@@ -43,13 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation  # type: ignore
@@ -92,22 +86,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -119,17 +105,9 @@ def test__get_default_mtls_endpoint():
 
     assert ImagesClient._get_default_mtls_endpoint(None) is None
     assert ImagesClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert (
-        ImagesClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        ImagesClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ImagesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert ImagesClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert ImagesClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert ImagesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert ImagesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -142,15 +120,17 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert ImagesClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            ImagesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                ImagesClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert ImagesClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert ImagesClient._read_environment_variables() == (False, "never", None)
@@ -164,13 +144,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             ImagesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
         assert ImagesClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert ImagesClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert ImagesClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert ImagesClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert ImagesClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                ImagesClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert ImagesClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert ImagesClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -178,108 +240,44 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert ImagesClient._get_client_cert_source(None, False) is None
-    assert (
-        ImagesClient._get_client_cert_source(mock_provided_cert_source, False) is None
-    )
-    assert (
-        ImagesClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert ImagesClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert ImagesClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                ImagesClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                ImagesClient._get_client_cert_source(mock_provided_cert_source, "true")
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert ImagesClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert ImagesClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    ImagesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ImagesClient),
-)
+@mock.patch.object(ImagesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ImagesClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = ImagesClient._DEFAULT_UNIVERSE
-    default_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        ImagesClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        ImagesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == ImagesClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ImagesClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        ImagesClient._get_api_endpoint(None, None, default_universe, "always")
-        == ImagesClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ImagesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == ImagesClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ImagesClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        ImagesClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert ImagesClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert ImagesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == ImagesClient.DEFAULT_MTLS_ENDPOINT
+    assert ImagesClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert ImagesClient._get_api_endpoint(None, None, default_universe, "always") == ImagesClient.DEFAULT_MTLS_ENDPOINT
+    assert ImagesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == ImagesClient.DEFAULT_MTLS_ENDPOINT
+    assert ImagesClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert ImagesClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        ImagesClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        ImagesClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        ImagesClient._get_universe_domain(client_universe_domain, universe_domain_env)
-        == client_universe_domain
-    )
-    assert (
-        ImagesClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        ImagesClient._get_universe_domain(None, None) == ImagesClient._DEFAULT_UNIVERSE
-    )
+    assert ImagesClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert ImagesClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert ImagesClient._get_universe_domain(None, None) == ImagesClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         ImagesClient._get_universe_domain("", None)
@@ -337,9 +335,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_images_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -347,9 +343,7 @@ def test_images_client_from_service_account_info(client_class, transport_name):
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -360,16 +354,12 @@ def test_images_client_from_service_account_info(client_class, transport_name):
     ],
 )
 def test_images_client_service_account_always_use_jwt(transport_class, transport_name):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -383,26 +373,18 @@ def test_images_client_service_account_always_use_jwt(transport_class, transport
 )
 def test_images_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -423,11 +405,7 @@ def test_images_client_get_transport_class():
         (ImagesClient, transports.ImagesRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    ImagesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ImagesClient),
-)
+@mock.patch.object(ImagesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ImagesClient))
 def test_images_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ImagesClient, "get_transport_class") as gtc:
@@ -466,9 +444,7 @@ def test_images_client_client_options(client_class, transport_class, transport_n
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -500,21 +476,7 @@ def test_images_client_client_options(client_class, transport_class, transport_n
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -524,9 +486,7 @@ def test_images_client_client_options(client_class, transport_class, transport_n
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -535,18 +495,14 @@ def test_images_client_client_options(client_class, transport_class, transport_n
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -563,35 +519,23 @@ def test_images_client_client_options(client_class, transport_class, transport_n
         (ImagesClient, transports.ImagesRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    ImagesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ImagesClient),
-)
+@mock.patch.object(ImagesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ImagesClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_images_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_images_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -610,22 +554,12 @@ def test_images_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -646,22 +580,15 @@ def test_images_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -672,21 +599,15 @@ def test_images_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [ImagesClient])
-@mock.patch.object(
-    ImagesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ImagesClient)
-)
+@mock.patch.object(ImagesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ImagesClient))
 def test_images_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -694,14 +615,106 @@ def test_images_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -717,28 +730,16 @@ def test_images_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -748,55 +749,25 @@ def test_images_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [ImagesClient])
-@mock.patch.object(
-    ImagesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ImagesClient),
-)
+@mock.patch.object(ImagesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ImagesClient))
 def test_images_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = ImagesClient._DEFAULT_UNIVERSE
-    default_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ImagesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -819,19 +790,11 @@ def test_images_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -839,9 +802,7 @@ def test_images_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -851,9 +812,7 @@ def test_images_client_client_api_endpoint(client_class):
         (ImagesClient, transports.ImagesRestTransport, "rest"),
     ],
 )
-def test_images_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_images_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -864,9 +823,7 @@ def test_images_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -882,9 +839,7 @@ def test_images_client_client_options_scopes(
         (ImagesClient, transports.ImagesRestTransport, "rest", None),
     ],
 )
-def test_images_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_images_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -894,9 +849,7 @@ def test_images_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -924,9 +877,7 @@ def test_delete_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -954,15 +905,11 @@ def test_delete_rest_required_fields(request_type=compute.DeleteImageRequest):
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -970,9 +917,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteImageRequest):
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1026,9 +971,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteImageRequest):
 
 
 def test_delete_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1079,11 +1022,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}" % client.transport._host, args[1])
 
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
@@ -1120,9 +1059,7 @@ def test_delete_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -1150,15 +1087,11 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteImageReque
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1166,9 +1099,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteImageReque
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1222,9 +1153,7 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteImageReque
 
 
 def test_delete_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1275,11 +1204,7 @@ def test_delete_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}" % client.transport._host, args[1])
 
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
@@ -1316,9 +1241,7 @@ def test_deprecate_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.deprecate] = mock_rpc
 
         request = {}
@@ -1346,15 +1269,11 @@ def test_deprecate_rest_required_fields(request_type=compute.DeprecateImageReque
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).deprecate._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).deprecate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1362,9 +1281,7 @@ def test_deprecate_rest_required_fields(request_type=compute.DeprecateImageReque
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).deprecate._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).deprecate._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1419,9 +1336,7 @@ def test_deprecate_rest_required_fields(request_type=compute.DeprecateImageReque
 
 
 def test_deprecate_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.deprecate._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1454,9 +1369,7 @@ def test_deprecate_rest_flattened():
         mock_args = dict(
             project="project_value",
             image="image_value",
-            deprecation_status_resource=compute.DeprecationStatus(
-                deleted="deleted_value"
-            ),
+            deprecation_status_resource=compute.DeprecationStatus(deleted="deleted_value"),
         )
         mock_args.update(sample_request)
 
@@ -1476,11 +1389,7 @@ def test_deprecate_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}/deprecate"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}/deprecate" % client.transport._host, args[1])
 
 
 def test_deprecate_rest_flattened_error(transport: str = "rest"):
@@ -1496,9 +1405,7 @@ def test_deprecate_rest_flattened_error(transport: str = "rest"):
             compute.DeprecateImageRequest(),
             project="project_value",
             image="image_value",
-            deprecation_status_resource=compute.DeprecationStatus(
-                deleted="deleted_value"
-            ),
+            deprecation_status_resource=compute.DeprecationStatus(deleted="deleted_value"),
         )
 
 
@@ -1520,9 +1427,7 @@ def test_deprecate_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.deprecate] = mock_rpc
 
         request = {}
@@ -1542,9 +1447,7 @@ def test_deprecate_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_deprecate_unary_rest_required_fields(
-    request_type=compute.DeprecateImageRequest,
-):
+def test_deprecate_unary_rest_required_fields(request_type=compute.DeprecateImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -1552,15 +1455,11 @@ def test_deprecate_unary_rest_required_fields(
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).deprecate._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).deprecate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1568,9 +1467,7 @@ def test_deprecate_unary_rest_required_fields(
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).deprecate._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).deprecate._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1625,9 +1522,7 @@ def test_deprecate_unary_rest_required_fields(
 
 
 def test_deprecate_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.deprecate._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1660,9 +1555,7 @@ def test_deprecate_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             image="image_value",
-            deprecation_status_resource=compute.DeprecationStatus(
-                deleted="deleted_value"
-            ),
+            deprecation_status_resource=compute.DeprecationStatus(deleted="deleted_value"),
         )
         mock_args.update(sample_request)
 
@@ -1682,11 +1575,7 @@ def test_deprecate_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}/deprecate"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}/deprecate" % client.transport._host, args[1])
 
 
 def test_deprecate_unary_rest_flattened_error(transport: str = "rest"):
@@ -1702,9 +1591,7 @@ def test_deprecate_unary_rest_flattened_error(transport: str = "rest"):
             compute.DeprecateImageRequest(),
             project="project_value",
             image="image_value",
-            deprecation_status_resource=compute.DeprecationStatus(
-                deleted="deleted_value"
-            ),
+            deprecation_status_resource=compute.DeprecationStatus(deleted="deleted_value"),
         )
 
 
@@ -1726,9 +1613,7 @@ def test_get_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get] = mock_rpc
 
         request = {}
@@ -1752,15 +1637,11 @@ def test_get_rest_required_fields(request_type=compute.GetImageRequest):
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1768,9 +1649,7 @@ def test_get_rest_required_fields(request_type=compute.GetImageRequest):
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1822,9 +1701,7 @@ def test_get_rest_required_fields(request_type=compute.GetImageRequest):
 
 
 def test_get_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1875,11 +1752,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}" % client.transport._host, args[1])
 
 
 def test_get_rest_flattened_error(transport: str = "rest"):
@@ -1916,9 +1789,7 @@ def test_get_from_family_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_from_family] = mock_rpc
 
         request = {}
@@ -1934,9 +1805,7 @@ def test_get_from_family_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_from_family_rest_required_fields(
-    request_type=compute.GetFromFamilyImageRequest,
-):
+def test_get_from_family_rest_required_fields(request_type=compute.GetFromFamilyImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -1944,15 +1813,11 @@ def test_get_from_family_rest_required_fields(
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_from_family._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_from_family._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1960,9 +1825,7 @@ def test_get_from_family_rest_required_fields(
     jsonified_request["family"] = "family_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_from_family._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_from_family._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2014,9 +1877,7 @@ def test_get_from_family_rest_required_fields(
 
 
 def test_get_from_family_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_from_family._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2067,11 +1928,7 @@ def test_get_from_family_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/family/{family}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/family/{family}" % client.transport._host, args[1])
 
 
 def test_get_from_family_rest_flattened_error(transport: str = "rest"):
@@ -2108,9 +1965,7 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_iam_policy] = mock_rpc
 
         request = {}
@@ -2126,9 +1981,7 @@ def test_get_iam_policy_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_iam_policy_rest_required_fields(
-    request_type=compute.GetIamPolicyImageRequest,
-):
+def test_get_iam_policy_rest_required_fields(request_type=compute.GetIamPolicyImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -2136,15 +1989,11 @@ def test_get_iam_policy_rest_required_fields(
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2152,9 +2001,7 @@ def test_get_iam_policy_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_iam_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("options_requested_policy_version",))
     jsonified_request.update(unset_fields)
@@ -2208,9 +2055,7 @@ def test_get_iam_policy_rest_required_fields(
 
 
 def test_get_iam_policy_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2261,11 +2106,7 @@ def test_get_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/getIamPolicy"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{resource}/getIamPolicy" % client.transport._host, args[1])
 
 
 def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
@@ -2302,9 +2143,7 @@ def test_insert_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -2331,24 +2170,18 @@ def test_insert_rest_required_fields(request_type=compute.InsertImageRequest):
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2406,9 +2239,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertImageRequest):
 
 
 def test_insert_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2464,10 +2295,7 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images" % client.transport._host, args[1])
 
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
@@ -2504,9 +2332,7 @@ def test_insert_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -2533,24 +2359,18 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertImageReque
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2608,9 +2428,7 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertImageReque
 
 
 def test_insert_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2666,10 +2484,7 @@ def test_insert_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images" % client.transport._host, args[1])
 
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
@@ -2706,9 +2521,7 @@ def test_list_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list] = mock_rpc
 
         request = {}
@@ -2731,24 +2544,18 @@ def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2808,9 +2615,7 @@ def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
 
 
 def test_list_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2863,10 +2668,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images" % client.transport._host, args[1])
 
 
 def test_list_rest_flattened_error(transport: str = "rest"):
@@ -2963,9 +2765,7 @@ def test_patch_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch] = mock_rpc
 
         request = {}
@@ -2993,15 +2793,11 @@ def test_patch_rest_required_fields(request_type=compute.PatchImageRequest):
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3009,9 +2805,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchImageRequest):
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3066,9 +2860,7 @@ def test_patch_rest_required_fields(request_type=compute.PatchImageRequest):
 
 
 def test_patch_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3121,11 +2913,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}" % client.transport._host, args[1])
 
 
 def test_patch_rest_flattened_error(transport: str = "rest"):
@@ -3163,9 +2951,7 @@ def test_patch_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch] = mock_rpc
 
         request = {}
@@ -3193,15 +2979,11 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3209,9 +2991,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest
     jsonified_request["image"] = "image_value"
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3266,9 +3046,7 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest
 
 
 def test_patch_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3321,11 +3099,7 @@ def test_patch_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{image}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{image}" % client.transport._host, args[1])
 
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
@@ -3363,9 +3137,7 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_iam_policy] = mock_rpc
 
         request = {}
@@ -3381,9 +3153,7 @@ def test_set_iam_policy_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_iam_policy_rest_required_fields(
-    request_type=compute.SetIamPolicyImageRequest,
-):
+def test_set_iam_policy_rest_required_fields(request_type=compute.SetIamPolicyImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -3391,15 +3161,11 @@ def test_set_iam_policy_rest_required_fields(
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3407,9 +3173,7 @@ def test_set_iam_policy_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_iam_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_iam_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3462,9 +3226,7 @@ def test_set_iam_policy_rest_required_fields(
 
 
 def test_set_iam_policy_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3497,9 +3259,7 @@ def test_set_iam_policy_rest_flattened():
         mock_args = dict(
             project="project_value",
             resource="resource_value",
-            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
-            ),
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(bindings=[compute.Binding(binding_id="binding_id_value")]),
         )
         mock_args.update(sample_request)
 
@@ -3519,11 +3279,7 @@ def test_set_iam_policy_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setIamPolicy"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{resource}/setIamPolicy" % client.transport._host, args[1])
 
 
 def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
@@ -3539,9 +3295,7 @@ def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
             compute.SetIamPolicyImageRequest(),
             project="project_value",
             resource="resource_value",
-            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(
-                bindings=[compute.Binding(binding_id="binding_id_value")]
-            ),
+            global_set_policy_request_resource=compute.GlobalSetPolicyRequest(bindings=[compute.Binding(binding_id="binding_id_value")]),
         )
 
 
@@ -3563,9 +3317,7 @@ def test_set_labels_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
 
         request = {}
@@ -3593,15 +3345,11 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsImageRequ
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_labels._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3609,9 +3357,7 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsImageRequ
     jsonified_request["project"] = "project_value"
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_labels._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3664,9 +3410,7 @@ def test_set_labels_rest_required_fields(request_type=compute.SetLabelsImageRequ
 
 
 def test_set_labels_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_labels._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3699,9 +3443,7 @@ def test_set_labels_rest_flattened():
         mock_args = dict(
             project="project_value",
             resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(label_fingerprint="label_fingerprint_value"),
         )
         mock_args.update(sample_request)
 
@@ -3721,11 +3463,7 @@ def test_set_labels_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{resource}/setLabels" % client.transport._host, args[1])
 
 
 def test_set_labels_rest_flattened_error(transport: str = "rest"):
@@ -3741,9 +3479,7 @@ def test_set_labels_rest_flattened_error(transport: str = "rest"):
             compute.SetLabelsImageRequest(),
             project="project_value",
             resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(label_fingerprint="label_fingerprint_value"),
         )
 
 
@@ -3765,9 +3501,7 @@ def test_set_labels_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_labels] = mock_rpc
 
         request = {}
@@ -3787,9 +3521,7 @@ def test_set_labels_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_labels_unary_rest_required_fields(
-    request_type=compute.SetLabelsImageRequest,
-):
+def test_set_labels_unary_rest_required_fields(request_type=compute.SetLabelsImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -3797,15 +3529,11 @@ def test_set_labels_unary_rest_required_fields(
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_labels._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3813,9 +3541,7 @@ def test_set_labels_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_labels._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_labels._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3868,9 +3594,7 @@ def test_set_labels_unary_rest_required_fields(
 
 
 def test_set_labels_unary_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_labels._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3903,9 +3627,7 @@ def test_set_labels_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(label_fingerprint="label_fingerprint_value"),
         )
         mock_args.update(sample_request)
 
@@ -3925,11 +3647,7 @@ def test_set_labels_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/setLabels"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/images/{resource}/setLabels" % client.transport._host, args[1])
 
 
 def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
@@ -3945,9 +3663,7 @@ def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
             compute.SetLabelsImageRequest(),
             project="project_value",
             resource="resource_value",
-            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(
-                label_fingerprint="label_fingerprint_value"
-            ),
+            global_set_labels_request_resource=compute.GlobalSetLabelsRequest(label_fingerprint="label_fingerprint_value"),
         )
 
 
@@ -3965,18 +3681,12 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.test_iam_permissions in client._transport._wrapped_methods
-        )
+        assert client._transport.test_iam_permissions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.test_iam_permissions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.test_iam_permissions] = mock_rpc
 
         request = {}
         client.test_iam_permissions(request)
@@ -3991,9 +3701,7 @@ def test_test_iam_permissions_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_test_iam_permissions_rest_required_fields(
-    request_type=compute.TestIamPermissionsImageRequest,
-):
+def test_test_iam_permissions_rest_required_fields(request_type=compute.TestIamPermissionsImageRequest):
     transport_class = transports.ImagesRestTransport
 
     request_init = {}
@@ -4001,15 +3709,13 @@ def test_test_iam_permissions_rest_required_fields(
     request_init["resource"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).test_iam_permissions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -4017,9 +3723,9 @@ def test_test_iam_permissions_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["resource"] = "resource_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).test_iam_permissions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).test_iam_permissions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -4072,9 +3778,7 @@ def test_test_iam_permissions_rest_required_fields(
 
 
 def test_test_iam_permissions_rest_unset_required_fields():
-    transport = transports.ImagesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ImagesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4107,9 +3811,7 @@ def test_test_iam_permissions_rest_flattened():
         mock_args = dict(
             project="project_value",
             resource="resource_value",
-            test_permissions_request_resource=compute.TestPermissionsRequest(
-                permissions=["permissions_value"]
-            ),
+            test_permissions_request_resource=compute.TestPermissionsRequest(permissions=["permissions_value"]),
         )
         mock_args.update(sample_request)
 
@@ -4130,9 +3832,7 @@ def test_test_iam_permissions_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/images/{resource}/testIamPermissions"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/images/{resource}/testIamPermissions" % client.transport._host, args[1]
         )
 
 
@@ -4149,9 +3849,7 @@ def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
             compute.TestIamPermissionsImageRequest(),
             project="project_value",
             resource="resource_value",
-            test_permissions_request_resource=compute.TestPermissionsRequest(
-                permissions=["permissions_value"]
-            ),
+            test_permissions_request_resource=compute.TestPermissionsRequest(permissions=["permissions_value"]),
         )
 
 
@@ -4192,9 +3890,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ImagesClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = ImagesClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ImagesRestTransport(
@@ -4231,24 +3927,18 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_rest():
-    transport = ImagesClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = ImagesClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4268,9 +3958,7 @@ def test_delete_rest_bad_request(request_type=compute.DeleteImageRequest):
     ],
 )
 def test_delete_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
@@ -4350,13 +4038,9 @@ def test_delete_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_delete") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_delete_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_delete"
@@ -4401,17 +4085,13 @@ def test_delete_rest_interceptors(null_interceptor):
 
 
 def test_deprecate_rest_bad_request(request_type=compute.DeprecateImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4431,9 +4111,7 @@ def test_deprecate_rest_bad_request(request_type=compute.DeprecateImageRequest):
     ],
 )
 def test_deprecate_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
@@ -4449,9 +4127,7 @@ def test_deprecate_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.DeprecateImageRequest.meta.fields[
-        "deprecation_status_resource"
-    ]
+    test_field = compute.DeprecateImageRequest.meta.fields["deprecation_status_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -4470,18 +4146,14 @@ def test_deprecate_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "deprecation_status_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["deprecation_status_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -4495,13 +4167,7 @@ def test_deprecate_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -4511,9 +4177,7 @@ def test_deprecate_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["deprecation_status_resource"][field])
-                ):
+                for i in range(0, len(request_init["deprecation_status_resource"][field])):
                     del request_init["deprecation_status_resource"][field][i][subfield]
             else:
                 del request_init["deprecation_status_resource"][field][subfield]
@@ -4593,13 +4257,9 @@ def test_deprecate_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_deprecate"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_deprecate") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_deprecate_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_deprecate"
@@ -4644,17 +4304,13 @@ def test_deprecate_rest_interceptors(null_interceptor):
 
 
 def test_get_rest_bad_request(request_type=compute.GetImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4674,9 +4330,7 @@ def test_get_rest_bad_request(request_type=compute.GetImageRequest):
     ],
 )
 def test_get_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
@@ -4762,13 +4416,9 @@ def test_get_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_get") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get"
@@ -4812,20 +4462,14 @@ def test_get_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_from_family_rest_bad_request(
-    request_type=compute.GetFromFamilyImageRequest,
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_from_family_rest_bad_request(request_type=compute.GetFromFamilyImageRequest):
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "family": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4845,9 +4489,7 @@ def test_get_from_family_rest_bad_request(
     ],
 )
 def test_get_from_family_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "family": "sample2"}
@@ -4933,13 +4575,9 @@ def test_get_from_family_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get_from_family"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_get_from_family") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get_from_family_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get_from_family"
@@ -4947,9 +4585,7 @@ def test_get_from_family_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetFromFamilyImageRequest.pb(
-            compute.GetFromFamilyImageRequest()
-        )
+        pb_message = compute.GetFromFamilyImageRequest.pb(compute.GetFromFamilyImageRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -4986,17 +4622,13 @@ def test_get_from_family_rest_interceptors(null_interceptor):
 
 
 def test_get_iam_policy_rest_bad_request(request_type=compute.GetIamPolicyImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5016,9 +4648,7 @@ def test_get_iam_policy_rest_bad_request(request_type=compute.GetIamPolicyImageR
     ],
 )
 def test_get_iam_policy_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
@@ -5060,13 +4690,9 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_get_iam_policy"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_get_iam_policy") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_get_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_get_iam_policy"
@@ -5074,9 +4700,7 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetIamPolicyImageRequest.pb(
-            compute.GetIamPolicyImageRequest()
-        )
+        pb_message = compute.GetIamPolicyImageRequest.pb(compute.GetIamPolicyImageRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5113,17 +4737,13 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5143,9 +4763,7 @@ def test_insert_rest_bad_request(request_type=compute.InsertImageRequest):
     ],
 )
 def test_insert_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
@@ -5180,20 +4798,11 @@ def test_insert_rest_call_success(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "name": "name_value",
         "params": {"resource_manager_tags": {}},
-        "raw_disk": {
-            "container_type": "container_type_value",
-            "sha1_checksum": "sha1_checksum_value",
-            "source": "source_value",
-        },
+        "raw_disk": {"container_type": "container_type_value", "sha1_checksum": "sha1_checksum_value", "source": "source_value"},
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
-        "shielded_instance_initial_state": {
-            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
-            "dbxs": {},
-            "keks": {},
-            "pk": {},
-        },
+        "shielded_instance_initial_state": {"dbs": [{"content": "content_value", "file_type": "file_type_value"}], "dbxs": {}, "keks": {}, "pk": {}},
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
@@ -5231,9 +4840,7 @@ def test_insert_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -5254,13 +4861,7 @@ def test_insert_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5350,13 +4951,9 @@ def test_insert_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_insert") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_insert_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_insert"
@@ -5401,17 +4998,13 @@ def test_insert_rest_interceptors(null_interceptor):
 
 
 def test_list_rest_bad_request(request_type=compute.ListImagesRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5431,9 +5024,7 @@ def test_list_rest_bad_request(request_type=compute.ListImagesRequest):
     ],
 )
 def test_list_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
@@ -5477,13 +5068,9 @@ def test_list_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_list") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_list_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_list"
@@ -5528,17 +5115,13 @@ def test_list_rest_interceptors(null_interceptor):
 
 
 def test_patch_rest_bad_request(request_type=compute.PatchImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5558,9 +5141,7 @@ def test_patch_rest_bad_request(request_type=compute.PatchImageRequest):
     ],
 )
 def test_patch_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "image": "sample2"}
@@ -5595,20 +5176,11 @@ def test_patch_rest_call_success(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "name": "name_value",
         "params": {"resource_manager_tags": {}},
-        "raw_disk": {
-            "container_type": "container_type_value",
-            "sha1_checksum": "sha1_checksum_value",
-            "source": "source_value",
-        },
+        "raw_disk": {"container_type": "container_type_value", "sha1_checksum": "sha1_checksum_value", "source": "source_value"},
         "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
-        "shielded_instance_initial_state": {
-            "dbs": [{"content": "content_value", "file_type": "file_type_value"}],
-            "dbxs": {},
-            "keks": {},
-            "pk": {},
-        },
+        "shielded_instance_initial_state": {"dbs": [{"content": "content_value", "file_type": "file_type_value"}], "dbxs": {}, "keks": {}, "pk": {}},
         "source_disk": "source_disk_value",
         "source_disk_encryption_key": {},
         "source_disk_id": "source_disk_id_value",
@@ -5646,9 +5218,7 @@ def test_patch_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -5669,13 +5239,7 @@ def test_patch_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5765,13 +5329,9 @@ def test_patch_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_patch") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_patch_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_patch"
@@ -5816,17 +5376,13 @@ def test_patch_rest_interceptors(null_interceptor):
 
 
 def test_set_iam_policy_rest_bad_request(request_type=compute.SetIamPolicyImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5846,9 +5402,7 @@ def test_set_iam_policy_rest_bad_request(request_type=compute.SetIamPolicyImageR
     ],
 )
 def test_set_iam_policy_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
@@ -5872,18 +5426,12 @@ def test_set_iam_policy_rest_call_success(request_type):
                 {
                     "audit_log_configs": [
                         {
-                            "exempted_members": [
-                                "exempted_members_value1",
-                                "exempted_members_value2",
-                            ],
+                            "exempted_members": ["exempted_members_value1", "exempted_members_value2"],
                             "ignore_child_exemptions": True,
                             "log_type": "log_type_value",
                         }
                     ],
-                    "exempted_members": [
-                        "exempted_members_value1",
-                        "exempted_members_value2",
-                    ],
+                    "exempted_members": ["exempted_members_value1", "exempted_members_value2"],
                     "service": "service_value",
                 }
             ],
@@ -5898,9 +5446,7 @@ def test_set_iam_policy_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetIamPolicyImageRequest.meta.fields[
-        "global_set_policy_request_resource"
-    ]
+    test_field = compute.SetIamPolicyImageRequest.meta.fields["global_set_policy_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5919,18 +5465,14 @@ def test_set_iam_policy_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "global_set_policy_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["global_set_policy_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5944,13 +5486,7 @@ def test_set_iam_policy_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5960,12 +5496,8 @@ def test_set_iam_policy_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["global_set_policy_request_resource"][field])
-                ):
-                    del request_init["global_set_policy_request_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["global_set_policy_request_resource"][field])):
+                    del request_init["global_set_policy_request_resource"][field][i][subfield]
             else:
                 del request_init["global_set_policy_request_resource"][field][subfield]
     request = request_type(**request_init)
@@ -6006,13 +5538,9 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_set_iam_policy"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_set_iam_policy") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_set_iam_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_set_iam_policy"
@@ -6020,9 +5548,7 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetIamPolicyImageRequest.pb(
-            compute.SetIamPolicyImageRequest()
-        )
+        pb_message = compute.SetIamPolicyImageRequest.pb(compute.SetIamPolicyImageRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6059,17 +5585,13 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
 
 
 def test_set_labels_rest_bad_request(request_type=compute.SetLabelsImageRequest):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6089,24 +5611,17 @@ def test_set_labels_rest_bad_request(request_type=compute.SetLabelsImageRequest)
     ],
 )
 def test_set_labels_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request_init["global_set_labels_request_resource"] = {
-        "label_fingerprint": "label_fingerprint_value",
-        "labels": {},
-    }
+    request_init["global_set_labels_request_resource"] = {"label_fingerprint": "label_fingerprint_value", "labels": {}}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetLabelsImageRequest.meta.fields[
-        "global_set_labels_request_resource"
-    ]
+    test_field = compute.SetLabelsImageRequest.meta.fields["global_set_labels_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6125,18 +5640,14 @@ def test_set_labels_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "global_set_labels_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["global_set_labels_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6150,13 +5661,7 @@ def test_set_labels_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6166,12 +5671,8 @@ def test_set_labels_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["global_set_labels_request_resource"][field])
-                ):
-                    del request_init["global_set_labels_request_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["global_set_labels_request_resource"][field])):
+                    del request_init["global_set_labels_request_resource"][field][i][subfield]
             else:
                 del request_init["global_set_labels_request_resource"][field][subfield]
     request = request_type(**request_init)
@@ -6250,13 +5751,9 @@ def test_set_labels_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_set_labels"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_set_labels") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_set_labels_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_set_labels"
@@ -6300,20 +5797,14 @@ def test_set_labels_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_test_iam_permissions_rest_bad_request(
-    request_type=compute.TestIamPermissionsImageRequest,
-):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_test_iam_permissions_rest_bad_request(request_type=compute.TestIamPermissionsImageRequest):
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6333,23 +5824,17 @@ def test_test_iam_permissions_rest_bad_request(
     ],
 )
 def test_test_iam_permissions_rest_call_success(request_type):
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "resource": "sample2"}
-    request_init["test_permissions_request_resource"] = {
-        "permissions": ["permissions_value1", "permissions_value2"]
-    }
+    request_init["test_permissions_request_resource"] = {"permissions": ["permissions_value1", "permissions_value2"]}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.TestIamPermissionsImageRequest.meta.fields[
-        "test_permissions_request_resource"
-    ]
+    test_field = compute.TestIamPermissionsImageRequest.meta.fields["test_permissions_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6368,18 +5853,14 @@ def test_test_iam_permissions_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "test_permissions_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["test_permissions_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6393,13 +5874,7 @@ def test_test_iam_permissions_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6409,12 +5884,8 @@ def test_test_iam_permissions_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["test_permissions_request_resource"][field])
-                ):
-                    del request_init["test_permissions_request_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["test_permissions_request_resource"][field])):
+                    del request_init["test_permissions_request_resource"][field][i][subfield]
             else:
                 del request_init["test_permissions_request_resource"][field][subfield]
     request = request_type(**request_init)
@@ -6451,13 +5922,9 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
     )
     client = ImagesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ImagesRestInterceptor, "post_test_iam_permissions"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ImagesRestInterceptor, "post_test_iam_permissions") as post, mock.patch.object(
         transports.ImagesRestInterceptor, "post_test_iam_permissions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ImagesRestInterceptor, "pre_test_iam_permissions"
@@ -6465,9 +5932,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.TestIamPermissionsImageRequest.pb(
-            compute.TestIamPermissionsImageRequest()
-        )
+        pb_message = compute.TestIamPermissionsImageRequest.pb(compute.TestIamPermissionsImageRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6478,9 +5943,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = compute.TestPermissionsResponse.to_json(
-            compute.TestPermissionsResponse()
-        )
+        return_value = compute.TestPermissionsResponse.to_json(compute.TestPermissionsResponse())
         req.return_value.content = return_value
 
         request = compute.TestIamPermissionsImageRequest()
@@ -6506,9 +5969,7 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
 
 
 def test_initialize_client_w_rest():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -6721,9 +6182,7 @@ def test_test_iam_permissions_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         client.test_iam_permissions(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6737,17 +6196,12 @@ def test_test_iam_permissions_empty_call_rest():
 def test_images_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.ImagesTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.ImagesTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_images_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.compute_v1.services.images.transports.ImagesTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.compute_v1.services.images.transports.ImagesTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.ImagesTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -6786,9 +6240,7 @@ def test_images_base_transport():
 
 def test_images_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.compute_v1.services.images.transports.ImagesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -6836,12 +6288,8 @@ def test_images_auth_adc():
 
 def test_images_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.ImagesRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.ImagesRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -6854,15 +6302,11 @@ def test_images_http_transport_client_cert_source_for_mtls():
 def test_images_host_no_port(transport_name):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com"
+        "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
     )
 
 
@@ -6875,15 +6319,11 @@ def test_images_host_no_port(transport_name):
 def test_images_host_with_port(transport_name):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com:8000"
+        "compute.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com:8000"
     )
 
 
@@ -7045,18 +6485,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.ImagesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ImagesTransport, "_prep_wrapped_messages") as prep:
         client = ImagesClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.ImagesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ImagesTransport, "_prep_wrapped_messages") as prep:
         transport_class = ImagesClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -7066,12 +6502,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_rest():
-    client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -7082,9 +6514,7 @@ def test_client_ctx():
         "rest",
     ]
     for transport in transports:
-        client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = ImagesClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -7100,9 +6530,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -7113,9 +6541,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

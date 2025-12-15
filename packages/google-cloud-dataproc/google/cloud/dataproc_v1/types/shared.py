@@ -823,9 +823,7 @@ class GkeNodePoolConfig(proto.Message):
             proto.BOOL,
             number=10,
         )
-        accelerators: MutableSequence[
-            "GkeNodePoolConfig.GkeNodePoolAcceleratorConfig"
-        ] = proto.RepeatedField(
+        accelerators: MutableSequence["GkeNodePoolConfig.GkeNodePoolAcceleratorConfig"] = proto.RepeatedField(
             proto.MESSAGE,
             number=11,
             message="GkeNodePoolConfig.GkeNodePoolAcceleratorConfig",

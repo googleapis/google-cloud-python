@@ -240,13 +240,8 @@ class CertificateAuthorityServiceRestInterceptor:
     """
 
     def pre_activate_certificate_authority(
-        self,
-        request: service.ActivateCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ActivateCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ActivateCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ActivateCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for activate_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +249,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_activate_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_activate_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for activate_certificate_authority
 
         DEPRECATED. Please use the `post_activate_certificate_authority_with_metadata`
@@ -270,9 +263,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_activate_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for activate_certificate_authority
 
@@ -289,12 +280,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_create_certificate(
-        self,
-        request: service.CreateCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +289,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_certificate(
-        self, response: resources.Certificate
-    ) -> resources.Certificate:
+    def post_create_certificate(self, response: resources.Certificate) -> resources.Certificate:
         """Post-rpc interceptor for create_certificate
 
         DEPRECATED. Please use the `post_create_certificate_with_metadata`
@@ -318,9 +303,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_create_certificate_with_metadata(
-        self,
-        response: resources.Certificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Certificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_certificate
 
@@ -337,13 +320,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_create_certificate_authority(
-        self,
-        request: service.CreateCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.CreateCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -351,9 +329,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_certificate_authority
 
         DEPRECATED. Please use the `post_create_certificate_authority_with_metadata`
@@ -367,9 +343,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_create_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_certificate_authority
 
@@ -386,13 +360,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_disable_certificate_authority(
-        self,
-        request: service.DisableCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DisableCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.DisableCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DisableCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for disable_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +369,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_disable_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_disable_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for disable_certificate_authority
 
         DEPRECATED. Please use the `post_disable_certificate_authority_with_metadata`
@@ -416,9 +383,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_disable_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for disable_certificate_authority
 
@@ -435,13 +400,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_enable_certificate_authority(
-        self,
-        request: service.EnableCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.EnableCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.EnableCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.EnableCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enable_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -449,9 +409,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_enable_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_enable_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for enable_certificate_authority
 
         DEPRECATED. Please use the `post_enable_certificate_authority_with_metadata`
@@ -465,9 +423,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_enable_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for enable_certificate_authority
 
@@ -484,13 +440,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_fetch_certificate_authority_csr(
-        self,
-        request: service.FetchCertificateAuthorityCsrRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.FetchCertificateAuthorityCsrRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.FetchCertificateAuthorityCsrRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.FetchCertificateAuthorityCsrRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_certificate_authority_csr
 
         Override in a subclass to manipulate the request or metadata
@@ -514,13 +465,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_fetch_certificate_authority_csr_with_metadata(
-        self,
-        response: service.FetchCertificateAuthorityCsrResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.FetchCertificateAuthorityCsrResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.FetchCertificateAuthorityCsrResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.FetchCertificateAuthorityCsrResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_certificate_authority_csr
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -536,9 +482,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_certificate(
-        self,
-        request: service.GetCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_certificate
 
@@ -547,9 +491,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_certificate(
-        self, response: resources.Certificate
-    ) -> resources.Certificate:
+    def post_get_certificate(self, response: resources.Certificate) -> resources.Certificate:
         """Post-rpc interceptor for get_certificate
 
         DEPRECATED. Please use the `post_get_certificate_with_metadata`
@@ -563,9 +505,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_get_certificate_with_metadata(
-        self,
-        response: resources.Certificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Certificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_certificate
 
@@ -582,12 +522,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_certificate_authority(
-        self,
-        request: service.GetCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -595,9 +531,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_certificate_authority(
-        self, response: resources.CertificateAuthority
-    ) -> resources.CertificateAuthority:
+    def post_get_certificate_authority(self, response: resources.CertificateAuthority) -> resources.CertificateAuthority:
         """Post-rpc interceptor for get_certificate_authority
 
         DEPRECATED. Please use the `post_get_certificate_authority_with_metadata`
@@ -611,9 +545,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_get_certificate_authority_with_metadata(
-        self,
-        response: resources.CertificateAuthority,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.CertificateAuthority, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.CertificateAuthority, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_certificate_authority
 
@@ -630,13 +562,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_certificate_revocation_list(
-        self,
-        request: service.GetCertificateRevocationListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetCertificateRevocationListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.GetCertificateRevocationListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetCertificateRevocationListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_certificate_revocation_list
 
         Override in a subclass to manipulate the request or metadata
@@ -644,9 +571,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_certificate_revocation_list(
-        self, response: resources.CertificateRevocationList
-    ) -> resources.CertificateRevocationList:
+    def post_get_certificate_revocation_list(self, response: resources.CertificateRevocationList) -> resources.CertificateRevocationList:
         """Post-rpc interceptor for get_certificate_revocation_list
 
         DEPRECATED. Please use the `post_get_certificate_revocation_list_with_metadata`
@@ -660,12 +585,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_get_certificate_revocation_list_with_metadata(
-        self,
-        response: resources.CertificateRevocationList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        resources.CertificateRevocationList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: resources.CertificateRevocationList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[resources.CertificateRevocationList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_certificate_revocation_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -681,12 +602,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_reusable_config(
-        self,
-        request: service.GetReusableConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetReusableConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetReusableConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetReusableConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_reusable_config
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +611,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_reusable_config(
-        self, response: resources.ReusableConfig
-    ) -> resources.ReusableConfig:
+    def post_get_reusable_config(self, response: resources.ReusableConfig) -> resources.ReusableConfig:
         """Post-rpc interceptor for get_reusable_config
 
         DEPRECATED. Please use the `post_get_reusable_config_with_metadata`
@@ -710,9 +625,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_get_reusable_config_with_metadata(
-        self,
-        response: resources.ReusableConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.ReusableConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.ReusableConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_reusable_config
 
@@ -729,13 +642,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_certificate_authorities(
-        self,
-        request: service.ListCertificateAuthoritiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificateAuthoritiesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListCertificateAuthoritiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificateAuthoritiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_certificate_authorities
 
         Override in a subclass to manipulate the request or metadata
@@ -743,9 +651,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_certificate_authorities(
-        self, response: service.ListCertificateAuthoritiesResponse
-    ) -> service.ListCertificateAuthoritiesResponse:
+    def post_list_certificate_authorities(self, response: service.ListCertificateAuthoritiesResponse) -> service.ListCertificateAuthoritiesResponse:
         """Post-rpc interceptor for list_certificate_authorities
 
         DEPRECATED. Please use the `post_list_certificate_authorities_with_metadata`
@@ -759,13 +665,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_list_certificate_authorities_with_metadata(
-        self,
-        response: service.ListCertificateAuthoritiesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificateAuthoritiesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListCertificateAuthoritiesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificateAuthoritiesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_certificate_authorities
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -781,13 +682,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_certificate_revocation_lists(
-        self,
-        request: service.ListCertificateRevocationListsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificateRevocationListsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListCertificateRevocationListsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificateRevocationListsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_certificate_revocation_lists
 
         Override in a subclass to manipulate the request or metadata
@@ -811,13 +707,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_list_certificate_revocation_lists_with_metadata(
-        self,
-        response: service.ListCertificateRevocationListsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificateRevocationListsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListCertificateRevocationListsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificateRevocationListsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_certificate_revocation_lists
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -833,12 +724,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_certificates(
-        self,
-        request: service.ListCertificatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListCertificatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_certificates
 
         Override in a subclass to manipulate the request or metadata
@@ -846,9 +733,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_certificates(
-        self, response: service.ListCertificatesResponse
-    ) -> service.ListCertificatesResponse:
+    def post_list_certificates(self, response: service.ListCertificatesResponse) -> service.ListCertificatesResponse:
         """Post-rpc interceptor for list_certificates
 
         DEPRECATED. Please use the `post_list_certificates_with_metadata`
@@ -862,12 +747,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_list_certificates_with_metadata(
-        self,
-        response: service.ListCertificatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListCertificatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListCertificatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListCertificatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_certificates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -883,12 +764,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_reusable_configs(
-        self,
-        request: service.ListReusableConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListReusableConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListReusableConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListReusableConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reusable_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -896,9 +773,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reusable_configs(
-        self, response: service.ListReusableConfigsResponse
-    ) -> service.ListReusableConfigsResponse:
+    def post_list_reusable_configs(self, response: service.ListReusableConfigsResponse) -> service.ListReusableConfigsResponse:
         """Post-rpc interceptor for list_reusable_configs
 
         DEPRECATED. Please use the `post_list_reusable_configs_with_metadata`
@@ -912,12 +787,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_list_reusable_configs_with_metadata(
-        self,
-        response: service.ListReusableConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListReusableConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListReusableConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListReusableConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reusable_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -933,13 +804,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_restore_certificate_authority(
-        self,
-        request: service.RestoreCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RestoreCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.RestoreCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RestoreCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -947,9 +813,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_certificate_authority
 
         DEPRECATED. Please use the `post_restore_certificate_authority_with_metadata`
@@ -963,9 +827,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_restore_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_certificate_authority
 
@@ -982,12 +844,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_revoke_certificate(
-        self,
-        request: service.RevokeCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RevokeCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RevokeCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RevokeCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revoke_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -995,9 +853,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_revoke_certificate(
-        self, response: resources.Certificate
-    ) -> resources.Certificate:
+    def post_revoke_certificate(self, response: resources.Certificate) -> resources.Certificate:
         """Post-rpc interceptor for revoke_certificate
 
         DEPRECATED. Please use the `post_revoke_certificate_with_metadata`
@@ -1011,9 +867,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_revoke_certificate_with_metadata(
-        self,
-        response: resources.Certificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Certificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for revoke_certificate
 
@@ -1030,13 +884,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_schedule_delete_certificate_authority(
-        self,
-        request: service.ScheduleDeleteCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ScheduleDeleteCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ScheduleDeleteCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ScheduleDeleteCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for schedule_delete_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -1044,9 +893,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_schedule_delete_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_schedule_delete_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for schedule_delete_certificate_authority
 
         DEPRECATED. Please use the `post_schedule_delete_certificate_authority_with_metadata`
@@ -1060,9 +907,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_schedule_delete_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for schedule_delete_certificate_authority
 
@@ -1079,12 +924,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_certificate(
-        self,
-        request: service.UpdateCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -1092,9 +933,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_certificate(
-        self, response: resources.Certificate
-    ) -> resources.Certificate:
+    def post_update_certificate(self, response: resources.Certificate) -> resources.Certificate:
         """Post-rpc interceptor for update_certificate
 
         DEPRECATED. Please use the `post_update_certificate_with_metadata`
@@ -1108,9 +947,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_update_certificate_with_metadata(
-        self,
-        response: resources.Certificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Certificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Certificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_certificate
 
@@ -1127,13 +964,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_certificate_authority(
-        self,
-        request: service.UpdateCertificateAuthorityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateCertificateAuthorityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.UpdateCertificateAuthorityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateCertificateAuthorityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_certificate_authority
 
         Override in a subclass to manipulate the request or metadata
@@ -1141,9 +973,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_certificate_authority(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_certificate_authority(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_certificate_authority
 
         DEPRECATED. Please use the `post_update_certificate_authority_with_metadata`
@@ -1157,9 +987,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_update_certificate_authority_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_certificate_authority
 
@@ -1176,13 +1004,8 @@ class CertificateAuthorityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_certificate_revocation_list(
-        self,
-        request: service.UpdateCertificateRevocationListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateCertificateRevocationListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.UpdateCertificateRevocationListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateCertificateRevocationListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_certificate_revocation_list
 
         Override in a subclass to manipulate the request or metadata
@@ -1190,9 +1013,7 @@ class CertificateAuthorityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_certificate_revocation_list(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_certificate_revocation_list(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_certificate_revocation_list
 
         DEPRECATED. Please use the `post_update_certificate_revocation_list_with_metadata`
@@ -1206,9 +1027,7 @@ class CertificateAuthorityServiceRestInterceptor:
         return response
 
     def post_update_certificate_revocation_list_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_certificate_revocation_list
 
@@ -1232,9 +1051,7 @@ class CertificateAuthorityServiceRestStub:
     _interceptor: CertificateAuthorityServiceRestInterceptor
 
 
-class CertificateAuthorityServiceRestTransport(
-    _BaseCertificateAuthorityServiceRestTransport
-):
+class CertificateAuthorityServiceRestTransport(_BaseCertificateAuthorityServiceRestTransport):
     """REST backend synchronous transport for CertificateAuthorityService.
 
     [Certificate Authority
@@ -1308,9 +1125,7 @@ class CertificateAuthorityServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1363,32 +1178,19 @@ class CertificateAuthorityServiceRestTransport(
                 path_prefix="v1beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _ActivateCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.ActivateCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.ActivateCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1433,32 +1235,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_activate_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_activate_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1482,13 +1272,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ActivateCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1502,15 +1286,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_activate_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_activate_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_activate_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1531,23 +1308,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _CreateCertificate(
-        _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _CreateCertificate(_BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.CreateCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1592,32 +1358,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_certificate(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_certificate(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_transcoded_request(http_options, request)
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1641,13 +1393,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._CreateCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1663,12 +1409,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_create_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Certificate.to_json(response)
                 except:
@@ -1690,24 +1432,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _CreateCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.CreateCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.CreateCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1752,32 +1483,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1801,13 +1520,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._CreateCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1821,12 +1534,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_create_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1848,24 +1557,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _DisableCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.DisableCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.DisableCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1910,32 +1608,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_disable_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_disable_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1959,13 +1645,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._DisableCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1979,15 +1659,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_disable_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_disable_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_disable_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2009,24 +1682,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _EnableCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.EnableCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.EnableCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2071,32 +1733,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_enable_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_enable_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2120,13 +1770,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._EnableCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2140,12 +1784,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_enable_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_enable_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_enable_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2167,24 +1807,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _FetchCertificateAuthorityCsr(
-        _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.FetchCertificateAuthorityCsr"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.FetchCertificateAuthorityCsr")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2227,28 +1856,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_certificate_authority_csr(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_fetch_certificate_authority_csr(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2272,12 +1891,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._FetchCertificateAuthorityCsr._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2293,19 +1907,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_fetch_certificate_authority_csr(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_certificate_authority_csr_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_certificate_authority_csr_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.FetchCertificateAuthorityCsrResponse.to_json(response)
-                    )
+                    response_payload = service.FetchCertificateAuthorityCsrResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2324,23 +1929,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _GetCertificate(
-        _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _GetCertificate(_BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.GetCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2384,26 +1978,16 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_certificate(request, metadata)
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2426,15 +2010,8 @@ class CertificateAuthorityServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                CertificateAuthorityServiceRestTransport._GetCertificate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CertificateAuthorityServiceRestTransport._GetCertificate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2450,12 +2027,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_get_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Certificate.to_json(response)
                 except:
@@ -2476,25 +2049,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _GetCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _GetCertificateAuthority(_BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority, CertificateAuthorityServiceRestStub):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.GetCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.GetCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2540,28 +2100,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2585,12 +2135,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._GetCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2606,12 +2151,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_get_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.CertificateAuthority.to_json(response)
                 except:
@@ -2633,24 +2174,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _GetCertificateRevocationList(
-        _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.GetCertificateRevocationList"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.GetCertificateRevocationList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2696,28 +2226,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_certificate_revocation_list(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_certificate_revocation_list(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2741,12 +2261,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._GetCertificateRevocationList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2762,19 +2277,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_get_certificate_revocation_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_certificate_revocation_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_certificate_revocation_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = resources.CertificateRevocationList.to_json(
-                        response
-                    )
+                    response_payload = resources.CertificateRevocationList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2793,23 +2299,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _GetReusableConfig(
-        _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _GetReusableConfig(_BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.GetReusableConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2857,28 +2352,16 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_reusable_config(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_reusable_config(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2902,12 +2385,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._GetReusableConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2923,12 +2401,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_get_reusable_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_reusable_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_reusable_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.ReusableConfig.to_json(response)
                 except:
@@ -2950,24 +2424,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _ListCertificateAuthorities(
-        _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.ListCertificateAuthorities"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.ListCertificateAuthorities")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3010,28 +2473,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_certificate_authorities(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_certificate_authorities(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3055,12 +2508,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ListCertificateAuthorities._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3076,16 +2524,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_list_certificate_authorities(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_certificate_authorities_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_certificate_authorities_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListCertificateAuthoritiesResponse.to_json(response)
-                    )
+                    response_payload = service.ListCertificateAuthoritiesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3105,24 +2547,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _ListCertificateRevocationLists(
-        _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.ListCertificateRevocationLists"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.ListCertificateRevocationLists")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3165,13 +2596,9 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_certificate_revocation_lists(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_certificate_revocation_lists(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists._get_transcoded_request(
                 http_options, request
             )
@@ -3181,12 +2608,8 @@ class CertificateAuthorityServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3210,12 +2633,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ListCertificateRevocationLists._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3231,19 +2649,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_list_certificate_revocation_lists(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_certificate_revocation_lists_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_certificate_revocation_lists_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListCertificateRevocationListsResponse.to_json(response)
-                    )
+                    response_payload = service.ListCertificateRevocationListsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3262,23 +2671,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _ListCertificates(
-        _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _ListCertificates(_BaseCertificateAuthorityServiceRestTransport._BaseListCertificates, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.ListCertificates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3320,28 +2718,16 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_certificates(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_certificates(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3365,12 +2751,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ListCertificates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3386,16 +2767,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_list_certificates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_certificates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_certificates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListCertificatesResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListCertificatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3414,23 +2789,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _ListReusableConfigs(
-        _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _ListReusableConfigs(_BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.ListReusableConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3472,28 +2836,16 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_reusable_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_reusable_configs(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3517,12 +2869,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ListReusableConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3538,16 +2885,10 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_list_reusable_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reusable_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reusable_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListReusableConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListReusableConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3567,24 +2908,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _RestoreCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.RestoreCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.RestoreCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3629,32 +2959,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_restore_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3678,13 +2996,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._RestoreCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3698,15 +3010,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_restore_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_restore_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3727,23 +3032,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _RevokeCertificate(
-        _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _RevokeCertificate(_BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.RevokeCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3788,32 +3082,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_revoke_certificate(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_revoke_certificate(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_transcoded_request(http_options, request)
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3837,13 +3117,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._RevokeCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3859,12 +3133,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_revoke_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_revoke_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_revoke_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Certificate.to_json(response)
                 except:
@@ -3886,24 +3156,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _ScheduleDeleteCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.ScheduleDeleteCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.ScheduleDeleteCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3948,35 +3207,22 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_schedule_delete_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_schedule_delete_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4000,13 +3246,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._ScheduleDeleteCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4020,15 +3260,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_schedule_delete_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_schedule_delete_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_schedule_delete_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4049,23 +3282,12 @@ class CertificateAuthorityServiceRestTransport(
                 )
             return resp
 
-    class _UpdateCertificate(
-        _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate,
-        CertificateAuthorityServiceRestStub,
-    ):
+    class _UpdateCertificate(_BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate, CertificateAuthorityServiceRestStub):
         def __hash__(self):
             return hash("CertificateAuthorityServiceRestTransport.UpdateCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4110,32 +3332,18 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_certificate(
-                request, metadata
-            )
-            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_certificate(request, metadata)
+            transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_transcoded_request(http_options, request)
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4159,13 +3367,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._UpdateCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4181,12 +3383,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_update_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Certificate.to_json(response)
                 except:
@@ -4208,24 +3406,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _UpdateCertificateAuthority(
-        _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.UpdateCertificateAuthority"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.UpdateCertificateAuthority")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4270,32 +3457,20 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_certificate_authority(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_certificate_authority(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4319,13 +3494,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._UpdateCertificateAuthority._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4339,12 +3508,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_update_certificate_authority(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_certificate_authority_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_certificate_authority_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4366,24 +3531,13 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     class _UpdateCertificateRevocationList(
-        _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList,
-        CertificateAuthorityServiceRestStub,
+        _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList, CertificateAuthorityServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CertificateAuthorityServiceRestTransport.UpdateCertificateRevocationList"
-            )
+            return hash("CertificateAuthorityServiceRestTransport.UpdateCertificateRevocationList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4428,35 +3582,22 @@ class CertificateAuthorityServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_http_options()
-            )
+            http_options = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_certificate_revocation_list(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_certificate_revocation_list(request, metadata)
             transcoded_request = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4480,13 +3621,7 @@ class CertificateAuthorityServiceRestTransport(
 
             # Send the request
             response = CertificateAuthorityServiceRestTransport._UpdateCertificateRevocationList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4500,15 +3635,8 @@ class CertificateAuthorityServiceRestTransport(
 
             resp = self._interceptor.post_update_certificate_revocation_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_certificate_revocation_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_certificate_revocation_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4530,49 +3658,31 @@ class CertificateAuthorityServiceRestTransport(
             return resp
 
     @property
-    def activate_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.ActivateCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def activate_certificate_authority(self) -> Callable[[service.ActivateCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ActivateCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_certificate(
-        self,
-    ) -> Callable[[service.CreateCertificateRequest], resources.Certificate]:
+    def create_certificate(self) -> Callable[[service.CreateCertificateRequest], resources.Certificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.CreateCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def create_certificate_authority(self) -> Callable[[service.CreateCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def disable_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.DisableCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def disable_certificate_authority(self) -> Callable[[service.DisableCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DisableCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enable_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.EnableCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def enable_certificate_authority(self) -> Callable[[service.EnableCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnableCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
@@ -4580,58 +3690,37 @@ class CertificateAuthorityServiceRestTransport(
     @property
     def fetch_certificate_authority_csr(
         self,
-    ) -> Callable[
-        [service.FetchCertificateAuthorityCsrRequest],
-        service.FetchCertificateAuthorityCsrResponse,
-    ]:
+    ) -> Callable[[service.FetchCertificateAuthorityCsrRequest], service.FetchCertificateAuthorityCsrResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchCertificateAuthorityCsr(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_certificate(
-        self,
-    ) -> Callable[[service.GetCertificateRequest], resources.Certificate]:
+    def get_certificate(self) -> Callable[[service.GetCertificateRequest], resources.Certificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.GetCertificateAuthorityRequest], resources.CertificateAuthority
-    ]:
+    def get_certificate_authority(self) -> Callable[[service.GetCertificateAuthorityRequest], resources.CertificateAuthority]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_certificate_revocation_list(
-        self,
-    ) -> Callable[
-        [service.GetCertificateRevocationListRequest],
-        resources.CertificateRevocationList,
-    ]:
+    def get_certificate_revocation_list(self) -> Callable[[service.GetCertificateRevocationListRequest], resources.CertificateRevocationList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCertificateRevocationList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_reusable_config(
-        self,
-    ) -> Callable[[service.GetReusableConfigRequest], resources.ReusableConfig]:
+    def get_reusable_config(self) -> Callable[[service.GetReusableConfigRequest], resources.ReusableConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReusableConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_certificate_authorities(
-        self,
-    ) -> Callable[
-        [service.ListCertificateAuthoritiesRequest],
-        service.ListCertificateAuthoritiesResponse,
-    ]:
+    def list_certificate_authorities(self) -> Callable[[service.ListCertificateAuthoritiesRequest], service.ListCertificateAuthoritiesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCertificateAuthorities(self._session, self._host, self._interceptor)  # type: ignore
@@ -4639,84 +3728,55 @@ class CertificateAuthorityServiceRestTransport(
     @property
     def list_certificate_revocation_lists(
         self,
-    ) -> Callable[
-        [service.ListCertificateRevocationListsRequest],
-        service.ListCertificateRevocationListsResponse,
-    ]:
+    ) -> Callable[[service.ListCertificateRevocationListsRequest], service.ListCertificateRevocationListsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCertificateRevocationLists(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_certificates(
-        self,
-    ) -> Callable[[service.ListCertificatesRequest], service.ListCertificatesResponse]:
+    def list_certificates(self) -> Callable[[service.ListCertificatesRequest], service.ListCertificatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCertificates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reusable_configs(
-        self,
-    ) -> Callable[
-        [service.ListReusableConfigsRequest], service.ListReusableConfigsResponse
-    ]:
+    def list_reusable_configs(self) -> Callable[[service.ListReusableConfigsRequest], service.ListReusableConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReusableConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.RestoreCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def restore_certificate_authority(self) -> Callable[[service.RestoreCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def revoke_certificate(
-        self,
-    ) -> Callable[[service.RevokeCertificateRequest], resources.Certificate]:
+    def revoke_certificate(self) -> Callable[[service.RevokeCertificateRequest], resources.Certificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RevokeCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def schedule_delete_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.ScheduleDeleteCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def schedule_delete_certificate_authority(self) -> Callable[[service.ScheduleDeleteCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ScheduleDeleteCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_certificate(
-        self,
-    ) -> Callable[[service.UpdateCertificateRequest], resources.Certificate]:
+    def update_certificate(self) -> Callable[[service.UpdateCertificateRequest], resources.Certificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_certificate_authority(
-        self,
-    ) -> Callable[
-        [service.UpdateCertificateAuthorityRequest], operations_pb2.Operation
-    ]:
+    def update_certificate_authority(self) -> Callable[[service.UpdateCertificateAuthorityRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCertificateAuthority(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_certificate_revocation_list(
-        self,
-    ) -> Callable[
-        [service.UpdateCertificateRevocationListRequest], operations_pb2.Operation
-    ]:
+    def update_certificate_revocation_list(self) -> Callable[[service.UpdateCertificateRevocationListRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCertificateRevocationList(self._session, self._host, self._interceptor)  # type: ignore

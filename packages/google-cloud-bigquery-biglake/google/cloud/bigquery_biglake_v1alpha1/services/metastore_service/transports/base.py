@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.bigquery_biglake_v1alpha1 import gapic_version as package_version
 from google.cloud.bigquery_biglake_v1alpha1.types import metastore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class MetastoreServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -244,175 +234,83 @@ class MetastoreServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_catalog(
-        self,
-    ) -> Callable[
-        [metastore.CreateCatalogRequest],
-        Union[metastore.Catalog, Awaitable[metastore.Catalog]],
-    ]:
+    def create_catalog(self) -> Callable[[metastore.CreateCatalogRequest], Union[metastore.Catalog, Awaitable[metastore.Catalog]]]:
         raise NotImplementedError()
 
     @property
-    def delete_catalog(
-        self,
-    ) -> Callable[
-        [metastore.DeleteCatalogRequest],
-        Union[metastore.Catalog, Awaitable[metastore.Catalog]],
-    ]:
+    def delete_catalog(self) -> Callable[[metastore.DeleteCatalogRequest], Union[metastore.Catalog, Awaitable[metastore.Catalog]]]:
         raise NotImplementedError()
 
     @property
-    def get_catalog(
-        self,
-    ) -> Callable[
-        [metastore.GetCatalogRequest],
-        Union[metastore.Catalog, Awaitable[metastore.Catalog]],
-    ]:
+    def get_catalog(self) -> Callable[[metastore.GetCatalogRequest], Union[metastore.Catalog, Awaitable[metastore.Catalog]]]:
         raise NotImplementedError()
 
     @property
     def list_catalogs(
         self,
-    ) -> Callable[
-        [metastore.ListCatalogsRequest],
-        Union[
-            metastore.ListCatalogsResponse, Awaitable[metastore.ListCatalogsResponse]
-        ],
-    ]:
+    ) -> Callable[[metastore.ListCatalogsRequest], Union[metastore.ListCatalogsResponse, Awaitable[metastore.ListCatalogsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[
-        [metastore.CreateDatabaseRequest],
-        Union[metastore.Database, Awaitable[metastore.Database]],
-    ]:
+    def create_database(self) -> Callable[[metastore.CreateDatabaseRequest], Union[metastore.Database, Awaitable[metastore.Database]]]:
         raise NotImplementedError()
 
     @property
-    def delete_database(
-        self,
-    ) -> Callable[
-        [metastore.DeleteDatabaseRequest],
-        Union[metastore.Database, Awaitable[metastore.Database]],
-    ]:
+    def delete_database(self) -> Callable[[metastore.DeleteDatabaseRequest], Union[metastore.Database, Awaitable[metastore.Database]]]:
         raise NotImplementedError()
 
     @property
-    def update_database(
-        self,
-    ) -> Callable[
-        [metastore.UpdateDatabaseRequest],
-        Union[metastore.Database, Awaitable[metastore.Database]],
-    ]:
+    def update_database(self) -> Callable[[metastore.UpdateDatabaseRequest], Union[metastore.Database, Awaitable[metastore.Database]]]:
         raise NotImplementedError()
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[
-        [metastore.GetDatabaseRequest],
-        Union[metastore.Database, Awaitable[metastore.Database]],
-    ]:
+    def get_database(self) -> Callable[[metastore.GetDatabaseRequest], Union[metastore.Database, Awaitable[metastore.Database]]]:
         raise NotImplementedError()
 
     @property
     def list_databases(
         self,
-    ) -> Callable[
-        [metastore.ListDatabasesRequest],
-        Union[
-            metastore.ListDatabasesResponse, Awaitable[metastore.ListDatabasesResponse]
-        ],
-    ]:
+    ) -> Callable[[metastore.ListDatabasesRequest], Union[metastore.ListDatabasesResponse, Awaitable[metastore.ListDatabasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_table(
-        self,
-    ) -> Callable[
-        [metastore.CreateTableRequest],
-        Union[metastore.Table, Awaitable[metastore.Table]],
-    ]:
+    def create_table(self) -> Callable[[metastore.CreateTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]]:
         raise NotImplementedError()
 
     @property
-    def delete_table(
-        self,
-    ) -> Callable[
-        [metastore.DeleteTableRequest],
-        Union[metastore.Table, Awaitable[metastore.Table]],
-    ]:
+    def delete_table(self) -> Callable[[metastore.DeleteTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]]:
         raise NotImplementedError()
 
     @property
-    def update_table(
-        self,
-    ) -> Callable[
-        [metastore.UpdateTableRequest],
-        Union[metastore.Table, Awaitable[metastore.Table]],
-    ]:
+    def update_table(self) -> Callable[[metastore.UpdateTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]]:
         raise NotImplementedError()
 
     @property
-    def rename_table(
-        self,
-    ) -> Callable[
-        [metastore.RenameTableRequest],
-        Union[metastore.Table, Awaitable[metastore.Table]],
-    ]:
+    def rename_table(self) -> Callable[[metastore.RenameTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]]:
         raise NotImplementedError()
 
     @property
-    def get_table(
-        self,
-    ) -> Callable[
-        [metastore.GetTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]
-    ]:
+    def get_table(self) -> Callable[[metastore.GetTableRequest], Union[metastore.Table, Awaitable[metastore.Table]]]:
         raise NotImplementedError()
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[
-        [metastore.ListTablesRequest],
-        Union[metastore.ListTablesResponse, Awaitable[metastore.ListTablesResponse]],
-    ]:
+    def list_tables(self) -> Callable[[metastore.ListTablesRequest], Union[metastore.ListTablesResponse, Awaitable[metastore.ListTablesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_lock(
-        self,
-    ) -> Callable[
-        [metastore.CreateLockRequest], Union[metastore.Lock, Awaitable[metastore.Lock]]
-    ]:
+    def create_lock(self) -> Callable[[metastore.CreateLockRequest], Union[metastore.Lock, Awaitable[metastore.Lock]]]:
         raise NotImplementedError()
 
     @property
-    def delete_lock(
-        self,
-    ) -> Callable[
-        [metastore.DeleteLockRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_lock(self) -> Callable[[metastore.DeleteLockRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def check_lock(
-        self,
-    ) -> Callable[
-        [metastore.CheckLockRequest], Union[metastore.Lock, Awaitable[metastore.Lock]]
-    ]:
+    def check_lock(self) -> Callable[[metastore.CheckLockRequest], Union[metastore.Lock, Awaitable[metastore.Lock]]]:
         raise NotImplementedError()
 
     @property
-    def list_locks(
-        self,
-    ) -> Callable[
-        [metastore.ListLocksRequest],
-        Union[metastore.ListLocksResponse, Awaitable[metastore.ListLocksResponse]],
-    ]:
+    def list_locks(self) -> Callable[[metastore.ListLocksRequest], Union[metastore.ListLocksResponse, Awaitable[metastore.ListLocksResponse]]]:
         raise NotImplementedError()
 
     @property

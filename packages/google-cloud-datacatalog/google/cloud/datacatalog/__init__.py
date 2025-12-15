@@ -18,32 +18,14 @@ from google.cloud.datacatalog import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.datacatalog_v1.services.data_catalog.async_client import (
-    DataCatalogAsyncClient,
-)
+from google.cloud.datacatalog_v1.services.data_catalog.async_client import DataCatalogAsyncClient
 from google.cloud.datacatalog_v1.services.data_catalog.client import DataCatalogClient
-from google.cloud.datacatalog_v1.services.policy_tag_manager.async_client import (
-    PolicyTagManagerAsyncClient,
-)
-from google.cloud.datacatalog_v1.services.policy_tag_manager.client import (
-    PolicyTagManagerClient,
-)
-from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.async_client import (
-    PolicyTagManagerSerializationAsyncClient,
-)
-from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.client import (
-    PolicyTagManagerSerializationClient,
-)
-from google.cloud.datacatalog_v1.types.bigquery import (
-    BigQueryConnectionSpec,
-    BigQueryRoutineSpec,
-    CloudSqlBigQueryConnectionSpec,
-)
-from google.cloud.datacatalog_v1.types.common import (
-    IntegratedSystem,
-    ManagingSystem,
-    PersonalDetails,
-)
+from google.cloud.datacatalog_v1.services.policy_tag_manager.async_client import PolicyTagManagerAsyncClient
+from google.cloud.datacatalog_v1.services.policy_tag_manager.client import PolicyTagManagerClient
+from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.async_client import PolicyTagManagerSerializationAsyncClient
+from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.client import PolicyTagManagerSerializationClient
+from google.cloud.datacatalog_v1.types.bigquery import BigQueryConnectionSpec, BigQueryRoutineSpec, CloudSqlBigQueryConnectionSpec
+from google.cloud.datacatalog_v1.types.common import IntegratedSystem, ManagingSystem, PersonalDetails
 from google.cloud.datacatalog_v1.types.data_source import DataSource, StorageProperties
 from google.cloud.datacatalog_v1.types.datacatalog import (
     BusinessContext,
@@ -116,17 +98,9 @@ from google.cloud.datacatalog_v1.types.datacatalog import (
     VertexModelSourceInfo,
     VertexModelSpec,
 )
-from google.cloud.datacatalog_v1.types.dataplex_spec import (
-    DataplexExternalTable,
-    DataplexFilesetSpec,
-    DataplexSpec,
-    DataplexTableSpec,
-)
+from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexExternalTable, DataplexFilesetSpec, DataplexSpec, DataplexTableSpec
 from google.cloud.datacatalog_v1.types.dump_content import DumpItem, TaggedEntry
-from google.cloud.datacatalog_v1.types.gcs_fileset_spec import (
-    GcsFilesetSpec,
-    GcsFileSpec,
-)
+from google.cloud.datacatalog_v1.types.gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from google.cloud.datacatalog_v1.types.physical_schema import PhysicalSchema
 from google.cloud.datacatalog_v1.types.policytagmanager import (
     CreatePolicyTagRequest,
@@ -156,30 +130,11 @@ from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     SerializedTaxonomy,
 )
 from google.cloud.datacatalog_v1.types.schema import ColumnSchema, Schema
-from google.cloud.datacatalog_v1.types.search import (
-    SearchCatalogResult,
-    SearchResultType,
-)
-from google.cloud.datacatalog_v1.types.table_spec import (
-    BigQueryDateShardedSpec,
-    BigQueryTableSpec,
-    TableSourceType,
-    TableSpec,
-    ViewSpec,
-)
-from google.cloud.datacatalog_v1.types.tags import (
-    FieldType,
-    Tag,
-    TagField,
-    TagTemplate,
-    TagTemplateField,
-)
+from google.cloud.datacatalog_v1.types.search import SearchCatalogResult, SearchResultType
+from google.cloud.datacatalog_v1.types.table_spec import BigQueryDateShardedSpec, BigQueryTableSpec, TableSourceType, TableSpec, ViewSpec
+from google.cloud.datacatalog_v1.types.tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from google.cloud.datacatalog_v1.types.timestamps import SystemTimestamps
-from google.cloud.datacatalog_v1.types.usage import (
-    CommonUsageStats,
-    UsageSignal,
-    UsageStats,
-)
+from google.cloud.datacatalog_v1.types.usage import CommonUsageStats, UsageSignal, UsageStats
 
 __all__ = (
     "DataCatalogClient",

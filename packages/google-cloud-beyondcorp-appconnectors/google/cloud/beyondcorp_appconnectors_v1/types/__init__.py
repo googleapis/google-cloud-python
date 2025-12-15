@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .app_connector_instance_config import (
-    AppConnectorInstanceConfig,
-    ImageConfig,
-    NotificationConfig,
-)
+from .app_connector_instance_config import AppConnectorInstanceConfig, ImageConfig, NotificationConfig
 from .app_connectors_service import (
     AppConnector,
     AppConnectorOperationMetadata,

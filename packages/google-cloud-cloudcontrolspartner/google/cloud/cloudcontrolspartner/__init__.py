@@ -18,18 +18,10 @@ from google.cloud.cloudcontrolspartner import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.async_client import (
-    CloudControlsPartnerCoreAsyncClient,
-)
-from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.client import (
-    CloudControlsPartnerCoreClient,
-)
-from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.async_client import (
-    CloudControlsPartnerMonitoringAsyncClient,
-)
-from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.client import (
-    CloudControlsPartnerMonitoringClient,
-)
+from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.async_client import CloudControlsPartnerCoreAsyncClient
+from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_core.client import CloudControlsPartnerCoreClient
+from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.async_client import CloudControlsPartnerMonitoringAsyncClient
+from google.cloud.cloudcontrolspartner_v1.services.cloud_controls_partner_monitoring.client import CloudControlsPartnerMonitoringClient
 from google.cloud.cloudcontrolspartner_v1.types.access_approval_requests import (
     AccessApprovalRequest,
     AccessReason,
@@ -57,27 +49,10 @@ from google.cloud.cloudcontrolspartner_v1.types.customers import (
     ListCustomersResponse,
     UpdateCustomerRequest,
 )
-from google.cloud.cloudcontrolspartner_v1.types.ekm_connections import (
-    EkmConnection,
-    EkmConnections,
-    GetEkmConnectionsRequest,
-)
-from google.cloud.cloudcontrolspartner_v1.types.partner_permissions import (
-    GetPartnerPermissionsRequest,
-    PartnerPermissions,
-)
-from google.cloud.cloudcontrolspartner_v1.types.partners import (
-    EkmMetadata,
-    GetPartnerRequest,
-    Partner,
-    Sku,
-)
-from google.cloud.cloudcontrolspartner_v1.types.violations import (
-    GetViolationRequest,
-    ListViolationsRequest,
-    ListViolationsResponse,
-    Violation,
-)
+from google.cloud.cloudcontrolspartner_v1.types.ekm_connections import EkmConnection, EkmConnections, GetEkmConnectionsRequest
+from google.cloud.cloudcontrolspartner_v1.types.partner_permissions import GetPartnerPermissionsRequest, PartnerPermissions
+from google.cloud.cloudcontrolspartner_v1.types.partners import EkmMetadata, GetPartnerRequest, Partner, Sku
+from google.cloud.cloudcontrolspartner_v1.types.violations import GetViolationRequest, ListViolationsRequest, ListViolationsResponse, Violation
 
 __all__ = (
     "CloudControlsPartnerCoreClient",

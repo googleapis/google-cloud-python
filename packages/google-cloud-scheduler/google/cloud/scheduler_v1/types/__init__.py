@@ -25,15 +25,7 @@ from .cloudscheduler import (
     UpdateJobRequest,
 )
 from .job import Job, RetryConfig
-from .target import (
-    AppEngineHttpTarget,
-    AppEngineRouting,
-    HttpMethod,
-    HttpTarget,
-    OAuthToken,
-    OidcToken,
-    PubsubTarget,
-)
+from .target import AppEngineHttpTarget, AppEngineRouting, HttpMethod, HttpTarget, OAuthToken, OidcToken, PubsubTarget
 
 __all__ = (
     "CreateJobRequest",

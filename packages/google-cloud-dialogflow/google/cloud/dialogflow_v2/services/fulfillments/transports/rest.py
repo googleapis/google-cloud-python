@@ -98,12 +98,8 @@ class FulfillmentsRestInterceptor:
     """
 
     def pre_get_fulfillment(
-        self,
-        request: fulfillment.GetFulfillmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        fulfillment.GetFulfillmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: fulfillment.GetFulfillmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[fulfillment.GetFulfillmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_fulfillment
 
         Override in a subclass to manipulate the request or metadata
@@ -111,9 +107,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_fulfillment(
-        self, response: fulfillment.Fulfillment
-    ) -> fulfillment.Fulfillment:
+    def post_get_fulfillment(self, response: fulfillment.Fulfillment) -> fulfillment.Fulfillment:
         """Post-rpc interceptor for get_fulfillment
 
         DEPRECATED. Please use the `post_get_fulfillment_with_metadata`
@@ -127,9 +121,7 @@ class FulfillmentsRestInterceptor:
         return response
 
     def post_get_fulfillment_with_metadata(
-        self,
-        response: fulfillment.Fulfillment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: fulfillment.Fulfillment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[fulfillment.Fulfillment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_fulfillment
 
@@ -146,13 +138,8 @@ class FulfillmentsRestInterceptor:
         return response, metadata
 
     def pre_update_fulfillment(
-        self,
-        request: gcd_fulfillment.UpdateFulfillmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_fulfillment.UpdateFulfillmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_fulfillment.UpdateFulfillmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_fulfillment.UpdateFulfillmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_fulfillment
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +147,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_fulfillment(
-        self, response: gcd_fulfillment.Fulfillment
-    ) -> gcd_fulfillment.Fulfillment:
+    def post_update_fulfillment(self, response: gcd_fulfillment.Fulfillment) -> gcd_fulfillment.Fulfillment:
         """Post-rpc interceptor for update_fulfillment
 
         DEPRECATED. Please use the `post_update_fulfillment_with_metadata`
@@ -176,9 +161,7 @@ class FulfillmentsRestInterceptor:
         return response
 
     def post_update_fulfillment_with_metadata(
-        self,
-        response: gcd_fulfillment.Fulfillment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_fulfillment.Fulfillment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_fulfillment.Fulfillment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_fulfillment
 
@@ -195,12 +178,8 @@ class FulfillmentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +187,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -220,12 +197,8 @@ class FulfillmentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -233,9 +206,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -245,12 +216,8 @@ class FulfillmentsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -268,12 +235,8 @@ class FulfillmentsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -281,9 +244,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -293,12 +254,8 @@ class FulfillmentsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +263,7 @@ class FulfillmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -398,30 +353,18 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or FulfillmentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetFulfillment(
-        _BaseFulfillmentsRestTransport._BaseGetFulfillment, FulfillmentsRestStub
-    ):
+    class _GetFulfillment(_BaseFulfillmentsRestTransport._BaseGetFulfillment, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.GetFulfillment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -473,26 +416,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_fulfillment(request, metadata)
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseGetFulfillment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -516,12 +449,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._GetFulfillment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -537,12 +465,8 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             resp = self._interceptor.post_get_fulfillment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_fulfillment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_fulfillment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = fulfillment.Fulfillment.to_json(response)
                 except:
@@ -563,22 +487,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                 )
             return resp
 
-    class _UpdateFulfillment(
-        _BaseFulfillmentsRestTransport._BaseUpdateFulfillment, FulfillmentsRestStub
-    ):
+    class _UpdateFulfillment(_BaseFulfillmentsRestTransport._BaseUpdateFulfillment, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.UpdateFulfillment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -631,32 +545,18 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_fulfillment(
-                request, metadata
-            )
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_fulfillment(request, metadata)
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_transcoded_request(http_options, request)
 
-            body = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseUpdateFulfillment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -680,13 +580,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._UpdateFulfillment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -702,12 +596,8 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             resp = self._interceptor.post_update_fulfillment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_fulfillment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_fulfillment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_fulfillment.Fulfillment.to_json(response)
                 except:
@@ -729,19 +619,13 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             return resp
 
     @property
-    def get_fulfillment(
-        self,
-    ) -> Callable[[fulfillment.GetFulfillmentRequest], fulfillment.Fulfillment]:
+    def get_fulfillment(self) -> Callable[[fulfillment.GetFulfillmentRequest], fulfillment.Fulfillment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFulfillment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_fulfillment(
-        self,
-    ) -> Callable[
-        [gcd_fulfillment.UpdateFulfillmentRequest], gcd_fulfillment.Fulfillment
-    ]:
+    def update_fulfillment(self) -> Callable[[gcd_fulfillment.UpdateFulfillmentRequest], gcd_fulfillment.Fulfillment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFulfillment(self._session, self._host, self._interceptor)  # type: ignore
@@ -750,22 +634,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseFulfillmentsRestTransport._BaseGetLocation, FulfillmentsRestStub
-    ):
+    class _GetLocation(_BaseFulfillmentsRestTransport._BaseGetLocation, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -803,30 +677,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseFulfillmentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFulfillmentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -850,12 +710,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -867,9 +722,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -894,22 +747,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseFulfillmentsRestTransport._BaseListLocations, FulfillmentsRestStub
-    ):
+    class _ListLocations(_BaseFulfillmentsRestTransport._BaseListLocations, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -947,26 +790,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFulfillmentsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -990,12 +823,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1007,9 +835,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1034,22 +860,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseFulfillmentsRestTransport._BaseCancelOperation, FulfillmentsRestStub
-    ):
+    class _CancelOperation(_BaseFulfillmentsRestTransport._BaseCancelOperation, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1084,28 +900,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFulfillmentsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1129,12 +933,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1148,22 +947,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseFulfillmentsRestTransport._BaseGetOperation, FulfillmentsRestStub
-    ):
+    class _GetOperation(_BaseFulfillmentsRestTransport._BaseGetOperation, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1201,28 +990,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFulfillmentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1246,12 +1023,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1263,9 +1035,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1290,22 +1060,12 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseFulfillmentsRestTransport._BaseListOperations, FulfillmentsRestStub
-    ):
+    class _ListOperations(_BaseFulfillmentsRestTransport._BaseListOperations, FulfillmentsRestStub):
         def __hash__(self):
             return hash("FulfillmentsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1343,26 +1103,16 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFulfillmentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFulfillmentsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseFulfillmentsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFulfillmentsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFulfillmentsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFulfillmentsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1386,12 +1136,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
 
             # Send the request
             response = FulfillmentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1403,9 +1148,7 @@ class FulfillmentsRestTransport(_BaseFulfillmentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

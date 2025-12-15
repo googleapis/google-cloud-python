@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.apps.events_subscriptions_v1beta.types import (
-    subscription_resource,
-    subscriptions_service,
-)
+from google.apps.events_subscriptions_v1beta.types import subscription_resource, subscriptions_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSubscriptionsServiceRestTransport
@@ -131,13 +128,8 @@ class SubscriptionsServiceRestInterceptor:
     """
 
     def pre_create_subscription(
-        self,
-        request: subscriptions_service.CreateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.CreateSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.CreateSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.CreateSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -145,9 +137,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_subscription(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_subscription(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_subscription
 
         DEPRECATED. Please use the `post_create_subscription_with_metadata`
@@ -161,9 +151,7 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_create_subscription_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_subscription
 
@@ -180,13 +168,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_subscription(
-        self,
-        request: subscriptions_service.DeleteSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.DeleteSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.DeleteSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.DeleteSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -194,9 +177,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_subscription(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_subscription(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_subscription
 
         DEPRECATED. Please use the `post_delete_subscription_with_metadata`
@@ -210,9 +191,7 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_delete_subscription_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_subscription
 
@@ -229,13 +208,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_subscription(
-        self,
-        request: subscriptions_service.GetSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.GetSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.GetSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.GetSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -243,9 +217,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_subscription(
-        self, response: subscription_resource.Subscription
-    ) -> subscription_resource.Subscription:
+    def post_get_subscription(self, response: subscription_resource.Subscription) -> subscription_resource.Subscription:
         """Post-rpc interceptor for get_subscription
 
         DEPRECATED. Please use the `post_get_subscription_with_metadata`
@@ -259,12 +231,8 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_get_subscription_with_metadata(
-        self,
-        response: subscription_resource.Subscription,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscription_resource.Subscription, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: subscription_resource.Subscription, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscription_resource.Subscription, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_subscription
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -280,13 +248,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_subscriptions(
-        self,
-        request: subscriptions_service.ListSubscriptionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.ListSubscriptionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.ListSubscriptionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.ListSubscriptionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subscriptions
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +257,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_subscriptions(
-        self, response: subscriptions_service.ListSubscriptionsResponse
-    ) -> subscriptions_service.ListSubscriptionsResponse:
+    def post_list_subscriptions(self, response: subscriptions_service.ListSubscriptionsResponse) -> subscriptions_service.ListSubscriptionsResponse:
         """Post-rpc interceptor for list_subscriptions
 
         DEPRECATED. Please use the `post_list_subscriptions_with_metadata`
@@ -310,13 +271,8 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_list_subscriptions_with_metadata(
-        self,
-        response: subscriptions_service.ListSubscriptionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.ListSubscriptionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: subscriptions_service.ListSubscriptionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.ListSubscriptionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_subscriptions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -332,13 +288,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_reactivate_subscription(
-        self,
-        request: subscriptions_service.ReactivateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.ReactivateSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.ReactivateSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.ReactivateSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reactivate_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -346,9 +297,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_reactivate_subscription(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reactivate_subscription(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reactivate_subscription
 
         DEPRECATED. Please use the `post_reactivate_subscription_with_metadata`
@@ -362,9 +311,7 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_reactivate_subscription_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reactivate_subscription
 
@@ -381,13 +328,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_subscription(
-        self,
-        request: subscriptions_service.UpdateSubscriptionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        subscriptions_service.UpdateSubscriptionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: subscriptions_service.UpdateSubscriptionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[subscriptions_service.UpdateSubscriptionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_subscription
 
         Override in a subclass to manipulate the request or metadata
@@ -395,9 +337,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_subscription(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_subscription(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_subscription
 
         DEPRECATED. Please use the `post_update_subscription_with_metadata`
@@ -411,9 +351,7 @@ class SubscriptionsServiceRestInterceptor:
         return response
 
     def post_update_subscription_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_subscription
 
@@ -430,12 +368,8 @@ class SubscriptionsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -443,9 +377,7 @@ class SubscriptionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -535,9 +467,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -571,30 +501,17 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateSubscription(
-        _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription,
-        SubscriptionsServiceRestStub,
-    ):
+    class _CreateSubscription(_BaseSubscriptionsServiceRestTransport._BaseCreateSubscription, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.CreateSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -638,32 +555,18 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_subscription(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_subscription(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_transcoded_request(http_options, request)
 
-            body = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseCreateSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -686,16 +589,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SubscriptionsServiceRestTransport._CreateSubscription._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SubscriptionsServiceRestTransport._CreateSubscription._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -709,12 +604,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_create_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -735,23 +626,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSubscription(
-        _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription,
-        SubscriptionsServiceRestStub,
-    ):
+    class _DeleteSubscription(_BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.DeleteSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -794,28 +674,16 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_subscription(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_subscription(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseDeleteSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -838,15 +706,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SubscriptionsServiceRestTransport._DeleteSubscription._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SubscriptionsServiceRestTransport._DeleteSubscription._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -860,12 +721,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_delete_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -886,23 +743,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
             return resp
 
-    class _GetSubscription(
-        _BaseSubscriptionsServiceRestTransport._BaseGetSubscription,
-        SubscriptionsServiceRestStub,
-    ):
+    class _GetSubscription(_BaseSubscriptionsServiceRestTransport._BaseGetSubscription, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.GetSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -946,28 +792,16 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_subscription(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_subscription(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseGetSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -991,12 +825,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             # Send the request
             response = SubscriptionsServiceRestTransport._GetSubscription._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1012,16 +841,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_get_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = subscription_resource.Subscription.to_json(
-                        response
-                    )
+                    response_payload = subscription_resource.Subscription.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1040,23 +863,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
             return resp
 
-    class _ListSubscriptions(
-        _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions,
-        SubscriptionsServiceRestStub,
-    ):
+    class _ListSubscriptions(_BaseSubscriptionsServiceRestTransport._BaseListSubscriptions, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.ListSubscriptions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1098,28 +910,16 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_subscriptions(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_subscriptions(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseListSubscriptions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1142,15 +942,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SubscriptionsServiceRestTransport._ListSubscriptions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SubscriptionsServiceRestTransport._ListSubscriptions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1166,18 +959,10 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_list_subscriptions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_subscriptions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_subscriptions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        subscriptions_service.ListSubscriptionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = subscriptions_service.ListSubscriptionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1196,23 +981,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
             return resp
 
-    class _ReactivateSubscription(
-        _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription,
-        SubscriptionsServiceRestStub,
-    ):
+    class _ReactivateSubscription(_BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.ReactivateSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1256,32 +1030,18 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_reactivate_subscription(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reactivate_subscription(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_transcoded_request(http_options, request)
 
-            body = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseReactivateSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1304,16 +1064,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SubscriptionsServiceRestTransport._ReactivateSubscription._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SubscriptionsServiceRestTransport._ReactivateSubscription._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1327,12 +1079,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_reactivate_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reactivate_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reactivate_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1353,23 +1101,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSubscription(
-        _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription,
-        SubscriptionsServiceRestStub,
-    ):
+    class _UpdateSubscription(_BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.UpdateSubscription")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1413,32 +1150,18 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_subscription(
-                request, metadata
-            )
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_subscription(request, metadata)
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_transcoded_request(http_options, request)
 
-            body = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseUpdateSubscription._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1461,16 +1184,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SubscriptionsServiceRestTransport._UpdateSubscription._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SubscriptionsServiceRestTransport._UpdateSubscription._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1484,12 +1199,8 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             resp = self._interceptor.post_update_subscription(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_subscription_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_subscription_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1511,63 +1222,37 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             return resp
 
     @property
-    def create_subscription(
-        self,
-    ) -> Callable[
-        [subscriptions_service.CreateSubscriptionRequest], operations_pb2.Operation
-    ]:
+    def create_subscription(self) -> Callable[[subscriptions_service.CreateSubscriptionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSubscription(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_subscription(
-        self,
-    ) -> Callable[
-        [subscriptions_service.DeleteSubscriptionRequest], operations_pb2.Operation
-    ]:
+    def delete_subscription(self) -> Callable[[subscriptions_service.DeleteSubscriptionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSubscription(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_subscription(
-        self,
-    ) -> Callable[
-        [subscriptions_service.GetSubscriptionRequest],
-        subscription_resource.Subscription,
-    ]:
+    def get_subscription(self) -> Callable[[subscriptions_service.GetSubscriptionRequest], subscription_resource.Subscription]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSubscription(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_subscriptions(
-        self,
-    ) -> Callable[
-        [subscriptions_service.ListSubscriptionsRequest],
-        subscriptions_service.ListSubscriptionsResponse,
-    ]:
+    def list_subscriptions(self) -> Callable[[subscriptions_service.ListSubscriptionsRequest], subscriptions_service.ListSubscriptionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubscriptions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reactivate_subscription(
-        self,
-    ) -> Callable[
-        [subscriptions_service.ReactivateSubscriptionRequest], operations_pb2.Operation
-    ]:
+    def reactivate_subscription(self) -> Callable[[subscriptions_service.ReactivateSubscriptionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReactivateSubscription(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_subscription(
-        self,
-    ) -> Callable[
-        [subscriptions_service.UpdateSubscriptionRequest], operations_pb2.Operation
-    ]:
+    def update_subscription(self) -> Callable[[subscriptions_service.UpdateSubscriptionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSubscription(self._session, self._host, self._interceptor)  # type: ignore
@@ -1576,23 +1261,12 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSubscriptionsServiceRestTransport._BaseGetOperation,
-        SubscriptionsServiceRestStub,
-    ):
+    class _GetOperation(_BaseSubscriptionsServiceRestTransport._BaseGetOperation, SubscriptionsServiceRestStub):
         def __hash__(self):
             return hash("SubscriptionsServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1630,26 +1304,16 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubscriptionsServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1673,12 +1337,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
 
             # Send the request
             response = SubscriptionsServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1690,9 +1349,7 @@ class SubscriptionsServiceRestTransport(_BaseSubscriptionsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

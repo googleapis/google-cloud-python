@@ -21,14 +21,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.bigquery_migration_v2.types import (
-    migration_error_details,
-    migration_metrics,
-    translation_config,
-)
-from google.cloud.bigquery_migration_v2.types import (
-    translation_details as gcbm_translation_details,
-)
+from google.cloud.bigquery_migration_v2.types import migration_error_details, migration_metrics, translation_config
+from google.cloud.bigquery_migration_v2.types import translation_details as gcbm_translation_details
 from google.cloud.bigquery_migration_v2.types import translation_usability
 
 __protobuf__ = proto.module(
@@ -225,13 +219,11 @@ class MigrationTask(proto.Message):
         SUCCEEDED = 5
         FAILED = 6
 
-    translation_config_details: translation_config.TranslationConfigDetails = (
-        proto.Field(
-            proto.MESSAGE,
-            number=14,
-            oneof="task_details",
-            message=translation_config.TranslationConfigDetails,
-        )
+    translation_config_details: translation_config.TranslationConfigDetails = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="task_details",
+        message=translation_config.TranslationConfigDetails,
     )
     translation_details: gcbm_translation_details.TranslationDetails = proto.Field(
         proto.MESSAGE,
@@ -267,9 +259,7 @@ class MigrationTask(proto.Message):
         number=7,
         message=timestamp_pb2.Timestamp,
     )
-    resource_error_details: MutableSequence[
-        migration_error_details.ResourceErrorDetail
-    ] = proto.RepeatedField(
+    resource_error_details: MutableSequence[migration_error_details.ResourceErrorDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message=migration_error_details.ResourceErrorDetail,
@@ -401,9 +391,7 @@ class MigrationSubtask(proto.Message):
         number=6,
         message=error_details_pb2.ErrorInfo,
     )
-    resource_error_details: MutableSequence[
-        migration_error_details.ResourceErrorDetail
-    ] = proto.RepeatedField(
+    resource_error_details: MutableSequence[migration_error_details.ResourceErrorDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=migration_error_details.ResourceErrorDetail,
@@ -460,16 +448,12 @@ class TranslationTaskResult(proto.Message):
             a migration workflow.
     """
 
-    translated_literals: MutableSequence[
-        gcbm_translation_details.Literal
-    ] = proto.RepeatedField(
+    translated_literals: MutableSequence[gcbm_translation_details.Literal] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcbm_translation_details.Literal,
     )
-    report_log_messages: MutableSequence[
-        translation_usability.GcsReportLogMessage
-    ] = proto.RepeatedField(
+    report_log_messages: MutableSequence[translation_usability.GcsReportLogMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=translation_usability.GcsReportLogMessage,

@@ -39,16 +39,12 @@ async def sample_list_effective_security_health_analytics_custom_modules():
     client = securitycenter_v1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = (
-        securitycenter_v1.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-            parent="parent_value",
-        )
+    request = securitycenter_v1.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    page_result = client.list_effective_security_health_analytics_custom_modules(
-        request=request
-    )
+    page_result = client.list_effective_security_health_analytics_custom_modules(request=request)
 
     # Handle the response
     async for response in page_result:

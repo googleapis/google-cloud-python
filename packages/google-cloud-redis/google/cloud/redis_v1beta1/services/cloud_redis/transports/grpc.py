@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -238,18 +229,14 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -283,9 +270,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -352,19 +337,13 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [cloud_redis.ListInstancesRequest], cloud_redis.ListInstancesResponse
-    ]:
+    def list_instances(self) -> Callable[[cloud_redis.ListInstancesRequest], cloud_redis.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists all Redis instances owned by a project in either the
@@ -397,9 +376,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[cloud_redis.GetInstanceRequest], cloud_redis.Instance]:
+    def get_instance(self) -> Callable[[cloud_redis.GetInstanceRequest], cloud_redis.Instance]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets the details of a specific Redis instance.
@@ -423,11 +400,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["get_instance"]
 
     @property
-    def get_instance_auth_string(
-        self,
-    ) -> Callable[
-        [cloud_redis.GetInstanceAuthStringRequest], cloud_redis.InstanceAuthString
-    ]:
+    def get_instance_auth_string(self) -> Callable[[cloud_redis.GetInstanceAuthStringRequest], cloud_redis.InstanceAuthString]:
         r"""Return a callable for the get instance auth string method over gRPC.
 
         Gets the AUTH string for a Redis instance. If AUTH is
@@ -454,9 +427,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["get_instance_auth_string"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[cloud_redis.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[cloud_redis.CreateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a Redis instance based on the specified tier and memory
@@ -493,9 +464,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["create_instance"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[cloud_redis.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[cloud_redis.UpdateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the metadata and configuration of a specific
@@ -524,9 +493,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["update_instance"]
 
     @property
-    def upgrade_instance(
-        self,
-    ) -> Callable[[cloud_redis.UpgradeInstanceRequest], operations_pb2.Operation]:
+    def upgrade_instance(self) -> Callable[[cloud_redis.UpgradeInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the upgrade instance method over gRPC.
 
         Upgrades Redis instance to the newer Redis version
@@ -551,9 +518,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["upgrade_instance"]
 
     @property
-    def import_instance(
-        self,
-    ) -> Callable[[cloud_redis.ImportInstanceRequest], operations_pb2.Operation]:
+    def import_instance(self) -> Callable[[cloud_redis.ImportInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the import instance method over gRPC.
 
         Import a Redis RDB snapshot file from Cloud Storage
@@ -585,9 +550,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["import_instance"]
 
     @property
-    def export_instance(
-        self,
-    ) -> Callable[[cloud_redis.ExportInstanceRequest], operations_pb2.Operation]:
+    def export_instance(self) -> Callable[[cloud_redis.ExportInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the export instance method over gRPC.
 
         Export Redis instance data into a Redis RDB format
@@ -616,9 +579,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["export_instance"]
 
     @property
-    def failover_instance(
-        self,
-    ) -> Callable[[cloud_redis.FailoverInstanceRequest], operations_pb2.Operation]:
+    def failover_instance(self) -> Callable[[cloud_redis.FailoverInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the failover instance method over gRPC.
 
         Initiates a failover of the primary node to current
@@ -644,9 +605,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["failover_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[cloud_redis.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[cloud_redis.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a specific Redis instance.  Instance stops
@@ -671,9 +630,7 @@ class CloudRedisGrpcTransport(CloudRedisTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def reschedule_maintenance(
-        self,
-    ) -> Callable[[cloud_redis.RescheduleMaintenanceRequest], operations_pb2.Operation]:
+    def reschedule_maintenance(self) -> Callable[[cloud_redis.RescheduleMaintenanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the reschedule maintenance method over gRPC.
 
         Reschedule maintenance for a given instance in a

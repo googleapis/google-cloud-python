@@ -803,9 +803,7 @@ class FaceFrame(proto.Message):
             location.
     """
 
-    normalized_bounding_boxes: MutableSequence[
-        "NormalizedBoundingBox"
-    ] = proto.RepeatedField(
+    normalized_bounding_boxes: MutableSequence["NormalizedBoundingBox"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="NormalizedBoundingBox",
@@ -1070,9 +1068,7 @@ class VideoAnnotationResults(proto.Message):
         number=2,
         message="LabelAnnotation",
     )
-    segment_presence_label_annotations: MutableSequence[
-        "LabelAnnotation"
-    ] = proto.RepeatedField(
+    segment_presence_label_annotations: MutableSequence["LabelAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=23,
         message="LabelAnnotation",
@@ -1082,9 +1078,7 @@ class VideoAnnotationResults(proto.Message):
         number=3,
         message="LabelAnnotation",
     )
-    shot_presence_label_annotations: MutableSequence[
-        "LabelAnnotation"
-    ] = proto.RepeatedField(
+    shot_presence_label_annotations: MutableSequence["LabelAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=24,
         message="LabelAnnotation",
@@ -1099,9 +1093,7 @@ class VideoAnnotationResults(proto.Message):
         number=5,
         message="FaceAnnotation",
     )
-    face_detection_annotations: MutableSequence[
-        "FaceDetectionAnnotation"
-    ] = proto.RepeatedField(
+    face_detection_annotations: MutableSequence["FaceDetectionAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="FaceDetectionAnnotation",
@@ -1126,23 +1118,17 @@ class VideoAnnotationResults(proto.Message):
         number=12,
         message="TextAnnotation",
     )
-    object_annotations: MutableSequence[
-        "ObjectTrackingAnnotation"
-    ] = proto.RepeatedField(
+    object_annotations: MutableSequence["ObjectTrackingAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="ObjectTrackingAnnotation",
     )
-    logo_recognition_annotations: MutableSequence[
-        "LogoRecognitionAnnotation"
-    ] = proto.RepeatedField(
+    logo_recognition_annotations: MutableSequence["LogoRecognitionAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=19,
         message="LogoRecognitionAnnotation",
     )
-    person_detection_annotations: MutableSequence[
-        "PersonDetectionAnnotation"
-    ] = proto.RepeatedField(
+    person_detection_annotations: MutableSequence["PersonDetectionAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=20,
         message="PersonDetectionAnnotation",
@@ -1235,9 +1221,7 @@ class AnnotateVideoProgress(proto.Message):
             ``AnnotateVideoRequest``.
     """
 
-    annotation_progress: MutableSequence[
-        "VideoAnnotationProgress"
-    ] = proto.RepeatedField(
+    annotation_progress: MutableSequence["VideoAnnotationProgress"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="VideoAnnotationProgress",

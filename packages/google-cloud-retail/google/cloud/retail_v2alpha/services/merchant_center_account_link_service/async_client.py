@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -49,20 +38,13 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.retail_v2alpha.types import (
-    merchant_center_account_link as gcr_merchant_center_account_link,
-)
+from google.cloud.retail_v2alpha.types import merchant_center_account_link as gcr_merchant_center_account_link
 from google.cloud.retail_v2alpha.types import merchant_center_account_link_service
 from google.cloud.retail_v2alpha.types import merchant_center_account_link
 
 from .client import MerchantCenterAccountLinkServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    MerchantCenterAccountLinkServiceTransport,
-)
-from .transports.grpc_asyncio import (
-    MerchantCenterAccountLinkServiceGrpcAsyncIOTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, MerchantCenterAccountLinkServiceTransport
+from .transports.grpc_asyncio import MerchantCenterAccountLinkServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -85,51 +67,23 @@ class MerchantCenterAccountLinkServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = MerchantCenterAccountLinkServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = MerchantCenterAccountLinkServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        MerchantCenterAccountLinkServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = MerchantCenterAccountLinkServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = MerchantCenterAccountLinkServiceClient._DEFAULT_UNIVERSE
 
     catalog_path = staticmethod(MerchantCenterAccountLinkServiceClient.catalog_path)
-    parse_catalog_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_catalog_path
-    )
-    merchant_center_account_link_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.merchant_center_account_link_path
-    )
-    parse_merchant_center_account_link_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_merchant_center_account_link_path
-    )
-    common_billing_account_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        MerchantCenterAccountLinkServiceClient.parse_common_location_path
-    )
+    parse_catalog_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_catalog_path)
+    merchant_center_account_link_path = staticmethod(MerchantCenterAccountLinkServiceClient.merchant_center_account_link_path)
+    parse_merchant_center_account_link_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_merchant_center_account_link_path)
+    common_billing_account_path = staticmethod(MerchantCenterAccountLinkServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(MerchantCenterAccountLinkServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(MerchantCenterAccountLinkServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(MerchantCenterAccountLinkServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(MerchantCenterAccountLinkServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(MerchantCenterAccountLinkServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -165,9 +119,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -235,11 +187,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                MerchantCenterAccountLinkServiceTransport,
-                Callable[..., MerchantCenterAccountLinkServiceTransport],
-            ]
+            Union[str, MerchantCenterAccountLinkServiceTransport, Callable[..., MerchantCenterAccountLinkServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -300,20 +248,14 @@ class MerchantCenterAccountLinkServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.retail_v2alpha.MerchantCenterAccountLinkServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.retail.v2alpha.MerchantCenterAccountLinkService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -324,12 +266,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
     async def list_merchant_center_account_links(
         self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -399,24 +336,14 @@ class MerchantCenterAccountLinkServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        ):
-            request = merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest(
-                request
-            )
+        if not isinstance(request, merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest):
+            request = merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -425,15 +352,11 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_merchant_center_account_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_merchant_center_account_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -451,17 +374,10 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
     async def create_merchant_center_account_link(
         self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        merchant_center_account_link: Optional[
-            gcr_merchant_center_account_link.MerchantCenterAccountLink
-        ] = None,
+        merchant_center_account_link: Optional[gcr_merchant_center_account_link.MerchantCenterAccountLink] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -552,24 +468,14 @@ class MerchantCenterAccountLinkServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, merchant_center_account_link]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        ):
-            request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(
-                request
-            )
+        if not isinstance(request, merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest):
+            request = merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -580,15 +486,11 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_merchant_center_account_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_merchant_center_account_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -614,12 +516,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
     async def delete_merchant_center_account_link(
         self,
-        request: Optional[
-            Union[
-                merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -679,24 +576,14 @@ class MerchantCenterAccountLinkServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        ):
-            request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(
-                request
-            )
+        if not isinstance(request, merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest):
+            request = merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -705,15 +592,11 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_merchant_center_account_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_merchant_center_account_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -763,9 +646,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -818,9 +699,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -843,9 +722,7 @@ class MerchantCenterAccountLinkServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

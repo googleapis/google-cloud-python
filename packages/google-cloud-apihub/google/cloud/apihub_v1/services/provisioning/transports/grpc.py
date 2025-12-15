@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,19 +319,13 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_api_hub_instance(
-        self,
-    ) -> Callable[
-        [provisioning_service.CreateApiHubInstanceRequest], operations_pb2.Operation
-    ]:
+    def create_api_hub_instance(self) -> Callable[[provisioning_service.CreateApiHubInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create api hub instance method over gRPC.
 
         Provisions instance resources for the API Hub.
@@ -370,11 +349,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
         return self._stubs["create_api_hub_instance"]
 
     @property
-    def delete_api_hub_instance(
-        self,
-    ) -> Callable[
-        [provisioning_service.DeleteApiHubInstanceRequest], operations_pb2.Operation
-    ]:
+    def delete_api_hub_instance(self) -> Callable[[provisioning_service.DeleteApiHubInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete api hub instance method over gRPC.
 
         Deletes the API hub instance.
@@ -398,11 +373,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
         return self._stubs["delete_api_hub_instance"]
 
     @property
-    def get_api_hub_instance(
-        self,
-    ) -> Callable[
-        [provisioning_service.GetApiHubInstanceRequest], common_fields.ApiHubInstance
-    ]:
+    def get_api_hub_instance(self) -> Callable[[provisioning_service.GetApiHubInstanceRequest], common_fields.ApiHubInstance]:
         r"""Return a callable for the get api hub instance method over gRPC.
 
         Gets details of a single API Hub instance.
@@ -428,10 +399,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
     @property
     def lookup_api_hub_instance(
         self,
-    ) -> Callable[
-        [provisioning_service.LookupApiHubInstanceRequest],
-        provisioning_service.LookupApiHubInstanceResponse,
-    ]:
+    ) -> Callable[[provisioning_service.LookupApiHubInstanceRequest], provisioning_service.LookupApiHubInstanceResponse]:
         r"""Return a callable for the lookup api hub instance method over gRPC.
 
         Looks up an Api Hub instance in a given GCP project.
@@ -513,9 +481,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -532,9 +498,7 @@ class ProvisioningGrpcTransport(ProvisioningTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

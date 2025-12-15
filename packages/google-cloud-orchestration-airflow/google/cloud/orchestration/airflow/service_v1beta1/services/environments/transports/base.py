@@ -27,14 +27,10 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.orchestration.airflow.service_v1beta1 import (
-    gapic_version as package_version,
-)
+from google.cloud.orchestration.airflow.service_v1beta1 import gapic_version as package_version
 from google.cloud.orchestration.airflow.service_v1beta1.types import environments
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +92,15 @@ class EnvironmentsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -296,67 +284,41 @@ class EnvironmentsTransport(abc.ABC):
     @property
     def create_environment(
         self,
-    ) -> Callable[
-        [environments.CreateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[environments.CreateEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[
-        [environments.GetEnvironmentRequest],
-        Union[environments.Environment, Awaitable[environments.Environment]],
-    ]:
+    def get_environment(self) -> Callable[[environments.GetEnvironmentRequest], Union[environments.Environment, Awaitable[environments.Environment]]]:
         raise NotImplementedError()
 
     @property
     def list_environments(
         self,
     ) -> Callable[
-        [environments.ListEnvironmentsRequest],
-        Union[
-            environments.ListEnvironmentsResponse,
-            Awaitable[environments.ListEnvironmentsResponse],
-        ],
+        [environments.ListEnvironmentsRequest], Union[environments.ListEnvironmentsResponse, Awaitable[environments.ListEnvironmentsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_environment(
         self,
-    ) -> Callable[
-        [environments.UpdateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[environments.UpdateEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_environment(
         self,
-    ) -> Callable[
-        [environments.DeleteEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[environments.DeleteEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def restart_web_server(
         self,
-    ) -> Callable[
-        [environments.RestartWebServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[environments.RestartWebServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def check_upgrade(
-        self,
-    ) -> Callable[
-        [environments.CheckUpgradeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def check_upgrade(self) -> Callable[[environments.CheckUpgradeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -364,10 +326,7 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [environments.ExecuteAirflowCommandRequest],
-        Union[
-            environments.ExecuteAirflowCommandResponse,
-            Awaitable[environments.ExecuteAirflowCommandResponse],
-        ],
+        Union[environments.ExecuteAirflowCommandResponse, Awaitable[environments.ExecuteAirflowCommandResponse]],
     ]:
         raise NotImplementedError()
 
@@ -375,11 +334,7 @@ class EnvironmentsTransport(abc.ABC):
     def stop_airflow_command(
         self,
     ) -> Callable[
-        [environments.StopAirflowCommandRequest],
-        Union[
-            environments.StopAirflowCommandResponse,
-            Awaitable[environments.StopAirflowCommandResponse],
-        ],
+        [environments.StopAirflowCommandRequest], Union[environments.StopAirflowCommandResponse, Awaitable[environments.StopAirflowCommandResponse]]
     ]:
         raise NotImplementedError()
 
@@ -387,48 +342,28 @@ class EnvironmentsTransport(abc.ABC):
     def poll_airflow_command(
         self,
     ) -> Callable[
-        [environments.PollAirflowCommandRequest],
-        Union[
-            environments.PollAirflowCommandResponse,
-            Awaitable[environments.PollAirflowCommandResponse],
-        ],
+        [environments.PollAirflowCommandRequest], Union[environments.PollAirflowCommandResponse, Awaitable[environments.PollAirflowCommandResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_workloads(
         self,
-    ) -> Callable[
-        [environments.ListWorkloadsRequest],
-        Union[
-            environments.ListWorkloadsResponse,
-            Awaitable[environments.ListWorkloadsResponse],
-        ],
-    ]:
+    ) -> Callable[[environments.ListWorkloadsRequest], Union[environments.ListWorkloadsResponse, Awaitable[environments.ListWorkloadsResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_user_workloads_secret(
         self,
     ) -> Callable[
-        [environments.CreateUserWorkloadsSecretRequest],
-        Union[
-            environments.UserWorkloadsSecret,
-            Awaitable[environments.UserWorkloadsSecret],
-        ],
+        [environments.CreateUserWorkloadsSecretRequest], Union[environments.UserWorkloadsSecret, Awaitable[environments.UserWorkloadsSecret]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_user_workloads_secret(
         self,
-    ) -> Callable[
-        [environments.GetUserWorkloadsSecretRequest],
-        Union[
-            environments.UserWorkloadsSecret,
-            Awaitable[environments.UserWorkloadsSecret],
-        ],
-    ]:
+    ) -> Callable[[environments.GetUserWorkloadsSecretRequest], Union[environments.UserWorkloadsSecret, Awaitable[environments.UserWorkloadsSecret]]]:
         raise NotImplementedError()
 
     @property
@@ -436,10 +371,7 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [environments.ListUserWorkloadsSecretsRequest],
-        Union[
-            environments.ListUserWorkloadsSecretsResponse,
-            Awaitable[environments.ListUserWorkloadsSecretsResponse],
-        ],
+        Union[environments.ListUserWorkloadsSecretsResponse, Awaitable[environments.ListUserWorkloadsSecretsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -447,32 +379,21 @@ class EnvironmentsTransport(abc.ABC):
     def update_user_workloads_secret(
         self,
     ) -> Callable[
-        [environments.UpdateUserWorkloadsSecretRequest],
-        Union[
-            environments.UserWorkloadsSecret,
-            Awaitable[environments.UserWorkloadsSecret],
-        ],
+        [environments.UpdateUserWorkloadsSecretRequest], Union[environments.UserWorkloadsSecret, Awaitable[environments.UserWorkloadsSecret]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_user_workloads_secret(
         self,
-    ) -> Callable[
-        [environments.DeleteUserWorkloadsSecretRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[environments.DeleteUserWorkloadsSecretRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_user_workloads_config_map(
         self,
     ) -> Callable[
-        [environments.CreateUserWorkloadsConfigMapRequest],
-        Union[
-            environments.UserWorkloadsConfigMap,
-            Awaitable[environments.UserWorkloadsConfigMap],
-        ],
+        [environments.CreateUserWorkloadsConfigMapRequest], Union[environments.UserWorkloadsConfigMap, Awaitable[environments.UserWorkloadsConfigMap]]
     ]:
         raise NotImplementedError()
 
@@ -480,11 +401,7 @@ class EnvironmentsTransport(abc.ABC):
     def get_user_workloads_config_map(
         self,
     ) -> Callable[
-        [environments.GetUserWorkloadsConfigMapRequest],
-        Union[
-            environments.UserWorkloadsConfigMap,
-            Awaitable[environments.UserWorkloadsConfigMap],
-        ],
+        [environments.GetUserWorkloadsConfigMapRequest], Union[environments.UserWorkloadsConfigMap, Awaitable[environments.UserWorkloadsConfigMap]]
     ]:
         raise NotImplementedError()
 
@@ -493,10 +410,7 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [environments.ListUserWorkloadsConfigMapsRequest],
-        Union[
-            environments.ListUserWorkloadsConfigMapsResponse,
-            Awaitable[environments.ListUserWorkloadsConfigMapsResponse],
-        ],
+        Union[environments.ListUserWorkloadsConfigMapsResponse, Awaitable[environments.ListUserWorkloadsConfigMapsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -504,48 +418,28 @@ class EnvironmentsTransport(abc.ABC):
     def update_user_workloads_config_map(
         self,
     ) -> Callable[
-        [environments.UpdateUserWorkloadsConfigMapRequest],
-        Union[
-            environments.UserWorkloadsConfigMap,
-            Awaitable[environments.UserWorkloadsConfigMap],
-        ],
+        [environments.UpdateUserWorkloadsConfigMapRequest], Union[environments.UserWorkloadsConfigMap, Awaitable[environments.UserWorkloadsConfigMap]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_user_workloads_config_map(
         self,
-    ) -> Callable[
-        [environments.DeleteUserWorkloadsConfigMapRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[environments.DeleteUserWorkloadsConfigMapRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def save_snapshot(
-        self,
-    ) -> Callable[
-        [environments.SaveSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def save_snapshot(self) -> Callable[[environments.SaveSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def load_snapshot(
-        self,
-    ) -> Callable[
-        [environments.LoadSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def load_snapshot(self) -> Callable[[environments.LoadSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def database_failover(
         self,
-    ) -> Callable[
-        [environments.DatabaseFailoverRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[environments.DatabaseFailoverRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -553,10 +447,7 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [environments.FetchDatabasePropertiesRequest],
-        Union[
-            environments.FetchDatabasePropertiesResponse,
-            Awaitable[environments.FetchDatabasePropertiesResponse],
-        ],
+        Union[environments.FetchDatabasePropertiesResponse, Awaitable[environments.FetchDatabasePropertiesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -565,20 +456,14 @@ class EnvironmentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

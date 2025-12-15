@@ -161,9 +161,7 @@ class StudioDatasourceReferences(proto.Message):
             The references to the studio datasources.
     """
 
-    studio_references: MutableSequence[
-        "StudioDatasourceReference"
-    ] = proto.RepeatedField(
+    studio_references: MutableSequence["StudioDatasourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="StudioDatasourceReference",

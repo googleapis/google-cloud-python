@@ -294,9 +294,7 @@ class AdaptiveMtTranslateRequest(proto.Message):
                 Reference sentence pairs.
         """
 
-        reference_sentence_pairs: MutableSequence[
-            "AdaptiveMtTranslateRequest.ReferenceSentencePair"
-        ] = proto.RepeatedField(
+        reference_sentence_pairs: MutableSequence["AdaptiveMtTranslateRequest.ReferenceSentencePair"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AdaptiveMtTranslateRequest.ReferenceSentencePair",
@@ -319,9 +317,7 @@ class AdaptiveMtTranslateRequest(proto.Message):
                 Target language code.
         """
 
-        reference_sentence_pair_lists: MutableSequence[
-            "AdaptiveMtTranslateRequest.ReferenceSentencePairList"
-        ] = proto.RepeatedField(
+        reference_sentence_pair_lists: MutableSequence["AdaptiveMtTranslateRequest.ReferenceSentencePairList"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AdaptiveMtTranslateRequest.ReferenceSentencePairList",
@@ -433,9 +429,7 @@ class AdaptiveMtTranslateResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    glossary_translations: MutableSequence[
-        "AdaptiveMtTranslation"
-    ] = proto.RepeatedField(
+    glossary_translations: MutableSequence["AdaptiveMtTranslation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="AdaptiveMtTranslation",

@@ -136,9 +136,7 @@ class ListCreativeTemplatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    creative_templates: MutableSequence[
-        creative_template_messages.CreativeTemplate
-    ] = proto.RepeatedField(
+    creative_templates: MutableSequence[creative_template_messages.CreativeTemplate] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=creative_template_messages.CreativeTemplate,

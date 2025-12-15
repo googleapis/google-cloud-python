@@ -269,9 +269,7 @@ class ContinuousValidationEvent(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            check_results: MutableSequence[
-                "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult"
-            ] = proto.RepeatedField(
+            check_results: MutableSequence["ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails.CheckResult",
@@ -304,9 +302,7 @@ class ContinuousValidationEvent(proto.Message):
             number=4,
             enum="ContinuousValidationEvent.ContinuousValidationPodEvent.PolicyConformanceVerdict",
         )
-        images: MutableSequence[
-            "ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails"
-        ] = proto.RepeatedField(
+        images: MutableSequence["ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="ContinuousValidationEvent.ContinuousValidationPodEvent.ImageDetails",

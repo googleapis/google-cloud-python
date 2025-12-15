@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group as gcn_security_profile_group,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group as gcn_security_profile_group
 
 __protobuf__ = proto.module(
     package="google.cloud.networksecurity.v1alpha1",
@@ -94,9 +92,7 @@ class ListSecurityProfileGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_profile_groups: MutableSequence[
-        gcn_security_profile_group.SecurityProfileGroup
-    ] = proto.RepeatedField(
+    security_profile_groups: MutableSequence[gcn_security_profile_group.SecurityProfileGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_security_profile_group.SecurityProfileGroup,
@@ -150,12 +146,10 @@ class CreateSecurityProfileGroupRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    security_profile_group: gcn_security_profile_group.SecurityProfileGroup = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=gcn_security_profile_group.SecurityProfileGroup,
-        )
+    security_profile_group: gcn_security_profile_group.SecurityProfileGroup = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcn_security_profile_group.SecurityProfileGroup,
     )
 
 
@@ -179,12 +173,10 @@ class UpdateSecurityProfileGroupRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    security_profile_group: gcn_security_profile_group.SecurityProfileGroup = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=gcn_security_profile_group.SecurityProfileGroup,
-        )
+    security_profile_group: gcn_security_profile_group.SecurityProfileGroup = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcn_security_profile_group.SecurityProfileGroup,
     )
 
 
@@ -261,9 +253,7 @@ class ListSecurityProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    security_profiles: MutableSequence[
-        gcn_security_profile_group.SecurityProfile
-    ] = proto.RepeatedField(
+    security_profiles: MutableSequence[gcn_security_profile_group.SecurityProfile] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_security_profile_group.SecurityProfile,

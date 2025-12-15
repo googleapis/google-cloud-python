@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.devtools.cloudbuild_v2 import gapic_version as package_version
 from google.cloud.devtools.cloudbuild_v2.types import repositories
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class RepositoryManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -314,97 +304,61 @@ class RepositoryManagerTransport(abc.ABC):
     @property
     def create_connection(
         self,
-    ) -> Callable[
-        [repositories.CreateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.CreateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[
-        [repositories.GetConnectionRequest],
-        Union[repositories.Connection, Awaitable[repositories.Connection]],
-    ]:
+    def get_connection(self) -> Callable[[repositories.GetConnectionRequest], Union[repositories.Connection, Awaitable[repositories.Connection]]]:
         raise NotImplementedError()
 
     @property
     def list_connections(
         self,
     ) -> Callable[
-        [repositories.ListConnectionsRequest],
-        Union[
-            repositories.ListConnectionsResponse,
-            Awaitable[repositories.ListConnectionsResponse],
-        ],
+        [repositories.ListConnectionsRequest], Union[repositories.ListConnectionsResponse, Awaitable[repositories.ListConnectionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_connection(
         self,
-    ) -> Callable[
-        [repositories.UpdateConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.UpdateConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_connection(
         self,
-    ) -> Callable[
-        [repositories.DeleteConnectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.DeleteConnectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_repository(
         self,
-    ) -> Callable[
-        [repositories.CreateRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.CreateRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_repositories(
         self,
-    ) -> Callable[
-        [repositories.BatchCreateRepositoriesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.BatchCreateRepositoriesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [repositories.GetRepositoryRequest],
-        Union[repositories.Repository, Awaitable[repositories.Repository]],
-    ]:
+    def get_repository(self) -> Callable[[repositories.GetRepositoryRequest], Union[repositories.Repository, Awaitable[repositories.Repository]]]:
         raise NotImplementedError()
 
     @property
     def list_repositories(
         self,
     ) -> Callable[
-        [repositories.ListRepositoriesRequest],
-        Union[
-            repositories.ListRepositoriesResponse,
-            Awaitable[repositories.ListRepositoriesResponse],
-        ],
+        [repositories.ListRepositoriesRequest], Union[repositories.ListRepositoriesResponse, Awaitable[repositories.ListRepositoriesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_repository(
         self,
-    ) -> Callable[
-        [repositories.DeleteRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repositories.DeleteRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -412,23 +366,14 @@ class RepositoryManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [repositories.FetchReadWriteTokenRequest],
-        Union[
-            repositories.FetchReadWriteTokenResponse,
-            Awaitable[repositories.FetchReadWriteTokenResponse],
-        ],
+        Union[repositories.FetchReadWriteTokenResponse, Awaitable[repositories.FetchReadWriteTokenResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_read_token(
         self,
-    ) -> Callable[
-        [repositories.FetchReadTokenRequest],
-        Union[
-            repositories.FetchReadTokenResponse,
-            Awaitable[repositories.FetchReadTokenResponse],
-        ],
-    ]:
+    ) -> Callable[[repositories.FetchReadTokenRequest], Union[repositories.FetchReadTokenResponse, Awaitable[repositories.FetchReadTokenResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -436,32 +381,20 @@ class RepositoryManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [repositories.FetchLinkableRepositoriesRequest],
-        Union[
-            repositories.FetchLinkableRepositoriesResponse,
-            Awaitable[repositories.FetchLinkableRepositoriesResponse],
-        ],
+        Union[repositories.FetchLinkableRepositoriesResponse, Awaitable[repositories.FetchLinkableRepositoriesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def fetch_git_refs(
         self,
-    ) -> Callable[
-        [repositories.FetchGitRefsRequest],
-        Union[
-            repositories.FetchGitRefsResponse,
-            Awaitable[repositories.FetchGitRefsResponse],
-        ],
-    ]:
+    ) -> Callable[[repositories.FetchGitRefsRequest], Union[repositories.FetchGitRefsResponse, Awaitable[repositories.FetchGitRefsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -473,19 +406,13 @@ class RepositoryManagerTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property

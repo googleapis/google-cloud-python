@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import GkeInferenceQuickstartTransport
 from .grpc import GkeInferenceQuickstartGrpcTransport
 from .grpc_asyncio import GkeInferenceQuickstartGrpcAsyncIOTransport
-from .rest import (
-    GkeInferenceQuickstartRestInterceptor,
-    GkeInferenceQuickstartRestTransport,
-)
+from .rest import GkeInferenceQuickstartRestInterceptor, GkeInferenceQuickstartRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GkeInferenceQuickstartTransport]]
 _transport_registry["grpc"] = GkeInferenceQuickstartGrpcTransport
 _transport_registry["grpc_asyncio"] = GkeInferenceQuickstartGrpcAsyncIOTransport
 _transport_registry["rest"] = GkeInferenceQuickstartRestTransport

@@ -660,9 +660,7 @@ class ExplainedAllowPolicy(proto.Message):
         proto.STRING,
         number=2,
     )
-    binding_explanations: MutableSequence[
-        "AllowBindingExplanation"
-    ] = proto.RepeatedField(
+    binding_explanations: MutableSequence["AllowBindingExplanation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="AllowBindingExplanation",
@@ -1147,9 +1145,7 @@ class DenyRuleExplanation(proto.Message):
         number=2,
         message=AnnotatedPermissionMatching,
     )
-    denied_permissions: MutableMapping[
-        str, AnnotatedPermissionMatching
-    ] = proto.MapField(
+    denied_permissions: MutableMapping[str, AnnotatedPermissionMatching] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=3,
@@ -1160,9 +1156,7 @@ class DenyRuleExplanation(proto.Message):
         number=4,
         message=AnnotatedPermissionMatching,
     )
-    exception_permissions: MutableMapping[
-        str, AnnotatedPermissionMatching
-    ] = proto.MapField(
+    exception_permissions: MutableMapping[str, AnnotatedPermissionMatching] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=5,
@@ -1173,9 +1167,7 @@ class DenyRuleExplanation(proto.Message):
         number=6,
         message=AnnotatedDenyPrincipalMatching,
     )
-    denied_principals: MutableMapping[
-        str, AnnotatedDenyPrincipalMatching
-    ] = proto.MapField(
+    denied_principals: MutableMapping[str, AnnotatedDenyPrincipalMatching] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=7,
@@ -1186,9 +1178,7 @@ class DenyRuleExplanation(proto.Message):
         number=8,
         message=AnnotatedDenyPrincipalMatching,
     )
-    exception_principals: MutableMapping[
-        str, AnnotatedDenyPrincipalMatching
-    ] = proto.MapField(
+    exception_principals: MutableMapping[str, AnnotatedDenyPrincipalMatching] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=9,

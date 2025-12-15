@@ -207,9 +207,7 @@ class Allocation(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            local_ssd: MutableSequence[
-                "Allocation.SpecificSKUAllocation.AllocatedInstanceProperties.AllocatedDisk"
-            ] = proto.RepeatedField(
+            local_ssd: MutableSequence["Allocation.SpecificSKUAllocation.AllocatedInstanceProperties.AllocatedDisk"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Allocation.SpecificSKUAllocation.AllocatedInstanceProperties.AllocatedDisk",

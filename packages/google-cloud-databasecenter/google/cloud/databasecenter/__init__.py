@@ -18,21 +18,10 @@ from google.cloud.databasecenter import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.databasecenter_v1beta.services.database_center.async_client import (
-    DatabaseCenterAsyncClient,
-)
-from google.cloud.databasecenter_v1beta.services.database_center.client import (
-    DatabaseCenterClient,
-)
-from google.cloud.databasecenter_v1beta.types.product import (
-    Engine,
-    Product,
-    ProductType,
-)
-from google.cloud.databasecenter_v1beta.types.service import (
-    QueryProductsRequest,
-    QueryProductsResponse,
-)
+from google.cloud.databasecenter_v1beta.services.database_center.async_client import DatabaseCenterAsyncClient
+from google.cloud.databasecenter_v1beta.services.database_center.client import DatabaseCenterClient
+from google.cloud.databasecenter_v1beta.types.product import Engine, Product, ProductType
+from google.cloud.databasecenter_v1beta.types.service import QueryProductsRequest, QueryProductsResponse
 
 __all__ = (
     "DatabaseCenterClient",

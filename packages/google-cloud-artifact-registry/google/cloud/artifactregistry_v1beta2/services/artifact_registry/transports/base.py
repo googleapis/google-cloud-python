@@ -39,9 +39,7 @@ from google.cloud.artifactregistry_v1beta2.types import tag
 from google.cloud.artifactregistry_v1beta2.types import tag as gda_tag
 from google.cloud.artifactregistry_v1beta2.types import version, yum_artifact
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -106,23 +104,15 @@ class ArtifactRegistryTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -436,191 +426,101 @@ class ArtifactRegistryTransport(abc.ABC):
     @property
     def import_apt_artifacts(
         self,
-    ) -> Callable[
-        [apt_artifact.ImportAptArtifactsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apt_artifact.ImportAptArtifactsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_yum_artifacts(
         self,
-    ) -> Callable[
-        [yum_artifact.ImportYumArtifactsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[yum_artifact.ImportYumArtifactsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_repositories(
         self,
-    ) -> Callable[
-        [repository.ListRepositoriesRequest],
-        Union[
-            repository.ListRepositoriesResponse,
-            Awaitable[repository.ListRepositoriesResponse],
-        ],
-    ]:
+    ) -> Callable[[repository.ListRepositoriesRequest], Union[repository.ListRepositoriesResponse, Awaitable[repository.ListRepositoriesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [repository.GetRepositoryRequest],
-        Union[repository.Repository, Awaitable[repository.Repository]],
-    ]:
+    def get_repository(self) -> Callable[[repository.GetRepositoryRequest], Union[repository.Repository, Awaitable[repository.Repository]]]:
         raise NotImplementedError()
 
     @property
     def create_repository(
         self,
-    ) -> Callable[
-        [gda_repository.CreateRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gda_repository.CreateRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_repository(
         self,
-    ) -> Callable[
-        [gda_repository.UpdateRepositoryRequest],
-        Union[gda_repository.Repository, Awaitable[gda_repository.Repository]],
-    ]:
+    ) -> Callable[[gda_repository.UpdateRepositoryRequest], Union[gda_repository.Repository, Awaitable[gda_repository.Repository]]]:
         raise NotImplementedError()
 
     @property
     def delete_repository(
         self,
-    ) -> Callable[
-        [repository.DeleteRepositoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[repository.DeleteRepositoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_packages(
-        self,
-    ) -> Callable[
-        [package.ListPackagesRequest],
-        Union[package.ListPackagesResponse, Awaitable[package.ListPackagesResponse]],
-    ]:
+    def list_packages(self) -> Callable[[package.ListPackagesRequest], Union[package.ListPackagesResponse, Awaitable[package.ListPackagesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_package(
-        self,
-    ) -> Callable[
-        [package.GetPackageRequest], Union[package.Package, Awaitable[package.Package]]
-    ]:
+    def get_package(self) -> Callable[[package.GetPackageRequest], Union[package.Package, Awaitable[package.Package]]]:
         raise NotImplementedError()
 
     @property
-    def delete_package(
-        self,
-    ) -> Callable[
-        [package.DeletePackageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_package(self) -> Callable[[package.DeletePackageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [version.ListVersionsRequest],
-        Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]],
-    ]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]
-    ]:
+    def get_version(self) -> Callable[[version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[
-        [version.DeleteVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_files(
-        self,
-    ) -> Callable[
-        [file.ListFilesRequest],
-        Union[file.ListFilesResponse, Awaitable[file.ListFilesResponse]],
-    ]:
+    def list_files(self) -> Callable[[file.ListFilesRequest], Union[file.ListFilesResponse, Awaitable[file.ListFilesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_file(
-        self,
-    ) -> Callable[[file.GetFileRequest], Union[file.File, Awaitable[file.File]]]:
+    def get_file(self) -> Callable[[file.GetFileRequest], Union[file.File, Awaitable[file.File]]]:
         raise NotImplementedError()
 
     @property
-    def list_tags(
-        self,
-    ) -> Callable[
-        [tag.ListTagsRequest],
-        Union[tag.ListTagsResponse, Awaitable[tag.ListTagsResponse]],
-    ]:
+    def list_tags(self) -> Callable[[tag.ListTagsRequest], Union[tag.ListTagsResponse, Awaitable[tag.ListTagsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_tag(
-        self,
-    ) -> Callable[[tag.GetTagRequest], Union[tag.Tag, Awaitable[tag.Tag]]]:
+    def get_tag(self) -> Callable[[tag.GetTagRequest], Union[tag.Tag, Awaitable[tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def create_tag(
-        self,
-    ) -> Callable[
-        [gda_tag.CreateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]
-    ]:
+    def create_tag(self) -> Callable[[gda_tag.CreateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def update_tag(
-        self,
-    ) -> Callable[
-        [gda_tag.UpdateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]
-    ]:
+    def update_tag(self) -> Callable[[gda_tag.UpdateTagRequest], Union[gda_tag.Tag, Awaitable[gda_tag.Tag]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tag(
-        self,
-    ) -> Callable[
-        [tag.DeleteTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_tag(self) -> Callable[[tag.DeleteTagRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -628,50 +528,32 @@ class ArtifactRegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_project_settings(
         self,
-    ) -> Callable[
-        [settings.GetProjectSettingsRequest],
-        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
-    ]:
+    ) -> Callable[[settings.GetProjectSettingsRequest], Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]]]:
         raise NotImplementedError()
 
     @property
     def update_project_settings(
         self,
-    ) -> Callable[
-        [settings.UpdateProjectSettingsRequest],
-        Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]],
-    ]:
+    ) -> Callable[[settings.UpdateProjectSettingsRequest], Union[settings.ProjectSettings, Awaitable[settings.ProjectSettings]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

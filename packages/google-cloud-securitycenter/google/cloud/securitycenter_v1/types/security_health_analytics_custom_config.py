@@ -120,9 +120,7 @@ class CustomConfig(proto.Message):
                 message=expr_pb2.Expr,
             )
 
-        properties: MutableSequence[
-            "CustomConfig.CustomOutputSpec.Property"
-        ] = proto.RepeatedField(
+        properties: MutableSequence["CustomConfig.CustomOutputSpec.Property"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CustomConfig.CustomOutputSpec.Property",

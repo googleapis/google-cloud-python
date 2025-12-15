@@ -312,9 +312,7 @@ class SummarizationSectionList(proto.Message):
             Optional. Summarization sections.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
+    summarization_sections: MutableSequence["SummarizationSection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SummarizationSection",
@@ -459,9 +457,7 @@ class AgentCoachingContext(proto.Message):
         proto.STRING,
         number=7,
     )
-    instructions: MutableSequence[
-        agent_coaching_instruction.AgentCoachingInstruction
-    ] = proto.RepeatedField(
+    instructions: MutableSequence[agent_coaching_instruction.AgentCoachingInstruction] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=agent_coaching_instruction.AgentCoachingInstruction,
@@ -578,9 +574,7 @@ class SummarizationContext(proto.Message):
             empty. Supported 2.0 and later versions.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
+    summarization_sections: MutableSequence["SummarizationSection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SummarizationSection",
@@ -856,9 +850,7 @@ class AgentCoachingSuggestion(proto.Message):
                 number=4,
             )
 
-        duplicate_suggestions: MutableSequence[
-            "AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion"
-        ] = proto.RepeatedField(
+        duplicate_suggestions: MutableSequence["AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AgentCoachingSuggestion.DuplicateCheckResult.DuplicateSuggestion",
@@ -888,12 +880,10 @@ class AgentCoachingSuggestion(proto.Message):
             number=2,
             message="AgentCoachingSuggestion.Sources",
         )
-        duplicate_check_result: "AgentCoachingSuggestion.DuplicateCheckResult" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="AgentCoachingSuggestion.DuplicateCheckResult",
-            )
+        duplicate_check_result: "AgentCoachingSuggestion.DuplicateCheckResult" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="AgentCoachingSuggestion.DuplicateCheckResult",
         )
 
     class SampleResponse(proto.Message):
@@ -919,24 +909,18 @@ class AgentCoachingSuggestion(proto.Message):
             number=2,
             message="AgentCoachingSuggestion.Sources",
         )
-        duplicate_check_result: "AgentCoachingSuggestion.DuplicateCheckResult" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="AgentCoachingSuggestion.DuplicateCheckResult",
-            )
+        duplicate_check_result: "AgentCoachingSuggestion.DuplicateCheckResult" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="AgentCoachingSuggestion.DuplicateCheckResult",
         )
 
-    applicable_instructions: MutableSequence[
-        agent_coaching_instruction.AgentCoachingInstruction
-    ] = proto.RepeatedField(
+    applicable_instructions: MutableSequence[agent_coaching_instruction.AgentCoachingInstruction] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=agent_coaching_instruction.AgentCoachingInstruction,
     )
-    agent_action_suggestions: MutableSequence[
-        AgentActionSuggestion
-    ] = proto.RepeatedField(
+    agent_action_suggestions: MutableSequence[AgentActionSuggestion] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=AgentActionSuggestion,
@@ -1115,12 +1099,10 @@ class RaiSettings(proto.Message):
             number=1,
             enum="RaiSettings.RaiCategoryConfig.RaiCategory",
         )
-        sensitivity_level: "RaiSettings.RaiCategoryConfig.SensitivityLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="RaiSettings.RaiCategoryConfig.SensitivityLevel",
-            )
+        sensitivity_level: "RaiSettings.RaiCategoryConfig.SensitivityLevel" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="RaiSettings.RaiCategoryConfig.SensitivityLevel",
         )
 
     rai_category_configs: MutableSequence[RaiCategoryConfig] = proto.RepeatedField(

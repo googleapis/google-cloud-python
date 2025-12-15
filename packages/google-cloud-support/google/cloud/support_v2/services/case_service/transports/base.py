@@ -30,9 +30,7 @@ from google.cloud.support_v2.types import case
 from google.cloud.support_v2.types import case as gcs_case
 from google.cloud.support_v2.types import case_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class CaseServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -223,66 +213,35 @@ class CaseServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_case(
-        self,
-    ) -> Callable[
-        [case_service.GetCaseRequest], Union[case.Case, Awaitable[case.Case]]
-    ]:
+    def get_case(self) -> Callable[[case_service.GetCaseRequest], Union[case.Case, Awaitable[case.Case]]]:
         raise NotImplementedError()
 
     @property
     def list_cases(
         self,
-    ) -> Callable[
-        [case_service.ListCasesRequest],
-        Union[
-            case_service.ListCasesResponse, Awaitable[case_service.ListCasesResponse]
-        ],
-    ]:
+    ) -> Callable[[case_service.ListCasesRequest], Union[case_service.ListCasesResponse, Awaitable[case_service.ListCasesResponse]]]:
         raise NotImplementedError()
 
     @property
     def search_cases(
         self,
-    ) -> Callable[
-        [case_service.SearchCasesRequest],
-        Union[
-            case_service.SearchCasesResponse,
-            Awaitable[case_service.SearchCasesResponse],
-        ],
-    ]:
+    ) -> Callable[[case_service.SearchCasesRequest], Union[case_service.SearchCasesResponse, Awaitable[case_service.SearchCasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_case(
-        self,
-    ) -> Callable[
-        [case_service.CreateCaseRequest], Union[gcs_case.Case, Awaitable[gcs_case.Case]]
-    ]:
+    def create_case(self) -> Callable[[case_service.CreateCaseRequest], Union[gcs_case.Case, Awaitable[gcs_case.Case]]]:
         raise NotImplementedError()
 
     @property
-    def update_case(
-        self,
-    ) -> Callable[
-        [case_service.UpdateCaseRequest], Union[gcs_case.Case, Awaitable[gcs_case.Case]]
-    ]:
+    def update_case(self) -> Callable[[case_service.UpdateCaseRequest], Union[gcs_case.Case, Awaitable[gcs_case.Case]]]:
         raise NotImplementedError()
 
     @property
-    def escalate_case(
-        self,
-    ) -> Callable[
-        [case_service.EscalateCaseRequest], Union[case.Case, Awaitable[case.Case]]
-    ]:
+    def escalate_case(self) -> Callable[[case_service.EscalateCaseRequest], Union[case.Case, Awaitable[case.Case]]]:
         raise NotImplementedError()
 
     @property
-    def close_case(
-        self,
-    ) -> Callable[
-        [case_service.CloseCaseRequest], Union[case.Case, Awaitable[case.Case]]
-    ]:
+    def close_case(self) -> Callable[[case_service.CloseCaseRequest], Union[case.Case, Awaitable[case.Case]]]:
         raise NotImplementedError()
 
     @property
@@ -290,10 +249,7 @@ class CaseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [case_service.SearchCaseClassificationsRequest],
-        Union[
-            case_service.SearchCaseClassificationsResponse,
-            Awaitable[case_service.SearchCaseClassificationsResponse],
-        ],
+        Union[case_service.SearchCaseClassificationsResponse, Awaitable[case_service.SearchCaseClassificationsResponse]],
     ]:
         raise NotImplementedError()
 

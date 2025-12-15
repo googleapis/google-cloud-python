@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -326,9 +311,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_data_policy(
-        self,
-    ) -> Callable[[datapolicy.CreateDataPolicyRequest], datapolicy.DataPolicy]:
+    def create_data_policy(self) -> Callable[[datapolicy.CreateDataPolicyRequest], datapolicy.DataPolicy]:
         r"""Return a callable for the create data policy method over gRPC.
 
         Creates a new data policy under a project with the given
@@ -354,9 +337,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["create_data_policy"]
 
     @property
-    def add_grantees(
-        self,
-    ) -> Callable[[datapolicy.AddGranteesRequest], datapolicy.DataPolicy]:
+    def add_grantees(self) -> Callable[[datapolicy.AddGranteesRequest], datapolicy.DataPolicy]:
         r"""Return a callable for the add grantees method over gRPC.
 
         Adds new grantees to a data policy.
@@ -384,9 +365,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["add_grantees"]
 
     @property
-    def remove_grantees(
-        self,
-    ) -> Callable[[datapolicy.RemoveGranteesRequest], datapolicy.DataPolicy]:
+    def remove_grantees(self) -> Callable[[datapolicy.RemoveGranteesRequest], datapolicy.DataPolicy]:
         r"""Return a callable for the remove grantees method over gRPC.
 
         Removes grantees from a data policy.
@@ -413,9 +392,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["remove_grantees"]
 
     @property
-    def update_data_policy(
-        self,
-    ) -> Callable[[datapolicy.UpdateDataPolicyRequest], datapolicy.DataPolicy]:
+    def update_data_policy(self) -> Callable[[datapolicy.UpdateDataPolicyRequest], datapolicy.DataPolicy]:
         r"""Return a callable for the update data policy method over gRPC.
 
         Updates the metadata for an existing data policy. The
@@ -441,9 +418,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["update_data_policy"]
 
     @property
-    def delete_data_policy(
-        self,
-    ) -> Callable[[datapolicy.DeleteDataPolicyRequest], empty_pb2.Empty]:
+    def delete_data_policy(self) -> Callable[[datapolicy.DeleteDataPolicyRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data policy method over gRPC.
 
         Deletes the data policy specified by its resource
@@ -468,9 +443,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["delete_data_policy"]
 
     @property
-    def get_data_policy(
-        self,
-    ) -> Callable[[datapolicy.GetDataPolicyRequest], datapolicy.DataPolicy]:
+    def get_data_policy(self) -> Callable[[datapolicy.GetDataPolicyRequest], datapolicy.DataPolicy]:
         r"""Return a callable for the get data policy method over gRPC.
 
         Gets the data policy specified by its resource name.
@@ -494,11 +467,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["get_data_policy"]
 
     @property
-    def list_data_policies(
-        self,
-    ) -> Callable[
-        [datapolicy.ListDataPoliciesRequest], datapolicy.ListDataPoliciesResponse
-    ]:
+    def list_data_policies(self) -> Callable[[datapolicy.ListDataPoliciesRequest], datapolicy.ListDataPoliciesResponse]:
         r"""Return a callable for the list data policies method over gRPC.
 
         List all of the data policies in the specified parent
@@ -523,9 +492,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["list_data_policies"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for the specified data policy.
@@ -549,9 +516,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM policy for the specified data policy.
@@ -575,12 +540,7 @@ class DataPolicyServiceGrpcTransport(DataPolicyServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the caller's permission on the specified data

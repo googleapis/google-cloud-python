@@ -560,12 +560,8 @@ class WarehouseRestInterceptor:
     """
 
     def pre_add_collection_item(
-        self,
-        request: warehouse.AddCollectionItemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.AddCollectionItemRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.AddCollectionItemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.AddCollectionItemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_collection_item
 
         Override in a subclass to manipulate the request or metadata
@@ -573,9 +569,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_add_collection_item(
-        self, response: warehouse.AddCollectionItemResponse
-    ) -> warehouse.AddCollectionItemResponse:
+    def post_add_collection_item(self, response: warehouse.AddCollectionItemResponse) -> warehouse.AddCollectionItemResponse:
         """Post-rpc interceptor for add_collection_item
 
         DEPRECATED. Please use the `post_add_collection_item_with_metadata`
@@ -589,12 +583,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_add_collection_item_with_metadata(
-        self,
-        response: warehouse.AddCollectionItemResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.AddCollectionItemResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.AddCollectionItemResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.AddCollectionItemResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_collection_item
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -610,9 +600,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_analyze_asset(
-        self,
-        request: warehouse.AnalyzeAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.AnalyzeAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.AnalyzeAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_asset
 
@@ -621,9 +609,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_analyze_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_asset
 
         DEPRECATED. Please use the `post_analyze_asset_with_metadata`
@@ -637,9 +623,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_analyze_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_asset
 
@@ -656,9 +640,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_analyze_corpus(
-        self,
-        request: warehouse.AnalyzeCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.AnalyzeCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.AnalyzeCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_corpus
 
@@ -667,9 +649,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_corpus(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_analyze_corpus(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for analyze_corpus
 
         DEPRECATED. Please use the `post_analyze_corpus_with_metadata`
@@ -683,9 +663,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_analyze_corpus_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_corpus
 
@@ -702,9 +680,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_clip_asset(
-        self,
-        request: warehouse.ClipAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.ClipAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ClipAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for clip_asset
 
@@ -713,9 +689,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_clip_asset(
-        self, response: warehouse.ClipAssetResponse
-    ) -> warehouse.ClipAssetResponse:
+    def post_clip_asset(self, response: warehouse.ClipAssetResponse) -> warehouse.ClipAssetResponse:
         """Post-rpc interceptor for clip_asset
 
         DEPRECATED. Please use the `post_clip_asset_with_metadata`
@@ -729,9 +703,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_clip_asset_with_metadata(
-        self,
-        response: warehouse.ClipAssetResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.ClipAssetResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ClipAssetResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for clip_asset
 
@@ -748,12 +720,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_annotation(
-        self,
-        request: warehouse.CreateAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -761,9 +729,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_annotation(
-        self, response: warehouse.Annotation
-    ) -> warehouse.Annotation:
+    def post_create_annotation(self, response: warehouse.Annotation) -> warehouse.Annotation:
         """Post-rpc interceptor for create_annotation
 
         DEPRECATED. Please use the `post_create_annotation_with_metadata`
@@ -777,9 +743,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_annotation_with_metadata(
-        self,
-        response: warehouse.Annotation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Annotation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_annotation
 
@@ -796,9 +760,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_asset(
-        self,
-        request: warehouse.CreateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.CreateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.CreateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_asset
 
@@ -821,9 +783,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_asset_with_metadata(
-        self,
-        response: warehouse.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_asset
 
@@ -840,12 +800,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_collection(
-        self,
-        request: warehouse.CreateCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -853,9 +809,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_collection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_collection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_collection
 
         DEPRECATED. Please use the `post_create_collection_with_metadata`
@@ -869,9 +823,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_collection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_collection
 
@@ -888,9 +840,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_corpus(
-        self,
-        request: warehouse.CreateCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.CreateCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.CreateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_corpus
 
@@ -899,9 +849,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_corpus(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_corpus(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_corpus
 
         DEPRECATED. Please use the `post_create_corpus_with_metadata`
@@ -915,9 +863,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_corpus_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_corpus
 
@@ -934,12 +880,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_data_schema(
-        self,
-        request: warehouse.CreateDataSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateDataSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -947,9 +889,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_schema(
-        self, response: warehouse.DataSchema
-    ) -> warehouse.DataSchema:
+    def post_create_data_schema(self, response: warehouse.DataSchema) -> warehouse.DataSchema:
         """Post-rpc interceptor for create_data_schema
 
         DEPRECATED. Please use the `post_create_data_schema_with_metadata`
@@ -963,9 +903,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_data_schema_with_metadata(
-        self,
-        response: warehouse.DataSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.DataSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_schema
 
@@ -982,9 +920,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_index(
-        self,
-        request: warehouse.CreateIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.CreateIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.CreateIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_index
 
@@ -993,9 +929,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_index
 
         DEPRECATED. Please use the `post_create_index_with_metadata`
@@ -1009,9 +943,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_index
 
@@ -1028,12 +960,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_index_endpoint(
-        self,
-        request: warehouse.CreateIndexEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateIndexEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_index_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -1041,9 +969,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_index_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_index_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_index_endpoint
 
         DEPRECATED. Please use the `post_create_index_endpoint_with_metadata`
@@ -1057,9 +983,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_index_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_index_endpoint
 
@@ -1076,12 +1000,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_search_config(
-        self,
-        request: warehouse.CreateSearchConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateSearchConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1089,9 +1009,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_search_config(
-        self, response: warehouse.SearchConfig
-    ) -> warehouse.SearchConfig:
+    def post_create_search_config(self, response: warehouse.SearchConfig) -> warehouse.SearchConfig:
         """Post-rpc interceptor for create_search_config
 
         DEPRECATED. Please use the `post_create_search_config_with_metadata`
@@ -1105,9 +1023,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_search_config_with_metadata(
-        self,
-        response: warehouse.SearchConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_search_config
 
@@ -1124,12 +1040,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_create_search_hypernym(
-        self,
-        request: warehouse.CreateSearchHypernymRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.CreateSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.CreateSearchHypernymRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.CreateSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_search_hypernym
 
         Override in a subclass to manipulate the request or metadata
@@ -1137,9 +1049,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_search_hypernym(
-        self, response: warehouse.SearchHypernym
-    ) -> warehouse.SearchHypernym:
+    def post_create_search_hypernym(self, response: warehouse.SearchHypernym) -> warehouse.SearchHypernym:
         """Post-rpc interceptor for create_search_hypernym
 
         DEPRECATED. Please use the `post_create_search_hypernym_with_metadata`
@@ -1153,9 +1063,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_create_search_hypernym_with_metadata(
-        self,
-        response: warehouse.SearchHypernym,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchHypernym, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchHypernym, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_search_hypernym
 
@@ -1172,12 +1080,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_delete_annotation(
-        self,
-        request: warehouse.DeleteAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -1186,9 +1090,7 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_delete_asset(
-        self,
-        request: warehouse.DeleteAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.DeleteAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
@@ -1197,9 +1099,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_asset
 
         DEPRECATED. Please use the `post_delete_asset_with_metadata`
@@ -1213,9 +1113,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_delete_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_asset
 
@@ -1232,12 +1130,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_delete_collection(
-        self,
-        request: warehouse.DeleteCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -1245,9 +1139,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_collection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_collection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_collection
 
         DEPRECATED. Please use the `post_delete_collection_with_metadata`
@@ -1261,9 +1153,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_delete_collection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_collection
 
@@ -1280,9 +1170,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_delete_corpus(
-        self,
-        request: warehouse.DeleteCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.DeleteCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DeleteCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_corpus
 
@@ -1292,12 +1180,8 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_delete_data_schema(
-        self,
-        request: warehouse.DeleteDataSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteDataSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -1306,9 +1190,7 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_delete_index(
-        self,
-        request: warehouse.DeleteIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.DeleteIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DeleteIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_index
 
@@ -1317,9 +1199,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_index
 
         DEPRECATED. Please use the `post_delete_index_with_metadata`
@@ -1333,9 +1213,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_delete_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_index
 
@@ -1352,12 +1230,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_delete_index_endpoint(
-        self,
-        request: warehouse.DeleteIndexEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteIndexEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_index_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -1365,9 +1239,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_index_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_index_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_index_endpoint
 
         DEPRECATED. Please use the `post_delete_index_endpoint_with_metadata`
@@ -1381,9 +1253,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_delete_index_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_index_endpoint
 
@@ -1400,12 +1270,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_delete_search_config(
-        self,
-        request: warehouse.DeleteSearchConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteSearchConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1414,12 +1280,8 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_delete_search_hypernym(
-        self,
-        request: warehouse.DeleteSearchHypernymRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.DeleteSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.DeleteSearchHypernymRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.DeleteSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_search_hypernym
 
         Override in a subclass to manipulate the request or metadata
@@ -1428,9 +1290,7 @@ class WarehouseRestInterceptor:
         return request, metadata
 
     def pre_deploy_index(
-        self,
-        request: warehouse.DeployIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.DeployIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DeployIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_index
 
@@ -1439,9 +1299,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_index
 
         DEPRECATED. Please use the `post_deploy_index_with_metadata`
@@ -1455,9 +1313,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_deploy_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_index
 
@@ -1474,12 +1330,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_generate_hls_uri(
-        self,
-        request: warehouse.GenerateHlsUriRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GenerateHlsUriRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.GenerateHlsUriRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GenerateHlsUriRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_hls_uri
 
         Override in a subclass to manipulate the request or metadata
@@ -1487,9 +1339,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_hls_uri(
-        self, response: warehouse.GenerateHlsUriResponse
-    ) -> warehouse.GenerateHlsUriResponse:
+    def post_generate_hls_uri(self, response: warehouse.GenerateHlsUriResponse) -> warehouse.GenerateHlsUriResponse:
         """Post-rpc interceptor for generate_hls_uri
 
         DEPRECATED. Please use the `post_generate_hls_uri_with_metadata`
@@ -1503,12 +1353,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_generate_hls_uri_with_metadata(
-        self,
-        response: warehouse.GenerateHlsUriResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GenerateHlsUriResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.GenerateHlsUriResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GenerateHlsUriResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_hls_uri
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1524,12 +1370,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_generate_retrieval_url(
-        self,
-        request: warehouse.GenerateRetrievalUrlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GenerateRetrievalUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.GenerateRetrievalUrlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GenerateRetrievalUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_retrieval_url
 
         Override in a subclass to manipulate the request or metadata
@@ -1537,9 +1379,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_retrieval_url(
-        self, response: warehouse.GenerateRetrievalUrlResponse
-    ) -> warehouse.GenerateRetrievalUrlResponse:
+    def post_generate_retrieval_url(self, response: warehouse.GenerateRetrievalUrlResponse) -> warehouse.GenerateRetrievalUrlResponse:
         """Post-rpc interceptor for generate_retrieval_url
 
         DEPRECATED. Please use the `post_generate_retrieval_url_with_metadata`
@@ -1553,12 +1393,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_generate_retrieval_url_with_metadata(
-        self,
-        response: warehouse.GenerateRetrievalUrlResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GenerateRetrievalUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.GenerateRetrievalUrlResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GenerateRetrievalUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_retrieval_url
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1574,9 +1410,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_annotation(
-        self,
-        request: warehouse.GetAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_annotation
 
@@ -1585,9 +1419,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_annotation(
-        self, response: warehouse.Annotation
-    ) -> warehouse.Annotation:
+    def post_get_annotation(self, response: warehouse.Annotation) -> warehouse.Annotation:
         """Post-rpc interceptor for get_annotation
 
         DEPRECATED. Please use the `post_get_annotation_with_metadata`
@@ -1601,9 +1433,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_annotation_with_metadata(
-        self,
-        response: warehouse.Annotation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Annotation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_annotation
 
@@ -1620,9 +1450,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_asset(
-        self,
-        request: warehouse.GetAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
@@ -1645,9 +1473,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_asset_with_metadata(
-        self,
-        response: warehouse.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_asset
 
@@ -1664,9 +1490,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_collection(
-        self,
-        request: warehouse.GetCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_collection
 
@@ -1675,9 +1499,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_collection(
-        self, response: warehouse.Collection
-    ) -> warehouse.Collection:
+    def post_get_collection(self, response: warehouse.Collection) -> warehouse.Collection:
         """Post-rpc interceptor for get_collection
 
         DEPRECATED. Please use the `post_get_collection_with_metadata`
@@ -1691,9 +1513,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_collection_with_metadata(
-        self,
-        response: warehouse.Collection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Collection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Collection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_collection
 
@@ -1710,9 +1530,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_corpus(
-        self,
-        request: warehouse.GetCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_corpus
 
@@ -1735,9 +1553,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_corpus_with_metadata(
-        self,
-        response: warehouse.Corpus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Corpus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_corpus
 
@@ -1754,9 +1570,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_data_schema(
-        self,
-        request: warehouse.GetDataSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetDataSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_schema
 
@@ -1765,9 +1579,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_schema(
-        self, response: warehouse.DataSchema
-    ) -> warehouse.DataSchema:
+    def post_get_data_schema(self, response: warehouse.DataSchema) -> warehouse.DataSchema:
         """Post-rpc interceptor for get_data_schema
 
         DEPRECATED. Please use the `post_get_data_schema_with_metadata`
@@ -1781,9 +1593,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_data_schema_with_metadata(
-        self,
-        response: warehouse.DataSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.DataSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_schema
 
@@ -1800,9 +1610,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_index(
-        self,
-        request: warehouse.GetIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.GetIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.GetIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_index
 
@@ -1825,9 +1633,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_index_with_metadata(
-        self,
-        response: warehouse.Index,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Index, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Index, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_index
 
@@ -1844,12 +1650,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_index_endpoint(
-        self,
-        request: warehouse.GetIndexEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GetIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.GetIndexEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GetIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_index_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -1857,9 +1659,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_index_endpoint(
-        self, response: warehouse.IndexEndpoint
-    ) -> warehouse.IndexEndpoint:
+    def post_get_index_endpoint(self, response: warehouse.IndexEndpoint) -> warehouse.IndexEndpoint:
         """Post-rpc interceptor for get_index_endpoint
 
         DEPRECATED. Please use the `post_get_index_endpoint_with_metadata`
@@ -1873,9 +1673,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_index_endpoint_with_metadata(
-        self,
-        response: warehouse.IndexEndpoint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.IndexEndpoint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.IndexEndpoint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_index_endpoint
 
@@ -1892,12 +1690,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_search_config(
-        self,
-        request: warehouse.GetSearchConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GetSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.GetSearchConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GetSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1905,9 +1699,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_search_config(
-        self, response: warehouse.SearchConfig
-    ) -> warehouse.SearchConfig:
+    def post_get_search_config(self, response: warehouse.SearchConfig) -> warehouse.SearchConfig:
         """Post-rpc interceptor for get_search_config
 
         DEPRECATED. Please use the `post_get_search_config_with_metadata`
@@ -1921,9 +1713,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_search_config_with_metadata(
-        self,
-        response: warehouse.SearchConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_search_config
 
@@ -1940,12 +1730,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_get_search_hypernym(
-        self,
-        request: warehouse.GetSearchHypernymRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.GetSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.GetSearchHypernymRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.GetSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_search_hypernym
 
         Override in a subclass to manipulate the request or metadata
@@ -1953,9 +1739,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_search_hypernym(
-        self, response: warehouse.SearchHypernym
-    ) -> warehouse.SearchHypernym:
+    def post_get_search_hypernym(self, response: warehouse.SearchHypernym) -> warehouse.SearchHypernym:
         """Post-rpc interceptor for get_search_hypernym
 
         DEPRECATED. Please use the `post_get_search_hypernym_with_metadata`
@@ -1969,9 +1753,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_get_search_hypernym_with_metadata(
-        self,
-        response: warehouse.SearchHypernym,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchHypernym, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchHypernym, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_search_hypernym
 
@@ -1988,9 +1770,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_import_assets(
-        self,
-        request: warehouse.ImportAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.ImportAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ImportAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_assets
 
@@ -1999,9 +1779,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_import_assets(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_assets(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_assets
 
         DEPRECATED. Please use the `post_import_assets_with_metadata`
@@ -2015,9 +1793,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_import_assets_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_assets
 
@@ -2034,9 +1810,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_index_asset(
-        self,
-        request: warehouse.IndexAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.IndexAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.IndexAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for index_asset
 
@@ -2045,9 +1819,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_index_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_index_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for index_asset
 
         DEPRECATED. Please use the `post_index_asset_with_metadata`
@@ -2061,9 +1833,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_index_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for index_asset
 
@@ -2080,12 +1850,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_annotations(
-        self,
-        request: warehouse.ListAnnotationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListAnnotationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListAnnotationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListAnnotationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_annotations
 
         Override in a subclass to manipulate the request or metadata
@@ -2093,9 +1859,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_annotations(
-        self, response: warehouse.ListAnnotationsResponse
-    ) -> warehouse.ListAnnotationsResponse:
+    def post_list_annotations(self, response: warehouse.ListAnnotationsResponse) -> warehouse.ListAnnotationsResponse:
         """Post-rpc interceptor for list_annotations
 
         DEPRECATED. Please use the `post_list_annotations_with_metadata`
@@ -2109,12 +1873,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_annotations_with_metadata(
-        self,
-        response: warehouse.ListAnnotationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListAnnotationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListAnnotationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListAnnotationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_annotations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2130,9 +1890,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: warehouse.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
@@ -2141,9 +1899,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: warehouse.ListAssetsResponse
-    ) -> warehouse.ListAssetsResponse:
+    def post_list_assets(self, response: warehouse.ListAssetsResponse) -> warehouse.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -2157,9 +1913,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: warehouse.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
@@ -2176,12 +1930,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_collections(
-        self,
-        request: warehouse.ListCollectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListCollectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListCollectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListCollectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_collections
 
         Override in a subclass to manipulate the request or metadata
@@ -2189,9 +1939,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_collections(
-        self, response: warehouse.ListCollectionsResponse
-    ) -> warehouse.ListCollectionsResponse:
+    def post_list_collections(self, response: warehouse.ListCollectionsResponse) -> warehouse.ListCollectionsResponse:
         """Post-rpc interceptor for list_collections
 
         DEPRECATED. Please use the `post_list_collections_with_metadata`
@@ -2205,12 +1953,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_collections_with_metadata(
-        self,
-        response: warehouse.ListCollectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListCollectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListCollectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListCollectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_collections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2226,9 +1970,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_corpora(
-        self,
-        request: warehouse.ListCorporaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.ListCorporaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListCorporaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_corpora
 
@@ -2237,9 +1979,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_corpora(
-        self, response: warehouse.ListCorporaResponse
-    ) -> warehouse.ListCorporaResponse:
+    def post_list_corpora(self, response: warehouse.ListCorporaResponse) -> warehouse.ListCorporaResponse:
         """Post-rpc interceptor for list_corpora
 
         DEPRECATED. Please use the `post_list_corpora_with_metadata`
@@ -2253,9 +1993,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_corpora_with_metadata(
-        self,
-        response: warehouse.ListCorporaResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.ListCorporaResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListCorporaResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_corpora
 
@@ -2272,12 +2010,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_data_schemas(
-        self,
-        request: warehouse.ListDataSchemasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListDataSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListDataSchemasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListDataSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -2285,9 +2019,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_schemas(
-        self, response: warehouse.ListDataSchemasResponse
-    ) -> warehouse.ListDataSchemasResponse:
+    def post_list_data_schemas(self, response: warehouse.ListDataSchemasResponse) -> warehouse.ListDataSchemasResponse:
         """Post-rpc interceptor for list_data_schemas
 
         DEPRECATED. Please use the `post_list_data_schemas_with_metadata`
@@ -2301,12 +2033,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_data_schemas_with_metadata(
-        self,
-        response: warehouse.ListDataSchemasResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListDataSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListDataSchemasResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListDataSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_schemas
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2322,12 +2050,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_index_endpoints(
-        self,
-        request: warehouse.ListIndexEndpointsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListIndexEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListIndexEndpointsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListIndexEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_index_endpoints
 
         Override in a subclass to manipulate the request or metadata
@@ -2335,9 +2059,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_index_endpoints(
-        self, response: warehouse.ListIndexEndpointsResponse
-    ) -> warehouse.ListIndexEndpointsResponse:
+    def post_list_index_endpoints(self, response: warehouse.ListIndexEndpointsResponse) -> warehouse.ListIndexEndpointsResponse:
         """Post-rpc interceptor for list_index_endpoints
 
         DEPRECATED. Please use the `post_list_index_endpoints_with_metadata`
@@ -2351,12 +2073,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_index_endpoints_with_metadata(
-        self,
-        response: warehouse.ListIndexEndpointsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListIndexEndpointsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListIndexEndpointsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListIndexEndpointsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_index_endpoints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2372,9 +2090,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_indexes(
-        self,
-        request: warehouse.ListIndexesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.ListIndexesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListIndexesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_indexes
 
@@ -2383,9 +2099,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_indexes(
-        self, response: warehouse.ListIndexesResponse
-    ) -> warehouse.ListIndexesResponse:
+    def post_list_indexes(self, response: warehouse.ListIndexesResponse) -> warehouse.ListIndexesResponse:
         """Post-rpc interceptor for list_indexes
 
         DEPRECATED. Please use the `post_list_indexes_with_metadata`
@@ -2399,9 +2113,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_indexes_with_metadata(
-        self,
-        response: warehouse.ListIndexesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.ListIndexesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.ListIndexesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_indexes
 
@@ -2418,12 +2130,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_search_configs(
-        self,
-        request: warehouse.ListSearchConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListSearchConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListSearchConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListSearchConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_search_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -2431,9 +2139,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_search_configs(
-        self, response: warehouse.ListSearchConfigsResponse
-    ) -> warehouse.ListSearchConfigsResponse:
+    def post_list_search_configs(self, response: warehouse.ListSearchConfigsResponse) -> warehouse.ListSearchConfigsResponse:
         """Post-rpc interceptor for list_search_configs
 
         DEPRECATED. Please use the `post_list_search_configs_with_metadata`
@@ -2447,12 +2153,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_search_configs_with_metadata(
-        self,
-        response: warehouse.ListSearchConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListSearchConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListSearchConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListSearchConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_search_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2468,12 +2170,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_list_search_hypernyms(
-        self,
-        request: warehouse.ListSearchHypernymsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListSearchHypernymsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ListSearchHypernymsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListSearchHypernymsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_search_hypernyms
 
         Override in a subclass to manipulate the request or metadata
@@ -2481,9 +2179,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_search_hypernyms(
-        self, response: warehouse.ListSearchHypernymsResponse
-    ) -> warehouse.ListSearchHypernymsResponse:
+    def post_list_search_hypernyms(self, response: warehouse.ListSearchHypernymsResponse) -> warehouse.ListSearchHypernymsResponse:
         """Post-rpc interceptor for list_search_hypernyms
 
         DEPRECATED. Please use the `post_list_search_hypernyms_with_metadata`
@@ -2497,12 +2193,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_list_search_hypernyms_with_metadata(
-        self,
-        response: warehouse.ListSearchHypernymsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ListSearchHypernymsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ListSearchHypernymsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ListSearchHypernymsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_search_hypernyms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2518,12 +2210,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_remove_collection_item(
-        self,
-        request: warehouse.RemoveCollectionItemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.RemoveCollectionItemRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.RemoveCollectionItemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.RemoveCollectionItemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_collection_item
 
         Override in a subclass to manipulate the request or metadata
@@ -2531,9 +2219,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_collection_item(
-        self, response: warehouse.RemoveCollectionItemResponse
-    ) -> warehouse.RemoveCollectionItemResponse:
+    def post_remove_collection_item(self, response: warehouse.RemoveCollectionItemResponse) -> warehouse.RemoveCollectionItemResponse:
         """Post-rpc interceptor for remove_collection_item
 
         DEPRECATED. Please use the `post_remove_collection_item_with_metadata`
@@ -2547,12 +2233,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_remove_collection_item_with_metadata(
-        self,
-        response: warehouse.RemoveCollectionItemResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.RemoveCollectionItemResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.RemoveCollectionItemResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.RemoveCollectionItemResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_collection_item
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2568,12 +2250,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_remove_index_asset(
-        self,
-        request: warehouse.RemoveIndexAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.RemoveIndexAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.RemoveIndexAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.RemoveIndexAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_index_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -2581,9 +2259,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_index_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_index_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_index_asset
 
         DEPRECATED. Please use the `post_remove_index_asset_with_metadata`
@@ -2597,9 +2273,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_remove_index_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_index_asset
 
@@ -2616,9 +2290,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_search_assets(
-        self,
-        request: warehouse.SearchAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.SearchAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_assets
 
@@ -2627,9 +2299,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_search_assets(
-        self, response: warehouse.SearchAssetsResponse
-    ) -> warehouse.SearchAssetsResponse:
+    def post_search_assets(self, response: warehouse.SearchAssetsResponse) -> warehouse.SearchAssetsResponse:
         """Post-rpc interceptor for search_assets
 
         DEPRECATED. Please use the `post_search_assets_with_metadata`
@@ -2643,9 +2313,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_search_assets_with_metadata(
-        self,
-        response: warehouse.SearchAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_assets
 
@@ -2662,12 +2330,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_search_index_endpoint(
-        self,
-        request: warehouse.SearchIndexEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.SearchIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.SearchIndexEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.SearchIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_index_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -2675,9 +2339,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_search_index_endpoint(
-        self, response: warehouse.SearchIndexEndpointResponse
-    ) -> warehouse.SearchIndexEndpointResponse:
+    def post_search_index_endpoint(self, response: warehouse.SearchIndexEndpointResponse) -> warehouse.SearchIndexEndpointResponse:
         """Post-rpc interceptor for search_index_endpoint
 
         DEPRECATED. Please use the `post_search_index_endpoint_with_metadata`
@@ -2691,12 +2353,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_search_index_endpoint_with_metadata(
-        self,
-        response: warehouse.SearchIndexEndpointResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.SearchIndexEndpointResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.SearchIndexEndpointResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.SearchIndexEndpointResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_index_endpoint
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2712,9 +2370,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_undeploy_index(
-        self,
-        request: warehouse.UndeployIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.UndeployIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.UndeployIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_index
 
@@ -2723,9 +2379,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undeploy_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_index
 
         DEPRECATED. Please use the `post_undeploy_index_with_metadata`
@@ -2739,9 +2393,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_undeploy_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_index
 
@@ -2758,12 +2410,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_annotation(
-        self,
-        request: warehouse.UpdateAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -2771,9 +2419,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_annotation(
-        self, response: warehouse.Annotation
-    ) -> warehouse.Annotation:
+    def post_update_annotation(self, response: warehouse.Annotation) -> warehouse.Annotation:
         """Post-rpc interceptor for update_annotation
 
         DEPRECATED. Please use the `post_update_annotation_with_metadata`
@@ -2787,9 +2433,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_annotation_with_metadata(
-        self,
-        response: warehouse.Annotation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Annotation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_annotation
 
@@ -2806,9 +2450,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_asset(
-        self,
-        request: warehouse.UpdateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.UpdateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_asset
 
@@ -2831,9 +2473,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_asset_with_metadata(
-        self,
-        response: warehouse.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_asset
 
@@ -2850,12 +2490,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_collection(
-        self,
-        request: warehouse.UpdateCollectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateCollectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateCollectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_collection
 
         Override in a subclass to manipulate the request or metadata
@@ -2863,9 +2499,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_collection(
-        self, response: warehouse.Collection
-    ) -> warehouse.Collection:
+    def post_update_collection(self, response: warehouse.Collection) -> warehouse.Collection:
         """Post-rpc interceptor for update_collection
 
         DEPRECATED. Please use the `post_update_collection_with_metadata`
@@ -2879,9 +2513,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_collection_with_metadata(
-        self,
-        response: warehouse.Collection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Collection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Collection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_collection
 
@@ -2898,9 +2530,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_corpus(
-        self,
-        request: warehouse.UpdateCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.UpdateCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.UpdateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_corpus
 
@@ -2923,9 +2553,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_corpus_with_metadata(
-        self,
-        response: warehouse.Corpus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.Corpus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_corpus
 
@@ -2942,12 +2570,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_data_schema(
-        self,
-        request: warehouse.UpdateDataSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateDataSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateDataSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -2955,9 +2579,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_schema(
-        self, response: warehouse.DataSchema
-    ) -> warehouse.DataSchema:
+    def post_update_data_schema(self, response: warehouse.DataSchema) -> warehouse.DataSchema:
         """Post-rpc interceptor for update_data_schema
 
         DEPRECATED. Please use the `post_update_data_schema_with_metadata`
@@ -2971,9 +2593,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_data_schema_with_metadata(
-        self,
-        response: warehouse.DataSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.DataSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.DataSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_schema
 
@@ -2990,9 +2610,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_index(
-        self,
-        request: warehouse.UpdateIndexRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.UpdateIndexRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.UpdateIndexRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_index
 
@@ -3001,9 +2619,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_index(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_index(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_index
 
         DEPRECATED. Please use the `post_update_index_with_metadata`
@@ -3017,9 +2633,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_index_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_index
 
@@ -3036,12 +2650,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_index_endpoint(
-        self,
-        request: warehouse.UpdateIndexEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateIndexEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateIndexEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_index_endpoint
 
         Override in a subclass to manipulate the request or metadata
@@ -3049,9 +2659,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_index_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_index_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_index_endpoint
 
         DEPRECATED. Please use the `post_update_index_endpoint_with_metadata`
@@ -3065,9 +2673,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_index_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_index_endpoint
 
@@ -3084,12 +2690,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_search_config(
-        self,
-        request: warehouse.UpdateSearchConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateSearchConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateSearchConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_search_config
 
         Override in a subclass to manipulate the request or metadata
@@ -3097,9 +2699,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_search_config(
-        self, response: warehouse.SearchConfig
-    ) -> warehouse.SearchConfig:
+    def post_update_search_config(self, response: warehouse.SearchConfig) -> warehouse.SearchConfig:
         """Post-rpc interceptor for update_search_config
 
         DEPRECATED. Please use the `post_update_search_config_with_metadata`
@@ -3113,9 +2713,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_search_config_with_metadata(
-        self,
-        response: warehouse.SearchConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_search_config
 
@@ -3132,12 +2730,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_update_search_hypernym(
-        self,
-        request: warehouse.UpdateSearchHypernymRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.UpdateSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.UpdateSearchHypernymRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.UpdateSearchHypernymRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_search_hypernym
 
         Override in a subclass to manipulate the request or metadata
@@ -3145,9 +2739,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_search_hypernym(
-        self, response: warehouse.SearchHypernym
-    ) -> warehouse.SearchHypernym:
+    def post_update_search_hypernym(self, response: warehouse.SearchHypernym) -> warehouse.SearchHypernym:
         """Post-rpc interceptor for update_search_hypernym
 
         DEPRECATED. Please use the `post_update_search_hypernym_with_metadata`
@@ -3161,9 +2753,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_update_search_hypernym_with_metadata(
-        self,
-        response: warehouse.SearchHypernym,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: warehouse.SearchHypernym, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.SearchHypernym, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_search_hypernym
 
@@ -3180,9 +2770,7 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_upload_asset(
-        self,
-        request: warehouse.UploadAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: warehouse.UploadAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[warehouse.UploadAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upload_asset
 
@@ -3191,9 +2779,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_upload_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upload_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upload_asset
 
         DEPRECATED. Please use the `post_upload_asset_with_metadata`
@@ -3207,9 +2793,7 @@ class WarehouseRestInterceptor:
         return response
 
     def post_upload_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upload_asset
 
@@ -3226,12 +2810,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_view_collection_items(
-        self,
-        request: warehouse.ViewCollectionItemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ViewCollectionItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ViewCollectionItemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ViewCollectionItemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for view_collection_items
 
         Override in a subclass to manipulate the request or metadata
@@ -3239,9 +2819,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_view_collection_items(
-        self, response: warehouse.ViewCollectionItemsResponse
-    ) -> warehouse.ViewCollectionItemsResponse:
+    def post_view_collection_items(self, response: warehouse.ViewCollectionItemsResponse) -> warehouse.ViewCollectionItemsResponse:
         """Post-rpc interceptor for view_collection_items
 
         DEPRECATED. Please use the `post_view_collection_items_with_metadata`
@@ -3255,12 +2833,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_view_collection_items_with_metadata(
-        self,
-        response: warehouse.ViewCollectionItemsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ViewCollectionItemsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ViewCollectionItemsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ViewCollectionItemsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for view_collection_items
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3276,12 +2850,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_view_indexed_assets(
-        self,
-        request: warehouse.ViewIndexedAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ViewIndexedAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: warehouse.ViewIndexedAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ViewIndexedAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for view_indexed_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -3289,9 +2859,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_view_indexed_assets(
-        self, response: warehouse.ViewIndexedAssetsResponse
-    ) -> warehouse.ViewIndexedAssetsResponse:
+    def post_view_indexed_assets(self, response: warehouse.ViewIndexedAssetsResponse) -> warehouse.ViewIndexedAssetsResponse:
         """Post-rpc interceptor for view_indexed_assets
 
         DEPRECATED. Please use the `post_view_indexed_assets_with_metadata`
@@ -3305,12 +2873,8 @@ class WarehouseRestInterceptor:
         return response
 
     def post_view_indexed_assets_with_metadata(
-        self,
-        response: warehouse.ViewIndexedAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        warehouse.ViewIndexedAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: warehouse.ViewIndexedAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[warehouse.ViewIndexedAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for view_indexed_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3326,12 +2890,8 @@ class WarehouseRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3349,12 +2909,8 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3372,12 +2928,8 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3385,9 +2937,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -3397,12 +2947,8 @@ class WarehouseRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -3410,9 +2956,7 @@ class WarehouseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -3501,9 +3045,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -3584,29 +3126,17 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddCollectionItem(
-        _BaseWarehouseRestTransport._BaseAddCollectionItem, WarehouseRestStub
-    ):
+    class _AddCollectionItem(_BaseWarehouseRestTransport._BaseAddCollectionItem, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.AddCollectionItem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3649,32 +3179,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseAddCollectionItem._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_collection_item(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_collection_item(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseAddCollectionItem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3698,13 +3214,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._AddCollectionItem._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3720,16 +3230,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_add_collection_item(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_collection_item_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_collection_item_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.AddCollectionItemResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.AddCollectionItemResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3748,22 +3252,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _AnalyzeAsset(
-        _BaseWarehouseRestTransport._BaseAnalyzeAsset, WarehouseRestStub
-    ):
+    class _AnalyzeAsset(_BaseWarehouseRestTransport._BaseAnalyzeAsset, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.AnalyzeAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3806,34 +3300,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseAnalyzeAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3857,13 +3335,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._AnalyzeAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3877,12 +3349,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_analyze_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3903,22 +3371,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _AnalyzeCorpus(
-        _BaseWarehouseRestTransport._BaseAnalyzeCorpus, WarehouseRestStub
-    ):
+    class _AnalyzeCorpus(_BaseWarehouseRestTransport._BaseAnalyzeCorpus, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.AnalyzeCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3961,36 +3419,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_corpus(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseAnalyzeCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4014,13 +3454,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._AnalyzeCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4034,12 +3468,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_analyze_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4065,15 +3495,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.ClipAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4113,34 +3535,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ClipAsset API.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseClipAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseClipAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_clip_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseClipAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseClipAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseClipAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseClipAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseClipAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseClipAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4164,13 +3570,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ClipAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4186,12 +3586,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_clip_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_clip_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_clip_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ClipAssetResponse.to_json(response)
                 except:
@@ -4212,22 +3608,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateAnnotation(
-        _BaseWarehouseRestTransport._BaseCreateAnnotation, WarehouseRestStub
-    ):
+    class _CreateAnnotation(_BaseWarehouseRestTransport._BaseCreateAnnotation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4270,32 +3656,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateAnnotation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_annotation(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_annotation(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4319,13 +3691,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateAnnotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4341,12 +3707,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_annotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_annotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_annotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
                 except:
@@ -4372,15 +3734,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.CreateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4428,34 +3782,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseCreateAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseCreateAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4479,13 +3817,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4501,12 +3833,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
                 except:
@@ -4527,22 +3855,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateCollection(
-        _BaseWarehouseRestTransport._BaseCreateCollection, WarehouseRestStub
-    ):
+    class _CreateCollection(_BaseWarehouseRestTransport._BaseCreateCollection, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4585,32 +3903,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateCollection._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_collection(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateCollection._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateCollection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateCollection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4634,13 +3938,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4654,12 +3952,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4680,22 +3974,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateCorpus(
-        _BaseWarehouseRestTransport._BaseCreateCorpus, WarehouseRestStub
-    ):
+    class _CreateCorpus(_BaseWarehouseRestTransport._BaseCreateCorpus, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4738,34 +4022,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateCorpus._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_create_corpus(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseCreateCorpus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateCorpus._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateCorpus._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseCreateCorpus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4789,13 +4057,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4809,12 +4071,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4835,22 +4093,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateDataSchema(
-        _BaseWarehouseRestTransport._BaseCreateDataSchema, WarehouseRestStub
-    ):
+    class _CreateDataSchema(_BaseWarehouseRestTransport._BaseCreateDataSchema, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateDataSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4893,32 +4141,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateDataSchema._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_schema(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateDataSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4942,13 +4176,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateDataSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4964,12 +4192,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_data_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
                 except:
@@ -4995,15 +4219,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.CreateIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5046,34 +4262,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateIndex._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_create_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseCreateIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateIndex._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateIndex._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateIndex._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseCreateIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5097,13 +4297,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5117,12 +4311,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5143,22 +4333,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateIndexEndpoint(
-        _BaseWarehouseRestTransport._BaseCreateIndexEndpoint, WarehouseRestStub
-    ):
+    class _CreateIndexEndpoint(_BaseWarehouseRestTransport._BaseCreateIndexEndpoint, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateIndexEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5202,32 +4382,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_index_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_index_endpoint(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateIndexEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5251,13 +4417,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateIndexEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5271,12 +4431,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_index_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_index_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_index_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5297,22 +4453,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateSearchConfig(
-        _BaseWarehouseRestTransport._BaseCreateSearchConfig, WarehouseRestStub
-    ):
+    class _CreateSearchConfig(_BaseWarehouseRestTransport._BaseCreateSearchConfig, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateSearchConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5356,32 +4502,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_search_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_search_config(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateSearchConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5405,13 +4537,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateSearchConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5427,12 +4553,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_search_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_search_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_search_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
                 except:
@@ -5453,22 +4575,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _CreateSearchHypernym(
-        _BaseWarehouseRestTransport._BaseCreateSearchHypernym, WarehouseRestStub
-    ):
+    class _CreateSearchHypernym(_BaseWarehouseRestTransport._BaseCreateSearchHypernym, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CreateSearchHypernym")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5514,32 +4626,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_search_hypernym(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_search_hypernym(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCreateSearchHypernym._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5563,13 +4661,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CreateSearchHypernym._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5585,12 +4677,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_create_search_hypernym(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_search_hypernym_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_search_hypernym_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
                 except:
@@ -5611,22 +4699,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _DeleteAnnotation(
-        _BaseWarehouseRestTransport._BaseDeleteAnnotation, WarehouseRestStub
-    ):
+    class _DeleteAnnotation(_BaseWarehouseRestTransport._BaseDeleteAnnotation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5662,28 +4740,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_annotation(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_annotation(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5707,12 +4773,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteAnnotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5725,15 +4786,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.DeleteAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5775,30 +4828,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseDeleteAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseDeleteAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5822,12 +4861,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5841,12 +4875,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_delete_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5867,22 +4897,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _DeleteCollection(
-        _BaseWarehouseRestTransport._BaseDeleteCollection, WarehouseRestStub
-    ):
+    class _DeleteCollection(_BaseWarehouseRestTransport._BaseDeleteCollection, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5925,28 +4945,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteCollection._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_collection(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteCollection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5970,12 +4978,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5989,12 +4992,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_delete_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6015,22 +5014,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _DeleteCorpus(
-        _BaseWarehouseRestTransport._BaseDeleteCorpus, WarehouseRestStub
-    ):
+    class _DeleteCorpus(_BaseWarehouseRestTransport._BaseDeleteCorpus, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6065,30 +5054,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_corpus(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteCorpus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseDeleteCorpus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6112,12 +5087,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6125,22 +5095,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDataSchema(
-        _BaseWarehouseRestTransport._BaseDeleteDataSchema, WarehouseRestStub
-    ):
+    class _DeleteDataSchema(_BaseWarehouseRestTransport._BaseDeleteDataSchema, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteDataSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6175,28 +5135,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_schema(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteDataSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6220,12 +5168,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteDataSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6238,15 +5181,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.DeleteIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6288,30 +5223,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteIndex._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseDeleteIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteIndex._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseDeleteIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6335,12 +5256,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6354,12 +5270,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_delete_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6380,22 +5292,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _DeleteIndexEndpoint(
-        _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint, WarehouseRestStub
-    ):
+    class _DeleteIndexEndpoint(_BaseWarehouseRestTransport._BaseDeleteIndexEndpoint, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteIndexEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6438,28 +5340,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_index_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_index_endpoint(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteIndexEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6483,12 +5373,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteIndexEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6502,12 +5387,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_delete_index_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_index_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_index_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6528,22 +5409,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _DeleteSearchConfig(
-        _BaseWarehouseRestTransport._BaseDeleteSearchConfig, WarehouseRestStub
-    ):
+    class _DeleteSearchConfig(_BaseWarehouseRestTransport._BaseDeleteSearchConfig, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteSearchConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6579,28 +5450,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_search_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_search_config(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6624,12 +5483,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteSearchConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6637,22 +5491,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSearchHypernym(
-        _BaseWarehouseRestTransport._BaseDeleteSearchHypernym, WarehouseRestStub
-    ):
+    class _DeleteSearchHypernym(_BaseWarehouseRestTransport._BaseDeleteSearchHypernym, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteSearchHypernym")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6688,28 +5532,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_search_hypernym(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_search_hypernym(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteSearchHypernym._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6733,12 +5565,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteSearchHypernym._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6751,15 +5578,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.DeployIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6802,34 +5621,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeployIndex._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeployIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_deploy_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseDeployIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeployIndex._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseDeployIndex._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseDeployIndex._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseDeployIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeployIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6853,13 +5656,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeployIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6873,12 +5670,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_deploy_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6899,22 +5692,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GenerateHlsUri(
-        _BaseWarehouseRestTransport._BaseGenerateHlsUri, WarehouseRestStub
-    ):
+    class _GenerateHlsUri(_BaseWarehouseRestTransport._BaseGenerateHlsUri, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GenerateHlsUri")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6957,38 +5740,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_hls_uri(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_generate_hls_uri(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGenerateHlsUri._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7012,13 +5775,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GenerateHlsUri._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7034,16 +5791,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_generate_hls_uri(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_hls_uri_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_hls_uri_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.GenerateHlsUriResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.GenerateHlsUriResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7062,22 +5813,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GenerateRetrievalUrl(
-        _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl, WarehouseRestStub
-    ):
+    class _GenerateRetrievalUrl(_BaseWarehouseRestTransport._BaseGenerateRetrievalUrl, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GenerateRetrievalUrl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7120,32 +5861,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_retrieval_url(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_retrieval_url(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGenerateRetrievalUrl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7169,13 +5896,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GenerateRetrievalUrl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7191,16 +5912,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_generate_retrieval_url(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_retrieval_url_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_retrieval_url_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.GenerateRetrievalUrlResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.GenerateRetrievalUrlResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7219,22 +5934,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetAnnotation(
-        _BaseWarehouseRestTransport._BaseGetAnnotation, WarehouseRestStub
-    ):
+    class _GetAnnotation(_BaseWarehouseRestTransport._BaseGetAnnotation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7277,30 +5982,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetAnnotation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetAnnotation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetAnnotation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetAnnotation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetAnnotation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7324,12 +6015,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetAnnotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7345,12 +6031,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_annotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_annotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_annotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
                 except:
@@ -7376,15 +6058,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.GetAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7433,25 +6107,13 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = _BaseWarehouseRestTransport._BaseGetAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7474,14 +6136,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
 
             # Send the request
-            response = WarehouseRestTransport._GetAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = WarehouseRestTransport._GetAsset._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7496,12 +6151,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
                 except:
@@ -7522,22 +6173,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetCollection(
-        _BaseWarehouseRestTransport._BaseGetCollection, WarehouseRestStub
-    ):
+    class _GetCollection(_BaseWarehouseRestTransport._BaseGetCollection, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7580,30 +6221,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetCollection._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetCollection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_collection(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetCollection._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetCollection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetCollection._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7627,12 +6254,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7648,12 +6270,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Collection.to_json(response)
                 except:
@@ -7679,15 +6297,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.GetCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7730,30 +6340,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetCorpus._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_get_corpus(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetCorpus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetCorpus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetCorpus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7776,14 +6372,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
 
             # Send the request
-            response = WarehouseRestTransport._GetCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = WarehouseRestTransport._GetCorpus._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7798,12 +6387,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Corpus.to_json(response)
                 except:
@@ -7824,22 +6409,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetDataSchema(
-        _BaseWarehouseRestTransport._BaseGetDataSchema, WarehouseRestStub
-    ):
+    class _GetDataSchema(_BaseWarehouseRestTransport._BaseGetDataSchema, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetDataSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7881,30 +6456,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetDataSchema._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetDataSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_schema(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetDataSchema._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetDataSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetDataSchema._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetDataSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7928,12 +6489,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetDataSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7949,12 +6505,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_data_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
                 except:
@@ -7980,15 +6532,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.GetIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8035,25 +6579,13 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             http_options = _BaseWarehouseRestTransport._BaseGetIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_get_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetIndex._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8076,14 +6608,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
 
             # Send the request
-            response = WarehouseRestTransport._GetIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = WarehouseRestTransport._GetIndex._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8098,12 +6623,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Index.to_json(response)
                 except:
@@ -8124,22 +6645,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetIndexEndpoint(
-        _BaseWarehouseRestTransport._BaseGetIndexEndpoint, WarehouseRestStub
-    ):
+    class _GetIndexEndpoint(_BaseWarehouseRestTransport._BaseGetIndexEndpoint, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetIndexEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8180,28 +6691,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_index_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_index_endpoint(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetIndexEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8225,12 +6724,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetIndexEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8246,12 +6740,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_index_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_index_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_index_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.IndexEndpoint.to_json(response)
                 except:
@@ -8272,22 +6762,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetSearchConfig(
-        _BaseWarehouseRestTransport._BaseGetSearchConfig, WarehouseRestStub
-    ):
+    class _GetSearchConfig(_BaseWarehouseRestTransport._BaseGetSearchConfig, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetSearchConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8329,30 +6809,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetSearchConfig._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetSearchConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_search_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_search_config(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetSearchConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetSearchConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8376,12 +6842,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetSearchConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8397,12 +6858,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_search_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_search_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_search_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
                 except:
@@ -8423,22 +6880,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _GetSearchHypernym(
-        _BaseWarehouseRestTransport._BaseGetSearchHypernym, WarehouseRestStub
-    ):
+    class _GetSearchHypernym(_BaseWarehouseRestTransport._BaseGetSearchHypernym, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetSearchHypernym")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8483,28 +6930,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_search_hypernym(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_search_hypernym(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetSearchHypernym._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8528,12 +6963,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetSearchHypernym._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8549,12 +6979,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_get_search_hypernym(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_search_hypernym_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_search_hypernym_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
                 except:
@@ -8575,22 +7001,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ImportAssets(
-        _BaseWarehouseRestTransport._BaseImportAssets, WarehouseRestStub
-    ):
+    class _ImportAssets(_BaseWarehouseRestTransport._BaseImportAssets, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ImportAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8633,34 +7049,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseImportAssets._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseImportAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_import_assets(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseImportAssets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseImportAssets._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseImportAssets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseImportAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseImportAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseImportAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8684,13 +7084,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ImportAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8704,12 +7098,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_import_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8735,15 +7125,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.IndexAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8786,34 +7168,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseIndexAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseIndexAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_index_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseIndexAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseIndexAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseIndexAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseIndexAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseIndexAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseIndexAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8837,13 +7203,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._IndexAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8857,12 +7217,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_index_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_index_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_index_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8895,26 +7251,14 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method IngestAsset is not available over REST transport"
-            )
+            raise NotImplementedError("Method IngestAsset is not available over REST transport")
 
-    class _ListAnnotations(
-        _BaseWarehouseRestTransport._BaseListAnnotations, WarehouseRestStub
-    ):
+    class _ListAnnotations(_BaseWarehouseRestTransport._BaseListAnnotations, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListAnnotations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8956,30 +7300,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListAnnotations._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListAnnotations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_annotations(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListAnnotations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_annotations(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListAnnotations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListAnnotations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListAnnotations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9003,12 +7333,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListAnnotations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9024,16 +7349,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_annotations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_annotations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_annotations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListAnnotationsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListAnnotationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9057,15 +7376,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9104,30 +7415,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ListAssets.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseListAssets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9151,12 +7448,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9172,12 +7464,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListAssetsResponse.to_json(response)
                 except:
@@ -9198,22 +7486,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ListCollections(
-        _BaseWarehouseRestTransport._BaseListCollections, WarehouseRestStub
-    ):
+    class _ListCollections(_BaseWarehouseRestTransport._BaseListCollections, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListCollections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9252,30 +7530,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ListCollections.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListCollections._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListCollections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_collections(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListCollections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_collections(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListCollections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListCollections._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListCollections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9299,12 +7563,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListCollections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9320,16 +7579,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_collections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_collections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_collections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListCollectionsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListCollectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9353,15 +7606,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.ListCorpora")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9400,30 +7645,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ListCorpora.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListCorpora._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListCorpora._get_http_options()
 
             request, metadata = self._interceptor.pre_list_corpora(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseListCorpora._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseListCorpora._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListCorpora._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListCorpora._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9447,12 +7678,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListCorpora._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9468,12 +7694,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_corpora(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_corpora_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_corpora_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListCorporaResponse.to_json(response)
                 except:
@@ -9494,22 +7716,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ListDataSchemas(
-        _BaseWarehouseRestTransport._BaseListDataSchemas, WarehouseRestStub
-    ):
+    class _ListDataSchemas(_BaseWarehouseRestTransport._BaseListDataSchemas, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListDataSchemas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9548,30 +7760,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ListDataSchemas.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListDataSchemas._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListDataSchemas._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_schemas(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListDataSchemas._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_schemas(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListDataSchemas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListDataSchemas._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListDataSchemas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9595,12 +7793,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListDataSchemas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9616,16 +7809,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_data_schemas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_schemas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_schemas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListDataSchemasResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListDataSchemasResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9644,22 +7831,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ListIndexEndpoints(
-        _BaseWarehouseRestTransport._BaseListIndexEndpoints, WarehouseRestStub
-    ):
+    class _ListIndexEndpoints(_BaseWarehouseRestTransport._BaseListIndexEndpoints, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListIndexEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9701,28 +7878,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_index_endpoints(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_index_endpoints(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListIndexEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9746,12 +7911,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListIndexEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9767,16 +7927,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_index_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_index_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_index_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListIndexEndpointsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListIndexEndpointsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9800,15 +7954,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.ListIndexes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9847,30 +7993,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for ListIndexes.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListIndexes._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListIndexes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_indexes(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseListIndexes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseListIndexes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListIndexes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListIndexes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9894,12 +8026,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListIndexes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9915,12 +8042,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_indexes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_indexes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_indexes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.ListIndexesResponse.to_json(response)
                 except:
@@ -9941,22 +8064,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ListSearchConfigs(
-        _BaseWarehouseRestTransport._BaseListSearchConfigs, WarehouseRestStub
-    ):
+    class _ListSearchConfigs(_BaseWarehouseRestTransport._BaseListSearchConfigs, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListSearchConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9998,28 +8111,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListSearchConfigs._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_search_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_search_configs(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListSearchConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10043,12 +8144,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListSearchConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10064,16 +8160,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_search_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_search_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_search_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListSearchConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListSearchConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10092,22 +8182,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ListSearchHypernyms(
-        _BaseWarehouseRestTransport._BaseListSearchHypernyms, WarehouseRestStub
-    ):
+    class _ListSearchHypernyms(_BaseWarehouseRestTransport._BaseListSearchHypernyms, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListSearchHypernyms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10149,28 +8229,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_search_hypernyms(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_search_hypernyms(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListSearchHypernyms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10194,12 +8262,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListSearchHypernyms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10215,16 +8278,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_list_search_hypernyms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_search_hypernyms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_search_hypernyms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ListSearchHypernymsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ListSearchHypernymsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10243,22 +8300,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _RemoveCollectionItem(
-        _BaseWarehouseRestTransport._BaseRemoveCollectionItem, WarehouseRestStub
-    ):
+    class _RemoveCollectionItem(_BaseWarehouseRestTransport._BaseRemoveCollectionItem, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.RemoveCollectionItem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10301,32 +8348,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_collection_item(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_collection_item(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseRemoveCollectionItem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10350,13 +8383,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._RemoveCollectionItem._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10372,16 +8399,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_remove_collection_item(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_collection_item_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_collection_item_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.RemoveCollectionItemResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.RemoveCollectionItemResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10400,22 +8421,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _RemoveIndexAsset(
-        _BaseWarehouseRestTransport._BaseRemoveIndexAsset, WarehouseRestStub
-    ):
+    class _RemoveIndexAsset(_BaseWarehouseRestTransport._BaseRemoveIndexAsset, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.RemoveIndexAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10458,32 +8469,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_index_asset(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_index_asset(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseRemoveIndexAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10507,13 +8504,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._RemoveIndexAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10527,12 +8518,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_remove_index_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_index_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_index_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10553,22 +8540,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _SearchAssets(
-        _BaseWarehouseRestTransport._BaseSearchAssets, WarehouseRestStub
-    ):
+    class _SearchAssets(_BaseWarehouseRestTransport._BaseSearchAssets, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.SearchAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10608,34 +8585,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     Response message for SearchAssets.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseSearchAssets._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseSearchAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_search_assets(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseSearchAssets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseSearchAssets._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseSearchAssets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseSearchAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseSearchAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseSearchAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10659,13 +8620,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._SearchAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10681,12 +8636,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_search_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchAssetsResponse.to_json(response)
                 except:
@@ -10707,22 +8658,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _SearchIndexEndpoint(
-        _BaseWarehouseRestTransport._BaseSearchIndexEndpoint, WarehouseRestStub
-    ):
+    class _SearchIndexEndpoint(_BaseWarehouseRestTransport._BaseSearchIndexEndpoint, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.SearchIndexEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10765,32 +8706,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_index_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_index_endpoint(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseSearchIndexEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10814,13 +8741,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._SearchIndexEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10836,16 +8757,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_search_index_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_index_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_index_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.SearchIndexEndpointResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.SearchIndexEndpointResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10864,22 +8779,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UndeployIndex(
-        _BaseWarehouseRestTransport._BaseUndeployIndex, WarehouseRestStub
-    ):
+    class _UndeployIndex(_BaseWarehouseRestTransport._BaseUndeployIndex, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UndeployIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10923,36 +8828,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUndeployIndex._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUndeployIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_undeploy_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseUndeployIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseUndeployIndex._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWarehouseRestTransport._BaseUndeployIndex._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWarehouseRestTransport._BaseUndeployIndex._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseUndeployIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUndeployIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10976,13 +8863,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UndeployIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10996,12 +8877,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_undeploy_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undeploy_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11022,22 +8899,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateAnnotation(
-        _BaseWarehouseRestTransport._BaseUpdateAnnotation, WarehouseRestStub
-    ):
+    class _UpdateAnnotation(_BaseWarehouseRestTransport._BaseUpdateAnnotation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11081,32 +8948,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_annotation(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_annotation(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11130,13 +8983,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateAnnotation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11152,12 +8999,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_annotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_annotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_annotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Annotation.to_json(response)
                 except:
@@ -11183,15 +9026,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.UpdateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11238,34 +9073,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_update_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseUpdateAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseUpdateAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11289,13 +9108,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11311,12 +9124,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Asset.to_json(response)
                 except:
@@ -11337,22 +9146,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateCollection(
-        _BaseWarehouseRestTransport._BaseUpdateCollection, WarehouseRestStub
-    ):
+    class _UpdateCollection(_BaseWarehouseRestTransport._BaseUpdateCollection, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateCollection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11396,32 +9195,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateCollection._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateCollection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_collection(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateCollection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_collection(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateCollection._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateCollection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateCollection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateCollection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateCollection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11445,13 +9230,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateCollection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11467,12 +9246,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_collection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_collection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_collection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Collection.to_json(response)
                 except:
@@ -11493,22 +9268,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateCorpus(
-        _BaseWarehouseRestTransport._BaseUpdateCorpus, WarehouseRestStub
-    ):
+    class _UpdateCorpus(_BaseWarehouseRestTransport._BaseUpdateCorpus, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11552,34 +9317,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_update_corpus(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseUpdateCorpus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11603,13 +9352,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11625,12 +9368,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.Corpus.to_json(response)
                 except:
@@ -11651,22 +9390,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateDataSchema(
-        _BaseWarehouseRestTransport._BaseUpdateDataSchema, WarehouseRestStub
-    ):
+    class _UpdateDataSchema(_BaseWarehouseRestTransport._BaseUpdateDataSchema, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateDataSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11709,32 +9438,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_schema(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateDataSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11758,13 +9473,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateDataSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11780,12 +9489,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_data_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.DataSchema.to_json(response)
                 except:
@@ -11811,15 +9516,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.UpdateIndex")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11862,34 +9559,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateIndex._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateIndex._get_http_options()
 
             request, metadata = self._interceptor.pre_update_index(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseUpdateIndex._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateIndex._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateIndex._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateIndex._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseUpdateIndex._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateIndex._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11913,13 +9594,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateIndex._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11933,12 +9608,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_index(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_index_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_index_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11959,22 +9630,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateIndexEndpoint(
-        _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint, WarehouseRestStub
-    ):
+    class _UpdateIndexEndpoint(_BaseWarehouseRestTransport._BaseUpdateIndexEndpoint, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateIndexEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12018,32 +9679,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_index_endpoint(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_index_endpoint(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateIndexEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12067,13 +9714,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateIndexEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12087,12 +9728,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_index_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_index_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_index_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12113,22 +9750,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateSearchConfig(
-        _BaseWarehouseRestTransport._BaseUpdateSearchConfig, WarehouseRestStub
-    ):
+    class _UpdateSearchConfig(_BaseWarehouseRestTransport._BaseUpdateSearchConfig, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateSearchConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12172,32 +9799,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_search_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_search_config(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12221,13 +9834,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateSearchConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12243,12 +9850,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_search_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_search_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_search_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchConfig.to_json(response)
                 except:
@@ -12269,22 +9872,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _UpdateSearchHypernym(
-        _BaseWarehouseRestTransport._BaseUpdateSearchHypernym, WarehouseRestStub
-    ):
+    class _UpdateSearchHypernym(_BaseWarehouseRestTransport._BaseUpdateSearchHypernym, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.UpdateSearchHypernym")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12330,32 +9923,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_search_hypernym(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_search_hypernym(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUpdateSearchHypernym._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12379,13 +9958,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UpdateSearchHypernym._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12401,12 +9974,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_update_search_hypernym(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_search_hypernym_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_search_hypernym_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = warehouse.SearchHypernym.to_json(response)
                 except:
@@ -12432,15 +10001,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return hash("WarehouseRestTransport.UploadAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12483,34 +10044,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseUploadAsset._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseUploadAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_upload_asset(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseUploadAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseUploadAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseWarehouseRestTransport._BaseUploadAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWarehouseRestTransport._BaseUploadAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseUploadAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseUploadAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12534,13 +10079,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._UploadAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12554,12 +10093,8 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_upload_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upload_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upload_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12580,22 +10115,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ViewCollectionItems(
-        _BaseWarehouseRestTransport._BaseViewCollectionItems, WarehouseRestStub
-    ):
+    class _ViewCollectionItems(_BaseWarehouseRestTransport._BaseViewCollectionItems, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ViewCollectionItems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12637,28 +10162,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseViewCollectionItems._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_http_options()
 
-            request, metadata = self._interceptor.pre_view_collection_items(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_view_collection_items(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseViewCollectionItems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12682,12 +10195,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ViewCollectionItems._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12703,16 +10211,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_view_collection_items(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_view_collection_items_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_view_collection_items_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ViewCollectionItemsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ViewCollectionItemsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12731,22 +10233,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 )
             return resp
 
-    class _ViewIndexedAssets(
-        _BaseWarehouseRestTransport._BaseViewIndexedAssets, WarehouseRestStub
-    ):
+    class _ViewIndexedAssets(_BaseWarehouseRestTransport._BaseViewIndexedAssets, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ViewIndexedAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12788,28 +10280,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_http_options()
 
-            request, metadata = self._interceptor.pre_view_indexed_assets(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_view_indexed_assets(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWarehouseRestTransport._BaseViewIndexedAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12833,12 +10313,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ViewIndexedAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12854,16 +10329,10 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             resp = self._interceptor.post_view_indexed_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_view_indexed_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_view_indexed_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = warehouse.ViewIndexedAssetsResponse.to_json(
-                        response
-                    )
+                    response_payload = warehouse.ViewIndexedAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12883,43 +10352,31 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             return resp
 
     @property
-    def add_collection_item(
-        self,
-    ) -> Callable[
-        [warehouse.AddCollectionItemRequest], warehouse.AddCollectionItemResponse
-    ]:
+    def add_collection_item(self) -> Callable[[warehouse.AddCollectionItemRequest], warehouse.AddCollectionItemResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddCollectionItem(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_asset(
-        self,
-    ) -> Callable[[warehouse.AnalyzeAssetRequest], operations_pb2.Operation]:
+    def analyze_asset(self) -> Callable[[warehouse.AnalyzeAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def analyze_corpus(
-        self,
-    ) -> Callable[[warehouse.AnalyzeCorpusRequest], operations_pb2.Operation]:
+    def analyze_corpus(self) -> Callable[[warehouse.AnalyzeCorpusRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def clip_asset(
-        self,
-    ) -> Callable[[warehouse.ClipAssetRequest], warehouse.ClipAssetResponse]:
+    def clip_asset(self) -> Callable[[warehouse.ClipAssetRequest], warehouse.ClipAssetResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ClipAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_annotation(
-        self,
-    ) -> Callable[[warehouse.CreateAnnotationRequest], warehouse.Annotation]:
+    def create_annotation(self) -> Callable[[warehouse.CreateAnnotationRequest], warehouse.Annotation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnnotation(self._session, self._host, self._interceptor)  # type: ignore
@@ -12931,163 +10388,121 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
         return self._CreateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_collection(
-        self,
-    ) -> Callable[[warehouse.CreateCollectionRequest], operations_pb2.Operation]:
+    def create_collection(self) -> Callable[[warehouse.CreateCollectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[[warehouse.CreateCorpusRequest], operations_pb2.Operation]:
+    def create_corpus(self) -> Callable[[warehouse.CreateCorpusRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_schema(
-        self,
-    ) -> Callable[[warehouse.CreateDataSchemaRequest], warehouse.DataSchema]:
+    def create_data_schema(self) -> Callable[[warehouse.CreateDataSchemaRequest], warehouse.DataSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_index(
-        self,
-    ) -> Callable[[warehouse.CreateIndexRequest], operations_pb2.Operation]:
+    def create_index(self) -> Callable[[warehouse.CreateIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_index_endpoint(
-        self,
-    ) -> Callable[[warehouse.CreateIndexEndpointRequest], operations_pb2.Operation]:
+    def create_index_endpoint(self) -> Callable[[warehouse.CreateIndexEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIndexEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_search_config(
-        self,
-    ) -> Callable[[warehouse.CreateSearchConfigRequest], warehouse.SearchConfig]:
+    def create_search_config(self) -> Callable[[warehouse.CreateSearchConfigRequest], warehouse.SearchConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSearchConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_search_hypernym(
-        self,
-    ) -> Callable[[warehouse.CreateSearchHypernymRequest], warehouse.SearchHypernym]:
+    def create_search_hypernym(self) -> Callable[[warehouse.CreateSearchHypernymRequest], warehouse.SearchHypernym]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSearchHypernym(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_annotation(
-        self,
-    ) -> Callable[[warehouse.DeleteAnnotationRequest], empty_pb2.Empty]:
+    def delete_annotation(self) -> Callable[[warehouse.DeleteAnnotationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[warehouse.DeleteAssetRequest], operations_pb2.Operation]:
+    def delete_asset(self) -> Callable[[warehouse.DeleteAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_collection(
-        self,
-    ) -> Callable[[warehouse.DeleteCollectionRequest], operations_pb2.Operation]:
+    def delete_collection(self) -> Callable[[warehouse.DeleteCollectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[[warehouse.DeleteCorpusRequest], empty_pb2.Empty]:
+    def delete_corpus(self) -> Callable[[warehouse.DeleteCorpusRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_schema(
-        self,
-    ) -> Callable[[warehouse.DeleteDataSchemaRequest], empty_pb2.Empty]:
+    def delete_data_schema(self) -> Callable[[warehouse.DeleteDataSchemaRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_index(
-        self,
-    ) -> Callable[[warehouse.DeleteIndexRequest], operations_pb2.Operation]:
+    def delete_index(self) -> Callable[[warehouse.DeleteIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_index_endpoint(
-        self,
-    ) -> Callable[[warehouse.DeleteIndexEndpointRequest], operations_pb2.Operation]:
+    def delete_index_endpoint(self) -> Callable[[warehouse.DeleteIndexEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIndexEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_search_config(
-        self,
-    ) -> Callable[[warehouse.DeleteSearchConfigRequest], empty_pb2.Empty]:
+    def delete_search_config(self) -> Callable[[warehouse.DeleteSearchConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSearchConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_search_hypernym(
-        self,
-    ) -> Callable[[warehouse.DeleteSearchHypernymRequest], empty_pb2.Empty]:
+    def delete_search_hypernym(self) -> Callable[[warehouse.DeleteSearchHypernymRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSearchHypernym(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_index(
-        self,
-    ) -> Callable[[warehouse.DeployIndexRequest], operations_pb2.Operation]:
+    def deploy_index(self) -> Callable[[warehouse.DeployIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_hls_uri(
-        self,
-    ) -> Callable[[warehouse.GenerateHlsUriRequest], warehouse.GenerateHlsUriResponse]:
+    def generate_hls_uri(self) -> Callable[[warehouse.GenerateHlsUriRequest], warehouse.GenerateHlsUriResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateHlsUri(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_retrieval_url(
-        self,
-    ) -> Callable[
-        [warehouse.GenerateRetrievalUrlRequest], warehouse.GenerateRetrievalUrlResponse
-    ]:
+    def generate_retrieval_url(self) -> Callable[[warehouse.GenerateRetrievalUrlRequest], warehouse.GenerateRetrievalUrlResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateRetrievalUrl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_annotation(
-        self,
-    ) -> Callable[[warehouse.GetAnnotationRequest], warehouse.Annotation]:
+    def get_annotation(self) -> Callable[[warehouse.GetAnnotationRequest], warehouse.Annotation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAnnotation(self._session, self._host, self._interceptor)  # type: ignore
@@ -13099,9 +10514,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
         return self._GetAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_collection(
-        self,
-    ) -> Callable[[warehouse.GetCollectionRequest], warehouse.Collection]:
+    def get_collection(self) -> Callable[[warehouse.GetCollectionRequest], warehouse.Collection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCollection(self._session, self._host, self._interceptor)  # type: ignore
@@ -13113,9 +10526,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
         return self._GetCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_schema(
-        self,
-    ) -> Callable[[warehouse.GetDataSchemaRequest], warehouse.DataSchema]:
+    def get_data_schema(self) -> Callable[[warehouse.GetDataSchemaRequest], warehouse.DataSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSchema(self._session, self._host, self._interceptor)  # type: ignore
@@ -13127,185 +10538,127 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
         return self._GetIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_index_endpoint(
-        self,
-    ) -> Callable[[warehouse.GetIndexEndpointRequest], warehouse.IndexEndpoint]:
+    def get_index_endpoint(self) -> Callable[[warehouse.GetIndexEndpointRequest], warehouse.IndexEndpoint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIndexEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_search_config(
-        self,
-    ) -> Callable[[warehouse.GetSearchConfigRequest], warehouse.SearchConfig]:
+    def get_search_config(self) -> Callable[[warehouse.GetSearchConfigRequest], warehouse.SearchConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSearchConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_search_hypernym(
-        self,
-    ) -> Callable[[warehouse.GetSearchHypernymRequest], warehouse.SearchHypernym]:
+    def get_search_hypernym(self) -> Callable[[warehouse.GetSearchHypernymRequest], warehouse.SearchHypernym]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSearchHypernym(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_assets(
-        self,
-    ) -> Callable[[warehouse.ImportAssetsRequest], operations_pb2.Operation]:
+    def import_assets(self) -> Callable[[warehouse.ImportAssetsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def index_asset(
-        self,
-    ) -> Callable[[warehouse.IndexAssetRequest], operations_pb2.Operation]:
+    def index_asset(self) -> Callable[[warehouse.IndexAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IndexAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def ingest_asset(
-        self,
-    ) -> Callable[[warehouse.IngestAssetRequest], warehouse.IngestAssetResponse]:
+    def ingest_asset(self) -> Callable[[warehouse.IngestAssetRequest], warehouse.IngestAssetResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_annotations(
-        self,
-    ) -> Callable[
-        [warehouse.ListAnnotationsRequest], warehouse.ListAnnotationsResponse
-    ]:
+    def list_annotations(self) -> Callable[[warehouse.ListAnnotationsRequest], warehouse.ListAnnotationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnnotations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[warehouse.ListAssetsRequest], warehouse.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[warehouse.ListAssetsRequest], warehouse.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_collections(
-        self,
-    ) -> Callable[
-        [warehouse.ListCollectionsRequest], warehouse.ListCollectionsResponse
-    ]:
+    def list_collections(self) -> Callable[[warehouse.ListCollectionsRequest], warehouse.ListCollectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCollections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_corpora(
-        self,
-    ) -> Callable[[warehouse.ListCorporaRequest], warehouse.ListCorporaResponse]:
+    def list_corpora(self) -> Callable[[warehouse.ListCorporaRequest], warehouse.ListCorporaResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCorpora(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_schemas(
-        self,
-    ) -> Callable[
-        [warehouse.ListDataSchemasRequest], warehouse.ListDataSchemasResponse
-    ]:
+    def list_data_schemas(self) -> Callable[[warehouse.ListDataSchemasRequest], warehouse.ListDataSchemasResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataSchemas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_index_endpoints(
-        self,
-    ) -> Callable[
-        [warehouse.ListIndexEndpointsRequest], warehouse.ListIndexEndpointsResponse
-    ]:
+    def list_index_endpoints(self) -> Callable[[warehouse.ListIndexEndpointsRequest], warehouse.ListIndexEndpointsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIndexEndpoints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_indexes(
-        self,
-    ) -> Callable[[warehouse.ListIndexesRequest], warehouse.ListIndexesResponse]:
+    def list_indexes(self) -> Callable[[warehouse.ListIndexesRequest], warehouse.ListIndexesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIndexes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_search_configs(
-        self,
-    ) -> Callable[
-        [warehouse.ListSearchConfigsRequest], warehouse.ListSearchConfigsResponse
-    ]:
+    def list_search_configs(self) -> Callable[[warehouse.ListSearchConfigsRequest], warehouse.ListSearchConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSearchConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_search_hypernyms(
-        self,
-    ) -> Callable[
-        [warehouse.ListSearchHypernymsRequest], warehouse.ListSearchHypernymsResponse
-    ]:
+    def list_search_hypernyms(self) -> Callable[[warehouse.ListSearchHypernymsRequest], warehouse.ListSearchHypernymsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSearchHypernyms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_collection_item(
-        self,
-    ) -> Callable[
-        [warehouse.RemoveCollectionItemRequest], warehouse.RemoveCollectionItemResponse
-    ]:
+    def remove_collection_item(self) -> Callable[[warehouse.RemoveCollectionItemRequest], warehouse.RemoveCollectionItemResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveCollectionItem(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_index_asset(
-        self,
-    ) -> Callable[[warehouse.RemoveIndexAssetRequest], operations_pb2.Operation]:
+    def remove_index_asset(self) -> Callable[[warehouse.RemoveIndexAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveIndexAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_assets(
-        self,
-    ) -> Callable[[warehouse.SearchAssetsRequest], warehouse.SearchAssetsResponse]:
+    def search_assets(self) -> Callable[[warehouse.SearchAssetsRequest], warehouse.SearchAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.SearchIndexEndpointRequest], warehouse.SearchIndexEndpointResponse
-    ]:
+    def search_index_endpoint(self) -> Callable[[warehouse.SearchIndexEndpointRequest], warehouse.SearchIndexEndpointResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchIndexEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_index(
-        self,
-    ) -> Callable[[warehouse.UndeployIndexRequest], operations_pb2.Operation]:
+    def undeploy_index(self) -> Callable[[warehouse.UndeployIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_annotation(
-        self,
-    ) -> Callable[[warehouse.UpdateAnnotationRequest], warehouse.Annotation]:
+    def update_annotation(self) -> Callable[[warehouse.UpdateAnnotationRequest], warehouse.Annotation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAnnotation(self._session, self._host, self._interceptor)  # type: ignore
@@ -13317,85 +10670,61 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
         return self._UpdateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_collection(
-        self,
-    ) -> Callable[[warehouse.UpdateCollectionRequest], warehouse.Collection]:
+    def update_collection(self) -> Callable[[warehouse.UpdateCollectionRequest], warehouse.Collection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCollection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[[warehouse.UpdateCorpusRequest], warehouse.Corpus]:
+    def update_corpus(self) -> Callable[[warehouse.UpdateCorpusRequest], warehouse.Corpus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_schema(
-        self,
-    ) -> Callable[[warehouse.UpdateDataSchemaRequest], warehouse.DataSchema]:
+    def update_data_schema(self) -> Callable[[warehouse.UpdateDataSchemaRequest], warehouse.DataSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_index(
-        self,
-    ) -> Callable[[warehouse.UpdateIndexRequest], operations_pb2.Operation]:
+    def update_index(self) -> Callable[[warehouse.UpdateIndexRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIndex(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_index_endpoint(
-        self,
-    ) -> Callable[[warehouse.UpdateIndexEndpointRequest], operations_pb2.Operation]:
+    def update_index_endpoint(self) -> Callable[[warehouse.UpdateIndexEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIndexEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_search_config(
-        self,
-    ) -> Callable[[warehouse.UpdateSearchConfigRequest], warehouse.SearchConfig]:
+    def update_search_config(self) -> Callable[[warehouse.UpdateSearchConfigRequest], warehouse.SearchConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSearchConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_search_hypernym(
-        self,
-    ) -> Callable[[warehouse.UpdateSearchHypernymRequest], warehouse.SearchHypernym]:
+    def update_search_hypernym(self) -> Callable[[warehouse.UpdateSearchHypernymRequest], warehouse.SearchHypernym]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSearchHypernym(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upload_asset(
-        self,
-    ) -> Callable[[warehouse.UploadAssetRequest], operations_pb2.Operation]:
+    def upload_asset(self) -> Callable[[warehouse.UploadAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UploadAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def view_collection_items(
-        self,
-    ) -> Callable[
-        [warehouse.ViewCollectionItemsRequest], warehouse.ViewCollectionItemsResponse
-    ]:
+    def view_collection_items(self) -> Callable[[warehouse.ViewCollectionItemsRequest], warehouse.ViewCollectionItemsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ViewCollectionItems(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def view_indexed_assets(
-        self,
-    ) -> Callable[
-        [warehouse.ViewIndexedAssetsRequest], warehouse.ViewIndexedAssetsResponse
-    ]:
+    def view_indexed_assets(self) -> Callable[[warehouse.ViewIndexedAssetsRequest], warehouse.ViewIndexedAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ViewIndexedAssets(self._session, self._host, self._interceptor)  # type: ignore
@@ -13404,22 +10733,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseWarehouseRestTransport._BaseCancelOperation, WarehouseRestStub
-    ):
+    class _CancelOperation(_BaseWarehouseRestTransport._BaseCancelOperation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13455,36 +10774,18 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWarehouseRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWarehouseRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13508,13 +10809,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13528,22 +10823,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseWarehouseRestTransport._BaseDeleteOperation, WarehouseRestStub
-    ):
+    class _DeleteOperation(_BaseWarehouseRestTransport._BaseDeleteOperation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13578,30 +10863,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseWarehouseRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13625,12 +10896,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13644,22 +10910,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseWarehouseRestTransport._BaseGetOperation, WarehouseRestStub
-    ):
+    class _GetOperation(_BaseWarehouseRestTransport._BaseGetOperation, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13697,30 +10953,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13744,12 +10986,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13761,9 +10998,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13788,22 +11023,12 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseWarehouseRestTransport._BaseListOperations, WarehouseRestStub
-    ):
+    class _ListOperations(_BaseWarehouseRestTransport._BaseListOperations, WarehouseRestStub):
         def __hash__(self):
             return hash("WarehouseRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13841,30 +11066,16 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseWarehouseRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseWarehouseRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseWarehouseRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWarehouseRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWarehouseRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWarehouseRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13888,12 +11099,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
 
             # Send the request
             response = WarehouseRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13905,9 +11111,7 @@ class WarehouseRestTransport(_BaseWarehouseRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

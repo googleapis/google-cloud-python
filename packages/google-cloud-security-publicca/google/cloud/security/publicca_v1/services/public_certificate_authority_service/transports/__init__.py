@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import PublicCertificateAuthorityServiceTransport
 from .grpc import PublicCertificateAuthorityServiceGrpcTransport
 from .grpc_asyncio import PublicCertificateAuthorityServiceGrpcAsyncIOTransport
-from .rest import (
-    PublicCertificateAuthorityServiceRestInterceptor,
-    PublicCertificateAuthorityServiceRestTransport,
-)
+from .rest import PublicCertificateAuthorityServiceRestInterceptor, PublicCertificateAuthorityServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PublicCertificateAuthorityServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PublicCertificateAuthorityServiceTransport]]
 _transport_registry["grpc"] = PublicCertificateAuthorityServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = PublicCertificateAuthorityServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = PublicCertificateAuthorityServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = PublicCertificateAuthorityServiceRestTransport
 
 __all__ = (

@@ -289,13 +289,8 @@ class EdgeNetworkRestInterceptor:
     """
 
     def pre_create_interconnect_attachment(
-        self,
-        request: service.CreateInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.CreateInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -303,9 +298,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_create_interconnect_attachment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_interconnect_attachment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_interconnect_attachment
 
         DEPRECATED. Please use the `post_create_interconnect_attachment_with_metadata`
@@ -319,9 +312,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_create_interconnect_attachment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_interconnect_attachment
 
@@ -338,9 +329,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_create_network(
-        self,
-        request: service.CreateNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_network
 
@@ -349,9 +338,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_create_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_network
 
         DEPRECATED. Please use the `post_create_network_with_metadata`
@@ -365,9 +352,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_create_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_network
 
@@ -384,9 +369,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_create_router(
-        self,
-        request: service.CreateRouterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateRouterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_router
 
@@ -395,9 +378,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_create_router(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_router(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_router
 
         DEPRECATED. Please use the `post_create_router_with_metadata`
@@ -411,9 +392,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_create_router_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_router
 
@@ -430,9 +409,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_create_subnet(
-        self,
-        request: service.CreateSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_subnet
 
@@ -441,9 +418,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_create_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_subnet
 
         DEPRECATED. Please use the `post_create_subnet_with_metadata`
@@ -457,9 +432,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_create_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_subnet
 
@@ -476,13 +449,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_delete_interconnect_attachment(
-        self,
-        request: service.DeleteInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.DeleteInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -490,9 +458,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_interconnect_attachment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_interconnect_attachment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_interconnect_attachment
 
         DEPRECATED. Please use the `post_delete_interconnect_attachment_with_metadata`
@@ -506,9 +472,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_delete_interconnect_attachment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_interconnect_attachment
 
@@ -525,9 +489,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_delete_network(
-        self,
-        request: service.DeleteNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_network
 
@@ -536,9 +498,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_network
 
         DEPRECATED. Please use the `post_delete_network_with_metadata`
@@ -552,9 +512,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_delete_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_network
 
@@ -571,9 +529,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_delete_router(
-        self,
-        request: service.DeleteRouterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteRouterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_router
 
@@ -582,9 +538,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_router(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_router(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_router
 
         DEPRECATED. Please use the `post_delete_router_with_metadata`
@@ -598,9 +552,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_delete_router_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_router
 
@@ -617,9 +569,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_delete_subnet(
-        self,
-        request: service.DeleteSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_subnet
 
@@ -628,9 +578,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_subnet
 
         DEPRECATED. Please use the `post_delete_subnet_with_metadata`
@@ -644,9 +592,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_delete_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_subnet
 
@@ -663,12 +609,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_diagnose_interconnect(
-        self,
-        request: service.DiagnoseInterconnectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DiagnoseInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DiagnoseInterconnectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DiagnoseInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_interconnect
 
         Override in a subclass to manipulate the request or metadata
@@ -676,9 +618,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_diagnose_interconnect(
-        self, response: service.DiagnoseInterconnectResponse
-    ) -> service.DiagnoseInterconnectResponse:
+    def post_diagnose_interconnect(self, response: service.DiagnoseInterconnectResponse) -> service.DiagnoseInterconnectResponse:
         """Post-rpc interceptor for diagnose_interconnect
 
         DEPRECATED. Please use the `post_diagnose_interconnect_with_metadata`
@@ -692,12 +632,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_diagnose_interconnect_with_metadata(
-        self,
-        response: service.DiagnoseInterconnectResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DiagnoseInterconnectResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.DiagnoseInterconnectResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DiagnoseInterconnectResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for diagnose_interconnect
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -713,9 +649,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_diagnose_network(
-        self,
-        request: service.DiagnoseNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DiagnoseNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DiagnoseNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_network
 
@@ -724,9 +658,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_diagnose_network(
-        self, response: service.DiagnoseNetworkResponse
-    ) -> service.DiagnoseNetworkResponse:
+    def post_diagnose_network(self, response: service.DiagnoseNetworkResponse) -> service.DiagnoseNetworkResponse:
         """Post-rpc interceptor for diagnose_network
 
         DEPRECATED. Please use the `post_diagnose_network_with_metadata`
@@ -740,12 +672,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_diagnose_network_with_metadata(
-        self,
-        response: service.DiagnoseNetworkResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DiagnoseNetworkResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.DiagnoseNetworkResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DiagnoseNetworkResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for diagnose_network
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -761,9 +689,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_diagnose_router(
-        self,
-        request: service.DiagnoseRouterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DiagnoseRouterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DiagnoseRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for diagnose_router
 
@@ -772,9 +698,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_diagnose_router(
-        self, response: service.DiagnoseRouterResponse
-    ) -> service.DiagnoseRouterResponse:
+    def post_diagnose_router(self, response: service.DiagnoseRouterResponse) -> service.DiagnoseRouterResponse:
         """Post-rpc interceptor for diagnose_router
 
         DEPRECATED. Please use the `post_diagnose_router_with_metadata`
@@ -788,9 +712,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_diagnose_router_with_metadata(
-        self,
-        response: service.DiagnoseRouterResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DiagnoseRouterResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DiagnoseRouterResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for diagnose_router
 
@@ -807,9 +729,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_interconnect(
-        self,
-        request: service.GetInterconnectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetInterconnectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetInterconnectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_interconnect
 
@@ -818,9 +738,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_get_interconnect(
-        self, response: resources.Interconnect
-    ) -> resources.Interconnect:
+    def post_get_interconnect(self, response: resources.Interconnect) -> resources.Interconnect:
         """Post-rpc interceptor for get_interconnect
 
         DEPRECATED. Please use the `post_get_interconnect_with_metadata`
@@ -834,9 +752,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_interconnect_with_metadata(
-        self,
-        response: resources.Interconnect,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Interconnect, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Interconnect, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_interconnect
 
@@ -853,13 +769,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_interconnect_attachment(
-        self,
-        request: service.GetInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.GetInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_interconnect_attachment
 
         Override in a subclass to manipulate the request or metadata
@@ -867,9 +778,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_get_interconnect_attachment(
-        self, response: resources.InterconnectAttachment
-    ) -> resources.InterconnectAttachment:
+    def post_get_interconnect_attachment(self, response: resources.InterconnectAttachment) -> resources.InterconnectAttachment:
         """Post-rpc interceptor for get_interconnect_attachment
 
         DEPRECATED. Please use the `post_get_interconnect_attachment_with_metadata`
@@ -883,12 +792,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_interconnect_attachment_with_metadata(
-        self,
-        response: resources.InterconnectAttachment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        resources.InterconnectAttachment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: resources.InterconnectAttachment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[resources.InterconnectAttachment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_interconnect_attachment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -904,9 +809,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_network(
-        self,
-        request: service.GetNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_network
 
@@ -929,9 +832,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_network_with_metadata(
-        self,
-        response: resources.Network,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Network, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Network, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_network
 
@@ -948,9 +849,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_router(
-        self,
-        request: service.GetRouterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetRouterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_router
 
@@ -973,9 +872,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_router_with_metadata(
-        self,
-        response: resources.Router,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Router, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Router, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_router
 
@@ -992,9 +889,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_subnet(
-        self,
-        request: service.GetSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_subnet
 
@@ -1017,9 +912,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_subnet_with_metadata(
-        self,
-        response: resources.Subnet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Subnet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Subnet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_subnet
 
@@ -1036,9 +929,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_zone(
-        self,
-        request: service.GetZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_zone
 
@@ -1061,9 +952,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_get_zone_with_metadata(
-        self,
-        response: resources.Zone,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Zone, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Zone, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_zone
 
@@ -1080,9 +969,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_initialize_zone(
-        self,
-        request: service.InitializeZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.InitializeZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.InitializeZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for initialize_zone
 
@@ -1091,9 +978,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_initialize_zone(
-        self, response: service.InitializeZoneResponse
-    ) -> service.InitializeZoneResponse:
+    def post_initialize_zone(self, response: service.InitializeZoneResponse) -> service.InitializeZoneResponse:
         """Post-rpc interceptor for initialize_zone
 
         DEPRECATED. Please use the `post_initialize_zone_with_metadata`
@@ -1107,9 +992,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_initialize_zone_with_metadata(
-        self,
-        response: service.InitializeZoneResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.InitializeZoneResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.InitializeZoneResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for initialize_zone
 
@@ -1126,13 +1009,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_interconnect_attachments(
-        self,
-        request: service.ListInterconnectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListInterconnectAttachmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListInterconnectAttachmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListInterconnectAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_interconnect_attachments
 
         Override in a subclass to manipulate the request or metadata
@@ -1156,13 +1034,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_interconnect_attachments_with_metadata(
-        self,
-        response: service.ListInterconnectAttachmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListInterconnectAttachmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListInterconnectAttachmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListInterconnectAttachmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_interconnect_attachments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1178,12 +1051,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_interconnects(
-        self,
-        request: service.ListInterconnectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListInterconnectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListInterconnectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListInterconnectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_interconnects
 
         Override in a subclass to manipulate the request or metadata
@@ -1191,9 +1060,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_interconnects(
-        self, response: service.ListInterconnectsResponse
-    ) -> service.ListInterconnectsResponse:
+    def post_list_interconnects(self, response: service.ListInterconnectsResponse) -> service.ListInterconnectsResponse:
         """Post-rpc interceptor for list_interconnects
 
         DEPRECATED. Please use the `post_list_interconnects_with_metadata`
@@ -1207,12 +1074,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_interconnects_with_metadata(
-        self,
-        response: service.ListInterconnectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListInterconnectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListInterconnectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListInterconnectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_interconnects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1228,9 +1091,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_networks(
-        self,
-        request: service.ListNetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListNetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_networks
 
@@ -1239,9 +1100,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_networks(
-        self, response: service.ListNetworksResponse
-    ) -> service.ListNetworksResponse:
+    def post_list_networks(self, response: service.ListNetworksResponse) -> service.ListNetworksResponse:
         """Post-rpc interceptor for list_networks
 
         DEPRECATED. Please use the `post_list_networks_with_metadata`
@@ -1255,9 +1114,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_networks_with_metadata(
-        self,
-        response: service.ListNetworksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListNetworksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_networks
 
@@ -1274,9 +1131,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_routers(
-        self,
-        request: service.ListRoutersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListRoutersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListRoutersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_routers
 
@@ -1285,9 +1140,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_routers(
-        self, response: service.ListRoutersResponse
-    ) -> service.ListRoutersResponse:
+    def post_list_routers(self, response: service.ListRoutersResponse) -> service.ListRoutersResponse:
         """Post-rpc interceptor for list_routers
 
         DEPRECATED. Please use the `post_list_routers_with_metadata`
@@ -1301,9 +1154,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_routers_with_metadata(
-        self,
-        response: service.ListRoutersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListRoutersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListRoutersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_routers
 
@@ -1320,9 +1171,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_subnets(
-        self,
-        request: service.ListSubnetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListSubnetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_subnets
 
@@ -1331,9 +1180,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_subnets(
-        self, response: service.ListSubnetsResponse
-    ) -> service.ListSubnetsResponse:
+    def post_list_subnets(self, response: service.ListSubnetsResponse) -> service.ListSubnetsResponse:
         """Post-rpc interceptor for list_subnets
 
         DEPRECATED. Please use the `post_list_subnets_with_metadata`
@@ -1347,9 +1194,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_subnets_with_metadata(
-        self,
-        response: service.ListSubnetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListSubnetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_subnets
 
@@ -1366,9 +1211,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_list_zones(
-        self,
-        request: service.ListZonesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListZonesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_zones
 
@@ -1377,9 +1220,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_zones(
-        self, response: service.ListZonesResponse
-    ) -> service.ListZonesResponse:
+    def post_list_zones(self, response: service.ListZonesResponse) -> service.ListZonesResponse:
         """Post-rpc interceptor for list_zones
 
         DEPRECATED. Please use the `post_list_zones_with_metadata`
@@ -1393,9 +1234,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_list_zones_with_metadata(
-        self,
-        response: service.ListZonesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListZonesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListZonesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_zones
 
@@ -1412,9 +1251,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_update_router(
-        self,
-        request: service.UpdateRouterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateRouterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateRouterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_router
 
@@ -1423,9 +1260,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_update_router(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_router(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_router
 
         DEPRECATED. Please use the `post_update_router_with_metadata`
@@ -1439,9 +1274,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_update_router_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_router
 
@@ -1458,9 +1291,7 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_update_subnet(
-        self,
-        request: service.UpdateSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_subnet
 
@@ -1469,9 +1300,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_update_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_subnet
 
         DEPRECATED. Please use the `post_update_subnet_with_metadata`
@@ -1485,9 +1314,7 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def post_update_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_subnet
 
@@ -1504,12 +1331,8 @@ class EdgeNetworkRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1517,9 +1340,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1529,12 +1350,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1542,9 +1359,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1554,12 +1369,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1577,12 +1388,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1600,12 +1407,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1613,9 +1416,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1625,12 +1426,8 @@ class EdgeNetworkRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1638,9 +1435,7 @@ class EdgeNetworkRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1733,9 +1528,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1788,30 +1581,17 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateInterconnectAttachment(
-        _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment,
-        EdgeNetworkRestStub,
-    ):
+    class _CreateInterconnectAttachment(_BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.CreateInterconnectAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1856,32 +1636,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_interconnect_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_interconnect_attachment(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_transcoded_request(http_options, request)
 
-            body = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseCreateInterconnectAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1904,16 +1670,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
 
             # Send the request
-            response = (
-                EdgeNetworkRestTransport._CreateInterconnectAttachment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EdgeNetworkRestTransport._CreateInterconnectAttachment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1927,15 +1685,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_create_interconnect_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_interconnect_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_interconnect_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1956,22 +1707,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _CreateNetwork(
-        _BaseEdgeNetworkRestTransport._BaseCreateNetwork, EdgeNetworkRestStub
-    ):
+    class _CreateNetwork(_BaseEdgeNetworkRestTransport._BaseCreateNetwork, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.CreateNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2014,34 +1755,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_create_network(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseCreateNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2065,13 +1790,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._CreateNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2085,12 +1804,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_create_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2111,22 +1826,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _CreateRouter(
-        _BaseEdgeNetworkRestTransport._BaseCreateRouter, EdgeNetworkRestStub
-    ):
+    class _CreateRouter(_BaseEdgeNetworkRestTransport._BaseCreateRouter, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.CreateRouter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2169,36 +1874,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_http_options()
 
             request, metadata = self._interceptor.pre_create_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseCreateRouter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2222,13 +1909,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._CreateRouter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2242,12 +1923,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_create_router(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_router_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_router_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2268,22 +1945,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _CreateSubnet(
-        _BaseEdgeNetworkRestTransport._BaseCreateSubnet, EdgeNetworkRestStub
-    ):
+    class _CreateSubnet(_BaseEdgeNetworkRestTransport._BaseCreateSubnet, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.CreateSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2326,36 +1993,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_create_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseCreateSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2379,13 +2028,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._CreateSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2399,12 +2042,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_create_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2425,23 +2064,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DeleteInterconnectAttachment(
-        _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment,
-        EdgeNetworkRestStub,
-    ):
+    class _DeleteInterconnectAttachment(_BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DeleteInterconnectAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2485,28 +2113,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_interconnect_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_interconnect_attachment(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteInterconnectAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2529,15 +2145,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
 
             # Send the request
-            response = (
-                EdgeNetworkRestTransport._DeleteInterconnectAttachment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EdgeNetworkRestTransport._DeleteInterconnectAttachment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2551,15 +2160,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_delete_interconnect_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_interconnect_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_interconnect_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2580,22 +2182,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DeleteNetwork(
-        _BaseEdgeNetworkRestTransport._BaseDeleteNetwork, EdgeNetworkRestStub
-    ):
+    class _DeleteNetwork(_BaseEdgeNetworkRestTransport._BaseDeleteNetwork, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DeleteNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2637,28 +2229,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_network(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2682,12 +2262,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2701,12 +2276,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_delete_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2727,22 +2298,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DeleteRouter(
-        _BaseEdgeNetworkRestTransport._BaseDeleteRouter, EdgeNetworkRestStub
-    ):
+    class _DeleteRouter(_BaseEdgeNetworkRestTransport._BaseDeleteRouter, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DeleteRouter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2784,30 +2345,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteRouter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2831,12 +2378,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteRouter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2850,12 +2392,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_delete_router(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_router_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_router_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2876,22 +2414,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DeleteSubnet(
-        _BaseEdgeNetworkRestTransport._BaseDeleteSubnet, EdgeNetworkRestStub
-    ):
+    class _DeleteSubnet(_BaseEdgeNetworkRestTransport._BaseDeleteSubnet, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DeleteSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2933,30 +2461,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2980,12 +2494,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2999,12 +2508,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_delete_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3025,22 +2530,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DiagnoseInterconnect(
-        _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect, EdgeNetworkRestStub
-    ):
+    class _DiagnoseInterconnect(_BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DiagnoseInterconnect")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3084,28 +2579,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_http_options()
 
-            request, metadata = self._interceptor.pre_diagnose_interconnect(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_diagnose_interconnect(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseInterconnect._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3129,12 +2612,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseInterconnect._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3150,16 +2628,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_diagnose_interconnect(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_diagnose_interconnect_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_diagnose_interconnect_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.DiagnoseInterconnectResponse.to_json(
-                        response
-                    )
+                    response_payload = service.DiagnoseInterconnectResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3178,22 +2650,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DiagnoseNetwork(
-        _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork, EdgeNetworkRestStub
-    ):
+    class _DiagnoseNetwork(_BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DiagnoseNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3236,28 +2698,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_diagnose_network(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_diagnose_network(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3281,12 +2731,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3302,12 +2747,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_diagnose_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_diagnose_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_diagnose_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DiagnoseNetworkResponse.to_json(response)
                 except:
@@ -3328,22 +2769,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _DiagnoseRouter(
-        _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter, EdgeNetworkRestStub
-    ):
+    class _DiagnoseRouter(_BaseEdgeNetworkRestTransport._BaseDiagnoseRouter, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DiagnoseRouter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3385,26 +2816,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_http_options()
 
             request, metadata = self._interceptor.pre_diagnose_router(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDiagnoseRouter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3428,12 +2849,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DiagnoseRouter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3449,12 +2865,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_diagnose_router(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_diagnose_router_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_diagnose_router_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DiagnoseRouterResponse.to_json(response)
                 except:
@@ -3475,22 +2887,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _GetInterconnect(
-        _BaseEdgeNetworkRestTransport._BaseGetInterconnect, EdgeNetworkRestStub
-    ):
+    class _GetInterconnect(_BaseEdgeNetworkRestTransport._BaseGetInterconnect, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.GetInterconnect")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3531,28 +2933,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_interconnect(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_interconnect(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnect._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3576,12 +2966,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetInterconnect._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3597,12 +2982,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_interconnect(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_interconnect_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_interconnect_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Interconnect.to_json(response)
                 except:
@@ -3623,23 +3004,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _GetInterconnectAttachment(
-        _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment,
-        EdgeNetworkRestStub,
-    ):
+    class _GetInterconnectAttachment(_BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.GetInterconnectAttachment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3682,28 +3052,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_interconnect_attachment(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_interconnect_attachment(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetInterconnectAttachment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3726,15 +3084,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
 
             # Send the request
-            response = (
-                EdgeNetworkRestTransport._GetInterconnectAttachment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EdgeNetworkRestTransport._GetInterconnectAttachment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3750,16 +3101,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_interconnect_attachment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_interconnect_attachment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_interconnect_attachment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = resources.InterconnectAttachment.to_json(
-                        response
-                    )
+                    response_payload = resources.InterconnectAttachment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3778,22 +3123,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _GetNetwork(
-        _BaseEdgeNetworkRestTransport._BaseGetNetwork, EdgeNetworkRestStub
-    ):
+    class _GetNetwork(_BaseEdgeNetworkRestTransport._BaseGetNetwork, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.GetNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3832,30 +3167,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     Message describing Network object
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_get_network(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3879,12 +3200,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3900,12 +3216,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Network.to_json(response)
                 except:
@@ -3931,15 +3243,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             return hash("EdgeNetworkRestTransport.GetRouter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3978,30 +3282,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     Message describing Router object
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetRouter._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetRouter._get_http_options()
 
             request, metadata = self._interceptor.pre_get_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetRouter._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetRouter._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetRouter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4025,12 +3315,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetRouter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4046,12 +3331,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_router(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_router_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_router_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Router.to_json(response)
                 except:
@@ -4077,15 +3358,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             return hash("EdgeNetworkRestTransport.GetSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4124,30 +3397,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     Message describing Subnet object
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4171,12 +3430,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4192,12 +3446,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Subnet.to_json(response)
                 except:
@@ -4223,15 +3473,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             return hash("EdgeNetworkRestTransport.GetZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4271,30 +3513,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     A Google Edge Cloud zone.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetZone._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetZone._get_http_options()
 
             request, metadata = self._interceptor.pre_get_zone(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetZone._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetZone._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetZone._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4317,14 +3545,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
 
             # Send the request
-            response = EdgeNetworkRestTransport._GetZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = EdgeNetworkRestTransport._GetZone._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4339,12 +3560,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_get_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Zone.to_json(response)
                 except:
@@ -4365,22 +3582,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _InitializeZone(
-        _BaseEdgeNetworkRestTransport._BaseInitializeZone, EdgeNetworkRestStub
-    ):
+    class _InitializeZone(_BaseEdgeNetworkRestTransport._BaseInitializeZone, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.InitializeZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4421,30 +3628,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     The response of initializing a zone
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_http_options()
 
             request, metadata = self._interceptor.pre_initialize_zone(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_transcoded_request(http_options, request)
 
-            body = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseInitializeZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4468,13 +3663,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._InitializeZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4490,12 +3679,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_initialize_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_initialize_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_initialize_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.InitializeZoneResponse.to_json(response)
                 except:
@@ -4516,23 +3701,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _ListInterconnectAttachments(
-        _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments,
-        EdgeNetworkRestStub,
-    ):
+    class _ListInterconnectAttachments(_BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListInterconnectAttachments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4575,28 +3749,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_interconnect_attachments(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_interconnect_attachments(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnectAttachments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4619,15 +3781,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
 
             # Send the request
-            response = (
-                EdgeNetworkRestTransport._ListInterconnectAttachments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EdgeNetworkRestTransport._ListInterconnectAttachments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4643,19 +3798,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_interconnect_attachments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_interconnect_attachments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_interconnect_attachments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListInterconnectAttachmentsResponse.to_json(response)
-                    )
+                    response_payload = service.ListInterconnectAttachmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4674,22 +3820,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _ListInterconnects(
-        _BaseEdgeNetworkRestTransport._BaseListInterconnects, EdgeNetworkRestStub
-    ):
+    class _ListInterconnects(_BaseEdgeNetworkRestTransport._BaseListInterconnects, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListInterconnects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4731,28 +3867,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_interconnects(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_interconnects(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListInterconnects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4776,12 +3900,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListInterconnects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4797,16 +3916,10 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_interconnects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_interconnects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_interconnects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListInterconnectsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListInterconnectsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4825,22 +3938,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _ListNetworks(
-        _BaseEdgeNetworkRestTransport._BaseListNetworks, EdgeNetworkRestStub
-    ):
+    class _ListNetworks(_BaseEdgeNetworkRestTransport._BaseListNetworks, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListNetworks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4882,30 +3985,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListNetworks._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListNetworks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_networks(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListNetworks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListNetworks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListNetworks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListNetworks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4929,12 +4018,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListNetworks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4950,12 +4034,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_networks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_networks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_networks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListNetworksResponse.to_json(response)
                 except:
@@ -4976,22 +4056,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _ListRouters(
-        _BaseEdgeNetworkRestTransport._BaseListRouters, EdgeNetworkRestStub
-    ):
+    class _ListRouters(_BaseEdgeNetworkRestTransport._BaseListRouters, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListRouters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5033,30 +4103,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListRouters._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListRouters._get_http_options()
 
             request, metadata = self._interceptor.pre_list_routers(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListRouters._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListRouters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListRouters._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListRouters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5080,12 +4136,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListRouters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5101,12 +4152,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_routers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_routers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_routers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListRoutersResponse.to_json(response)
                 except:
@@ -5127,22 +4174,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _ListSubnets(
-        _BaseEdgeNetworkRestTransport._BaseListSubnets, EdgeNetworkRestStub
-    ):
+    class _ListSubnets(_BaseEdgeNetworkRestTransport._BaseListSubnets, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListSubnets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5184,30 +4221,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListSubnets._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListSubnets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_subnets(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListSubnets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListSubnets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListSubnets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListSubnets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5231,12 +4254,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListSubnets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5252,12 +4270,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_subnets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_subnets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_subnets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListSubnetsResponse.to_json(response)
                 except:
@@ -5283,15 +4297,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             return hash("EdgeNetworkRestTransport.ListZones")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5333,30 +4339,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListZones._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListZones._get_http_options()
 
             request, metadata = self._interceptor.pre_list_zones(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseListZones._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListZones._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListZones._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListZones._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5380,12 +4372,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListZones._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5401,12 +4388,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_list_zones(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_zones_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_zones_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListZonesResponse.to_json(response)
                 except:
@@ -5427,22 +4410,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _UpdateRouter(
-        _BaseEdgeNetworkRestTransport._BaseUpdateRouter, EdgeNetworkRestStub
-    ):
+    class _UpdateRouter(_BaseEdgeNetworkRestTransport._BaseUpdateRouter, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.UpdateRouter")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5485,36 +4458,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_http_options()
 
             request, metadata = self._interceptor.pre_update_router(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseUpdateRouter._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5538,13 +4493,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._UpdateRouter._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5558,12 +4507,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_update_router(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_router_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_router_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5584,22 +4529,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 )
             return resp
 
-    class _UpdateSubnet(
-        _BaseEdgeNetworkRestTransport._BaseUpdateSubnet, EdgeNetworkRestStub
-    ):
+    class _UpdateSubnet(_BaseEdgeNetworkRestTransport._BaseUpdateSubnet, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.UpdateSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5642,36 +4577,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_update_subnet(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseUpdateSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5695,13 +4612,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._UpdateSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5715,12 +4626,8 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             resp = self._interceptor.post_update_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5742,113 +4649,79 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             return resp
 
     @property
-    def create_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.CreateInterconnectAttachmentRequest], operations_pb2.Operation
-    ]:
+    def create_interconnect_attachment(self) -> Callable[[service.CreateInterconnectAttachmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInterconnectAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_network(
-        self,
-    ) -> Callable[[service.CreateNetworkRequest], operations_pb2.Operation]:
+    def create_network(self) -> Callable[[service.CreateNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_router(
-        self,
-    ) -> Callable[[service.CreateRouterRequest], operations_pb2.Operation]:
+    def create_router(self) -> Callable[[service.CreateRouterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRouter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_subnet(
-        self,
-    ) -> Callable[[service.CreateSubnetRequest], operations_pb2.Operation]:
+    def create_subnet(self) -> Callable[[service.CreateSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.DeleteInterconnectAttachmentRequest], operations_pb2.Operation
-    ]:
+    def delete_interconnect_attachment(self) -> Callable[[service.DeleteInterconnectAttachmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInterconnectAttachment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_network(
-        self,
-    ) -> Callable[[service.DeleteNetworkRequest], operations_pb2.Operation]:
+    def delete_network(self) -> Callable[[service.DeleteNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_router(
-        self,
-    ) -> Callable[[service.DeleteRouterRequest], operations_pb2.Operation]:
+    def delete_router(self) -> Callable[[service.DeleteRouterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRouter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_subnet(
-        self,
-    ) -> Callable[[service.DeleteSubnetRequest], operations_pb2.Operation]:
+    def delete_subnet(self) -> Callable[[service.DeleteSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def diagnose_interconnect(
-        self,
-    ) -> Callable[
-        [service.DiagnoseInterconnectRequest], service.DiagnoseInterconnectResponse
-    ]:
+    def diagnose_interconnect(self) -> Callable[[service.DiagnoseInterconnectRequest], service.DiagnoseInterconnectResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiagnoseInterconnect(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def diagnose_network(
-        self,
-    ) -> Callable[[service.DiagnoseNetworkRequest], service.DiagnoseNetworkResponse]:
+    def diagnose_network(self) -> Callable[[service.DiagnoseNetworkRequest], service.DiagnoseNetworkResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiagnoseNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def diagnose_router(
-        self,
-    ) -> Callable[[service.DiagnoseRouterRequest], service.DiagnoseRouterResponse]:
+    def diagnose_router(self) -> Callable[[service.DiagnoseRouterRequest], service.DiagnoseRouterResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiagnoseRouter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_interconnect(
-        self,
-    ) -> Callable[[service.GetInterconnectRequest], resources.Interconnect]:
+    def get_interconnect(self) -> Callable[[service.GetInterconnectRequest], resources.Interconnect]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterconnect(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_interconnect_attachment(
-        self,
-    ) -> Callable[
-        [service.GetInterconnectAttachmentRequest], resources.InterconnectAttachment
-    ]:
+    def get_interconnect_attachment(self) -> Callable[[service.GetInterconnectAttachmentRequest], resources.InterconnectAttachment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInterconnectAttachment(self._session, self._host, self._interceptor)  # type: ignore
@@ -5878,78 +4751,55 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
         return self._GetZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def initialize_zone(
-        self,
-    ) -> Callable[[service.InitializeZoneRequest], service.InitializeZoneResponse]:
+    def initialize_zone(self) -> Callable[[service.InitializeZoneRequest], service.InitializeZoneResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InitializeZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_interconnect_attachments(
-        self,
-    ) -> Callable[
-        [service.ListInterconnectAttachmentsRequest],
-        service.ListInterconnectAttachmentsResponse,
-    ]:
+    def list_interconnect_attachments(self) -> Callable[[service.ListInterconnectAttachmentsRequest], service.ListInterconnectAttachmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterconnectAttachments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_interconnects(
-        self,
-    ) -> Callable[
-        [service.ListInterconnectsRequest], service.ListInterconnectsResponse
-    ]:
+    def list_interconnects(self) -> Callable[[service.ListInterconnectsRequest], service.ListInterconnectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInterconnects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[[service.ListNetworksRequest], service.ListNetworksResponse]:
+    def list_networks(self) -> Callable[[service.ListNetworksRequest], service.ListNetworksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_routers(
-        self,
-    ) -> Callable[[service.ListRoutersRequest], service.ListRoutersResponse]:
+    def list_routers(self) -> Callable[[service.ListRoutersRequest], service.ListRoutersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRouters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_subnets(
-        self,
-    ) -> Callable[[service.ListSubnetsRequest], service.ListSubnetsResponse]:
+    def list_subnets(self) -> Callable[[service.ListSubnetsRequest], service.ListSubnetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSubnets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListZones(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_router(
-        self,
-    ) -> Callable[[service.UpdateRouterRequest], operations_pb2.Operation]:
+    def update_router(self) -> Callable[[service.UpdateRouterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRouter(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_subnet(
-        self,
-    ) -> Callable[[service.UpdateSubnetRequest], operations_pb2.Operation]:
+    def update_subnet(self) -> Callable[[service.UpdateSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSubnet(self._session, self._host, self._interceptor)  # type: ignore
@@ -5958,22 +4808,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseEdgeNetworkRestTransport._BaseGetLocation, EdgeNetworkRestStub
-    ):
+    class _GetLocation(_BaseEdgeNetworkRestTransport._BaseGetLocation, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6011,30 +4851,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6058,12 +4884,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6075,9 +4896,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6102,22 +4921,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseEdgeNetworkRestTransport._BaseListLocations, EdgeNetworkRestStub
-    ):
+    class _ListLocations(_BaseEdgeNetworkRestTransport._BaseListLocations, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6155,28 +4964,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6200,12 +4997,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6217,9 +5009,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6244,22 +5034,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEdgeNetworkRestTransport._BaseCancelOperation, EdgeNetworkRestStub
-    ):
+    class _CancelOperation(_BaseEdgeNetworkRestTransport._BaseCancelOperation, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6295,32 +5075,18 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6344,13 +5110,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6364,22 +5124,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseEdgeNetworkRestTransport._BaseDeleteOperation, EdgeNetworkRestStub
-    ):
+    class _DeleteOperation(_BaseEdgeNetworkRestTransport._BaseDeleteOperation, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6414,28 +5164,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6459,12 +5197,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6478,22 +5211,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEdgeNetworkRestTransport._BaseGetOperation, EdgeNetworkRestStub
-    ):
+    class _GetOperation(_BaseEdgeNetworkRestTransport._BaseGetOperation, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6531,30 +5254,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseEdgeNetworkRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEdgeNetworkRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6578,12 +5287,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6595,9 +5299,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6622,22 +5324,12 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEdgeNetworkRestTransport._BaseListOperations, EdgeNetworkRestStub
-    ):
+    class _ListOperations(_BaseEdgeNetworkRestTransport._BaseListOperations, EdgeNetworkRestStub):
         def __hash__(self):
             return hash("EdgeNetworkRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6675,26 +5367,16 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEdgeNetworkRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEdgeNetworkRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEdgeNetworkRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEdgeNetworkRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEdgeNetworkRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6718,12 +5400,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
 
             # Send the request
             response = EdgeNetworkRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6735,9 +5412,7 @@ class EdgeNetworkRestTransport(_BaseEdgeNetworkRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

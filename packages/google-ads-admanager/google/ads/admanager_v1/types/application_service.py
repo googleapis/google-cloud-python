@@ -136,9 +136,7 @@ class ListApplicationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    applications: MutableSequence[
-        application_messages.Application
-    ] = proto.RepeatedField(
+    applications: MutableSequence[application_messages.Application] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=application_messages.Application,

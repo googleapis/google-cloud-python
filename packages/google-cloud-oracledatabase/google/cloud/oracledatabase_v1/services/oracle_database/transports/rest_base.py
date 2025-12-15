@@ -22,25 +22,10 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_version,
-    exadata_infra,
-    exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
-    oracledatabase,
-    pluggable_database,
-    vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exascale_db_storage_vault as gco_exascale_db_storage_vault,
-)
+from google.cloud.oracledatabase_v1.types import db_system_initial_storage_size, db_version, exadata_infra, exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import autonomous_database, database, database_character_set
+from google.cloud.oracledatabase_v1.types import oracledatabase, pluggable_database, vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault as gco_exascale_db_storage_vault
 from google.cloud.oracledatabase_v1.types import db_system
 from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
@@ -99,20 +84,14 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateAutonomousDatabase:
@@ -125,11 +104,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -152,9 +127,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -165,11 +138,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -184,11 +153,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -203,9 +168,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.CreateCloudExadataInfrastructureRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -213,9 +176,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -226,11 +187,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -245,11 +202,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -272,9 +225,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -285,11 +236,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -304,11 +251,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -331,9 +274,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -344,11 +285,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -363,11 +300,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -390,9 +323,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -403,11 +334,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -422,11 +349,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -441,11 +364,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.pb(
-                    request
-                )
-            )
+            pb_request = gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -453,9 +372,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -466,11 +383,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -485,11 +398,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -512,9 +421,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -525,11 +432,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -544,11 +447,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -571,9 +470,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -584,11 +481,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -601,11 +494,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -631,11 +520,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -648,11 +533,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -666,9 +547,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.DeleteCloudExadataInfrastructureRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -680,11 +559,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -697,11 +572,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -727,11 +598,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -744,11 +611,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -774,11 +637,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -791,11 +650,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -821,11 +676,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -838,11 +689,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -856,11 +703,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.pb(
-                    request
-                )
-            )
+            pb_request = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -872,11 +715,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -889,11 +728,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -919,11 +754,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -936,11 +767,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -966,11 +793,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -983,11 +806,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1010,9 +829,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1023,11 +840,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1040,11 +853,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1059,9 +868,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.GenerateAutonomousDatabaseWalletRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.GenerateAutonomousDatabaseWalletRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1069,9 +876,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1082,11 +887,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1099,11 +900,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1129,11 +926,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1146,11 +939,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1176,11 +965,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1193,11 +978,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1223,11 +1004,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1240,11 +1017,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1270,11 +1043,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1287,11 +1056,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1317,11 +1082,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1334,11 +1095,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1364,11 +1121,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1381,11 +1134,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1399,9 +1148,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.pb(
-                request
-            )
+            pb_request = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1413,11 +1160,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1430,11 +1173,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1460,11 +1199,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1477,11 +1212,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1507,11 +1238,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1524,11 +1251,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1554,11 +1277,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1571,11 +1290,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1601,11 +1316,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1618,11 +1329,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1636,9 +1343,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1650,11 +1355,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1667,11 +1368,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1697,11 +1394,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1714,11 +1407,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1744,11 +1433,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1761,11 +1446,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1779,9 +1460,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.ListCloudExadataInfrastructuresRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1793,11 +1472,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1810,11 +1485,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1840,11 +1511,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1857,11 +1524,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1875,9 +1538,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = database_character_set.ListDatabaseCharacterSetsRequest.pb(
-                request
-            )
+            pb_request = database_character_set.ListDatabaseCharacterSetsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1889,11 +1550,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1906,11 +1563,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1936,11 +1589,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDatabases._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDatabases._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1953,11 +1602,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1987,11 +1632,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbNodes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2004,11 +1645,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2034,11 +1671,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbServers._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbServers._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2051,11 +1684,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2069,9 +1698,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.pb(
-                request
-            )
+            pb_request = db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2083,11 +1710,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2100,11 +1723,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2130,11 +1749,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbSystems._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2147,11 +1762,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2177,11 +1788,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2194,11 +1801,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2224,11 +1827,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListDbVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2241,11 +1840,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2271,11 +1866,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListEntitlements._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2288,11 +1879,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2318,11 +1905,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2335,11 +1918,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2353,9 +1932,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.pb(request)
-            )
+            pb_request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2367,11 +1944,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2384,11 +1957,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2414,11 +1983,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListGiVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2431,11 +1996,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2461,11 +2022,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2478,11 +2035,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2508,11 +2061,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2525,11 +2074,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2555,11 +2100,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2572,11 +2113,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2602,11 +2139,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2619,11 +2152,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2638,9 +2167,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.pb(
-                request
-            )
+            pb_request = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2648,9 +2175,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2661,11 +2186,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2678,11 +2199,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2705,9 +2222,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2718,11 +2233,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2735,11 +2246,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2762,9 +2269,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2775,11 +2280,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2792,11 +2293,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2819,9 +2316,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2832,11 +2327,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2849,11 +2340,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2876,9 +2363,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2889,11 +2374,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2906,11 +2387,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2933,9 +2410,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2946,11 +2421,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2963,11 +2434,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2990,9 +2457,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3003,11 +2468,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3020,11 +2481,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3047,9 +2504,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3060,11 +2515,7 @@ class _BaseOracleDatabaseRestTransport(OracleDatabaseTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

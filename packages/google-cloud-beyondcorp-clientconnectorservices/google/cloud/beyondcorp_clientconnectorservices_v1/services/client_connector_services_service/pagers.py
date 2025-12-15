@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,16 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
-    client_connector_services_service,
-)
+from google.cloud.beyondcorp_clientconnectorservices_v1.types import client_connector_services_service
 
 
 class ListClientConnectorServicesPager:
@@ -63,9 +49,7 @@ class ListClientConnectorServicesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., client_connector_services_service.ListClientConnectorServicesResponse
-        ],
+        method: Callable[..., client_connector_services_service.ListClientConnectorServicesResponse],
         request: client_connector_services_service.ListClientConnectorServicesRequest,
         response: client_connector_services_service.ListClientConnectorServicesResponse,
         *,
@@ -91,11 +75,7 @@ class ListClientConnectorServicesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            client_connector_services_service.ListClientConnectorServicesRequest(
-                request
-            )
-        )
+        self._request = client_connector_services_service.ListClientConnectorServicesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -105,25 +85,14 @@ class ListClientConnectorServicesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        client_connector_services_service.ListClientConnectorServicesResponse
-    ]:
+    def pages(self) -> Iterator[client_connector_services_service.ListClientConnectorServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[client_connector_services_service.ClientConnectorService]:
+    def __iter__(self) -> Iterator[client_connector_services_service.ClientConnectorService]:
         for page in self.pages:
             yield from page.client_connector_services
 
@@ -151,12 +120,7 @@ class ListClientConnectorServicesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                client_connector_services_service.ListClientConnectorServicesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[client_connector_services_service.ListClientConnectorServicesResponse]],
         request: client_connector_services_service.ListClientConnectorServicesRequest,
         response: client_connector_services_service.ListClientConnectorServicesResponse,
         *,
@@ -182,11 +146,7 @@ class ListClientConnectorServicesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            client_connector_services_service.ListClientConnectorServicesRequest(
-                request
-            )
-        )
+        self._request = client_connector_services_service.ListClientConnectorServicesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -196,25 +156,14 @@ class ListClientConnectorServicesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        client_connector_services_service.ListClientConnectorServicesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[client_connector_services_service.ListClientConnectorServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[client_connector_services_service.ClientConnectorService]:
+    def __aiter__(self) -> AsyncIterator[client_connector_services_service.ClientConnectorService]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.client_connector_services:

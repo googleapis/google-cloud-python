@@ -20,9 +20,7 @@ from .base import MobileCarrierServiceTransport
 from .rest import MobileCarrierServiceRestInterceptor, MobileCarrierServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[MobileCarrierServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[MobileCarrierServiceTransport]]
 _transport_registry["rest"] = MobileCarrierServiceRestTransport
 
 __all__ = (

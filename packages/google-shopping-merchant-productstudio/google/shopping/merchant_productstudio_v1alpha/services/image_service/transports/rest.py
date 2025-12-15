@@ -103,13 +103,8 @@ class ImageServiceRestInterceptor:
     """
 
     def pre_generate_product_image_background(
-        self,
-        request: image.GenerateProductImageBackgroundRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.GenerateProductImageBackgroundRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: image.GenerateProductImageBackgroundRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.GenerateProductImageBackgroundRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_product_image_background
 
         Override in a subclass to manipulate the request or metadata
@@ -133,13 +128,8 @@ class ImageServiceRestInterceptor:
         return response
 
     def post_generate_product_image_background_with_metadata(
-        self,
-        response: image.GenerateProductImageBackgroundResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.GenerateProductImageBackgroundResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: image.GenerateProductImageBackgroundResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.GenerateProductImageBackgroundResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_product_image_background
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -155,13 +145,8 @@ class ImageServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_product_image_background(
-        self,
-        request: image.RemoveProductImageBackgroundRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.RemoveProductImageBackgroundRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: image.RemoveProductImageBackgroundRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.RemoveProductImageBackgroundRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_product_image_background
 
         Override in a subclass to manipulate the request or metadata
@@ -185,13 +170,8 @@ class ImageServiceRestInterceptor:
         return response
 
     def post_remove_product_image_background_with_metadata(
-        self,
-        response: image.RemoveProductImageBackgroundResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.RemoveProductImageBackgroundResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: image.RemoveProductImageBackgroundResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.RemoveProductImageBackgroundResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_product_image_background
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -207,12 +187,8 @@ class ImageServiceRestInterceptor:
         return response, metadata
 
     def pre_upscale_product_image(
-        self,
-        request: image.UpscaleProductImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.UpscaleProductImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: image.UpscaleProductImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.UpscaleProductImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upscale_product_image
 
         Override in a subclass to manipulate the request or metadata
@@ -220,9 +196,7 @@ class ImageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_upscale_product_image(
-        self, response: image.UpscaleProductImageResponse
-    ) -> image.UpscaleProductImageResponse:
+    def post_upscale_product_image(self, response: image.UpscaleProductImageResponse) -> image.UpscaleProductImageResponse:
         """Post-rpc interceptor for upscale_product_image
 
         DEPRECATED. Please use the `post_upscale_product_image_with_metadata`
@@ -236,12 +210,8 @@ class ImageServiceRestInterceptor:
         return response
 
     def post_upscale_product_image_with_metadata(
-        self,
-        response: image.UpscaleProductImageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image.UpscaleProductImageResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: image.UpscaleProductImageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[image.UpscaleProductImageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upscale_product_image
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -337,31 +307,18 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ImageServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GenerateProductImageBackground(
-        _BaseImageServiceRestTransport._BaseGenerateProductImageBackground,
-        ImageServiceRestStub,
-    ):
+    class _GenerateProductImageBackground(_BaseImageServiceRestTransport._BaseGenerateProductImageBackground, ImageServiceRestStub):
         def __hash__(self):
             return hash("ImageServiceRestTransport.GenerateProductImageBackground")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -405,32 +362,18 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_product_image_background(
-                request, metadata
-            )
-            transcoded_request = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_product_image_background(request, metadata)
+            transcoded_request = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_transcoded_request(http_options, request)
 
-            body = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageServiceRestTransport._BaseGenerateProductImageBackground._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -453,16 +396,8 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ImageServiceRestTransport._GenerateProductImageBackground._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ImageServiceRestTransport._GenerateProductImageBackground._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -478,19 +413,10 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             resp = self._interceptor.post_generate_product_image_background(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_product_image_background_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_product_image_background_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        image.GenerateProductImageBackgroundResponse.to_json(response)
-                    )
+                    response_payload = image.GenerateProductImageBackgroundResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -509,23 +435,12 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
                 )
             return resp
 
-    class _RemoveProductImageBackground(
-        _BaseImageServiceRestTransport._BaseRemoveProductImageBackground,
-        ImageServiceRestStub,
-    ):
+    class _RemoveProductImageBackground(_BaseImageServiceRestTransport._BaseRemoveProductImageBackground, ImageServiceRestStub):
         def __hash__(self):
             return hash("ImageServiceRestTransport.RemoveProductImageBackground")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -569,32 +484,18 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_product_image_background(
-                request, metadata
-            )
-            transcoded_request = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_product_image_background(request, metadata)
+            transcoded_request = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_transcoded_request(http_options, request)
 
-            body = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageServiceRestTransport._BaseRemoveProductImageBackground._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -617,16 +518,8 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ImageServiceRestTransport._RemoveProductImageBackground._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ImageServiceRestTransport._RemoveProductImageBackground._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -642,19 +535,10 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             resp = self._interceptor.post_remove_product_image_background(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_product_image_background_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_product_image_background_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        image.RemoveProductImageBackgroundResponse.to_json(response)
-                    )
+                    response_payload = image.RemoveProductImageBackgroundResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -673,22 +557,12 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
                 )
             return resp
 
-    class _UpscaleProductImage(
-        _BaseImageServiceRestTransport._BaseUpscaleProductImage, ImageServiceRestStub
-    ):
+    class _UpscaleProductImage(_BaseImageServiceRestTransport._BaseUpscaleProductImage, ImageServiceRestStub):
         def __hash__(self):
             return hash("ImageServiceRestTransport.UpscaleProductImage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -731,32 +605,18 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_http_options()
-            )
+            http_options = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_http_options()
 
-            request, metadata = self._interceptor.pre_upscale_product_image(
-                request, metadata
-            )
-            transcoded_request = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_upscale_product_image(request, metadata)
+            transcoded_request = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_transcoded_request(http_options, request)
 
-            body = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageServiceRestTransport._BaseUpscaleProductImage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -780,13 +640,7 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             # Send the request
             response = ImageServiceRestTransport._UpscaleProductImage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -802,16 +656,10 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
 
             resp = self._interceptor.post_upscale_product_image(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upscale_product_image_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upscale_product_image_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = image.UpscaleProductImageResponse.to_json(
-                        response
-                    )
+                    response_payload = image.UpscaleProductImageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -833,31 +681,19 @@ class ImageServiceRestTransport(_BaseImageServiceRestTransport):
     @property
     def generate_product_image_background(
         self,
-    ) -> Callable[
-        [image.GenerateProductImageBackgroundRequest],
-        image.GenerateProductImageBackgroundResponse,
-    ]:
+    ) -> Callable[[image.GenerateProductImageBackgroundRequest], image.GenerateProductImageBackgroundResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateProductImageBackground(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_product_image_background(
-        self,
-    ) -> Callable[
-        [image.RemoveProductImageBackgroundRequest],
-        image.RemoveProductImageBackgroundResponse,
-    ]:
+    def remove_product_image_background(self) -> Callable[[image.RemoveProductImageBackgroundRequest], image.RemoveProductImageBackgroundResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveProductImageBackground(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upscale_product_image(
-        self,
-    ) -> Callable[
-        [image.UpscaleProductImageRequest], image.UpscaleProductImageResponse
-    ]:
+    def upscale_product_image(self) -> Callable[[image.UpscaleProductImageRequest], image.UpscaleProductImageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpscaleProductImage(self._session, self._host, self._interceptor)  # type: ignore

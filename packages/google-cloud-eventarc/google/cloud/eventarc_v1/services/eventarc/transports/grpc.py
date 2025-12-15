@@ -32,17 +32,8 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.eventarc_v1.types import (
-    channel,
-    channel_connection,
-    discovery,
-    enrollment,
-    eventarc,
-    google_api_source,
-)
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
+from google.cloud.eventarc_v1.types import channel, channel_connection, discovery, enrollment, eventarc, google_api_source
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
@@ -60,9 +51,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -72,10 +61,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -94,11 +80,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -235,18 +217,14 @@ class EventarcGrpcTransport(EventarcTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -280,9 +258,7 @@ class EventarcGrpcTransport(EventarcTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -349,9 +325,7 @@ class EventarcGrpcTransport(EventarcTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -381,9 +355,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_trigger"]
 
     @property
-    def list_triggers(
-        self,
-    ) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
+    def list_triggers(self) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
         r"""Return a callable for the list triggers method over gRPC.
 
         List triggers.
@@ -407,9 +379,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_triggers"]
 
     @property
-    def create_trigger(
-        self,
-    ) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
+    def create_trigger(self) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the create trigger method over gRPC.
 
         Create a new trigger in a particular project and
@@ -434,9 +404,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_trigger"]
 
     @property
-    def update_trigger(
-        self,
-    ) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
+    def update_trigger(self) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the update trigger method over gRPC.
 
         Update a single trigger.
@@ -460,9 +428,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_trigger"]
 
     @property
-    def delete_trigger(
-        self,
-    ) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
+    def delete_trigger(self) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete trigger method over gRPC.
 
         Delete a single trigger.
@@ -510,9 +476,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_channel"]
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
+    def list_channels(self) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
         r"""Return a callable for the list channels method over gRPC.
 
         List channels.
@@ -536,9 +500,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_channels"]
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
+    def create_channel_(self) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the create channel method over gRPC.
 
         Create a new channel in a particular project and
@@ -563,9 +525,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_channel_"]
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
+    def update_channel(self) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the update channel method over gRPC.
 
         Update a single channel.
@@ -589,9 +549,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_channel"]
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
+    def delete_channel(self) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete channel method over gRPC.
 
         Delete a single channel.
@@ -615,9 +573,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["delete_channel"]
 
     @property
-    def get_provider(
-        self,
-    ) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
+    def get_provider(self) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
         r"""Return a callable for the get provider method over gRPC.
 
         Get a single Provider.
@@ -641,9 +597,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_provider"]
 
     @property
-    def list_providers(
-        self,
-    ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
+    def list_providers(self) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
         r"""Return a callable for the list providers method over gRPC.
 
         List providers.
@@ -667,11 +621,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_providers"]
 
     @property
-    def get_channel_connection(
-        self,
-    ) -> Callable[
-        [eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection
-    ]:
+    def get_channel_connection(self) -> Callable[[eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection]:
         r"""Return a callable for the get channel connection method over gRPC.
 
         Get a single ChannelConnection.
@@ -695,12 +645,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_channel_connection"]
 
     @property
-    def list_channel_connections(
-        self,
-    ) -> Callable[
-        [eventarc.ListChannelConnectionsRequest],
-        eventarc.ListChannelConnectionsResponse,
-    ]:
+    def list_channel_connections(self) -> Callable[[eventarc.ListChannelConnectionsRequest], eventarc.ListChannelConnectionsResponse]:
         r"""Return a callable for the list channel connections method over gRPC.
 
         List channel connections.
@@ -724,9 +669,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_channel_connections"]
 
     @property
-    def create_channel_connection(
-        self,
-    ) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
+    def create_channel_connection(self) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create channel connection method over gRPC.
 
         Create a new ChannelConnection in a particular
@@ -751,9 +694,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_channel_connection"]
 
     @property
-    def delete_channel_connection(
-        self,
-    ) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
+    def delete_channel_connection(self) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete channel connection method over gRPC.
 
         Delete a single ChannelConnection.
@@ -777,12 +718,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["delete_channel_connection"]
 
     @property
-    def get_google_channel_config(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleChannelConfigRequest],
-        google_channel_config.GoogleChannelConfig,
-    ]:
+    def get_google_channel_config(self) -> Callable[[eventarc.GetGoogleChannelConfigRequest], google_channel_config.GoogleChannelConfig]:
         r"""Return a callable for the get google channel config method over gRPC.
 
         Get a GoogleChannelConfig.
@@ -808,12 +744,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_google_channel_config"]
 
     @property
-    def update_google_channel_config(
-        self,
-    ) -> Callable[
-        [eventarc.UpdateGoogleChannelConfigRequest],
-        gce_google_channel_config.GoogleChannelConfig,
-    ]:
+    def update_google_channel_config(self) -> Callable[[eventarc.UpdateGoogleChannelConfigRequest], gce_google_channel_config.GoogleChannelConfig]:
         r"""Return a callable for the update google channel config method over gRPC.
 
         Update a single GoogleChannelConfig
@@ -829,9 +760,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_google_channel_config" not in self._stubs:
-            self._stubs[
-                "update_google_channel_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_google_channel_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
                 request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
                 response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
@@ -839,9 +768,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_google_channel_config"]
 
     @property
-    def get_message_bus(
-        self,
-    ) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
+    def get_message_bus(self) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
         r"""Return a callable for the get message bus method over gRPC.
 
         Get a single MessageBus.
@@ -865,11 +792,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_message_bus"]
 
     @property
-    def list_message_buses(
-        self,
-    ) -> Callable[
-        [eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse
-    ]:
+    def list_message_buses(self) -> Callable[[eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse]:
         r"""Return a callable for the list message buses method over gRPC.
 
         List message buses.
@@ -893,12 +816,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_message_buses"]
 
     @property
-    def list_message_bus_enrollments(
-        self,
-    ) -> Callable[
-        [eventarc.ListMessageBusEnrollmentsRequest],
-        eventarc.ListMessageBusEnrollmentsResponse,
-    ]:
+    def list_message_bus_enrollments(self) -> Callable[[eventarc.ListMessageBusEnrollmentsRequest], eventarc.ListMessageBusEnrollmentsResponse]:
         r"""Return a callable for the list message bus enrollments method over gRPC.
 
         List message bus enrollments.
@@ -914,9 +832,7 @@ class EventarcGrpcTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_message_bus_enrollments" not in self._stubs:
-            self._stubs[
-                "list_message_bus_enrollments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_message_bus_enrollments"] = self._logged_channel.unary_unary(
                 "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
                 request_serializer=eventarc.ListMessageBusEnrollmentsRequest.serialize,
                 response_deserializer=eventarc.ListMessageBusEnrollmentsResponse.deserialize,
@@ -924,9 +840,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_message_bus_enrollments"]
 
     @property
-    def create_message_bus(
-        self,
-    ) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
+    def create_message_bus(self) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
         r"""Return a callable for the create message bus method over gRPC.
 
         Create a new MessageBus in a particular project and
@@ -951,9 +865,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_message_bus"]
 
     @property
-    def update_message_bus(
-        self,
-    ) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
+    def update_message_bus(self) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
         r"""Return a callable for the update message bus method over gRPC.
 
         Update a single message bus.
@@ -977,9 +889,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_message_bus"]
 
     @property
-    def delete_message_bus(
-        self,
-    ) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
+    def delete_message_bus(self) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete message bus method over gRPC.
 
         Delete a single message bus.
@@ -1003,9 +913,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["delete_message_bus"]
 
     @property
-    def get_enrollment(
-        self,
-    ) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
+    def get_enrollment(self) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
         r"""Return a callable for the get enrollment method over gRPC.
 
         Get a single Enrollment.
@@ -1029,9 +937,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_enrollment"]
 
     @property
-    def list_enrollments(
-        self,
-    ) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
+    def list_enrollments(self) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
         r"""Return a callable for the list enrollments method over gRPC.
 
         List Enrollments.
@@ -1055,9 +961,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_enrollments"]
 
     @property
-    def create_enrollment(
-        self,
-    ) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
+    def create_enrollment(self) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create enrollment method over gRPC.
 
         Create a new Enrollment in a particular project and
@@ -1082,9 +986,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_enrollment"]
 
     @property
-    def update_enrollment(
-        self,
-    ) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
+    def update_enrollment(self) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the update enrollment method over gRPC.
 
         Update a single Enrollment.
@@ -1108,9 +1010,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_enrollment"]
 
     @property
-    def delete_enrollment(
-        self,
-    ) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
+    def delete_enrollment(self) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete enrollment method over gRPC.
 
         Delete a single Enrollment.
@@ -1134,9 +1034,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["delete_enrollment"]
 
     @property
-    def get_pipeline(
-        self,
-    ) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
+    def get_pipeline(self) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
         r"""Return a callable for the get pipeline method over gRPC.
 
         Get a single Pipeline.
@@ -1160,9 +1058,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_pipeline"]
 
     @property
-    def list_pipelines(
-        self,
-    ) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
+    def list_pipelines(self) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
         r"""Return a callable for the list pipelines method over gRPC.
 
         List pipelines.
@@ -1186,9 +1082,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_pipelines"]
 
     @property
-    def create_pipeline(
-        self,
-    ) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
+    def create_pipeline(self) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the create pipeline method over gRPC.
 
         Create a new Pipeline in a particular project and
@@ -1213,9 +1107,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_pipeline"]
 
     @property
-    def update_pipeline(
-        self,
-    ) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
+    def update_pipeline(self) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the update pipeline method over gRPC.
 
         Update a single pipeline.
@@ -1239,9 +1131,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_pipeline"]
 
     @property
-    def delete_pipeline(
-        self,
-    ) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
+    def delete_pipeline(self) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete pipeline method over gRPC.
 
         Delete a single pipeline.
@@ -1265,11 +1155,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["delete_pipeline"]
 
     @property
-    def get_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource
-    ]:
+    def get_google_api_source(self) -> Callable[[eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource]:
         r"""Return a callable for the get google api source method over gRPC.
 
         Get a single GoogleApiSource.
@@ -1293,11 +1179,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["get_google_api_source"]
 
     @property
-    def list_google_api_sources(
-        self,
-    ) -> Callable[
-        [eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse
-    ]:
+    def list_google_api_sources(self) -> Callable[[eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse]:
         r"""Return a callable for the list google api sources method over gRPC.
 
         List GoogleApiSources.
@@ -1321,9 +1203,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["list_google_api_sources"]
 
     @property
-    def create_google_api_source(
-        self,
-    ) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
+    def create_google_api_source(self) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create google api source method over gRPC.
 
         Create a new GoogleApiSource in a particular project
@@ -1348,9 +1228,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["create_google_api_source"]
 
     @property
-    def update_google_api_source(
-        self,
-    ) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
+    def update_google_api_source(self) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update google api source method over gRPC.
 
         Update a single GoogleApiSource.
@@ -1374,9 +1252,7 @@ class EventarcGrpcTransport(EventarcTransport):
         return self._stubs["update_google_api_source"]
 
     @property
-    def delete_google_api_source(
-        self,
-    ) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
+    def delete_google_api_source(self) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete google api source method over gRPC.
 
         Delete a single GoogleApiSource.
@@ -1456,9 +1332,7 @@ class EventarcGrpcTransport(EventarcTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1475,9 +1349,7 @@ class EventarcGrpcTransport(EventarcTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1562,10 +1434,7 @@ class EventarcGrpcTransport(EventarcTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

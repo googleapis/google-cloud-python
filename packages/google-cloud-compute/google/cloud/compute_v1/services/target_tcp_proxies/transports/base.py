@@ -29,9 +29,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import global_operations
 from google.cloud.compute_v1.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class TargetTcpProxiesTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -188,66 +178,34 @@ class TargetTcpProxiesTransport(abc.ABC):
     def aggregated_list(
         self,
     ) -> Callable[
-        [compute.AggregatedListTargetTcpProxiesRequest],
-        Union[
-            compute.TargetTcpProxyAggregatedList,
-            Awaitable[compute.TargetTcpProxyAggregatedList],
-        ],
+        [compute.AggregatedListTargetTcpProxiesRequest], Union[compute.TargetTcpProxyAggregatedList, Awaitable[compute.TargetTcpProxyAggregatedList]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteTargetTcpProxyRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteTargetTcpProxyRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetTargetTcpProxyRequest],
-        Union[compute.TargetTcpProxy, Awaitable[compute.TargetTcpProxy]],
-    ]:
+    def get(self) -> Callable[[compute.GetTargetTcpProxyRequest], Union[compute.TargetTcpProxy, Awaitable[compute.TargetTcpProxy]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertTargetTcpProxyRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertTargetTcpProxyRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListTargetTcpProxiesRequest],
-        Union[compute.TargetTcpProxyList, Awaitable[compute.TargetTcpProxyList]],
-    ]:
+    def list(self) -> Callable[[compute.ListTargetTcpProxiesRequest], Union[compute.TargetTcpProxyList, Awaitable[compute.TargetTcpProxyList]]]:
         raise NotImplementedError()
 
     @property
     def set_backend_service(
         self,
-    ) -> Callable[
-        [compute.SetBackendServiceTargetTcpProxyRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetBackendServiceTargetTcpProxyRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_proxy_header(
-        self,
-    ) -> Callable[
-        [compute.SetProxyHeaderTargetTcpProxyRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_proxy_header(self) -> Callable[[compute.SetProxyHeaderTargetTcpProxyRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

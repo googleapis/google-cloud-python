@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.servicemanagement_v1 import gapic_version as package_version
 from google.cloud.servicemanagement_v1.types import resources, servicemanager
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -101,23 +99,15 @@ class ServiceManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -246,49 +236,25 @@ class ServiceManagerTransport(abc.ABC):
     @property
     def list_services(
         self,
-    ) -> Callable[
-        [servicemanager.ListServicesRequest],
-        Union[
-            servicemanager.ListServicesResponse,
-            Awaitable[servicemanager.ListServicesResponse],
-        ],
-    ]:
+    ) -> Callable[[servicemanager.ListServicesRequest], Union[servicemanager.ListServicesResponse, Awaitable[servicemanager.ListServicesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[
-        [servicemanager.GetServiceRequest],
-        Union[resources.ManagedService, Awaitable[resources.ManagedService]],
-    ]:
+    def get_service(self) -> Callable[[servicemanager.GetServiceRequest], Union[resources.ManagedService, Awaitable[resources.ManagedService]]]:
         raise NotImplementedError()
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [servicemanager.CreateServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_service(self) -> Callable[[servicemanager.CreateServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [servicemanager.DeleteServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_service(self) -> Callable[[servicemanager.DeleteServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undelete_service(
         self,
-    ) -> Callable[
-        [servicemanager.UndeleteServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[servicemanager.UndeleteServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -296,38 +262,24 @@ class ServiceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [servicemanager.ListServiceConfigsRequest],
-        Union[
-            servicemanager.ListServiceConfigsResponse,
-            Awaitable[servicemanager.ListServiceConfigsResponse],
-        ],
+        Union[servicemanager.ListServiceConfigsResponse, Awaitable[servicemanager.ListServiceConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_service_config(
-        self,
-    ) -> Callable[
-        [servicemanager.GetServiceConfigRequest],
-        Union[service_pb2.Service, Awaitable[service_pb2.Service]],
-    ]:
+    def get_service_config(self) -> Callable[[servicemanager.GetServiceConfigRequest], Union[service_pb2.Service, Awaitable[service_pb2.Service]]]:
         raise NotImplementedError()
 
     @property
     def create_service_config(
         self,
-    ) -> Callable[
-        [servicemanager.CreateServiceConfigRequest],
-        Union[service_pb2.Service, Awaitable[service_pb2.Service]],
-    ]:
+    ) -> Callable[[servicemanager.CreateServiceConfigRequest], Union[service_pb2.Service, Awaitable[service_pb2.Service]]]:
         raise NotImplementedError()
 
     @property
     def submit_config_source(
         self,
-    ) -> Callable[
-        [servicemanager.SubmitConfigSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[servicemanager.SubmitConfigSourceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -335,29 +287,18 @@ class ServiceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [servicemanager.ListServiceRolloutsRequest],
-        Union[
-            servicemanager.ListServiceRolloutsResponse,
-            Awaitable[servicemanager.ListServiceRolloutsResponse],
-        ],
+        Union[servicemanager.ListServiceRolloutsResponse, Awaitable[servicemanager.ListServiceRolloutsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_service_rollout(
-        self,
-    ) -> Callable[
-        [servicemanager.GetServiceRolloutRequest],
-        Union[resources.Rollout, Awaitable[resources.Rollout]],
-    ]:
+    def get_service_rollout(self) -> Callable[[servicemanager.GetServiceRolloutRequest], Union[resources.Rollout, Awaitable[resources.Rollout]]]:
         raise NotImplementedError()
 
     @property
     def create_service_rollout(
         self,
-    ) -> Callable[
-        [servicemanager.CreateServiceRolloutRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[servicemanager.CreateServiceRolloutRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -365,10 +306,7 @@ class ServiceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [servicemanager.GenerateConfigReportRequest],
-        Union[
-            servicemanager.GenerateConfigReportResponse,
-            Awaitable[servicemanager.GenerateConfigReportResponse],
-        ],
+        Union[servicemanager.GenerateConfigReportResponse, Awaitable[servicemanager.GenerateConfigReportResponse]],
     ]:
         raise NotImplementedError()
 
@@ -377,29 +315,20 @@ class ServiceManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property

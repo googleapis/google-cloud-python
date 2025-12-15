@@ -21,10 +21,7 @@ from google.api_core import gapic_v1, path_template
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
-)
+from google.cloud.commerce_consumer_procurement_v1.types import order, procurement_service
 
 from .base import DEFAULT_CLIENT_INFO, ConsumerProcurementServiceTransport
 
@@ -75,20 +72,14 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCancelOrder:
@@ -99,11 +90,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -126,9 +113,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -139,11 +124,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -156,11 +137,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -186,11 +163,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -203,11 +176,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -233,11 +202,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -250,11 +215,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -277,9 +238,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -290,11 +249,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -307,11 +262,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -334,9 +285,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -347,11 +296,7 @@ class _BaseConsumerProcurementServiceRestTransport(ConsumerProcurementServiceTra
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

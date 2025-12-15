@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -275,18 +264,14 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -322,9 +307,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -339,11 +322,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._grpc_channel
 
     @property
-    def create_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanager.CreateTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]
-    ]:
+    def create_taxonomy(self) -> Callable[[policytagmanager.CreateTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]]:
         r"""Return a callable for the create taxonomy method over gRPC.
 
         Creates a taxonomy in a specified project.
@@ -370,9 +349,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["create_taxonomy"]
 
     @property
-    def delete_taxonomy(
-        self,
-    ) -> Callable[[policytagmanager.DeleteTaxonomyRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_taxonomy(self) -> Callable[[policytagmanager.DeleteTaxonomyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete taxonomy method over gRPC.
 
         Deletes a taxonomy, including all policy tags in this
@@ -398,11 +375,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["delete_taxonomy"]
 
     @property
-    def update_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanager.UpdateTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]
-    ]:
+    def update_taxonomy(self) -> Callable[[policytagmanager.UpdateTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]]:
         r"""Return a callable for the update taxonomy method over gRPC.
 
         Updates a taxonomy, including its display name,
@@ -427,12 +400,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["update_taxonomy"]
 
     @property
-    def list_taxonomies(
-        self,
-    ) -> Callable[
-        [policytagmanager.ListTaxonomiesRequest],
-        Awaitable[policytagmanager.ListTaxonomiesResponse],
-    ]:
+    def list_taxonomies(self) -> Callable[[policytagmanager.ListTaxonomiesRequest], Awaitable[policytagmanager.ListTaxonomiesResponse]]:
         r"""Return a callable for the list taxonomies method over gRPC.
 
         Lists all taxonomies in a project in a particular
@@ -457,11 +425,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["list_taxonomies"]
 
     @property
-    def get_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanager.GetTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]
-    ]:
+    def get_taxonomy(self) -> Callable[[policytagmanager.GetTaxonomyRequest], Awaitable[policytagmanager.Taxonomy]]:
         r"""Return a callable for the get taxonomy method over gRPC.
 
         Gets a taxonomy.
@@ -485,11 +449,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["get_taxonomy"]
 
     @property
-    def create_policy_tag(
-        self,
-    ) -> Callable[
-        [policytagmanager.CreatePolicyTagRequest], Awaitable[policytagmanager.PolicyTag]
-    ]:
+    def create_policy_tag(self) -> Callable[[policytagmanager.CreatePolicyTagRequest], Awaitable[policytagmanager.PolicyTag]]:
         r"""Return a callable for the create policy tag method over gRPC.
 
         Creates a policy tag in a taxonomy.
@@ -513,11 +473,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["create_policy_tag"]
 
     @property
-    def delete_policy_tag(
-        self,
-    ) -> Callable[
-        [policytagmanager.DeletePolicyTagRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_policy_tag(self) -> Callable[[policytagmanager.DeletePolicyTagRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete policy tag method over gRPC.
 
         Deletes a policy tag together with the following:
@@ -546,11 +502,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["delete_policy_tag"]
 
     @property
-    def update_policy_tag(
-        self,
-    ) -> Callable[
-        [policytagmanager.UpdatePolicyTagRequest], Awaitable[policytagmanager.PolicyTag]
-    ]:
+    def update_policy_tag(self) -> Callable[[policytagmanager.UpdatePolicyTagRequest], Awaitable[policytagmanager.PolicyTag]]:
         r"""Return a callable for the update policy tag method over gRPC.
 
         Updates a policy tag, including its display
@@ -575,12 +527,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["update_policy_tag"]
 
     @property
-    def list_policy_tags(
-        self,
-    ) -> Callable[
-        [policytagmanager.ListPolicyTagsRequest],
-        Awaitable[policytagmanager.ListPolicyTagsResponse],
-    ]:
+    def list_policy_tags(self) -> Callable[[policytagmanager.ListPolicyTagsRequest], Awaitable[policytagmanager.ListPolicyTagsResponse]]:
         r"""Return a callable for the list policy tags method over gRPC.
 
         Lists all policy tags in a taxonomy.
@@ -604,11 +551,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["list_policy_tags"]
 
     @property
-    def get_policy_tag(
-        self,
-    ) -> Callable[
-        [policytagmanager.GetPolicyTagRequest], Awaitable[policytagmanager.PolicyTag]
-    ]:
+    def get_policy_tag(self) -> Callable[[policytagmanager.GetPolicyTagRequest], Awaitable[policytagmanager.PolicyTag]]:
         r"""Return a callable for the get policy tag method over gRPC.
 
         Gets a policy tag.
@@ -632,9 +575,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["get_policy_tag"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a policy tag or a taxonomy.
@@ -658,9 +599,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM policy for a policy tag or a taxonomy.
@@ -684,12 +623,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns your permissions on a specified policy tag or
@@ -869,9 +803,7 @@ class PolicyTagManagerGrpcAsyncIOTransport(PolicyTagManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

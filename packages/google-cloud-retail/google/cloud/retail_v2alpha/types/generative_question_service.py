@@ -102,9 +102,7 @@ class ListGenerativeQuestionConfigsResponse(proto.Message):
             All the questions for a given catalog.
     """
 
-    generative_question_configs: MutableSequence[
-        generative_question.GenerativeQuestionConfig
-    ] = proto.RepeatedField(
+    generative_question_configs: MutableSequence[generative_question.GenerativeQuestionConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=generative_question.GenerativeQuestionConfig,
@@ -127,12 +125,10 @@ class UpdateGenerativeQuestionConfigRequest(proto.Message):
             If not set or empty, all supported fields are updated.
     """
 
-    generative_question_config: generative_question.GenerativeQuestionConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=generative_question.GenerativeQuestionConfig,
-        )
+    generative_question_config: generative_question.GenerativeQuestionConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=generative_question.GenerativeQuestionConfig,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -157,9 +153,7 @@ class BatchUpdateGenerativeQuestionConfigsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateGenerativeQuestionConfigRequest"
-    ] = proto.RepeatedField(
+    requests: MutableSequence["UpdateGenerativeQuestionConfigRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="UpdateGenerativeQuestionConfigRequest",
@@ -175,9 +169,7 @@ class BatchUpdateGenerativeQuestionConfigsResponse(proto.Message):
             Optional. The updates question configs.
     """
 
-    generative_question_configs: MutableSequence[
-        generative_question.GenerativeQuestionConfig
-    ] = proto.RepeatedField(
+    generative_question_configs: MutableSequence[generative_question.GenerativeQuestionConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=generative_question.GenerativeQuestionConfig,

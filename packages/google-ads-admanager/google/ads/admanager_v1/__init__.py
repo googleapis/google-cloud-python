@@ -13,10 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+import sys
+
+import google.api_core as api_core
+
 from google.ads.admanager_v1 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
+if sys.version_info >= (3, 8):  # pragma: NO COVER
+    from importlib import metadata
+else:  # pragma: NO COVER
+    # TODO(https://github.com/googleapis/python-api-core/issues/835): Remove
+    # this code path once we drop support for Python 3.7
+    import importlib_metadata as metadata
 
 from .services.ad_break_service import AdBreakServiceClient
 from .services.ad_review_center_ad_service import AdReviewCenterAdServiceClient
@@ -48,9 +58,7 @@ from .services.mobile_device_service import MobileDeviceServiceClient
 from .services.mobile_device_submodel_service import MobileDeviceSubmodelServiceClient
 from .services.network_service import NetworkServiceClient
 from .services.operating_system_service import OperatingSystemServiceClient
-from .services.operating_system_version_service import (
-    OperatingSystemVersionServiceClient,
-)
+from .services.operating_system_version_service import OperatingSystemVersionServiceClient
 from .services.order_service import OrderServiceClient
 from .services.placement_service import PlacementServiceClient
 from .services.private_auction_deal_service import PrivateAuctionDealServiceClient
@@ -105,57 +113,25 @@ from .types.ad_unit_service import (
 )
 from .types.admanager_error import AdManagerError
 from .types.application_messages import Application
-from .types.application_service import (
-    GetApplicationRequest,
-    ListApplicationsRequest,
-    ListApplicationsResponse,
-)
+from .types.application_service import GetApplicationRequest, ListApplicationsRequest, ListApplicationsResponse
 from .types.applied_label import AppliedLabel
 from .types.audience_segment_messages import AudienceSegment
-from .types.audience_segment_service import (
-    GetAudienceSegmentRequest,
-    ListAudienceSegmentsRequest,
-    ListAudienceSegmentsResponse,
-)
+from .types.audience_segment_service import GetAudienceSegmentRequest, ListAudienceSegmentsRequest, ListAudienceSegmentsResponse
 from .types.bandwidth_group_messages import BandwidthGroup
-from .types.bandwidth_group_service import (
-    GetBandwidthGroupRequest,
-    ListBandwidthGroupsRequest,
-    ListBandwidthGroupsResponse,
-)
+from .types.bandwidth_group_service import GetBandwidthGroupRequest, ListBandwidthGroupsRequest, ListBandwidthGroupsResponse
 from .types.browser_language_messages import BrowserLanguage
-from .types.browser_language_service import (
-    GetBrowserLanguageRequest,
-    ListBrowserLanguagesRequest,
-    ListBrowserLanguagesResponse,
-)
+from .types.browser_language_service import GetBrowserLanguageRequest, ListBrowserLanguagesRequest, ListBrowserLanguagesResponse
 from .types.browser_messages import Browser
-from .types.browser_service import (
-    GetBrowserRequest,
-    ListBrowsersRequest,
-    ListBrowsersResponse,
-)
+from .types.browser_service import GetBrowserRequest, ListBrowsersRequest, ListBrowsersResponse
 from .types.cms_metadata_key_enums import CmsMetadataKeyStatusEnum
 from .types.cms_metadata_key_messages import CmsMetadataKey
-from .types.cms_metadata_key_service import (
-    GetCmsMetadataKeyRequest,
-    ListCmsMetadataKeysRequest,
-    ListCmsMetadataKeysResponse,
-)
+from .types.cms_metadata_key_service import GetCmsMetadataKeyRequest, ListCmsMetadataKeysRequest, ListCmsMetadataKeysResponse
 from .types.cms_metadata_value_enums import CmsMetadataValueStatusEnum
 from .types.cms_metadata_value_messages import CmsMetadataValue
-from .types.cms_metadata_value_service import (
-    GetCmsMetadataValueRequest,
-    ListCmsMetadataValuesRequest,
-    ListCmsMetadataValuesResponse,
-)
+from .types.cms_metadata_value_service import GetCmsMetadataValueRequest, ListCmsMetadataValuesRequest, ListCmsMetadataValuesResponse
 from .types.company_enums import CompanyCreditStatusEnum, CompanyTypeEnum
 from .types.company_messages import Company
-from .types.company_service import (
-    GetCompanyRequest,
-    ListCompaniesRequest,
-    ListCompaniesResponse,
-)
+from .types.company_service import GetCompanyRequest, ListCompaniesRequest, ListCompaniesResponse
 from .types.contact_enums import ContactStatusEnum
 from .types.contact_messages import Contact
 from .types.contact_service import (
@@ -170,42 +146,16 @@ from .types.contact_service import (
     UpdateContactRequest,
 )
 from .types.content_bundle_messages import ContentBundle
-from .types.content_bundle_service import (
-    GetContentBundleRequest,
-    ListContentBundlesRequest,
-    ListContentBundlesResponse,
-)
+from .types.content_bundle_service import GetContentBundleRequest, ListContentBundlesRequest, ListContentBundlesResponse
 from .types.content_label_messages import ContentLabel
-from .types.content_label_service import (
-    GetContentLabelRequest,
-    ListContentLabelsRequest,
-    ListContentLabelsResponse,
-)
+from .types.content_label_service import GetContentLabelRequest, ListContentLabelsRequest, ListContentLabelsResponse
 from .types.content_messages import Content
-from .types.content_service import (
-    GetContentRequest,
-    ListContentRequest,
-    ListContentResponse,
-)
-from .types.creative_template_enums import (
-    CreativeTemplateStatusEnum,
-    CreativeTemplateTypeEnum,
-)
+from .types.content_service import GetContentRequest, ListContentRequest, ListContentResponse
+from .types.creative_template_enums import CreativeTemplateStatusEnum, CreativeTemplateTypeEnum
 from .types.creative_template_messages import CreativeTemplate, CreativeTemplateVariable
-from .types.creative_template_service import (
-    GetCreativeTemplateRequest,
-    ListCreativeTemplatesRequest,
-    ListCreativeTemplatesResponse,
-)
-from .types.creative_template_variable_url_type_enum import (
-    CreativeTemplateVariableUrlTypeEnum,
-)
-from .types.custom_field_enums import (
-    CustomFieldDataTypeEnum,
-    CustomFieldEntityTypeEnum,
-    CustomFieldStatusEnum,
-    CustomFieldVisibilityEnum,
-)
+from .types.creative_template_service import GetCreativeTemplateRequest, ListCreativeTemplatesRequest, ListCreativeTemplatesResponse
+from .types.creative_template_variable_url_type_enum import CreativeTemplateVariableUrlTypeEnum
+from .types.custom_field_enums import CustomFieldDataTypeEnum, CustomFieldEntityTypeEnum, CustomFieldStatusEnum, CustomFieldVisibilityEnum
 from .types.custom_field_messages import CustomField, CustomFieldOption
 from .types.custom_field_service import (
     BatchActivateCustomFieldsRequest,
@@ -223,11 +173,7 @@ from .types.custom_field_service import (
     UpdateCustomFieldRequest,
 )
 from .types.custom_field_value import CustomFieldValue
-from .types.custom_targeting_key_enums import (
-    CustomTargetingKeyReportableTypeEnum,
-    CustomTargetingKeyStatusEnum,
-    CustomTargetingKeyTypeEnum,
-)
+from .types.custom_targeting_key_enums import CustomTargetingKeyReportableTypeEnum, CustomTargetingKeyStatusEnum, CustomTargetingKeyTypeEnum
 from .types.custom_targeting_key_messages import CustomTargetingKey
 from .types.custom_targeting_key_service import (
     BatchActivateCustomTargetingKeysRequest,
@@ -244,35 +190,16 @@ from .types.custom_targeting_key_service import (
     ListCustomTargetingKeysResponse,
     UpdateCustomTargetingKeyRequest,
 )
-from .types.custom_targeting_value_enums import (
-    CustomTargetingValueMatchTypeEnum,
-    CustomTargetingValueStatusEnum,
-)
+from .types.custom_targeting_value_enums import CustomTargetingValueMatchTypeEnum, CustomTargetingValueStatusEnum
 from .types.custom_targeting_value_messages import CustomTargetingValue
-from .types.custom_targeting_value_service import (
-    GetCustomTargetingValueRequest,
-    ListCustomTargetingValuesRequest,
-    ListCustomTargetingValuesResponse,
-)
+from .types.custom_targeting_value_service import GetCustomTargetingValueRequest, ListCustomTargetingValuesRequest, ListCustomTargetingValuesResponse
 from .types.deal_buyer_permission_type_enum import DealBuyerPermissionTypeEnum
 from .types.device_capability_messages import DeviceCapability
-from .types.device_capability_service import (
-    GetDeviceCapabilityRequest,
-    ListDeviceCapabilitiesRequest,
-    ListDeviceCapabilitiesResponse,
-)
+from .types.device_capability_service import GetDeviceCapabilityRequest, ListDeviceCapabilitiesRequest, ListDeviceCapabilitiesResponse
 from .types.device_category_messages import DeviceCategory
-from .types.device_category_service import (
-    GetDeviceCategoryRequest,
-    ListDeviceCategoriesRequest,
-    ListDeviceCategoriesResponse,
-)
+from .types.device_category_service import GetDeviceCategoryRequest, ListDeviceCategoriesRequest, ListDeviceCategoriesResponse
 from .types.device_manufacturer_messages import DeviceManufacturer
-from .types.device_manufacturer_service import (
-    GetDeviceManufacturerRequest,
-    ListDeviceManufacturersRequest,
-    ListDeviceManufacturersResponse,
-)
+from .types.device_manufacturer_service import GetDeviceManufacturerRequest, ListDeviceManufacturersRequest, ListDeviceManufacturersResponse
 from .types.early_ad_break_notification_enums import AdBreakStateEnum
 from .types.entity_signals_mapping_messages import EntitySignalsMapping
 from .types.entity_signals_mapping_service import (
@@ -290,52 +217,24 @@ from .types.environment_type_enum import EnvironmentTypeEnum
 from .types.exchange_syndication_product_enum import ExchangeSyndicationProductEnum
 from .types.frequency_cap import FrequencyCap
 from .types.geo_target_messages import GeoTarget
-from .types.geo_target_service import (
-    GetGeoTargetRequest,
-    ListGeoTargetsRequest,
-    ListGeoTargetsResponse,
-)
+from .types.geo_target_service import GetGeoTargetRequest, ListGeoTargetsRequest, ListGeoTargetsResponse
 from .types.goal import Goal
 from .types.goal_enums import GoalTypeEnum, UnitTypeEnum
 from .types.label_messages import Label
 from .types.line_item_enums import LineItemTypeEnum
 from .types.line_item_messages import LineItem
-from .types.line_item_service import (
-    GetLineItemRequest,
-    ListLineItemsRequest,
-    ListLineItemsResponse,
-)
+from .types.line_item_service import GetLineItemRequest, ListLineItemsRequest, ListLineItemsResponse
 from .types.live_stream_event_messages import LiveStreamEvent
 from .types.mobile_carrier_messages import MobileCarrier
-from .types.mobile_carrier_service import (
-    GetMobileCarrierRequest,
-    ListMobileCarriersRequest,
-    ListMobileCarriersResponse,
-)
+from .types.mobile_carrier_service import GetMobileCarrierRequest, ListMobileCarriersRequest, ListMobileCarriersResponse
 from .types.mobile_device_messages import MobileDevice
-from .types.mobile_device_service import (
-    GetMobileDeviceRequest,
-    ListMobileDevicesRequest,
-    ListMobileDevicesResponse,
-)
+from .types.mobile_device_service import GetMobileDeviceRequest, ListMobileDevicesRequest, ListMobileDevicesResponse
 from .types.mobile_device_submodel_messages import MobileDeviceSubmodel
-from .types.mobile_device_submodel_service import (
-    GetMobileDeviceSubmodelRequest,
-    ListMobileDeviceSubmodelsRequest,
-    ListMobileDeviceSubmodelsResponse,
-)
+from .types.mobile_device_submodel_service import GetMobileDeviceSubmodelRequest, ListMobileDeviceSubmodelsRequest, ListMobileDeviceSubmodelsResponse
 from .types.network_messages import Network
-from .types.network_service import (
-    GetNetworkRequest,
-    ListNetworksRequest,
-    ListNetworksResponse,
-)
+from .types.network_service import GetNetworkRequest, ListNetworksRequest, ListNetworksResponse
 from .types.operating_system_messages import OperatingSystem
-from .types.operating_system_service import (
-    GetOperatingSystemRequest,
-    ListOperatingSystemsRequest,
-    ListOperatingSystemsResponse,
-)
+from .types.operating_system_service import GetOperatingSystemRequest, ListOperatingSystemsRequest, ListOperatingSystemsResponse
 from .types.operating_system_version_messages import OperatingSystemVersion
 from .types.operating_system_version_service import (
     GetOperatingSystemVersionRequest,
@@ -382,11 +281,7 @@ from .types.private_auction_service import (
 )
 from .types.private_marketplace_enums import PrivateMarketplaceDealStatusEnum
 from .types.programmatic_buyer_messages import ProgrammaticBuyer
-from .types.programmatic_buyer_service import (
-    GetProgrammaticBuyerRequest,
-    ListProgrammaticBuyersRequest,
-    ListProgrammaticBuyersResponse,
-)
+from .types.programmatic_buyer_service import GetProgrammaticBuyerRequest, ListProgrammaticBuyersRequest, ListProgrammaticBuyersResponse
 from .types.report_definition import ReportDefinition
 from .types.report_messages import Report, ReportDataTable, ScheduleOptions
 from .types.report_service import (
@@ -455,11 +350,7 @@ from .types.targeting import (
     VideoPositionTargeting,
 )
 from .types.taxonomy_category_messages import TaxonomyCategory
-from .types.taxonomy_category_service import (
-    GetTaxonomyCategoryRequest,
-    ListTaxonomyCategoriesRequest,
-    ListTaxonomyCategoriesResponse,
-)
+from .types.taxonomy_category_service import GetTaxonomyCategoryRequest, ListTaxonomyCategoriesRequest, ListTaxonomyCategoriesResponse
 from .types.taxonomy_type_enum import TaxonomyTypeEnum
 from .types.team_enums import TeamAccessTypeEnum, TeamStatusEnum
 from .types.team_messages import Team
@@ -483,6 +374,98 @@ from .types.user_messages import User
 from .types.user_service import GetUserRequest
 from .types.video_position_enum import VideoPositionEnum
 from .types.web_property import WebProperty
+
+if hasattr(api_core, "check_python_version") and hasattr(api_core, "check_dependency_versions"):  # pragma: NO COVER
+    api_core.check_python_version("google.ads.admanager_v1")  # type: ignore
+    api_core.check_dependency_versions("google.ads.admanager_v1")  # type: ignore
+else:  # pragma: NO COVER
+    # An older version of api_core is installed which does not define the
+    # functions above. We do equivalent checks manually.
+    try:
+        import sys
+        import warnings
+
+        _py_version_str = sys.version.split()[0]
+        _package_label = "google.ads.admanager_v1"
+        if sys.version_info < (3, 9):
+            warnings.warn(
+                "You are using a non-supported Python version "
+                + f"({_py_version_str}).  Google will not post any further "
+                + f"updates to {_package_label} supporting this Python version. "
+                + "Please upgrade to the latest Python version, or at "
+                + f"least to Python 3.9, and then update {_package_label}.",
+                FutureWarning,
+            )
+        if sys.version_info[:2] == (3, 9):
+            warnings.warn(
+                f"You are using a Python version ({_py_version_str}) "
+                + f"which Google will stop supporting in {_package_label} in "
+                + "January 2026. Please "
+                + "upgrade to the latest Python version, or at "
+                + "least to Python 3.10, before then, and "
+                + f"then update {_package_label}.",
+                FutureWarning,
+            )
+
+        def parse_version_to_tuple(version_string: str):
+            """Safely converts a semantic version string to a comparable tuple of integers.
+            Example: "4.25.8" -> (4, 25, 8)
+            Ignores non-numeric parts and handles common version formats.
+            Args:
+                version_string: Version string in the format "x.y.z" or "x.y.z<suffix>"
+            Returns:
+                Tuple of integers for the parsed version string.
+            """
+            parts = []
+            for part in version_string.split("."):
+                try:
+                    parts.append(int(part))
+                except ValueError:
+                    # If it's a non-numeric part (e.g., '1.0.0b1' -> 'b1'), stop here.
+                    # This is a simplification compared to 'packaging.parse_version', but sufficient
+                    # for comparing strictly numeric semantic versions.
+                    break
+            return tuple(parts)
+
+        def _get_version(dependency_name):
+            try:
+                version_string: str = metadata.version(dependency_name)
+                parsed_version = parse_version_to_tuple(version_string)
+                return (parsed_version, version_string)
+            except Exception:
+                # Catch exceptions from metadata.version() (e.g., PackageNotFoundError)
+                # or errors during parse_version_to_tuple
+                return (None, "--")
+
+        _dependency_package = "google.protobuf"
+        _next_supported_version = "4.25.8"
+        _next_supported_version_tuple = (4, 25, 8)
+        _recommendation = " (we recommend 6.x)"
+        (_version_used, _version_used_string) = _get_version(_dependency_package)
+        if _version_used and _version_used < _next_supported_version_tuple:
+            warnings.warn(
+                f"Package {_package_label} depends on "
+                + f"{_dependency_package}, currently installed at version "
+                + f"{_version_used_string}. Future updates to "
+                + f"{_package_label} will require {_dependency_package} at "
+                + f"version {_next_supported_version} or higher{_recommendation}."
+                + " Please ensure "
+                + "that either (a) your Python environment doesn't pin the "
+                + f"version of {_dependency_package}, so that updates to "
+                + f"{_package_label} can require the higher version, or "
+                + "(b) you manually update your Python environment to use at "
+                + f"least version {_next_supported_version} of "
+                + f"{_dependency_package}.",
+                FutureWarning,
+            )
+    except Exception:
+        warnings.warn(
+            "Could not determine the version of Python "
+            + "currently being used. To continue receiving "
+            + "updates for {_package_label}, ensure you are "
+            + "using a supported version of Python; see "
+            + "https://devguide.python.org/versions/"
+        )
 
 __all__ = (
     "AdBreak",

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import uuid
 
 from google.api_core import exceptions as core_exceptions
@@ -50,19 +39,12 @@ from google.api_core import operation_async  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.policysimulator_v1.services.org_policy_violations_preview_service import (
-    pagers,
-)
+from google.cloud.policysimulator_v1.services.org_policy_violations_preview_service import pagers
 from google.cloud.policysimulator_v1.types import orgpolicy as gcp_orgpolicy
 
 from .client import OrgPolicyViolationsPreviewServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    OrgPolicyViolationsPreviewServiceTransport,
-)
-from .transports.grpc_asyncio import (
-    OrgPolicyViolationsPreviewServiceGrpcAsyncIOTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, OrgPolicyViolationsPreviewServiceTransport
+from .transports.grpc_asyncio import OrgPolicyViolationsPreviewServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -94,66 +76,28 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = OrgPolicyViolationsPreviewServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = (
-        OrgPolicyViolationsPreviewServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        OrgPolicyViolationsPreviewServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    DEFAULT_MTLS_ENDPOINT = OrgPolicyViolationsPreviewServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = OrgPolicyViolationsPreviewServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = OrgPolicyViolationsPreviewServiceClient._DEFAULT_UNIVERSE
 
-    custom_constraint_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.custom_constraint_path
-    )
-    parse_custom_constraint_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_custom_constraint_path
-    )
-    org_policy_violation_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.org_policy_violation_path
-    )
-    parse_org_policy_violation_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_org_policy_violation_path
-    )
-    org_policy_violations_preview_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.org_policy_violations_preview_path
-    )
-    parse_org_policy_violations_preview_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_org_policy_violations_preview_path
-    )
+    custom_constraint_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.custom_constraint_path)
+    parse_custom_constraint_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_custom_constraint_path)
+    org_policy_violation_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.org_policy_violation_path)
+    parse_org_policy_violation_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_org_policy_violation_path)
+    org_policy_violations_preview_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.org_policy_violations_preview_path)
+    parse_org_policy_violations_preview_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_org_policy_violations_preview_path)
     policy_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.policy_path)
-    parse_policy_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_policy_path
-    )
-    common_billing_account_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        OrgPolicyViolationsPreviewServiceClient.parse_common_location_path
-    )
+    parse_policy_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_policy_path)
+    common_billing_account_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(OrgPolicyViolationsPreviewServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -189,9 +133,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -259,11 +201,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                OrgPolicyViolationsPreviewServiceTransport,
-                Callable[..., OrgPolicyViolationsPreviewServiceTransport],
-            ]
+            Union[str, OrgPolicyViolationsPreviewServiceTransport, Callable[..., OrgPolicyViolationsPreviewServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -324,20 +262,14 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.policysimulator_v1.OrgPolicyViolationsPreviewServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.policysimulator.v1.OrgPolicyViolationsPreviewService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -348,9 +280,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
     async def list_org_policy_violations_previews(
         self,
-        request: Optional[
-            Union[gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest, dict]
-        ] = None,
+        request: Optional[Union[gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -427,20 +357,13 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest
-        ):
+        if not isinstance(request, gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest):
             request = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -450,15 +373,11 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_org_policy_violations_previews
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_org_policy_violations_previews]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -487,9 +406,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
     async def get_org_policy_violations_preview(
         self,
-        request: Optional[
-            Union[gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest, dict]
-        ] = None,
+        request: Optional[Union[gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -566,14 +483,9 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -587,15 +499,11 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_org_policy_violations_preview
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_org_policy_violations_preview]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -613,14 +521,10 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
     async def create_org_policy_violations_preview(
         self,
-        request: Optional[
-            Union[gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest, dict]
-        ] = None,
+        request: Optional[Union[gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        org_policy_violations_preview: Optional[
-            gcp_orgpolicy.OrgPolicyViolationsPreview
-        ] = None,
+        org_policy_violations_preview: Optional[gcp_orgpolicy.OrgPolicyViolationsPreview] = None,
         org_policy_violations_preview_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -722,25 +626,14 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            org_policy_violations_preview,
-            org_policy_violations_preview_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, org_policy_violations_preview, org_policy_violations_preview_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest
-        ):
+        if not isinstance(request, gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest):
             request = gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -754,15 +647,11 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_org_policy_violations_preview
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_org_policy_violations_preview]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -788,9 +677,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
     async def list_org_policy_violations(
         self,
-        request: Optional[
-            Union[gcp_orgpolicy.ListOrgPolicyViolationsRequest, dict]
-        ] = None,
+        request: Optional[Union[gcp_orgpolicy.ListOrgPolicyViolationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -864,14 +751,9 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -885,15 +767,11 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_org_policy_violations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_org_policy_violations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -957,9 +835,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1012,9 +888,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1037,9 +911,7 @@ class OrgPolicyViolationsPreviewServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

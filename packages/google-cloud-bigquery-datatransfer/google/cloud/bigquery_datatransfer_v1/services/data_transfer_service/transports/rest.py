@@ -193,12 +193,8 @@ class DataTransferServiceRestInterceptor:
     """
 
     def pre_check_valid_creds(
-        self,
-        request: datatransfer.CheckValidCredsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.CheckValidCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.CheckValidCredsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.CheckValidCredsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_valid_creds
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +202,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_check_valid_creds(
-        self, response: datatransfer.CheckValidCredsResponse
-    ) -> datatransfer.CheckValidCredsResponse:
+    def post_check_valid_creds(self, response: datatransfer.CheckValidCredsResponse) -> datatransfer.CheckValidCredsResponse:
         """Post-rpc interceptor for check_valid_creds
 
         DEPRECATED. Please use the `post_check_valid_creds_with_metadata`
@@ -222,12 +216,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_check_valid_creds_with_metadata(
-        self,
-        response: datatransfer.CheckValidCredsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.CheckValidCredsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datatransfer.CheckValidCredsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.CheckValidCredsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_valid_creds
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -243,13 +233,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_create_transfer_config(
-        self,
-        request: datatransfer.CreateTransferConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.CreateTransferConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datatransfer.CreateTransferConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.CreateTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +242,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_transfer_config(
-        self, response: transfer.TransferConfig
-    ) -> transfer.TransferConfig:
+    def post_create_transfer_config(self, response: transfer.TransferConfig) -> transfer.TransferConfig:
         """Post-rpc interceptor for create_transfer_config
 
         DEPRECATED. Please use the `post_create_transfer_config_with_metadata`
@@ -273,9 +256,7 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_create_transfer_config_with_metadata(
-        self,
-        response: transfer.TransferConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer.TransferConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_transfer_config
 
@@ -292,13 +273,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_transfer_config(
-        self,
-        request: datatransfer.DeleteTransferConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.DeleteTransferConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datatransfer.DeleteTransferConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.DeleteTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -307,12 +283,8 @@ class DataTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_transfer_run(
-        self,
-        request: datatransfer.DeleteTransferRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.DeleteTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.DeleteTransferRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.DeleteTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_transfer_run
 
         Override in a subclass to manipulate the request or metadata
@@ -321,12 +293,8 @@ class DataTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_enroll_data_sources(
-        self,
-        request: datatransfer.EnrollDataSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.EnrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.EnrollDataSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.EnrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for enroll_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -335,12 +303,8 @@ class DataTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_get_data_source(
-        self,
-        request: datatransfer.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.GetDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -348,9 +312,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_source(
-        self, response: datatransfer.DataSource
-    ) -> datatransfer.DataSource:
+    def post_get_data_source(self, response: datatransfer.DataSource) -> datatransfer.DataSource:
         """Post-rpc interceptor for get_data_source
 
         DEPRECATED. Please use the `post_get_data_source_with_metadata`
@@ -364,9 +326,7 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_get_data_source_with_metadata(
-        self,
-        response: datatransfer.DataSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datatransfer.DataSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datatransfer.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_source
 
@@ -383,12 +343,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_get_transfer_config(
-        self,
-        request: datatransfer.GetTransferConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.GetTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.GetTransferConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.GetTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -396,9 +352,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_transfer_config(
-        self, response: transfer.TransferConfig
-    ) -> transfer.TransferConfig:
+    def post_get_transfer_config(self, response: transfer.TransferConfig) -> transfer.TransferConfig:
         """Post-rpc interceptor for get_transfer_config
 
         DEPRECATED. Please use the `post_get_transfer_config_with_metadata`
@@ -412,9 +366,7 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_get_transfer_config_with_metadata(
-        self,
-        response: transfer.TransferConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer.TransferConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_transfer_config
 
@@ -431,12 +383,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_get_transfer_run(
-        self,
-        request: datatransfer.GetTransferRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.GetTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.GetTransferRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.GetTransferRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transfer_run
 
         Override in a subclass to manipulate the request or metadata
@@ -444,9 +392,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_transfer_run(
-        self, response: transfer.TransferRun
-    ) -> transfer.TransferRun:
+    def post_get_transfer_run(self, response: transfer.TransferRun) -> transfer.TransferRun:
         """Post-rpc interceptor for get_transfer_run
 
         DEPRECATED. Please use the `post_get_transfer_run_with_metadata`
@@ -460,9 +406,7 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_get_transfer_run_with_metadata(
-        self,
-        response: transfer.TransferRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer.TransferRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.TransferRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_transfer_run
 
@@ -479,12 +423,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_sources(
-        self,
-        request: datatransfer.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.ListDataSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -492,9 +432,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_sources(
-        self, response: datatransfer.ListDataSourcesResponse
-    ) -> datatransfer.ListDataSourcesResponse:
+    def post_list_data_sources(self, response: datatransfer.ListDataSourcesResponse) -> datatransfer.ListDataSourcesResponse:
         """Post-rpc interceptor for list_data_sources
 
         DEPRECATED. Please use the `post_list_data_sources_with_metadata`
@@ -508,12 +446,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_list_data_sources_with_metadata(
-        self,
-        response: datatransfer.ListDataSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datatransfer.ListDataSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -529,12 +463,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transfer_configs(
-        self,
-        request: datatransfer.ListTransferConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.ListTransferConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transfer_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -542,9 +472,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transfer_configs(
-        self, response: datatransfer.ListTransferConfigsResponse
-    ) -> datatransfer.ListTransferConfigsResponse:
+    def post_list_transfer_configs(self, response: datatransfer.ListTransferConfigsResponse) -> datatransfer.ListTransferConfigsResponse:
         """Post-rpc interceptor for list_transfer_configs
 
         DEPRECATED. Please use the `post_list_transfer_configs_with_metadata`
@@ -558,13 +486,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_list_transfer_configs_with_metadata(
-        self,
-        response: datatransfer.ListTransferConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datatransfer.ListTransferConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transfer_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -580,12 +503,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transfer_logs(
-        self,
-        request: datatransfer.ListTransferLogsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferLogsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.ListTransferLogsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferLogsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transfer_logs
 
         Override in a subclass to manipulate the request or metadata
@@ -593,9 +512,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transfer_logs(
-        self, response: datatransfer.ListTransferLogsResponse
-    ) -> datatransfer.ListTransferLogsResponse:
+    def post_list_transfer_logs(self, response: datatransfer.ListTransferLogsResponse) -> datatransfer.ListTransferLogsResponse:
         """Post-rpc interceptor for list_transfer_logs
 
         DEPRECATED. Please use the `post_list_transfer_logs_with_metadata`
@@ -609,12 +526,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_list_transfer_logs_with_metadata(
-        self,
-        response: datatransfer.ListTransferLogsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferLogsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datatransfer.ListTransferLogsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferLogsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transfer_logs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -630,12 +543,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transfer_runs(
-        self,
-        request: datatransfer.ListTransferRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.ListTransferRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -643,9 +552,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transfer_runs(
-        self, response: datatransfer.ListTransferRunsResponse
-    ) -> datatransfer.ListTransferRunsResponse:
+    def post_list_transfer_runs(self, response: datatransfer.ListTransferRunsResponse) -> datatransfer.ListTransferRunsResponse:
         """Post-rpc interceptor for list_transfer_runs
 
         DEPRECATED. Please use the `post_list_transfer_runs_with_metadata`
@@ -659,12 +566,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_list_transfer_runs_with_metadata(
-        self,
-        response: datatransfer.ListTransferRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ListTransferRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datatransfer.ListTransferRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ListTransferRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transfer_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -680,13 +583,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_schedule_transfer_runs(
-        self,
-        request: datatransfer.ScheduleTransferRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ScheduleTransferRunsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datatransfer.ScheduleTransferRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ScheduleTransferRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for schedule_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +592,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_schedule_transfer_runs(
-        self, response: datatransfer.ScheduleTransferRunsResponse
-    ) -> datatransfer.ScheduleTransferRunsResponse:
+    def post_schedule_transfer_runs(self, response: datatransfer.ScheduleTransferRunsResponse) -> datatransfer.ScheduleTransferRunsResponse:
         """Post-rpc interceptor for schedule_transfer_runs
 
         DEPRECATED. Please use the `post_schedule_transfer_runs_with_metadata`
@@ -710,13 +606,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_schedule_transfer_runs_with_metadata(
-        self,
-        response: datatransfer.ScheduleTransferRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.ScheduleTransferRunsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datatransfer.ScheduleTransferRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.ScheduleTransferRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for schedule_transfer_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -732,13 +623,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_start_manual_transfer_runs(
-        self,
-        request: datatransfer.StartManualTransferRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.StartManualTransferRunsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datatransfer.StartManualTransferRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.StartManualTransferRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_manual_transfer_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -746,9 +632,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_start_manual_transfer_runs(
-        self, response: datatransfer.StartManualTransferRunsResponse
-    ) -> datatransfer.StartManualTransferRunsResponse:
+    def post_start_manual_transfer_runs(self, response: datatransfer.StartManualTransferRunsResponse) -> datatransfer.StartManualTransferRunsResponse:
         """Post-rpc interceptor for start_manual_transfer_runs
 
         DEPRECATED. Please use the `post_start_manual_transfer_runs_with_metadata`
@@ -762,13 +646,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_start_manual_transfer_runs_with_metadata(
-        self,
-        response: datatransfer.StartManualTransferRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.StartManualTransferRunsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datatransfer.StartManualTransferRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.StartManualTransferRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_manual_transfer_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -784,12 +663,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_unenroll_data_sources(
-        self,
-        request: datatransfer.UnenrollDataSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.UnenrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datatransfer.UnenrollDataSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.UnenrollDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for unenroll_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -798,13 +673,8 @@ class DataTransferServiceRestInterceptor:
         return request, metadata
 
     def pre_update_transfer_config(
-        self,
-        request: datatransfer.UpdateTransferConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datatransfer.UpdateTransferConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datatransfer.UpdateTransferConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datatransfer.UpdateTransferConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_transfer_config
 
         Override in a subclass to manipulate the request or metadata
@@ -812,9 +682,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_transfer_config(
-        self, response: transfer.TransferConfig
-    ) -> transfer.TransferConfig:
+    def post_update_transfer_config(self, response: transfer.TransferConfig) -> transfer.TransferConfig:
         """Post-rpc interceptor for update_transfer_config
 
         DEPRECATED. Please use the `post_update_transfer_config_with_metadata`
@@ -828,9 +696,7 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def post_update_transfer_config_with_metadata(
-        self,
-        response: transfer.TransferConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: transfer.TransferConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[transfer.TransferConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_transfer_config
 
@@ -847,12 +713,8 @@ class DataTransferServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -860,9 +722,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -872,12 +732,8 @@ class DataTransferServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -885,9 +741,7 @@ class DataTransferServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -977,31 +831,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataTransferServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CheckValidCreds(
-        _BaseDataTransferServiceRestTransport._BaseCheckValidCreds,
-        DataTransferServiceRestStub,
-    ):
+    class _CheckValidCreds(_BaseDataTransferServiceRestTransport._BaseCheckValidCreds, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.CheckValidCreds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1053,32 +894,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_http_options()
 
-            request, metadata = self._interceptor.pre_check_valid_creds(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_check_valid_creds(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseCheckValidCreds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1102,13 +929,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._CheckValidCreds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1124,16 +945,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_check_valid_creds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_valid_creds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_valid_creds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datatransfer.CheckValidCredsResponse.to_json(
-                        response
-                    )
+                    response_payload = datatransfer.CheckValidCredsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1152,23 +967,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _CreateTransferConfig(
-        _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig,
-        DataTransferServiceRestStub,
-    ):
+    class _CreateTransferConfig(_BaseDataTransferServiceRestTransport._BaseCreateTransferConfig, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.CreateTransferConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1228,32 +1032,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_transfer_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_transfer_config(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseCreateTransferConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1276,16 +1066,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._CreateTransferConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._CreateTransferConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1301,12 +1083,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_create_transfer_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_transfer_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_transfer_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
                 except:
@@ -1327,23 +1105,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _DeleteTransferConfig(
-        _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig,
-        DataTransferServiceRestStub,
-    ):
+    class _DeleteTransferConfig(_BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.DeleteTransferConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1381,28 +1148,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_transfer_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_transfer_config(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1425,15 +1180,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._DeleteTransferConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTransferServiceRestTransport._DeleteTransferConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1441,23 +1189,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTransferRun(
-        _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun,
-        DataTransferServiceRestStub,
-    ):
+    class _DeleteTransferRun(_BaseDataTransferServiceRestTransport._BaseDeleteTransferRun, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.DeleteTransferRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1493,28 +1230,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_transfer_run(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_transfer_run(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseDeleteTransferRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1537,15 +1262,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._DeleteTransferRun._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTransferServiceRestTransport._DeleteTransferRun._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1553,23 +1271,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _EnrollDataSources(
-        _BaseDataTransferServiceRestTransport._BaseEnrollDataSources,
-        DataTransferServiceRestStub,
-    ):
+    class _EnrollDataSources(_BaseDataTransferServiceRestTransport._BaseEnrollDataSources, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.EnrollDataSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1606,32 +1313,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_enroll_data_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_enroll_data_sources(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseEnrollDataSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1654,16 +1347,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._EnrollDataSources._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._EnrollDataSources._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1671,23 +1356,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDataSource(
-        _BaseDataTransferServiceRestTransport._BaseGetDataSource,
-        DataTransferServiceRestStub,
-    ):
+    class _GetDataSource(_BaseDataTransferServiceRestTransport._BaseGetDataSource, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.GetDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1728,26 +1402,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseGetDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1771,12 +1435,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._GetDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1792,12 +1451,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_get_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datatransfer.DataSource.to_json(response)
                 except:
@@ -1818,23 +1473,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _GetTransferConfig(
-        _BaseDataTransferServiceRestTransport._BaseGetTransferConfig,
-        DataTransferServiceRestStub,
-    ):
+    class _GetTransferConfig(_BaseDataTransferServiceRestTransport._BaseGetTransferConfig, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.GetTransferConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1881,28 +1525,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_transfer_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_transfer_config(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1925,15 +1557,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._GetTransferConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTransferServiceRestTransport._GetTransferConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1949,12 +1574,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_get_transfer_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_transfer_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_transfer_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
                 except:
@@ -1975,23 +1596,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _GetTransferRun(
-        _BaseDataTransferServiceRestTransport._BaseGetTransferRun,
-        DataTransferServiceRestStub,
-    ):
+    class _GetTransferRun(_BaseDataTransferServiceRestTransport._BaseGetTransferRun, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.GetTransferRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2031,28 +1641,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     Represents a data transfer run.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_transfer_run(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_transfer_run(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseGetTransferRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2076,12 +1674,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._GetTransferRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2097,12 +1690,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_get_transfer_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_transfer_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_transfer_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferRun.to_json(response)
                 except:
@@ -2123,23 +1712,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _ListDataSources(
-        _BaseDataTransferServiceRestTransport._BaseListDataSources,
-        DataTransferServiceRestStub,
-    ):
+    class _ListDataSources(_BaseDataTransferServiceRestTransport._BaseListDataSources, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ListDataSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2182,28 +1760,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_sources(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseListDataSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2227,12 +1793,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._ListDataSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2248,16 +1809,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_list_data_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datatransfer.ListDataSourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = datatransfer.ListDataSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2276,23 +1831,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _ListTransferConfigs(
-        _BaseDataTransferServiceRestTransport._BaseListTransferConfigs,
-        DataTransferServiceRestStub,
-    ):
+    class _ListTransferConfigs(_BaseDataTransferServiceRestTransport._BaseListTransferConfigs, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ListTransferConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2334,28 +1878,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transfer_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transfer_configs(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2378,15 +1910,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._ListTransferConfigs._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataTransferServiceRestTransport._ListTransferConfigs._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2402,16 +1927,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_list_transfer_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transfer_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transfer_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datatransfer.ListTransferConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = datatransfer.ListTransferConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2430,23 +1949,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _ListTransferLogs(
-        _BaseDataTransferServiceRestTransport._BaseListTransferLogs,
-        DataTransferServiceRestStub,
-    ):
+    class _ListTransferLogs(_BaseDataTransferServiceRestTransport._BaseListTransferLogs, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ListTransferLogs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2489,28 +1997,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transfer_logs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transfer_logs(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferLogs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2534,12 +2030,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._ListTransferLogs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2555,16 +2046,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_list_transfer_logs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transfer_logs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transfer_logs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datatransfer.ListTransferLogsResponse.to_json(
-                        response
-                    )
+                    response_payload = datatransfer.ListTransferLogsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2583,23 +2068,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _ListTransferRuns(
-        _BaseDataTransferServiceRestTransport._BaseListTransferRuns,
-        DataTransferServiceRestStub,
-    ):
+    class _ListTransferRuns(_BaseDataTransferServiceRestTransport._BaseListTransferRuns, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ListTransferRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2640,28 +2114,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transfer_runs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transfer_runs(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseListTransferRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2685,12 +2147,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._ListTransferRuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2706,16 +2163,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_list_transfer_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transfer_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transfer_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datatransfer.ListTransferRunsResponse.to_json(
-                        response
-                    )
+                    response_payload = datatransfer.ListTransferRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2734,23 +2185,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _ScheduleTransferRuns(
-        _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns,
-        DataTransferServiceRestStub,
-    ):
+    class _ScheduleTransferRuns(_BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ScheduleTransferRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2793,32 +2233,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_http_options()
 
-            request, metadata = self._interceptor.pre_schedule_transfer_runs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_schedule_transfer_runs(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseScheduleTransferRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2841,16 +2267,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._ScheduleTransferRuns._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._ScheduleTransferRuns._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2866,16 +2284,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_schedule_transfer_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_schedule_transfer_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_schedule_transfer_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datatransfer.ScheduleTransferRunsResponse.to_json(response)
-                    )
+                    response_payload = datatransfer.ScheduleTransferRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2894,23 +2306,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _StartManualTransferRuns(
-        _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns,
-        DataTransferServiceRestStub,
-    ):
+    class _StartManualTransferRuns(_BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.StartManualTransferRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2954,32 +2355,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_manual_transfer_runs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_manual_transfer_runs(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseStartManualTransferRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3002,16 +2389,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._StartManualTransferRuns._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._StartManualTransferRuns._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3027,16 +2406,10 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_start_manual_transfer_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_manual_transfer_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_manual_transfer_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datatransfer.StartManualTransferRunsResponse.to_json(response)
-                    )
+                    response_payload = datatransfer.StartManualTransferRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3055,23 +2428,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
             return resp
 
-    class _UnenrollDataSources(
-        _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources,
-        DataTransferServiceRestStub,
-    ):
+    class _UnenrollDataSources(_BaseDataTransferServiceRestTransport._BaseUnenrollDataSources, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.UnenrollDataSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3108,32 +2470,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_unenroll_data_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_unenroll_data_sources(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseUnenrollDataSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3156,16 +2504,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._UnenrollDataSources._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._UnenrollDataSources._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3173,23 +2513,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _UpdateTransferConfig(
-        _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig,
-        DataTransferServiceRestStub,
-    ):
+    class _UpdateTransferConfig(_BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.UpdateTransferConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3244,32 +2573,18 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_transfer_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_transfer_config(request, metadata)
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseUpdateTransferConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3292,16 +2607,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataTransferServiceRestTransport._UpdateTransferConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataTransferServiceRestTransport._UpdateTransferConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3317,12 +2624,8 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             resp = self._interceptor.post_update_transfer_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_transfer_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_transfer_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = transfer.TransferConfig.to_json(response)
                 except:
@@ -3344,146 +2647,97 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             return resp
 
     @property
-    def check_valid_creds(
-        self,
-    ) -> Callable[
-        [datatransfer.CheckValidCredsRequest], datatransfer.CheckValidCredsResponse
-    ]:
+    def check_valid_creds(self) -> Callable[[datatransfer.CheckValidCredsRequest], datatransfer.CheckValidCredsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckValidCreds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_transfer_config(
-        self,
-    ) -> Callable[[datatransfer.CreateTransferConfigRequest], transfer.TransferConfig]:
+    def create_transfer_config(self) -> Callable[[datatransfer.CreateTransferConfigRequest], transfer.TransferConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTransferConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_transfer_config(
-        self,
-    ) -> Callable[[datatransfer.DeleteTransferConfigRequest], empty_pb2.Empty]:
+    def delete_transfer_config(self) -> Callable[[datatransfer.DeleteTransferConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTransferConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_transfer_run(
-        self,
-    ) -> Callable[[datatransfer.DeleteTransferRunRequest], empty_pb2.Empty]:
+    def delete_transfer_run(self) -> Callable[[datatransfer.DeleteTransferRunRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTransferRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def enroll_data_sources(
-        self,
-    ) -> Callable[[datatransfer.EnrollDataSourcesRequest], empty_pb2.Empty]:
+    def enroll_data_sources(self) -> Callable[[datatransfer.EnrollDataSourcesRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EnrollDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[[datatransfer.GetDataSourceRequest], datatransfer.DataSource]:
+    def get_data_source(self) -> Callable[[datatransfer.GetDataSourceRequest], datatransfer.DataSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_transfer_config(
-        self,
-    ) -> Callable[[datatransfer.GetTransferConfigRequest], transfer.TransferConfig]:
+    def get_transfer_config(self) -> Callable[[datatransfer.GetTransferConfigRequest], transfer.TransferConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTransferConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_transfer_run(
-        self,
-    ) -> Callable[[datatransfer.GetTransferRunRequest], transfer.TransferRun]:
+    def get_transfer_run(self) -> Callable[[datatransfer.GetTransferRunRequest], transfer.TransferRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTransferRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_sources(
-        self,
-    ) -> Callable[
-        [datatransfer.ListDataSourcesRequest], datatransfer.ListDataSourcesResponse
-    ]:
+    def list_data_sources(self) -> Callable[[datatransfer.ListDataSourcesRequest], datatransfer.ListDataSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transfer_configs(
-        self,
-    ) -> Callable[
-        [datatransfer.ListTransferConfigsRequest],
-        datatransfer.ListTransferConfigsResponse,
-    ]:
+    def list_transfer_configs(self) -> Callable[[datatransfer.ListTransferConfigsRequest], datatransfer.ListTransferConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTransferConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transfer_logs(
-        self,
-    ) -> Callable[
-        [datatransfer.ListTransferLogsRequest], datatransfer.ListTransferLogsResponse
-    ]:
+    def list_transfer_logs(self) -> Callable[[datatransfer.ListTransferLogsRequest], datatransfer.ListTransferLogsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTransferLogs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transfer_runs(
-        self,
-    ) -> Callable[
-        [datatransfer.ListTransferRunsRequest], datatransfer.ListTransferRunsResponse
-    ]:
+    def list_transfer_runs(self) -> Callable[[datatransfer.ListTransferRunsRequest], datatransfer.ListTransferRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTransferRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def schedule_transfer_runs(
-        self,
-    ) -> Callable[
-        [datatransfer.ScheduleTransferRunsRequest],
-        datatransfer.ScheduleTransferRunsResponse,
-    ]:
+    def schedule_transfer_runs(self) -> Callable[[datatransfer.ScheduleTransferRunsRequest], datatransfer.ScheduleTransferRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ScheduleTransferRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_manual_transfer_runs(
-        self,
-    ) -> Callable[
-        [datatransfer.StartManualTransferRunsRequest],
-        datatransfer.StartManualTransferRunsResponse,
-    ]:
+    def start_manual_transfer_runs(self) -> Callable[[datatransfer.StartManualTransferRunsRequest], datatransfer.StartManualTransferRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartManualTransferRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def unenroll_data_sources(
-        self,
-    ) -> Callable[[datatransfer.UnenrollDataSourcesRequest], empty_pb2.Empty]:
+    def unenroll_data_sources(self) -> Callable[[datatransfer.UnenrollDataSourcesRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UnenrollDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_transfer_config(
-        self,
-    ) -> Callable[[datatransfer.UpdateTransferConfigRequest], transfer.TransferConfig]:
+    def update_transfer_config(self) -> Callable[[datatransfer.UpdateTransferConfigRequest], transfer.TransferConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTransferConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -3492,23 +2746,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataTransferServiceRestTransport._BaseGetLocation,
-        DataTransferServiceRestStub,
-    ):
+    class _GetLocation(_BaseDataTransferServiceRestTransport._BaseGetLocation, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3546,26 +2789,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3589,12 +2822,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3606,9 +2834,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3633,23 +2859,12 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataTransferServiceRestTransport._BaseListLocations,
-        DataTransferServiceRestStub,
-    ):
+    class _ListLocations(_BaseDataTransferServiceRestTransport._BaseListLocations, DataTransferServiceRestStub):
         def __hash__(self):
             return hash("DataTransferServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3687,26 +2902,16 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataTransferServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataTransferServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataTransferServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataTransferServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataTransferServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3730,12 +2935,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
 
             # Send the request
             response = DataTransferServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3747,9 +2947,7 @@ class DataTransferServiceRestTransport(_BaseDataTransferServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

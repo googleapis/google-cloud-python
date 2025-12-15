@@ -97,12 +97,8 @@ class AclConfigServiceRestInterceptor:
     """
 
     def pre_get_acl_config(
-        self,
-        request: acl_config_service.GetAclConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        acl_config_service.GetAclConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: acl_config_service.GetAclConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[acl_config_service.GetAclConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_acl_config
 
         Override in a subclass to manipulate the request or metadata
@@ -110,9 +106,7 @@ class AclConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_acl_config(
-        self, response: acl_config.AclConfig
-    ) -> acl_config.AclConfig:
+    def post_get_acl_config(self, response: acl_config.AclConfig) -> acl_config.AclConfig:
         """Post-rpc interceptor for get_acl_config
 
         DEPRECATED. Please use the `post_get_acl_config_with_metadata`
@@ -126,9 +120,7 @@ class AclConfigServiceRestInterceptor:
         return response
 
     def post_get_acl_config_with_metadata(
-        self,
-        response: acl_config.AclConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: acl_config.AclConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[acl_config.AclConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_acl_config
 
@@ -145,13 +137,8 @@ class AclConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_update_acl_config(
-        self,
-        request: acl_config_service.UpdateAclConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        acl_config_service.UpdateAclConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: acl_config_service.UpdateAclConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[acl_config_service.UpdateAclConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_acl_config
 
         Override in a subclass to manipulate the request or metadata
@@ -159,9 +146,7 @@ class AclConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_acl_config(
-        self, response: acl_config.AclConfig
-    ) -> acl_config.AclConfig:
+    def post_update_acl_config(self, response: acl_config.AclConfig) -> acl_config.AclConfig:
         """Post-rpc interceptor for update_acl_config
 
         DEPRECATED. Please use the `post_update_acl_config_with_metadata`
@@ -175,9 +160,7 @@ class AclConfigServiceRestInterceptor:
         return response
 
     def post_update_acl_config_with_metadata(
-        self,
-        response: acl_config.AclConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: acl_config.AclConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[acl_config.AclConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_acl_config
 
@@ -194,12 +177,8 @@ class AclConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -217,12 +196,8 @@ class AclConfigServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -230,9 +205,7 @@ class AclConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -242,12 +215,8 @@ class AclConfigServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -255,9 +224,7 @@ class AclConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -346,30 +313,18 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AclConfigServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAclConfig(
-        _BaseAclConfigServiceRestTransport._BaseGetAclConfig, AclConfigServiceRestStub
-    ):
+    class _GetAclConfig(_BaseAclConfigServiceRestTransport._BaseGetAclConfig, AclConfigServiceRestStub):
         def __hash__(self):
             return hash("AclConfigServiceRestTransport.GetAclConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -409,26 +364,16 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                     Access Control Configuration.
             """
 
-            http_options = (
-                _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_http_options()
-            )
+            http_options = _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_acl_config(request, metadata)
-            transcoded_request = _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAclConfigServiceRestTransport._BaseGetAclConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -452,12 +397,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             # Send the request
             response = AclConfigServiceRestTransport._GetAclConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -473,12 +413,8 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             resp = self._interceptor.post_get_acl_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_acl_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_acl_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = acl_config.AclConfig.to_json(response)
                 except:
@@ -499,23 +435,12 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAclConfig(
-        _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig,
-        AclConfigServiceRestStub,
-    ):
+    class _UpdateAclConfig(_BaseAclConfigServiceRestTransport._BaseUpdateAclConfig, AclConfigServiceRestStub):
         def __hash__(self):
             return hash("AclConfigServiceRestTransport.UpdateAclConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -556,32 +481,18 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                     Access Control Configuration.
             """
 
-            http_options = (
-                _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_http_options()
-            )
+            http_options = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_acl_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_acl_config(request, metadata)
+            transcoded_request = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAclConfigServiceRestTransport._BaseUpdateAclConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -605,13 +516,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             # Send the request
             response = AclConfigServiceRestTransport._UpdateAclConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -627,12 +532,8 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             resp = self._interceptor.post_update_acl_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_acl_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_acl_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = acl_config.AclConfig.to_json(response)
                 except:
@@ -654,17 +555,13 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
             return resp
 
     @property
-    def get_acl_config(
-        self,
-    ) -> Callable[[acl_config_service.GetAclConfigRequest], acl_config.AclConfig]:
+    def get_acl_config(self) -> Callable[[acl_config_service.GetAclConfigRequest], acl_config.AclConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAclConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_acl_config(
-        self,
-    ) -> Callable[[acl_config_service.UpdateAclConfigRequest], acl_config.AclConfig]:
+    def update_acl_config(self) -> Callable[[acl_config_service.UpdateAclConfigRequest], acl_config.AclConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAclConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -673,23 +570,12 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAclConfigServiceRestTransport._BaseCancelOperation,
-        AclConfigServiceRestStub,
-    ):
+    class _CancelOperation(_BaseAclConfigServiceRestTransport._BaseCancelOperation, AclConfigServiceRestStub):
         def __hash__(self):
             return hash("AclConfigServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -725,32 +611,18 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAclConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -774,13 +646,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             # Send the request
             response = AclConfigServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -794,22 +660,12 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAclConfigServiceRestTransport._BaseGetOperation, AclConfigServiceRestStub
-    ):
+    class _GetOperation(_BaseAclConfigServiceRestTransport._BaseGetOperation, AclConfigServiceRestStub):
         def __hash__(self):
             return hash("AclConfigServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -847,26 +703,16 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAclConfigServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAclConfigServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAclConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAclConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAclConfigServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAclConfigServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -890,12 +736,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             # Send the request
             response = AclConfigServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -907,9 +748,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -934,22 +773,12 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAclConfigServiceRestTransport._BaseListOperations, AclConfigServiceRestStub
-    ):
+    class _ListOperations(_BaseAclConfigServiceRestTransport._BaseListOperations, AclConfigServiceRestStub):
         def __hash__(self):
             return hash("AclConfigServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -987,26 +816,16 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAclConfigServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAclConfigServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAclConfigServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAclConfigServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAclConfigServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAclConfigServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1030,12 +849,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
 
             # Send the request
             response = AclConfigServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1047,9 +861,7 @@ class AclConfigServiceRestTransport(_BaseAclConfigServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

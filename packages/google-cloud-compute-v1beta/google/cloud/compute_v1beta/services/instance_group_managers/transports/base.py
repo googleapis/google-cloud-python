@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import zone_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class InstanceGroupManagersTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -292,10 +282,7 @@ class InstanceGroupManagersTransport(abc.ABC):
     @property
     def abandon_instances(
         self,
-    ) -> Callable[
-        [compute.AbandonInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.AbandonInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -303,86 +290,50 @@ class InstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.AggregatedListInstanceGroupManagersRequest],
-        Union[
-            compute.InstanceGroupManagerAggregatedList,
-            Awaitable[compute.InstanceGroupManagerAggregatedList],
-        ],
+        Union[compute.InstanceGroupManagerAggregatedList, Awaitable[compute.InstanceGroupManagerAggregatedList]],
     ]:
         raise NotImplementedError()
 
     @property
     def apply_updates_to_instances(
         self,
-    ) -> Callable[
-        [compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.ApplyUpdatesToInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_instances(
         self,
-    ) -> Callable[
-        [compute.CreateInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.CreateInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_instances(
         self,
-    ) -> Callable[
-        [compute.DeleteInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.DeleteInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_per_instance_configs(
         self,
-    ) -> Callable[
-        [compute.DeletePerInstanceConfigsInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.DeletePerInstanceConfigsInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetInstanceGroupManagerRequest],
-        Union[compute.InstanceGroupManager, Awaitable[compute.InstanceGroupManager]],
-    ]:
+    def get(self) -> Callable[[compute.GetInstanceGroupManagerRequest], Union[compute.InstanceGroupManager, Awaitable[compute.InstanceGroupManager]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list(
         self,
-    ) -> Callable[
-        [compute.ListInstanceGroupManagersRequest],
-        Union[
-            compute.InstanceGroupManagerList,
-            Awaitable[compute.InstanceGroupManagerList],
-        ],
-    ]:
+    ) -> Callable[[compute.ListInstanceGroupManagersRequest], Union[compute.InstanceGroupManagerList, Awaitable[compute.InstanceGroupManagerList]]]:
         raise NotImplementedError()
 
     @property
@@ -390,10 +341,7 @@ class InstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.ListErrorsInstanceGroupManagersRequest],
-        Union[
-            compute.InstanceGroupManagersListErrorsResponse,
-            Awaitable[compute.InstanceGroupManagersListErrorsResponse],
-        ],
+        Union[compute.InstanceGroupManagersListErrorsResponse, Awaitable[compute.InstanceGroupManagersListErrorsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -402,10 +350,7 @@ class InstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.ListManagedInstancesInstanceGroupManagersRequest],
-        Union[
-            compute.InstanceGroupManagersListManagedInstancesResponse,
-            Awaitable[compute.InstanceGroupManagersListManagedInstancesResponse],
-        ],
+        Union[compute.InstanceGroupManagersListManagedInstancesResponse, Awaitable[compute.InstanceGroupManagersListManagedInstancesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -414,148 +359,92 @@ class InstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.ListPerInstanceConfigsInstanceGroupManagersRequest],
-        Union[
-            compute.InstanceGroupManagersListPerInstanceConfigsResp,
-            Awaitable[compute.InstanceGroupManagersListPerInstanceConfigsResp],
-        ],
+        Union[compute.InstanceGroupManagersListPerInstanceConfigsResp, Awaitable[compute.InstanceGroupManagersListPerInstanceConfigsResp]],
     ]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def patch_per_instance_configs(
         self,
-    ) -> Callable[
-        [compute.PatchPerInstanceConfigsInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.PatchPerInstanceConfigsInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def recreate_instances(
         self,
-    ) -> Callable[
-        [compute.RecreateInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.RecreateInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def resize(
-        self,
-    ) -> Callable[
-        [compute.ResizeInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def resize(self) -> Callable[[compute.ResizeInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def resize_advanced(
         self,
-    ) -> Callable[
-        [compute.ResizeAdvancedInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.ResizeAdvancedInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def resume_instances(
         self,
-    ) -> Callable[
-        [compute.ResumeInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.ResumeInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_auto_healing_policies(
         self,
-    ) -> Callable[
-        [compute.SetAutoHealingPoliciesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetAutoHealingPoliciesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_instance_template(
         self,
-    ) -> Callable[
-        [compute.SetInstanceTemplateInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetInstanceTemplateInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_target_pools(
         self,
-    ) -> Callable[
-        [compute.SetTargetPoolsInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetTargetPoolsInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_instances(
         self,
-    ) -> Callable[
-        [compute.StartInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.StartInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop_instances(
-        self,
-    ) -> Callable[
-        [compute.StopInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def stop_instances(self) -> Callable[[compute.StopInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def suspend_instances(
         self,
-    ) -> Callable[
-        [compute.SuspendInstancesInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SuspendInstancesInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [compute.TestIamPermissionsInstanceGroupManagerRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
+        [compute.TestIamPermissionsInstanceGroupManagerRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_per_instance_configs(
         self,
-    ) -> Callable[
-        [compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.UpdatePerInstanceConfigsInstanceGroupManagerRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

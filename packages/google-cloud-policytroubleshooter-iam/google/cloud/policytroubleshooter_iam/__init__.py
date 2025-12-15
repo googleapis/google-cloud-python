@@ -18,12 +18,8 @@ from google.cloud.policytroubleshooter_iam import gapic_version as package_versi
 __version__ = package_version.__version__
 
 
-from google.cloud.policytroubleshooter_iam_v3.services.policy_troubleshooter.async_client import (
-    PolicyTroubleshooterAsyncClient,
-)
-from google.cloud.policytroubleshooter_iam_v3.services.policy_troubleshooter.client import (
-    PolicyTroubleshooterClient,
-)
+from google.cloud.policytroubleshooter_iam_v3.services.policy_troubleshooter.async_client import PolicyTroubleshooterAsyncClient
+from google.cloud.policytroubleshooter_iam_v3.services.policy_troubleshooter.client import PolicyTroubleshooterClient
 from google.cloud.policytroubleshooter_iam_v3.types.troubleshooter import (
     AccessTuple,
     AllowAccessState,

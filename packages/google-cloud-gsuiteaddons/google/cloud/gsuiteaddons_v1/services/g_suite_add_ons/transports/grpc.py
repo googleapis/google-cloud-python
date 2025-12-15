@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -251,18 +242,14 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -296,9 +283,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -357,9 +342,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._grpc_channel
 
     @property
-    def get_authorization(
-        self,
-    ) -> Callable[[gsuiteaddons.GetAuthorizationRequest], gsuiteaddons.Authorization]:
+    def get_authorization(self) -> Callable[[gsuiteaddons.GetAuthorizationRequest], gsuiteaddons.Authorization]:
         r"""Return a callable for the get authorization method over gRPC.
 
         Gets the authorization information for deployments in
@@ -384,9 +367,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["get_authorization"]
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.CreateDeploymentRequest], gsuiteaddons.Deployment]:
+    def create_deployment(self) -> Callable[[gsuiteaddons.CreateDeploymentRequest], gsuiteaddons.Deployment]:
         r"""Return a callable for the create deployment method over gRPC.
 
         Creates a deployment with the specified name and
@@ -411,9 +392,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["create_deployment"]
 
     @property
-    def replace_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.ReplaceDeploymentRequest], gsuiteaddons.Deployment]:
+    def replace_deployment(self) -> Callable[[gsuiteaddons.ReplaceDeploymentRequest], gsuiteaddons.Deployment]:
         r"""Return a callable for the replace deployment method over gRPC.
 
         Creates or replaces a deployment with the specified
@@ -438,9 +417,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["replace_deployment"]
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.GetDeploymentRequest], gsuiteaddons.Deployment]:
+    def get_deployment(self) -> Callable[[gsuiteaddons.GetDeploymentRequest], gsuiteaddons.Deployment]:
         r"""Return a callable for the get deployment method over gRPC.
 
         Gets the deployment with the specified name.
@@ -464,11 +441,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["get_deployment"]
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.ListDeploymentsRequest], gsuiteaddons.ListDeploymentsResponse
-    ]:
+    def list_deployments(self) -> Callable[[gsuiteaddons.ListDeploymentsRequest], gsuiteaddons.ListDeploymentsResponse]:
         r"""Return a callable for the list deployments method over gRPC.
 
         Lists all deployments in a particular project.
@@ -492,9 +465,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["list_deployments"]
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.DeleteDeploymentRequest], empty_pb2.Empty]:
+    def delete_deployment(self) -> Callable[[gsuiteaddons.DeleteDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete deployment method over gRPC.
 
         Deletes the deployment with the given name.
@@ -518,9 +489,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["delete_deployment"]
 
     @property
-    def install_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.InstallDeploymentRequest], empty_pb2.Empty]:
+    def install_deployment(self) -> Callable[[gsuiteaddons.InstallDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the install deployment method over gRPC.
 
         Installs a deployment in developer mode.
@@ -547,9 +516,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["install_deployment"]
 
     @property
-    def uninstall_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.UninstallDeploymentRequest], empty_pb2.Empty]:
+    def uninstall_deployment(self) -> Callable[[gsuiteaddons.UninstallDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the uninstall deployment method over gRPC.
 
         Uninstalls a developer mode deployment.
@@ -576,9 +543,7 @@ class GSuiteAddOnsGrpcTransport(GSuiteAddOnsTransport):
         return self._stubs["uninstall_deployment"]
 
     @property
-    def get_install_status(
-        self,
-    ) -> Callable[[gsuiteaddons.GetInstallStatusRequest], gsuiteaddons.InstallStatus]:
+    def get_install_status(self) -> Callable[[gsuiteaddons.GetInstallStatusRequest], gsuiteaddons.InstallStatus]:
         r"""Return a callable for the get install status method over gRPC.
 
         Fetches the install status of a developer mode

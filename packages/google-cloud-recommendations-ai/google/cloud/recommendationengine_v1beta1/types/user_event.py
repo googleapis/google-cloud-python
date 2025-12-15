@@ -368,9 +368,7 @@ class ProductEventDetail(proto.Message):
         proto.STRING,
         number=1,
     )
-    page_categories: MutableSequence[
-        catalog.CatalogItem.CategoryHierarchy
-    ] = proto.RepeatedField(
+    page_categories: MutableSequence[catalog.CatalogItem.CategoryHierarchy] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=catalog.CatalogItem.CategoryHierarchy,

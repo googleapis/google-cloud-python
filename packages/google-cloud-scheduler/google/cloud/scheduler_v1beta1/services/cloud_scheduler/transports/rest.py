@@ -143,12 +143,8 @@ class CloudSchedulerRestInterceptor:
     """
 
     def pre_create_job(
-        self,
-        request: cloudscheduler.CreateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudscheduler.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudscheduler.CreateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudscheduler.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job
 
         Override in a subclass to manipulate the request or metadata
@@ -187,12 +183,8 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_delete_job(
-        self,
-        request: cloudscheduler.DeleteJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudscheduler.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudscheduler.DeleteJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudscheduler.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
         Override in a subclass to manipulate the request or metadata
@@ -201,9 +193,7 @@ class CloudSchedulerRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self,
-        request: cloudscheduler.GetJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudscheduler.GetJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudscheduler.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
@@ -243,9 +233,7 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_list_jobs(
-        self,
-        request: cloudscheduler.ListJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudscheduler.ListJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudscheduler.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
@@ -254,9 +242,7 @@ class CloudSchedulerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_jobs(
-        self, response: cloudscheduler.ListJobsResponse
-    ) -> cloudscheduler.ListJobsResponse:
+    def post_list_jobs(self, response: cloudscheduler.ListJobsResponse) -> cloudscheduler.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
         DEPRECATED. Please use the `post_list_jobs_with_metadata`
@@ -270,12 +256,8 @@ class CloudSchedulerRestInterceptor:
         return response
 
     def post_list_jobs_with_metadata(
-        self,
-        response: cloudscheduler.ListJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudscheduler.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloudscheduler.ListJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudscheduler.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -291,9 +273,7 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_pause_job(
-        self,
-        request: cloudscheduler.PauseJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudscheduler.PauseJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudscheduler.PauseJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_job
 
@@ -333,12 +313,8 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_resume_job(
-        self,
-        request: cloudscheduler.ResumeJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudscheduler.ResumeJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudscheduler.ResumeJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudscheduler.ResumeJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_job
 
         Override in a subclass to manipulate the request or metadata
@@ -377,9 +353,7 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_run_job(
-        self,
-        request: cloudscheduler.RunJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudscheduler.RunJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudscheduler.RunJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_job
 
@@ -419,12 +393,8 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_update_job(
-        self,
-        request: cloudscheduler.UpdateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudscheduler.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudscheduler.UpdateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudscheduler.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job
 
         Override in a subclass to manipulate the request or metadata
@@ -463,12 +433,8 @@ class CloudSchedulerRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -476,9 +442,7 @@ class CloudSchedulerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -488,12 +452,8 @@ class CloudSchedulerRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -501,9 +461,7 @@ class CloudSchedulerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -593,30 +551,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudSchedulerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateJob(
-        _BaseCloudSchedulerRestTransport._BaseCreateJob, CloudSchedulerRestStub
-    ):
+    class _CreateJob(_BaseCloudSchedulerRestTransport._BaseCreateJob, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.CreateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -660,36 +606,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseCreateJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseCreateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseCreateJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseCreateJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudSchedulerRestTransport._BaseCreateJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudSchedulerRestTransport._BaseCreateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseCreateJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseCreateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -713,13 +641,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._CreateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,12 +657,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_create_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_job.Job.to_json(response)
                 except:
@@ -761,22 +679,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 )
             return resp
 
-    class _DeleteJob(
-        _BaseCloudSchedulerRestTransport._BaseDeleteJob, CloudSchedulerRestStub
-    ):
+    class _DeleteJob(_BaseCloudSchedulerRestTransport._BaseDeleteJob, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.DeleteJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -812,30 +720,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -859,12 +753,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._DeleteJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -877,15 +766,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             return hash("CloudSchedulerRestTransport.GetJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -928,30 +809,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseGetJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseGetJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseGetJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -975,12 +842,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._GetJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -996,12 +858,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
                 except:
@@ -1022,22 +880,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 )
             return resp
 
-    class _ListJobs(
-        _BaseCloudSchedulerRestTransport._BaseListJobs, CloudSchedulerRestStub
-    ):
+    class _ListJobs(_BaseCloudSchedulerRestTransport._BaseListJobs, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.ListJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1079,30 +927,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseListJobs._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseListJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseListJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1126,12 +960,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._ListJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1147,12 +976,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudscheduler.ListJobsResponse.to_json(response)
                 except:
@@ -1173,22 +998,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 )
             return resp
 
-    class _PauseJob(
-        _BaseCloudSchedulerRestTransport._BasePauseJob, CloudSchedulerRestStub
-    ):
+    class _PauseJob(_BaseCloudSchedulerRestTransport._BasePauseJob, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.PauseJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1232,36 +1047,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BasePauseJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BasePauseJob._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BasePauseJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BasePauseJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudSchedulerRestTransport._BasePauseJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudSchedulerRestTransport._BasePauseJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BasePauseJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BasePauseJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1285,13 +1082,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._PauseJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1307,12 +1098,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_pause_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
                 except:
@@ -1333,22 +1120,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 )
             return resp
 
-    class _ResumeJob(
-        _BaseCloudSchedulerRestTransport._BaseResumeJob, CloudSchedulerRestStub
-    ):
+    class _ResumeJob(_BaseCloudSchedulerRestTransport._BaseResumeJob, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.ResumeJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1392,36 +1169,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseResumeJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseResumeJob._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseResumeJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseResumeJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudSchedulerRestTransport._BaseResumeJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudSchedulerRestTransport._BaseResumeJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseResumeJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseResumeJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1445,13 +1204,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._ResumeJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1467,12 +1220,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_resume_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
                 except:
@@ -1498,15 +1247,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             return hash("CloudSchedulerRestTransport.RunJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1550,34 +1291,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseRunJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseRunJob._get_http_options()
 
             request, metadata = self._interceptor.pre_run_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseRunJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseRunJob._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudSchedulerRestTransport._BaseRunJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudSchedulerRestTransport._BaseRunJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseRunJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseRunJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1601,13 +1326,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._RunJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1623,12 +1342,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_run_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = job.Job.to_json(response)
                 except:
@@ -1649,22 +1364,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 )
             return resp
 
-    class _UpdateJob(
-        _BaseCloudSchedulerRestTransport._BaseUpdateJob, CloudSchedulerRestStub
-    ):
+    class _UpdateJob(_BaseCloudSchedulerRestTransport._BaseUpdateJob, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.UpdateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1708,36 +1413,18 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_job(request, metadata)
-            transcoded_request = (
-                _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseUpdateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1761,13 +1448,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._UpdateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1783,12 +1464,8 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             resp = self._interceptor.post_update_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_job.Job.to_json(response)
                 except:
@@ -1816,9 +1493,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
         return self._CreateJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_job(
-        self,
-    ) -> Callable[[cloudscheduler.DeleteJobRequest], empty_pb2.Empty]:
+    def delete_job(self) -> Callable[[cloudscheduler.DeleteJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -1830,9 +1505,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
         return self._GetJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[[cloudscheduler.ListJobsRequest], cloudscheduler.ListJobsResponse]:
+    def list_jobs(self) -> Callable[[cloudscheduler.ListJobsRequest], cloudscheduler.ListJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobs(self._session, self._host, self._interceptor)  # type: ignore
@@ -1865,22 +1538,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudSchedulerRestTransport._BaseGetLocation, CloudSchedulerRestStub
-    ):
+    class _GetLocation(_BaseCloudSchedulerRestTransport._BaseGetLocation, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1918,26 +1581,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1961,12 +1614,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1978,9 +1626,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2005,22 +1651,12 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudSchedulerRestTransport._BaseListLocations, CloudSchedulerRestStub
-    ):
+    class _ListLocations(_BaseCloudSchedulerRestTransport._BaseListLocations, CloudSchedulerRestStub):
         def __hash__(self):
             return hash("CloudSchedulerRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2058,26 +1694,16 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudSchedulerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudSchedulerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudSchedulerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudSchedulerRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudSchedulerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudSchedulerRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2101,12 +1727,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
 
             # Send the request
             response = CloudSchedulerRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2118,9 +1739,7 @@ class CloudSchedulerRestTransport(_BaseCloudSchedulerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

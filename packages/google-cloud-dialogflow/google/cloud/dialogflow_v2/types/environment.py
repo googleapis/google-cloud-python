@@ -196,9 +196,7 @@ class TextToSpeechSettings(proto.Message):
         proto.INT32,
         number=3,
     )
-    synthesize_speech_configs: MutableMapping[
-        str, audio_config.SynthesizeSpeechConfig
-    ] = proto.MapField(
+    synthesize_speech_configs: MutableMapping[str, audio_config.SynthesizeSpeechConfig] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,

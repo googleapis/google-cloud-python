@@ -105,9 +105,7 @@ from google.cloud.backupdr_v1.types.backupvault import (
     UpdateBackupVaultRequest,
     UpdateDataSourceRequest,
 )
-from google.cloud.backupdr_v1.types.backupvault_ba import (
-    BackupApplianceBackupProperties,
-)
+from google.cloud.backupdr_v1.types.backupvault_ba import BackupApplianceBackupProperties
 from google.cloud.backupdr_v1.types.backupvault_cloudsql import (
     CloudSqlInstanceBackupPlanAssociationProperties,
     CloudSqlInstanceBackupProperties,

@@ -117,9 +117,7 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_descriptors: MutableSequence[
-        monitored_resource_pb2.MonitoredResourceDescriptor
-    ] = proto.RepeatedField(
+    resource_descriptors: MutableSequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
@@ -247,9 +245,7 @@ class ListMetricDescriptorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metric_descriptors: MutableSequence[
-        metric_pb2.MetricDescriptor
-    ] = proto.RepeatedField(
+    metric_descriptors: MutableSequence[metric_pb2.MetricDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=metric_pb2.MetricDescriptor,

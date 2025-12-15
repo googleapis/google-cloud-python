@@ -35,15 +35,7 @@ from .group_service import (
     ListGroupsResponse,
     UpdateGroupRequest,
 )
-from .metric import (
-    LabelValue,
-    Point,
-    QueryError,
-    TextLocator,
-    TimeSeries,
-    TimeSeriesData,
-    TimeSeriesDescriptor,
-)
+from .metric import LabelValue, Point, QueryError, TextLocator, TimeSeries, TimeSeriesData, TimeSeriesDescriptor
 from .metric_service import (
     CreateMetricDescriptorRequest,
     CreateTimeSeriesError,
@@ -105,22 +97,9 @@ from .service_service import (
     UpdateServiceRequest,
 )
 from .snooze import Snooze
-from .snooze_service import (
-    CreateSnoozeRequest,
-    GetSnoozeRequest,
-    ListSnoozesRequest,
-    ListSnoozesResponse,
-    UpdateSnoozeRequest,
-)
+from .snooze_service import CreateSnoozeRequest, GetSnoozeRequest, ListSnoozesRequest, ListSnoozesResponse, UpdateSnoozeRequest
 from .span_context import SpanContext
-from .uptime import (
-    GroupResourceType,
-    InternalChecker,
-    SyntheticMonitorTarget,
-    UptimeCheckConfig,
-    UptimeCheckIp,
-    UptimeCheckRegion,
-)
+from .uptime import GroupResourceType, InternalChecker, SyntheticMonitorTarget, UptimeCheckConfig, UptimeCheckIp, UptimeCheckRegion
 from .uptime_service import (
     CreateUptimeCheckConfigRequest,
     DeleteUptimeCheckConfigRequest,

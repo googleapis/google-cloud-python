@@ -22,15 +22,7 @@ from .active_directory import (
     ListActiveDirectoriesResponse,
     UpdateActiveDirectoryRequest,
 )
-from .backup import (
-    Backup,
-    CreateBackupRequest,
-    DeleteBackupRequest,
-    GetBackupRequest,
-    ListBackupsRequest,
-    ListBackupsResponse,
-    UpdateBackupRequest,
-)
+from .backup import Backup, CreateBackupRequest, DeleteBackupRequest, GetBackupRequest, ListBackupsRequest, ListBackupsResponse, UpdateBackupRequest
 from .backup_policy import (
     BackupPolicy,
     CreateBackupPolicyRequest,

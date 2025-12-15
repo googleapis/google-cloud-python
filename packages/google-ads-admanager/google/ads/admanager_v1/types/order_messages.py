@@ -318,16 +318,12 @@ class Order(proto.Message):
         number=25,
         message=applied_label.AppliedLabel,
     )
-    effective_applied_labels: MutableSequence[
-        applied_label.AppliedLabel
-    ] = proto.RepeatedField(
+    effective_applied_labels: MutableSequence[applied_label.AppliedLabel] = proto.RepeatedField(
         proto.MESSAGE,
         number=26,
         message=applied_label.AppliedLabel,
     )
-    custom_field_values: MutableSequence[
-        custom_field_value.CustomFieldValue
-    ] = proto.RepeatedField(
+    custom_field_values: MutableSequence[custom_field_value.CustomFieldValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=38,
         message=custom_field_value.CustomFieldValue,

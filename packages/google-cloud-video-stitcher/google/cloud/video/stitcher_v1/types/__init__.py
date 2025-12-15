@@ -13,34 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .ad_tag_details import (
-    AdRequest,
-    LiveAdTagDetail,
-    RequestMetadata,
-    ResponseMetadata,
-    VodAdTagDetail,
-)
+from .ad_tag_details import AdRequest, LiveAdTagDetail, RequestMetadata, ResponseMetadata, VodAdTagDetail
 from .cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey, MediaCdnKey
-from .companions import (
-    Companion,
-    CompanionAds,
-    HtmlAdResource,
-    IframeAdResource,
-    StaticAdResource,
-)
+from .companions import Companion, CompanionAds, HtmlAdResource, IframeAdResource, StaticAdResource
 from .events import Event, ProgressEvent
 from .fetch_options import FetchOptions
 from .live_configs import AdTracking, GamLiveConfig, LiveConfig, PrefetchConfig
-from .sessions import (
-    Interstitials,
-    LiveSession,
-    ManifestOptions,
-    RenditionFilter,
-    VodSession,
-    VodSessionAd,
-    VodSessionAdBreak,
-    VodSessionContent,
-)
+from .sessions import Interstitials, LiveSession, ManifestOptions, RenditionFilter, VodSession, VodSessionAd, VodSessionAdBreak, VodSessionContent
 from .slates import Slate
 from .stitch_details import AdStitchDetail, VodStitchDetail
 from .video_stitcher_service import (

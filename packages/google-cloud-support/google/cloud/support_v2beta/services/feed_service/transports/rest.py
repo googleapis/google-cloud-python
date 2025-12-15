@@ -87,9 +87,7 @@ class FeedServiceRestInterceptor:
     """
 
     def pre_show_feed(
-        self,
-        request: feed_service.ShowFeedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: feed_service.ShowFeedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[feed_service.ShowFeedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for show_feed
 
@@ -98,9 +96,7 @@ class FeedServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_show_feed(
-        self, response: feed_service.ShowFeedResponse
-    ) -> feed_service.ShowFeedResponse:
+    def post_show_feed(self, response: feed_service.ShowFeedResponse) -> feed_service.ShowFeedResponse:
         """Post-rpc interceptor for show_feed
 
         DEPRECATED. Please use the `post_show_feed_with_metadata`
@@ -114,9 +110,7 @@ class FeedServiceRestInterceptor:
         return response
 
     def post_show_feed_with_metadata(
-        self,
-        response: feed_service.ShowFeedResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: feed_service.ShowFeedResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[feed_service.ShowFeedResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for show_feed
 
@@ -212,9 +206,7 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or FeedServiceRestInterceptor()
@@ -225,15 +217,7 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
             return hash("FeedServiceRestTransport.ShowFeed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -275,30 +259,16 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFeedServiceRestTransport._BaseShowFeed._get_http_options()
-            )
+            http_options = _BaseFeedServiceRestTransport._BaseShowFeed._get_http_options()
 
             request, metadata = self._interceptor.pre_show_feed(request, metadata)
-            transcoded_request = (
-                _BaseFeedServiceRestTransport._BaseShowFeed._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFeedServiceRestTransport._BaseShowFeed._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFeedServiceRestTransport._BaseShowFeed._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFeedServiceRestTransport._BaseShowFeed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -322,12 +292,7 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
 
             # Send the request
             response = FeedServiceRestTransport._ShowFeed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -343,12 +308,8 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
 
             resp = self._interceptor.post_show_feed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_show_feed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_show_feed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = feed_service.ShowFeedResponse.to_json(response)
                 except:
@@ -370,9 +331,7 @@ class FeedServiceRestTransport(_BaseFeedServiceRestTransport):
             return resp
 
     @property
-    def show_feed(
-        self,
-    ) -> Callable[[feed_service.ShowFeedRequest], feed_service.ShowFeedResponse]:
+    def show_feed(self) -> Callable[[feed_service.ShowFeedRequest], feed_service.ShowFeedResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ShowFeed(self._session, self._host, self._interceptor)  # type: ignore

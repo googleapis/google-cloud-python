@@ -21,9 +21,7 @@ from google.cloud.orgpolicy.v1 import orgpolicy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import (
-    service_perimeter_pb2,
-)  # type: ignore
+from google.identity.accesscontextmanager.v1 import service_perimeter_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 

@@ -521,9 +521,7 @@ class ImageSegmentationAnnotation(proto.Message):
             A byte string of a full image's color map.
     """
 
-    annotation_colors: MutableMapping[
-        str, annotation_spec_set.AnnotationSpec
-    ] = proto.MapField(
+    annotation_colors: MutableMapping[str, annotation_spec_set.AnnotationSpec] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -713,9 +711,7 @@ class VideoObjectTrackingAnnotation(proto.Message):
         number=2,
         message="TimeSegment",
     )
-    object_tracking_frames: MutableSequence[
-        "ObjectTrackingFrame"
-    ] = proto.RepeatedField(
+    object_tracking_frames: MutableSequence["ObjectTrackingFrame"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ObjectTrackingFrame",

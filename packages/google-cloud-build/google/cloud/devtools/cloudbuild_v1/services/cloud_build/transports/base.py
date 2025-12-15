@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.devtools.cloudbuild_v1 import gapic_version as package_version
 from google.cloud.devtools.cloudbuild_v1.types import cloudbuild
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class CloudBuildTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -317,114 +307,61 @@ class CloudBuildTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_build(
-        self,
-    ) -> Callable[
-        [cloudbuild.CreateBuildRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_build(self) -> Callable[[cloudbuild.CreateBuildRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_build(
-        self,
-    ) -> Callable[
-        [cloudbuild.GetBuildRequest],
-        Union[cloudbuild.Build, Awaitable[cloudbuild.Build]],
-    ]:
+    def get_build(self) -> Callable[[cloudbuild.GetBuildRequest], Union[cloudbuild.Build, Awaitable[cloudbuild.Build]]]:
         raise NotImplementedError()
 
     @property
-    def list_builds(
-        self,
-    ) -> Callable[
-        [cloudbuild.ListBuildsRequest],
-        Union[cloudbuild.ListBuildsResponse, Awaitable[cloudbuild.ListBuildsResponse]],
-    ]:
+    def list_builds(self) -> Callable[[cloudbuild.ListBuildsRequest], Union[cloudbuild.ListBuildsResponse, Awaitable[cloudbuild.ListBuildsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_build(
-        self,
-    ) -> Callable[
-        [cloudbuild.CancelBuildRequest],
-        Union[cloudbuild.Build, Awaitable[cloudbuild.Build]],
-    ]:
+    def cancel_build(self) -> Callable[[cloudbuild.CancelBuildRequest], Union[cloudbuild.Build, Awaitable[cloudbuild.Build]]]:
         raise NotImplementedError()
 
     @property
-    def retry_build(
-        self,
-    ) -> Callable[
-        [cloudbuild.RetryBuildRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def retry_build(self) -> Callable[[cloudbuild.RetryBuildRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def approve_build(
-        self,
-    ) -> Callable[
-        [cloudbuild.ApproveBuildRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def approve_build(self) -> Callable[[cloudbuild.ApproveBuildRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_build_trigger(
         self,
-    ) -> Callable[
-        [cloudbuild.CreateBuildTriggerRequest],
-        Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]],
-    ]:
+    ) -> Callable[[cloudbuild.CreateBuildTriggerRequest], Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]]]:
         raise NotImplementedError()
 
     @property
-    def get_build_trigger(
-        self,
-    ) -> Callable[
-        [cloudbuild.GetBuildTriggerRequest],
-        Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]],
-    ]:
+    def get_build_trigger(self) -> Callable[[cloudbuild.GetBuildTriggerRequest], Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]]]:
         raise NotImplementedError()
 
     @property
     def list_build_triggers(
         self,
     ) -> Callable[
-        [cloudbuild.ListBuildTriggersRequest],
-        Union[
-            cloudbuild.ListBuildTriggersResponse,
-            Awaitable[cloudbuild.ListBuildTriggersResponse],
-        ],
+        [cloudbuild.ListBuildTriggersRequest], Union[cloudbuild.ListBuildTriggersResponse, Awaitable[cloudbuild.ListBuildTriggersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_build_trigger(
-        self,
-    ) -> Callable[
-        [cloudbuild.DeleteBuildTriggerRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_build_trigger(self) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_build_trigger(
         self,
-    ) -> Callable[
-        [cloudbuild.UpdateBuildTriggerRequest],
-        Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]],
-    ]:
+    ) -> Callable[[cloudbuild.UpdateBuildTriggerRequest], Union[cloudbuild.BuildTrigger, Awaitable[cloudbuild.BuildTrigger]]]:
         raise NotImplementedError()
 
     @property
     def run_build_trigger(
         self,
-    ) -> Callable[
-        [cloudbuild.RunBuildTriggerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloudbuild.RunBuildTriggerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -432,71 +369,42 @@ class CloudBuildTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloudbuild.ReceiveTriggerWebhookRequest],
-        Union[
-            cloudbuild.ReceiveTriggerWebhookResponse,
-            Awaitable[cloudbuild.ReceiveTriggerWebhookResponse],
-        ],
+        Union[cloudbuild.ReceiveTriggerWebhookResponse, Awaitable[cloudbuild.ReceiveTriggerWebhookResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_worker_pool(
         self,
-    ) -> Callable[
-        [cloudbuild.CreateWorkerPoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloudbuild.CreateWorkerPoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_worker_pool(
-        self,
-    ) -> Callable[
-        [cloudbuild.GetWorkerPoolRequest],
-        Union[cloudbuild.WorkerPool, Awaitable[cloudbuild.WorkerPool]],
-    ]:
+    def get_worker_pool(self) -> Callable[[cloudbuild.GetWorkerPoolRequest], Union[cloudbuild.WorkerPool, Awaitable[cloudbuild.WorkerPool]]]:
         raise NotImplementedError()
 
     @property
     def delete_worker_pool(
         self,
-    ) -> Callable[
-        [cloudbuild.DeleteWorkerPoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_worker_pool(
         self,
-    ) -> Callable[
-        [cloudbuild.UpdateWorkerPoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloudbuild.UpdateWorkerPoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_worker_pools(
         self,
-    ) -> Callable[
-        [cloudbuild.ListWorkerPoolsRequest],
-        Union[
-            cloudbuild.ListWorkerPoolsResponse,
-            Awaitable[cloudbuild.ListWorkerPoolsResponse],
-        ],
-    ]:
+    ) -> Callable[[cloudbuild.ListWorkerPoolsRequest], Union[cloudbuild.ListWorkerPoolsResponse, Awaitable[cloudbuild.ListWorkerPoolsResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_default_service_account(
         self,
-    ) -> Callable[
-        [cloudbuild.GetDefaultServiceAccountRequest],
-        Union[
-            cloudbuild.DefaultServiceAccount,
-            Awaitable[cloudbuild.DefaultServiceAccount],
-        ],
-    ]:
+    ) -> Callable[[cloudbuild.GetDefaultServiceAccountRequest], Union[cloudbuild.DefaultServiceAccount, Awaitable[cloudbuild.DefaultServiceAccount]]]:
         raise NotImplementedError()
 
     @property

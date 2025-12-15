@@ -335,9 +335,7 @@ class Trip(proto.Message):
         number=6,
         message=timestamp_pb2.Timestamp,
     )
-    intermediate_destinations: MutableSequence[
-        fleetengine.TerminalLocation
-    ] = proto.RepeatedField(
+    intermediate_destinations: MutableSequence[fleetengine.TerminalLocation] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=fleetengine.TerminalLocation,
@@ -351,16 +349,12 @@ class Trip(proto.Message):
         proto.INT32,
         number=15,
     )
-    actual_intermediate_destination_arrival_points: MutableSequence[
-        "StopLocation"
-    ] = proto.RepeatedField(
+    actual_intermediate_destination_arrival_points: MutableSequence["StopLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=33,
         message="StopLocation",
     )
-    actual_intermediate_destinations: MutableSequence[
-        "StopLocation"
-    ] = proto.RepeatedField(
+    actual_intermediate_destinations: MutableSequence["StopLocation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=34,
         message="StopLocation",
@@ -380,9 +374,7 @@ class Trip(proto.Message):
         number=8,
         message=timestamp_pb2.Timestamp,
     )
-    remaining_waypoints: MutableSequence[
-        fleetengine.TripWaypoint
-    ] = proto.RepeatedField(
+    remaining_waypoints: MutableSequence[fleetengine.TripWaypoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=16,
         message=fleetengine.TripWaypoint,

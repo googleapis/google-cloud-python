@@ -749,9 +749,7 @@ class Attributes(proto.Message):
         number=39,
         message="Shipping",
     )
-    free_shipping_threshold: MutableSequence[
-        "FreeShippingThreshold"
-    ] = proto.RepeatedField(
+    free_shipping_threshold: MutableSequence["FreeShippingThreshold"] = proto.RepeatedField(
         proto.MESSAGE,
         number=135,
         message="FreeShippingThreshold",
@@ -977,9 +975,7 @@ class Attributes(proto.Message):
         proto.STRING,
         number=14,
     )
-    cloud_export_additional_properties: MutableSequence[
-        "CloudExportAdditionalProperties"
-    ] = proto.RepeatedField(
+    cloud_export_additional_properties: MutableSequence["CloudExportAdditionalProperties"] = proto.RepeatedField(
         proto.MESSAGE,
         number=84,
         message="CloudExportAdditionalProperties",
@@ -1011,9 +1007,7 @@ class Attributes(proto.Message):
         number=124,
         message=types.Price,
     )
-    sustainability_incentives: MutableSequence[
-        "ProductSustainabilityIncentive"
-    ] = proto.RepeatedField(
+    sustainability_incentives: MutableSequence["ProductSustainabilityIncentive"] = proto.RepeatedField(
         proto.MESSAGE,
         number=138,
         message="ProductSustainabilityIncentive",

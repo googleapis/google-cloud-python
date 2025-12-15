@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -98,30 +87,16 @@ class RouteOptimizationAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = RouteOptimizationClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = RouteOptimizationClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        RouteOptimizationClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RouteOptimizationClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(RouteOptimizationClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RouteOptimizationClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(RouteOptimizationClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        RouteOptimizationClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        RouteOptimizationClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        RouteOptimizationClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(RouteOptimizationClient.parse_common_folder_path)
+    common_organization_path = staticmethod(RouteOptimizationClient.common_organization_path)
+    parse_common_organization_path = staticmethod(RouteOptimizationClient.parse_common_organization_path)
     common_project_path = staticmethod(RouteOptimizationClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        RouteOptimizationClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(RouteOptimizationClient.parse_common_project_path)
     common_location_path = staticmethod(RouteOptimizationClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        RouteOptimizationClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(RouteOptimizationClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -157,9 +132,7 @@ class RouteOptimizationAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -226,13 +199,7 @@ class RouteOptimizationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                RouteOptimizationTransport,
-                Callable[..., RouteOptimizationTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, RouteOptimizationTransport, Callable[..., RouteOptimizationTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -292,20 +259,14 @@ class RouteOptimizationAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.maps.routeoptimization_v1.RouteOptimizationAsyncClient`.",
                 extra={
                     "serviceName": "google.maps.routeoptimization.v1.RouteOptimization",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -316,9 +277,7 @@ class RouteOptimizationAsyncClient:
 
     async def optimize_tours(
         self,
-        request: Optional[
-            Union[route_optimization_service.OptimizeToursRequest, dict]
-        ] = None,
+        request: Optional[Union[route_optimization_service.OptimizeToursRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -398,15 +357,11 @@ class RouteOptimizationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.optimize_tours
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.optimize_tours]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -424,9 +379,7 @@ class RouteOptimizationAsyncClient:
 
     async def batch_optimize_tours(
         self,
-        request: Optional[
-            Union[route_optimization_service.BatchOptimizeToursRequest, dict]
-        ] = None,
+        request: Optional[Union[route_optimization_service.BatchOptimizeToursRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -524,22 +477,16 @@ class RouteOptimizationAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, route_optimization_service.BatchOptimizeToursRequest
-        ):
+        if not isinstance(request, route_optimization_service.BatchOptimizeToursRequest):
             request = route_optimization_service.BatchOptimizeToursRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_optimize_tours
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_optimize_tours]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -565,9 +512,7 @@ class RouteOptimizationAsyncClient:
 
     async def optimize_tours_long_running(
         self,
-        request: Optional[
-            Union[route_optimization_service.OptimizeToursRequest, dict]
-        ] = None,
+        request: Optional[Union[route_optimization_service.OptimizeToursRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -655,15 +600,11 @@ class RouteOptimizationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.optimize_tours_long_running
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.optimize_tours_long_running]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -689,9 +630,7 @@ class RouteOptimizationAsyncClient:
 
     async def optimize_tours_uri(
         self,
-        request: Optional[
-            Union[route_optimization_service.OptimizeToursUriRequest, dict]
-        ] = None,
+        request: Optional[Union[route_optimization_service.OptimizeToursUriRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -785,15 +724,11 @@ class RouteOptimizationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.optimize_tours_uri
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.optimize_tours_uri]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -854,9 +789,7 @@ class RouteOptimizationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -879,9 +812,7 @@ class RouteOptimizationAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

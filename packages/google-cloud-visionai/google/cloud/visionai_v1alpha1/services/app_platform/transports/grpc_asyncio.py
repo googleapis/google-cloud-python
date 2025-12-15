@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,19 +326,13 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_applications(
-        self,
-    ) -> Callable[
-        [platform.ListApplicationsRequest], Awaitable[platform.ListApplicationsResponse]
-    ]:
+    def list_applications(self) -> Callable[[platform.ListApplicationsRequest], Awaitable[platform.ListApplicationsResponse]]:
         r"""Return a callable for the list applications method over gRPC.
 
         Lists Applications in a given project and location.
@@ -379,9 +356,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["list_applications"]
 
     @property
-    def get_application(
-        self,
-    ) -> Callable[[platform.GetApplicationRequest], Awaitable[platform.Application]]:
+    def get_application(self) -> Callable[[platform.GetApplicationRequest], Awaitable[platform.Application]]:
         r"""Return a callable for the get application method over gRPC.
 
         Gets details of a single Application.
@@ -405,11 +380,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["get_application"]
 
     @property
-    def create_application(
-        self,
-    ) -> Callable[
-        [platform.CreateApplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_application(self) -> Callable[[platform.CreateApplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create application method over gRPC.
 
         Creates a new Application in a given project and
@@ -434,11 +405,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["create_application"]
 
     @property
-    def update_application(
-        self,
-    ) -> Callable[
-        [platform.UpdateApplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_application(self) -> Callable[[platform.UpdateApplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update application method over gRPC.
 
         Updates the parameters of a single Application.
@@ -462,11 +429,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["update_application"]
 
     @property
-    def delete_application(
-        self,
-    ) -> Callable[
-        [platform.DeleteApplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_application(self) -> Callable[[platform.DeleteApplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete application method over gRPC.
 
         Deletes a single Application.
@@ -490,11 +453,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["delete_application"]
 
     @property
-    def deploy_application(
-        self,
-    ) -> Callable[
-        [platform.DeployApplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def deploy_application(self) -> Callable[[platform.DeployApplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the deploy application method over gRPC.
 
         Deploys a single Application.
@@ -518,11 +477,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["deploy_application"]
 
     @property
-    def undeploy_application(
-        self,
-    ) -> Callable[
-        [platform.UndeployApplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def undeploy_application(self) -> Callable[[platform.UndeployApplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undeploy application method over gRPC.
 
         Undeploys a single Application.
@@ -546,11 +501,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["undeploy_application"]
 
     @property
-    def add_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.AddApplicationStreamInputRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def add_application_stream_input(self) -> Callable[[platform.AddApplicationStreamInputRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the add application stream input method over gRPC.
 
         Adds target stream input to the Application.
@@ -569,9 +520,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "add_application_stream_input" not in self._stubs:
-            self._stubs[
-                "add_application_stream_input"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["add_application_stream_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/AddApplicationStreamInput",
                 request_serializer=platform.AddApplicationStreamInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -579,12 +528,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["add_application_stream_input"]
 
     @property
-    def remove_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.RemoveApplicationStreamInputRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def remove_application_stream_input(self) -> Callable[[platform.RemoveApplicationStreamInputRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the remove application stream
         input method over gRPC.
 
@@ -604,9 +548,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_application_stream_input" not in self._stubs:
-            self._stubs[
-                "remove_application_stream_input"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["remove_application_stream_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/RemoveApplicationStreamInput",
                 request_serializer=platform.RemoveApplicationStreamInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -614,12 +556,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["remove_application_stream_input"]
 
     @property
-    def update_application_stream_input(
-        self,
-    ) -> Callable[
-        [platform.UpdateApplicationStreamInputRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_application_stream_input(self) -> Callable[[platform.UpdateApplicationStreamInputRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update application stream
         input method over gRPC.
 
@@ -639,9 +576,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_application_stream_input" not in self._stubs:
-            self._stubs[
-                "update_application_stream_input"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_application_stream_input"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/UpdateApplicationStreamInput",
                 request_serializer=platform.UpdateApplicationStreamInputRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -649,11 +584,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["update_application_stream_input"]
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [platform.ListInstancesRequest], Awaitable[platform.ListInstancesResponse]
-    ]:
+    def list_instances(self) -> Callable[[platform.ListInstancesRequest], Awaitable[platform.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists Instances in a given project and location.
@@ -677,9 +608,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[platform.GetInstanceRequest], Awaitable[platform.Instance]]:
+    def get_instance(self) -> Callable[[platform.GetInstanceRequest], Awaitable[platform.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets details of a single Instance.
@@ -703,12 +632,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_application_instances(
-        self,
-    ) -> Callable[
-        [platform.CreateApplicationInstancesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_application_instances(self) -> Callable[[platform.CreateApplicationInstancesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create application instances method over gRPC.
 
         Adds target stream input to the Application.
@@ -727,9 +651,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_application_instances" not in self._stubs:
-            self._stubs[
-                "create_application_instances"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_application_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/CreateApplicationInstances",
                 request_serializer=platform.CreateApplicationInstancesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -737,12 +659,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["create_application_instances"]
 
     @property
-    def delete_application_instances(
-        self,
-    ) -> Callable[
-        [platform.DeleteApplicationInstancesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_application_instances(self) -> Callable[[platform.DeleteApplicationInstancesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete application instances method over gRPC.
 
         Remove target stream input to the Application, if the
@@ -761,9 +678,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_application_instances" not in self._stubs:
-            self._stubs[
-                "delete_application_instances"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_application_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/DeleteApplicationInstances",
                 request_serializer=platform.DeleteApplicationInstancesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -771,12 +686,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["delete_application_instances"]
 
     @property
-    def update_application_instances(
-        self,
-    ) -> Callable[
-        [platform.UpdateApplicationInstancesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_application_instances(self) -> Callable[[platform.UpdateApplicationInstancesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update application instances method over gRPC.
 
         Adds target stream input to the Application.
@@ -795,9 +705,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_application_instances" not in self._stubs:
-            self._stubs[
-                "update_application_instances"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_application_instances"] = self._logged_channel.unary_unary(
                 "/google.cloud.visionai.v1alpha1.AppPlatform/UpdateApplicationInstances",
                 request_serializer=platform.UpdateApplicationInstancesRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -805,9 +713,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["update_application_instances"]
 
     @property
-    def list_drafts(
-        self,
-    ) -> Callable[[platform.ListDraftsRequest], Awaitable[platform.ListDraftsResponse]]:
+    def list_drafts(self) -> Callable[[platform.ListDraftsRequest], Awaitable[platform.ListDraftsResponse]]:
         r"""Return a callable for the list drafts method over gRPC.
 
         Lists Drafts in a given project and location.
@@ -831,9 +737,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["list_drafts"]
 
     @property
-    def get_draft(
-        self,
-    ) -> Callable[[platform.GetDraftRequest], Awaitable[platform.Draft]]:
+    def get_draft(self) -> Callable[[platform.GetDraftRequest], Awaitable[platform.Draft]]:
         r"""Return a callable for the get draft method over gRPC.
 
         Gets details of a single Draft.
@@ -857,9 +761,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["get_draft"]
 
     @property
-    def create_draft(
-        self,
-    ) -> Callable[[platform.CreateDraftRequest], Awaitable[operations_pb2.Operation]]:
+    def create_draft(self) -> Callable[[platform.CreateDraftRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create draft method over gRPC.
 
         Creates a new Draft in a given project and location.
@@ -883,9 +785,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["create_draft"]
 
     @property
-    def update_draft(
-        self,
-    ) -> Callable[[platform.UpdateDraftRequest], Awaitable[operations_pb2.Operation]]:
+    def update_draft(self) -> Callable[[platform.UpdateDraftRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update draft method over gRPC.
 
         Updates the parameters of a single Draft.
@@ -909,9 +809,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["update_draft"]
 
     @property
-    def delete_draft(
-        self,
-    ) -> Callable[[platform.DeleteDraftRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_draft(self) -> Callable[[platform.DeleteDraftRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete draft method over gRPC.
 
         Deletes a single Draft.
@@ -935,11 +833,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["delete_draft"]
 
     @property
-    def list_processors(
-        self,
-    ) -> Callable[
-        [platform.ListProcessorsRequest], Awaitable[platform.ListProcessorsResponse]
-    ]:
+    def list_processors(self) -> Callable[[platform.ListProcessorsRequest], Awaitable[platform.ListProcessorsResponse]]:
         r"""Return a callable for the list processors method over gRPC.
 
         Lists Processors in a given project and location.
@@ -963,12 +857,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["list_processors"]
 
     @property
-    def list_prebuilt_processors(
-        self,
-    ) -> Callable[
-        [platform.ListPrebuiltProcessorsRequest],
-        Awaitable[platform.ListPrebuiltProcessorsResponse],
-    ]:
+    def list_prebuilt_processors(self) -> Callable[[platform.ListPrebuiltProcessorsRequest], Awaitable[platform.ListPrebuiltProcessorsResponse]]:
         r"""Return a callable for the list prebuilt processors method over gRPC.
 
         ListPrebuiltProcessors is a custom pass-through verb
@@ -993,9 +882,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["list_prebuilt_processors"]
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[[platform.GetProcessorRequest], Awaitable[platform.Processor]]:
+    def get_processor(self) -> Callable[[platform.GetProcessorRequest], Awaitable[platform.Processor]]:
         r"""Return a callable for the get processor method over gRPC.
 
         Gets details of a single Processor.
@@ -1019,11 +906,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["get_processor"]
 
     @property
-    def create_processor(
-        self,
-    ) -> Callable[
-        [platform.CreateProcessorRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_processor(self) -> Callable[[platform.CreateProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create processor method over gRPC.
 
         Creates a new Processor in a given project and
@@ -1048,11 +931,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["create_processor"]
 
     @property
-    def update_processor(
-        self,
-    ) -> Callable[
-        [platform.UpdateProcessorRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_processor(self) -> Callable[[platform.UpdateProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update processor method over gRPC.
 
         Updates the parameters of a single Processor.
@@ -1076,11 +955,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
         return self._stubs["update_processor"]
 
     @property
-    def delete_processor(
-        self,
-    ) -> Callable[
-        [platform.DeleteProcessorRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_processor(self) -> Callable[[platform.DeleteProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete processor method over gRPC.
 
         Deletes a single Processor.
@@ -1349,9 +1224,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1368,9 +1241,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1455,10 +1326,7 @@ class AppPlatformGrpcAsyncIOTransport(AppPlatformTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

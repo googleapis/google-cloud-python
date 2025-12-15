@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -333,20 +318,13 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[
-        [developer_connect.ListConnectionsRequest],
-        developer_connect.ListConnectionsResponse,
-    ]:
+    def list_connections(self) -> Callable[[developer_connect.ListConnectionsRequest], developer_connect.ListConnectionsResponse]:
         r"""Return a callable for the list connections method over gRPC.
 
         Lists Connections in a given project and location.
@@ -370,11 +348,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["list_connections"]
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.GetConnectionRequest], developer_connect.Connection
-    ]:
+    def get_connection(self) -> Callable[[developer_connect.GetConnectionRequest], developer_connect.Connection]:
         r"""Return a callable for the get connection method over gRPC.
 
         Gets details of a single Connection.
@@ -398,11 +372,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["get_connection"]
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_connection(self) -> Callable[[developer_connect.CreateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create connection method over gRPC.
 
         Creates a new Connection in a given project and
@@ -427,11 +397,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["create_connection"]
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.UpdateConnectionRequest], operations_pb2.Operation
-    ]:
+    def update_connection(self) -> Callable[[developer_connect.UpdateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the update connection method over gRPC.
 
         Updates the parameters of a single Connection.
@@ -455,11 +421,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["update_connection"]
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_connection(self) -> Callable[[developer_connect.DeleteConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete connection method over gRPC.
 
         Deletes a single Connection.
@@ -483,11 +445,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["delete_connection"]
 
     @property
-    def create_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateGitRepositoryLinkRequest], operations_pb2.Operation
-    ]:
+    def create_git_repository_link(self) -> Callable[[developer_connect.CreateGitRepositoryLinkRequest], operations_pb2.Operation]:
         r"""Return a callable for the create git repository link method over gRPC.
 
         Creates a GitRepositoryLink. Upon linking a Git
@@ -508,9 +466,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_git_repository_link" not in self._stubs:
-            self._stubs[
-                "create_git_repository_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_git_repository_link"] = self._logged_channel.unary_unary(
                 "/google.cloud.developerconnect.v1.DeveloperConnect/CreateGitRepositoryLink",
                 request_serializer=developer_connect.CreateGitRepositoryLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -518,11 +474,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["create_git_repository_link"]
 
     @property
-    def delete_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteGitRepositoryLinkRequest], operations_pb2.Operation
-    ]:
+    def delete_git_repository_link(self) -> Callable[[developer_connect.DeleteGitRepositoryLinkRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete git repository link method over gRPC.
 
         Deletes a single GitRepositoryLink.
@@ -538,9 +490,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_git_repository_link" not in self._stubs:
-            self._stubs[
-                "delete_git_repository_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_git_repository_link"] = self._logged_channel.unary_unary(
                 "/google.cloud.developerconnect.v1.DeveloperConnect/DeleteGitRepositoryLink",
                 request_serializer=developer_connect.DeleteGitRepositoryLinkRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -550,10 +500,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
     @property
     def list_git_repository_links(
         self,
-    ) -> Callable[
-        [developer_connect.ListGitRepositoryLinksRequest],
-        developer_connect.ListGitRepositoryLinksResponse,
-    ]:
+    ) -> Callable[[developer_connect.ListGitRepositoryLinksRequest], developer_connect.ListGitRepositoryLinksResponse]:
         r"""Return a callable for the list git repository links method over gRPC.
 
         Lists GitRepositoryLinks in a given project,
@@ -578,12 +525,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["list_git_repository_links"]
 
     @property
-    def get_git_repository_link(
-        self,
-    ) -> Callable[
-        [developer_connect.GetGitRepositoryLinkRequest],
-        developer_connect.GitRepositoryLink,
-    ]:
+    def get_git_repository_link(self) -> Callable[[developer_connect.GetGitRepositoryLinkRequest], developer_connect.GitRepositoryLink]:
         r"""Return a callable for the get git repository link method over gRPC.
 
         Gets details of a single GitRepositoryLink.
@@ -607,12 +549,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["get_git_repository_link"]
 
     @property
-    def fetch_read_write_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchReadWriteTokenRequest],
-        developer_connect.FetchReadWriteTokenResponse,
-    ]:
+    def fetch_read_write_token(self) -> Callable[[developer_connect.FetchReadWriteTokenRequest], developer_connect.FetchReadWriteTokenResponse]:
         r"""Return a callable for the fetch read write token method over gRPC.
 
         Fetches read/write token of a given
@@ -637,12 +574,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["fetch_read_write_token"]
 
     @property
-    def fetch_read_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchReadTokenRequest],
-        developer_connect.FetchReadTokenResponse,
-    ]:
+    def fetch_read_token(self) -> Callable[[developer_connect.FetchReadTokenRequest], developer_connect.FetchReadTokenResponse]:
         r"""Return a callable for the fetch read token method over gRPC.
 
         Fetches read token of a given gitRepositoryLink.
@@ -668,10 +600,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
     @property
     def fetch_linkable_git_repositories(
         self,
-    ) -> Callable[
-        [developer_connect.FetchLinkableGitRepositoriesRequest],
-        developer_connect.FetchLinkableGitRepositoriesResponse,
-    ]:
+    ) -> Callable[[developer_connect.FetchLinkableGitRepositoriesRequest], developer_connect.FetchLinkableGitRepositoriesResponse]:
         r"""Return a callable for the fetch linkable git
         repositories method over gRPC.
 
@@ -690,9 +619,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_linkable_git_repositories" not in self._stubs:
-            self._stubs[
-                "fetch_linkable_git_repositories"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_linkable_git_repositories"] = self._logged_channel.unary_unary(
                 "/google.cloud.developerconnect.v1.DeveloperConnect/FetchLinkableGitRepositories",
                 request_serializer=developer_connect.FetchLinkableGitRepositoriesRequest.serialize,
                 response_deserializer=developer_connect.FetchLinkableGitRepositoriesResponse.deserialize,
@@ -702,10 +629,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
     @property
     def fetch_git_hub_installations(
         self,
-    ) -> Callable[
-        [developer_connect.FetchGitHubInstallationsRequest],
-        developer_connect.FetchGitHubInstallationsResponse,
-    ]:
+    ) -> Callable[[developer_connect.FetchGitHubInstallationsRequest], developer_connect.FetchGitHubInstallationsResponse]:
         r"""Return a callable for the fetch git hub installations method over gRPC.
 
         FetchGitHubInstallations returns the list of GitHub
@@ -725,9 +649,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_git_hub_installations" not in self._stubs:
-            self._stubs[
-                "fetch_git_hub_installations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_git_hub_installations"] = self._logged_channel.unary_unary(
                 "/google.cloud.developerconnect.v1.DeveloperConnect/FetchGitHubInstallations",
                 request_serializer=developer_connect.FetchGitHubInstallationsRequest.serialize,
                 response_deserializer=developer_connect.FetchGitHubInstallationsResponse.deserialize,
@@ -735,11 +657,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["fetch_git_hub_installations"]
 
     @property
-    def fetch_git_refs(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchGitRefsRequest], developer_connect.FetchGitRefsResponse
-    ]:
+    def fetch_git_refs(self) -> Callable[[developer_connect.FetchGitRefsRequest], developer_connect.FetchGitRefsResponse]:
         r"""Return a callable for the fetch git refs method over gRPC.
 
         Fetch the list of branches or tags for a given
@@ -764,12 +682,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["fetch_git_refs"]
 
     @property
-    def list_account_connectors(
-        self,
-    ) -> Callable[
-        [developer_connect.ListAccountConnectorsRequest],
-        developer_connect.ListAccountConnectorsResponse,
-    ]:
+    def list_account_connectors(self) -> Callable[[developer_connect.ListAccountConnectorsRequest], developer_connect.ListAccountConnectorsResponse]:
         r"""Return a callable for the list account connectors method over gRPC.
 
         Lists AccountConnectors in a given project and
@@ -794,12 +707,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["list_account_connectors"]
 
     @property
-    def get_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.GetAccountConnectorRequest],
-        developer_connect.AccountConnector,
-    ]:
+    def get_account_connector(self) -> Callable[[developer_connect.GetAccountConnectorRequest], developer_connect.AccountConnector]:
         r"""Return a callable for the get account connector method over gRPC.
 
         Gets details of a single AccountConnector.
@@ -823,11 +731,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["get_account_connector"]
 
     @property
-    def create_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def create_account_connector(self) -> Callable[[developer_connect.CreateAccountConnectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the create account connector method over gRPC.
 
         Creates a new AccountConnector in a given project and
@@ -852,11 +756,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["create_account_connector"]
 
     @property
-    def update_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def update_account_connector(self) -> Callable[[developer_connect.UpdateAccountConnectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the update account connector method over gRPC.
 
         Updates the parameters of a single AccountConnector.
@@ -880,11 +780,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["update_account_connector"]
 
     @property
-    def delete_account_connector(
-        self,
-    ) -> Callable[
-        [developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation
-    ]:
+    def delete_account_connector(self) -> Callable[[developer_connect.DeleteAccountConnectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete account connector method over gRPC.
 
         Deletes a single AccountConnector.
@@ -908,12 +804,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["delete_account_connector"]
 
     @property
-    def fetch_access_token(
-        self,
-    ) -> Callable[
-        [developer_connect.FetchAccessTokenRequest],
-        developer_connect.FetchAccessTokenResponse,
-    ]:
+    def fetch_access_token(self) -> Callable[[developer_connect.FetchAccessTokenRequest], developer_connect.FetchAccessTokenResponse]:
         r"""Return a callable for the fetch access token method over gRPC.
 
         Fetches OAuth access token based on end user
@@ -938,11 +829,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["fetch_access_token"]
 
     @property
-    def list_users(
-        self,
-    ) -> Callable[
-        [developer_connect.ListUsersRequest], developer_connect.ListUsersResponse
-    ]:
+    def list_users(self) -> Callable[[developer_connect.ListUsersRequest], developer_connect.ListUsersResponse]:
         r"""Return a callable for the list users method over gRPC.
 
         Lists Users in a given project, location, and account_connector.
@@ -966,9 +853,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["list_users"]
 
     @property
-    def delete_user(
-        self,
-    ) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
+    def delete_user(self) -> Callable[[developer_connect.DeleteUserRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete user method over gRPC.
 
         Deletes a single User.
@@ -992,9 +877,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["delete_user"]
 
     @property
-    def fetch_self(
-        self,
-    ) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
+    def fetch_self(self) -> Callable[[developer_connect.FetchSelfRequest], developer_connect.User]:
         r"""Return a callable for the fetch self method over gRPC.
 
         Fetch the User based on the user credentials.
@@ -1018,9 +901,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
         return self._stubs["fetch_self"]
 
     @property
-    def delete_self(
-        self,
-    ) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
+    def delete_self(self) -> Callable[[developer_connect.DeleteSelfRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete self method over gRPC.
 
         Delete the User based on the user credentials.
@@ -1100,9 +981,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1119,9 +998,7 @@ class DeveloperConnectGrpcTransport(DeveloperConnectTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

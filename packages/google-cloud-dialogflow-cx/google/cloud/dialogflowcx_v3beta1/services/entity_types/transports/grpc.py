@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,17 +321,13 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_entity_type(
-        self,
-    ) -> Callable[[entity_type.GetEntityTypeRequest], entity_type.EntityType]:
+    def get_entity_type(self) -> Callable[[entity_type.GetEntityTypeRequest], entity_type.EntityType]:
         r"""Return a callable for the get entity type method over gRPC.
 
         Retrieves the specified entity type.
@@ -370,11 +351,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["get_entity_type"]
 
     @property
-    def create_entity_type(
-        self,
-    ) -> Callable[
-        [gcdc_entity_type.CreateEntityTypeRequest], gcdc_entity_type.EntityType
-    ]:
+    def create_entity_type(self) -> Callable[[gcdc_entity_type.CreateEntityTypeRequest], gcdc_entity_type.EntityType]:
         r"""Return a callable for the create entity type method over gRPC.
 
         Creates an entity type in the specified agent.
@@ -398,11 +375,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["create_entity_type"]
 
     @property
-    def update_entity_type(
-        self,
-    ) -> Callable[
-        [gcdc_entity_type.UpdateEntityTypeRequest], gcdc_entity_type.EntityType
-    ]:
+    def update_entity_type(self) -> Callable[[gcdc_entity_type.UpdateEntityTypeRequest], gcdc_entity_type.EntityType]:
         r"""Return a callable for the update entity type method over gRPC.
 
         Updates the specified entity type.
@@ -430,9 +403,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["update_entity_type"]
 
     @property
-    def delete_entity_type(
-        self,
-    ) -> Callable[[entity_type.DeleteEntityTypeRequest], empty_pb2.Empty]:
+    def delete_entity_type(self) -> Callable[[entity_type.DeleteEntityTypeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete entity type method over gRPC.
 
         Deletes the specified entity type.
@@ -460,11 +431,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["delete_entity_type"]
 
     @property
-    def list_entity_types(
-        self,
-    ) -> Callable[
-        [entity_type.ListEntityTypesRequest], entity_type.ListEntityTypesResponse
-    ]:
+    def list_entity_types(self) -> Callable[[entity_type.ListEntityTypesRequest], entity_type.ListEntityTypesResponse]:
         r"""Return a callable for the list entity types method over gRPC.
 
         Returns the list of all entity types in the specified
@@ -489,9 +456,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["list_entity_types"]
 
     @property
-    def export_entity_types(
-        self,
-    ) -> Callable[[entity_type.ExportEntityTypesRequest], operations_pb2.Operation]:
+    def export_entity_types(self) -> Callable[[entity_type.ExportEntityTypesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export entity types method over gRPC.
 
         Exports the selected entity types.
@@ -515,9 +480,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
         return self._stubs["export_entity_types"]
 
     @property
-    def import_entity_types(
-        self,
-    ) -> Callable[[entity_type.ImportEntityTypesRequest], operations_pb2.Operation]:
+    def import_entity_types(self) -> Callable[[entity_type.ImportEntityTypesRequest], operations_pb2.Operation]:
         r"""Return a callable for the import entity types method over gRPC.
 
         Imports the specified entitytypes into the agent.
@@ -580,9 +543,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -599,9 +560,7 @@ class EntityTypesGrpcTransport(EntityTypesTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

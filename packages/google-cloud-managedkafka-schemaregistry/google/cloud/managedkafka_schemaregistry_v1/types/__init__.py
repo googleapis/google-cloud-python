@@ -43,15 +43,7 @@ from .schema_registry import (
     UpdateSchemaConfigRequest,
     UpdateSchemaModeRequest,
 )
-from .schema_registry_resources import (
-    Context,
-    Schema,
-    SchemaConfig,
-    SchemaMode,
-    SchemaRegistry,
-    SchemaSubject,
-    SchemaVersion,
-)
+from .schema_registry_resources import Context, Schema, SchemaConfig, SchemaMode, SchemaRegistry, SchemaSubject, SchemaVersion
 
 __all__ = (
     "CheckCompatibilityRequest",

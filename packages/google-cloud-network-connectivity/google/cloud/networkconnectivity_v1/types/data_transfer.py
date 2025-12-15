@@ -211,9 +211,7 @@ class ListMulticloudDataTransferConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    multicloud_data_transfer_configs: MutableSequence[
-        "MulticloudDataTransferConfig"
-    ] = proto.RepeatedField(
+    multicloud_data_transfer_configs: MutableSequence["MulticloudDataTransferConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MulticloudDataTransferConfig",
@@ -981,9 +979,7 @@ class ListMulticloudDataTransferSupportedServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    multicloud_data_transfer_supported_services: MutableSequence[
-        "MulticloudDataTransferSupportedService"
-    ] = proto.RepeatedField(
+    multicloud_data_transfer_supported_services: MutableSequence["MulticloudDataTransferSupportedService"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MulticloudDataTransferSupportedService",

@@ -673,12 +673,10 @@ class GenerateContentResponse(proto.Message):
             PROHIBITED_CONTENT = 4
             IMAGE_SAFETY = 5
 
-        block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="GenerateContentResponse.PromptFeedback.BlockReason",
-            )
+        block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="GenerateContentResponse.PromptFeedback.BlockReason",
         )
         safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
             proto.MESSAGE,
@@ -875,9 +873,7 @@ class Candidate(proto.Message):
         proto.INT32,
         number=7,
     )
-    grounding_attributions: MutableSequence[
-        "GroundingAttribution"
-    ] = proto.RepeatedField(
+    grounding_attributions: MutableSequence["GroundingAttribution"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="GroundingAttribution",
@@ -1906,9 +1902,7 @@ class BidiGenerateContentToolResponse(proto.Message):
             Optional. The response to the function calls.
     """
 
-    function_responses: MutableSequence[
-        gag_content.FunctionResponse
-    ] = proto.RepeatedField(
+    function_responses: MutableSequence[gag_content.FunctionResponse] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gag_content.FunctionResponse,

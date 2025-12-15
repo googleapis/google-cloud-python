@@ -136,9 +136,7 @@ class ListContentBundlesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    content_bundles: MutableSequence[
-        content_bundle_messages.ContentBundle
-    ] = proto.RepeatedField(
+    content_bundles: MutableSequence[content_bundle_messages.ContentBundle] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=content_bundle_messages.ContentBundle,

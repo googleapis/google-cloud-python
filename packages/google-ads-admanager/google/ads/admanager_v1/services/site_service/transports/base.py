@@ -29,9 +29,7 @@ import google.protobuf
 from google.ads.admanager_v1 import gapic_version as package_version
 from google.ads.admanager_v1.types import site_messages, site_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class SiteServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -191,64 +181,36 @@ class SiteServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_site(
-        self,
-    ) -> Callable[
-        [site_service.GetSiteRequest],
-        Union[site_messages.Site, Awaitable[site_messages.Site]],
-    ]:
+    def get_site(self) -> Callable[[site_service.GetSiteRequest], Union[site_messages.Site, Awaitable[site_messages.Site]]]:
         raise NotImplementedError()
 
     @property
     def list_sites(
         self,
-    ) -> Callable[
-        [site_service.ListSitesRequest],
-        Union[
-            site_service.ListSitesResponse, Awaitable[site_service.ListSitesResponse]
-        ],
-    ]:
+    ) -> Callable[[site_service.ListSitesRequest], Union[site_service.ListSitesResponse, Awaitable[site_service.ListSitesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_site(
-        self,
-    ) -> Callable[
-        [site_service.CreateSiteRequest],
-        Union[site_messages.Site, Awaitable[site_messages.Site]],
-    ]:
+    def create_site(self) -> Callable[[site_service.CreateSiteRequest], Union[site_messages.Site, Awaitable[site_messages.Site]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_sites(
         self,
     ) -> Callable[
-        [site_service.BatchCreateSitesRequest],
-        Union[
-            site_service.BatchCreateSitesResponse,
-            Awaitable[site_service.BatchCreateSitesResponse],
-        ],
+        [site_service.BatchCreateSitesRequest], Union[site_service.BatchCreateSitesResponse, Awaitable[site_service.BatchCreateSitesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update_site(
-        self,
-    ) -> Callable[
-        [site_service.UpdateSiteRequest],
-        Union[site_messages.Site, Awaitable[site_messages.Site]],
-    ]:
+    def update_site(self) -> Callable[[site_service.UpdateSiteRequest], Union[site_messages.Site, Awaitable[site_messages.Site]]]:
         raise NotImplementedError()
 
     @property
     def batch_update_sites(
         self,
     ) -> Callable[
-        [site_service.BatchUpdateSitesRequest],
-        Union[
-            site_service.BatchUpdateSitesResponse,
-            Awaitable[site_service.BatchUpdateSitesResponse],
-        ],
+        [site_service.BatchUpdateSitesRequest], Union[site_service.BatchUpdateSitesResponse, Awaitable[site_service.BatchUpdateSitesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -257,10 +219,7 @@ class SiteServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [site_service.BatchDeactivateSitesRequest],
-        Union[
-            site_service.BatchDeactivateSitesResponse,
-            Awaitable[site_service.BatchDeactivateSitesResponse],
-        ],
+        Union[site_service.BatchDeactivateSitesResponse, Awaitable[site_service.BatchDeactivateSitesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -269,20 +228,14 @@ class SiteServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [site_service.BatchSubmitSitesForApprovalRequest],
-        Union[
-            site_service.BatchSubmitSitesForApprovalResponse,
-            Awaitable[site_service.BatchSubmitSitesForApprovalResponse],
-        ],
+        Union[site_service.BatchSubmitSitesForApprovalResponse, Awaitable[site_service.BatchSubmitSitesForApprovalResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

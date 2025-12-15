@@ -22,9 +22,7 @@ from .grpc_asyncio import KeyTrackingServiceGrpcAsyncIOTransport
 from .rest import KeyTrackingServiceRestInterceptor, KeyTrackingServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[KeyTrackingServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[KeyTrackingServiceTransport]]
 _transport_registry["grpc"] = KeyTrackingServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = KeyTrackingServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = KeyTrackingServiceRestTransport

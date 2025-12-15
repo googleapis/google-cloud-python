@@ -18,60 +18,24 @@ from google.ai.generativelanguage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ai.generativelanguage_v1beta.services.cache_service.async_client import (
-    CacheServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.cache_service.client import (
-    CacheServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.discuss_service.async_client import (
-    DiscussServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.discuss_service.client import (
-    DiscussServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.file_service.async_client import (
-    FileServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.file_service.client import (
-    FileServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.generative_service.async_client import (
-    GenerativeServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.generative_service.client import (
-    GenerativeServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.model_service.async_client import (
-    ModelServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.model_service.client import (
-    ModelServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.permission_service.async_client import (
-    PermissionServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.permission_service.client import (
-    PermissionServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.prediction_service.async_client import (
-    PredictionServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.prediction_service.client import (
-    PredictionServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.retriever_service.async_client import (
-    RetrieverServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.retriever_service.client import (
-    RetrieverServiceClient,
-)
-from google.ai.generativelanguage_v1beta.services.text_service.async_client import (
-    TextServiceAsyncClient,
-)
-from google.ai.generativelanguage_v1beta.services.text_service.client import (
-    TextServiceClient,
-)
+from google.ai.generativelanguage_v1beta.services.cache_service.async_client import CacheServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.cache_service.client import CacheServiceClient
+from google.ai.generativelanguage_v1beta.services.discuss_service.async_client import DiscussServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.discuss_service.client import DiscussServiceClient
+from google.ai.generativelanguage_v1beta.services.file_service.async_client import FileServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.file_service.client import FileServiceClient
+from google.ai.generativelanguage_v1beta.services.generative_service.async_client import GenerativeServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.generative_service.client import GenerativeServiceClient
+from google.ai.generativelanguage_v1beta.services.model_service.async_client import ModelServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.model_service.client import ModelServiceClient
+from google.ai.generativelanguage_v1beta.services.permission_service.async_client import PermissionServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.permission_service.client import PermissionServiceClient
+from google.ai.generativelanguage_v1beta.services.prediction_service.async_client import PredictionServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.prediction_service.client import PredictionServiceClient
+from google.ai.generativelanguage_v1beta.services.retriever_service.async_client import RetrieverServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.retriever_service.client import RetrieverServiceClient
+from google.ai.generativelanguage_v1beta.services.text_service.async_client import TextServiceAsyncClient
+from google.ai.generativelanguage_v1beta.services.text_service.client import TextServiceClient
 from google.ai.generativelanguage_v1beta.types.cache_service import (
     CreateCachedContentRequest,
     DeleteCachedContentRequest,
@@ -81,10 +45,7 @@ from google.ai.generativelanguage_v1beta.types.cache_service import (
     UpdateCachedContentRequest,
 )
 from google.ai.generativelanguage_v1beta.types.cached_content import CachedContent
-from google.ai.generativelanguage_v1beta.types.citation import (
-    CitationMetadata,
-    CitationSource,
-)
+from google.ai.generativelanguage_v1beta.types.citation import CitationMetadata, CitationSource
 from google.ai.generativelanguage_v1beta.types.content import (
     Blob,
     CodeExecution,
@@ -259,13 +220,7 @@ from google.ai.generativelanguage_v1beta.types.retriever_service import (
     UpdateCorpusRequest,
     UpdateDocumentRequest,
 )
-from google.ai.generativelanguage_v1beta.types.safety import (
-    ContentFilter,
-    HarmCategory,
-    SafetyFeedback,
-    SafetyRating,
-    SafetySetting,
-)
+from google.ai.generativelanguage_v1beta.types.safety import ContentFilter, HarmCategory, SafetyFeedback, SafetyRating, SafetySetting
 from google.ai.generativelanguage_v1beta.types.text_service import (
     BatchEmbedTextRequest,
     BatchEmbedTextResponse,

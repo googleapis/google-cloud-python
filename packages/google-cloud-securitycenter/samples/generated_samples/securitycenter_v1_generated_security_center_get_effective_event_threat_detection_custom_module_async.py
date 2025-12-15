@@ -44,9 +44,7 @@ async def sample_get_effective_event_threat_detection_custom_module():
     )
 
     # Make the request
-    response = await client.get_effective_event_threat_detection_custom_module(
-        request=request
-    )
+    response = await client.get_effective_event_threat_detection_custom_module(request=request)
 
     # Handle the response
     print(response)

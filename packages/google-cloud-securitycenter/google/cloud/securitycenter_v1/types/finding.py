@@ -21,38 +21,18 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import (
-    compliance,
-    connection,
-    contact_details,
-    container,
-)
-from google.cloud.securitycenter_v1.types import (
-    external_system,
-    file,
-    group_membership,
-    iam_binding,
-)
+from google.cloud.securitycenter_v1.types import compliance, connection, contact_details, container
+from google.cloud.securitycenter_v1.types import external_system, file, group_membership, iam_binding
 from google.cloud.securitycenter_v1.types import attack_exposure as gcs_attack_exposure
-from google.cloud.securitycenter_v1.types import (
-    backup_disaster_recovery as gcs_backup_disaster_recovery,
-)
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
-)
-from google.cloud.securitycenter_v1.types import (
-    cloud_dlp_inspection as gcs_cloud_dlp_inspection,
-)
+from google.cloud.securitycenter_v1.types import backup_disaster_recovery as gcs_backup_disaster_recovery
+from google.cloud.securitycenter_v1.types import cloud_dlp_data_profile as gcs_cloud_dlp_data_profile
+from google.cloud.securitycenter_v1.types import cloud_dlp_inspection as gcs_cloud_dlp_inspection
 from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltration
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
-from google.cloud.securitycenter_v1.types import (
-    security_posture as gcs_security_posture,
-)
-from google.cloud.securitycenter_v1.types import (
-    toxic_combination as gcs_toxic_combination,
-)
+from google.cloud.securitycenter_v1.types import security_posture as gcs_security_posture
+from google.cloud.securitycenter_v1.types import toxic_combination as gcs_toxic_combination
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import application as gcs_application
@@ -533,9 +513,7 @@ class Finding(proto.Message):
             number=1,
             message="Finding.MuteInfo.StaticMute",
         )
-        dynamic_mute_records: MutableSequence[
-            "Finding.MuteInfo.DynamicMuteRecord"
-        ] = proto.RepeatedField(
+        dynamic_mute_records: MutableSequence["Finding.MuteInfo.DynamicMuteRecord"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Finding.MuteInfo.DynamicMuteRecord",
@@ -621,9 +599,7 @@ class Finding(proto.Message):
         number=21,
         message=timestamp_pb2.Timestamp,
     )
-    external_systems: MutableMapping[
-        str, external_system.ExternalSystem
-    ] = proto.MapField(
+    external_systems: MutableMapping[str, external_system.ExternalSystem] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=22,
@@ -725,12 +701,10 @@ class Finding(proto.Message):
         number=48,
         message=gcs_cloud_dlp_inspection.CloudDlpInspection,
     )
-    cloud_dlp_data_profile: gcs_cloud_dlp_data_profile.CloudDlpDataProfile = (
-        proto.Field(
-            proto.MESSAGE,
-            number=49,
-            message=gcs_cloud_dlp_data_profile.CloudDlpDataProfile,
-        )
+    cloud_dlp_data_profile: gcs_cloud_dlp_data_profile.CloudDlpDataProfile = proto.Field(
+        proto.MESSAGE,
+        number=49,
+        message=gcs_cloud_dlp_data_profile.CloudDlpDataProfile,
     )
     kernel_rootkit: gcs_kernel_rootkit.KernelRootkit = proto.Field(
         proto.MESSAGE,
@@ -747,12 +721,10 @@ class Finding(proto.Message):
         number=53,
         message=gcs_application.Application,
     )
-    backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = (
-        proto.Field(
-            proto.MESSAGE,
-            number=55,
-            message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
-        )
+    backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = proto.Field(
+        proto.MESSAGE,
+        number=55,
+        message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
     )
     security_posture: gcs_security_posture.SecurityPosture = proto.Field(
         proto.MESSAGE,
@@ -784,9 +756,7 @@ class Finding(proto.Message):
         number=64,
         message=gcs_toxic_combination.ToxicCombination,
     )
-    group_memberships: MutableSequence[
-        group_membership.GroupMembership
-    ] = proto.RepeatedField(
+    group_memberships: MutableSequence[group_membership.GroupMembership] = proto.RepeatedField(
         proto.MESSAGE,
         number=65,
         message=group_membership.GroupMembership,

@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    entity_signals_mapping_messages,
-    entity_signals_mapping_service,
-)
+from google.ads.admanager_v1.types import entity_signals_mapping_messages, entity_signals_mapping_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseEntitySignalsMappingServiceRestTransport
@@ -131,13 +128,8 @@ class EntitySignalsMappingServiceRestInterceptor:
     """
 
     def pre_batch_create_entity_signals_mappings(
-        self,
-        request: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.BatchCreateEntitySignalsMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_entity_signals_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -146,8 +138,7 @@ class EntitySignalsMappingServiceRestInterceptor:
         return request, metadata
 
     def post_batch_create_entity_signals_mappings(
-        self,
-        response: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse,
+        self, response: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse
     ) -> entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse:
         """Post-rpc interceptor for batch_create_entity_signals_mappings
 
@@ -162,13 +153,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_batch_create_entity_signals_mappings_with_metadata(
-        self,
-        response: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_entity_signals_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -184,13 +170,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_update_entity_signals_mappings(
-        self,
-        request: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_entity_signals_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -199,8 +180,7 @@ class EntitySignalsMappingServiceRestInterceptor:
         return request, metadata
 
     def post_batch_update_entity_signals_mappings(
-        self,
-        response: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse,
+        self, response: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse
     ) -> entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse:
         """Post-rpc interceptor for batch_update_entity_signals_mappings
 
@@ -215,13 +195,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_batch_update_entity_signals_mappings_with_metadata(
-        self,
-        response: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_entity_signals_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -237,13 +212,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_create_entity_signals_mapping(
-        self,
-        request: entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.CreateEntitySignalsMappingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.CreateEntitySignalsMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.CreateEntitySignalsMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entity_signals_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -267,13 +237,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_create_entity_signals_mapping_with_metadata(
-        self,
-        response: entity_signals_mapping_messages.EntitySignalsMapping,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_messages.EntitySignalsMapping,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_messages.EntitySignalsMapping, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_messages.EntitySignalsMapping, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entity_signals_mapping
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -289,13 +254,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_get_entity_signals_mapping(
-        self,
-        request: entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.GetEntitySignalsMappingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.GetEntitySignalsMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.GetEntitySignalsMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entity_signals_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -319,13 +279,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_get_entity_signals_mapping_with_metadata(
-        self,
-        response: entity_signals_mapping_messages.EntitySignalsMapping,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_messages.EntitySignalsMapping,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_messages.EntitySignalsMapping, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_messages.EntitySignalsMapping, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entity_signals_mapping
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -341,13 +296,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entity_signals_mappings(
-        self,
-        request: entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.ListEntitySignalsMappingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.ListEntitySignalsMappingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.ListEntitySignalsMappingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entity_signals_mappings
 
         Override in a subclass to manipulate the request or metadata
@@ -371,13 +321,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_list_entity_signals_mappings_with_metadata(
-        self,
-        response: entity_signals_mapping_service.ListEntitySignalsMappingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.ListEntitySignalsMappingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_service.ListEntitySignalsMappingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.ListEntitySignalsMappingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entity_signals_mappings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -393,13 +338,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_update_entity_signals_mapping(
-        self,
-        request: entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_service.UpdateEntitySignalsMappingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: entity_signals_mapping_service.UpdateEntitySignalsMappingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_service.UpdateEntitySignalsMappingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entity_signals_mapping
 
         Override in a subclass to manipulate the request or metadata
@@ -423,13 +363,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response
 
     def post_update_entity_signals_mapping_with_metadata(
-        self,
-        response: entity_signals_mapping_messages.EntitySignalsMapping,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        entity_signals_mapping_messages.EntitySignalsMapping,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: entity_signals_mapping_messages.EntitySignalsMapping, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[entity_signals_mapping_messages.EntitySignalsMapping, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entity_signals_mapping
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -445,12 +380,8 @@ class EntitySignalsMappingServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -458,9 +389,7 @@ class EntitySignalsMappingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -477,9 +406,7 @@ class EntitySignalsMappingServiceRestStub:
     _interceptor: EntitySignalsMappingServiceRestInterceptor
 
 
-class EntitySignalsMappingServiceRestTransport(
-    _BaseEntitySignalsMappingServiceRestTransport
-):
+class EntitySignalsMappingServiceRestTransport(_BaseEntitySignalsMappingServiceRestTransport):
     """REST backend synchronous transport for EntitySignalsMappingService.
 
     Provides methods for handling ``EntitySignalsMapping`` objects.
@@ -551,33 +478,20 @@ class EntitySignalsMappingServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or EntitySignalsMappingServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _BatchCreateEntitySignalsMappings(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings,
-        EntitySignalsMappingServiceRestStub,
+        _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings, EntitySignalsMappingServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.BatchCreateEntitySignalsMappings"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.BatchCreateEntitySignalsMappings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -621,35 +535,22 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_create_entity_signals_mappings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_batch_create_entity_signals_mappings(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchCreateEntitySignalsMappings._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -673,13 +574,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._BatchCreateEntitySignalsMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -688,30 +583,17 @@ class EntitySignalsMappingServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
-            )
-            pb_resp = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.pb(
-                resp
-            )
+            resp = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse()
+            pb_resp = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_create_entity_signals_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_create_entity_signals_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_entity_signals_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(
-                        response
-                    )
+                    response_payload = entity_signals_mapping_service.BatchCreateEntitySignalsMappingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -731,24 +613,13 @@ class EntitySignalsMappingServiceRestTransport(
             return resp
 
     class _BatchUpdateEntitySignalsMappings(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings,
-        EntitySignalsMappingServiceRestStub,
+        _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings, EntitySignalsMappingServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.BatchUpdateEntitySignalsMappings"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.BatchUpdateEntitySignalsMappings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -792,35 +663,22 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_update_entity_signals_mappings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_batch_update_entity_signals_mappings(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseBatchUpdateEntitySignalsMappings._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -844,13 +702,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._BatchUpdateEntitySignalsMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -859,30 +711,17 @@ class EntitySignalsMappingServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
-            )
-            pb_resp = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.pb(
-                resp
-            )
+            resp = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse()
+            pb_resp = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_update_entity_signals_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_update_entity_signals_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_entity_signals_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(
-                        response
-                    )
+                    response_payload = entity_signals_mapping_service.BatchUpdateEntitySignalsMappingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -902,24 +741,13 @@ class EntitySignalsMappingServiceRestTransport(
             return resp
 
     class _CreateEntitySignalsMapping(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping,
-        EntitySignalsMappingServiceRestStub,
+        _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping, EntitySignalsMappingServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.CreateEntitySignalsMapping"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.CreateEntitySignalsMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -961,32 +789,20 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entity_signals_mapping(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_entity_signals_mapping(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseCreateEntitySignalsMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1010,13 +826,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._CreateEntitySignalsMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1032,21 +842,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_create_entity_signals_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_entity_signals_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entity_signals_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                            response
-                        )
-                    )
+                    response_payload = entity_signals_mapping_messages.EntitySignalsMapping.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1065,25 +864,12 @@ class EntitySignalsMappingServiceRestTransport(
                 )
             return resp
 
-    class _GetEntitySignalsMapping(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping,
-        EntitySignalsMappingServiceRestStub,
-    ):
+    class _GetEntitySignalsMapping(_BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping, EntitySignalsMappingServiceRestStub):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.GetEntitySignalsMapping"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.GetEntitySignalsMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1123,28 +909,18 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_entity_signals_mapping(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_entity_signals_mapping(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetEntitySignalsMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1168,12 +944,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._GetEntitySignalsMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1189,18 +960,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_get_entity_signals_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entity_signals_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entity_signals_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                            response
-                        )
-                    )
+                    response_payload = entity_signals_mapping_messages.EntitySignalsMapping.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1220,24 +983,13 @@ class EntitySignalsMappingServiceRestTransport(
             return resp
 
     class _ListEntitySignalsMappings(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings,
-        EntitySignalsMappingServiceRestStub,
+        _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings, EntitySignalsMappingServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.ListEntitySignalsMappings"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.ListEntitySignalsMappings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1279,28 +1031,18 @@ class EntitySignalsMappingServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entity_signals_mappings(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_entity_signals_mappings(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseListEntitySignalsMappings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1324,12 +1066,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._ListEntitySignalsMappings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1339,26 +1076,16 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Return the response
             resp = entity_signals_mapping_service.ListEntitySignalsMappingsResponse()
-            pb_resp = (
-                entity_signals_mapping_service.ListEntitySignalsMappingsResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = entity_signals_mapping_service.ListEntitySignalsMappingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_entity_signals_mappings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entity_signals_mappings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entity_signals_mappings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(
-                        response
-                    )
+                    response_payload = entity_signals_mapping_service.ListEntitySignalsMappingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1378,24 +1105,13 @@ class EntitySignalsMappingServiceRestTransport(
             return resp
 
     class _UpdateEntitySignalsMapping(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping,
-        EntitySignalsMappingServiceRestStub,
+        _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping, EntitySignalsMappingServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EntitySignalsMappingServiceRestTransport.UpdateEntitySignalsMapping"
-            )
+            return hash("EntitySignalsMappingServiceRestTransport.UpdateEntitySignalsMapping")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1437,32 +1153,20 @@ class EntitySignalsMappingServiceRestTransport(
                         The ``EntitySignalsMapping`` resource.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_entity_signals_mapping(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_entity_signals_mapping(request, metadata)
             transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseUpdateEntitySignalsMapping._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1486,13 +1190,7 @@ class EntitySignalsMappingServiceRestTransport(
 
             # Send the request
             response = EntitySignalsMappingServiceRestTransport._UpdateEntitySignalsMapping._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1508,21 +1206,10 @@ class EntitySignalsMappingServiceRestTransport(
 
             resp = self._interceptor.post_update_entity_signals_mapping(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_entity_signals_mapping_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entity_signals_mapping_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        entity_signals_mapping_messages.EntitySignalsMapping.to_json(
-                            response
-                        )
-                    )
+                    response_payload = entity_signals_mapping_messages.EntitySignalsMapping.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1566,10 +1253,7 @@ class EntitySignalsMappingServiceRestTransport(
     @property
     def create_entity_signals_mapping(
         self,
-    ) -> Callable[
-        [entity_signals_mapping_service.CreateEntitySignalsMappingRequest],
-        entity_signals_mapping_messages.EntitySignalsMapping,
-    ]:
+    ) -> Callable[[entity_signals_mapping_service.CreateEntitySignalsMappingRequest], entity_signals_mapping_messages.EntitySignalsMapping]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
@@ -1577,10 +1261,7 @@ class EntitySignalsMappingServiceRestTransport(
     @property
     def get_entity_signals_mapping(
         self,
-    ) -> Callable[
-        [entity_signals_mapping_service.GetEntitySignalsMappingRequest],
-        entity_signals_mapping_messages.EntitySignalsMapping,
-    ]:
+    ) -> Callable[[entity_signals_mapping_service.GetEntitySignalsMappingRequest], entity_signals_mapping_messages.EntitySignalsMapping]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
@@ -1589,8 +1270,7 @@ class EntitySignalsMappingServiceRestTransport(
     def list_entity_signals_mappings(
         self,
     ) -> Callable[
-        [entity_signals_mapping_service.ListEntitySignalsMappingsRequest],
-        entity_signals_mapping_service.ListEntitySignalsMappingsResponse,
+        [entity_signals_mapping_service.ListEntitySignalsMappingsRequest], entity_signals_mapping_service.ListEntitySignalsMappingsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1599,10 +1279,7 @@ class EntitySignalsMappingServiceRestTransport(
     @property
     def update_entity_signals_mapping(
         self,
-    ) -> Callable[
-        [entity_signals_mapping_service.UpdateEntitySignalsMappingRequest],
-        entity_signals_mapping_messages.EntitySignalsMapping,
-    ]:
+    ) -> Callable[[entity_signals_mapping_service.UpdateEntitySignalsMappingRequest], entity_signals_mapping_messages.EntitySignalsMapping]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntitySignalsMapping(self._session, self._host, self._interceptor)  # type: ignore
@@ -1611,23 +1288,12 @@ class EntitySignalsMappingServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation,
-        EntitySignalsMappingServiceRestStub,
-    ):
+    class _GetOperation(_BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation, EntitySignalsMappingServiceRestStub):
         def __hash__(self):
             return hash("EntitySignalsMappingServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1665,26 +1331,16 @@ class EntitySignalsMappingServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEntitySignalsMappingServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1707,15 +1363,8 @@ class EntitySignalsMappingServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                EntitySignalsMappingServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EntitySignalsMappingServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,9 +1376,7 @@ class EntitySignalsMappingServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

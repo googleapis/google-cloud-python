@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.secretmanager_v1beta2 import gapic_version as package_version
 from google.cloud.secretmanager_v1beta2.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class SecretManagerServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -244,134 +234,69 @@ class SecretManagerServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_secrets(
-        self,
-    ) -> Callable[
-        [service.ListSecretsRequest],
-        Union[service.ListSecretsResponse, Awaitable[service.ListSecretsResponse]],
-    ]:
+    def list_secrets(self) -> Callable[[service.ListSecretsRequest], Union[service.ListSecretsResponse, Awaitable[service.ListSecretsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_secret(
-        self,
-    ) -> Callable[
-        [service.CreateSecretRequest],
-        Union[resources.Secret, Awaitable[resources.Secret]],
-    ]:
+    def create_secret(self) -> Callable[[service.CreateSecretRequest], Union[resources.Secret, Awaitable[resources.Secret]]]:
         raise NotImplementedError()
 
     @property
-    def add_secret_version(
-        self,
-    ) -> Callable[
-        [service.AddSecretVersionRequest],
-        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
-    ]:
+    def add_secret_version(self) -> Callable[[service.AddSecretVersionRequest], Union[resources.SecretVersion, Awaitable[resources.SecretVersion]]]:
         raise NotImplementedError()
 
     @property
-    def get_secret(
-        self,
-    ) -> Callable[
-        [service.GetSecretRequest], Union[resources.Secret, Awaitable[resources.Secret]]
-    ]:
+    def get_secret(self) -> Callable[[service.GetSecretRequest], Union[resources.Secret, Awaitable[resources.Secret]]]:
         raise NotImplementedError()
 
     @property
-    def update_secret(
-        self,
-    ) -> Callable[
-        [service.UpdateSecretRequest],
-        Union[resources.Secret, Awaitable[resources.Secret]],
-    ]:
+    def update_secret(self) -> Callable[[service.UpdateSecretRequest], Union[resources.Secret, Awaitable[resources.Secret]]]:
         raise NotImplementedError()
 
     @property
-    def delete_secret(
-        self,
-    ) -> Callable[
-        [service.DeleteSecretRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_secret(self) -> Callable[[service.DeleteSecretRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_secret_versions(
         self,
-    ) -> Callable[
-        [service.ListSecretVersionsRequest],
-        Union[
-            service.ListSecretVersionsResponse,
-            Awaitable[service.ListSecretVersionsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListSecretVersionsRequest], Union[service.ListSecretVersionsResponse, Awaitable[service.ListSecretVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_secret_version(
-        self,
-    ) -> Callable[
-        [service.GetSecretVersionRequest],
-        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
-    ]:
+    def get_secret_version(self) -> Callable[[service.GetSecretVersionRequest], Union[resources.SecretVersion, Awaitable[resources.SecretVersion]]]:
         raise NotImplementedError()
 
     @property
     def access_secret_version(
         self,
-    ) -> Callable[
-        [service.AccessSecretVersionRequest],
-        Union[
-            service.AccessSecretVersionResponse,
-            Awaitable[service.AccessSecretVersionResponse],
-        ],
-    ]:
+    ) -> Callable[[service.AccessSecretVersionRequest], Union[service.AccessSecretVersionResponse, Awaitable[service.AccessSecretVersionResponse]]]:
         raise NotImplementedError()
 
     @property
     def disable_secret_version(
         self,
-    ) -> Callable[
-        [service.DisableSecretVersionRequest],
-        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
-    ]:
+    ) -> Callable[[service.DisableSecretVersionRequest], Union[resources.SecretVersion, Awaitable[resources.SecretVersion]]]:
         raise NotImplementedError()
 
     @property
     def enable_secret_version(
         self,
-    ) -> Callable[
-        [service.EnableSecretVersionRequest],
-        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
-    ]:
+    ) -> Callable[[service.EnableSecretVersionRequest], Union[resources.SecretVersion, Awaitable[resources.SecretVersion]]]:
         raise NotImplementedError()
 
     @property
     def destroy_secret_version(
         self,
-    ) -> Callable[
-        [service.DestroySecretVersionRequest],
-        Union[resources.SecretVersion, Awaitable[resources.SecretVersion]],
-    ]:
+    ) -> Callable[[service.DestroySecretVersionRequest], Union[resources.SecretVersion, Awaitable[resources.SecretVersion]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -379,32 +304,20 @@ class SecretManagerServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

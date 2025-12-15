@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -324,12 +309,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._grpc_channel
 
     @property
-    def generate_content(
-        self,
-    ) -> Callable[
-        [generative_service.GenerateContentRequest],
-        generative_service.GenerateContentResponse,
-    ]:
+    def generate_content(self) -> Callable[[generative_service.GenerateContentRequest], generative_service.GenerateContentResponse]:
         r"""Return a callable for the generate content method over gRPC.
 
         Generates a model response given an input
@@ -361,12 +341,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._stubs["generate_content"]
 
     @property
-    def generate_answer(
-        self,
-    ) -> Callable[
-        [generative_service.GenerateAnswerRequest],
-        generative_service.GenerateAnswerResponse,
-    ]:
+    def generate_answer(self) -> Callable[[generative_service.GenerateAnswerRequest], generative_service.GenerateAnswerResponse]:
         r"""Return a callable for the generate answer method over gRPC.
 
         Generates a grounded answer from the model given an input
@@ -391,12 +366,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._stubs["generate_answer"]
 
     @property
-    def stream_generate_content(
-        self,
-    ) -> Callable[
-        [generative_service.GenerateContentRequest],
-        generative_service.GenerateContentResponse,
-    ]:
+    def stream_generate_content(self) -> Callable[[generative_service.GenerateContentRequest], generative_service.GenerateContentResponse]:
         r"""Return a callable for the stream generate content method over gRPC.
 
         Generates a `streamed
@@ -422,12 +392,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._stubs["stream_generate_content"]
 
     @property
-    def embed_content(
-        self,
-    ) -> Callable[
-        [generative_service.EmbedContentRequest],
-        generative_service.EmbedContentResponse,
-    ]:
+    def embed_content(self) -> Callable[[generative_service.EmbedContentRequest], generative_service.EmbedContentResponse]:
         r"""Return a callable for the embed content method over gRPC.
 
         Generates a text embedding vector from the input ``Content``
@@ -453,12 +418,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._stubs["embed_content"]
 
     @property
-    def batch_embed_contents(
-        self,
-    ) -> Callable[
-        [generative_service.BatchEmbedContentsRequest],
-        generative_service.BatchEmbedContentsResponse,
-    ]:
+    def batch_embed_contents(self) -> Callable[[generative_service.BatchEmbedContentsRequest], generative_service.BatchEmbedContentsResponse]:
         r"""Return a callable for the batch embed contents method over gRPC.
 
         Generates multiple embedding vectors from the input ``Content``
@@ -484,11 +444,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
         return self._stubs["batch_embed_contents"]
 
     @property
-    def count_tokens(
-        self,
-    ) -> Callable[
-        [generative_service.CountTokensRequest], generative_service.CountTokensResponse
-    ]:
+    def count_tokens(self) -> Callable[[generative_service.CountTokensRequest], generative_service.CountTokensResponse]:
         r"""Return a callable for the count tokens method over gRPC.
 
         Runs a model's tokenizer on input ``Content`` and returns the
@@ -517,10 +473,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
     @property
     def bidi_generate_content(
         self,
-    ) -> Callable[
-        [generative_service.BidiGenerateContentClientMessage],
-        generative_service.BidiGenerateContentServerMessage,
-    ]:
+    ) -> Callable[[generative_service.BidiGenerateContentClientMessage], generative_service.BidiGenerateContentServerMessage]:
         r"""Return a callable for the bidi generate content method over gRPC.
 
         Low-Latency bidirectional streaming API that supports
@@ -568,9 +521,7 @@ class GenerativeServiceGrpcTransport(GenerativeServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

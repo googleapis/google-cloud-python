@@ -33,9 +33,7 @@ from google.cloud.retail_v2beta.types import serving_config as gcr_serving_confi
 from google.cloud.retail_v2beta.types import serving_config
 from google.cloud.retail_v2beta.types import serving_config_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class ServingConfigServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -198,42 +188,28 @@ class ServingConfigServiceTransport(abc.ABC):
     def create_serving_config(
         self,
     ) -> Callable[
-        [serving_config_service.CreateServingConfigRequest],
-        Union[
-            gcr_serving_config.ServingConfig,
-            Awaitable[gcr_serving_config.ServingConfig],
-        ],
+        [serving_config_service.CreateServingConfigRequest], Union[gcr_serving_config.ServingConfig, Awaitable[gcr_serving_config.ServingConfig]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_serving_config(
         self,
-    ) -> Callable[
-        [serving_config_service.DeleteServingConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[serving_config_service.DeleteServingConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_serving_config(
         self,
     ) -> Callable[
-        [serving_config_service.UpdateServingConfigRequest],
-        Union[
-            gcr_serving_config.ServingConfig,
-            Awaitable[gcr_serving_config.ServingConfig],
-        ],
+        [serving_config_service.UpdateServingConfigRequest], Union[gcr_serving_config.ServingConfig, Awaitable[gcr_serving_config.ServingConfig]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_serving_config(
         self,
-    ) -> Callable[
-        [serving_config_service.GetServingConfigRequest],
-        Union[serving_config.ServingConfig, Awaitable[serving_config.ServingConfig]],
-    ]:
+    ) -> Callable[[serving_config_service.GetServingConfigRequest], Union[serving_config.ServingConfig, Awaitable[serving_config.ServingConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -241,34 +217,21 @@ class ServingConfigServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [serving_config_service.ListServingConfigsRequest],
-        Union[
-            serving_config_service.ListServingConfigsResponse,
-            Awaitable[serving_config_service.ListServingConfigsResponse],
-        ],
+        Union[serving_config_service.ListServingConfigsResponse, Awaitable[serving_config_service.ListServingConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def add_control(
         self,
-    ) -> Callable[
-        [serving_config_service.AddControlRequest],
-        Union[
-            gcr_serving_config.ServingConfig,
-            Awaitable[gcr_serving_config.ServingConfig],
-        ],
-    ]:
+    ) -> Callable[[serving_config_service.AddControlRequest], Union[gcr_serving_config.ServingConfig, Awaitable[gcr_serving_config.ServingConfig]]]:
         raise NotImplementedError()
 
     @property
     def remove_control(
         self,
     ) -> Callable[
-        [serving_config_service.RemoveControlRequest],
-        Union[
-            gcr_serving_config.ServingConfig,
-            Awaitable[gcr_serving_config.ServingConfig],
-        ],
+        [serving_config_service.RemoveControlRequest], Union[gcr_serving_config.ServingConfig, Awaitable[gcr_serving_config.ServingConfig]]
     ]:
         raise NotImplementedError()
 
@@ -277,20 +240,14 @@ class ServingConfigServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -109,9 +109,7 @@ class ListUptimeCheckConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    uptime_check_configs: MutableSequence[
-        uptime.UptimeCheckConfig
-    ] = proto.RepeatedField(
+    uptime_check_configs: MutableSequence[uptime.UptimeCheckConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=uptime.UptimeCheckConfig,

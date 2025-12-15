@@ -363,9 +363,7 @@ class HttpRoute(proto.Message):
             number=5,
             message="HttpRoute.HeaderMatch",
         )
-        query_parameters: MutableSequence[
-            "HttpRoute.QueryParameterMatch"
-        ] = proto.RepeatedField(
+        query_parameters: MutableSequence["HttpRoute.QueryParameterMatch"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="HttpRoute.QueryParameterMatch",
@@ -1014,12 +1012,10 @@ class HttpRoute(proto.Message):
             number=11,
             message="HttpRoute.CorsPolicy",
         )
-        stateful_session_affinity: "HttpRoute.StatefulSessionAffinityPolicy" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=12,
-                message="HttpRoute.StatefulSessionAffinityPolicy",
-            )
+        stateful_session_affinity: "HttpRoute.StatefulSessionAffinityPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=12,
+            message="HttpRoute.StatefulSessionAffinityPolicy",
         )
         direct_response: "HttpRoute.HttpDirectResponse" = proto.Field(
             proto.MESSAGE,

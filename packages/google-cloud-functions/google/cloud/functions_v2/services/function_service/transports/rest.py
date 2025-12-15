@@ -147,12 +147,8 @@ class FunctionServiceRestInterceptor:
     """
 
     def pre_create_function(
-        self,
-        request: functions.CreateFunctionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.CreateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: functions.CreateFunctionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.CreateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_function
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +156,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_function(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_function(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_function
 
         DEPRECATED. Please use the `post_create_function_with_metadata`
@@ -176,9 +170,7 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_create_function_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_function
 
@@ -195,12 +187,8 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_function(
-        self,
-        request: functions.DeleteFunctionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.DeleteFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: functions.DeleteFunctionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.DeleteFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_function
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +196,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_function(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_function(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_function
 
         DEPRECATED. Please use the `post_delete_function_with_metadata`
@@ -224,9 +210,7 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_delete_function_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_function
 
@@ -243,12 +227,8 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_download_url(
-        self,
-        request: functions.GenerateDownloadUrlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.GenerateDownloadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: functions.GenerateDownloadUrlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.GenerateDownloadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_download_url
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +236,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_download_url(
-        self, response: functions.GenerateDownloadUrlResponse
-    ) -> functions.GenerateDownloadUrlResponse:
+    def post_generate_download_url(self, response: functions.GenerateDownloadUrlResponse) -> functions.GenerateDownloadUrlResponse:
         """Post-rpc interceptor for generate_download_url
 
         DEPRECATED. Please use the `post_generate_download_url_with_metadata`
@@ -272,12 +250,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_generate_download_url_with_metadata(
-        self,
-        response: functions.GenerateDownloadUrlResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.GenerateDownloadUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: functions.GenerateDownloadUrlResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.GenerateDownloadUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_download_url
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,12 +267,8 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_upload_url(
-        self,
-        request: functions.GenerateUploadUrlRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.GenerateUploadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: functions.GenerateUploadUrlRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.GenerateUploadUrlRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_upload_url
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +276,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_upload_url(
-        self, response: functions.GenerateUploadUrlResponse
-    ) -> functions.GenerateUploadUrlResponse:
+    def post_generate_upload_url(self, response: functions.GenerateUploadUrlResponse) -> functions.GenerateUploadUrlResponse:
         """Post-rpc interceptor for generate_upload_url
 
         DEPRECATED. Please use the `post_generate_upload_url_with_metadata`
@@ -322,12 +290,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_generate_upload_url_with_metadata(
-        self,
-        response: functions.GenerateUploadUrlResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.GenerateUploadUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: functions.GenerateUploadUrlResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.GenerateUploadUrlResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_upload_url
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -343,9 +307,7 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_function(
-        self,
-        request: functions.GetFunctionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: functions.GetFunctionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[functions.GetFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_function
 
@@ -368,9 +330,7 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_get_function_with_metadata(
-        self,
-        response: functions.Function,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: functions.Function, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[functions.Function, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_function
 
@@ -387,9 +347,7 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_functions(
-        self,
-        request: functions.ListFunctionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: functions.ListFunctionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[functions.ListFunctionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_functions
 
@@ -398,9 +356,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_functions(
-        self, response: functions.ListFunctionsResponse
-    ) -> functions.ListFunctionsResponse:
+    def post_list_functions(self, response: functions.ListFunctionsResponse) -> functions.ListFunctionsResponse:
         """Post-rpc interceptor for list_functions
 
         DEPRECATED. Please use the `post_list_functions_with_metadata`
@@ -414,12 +370,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_list_functions_with_metadata(
-        self,
-        response: functions.ListFunctionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.ListFunctionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: functions.ListFunctionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.ListFunctionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_functions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -435,9 +387,7 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_runtimes(
-        self,
-        request: functions.ListRuntimesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: functions.ListRuntimesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[functions.ListRuntimesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_runtimes
 
@@ -446,9 +396,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_runtimes(
-        self, response: functions.ListRuntimesResponse
-    ) -> functions.ListRuntimesResponse:
+    def post_list_runtimes(self, response: functions.ListRuntimesResponse) -> functions.ListRuntimesResponse:
         """Post-rpc interceptor for list_runtimes
 
         DEPRECATED. Please use the `post_list_runtimes_with_metadata`
@@ -462,9 +410,7 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_list_runtimes_with_metadata(
-        self,
-        response: functions.ListRuntimesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: functions.ListRuntimesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[functions.ListRuntimesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_runtimes
 
@@ -481,12 +427,8 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_update_function(
-        self,
-        request: functions.UpdateFunctionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        functions.UpdateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: functions.UpdateFunctionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[functions.UpdateFunctionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_function
 
         Override in a subclass to manipulate the request or metadata
@@ -494,9 +436,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_function(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_function(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_function
 
         DEPRECATED. Please use the `post_update_function_with_metadata`
@@ -510,9 +450,7 @@ class FunctionServiceRestInterceptor:
         return response
 
     def post_update_function_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_function
 
@@ -529,12 +467,8 @@ class FunctionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -542,9 +476,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -554,12 +486,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -577,12 +505,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -600,13 +524,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -614,9 +533,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -626,12 +543,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -639,9 +552,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -651,12 +562,8 @@ class FunctionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -664,9 +571,7 @@ class FunctionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -760,9 +665,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -802,29 +705,17 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateFunction(
-        _BaseFunctionServiceRestTransport._BaseCreateFunction, FunctionServiceRestStub
-    ):
+    class _CreateFunction(_BaseFunctionServiceRestTransport._BaseCreateFunction, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.CreateFunction")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -867,30 +758,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseCreateFunction._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_create_function(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseCreateFunction._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -914,13 +793,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._CreateFunction._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -934,12 +807,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_create_function(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_function_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_function_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -960,22 +829,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _DeleteFunction(
-        _BaseFunctionServiceRestTransport._BaseDeleteFunction, FunctionServiceRestStub
-    ):
+    class _DeleteFunction(_BaseFunctionServiceRestTransport._BaseDeleteFunction, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.DeleteFunction")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1017,26 +876,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_function(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseDeleteFunction._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1060,12 +909,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._DeleteFunction._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1079,12 +923,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_delete_function(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_function_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_function_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1105,23 +945,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _GenerateDownloadUrl(
-        _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl,
-        FunctionServiceRestStub,
-    ):
+    class _GenerateDownloadUrl(_BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.GenerateDownloadUrl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1161,32 +990,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                     Response of ``GenerateDownloadUrl`` method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_download_url(
-                request, metadata
-            )
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_download_url(request, metadata)
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseGenerateDownloadUrl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1210,13 +1025,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._GenerateDownloadUrl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1232,16 +1041,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_generate_download_url(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_download_url_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_download_url_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = functions.GenerateDownloadUrlResponse.to_json(
-                        response
-                    )
+                    response_payload = functions.GenerateDownloadUrlResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1260,23 +1063,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _GenerateUploadUrl(
-        _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl,
-        FunctionServiceRestStub,
-    ):
+    class _GenerateUploadUrl(_BaseFunctionServiceRestTransport._BaseGenerateUploadUrl, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.GenerateUploadUrl")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1316,32 +1108,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                     Response of ``GenerateSourceUploadUrl`` method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_upload_url(
-                request, metadata
-            )
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_upload_url(request, metadata)
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseGenerateUploadUrl._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1365,13 +1143,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._GenerateUploadUrl._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1387,16 +1159,10 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_generate_upload_url(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_upload_url_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_upload_url_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = functions.GenerateUploadUrlResponse.to_json(
-                        response
-                    )
+                    response_payload = functions.GenerateUploadUrlResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1415,22 +1181,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _GetFunction(
-        _BaseFunctionServiceRestTransport._BaseGetFunction, FunctionServiceRestStub
-    ):
+    class _GetFunction(_BaseFunctionServiceRestTransport._BaseGetFunction, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.GetFunction")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1473,26 +1229,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseGetFunction._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseGetFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_get_function(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetFunction._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetFunction._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseGetFunction._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseGetFunction._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1516,12 +1262,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._GetFunction._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1537,12 +1278,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_get_function(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_function_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_function_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = functions.Function.to_json(response)
                 except:
@@ -1563,22 +1300,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _ListFunctions(
-        _BaseFunctionServiceRestTransport._BaseListFunctions, FunctionServiceRestStub
-    ):
+    class _ListFunctions(_BaseFunctionServiceRestTransport._BaseListFunctions, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.ListFunctions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1617,26 +1344,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                     Response for the ``ListFunctions`` method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseListFunctions._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseListFunctions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_functions(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseListFunctions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseListFunctions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseListFunctions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseListFunctions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1660,12 +1377,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._ListFunctions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1681,12 +1393,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_list_functions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_functions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_functions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = functions.ListFunctionsResponse.to_json(response)
                 except:
@@ -1707,22 +1415,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _ListRuntimes(
-        _BaseFunctionServiceRestTransport._BaseListRuntimes, FunctionServiceRestStub
-    ):
+    class _ListRuntimes(_BaseFunctionServiceRestTransport._BaseListRuntimes, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.ListRuntimes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1761,26 +1459,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                     Response for the ``ListRuntimes`` method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseListRuntimes._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_runtimes(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseListRuntimes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1804,12 +1492,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._ListRuntimes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1825,12 +1508,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_list_runtimes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_runtimes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_runtimes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = functions.ListRuntimesResponse.to_json(response)
                 except:
@@ -1851,22 +1530,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 )
             return resp
 
-    class _UpdateFunction(
-        _BaseFunctionServiceRestTransport._BaseUpdateFunction, FunctionServiceRestStub
-    ):
+    class _UpdateFunction(_BaseFunctionServiceRestTransport._BaseUpdateFunction, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.UpdateFunction")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1909,30 +1578,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_http_options()
 
             request, metadata = self._interceptor.pre_update_function(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseUpdateFunction._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1956,13 +1613,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._UpdateFunction._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1976,12 +1627,8 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             resp = self._interceptor.post_update_function(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_function_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_function_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2003,69 +1650,49 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             return resp
 
     @property
-    def create_function(
-        self,
-    ) -> Callable[[functions.CreateFunctionRequest], operations_pb2.Operation]:
+    def create_function(self) -> Callable[[functions.CreateFunctionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFunction(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_function(
-        self,
-    ) -> Callable[[functions.DeleteFunctionRequest], operations_pb2.Operation]:
+    def delete_function(self) -> Callable[[functions.DeleteFunctionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFunction(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_download_url(
-        self,
-    ) -> Callable[
-        [functions.GenerateDownloadUrlRequest], functions.GenerateDownloadUrlResponse
-    ]:
+    def generate_download_url(self) -> Callable[[functions.GenerateDownloadUrlRequest], functions.GenerateDownloadUrlResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateDownloadUrl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_upload_url(
-        self,
-    ) -> Callable[
-        [functions.GenerateUploadUrlRequest], functions.GenerateUploadUrlResponse
-    ]:
+    def generate_upload_url(self) -> Callable[[functions.GenerateUploadUrlRequest], functions.GenerateUploadUrlResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateUploadUrl(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_function(
-        self,
-    ) -> Callable[[functions.GetFunctionRequest], functions.Function]:
+    def get_function(self) -> Callable[[functions.GetFunctionRequest], functions.Function]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFunction(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_functions(
-        self,
-    ) -> Callable[[functions.ListFunctionsRequest], functions.ListFunctionsResponse]:
+    def list_functions(self) -> Callable[[functions.ListFunctionsRequest], functions.ListFunctionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFunctions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_runtimes(
-        self,
-    ) -> Callable[[functions.ListRuntimesRequest], functions.ListRuntimesResponse]:
+    def list_runtimes(self) -> Callable[[functions.ListRuntimesRequest], functions.ListRuntimesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRuntimes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_function(
-        self,
-    ) -> Callable[[functions.UpdateFunctionRequest], operations_pb2.Operation]:
+    def update_function(self) -> Callable[[functions.UpdateFunctionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFunction(self._session, self._host, self._interceptor)  # type: ignore
@@ -2074,22 +1701,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseFunctionServiceRestTransport._BaseListLocations, FunctionServiceRestStub
-    ):
+    class _ListLocations(_BaseFunctionServiceRestTransport._BaseListLocations, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2127,26 +1744,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2170,12 +1777,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2187,9 +1789,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2214,22 +1814,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseFunctionServiceRestTransport._BaseGetIamPolicy, FunctionServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseFunctionServiceRestTransport._BaseGetIamPolicy, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2267,26 +1857,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2310,12 +1890,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2327,9 +1902,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2354,22 +1927,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseFunctionServiceRestTransport._BaseSetIamPolicy, FunctionServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseFunctionServiceRestTransport._BaseSetIamPolicy, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2408,30 +1971,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2455,13 +2006,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2473,9 +2018,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2500,23 +2043,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseFunctionServiceRestTransport._BaseTestIamPermissions,
-        FunctionServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseFunctionServiceRestTransport._BaseTestIamPermissions, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2555,32 +2087,18 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2604,13 +2122,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2622,9 +2134,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2649,22 +2159,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseFunctionServiceRestTransport._BaseGetOperation, FunctionServiceRestStub
-    ):
+    class _GetOperation(_BaseFunctionServiceRestTransport._BaseGetOperation, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2702,26 +2202,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2745,12 +2235,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2762,9 +2247,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2789,22 +2272,12 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseFunctionServiceRestTransport._BaseListOperations, FunctionServiceRestStub
-    ):
+    class _ListOperations(_BaseFunctionServiceRestTransport._BaseListOperations, FunctionServiceRestStub):
         def __hash__(self):
             return hash("FunctionServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2842,26 +2315,16 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFunctionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFunctionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseFunctionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFunctionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFunctionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFunctionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2885,12 +2348,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
 
             # Send the request
             response = FunctionServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2902,9 +2360,7 @@ class FunctionServiceRestTransport(_BaseFunctionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

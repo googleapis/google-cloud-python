@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import (
-    table_display_options as gmd_table_display_options,
-)
+from google.cloud.monitoring_dashboard_v1.types import table_display_options as gmd_table_display_options
 from google.cloud.monitoring_dashboard_v1.types import metrics
 
 __protobuf__ = proto.module(
@@ -101,12 +99,10 @@ class TimeSeriesTable(proto.Message):
             number=3,
             message=duration_pb2.Duration,
         )
-        table_display_options: gmd_table_display_options.TableDisplayOptions = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message=gmd_table_display_options.TableDisplayOptions,
-            )
+        table_display_options: gmd_table_display_options.TableDisplayOptions = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=gmd_table_display_options.TableDisplayOptions,
         )
 
     class ColumnSettings(proto.Message):

@@ -579,13 +579,8 @@ class NetAppRestInterceptor:
     """
 
     def pre_create_active_directory(
-        self,
-        request: gcn_active_directory.CreateActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_active_directory.CreateActiveDirectoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_active_directory.CreateActiveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_active_directory.CreateActiveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_active_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -593,9 +588,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_active_directory(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_active_directory(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_active_directory
 
         DEPRECATED. Please use the `post_create_active_directory_with_metadata`
@@ -609,9 +602,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_active_directory_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_active_directory
 
@@ -628,9 +619,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_backup(
-        self,
-        request: gcn_backup.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcn_backup.CreateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcn_backup.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
@@ -639,9 +628,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
         DEPRECATED. Please use the `post_create_backup_with_metadata`
@@ -655,9 +642,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup
 
@@ -674,13 +659,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_backup_policy(
-        self,
-        request: gcn_backup_policy.CreateBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_backup_policy.CreateBackupPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_backup_policy.CreateBackupPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_backup_policy.CreateBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -688,9 +668,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_policy
 
         DEPRECATED. Please use the `post_create_backup_policy_with_metadata`
@@ -704,9 +682,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_backup_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_policy
 
@@ -723,13 +699,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_backup_vault(
-        self,
-        request: gcn_backup_vault.CreateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_backup_vault.CreateBackupVaultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_backup_vault.CreateBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_backup_vault.CreateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -737,9 +708,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_vault
 
         DEPRECATED. Please use the `post_create_backup_vault_with_metadata`
@@ -753,9 +722,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_vault
 
@@ -772,9 +739,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_kms_config(
-        self,
-        request: kms.CreateKmsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.CreateKmsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.CreateKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_kms_config
 
@@ -783,9 +748,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_kms_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_kms_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_kms_config
 
         DEPRECATED. Please use the `post_create_kms_config_with_metadata`
@@ -799,9 +762,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_kms_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_kms_config
 
@@ -818,12 +779,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_quota_rule(
-        self,
-        request: gcn_quota_rule.CreateQuotaRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_quota_rule.CreateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcn_quota_rule.CreateQuotaRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_quota_rule.CreateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_quota_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -831,9 +788,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_quota_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_quota_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_quota_rule
 
         DEPRECATED. Please use the `post_create_quota_rule_with_metadata`
@@ -847,9 +802,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_quota_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_quota_rule
 
@@ -866,13 +819,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_replication(
-        self,
-        request: gcn_replication.CreateReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_replication.CreateReplicationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_replication.CreateReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_replication.CreateReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -880,9 +828,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_replication
 
         DEPRECATED. Please use the `post_create_replication_with_metadata`
@@ -896,9 +842,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_replication
 
@@ -915,12 +859,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_snapshot(
-        self,
-        request: gcn_snapshot.CreateSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_snapshot.CreateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcn_snapshot.CreateSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_snapshot.CreateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -928,9 +868,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_snapshot
 
         DEPRECATED. Please use the `post_create_snapshot_with_metadata`
@@ -944,9 +882,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_snapshot
 
@@ -963,13 +899,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_storage_pool(
-        self,
-        request: gcn_storage_pool.CreateStoragePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_storage_pool.CreateStoragePoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_storage_pool.CreateStoragePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_storage_pool.CreateStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -977,9 +908,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_storage_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_storage_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_storage_pool
 
         DEPRECATED. Please use the `post_create_storage_pool_with_metadata`
@@ -993,9 +922,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_storage_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_storage_pool
 
@@ -1012,9 +939,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_create_volume(
-        self,
-        request: gcn_volume.CreateVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcn_volume.CreateVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcn_volume.CreateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_volume
 
@@ -1023,9 +948,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_create_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_volume
 
         DEPRECATED. Please use the `post_create_volume_with_metadata`
@@ -1039,9 +962,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_create_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_volume
 
@@ -1058,13 +979,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_active_directory(
-        self,
-        request: active_directory.DeleteActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        active_directory.DeleteActiveDirectoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: active_directory.DeleteActiveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[active_directory.DeleteActiveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_active_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -1072,9 +988,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_active_directory(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_active_directory(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_active_directory
 
         DEPRECATED. Please use the `post_delete_active_directory_with_metadata`
@@ -1088,9 +1002,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_active_directory_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_active_directory
 
@@ -1107,9 +1019,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: backup.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: backup.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
@@ -1118,9 +1028,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -1134,9 +1042,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -1153,12 +1059,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_backup_policy(
-        self,
-        request: backup_policy.DeleteBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_policy.DeleteBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_policy.DeleteBackupPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_policy.DeleteBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1166,9 +1068,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_policy
 
         DEPRECATED. Please use the `post_delete_backup_policy_with_metadata`
@@ -1182,9 +1082,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_backup_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_policy
 
@@ -1201,12 +1099,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_backup_vault(
-        self,
-        request: backup_vault.DeleteBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_vault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_vault.DeleteBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_vault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1214,9 +1108,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_vault
 
         DEPRECATED. Please use the `post_delete_backup_vault_with_metadata`
@@ -1230,9 +1122,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_vault
 
@@ -1249,9 +1139,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_kms_config(
-        self,
-        request: kms.DeleteKmsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.DeleteKmsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.DeleteKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_kms_config
 
@@ -1260,9 +1148,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_kms_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_kms_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_kms_config
 
         DEPRECATED. Please use the `post_delete_kms_config_with_metadata`
@@ -1276,9 +1162,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_kms_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_kms_config
 
@@ -1295,12 +1179,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_quota_rule(
-        self,
-        request: quota_rule.DeleteQuotaRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        quota_rule.DeleteQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: quota_rule.DeleteQuotaRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[quota_rule.DeleteQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_quota_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1308,9 +1188,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_quota_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_quota_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_quota_rule
 
         DEPRECATED. Please use the `post_delete_quota_rule_with_metadata`
@@ -1324,9 +1202,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_quota_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_quota_rule
 
@@ -1343,12 +1219,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_replication(
-        self,
-        request: replication.DeleteReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.DeleteReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.DeleteReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.DeleteReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1356,9 +1228,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_replication
 
         DEPRECATED. Please use the `post_delete_replication_with_metadata`
@@ -1372,9 +1242,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_replication
 
@@ -1391,9 +1259,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_snapshot(
-        self,
-        request: snapshot.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: snapshot.DeleteSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshot.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_snapshot
 
@@ -1402,9 +1268,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_snapshot
 
         DEPRECATED. Please use the `post_delete_snapshot_with_metadata`
@@ -1418,9 +1282,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_snapshot
 
@@ -1437,12 +1299,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_storage_pool(
-        self,
-        request: storage_pool.DeleteStoragePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.DeleteStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storage_pool.DeleteStoragePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.DeleteStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1450,9 +1308,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_storage_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_storage_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_storage_pool
 
         DEPRECATED. Please use the `post_delete_storage_pool_with_metadata`
@@ -1466,9 +1322,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_storage_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_storage_pool
 
@@ -1485,9 +1339,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_delete_volume(
-        self,
-        request: volume.DeleteVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.DeleteVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.DeleteVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_volume
 
@@ -1496,9 +1348,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_volume
 
         DEPRECATED. Please use the `post_delete_volume_with_metadata`
@@ -1512,9 +1362,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_delete_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_volume
 
@@ -1531,9 +1379,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_encrypt_volumes(
-        self,
-        request: kms.EncryptVolumesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.EncryptVolumesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.EncryptVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for encrypt_volumes
 
@@ -1542,9 +1388,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_encrypt_volumes(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_encrypt_volumes(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for encrypt_volumes
 
         DEPRECATED. Please use the `post_encrypt_volumes_with_metadata`
@@ -1558,9 +1402,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_encrypt_volumes_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for encrypt_volumes
 
@@ -1577,12 +1419,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_establish_peering(
-        self,
-        request: replication.EstablishPeeringRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.EstablishPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.EstablishPeeringRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.EstablishPeeringRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for establish_peering
 
         Override in a subclass to manipulate the request or metadata
@@ -1590,9 +1428,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_establish_peering(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_establish_peering(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for establish_peering
 
         DEPRECATED. Please use the `post_establish_peering_with_metadata`
@@ -1606,9 +1442,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_establish_peering_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for establish_peering
 
@@ -1625,13 +1459,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_active_directory(
-        self,
-        request: active_directory.GetActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        active_directory.GetActiveDirectoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: active_directory.GetActiveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[active_directory.GetActiveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_active_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -1639,9 +1468,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_active_directory(
-        self, response: active_directory.ActiveDirectory
-    ) -> active_directory.ActiveDirectory:
+    def post_get_active_directory(self, response: active_directory.ActiveDirectory) -> active_directory.ActiveDirectory:
         """Post-rpc interceptor for get_active_directory
 
         DEPRECATED. Please use the `post_get_active_directory_with_metadata`
@@ -1655,12 +1482,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_active_directory_with_metadata(
-        self,
-        response: active_directory.ActiveDirectory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        active_directory.ActiveDirectory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: active_directory.ActiveDirectory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[active_directory.ActiveDirectory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_active_directory
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1676,9 +1499,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: backup.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: backup.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -1718,12 +1539,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_backup_policy(
-        self,
-        request: backup_policy.GetBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_policy.GetBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_policy.GetBackupPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_policy.GetBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1731,9 +1548,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_policy(
-        self, response: backup_policy.BackupPolicy
-    ) -> backup_policy.BackupPolicy:
+    def post_get_backup_policy(self, response: backup_policy.BackupPolicy) -> backup_policy.BackupPolicy:
         """Post-rpc interceptor for get_backup_policy
 
         DEPRECATED. Please use the `post_get_backup_policy_with_metadata`
@@ -1747,9 +1562,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_backup_policy_with_metadata(
-        self,
-        response: backup_policy.BackupPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backup_policy.BackupPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup_policy.BackupPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_policy
 
@@ -1766,12 +1579,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_backup_vault(
-        self,
-        request: backup_vault.GetBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_vault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_vault.GetBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_vault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1779,9 +1588,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_vault(
-        self, response: backup_vault.BackupVault
-    ) -> backup_vault.BackupVault:
+    def post_get_backup_vault(self, response: backup_vault.BackupVault) -> backup_vault.BackupVault:
         """Post-rpc interceptor for get_backup_vault
 
         DEPRECATED. Please use the `post_get_backup_vault_with_metadata`
@@ -1795,9 +1602,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_backup_vault_with_metadata(
-        self,
-        response: backup_vault.BackupVault,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backup_vault.BackupVault, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup_vault.BackupVault, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_vault
 
@@ -1814,9 +1619,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_kms_config(
-        self,
-        request: kms.GetKmsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.GetKmsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.GetKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_kms_config
 
@@ -1856,9 +1659,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_quota_rule(
-        self,
-        request: quota_rule.GetQuotaRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: quota_rule.GetQuotaRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[quota_rule.GetQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_quota_rule
 
@@ -1867,9 +1668,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_quota_rule(
-        self, response: quota_rule.QuotaRule
-    ) -> quota_rule.QuotaRule:
+    def post_get_quota_rule(self, response: quota_rule.QuotaRule) -> quota_rule.QuotaRule:
         """Post-rpc interceptor for get_quota_rule
 
         DEPRECATED. Please use the `post_get_quota_rule_with_metadata`
@@ -1883,9 +1682,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_quota_rule_with_metadata(
-        self,
-        response: quota_rule.QuotaRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: quota_rule.QuotaRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[quota_rule.QuotaRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_quota_rule
 
@@ -1902,12 +1699,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_replication(
-        self,
-        request: replication.GetReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.GetReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.GetReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.GetReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -1915,9 +1708,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_replication(
-        self, response: replication.Replication
-    ) -> replication.Replication:
+    def post_get_replication(self, response: replication.Replication) -> replication.Replication:
         """Post-rpc interceptor for get_replication
 
         DEPRECATED. Please use the `post_get_replication_with_metadata`
@@ -1931,9 +1722,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_replication_with_metadata(
-        self,
-        response: replication.Replication,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: replication.Replication, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[replication.Replication, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_replication
 
@@ -1950,9 +1739,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_snapshot(
-        self,
-        request: snapshot.GetSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: snapshot.GetSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshot.GetSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_snapshot
 
@@ -1975,9 +1762,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_snapshot_with_metadata(
-        self,
-        response: snapshot.Snapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: snapshot.Snapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshot.Snapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_snapshot
 
@@ -1994,12 +1779,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_storage_pool(
-        self,
-        request: storage_pool.GetStoragePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.GetStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storage_pool.GetStoragePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.GetStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -2007,9 +1788,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_storage_pool(
-        self, response: storage_pool.StoragePool
-    ) -> storage_pool.StoragePool:
+    def post_get_storage_pool(self, response: storage_pool.StoragePool) -> storage_pool.StoragePool:
         """Post-rpc interceptor for get_storage_pool
 
         DEPRECATED. Please use the `post_get_storage_pool_with_metadata`
@@ -2023,9 +1802,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_get_storage_pool_with_metadata(
-        self,
-        response: storage_pool.StoragePool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storage_pool.StoragePool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storage_pool.StoragePool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_storage_pool
 
@@ -2042,9 +1819,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_volume(
-        self,
-        request: volume.GetVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.GetVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.GetVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_volume
 
@@ -2084,13 +1859,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_active_directories(
-        self,
-        request: active_directory.ListActiveDirectoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        active_directory.ListActiveDirectoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: active_directory.ListActiveDirectoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[active_directory.ListActiveDirectoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_active_directories
 
         Override in a subclass to manipulate the request or metadata
@@ -2114,13 +1884,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_active_directories_with_metadata(
-        self,
-        response: active_directory.ListActiveDirectoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        active_directory.ListActiveDirectoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: active_directory.ListActiveDirectoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[active_directory.ListActiveDirectoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_active_directories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2136,12 +1901,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_backup_policies(
-        self,
-        request: backup_policy.ListBackupPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_policy.ListBackupPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_policy.ListBackupPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_policy.ListBackupPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -2149,9 +1910,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_policies(
-        self, response: backup_policy.ListBackupPoliciesResponse
-    ) -> backup_policy.ListBackupPoliciesResponse:
+    def post_list_backup_policies(self, response: backup_policy.ListBackupPoliciesResponse) -> backup_policy.ListBackupPoliciesResponse:
         """Post-rpc interceptor for list_backup_policies
 
         DEPRECATED. Please use the `post_list_backup_policies_with_metadata`
@@ -2165,13 +1924,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_backup_policies_with_metadata(
-        self,
-        response: backup_policy.ListBackupPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_policy.ListBackupPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backup_policy.ListBackupPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_policy.ListBackupPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2187,9 +1941,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: backup.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: backup.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -2198,9 +1950,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: backup.ListBackupsResponse
-    ) -> backup.ListBackupsResponse:
+    def post_list_backups(self, response: backup.ListBackupsResponse) -> backup.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -2214,9 +1964,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: backup.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backup.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backup.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
@@ -2233,12 +1981,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_backup_vaults(
-        self,
-        request: backup_vault.ListBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_vault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backup_vault.ListBackupVaultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_vault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -2246,9 +1990,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_vaults(
-        self, response: backup_vault.ListBackupVaultsResponse
-    ) -> backup_vault.ListBackupVaultsResponse:
+    def post_list_backup_vaults(self, response: backup_vault.ListBackupVaultsResponse) -> backup_vault.ListBackupVaultsResponse:
         """Post-rpc interceptor for list_backup_vaults
 
         DEPRECATED. Please use the `post_list_backup_vaults_with_metadata`
@@ -2262,12 +2004,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_backup_vaults_with_metadata(
-        self,
-        response: backup_vault.ListBackupVaultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backup_vault.ListBackupVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backup_vault.ListBackupVaultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backup_vault.ListBackupVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_vaults
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2283,9 +2021,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_kms_configs(
-        self,
-        request: kms.ListKmsConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.ListKmsConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.ListKmsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_kms_configs
 
@@ -2294,9 +2030,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_kms_configs(
-        self, response: kms.ListKmsConfigsResponse
-    ) -> kms.ListKmsConfigsResponse:
+    def post_list_kms_configs(self, response: kms.ListKmsConfigsResponse) -> kms.ListKmsConfigsResponse:
         """Post-rpc interceptor for list_kms_configs
 
         DEPRECATED. Please use the `post_list_kms_configs_with_metadata`
@@ -2310,9 +2044,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_kms_configs_with_metadata(
-        self,
-        response: kms.ListKmsConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: kms.ListKmsConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.ListKmsConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_kms_configs
 
@@ -2329,12 +2061,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_quota_rules(
-        self,
-        request: quota_rule.ListQuotaRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        quota_rule.ListQuotaRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: quota_rule.ListQuotaRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[quota_rule.ListQuotaRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_quota_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -2342,9 +2070,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_quota_rules(
-        self, response: quota_rule.ListQuotaRulesResponse
-    ) -> quota_rule.ListQuotaRulesResponse:
+    def post_list_quota_rules(self, response: quota_rule.ListQuotaRulesResponse) -> quota_rule.ListQuotaRulesResponse:
         """Post-rpc interceptor for list_quota_rules
 
         DEPRECATED. Please use the `post_list_quota_rules_with_metadata`
@@ -2358,12 +2084,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_quota_rules_with_metadata(
-        self,
-        response: quota_rule.ListQuotaRulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        quota_rule.ListQuotaRulesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: quota_rule.ListQuotaRulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[quota_rule.ListQuotaRulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_quota_rules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2379,12 +2101,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_replications(
-        self,
-        request: replication.ListReplicationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.ListReplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.ListReplicationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.ListReplicationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_replications
 
         Override in a subclass to manipulate the request or metadata
@@ -2392,9 +2110,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_replications(
-        self, response: replication.ListReplicationsResponse
-    ) -> replication.ListReplicationsResponse:
+    def post_list_replications(self, response: replication.ListReplicationsResponse) -> replication.ListReplicationsResponse:
         """Post-rpc interceptor for list_replications
 
         DEPRECATED. Please use the `post_list_replications_with_metadata`
@@ -2408,12 +2124,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_replications_with_metadata(
-        self,
-        response: replication.ListReplicationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.ListReplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: replication.ListReplicationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.ListReplicationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_replications
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2429,9 +2141,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_snapshots(
-        self,
-        request: snapshot.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: snapshot.ListSnapshotsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshot.ListSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_snapshots
 
@@ -2440,9 +2150,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_snapshots(
-        self, response: snapshot.ListSnapshotsResponse
-    ) -> snapshot.ListSnapshotsResponse:
+    def post_list_snapshots(self, response: snapshot.ListSnapshotsResponse) -> snapshot.ListSnapshotsResponse:
         """Post-rpc interceptor for list_snapshots
 
         DEPRECATED. Please use the `post_list_snapshots_with_metadata`
@@ -2456,9 +2164,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_snapshots_with_metadata(
-        self,
-        response: snapshot.ListSnapshotsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: snapshot.ListSnapshotsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshot.ListSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_snapshots
 
@@ -2475,12 +2181,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_storage_pools(
-        self,
-        request: storage_pool.ListStoragePoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.ListStoragePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storage_pool.ListStoragePoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.ListStoragePoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_storage_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -2488,9 +2190,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_storage_pools(
-        self, response: storage_pool.ListStoragePoolsResponse
-    ) -> storage_pool.ListStoragePoolsResponse:
+    def post_list_storage_pools(self, response: storage_pool.ListStoragePoolsResponse) -> storage_pool.ListStoragePoolsResponse:
         """Post-rpc interceptor for list_storage_pools
 
         DEPRECATED. Please use the `post_list_storage_pools_with_metadata`
@@ -2504,12 +2204,8 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_storage_pools_with_metadata(
-        self,
-        response: storage_pool.ListStoragePoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.ListStoragePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: storage_pool.ListStoragePoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.ListStoragePoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_storage_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2525,9 +2221,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_list_volumes(
-        self,
-        request: volume.ListVolumesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.ListVolumesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.ListVolumesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_volumes
 
@@ -2536,9 +2230,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_volumes(
-        self, response: volume.ListVolumesResponse
-    ) -> volume.ListVolumesResponse:
+    def post_list_volumes(self, response: volume.ListVolumesResponse) -> volume.ListVolumesResponse:
         """Post-rpc interceptor for list_volumes
 
         DEPRECATED. Please use the `post_list_volumes_with_metadata`
@@ -2552,9 +2244,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_list_volumes_with_metadata(
-        self,
-        response: volume.ListVolumesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: volume.ListVolumesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.ListVolumesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_volumes
 
@@ -2571,12 +2261,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_resume_replication(
-        self,
-        request: replication.ResumeReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.ResumeReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.ResumeReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.ResumeReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -2584,9 +2270,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_resume_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for resume_replication
 
         DEPRECATED. Please use the `post_resume_replication_with_metadata`
@@ -2600,9 +2284,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_resume_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_replication
 
@@ -2619,13 +2301,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_reverse_replication_direction(
-        self,
-        request: replication.ReverseReplicationDirectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.ReverseReplicationDirectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: replication.ReverseReplicationDirectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.ReverseReplicationDirectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reverse_replication_direction
 
         Override in a subclass to manipulate the request or metadata
@@ -2633,9 +2310,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_reverse_replication_direction(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reverse_replication_direction(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reverse_replication_direction
 
         DEPRECATED. Please use the `post_reverse_replication_direction_with_metadata`
@@ -2649,9 +2324,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_reverse_replication_direction_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reverse_replication_direction
 
@@ -2668,9 +2341,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_revert_volume(
-        self,
-        request: volume.RevertVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: volume.RevertVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[volume.RevertVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revert_volume
 
@@ -2679,9 +2350,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_revert_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_revert_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for revert_volume
 
         DEPRECATED. Please use the `post_revert_volume_with_metadata`
@@ -2695,9 +2364,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_revert_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for revert_volume
 
@@ -2714,12 +2381,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_stop_replication(
-        self,
-        request: replication.StopReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.StopReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.StopReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.StopReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -2727,9 +2390,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_replication
 
         DEPRECATED. Please use the `post_stop_replication_with_metadata`
@@ -2743,9 +2404,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_stop_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_replication
 
@@ -2762,13 +2421,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_switch_active_replica_zone(
-        self,
-        request: storage_pool.SwitchActiveReplicaZoneRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.SwitchActiveReplicaZoneRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_pool.SwitchActiveReplicaZoneRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.SwitchActiveReplicaZoneRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for switch_active_replica_zone
 
         Override in a subclass to manipulate the request or metadata
@@ -2776,9 +2430,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_switch_active_replica_zone(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_switch_active_replica_zone(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for switch_active_replica_zone
 
         DEPRECATED. Please use the `post_switch_active_replica_zone_with_metadata`
@@ -2792,9 +2444,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_switch_active_replica_zone_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for switch_active_replica_zone
 
@@ -2811,12 +2461,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_sync_replication(
-        self,
-        request: replication.SyncReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        replication.SyncReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: replication.SyncReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[replication.SyncReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sync_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -2824,9 +2470,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_sync_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_sync_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for sync_replication
 
         DEPRECATED. Please use the `post_sync_replication_with_metadata`
@@ -2840,9 +2484,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_sync_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sync_replication
 
@@ -2859,13 +2501,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_active_directory(
-        self,
-        request: gcn_active_directory.UpdateActiveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_active_directory.UpdateActiveDirectoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_active_directory.UpdateActiveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_active_directory.UpdateActiveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_active_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -2873,9 +2510,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_active_directory(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_active_directory(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_active_directory
 
         DEPRECATED. Please use the `post_update_active_directory_with_metadata`
@@ -2889,9 +2524,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_active_directory_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_active_directory
 
@@ -2908,9 +2541,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_backup(
-        self,
-        request: gcn_backup.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcn_backup.UpdateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcn_backup.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
@@ -2919,9 +2550,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
         DEPRECATED. Please use the `post_update_backup_with_metadata`
@@ -2935,9 +2564,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup
 
@@ -2954,13 +2581,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_backup_policy(
-        self,
-        request: gcn_backup_policy.UpdateBackupPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_backup_policy.UpdateBackupPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_backup_policy.UpdateBackupPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_backup_policy.UpdateBackupPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2968,9 +2590,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_policy
 
         DEPRECATED. Please use the `post_update_backup_policy_with_metadata`
@@ -2984,9 +2604,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_backup_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_policy
 
@@ -3003,13 +2621,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_backup_vault(
-        self,
-        request: gcn_backup_vault.UpdateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_backup_vault.UpdateBackupVaultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_backup_vault.UpdateBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_backup_vault.UpdateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -3017,9 +2630,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_vault
 
         DEPRECATED. Please use the `post_update_backup_vault_with_metadata`
@@ -3033,9 +2644,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_vault
 
@@ -3052,9 +2661,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_kms_config(
-        self,
-        request: kms.UpdateKmsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.UpdateKmsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.UpdateKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_kms_config
 
@@ -3063,9 +2670,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_kms_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_kms_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_kms_config
 
         DEPRECATED. Please use the `post_update_kms_config_with_metadata`
@@ -3079,9 +2684,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_kms_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_kms_config
 
@@ -3098,12 +2701,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_quota_rule(
-        self,
-        request: gcn_quota_rule.UpdateQuotaRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_quota_rule.UpdateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcn_quota_rule.UpdateQuotaRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_quota_rule.UpdateQuotaRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_quota_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -3111,9 +2710,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_quota_rule(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_quota_rule(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_quota_rule
 
         DEPRECATED. Please use the `post_update_quota_rule_with_metadata`
@@ -3127,9 +2724,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_quota_rule_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_quota_rule
 
@@ -3146,13 +2741,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_replication(
-        self,
-        request: gcn_replication.UpdateReplicationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_replication.UpdateReplicationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_replication.UpdateReplicationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_replication.UpdateReplicationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_replication
 
         Override in a subclass to manipulate the request or metadata
@@ -3160,9 +2750,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_replication(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_replication(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_replication
 
         DEPRECATED. Please use the `post_update_replication_with_metadata`
@@ -3176,9 +2764,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_replication_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_replication
 
@@ -3195,12 +2781,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_snapshot(
-        self,
-        request: gcn_snapshot.UpdateSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_snapshot.UpdateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcn_snapshot.UpdateSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_snapshot.UpdateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -3208,9 +2790,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_snapshot
 
         DEPRECATED. Please use the `post_update_snapshot_with_metadata`
@@ -3224,9 +2804,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_snapshot
 
@@ -3243,13 +2821,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_storage_pool(
-        self,
-        request: gcn_storage_pool.UpdateStoragePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcn_storage_pool.UpdateStoragePoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcn_storage_pool.UpdateStoragePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcn_storage_pool.UpdateStoragePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_storage_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -3257,9 +2830,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_storage_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_storage_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_storage_pool
 
         DEPRECATED. Please use the `post_update_storage_pool_with_metadata`
@@ -3273,9 +2844,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_storage_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_storage_pool
 
@@ -3292,9 +2861,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_update_volume(
-        self,
-        request: gcn_volume.UpdateVolumeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcn_volume.UpdateVolumeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcn_volume.UpdateVolumeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_volume
 
@@ -3303,9 +2870,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_update_volume(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_volume(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_volume
 
         DEPRECATED. Please use the `post_update_volume_with_metadata`
@@ -3319,9 +2884,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_update_volume_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_volume
 
@@ -3338,13 +2901,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_validate_directory_service(
-        self,
-        request: storage_pool.ValidateDirectoryServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storage_pool.ValidateDirectoryServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storage_pool.ValidateDirectoryServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storage_pool.ValidateDirectoryServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_directory_service
 
         Override in a subclass to manipulate the request or metadata
@@ -3352,9 +2910,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_validate_directory_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_validate_directory_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for validate_directory_service
 
         DEPRECATED. Please use the `post_validate_directory_service_with_metadata`
@@ -3368,9 +2924,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_validate_directory_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate_directory_service
 
@@ -3387,9 +2941,7 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_verify_kms_config(
-        self,
-        request: kms.VerifyKmsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: kms.VerifyKmsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.VerifyKmsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_kms_config
 
@@ -3398,9 +2950,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_verify_kms_config(
-        self, response: kms.VerifyKmsConfigResponse
-    ) -> kms.VerifyKmsConfigResponse:
+    def post_verify_kms_config(self, response: kms.VerifyKmsConfigResponse) -> kms.VerifyKmsConfigResponse:
         """Post-rpc interceptor for verify_kms_config
 
         DEPRECATED. Please use the `post_verify_kms_config_with_metadata`
@@ -3414,9 +2964,7 @@ class NetAppRestInterceptor:
         return response
 
     def post_verify_kms_config_with_metadata(
-        self,
-        response: kms.VerifyKmsConfigResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: kms.VerifyKmsConfigResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[kms.VerifyKmsConfigResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for verify_kms_config
 
@@ -3433,12 +2981,8 @@ class NetAppRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -3446,9 +2990,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -3458,12 +3000,8 @@ class NetAppRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -3471,9 +3009,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -3483,12 +3019,8 @@ class NetAppRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3506,12 +3038,8 @@ class NetAppRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3529,12 +3057,8 @@ class NetAppRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3542,9 +3066,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -3554,12 +3076,8 @@ class NetAppRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -3567,9 +3085,7 @@ class NetAppRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -3658,9 +3174,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -3713,29 +3227,17 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateActiveDirectory(
-        _BaseNetAppRestTransport._BaseCreateActiveDirectory, NetAppRestStub
-    ):
+    class _CreateActiveDirectory(_BaseNetAppRestTransport._BaseCreateActiveDirectory, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateActiveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3779,32 +3281,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_active_directory(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_active_directory(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateActiveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3828,13 +3316,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateActiveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3848,12 +3330,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_active_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_active_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_active_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3879,15 +3357,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.CreateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3930,34 +3400,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3981,13 +3435,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4001,12 +3449,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4027,22 +3471,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateBackupPolicy(
-        _BaseNetAppRestTransport._BaseCreateBackupPolicy, NetAppRestStub
-    ):
+    class _CreateBackupPolicy(_BaseNetAppRestTransport._BaseCreateBackupPolicy, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateBackupPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4086,36 +3520,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_policy(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateBackupPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4139,13 +3555,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateBackupPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4159,12 +3569,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_backup_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4185,22 +3591,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateBackupVault(
-        _BaseNetAppRestTransport._BaseCreateBackupVault, NetAppRestStub
-    ):
+    class _CreateBackupVault(_BaseNetAppRestTransport._BaseCreateBackupVault, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4244,38 +3640,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateBackupVault._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_vault(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_backup_vault(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateBackupVault._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseCreateBackupVault._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseCreateBackupVault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateBackupVault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4299,13 +3675,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4319,12 +3689,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4345,22 +3711,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateKmsConfig(
-        _BaseNetAppRestTransport._BaseCreateKmsConfig, NetAppRestStub
-    ):
+    class _CreateKmsConfig(_BaseNetAppRestTransport._BaseCreateKmsConfig, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateKmsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4404,36 +3760,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateKmsConfig._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateKmsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_kms_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateKmsConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_kms_config(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateKmsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateKmsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateKmsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateKmsConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateKmsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4457,13 +3795,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateKmsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4477,12 +3809,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_kms_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_kms_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_kms_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4503,22 +3831,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateQuotaRule(
-        _BaseNetAppRestTransport._BaseCreateQuotaRule, NetAppRestStub
-    ):
+    class _CreateQuotaRule(_BaseNetAppRestTransport._BaseCreateQuotaRule, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateQuotaRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4562,36 +3880,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_quota_rule(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_quota_rule(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateQuotaRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateQuotaRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4615,13 +3915,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateQuotaRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4635,12 +3929,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_quota_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_quota_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_quota_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4661,22 +3951,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateReplication(
-        _BaseNetAppRestTransport._BaseCreateReplication, NetAppRestStub
-    ):
+    class _CreateReplication(_BaseNetAppRestTransport._BaseCreateReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4720,38 +4000,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateReplication._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseCreateReplication._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseCreateReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4775,13 +4035,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4795,12 +4049,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4826,15 +4076,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.CreateSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4878,34 +4120,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateSnapshot._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateSnapshot._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateSnapshot._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4929,13 +4155,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4949,12 +4169,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4975,22 +4191,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _CreateStoragePool(
-        _BaseNetAppRestTransport._BaseCreateStoragePool, NetAppRestStub
-    ):
+    class _CreateStoragePool(_BaseNetAppRestTransport._BaseCreateStoragePool, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CreateStoragePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5034,38 +4240,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateStoragePool._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateStoragePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_storage_pool(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateStoragePool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_storage_pool(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateStoragePool._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseCreateStoragePool._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseCreateStoragePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateStoragePool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateStoragePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5089,13 +4275,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateStoragePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5109,12 +4289,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_storage_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_storage_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_storage_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5140,15 +4316,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.CreateVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5191,34 +4359,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCreateVolume._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCreateVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_create_volume(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCreateVolume._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseCreateVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCreateVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCreateVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCreateVolume._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCreateVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5242,13 +4394,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CreateVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5262,12 +4408,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_create_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5288,22 +4430,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteActiveDirectory(
-        _BaseNetAppRestTransport._BaseDeleteActiveDirectory, NetAppRestStub
-    ):
+    class _DeleteActiveDirectory(_BaseNetAppRestTransport._BaseDeleteActiveDirectory, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteActiveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5346,28 +4478,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_active_directory(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_active_directory(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteActiveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5391,12 +4511,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteActiveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5410,12 +4525,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_active_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_active_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_active_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5441,15 +4552,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5491,30 +4594,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5537,14 +4626,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._DeleteBackup._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5557,12 +4639,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5583,22 +4661,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteBackupPolicy(
-        _BaseNetAppRestTransport._BaseDeleteBackupPolicy, NetAppRestStub
-    ):
+    class _DeleteBackupPolicy(_BaseNetAppRestTransport._BaseDeleteBackupPolicy, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteBackupPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5641,30 +4709,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_policy(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteBackupPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5688,12 +4742,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteBackupPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5707,12 +4756,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_backup_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5733,22 +4778,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteBackupVault(
-        _BaseNetAppRestTransport._BaseDeleteBackupVault, NetAppRestStub
-    ):
+    class _DeleteBackupVault(_BaseNetAppRestTransport._BaseDeleteBackupVault, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5791,32 +4826,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteBackupVault._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_vault(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_backup_vault(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteBackupVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteBackupVault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5840,12 +4859,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5859,12 +4873,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5885,22 +4895,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteKmsConfig(
-        _BaseNetAppRestTransport._BaseDeleteKmsConfig, NetAppRestStub
-    ):
+    class _DeleteKmsConfig(_BaseNetAppRestTransport._BaseDeleteKmsConfig, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteKmsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5943,32 +4943,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_kms_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_kms_config(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteKmsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5992,12 +4976,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteKmsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6011,12 +4990,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_kms_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_kms_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_kms_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6037,22 +5012,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteQuotaRule(
-        _BaseNetAppRestTransport._BaseDeleteQuotaRule, NetAppRestStub
-    ):
+    class _DeleteQuotaRule(_BaseNetAppRestTransport._BaseDeleteQuotaRule, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteQuotaRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6095,32 +5060,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_quota_rule(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_quota_rule(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteQuotaRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6144,12 +5093,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteQuotaRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6163,12 +5107,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_quota_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_quota_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_quota_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6189,22 +5129,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteReplication(
-        _BaseNetAppRestTransport._BaseDeleteReplication, NetAppRestStub
-    ):
+    class _DeleteReplication(_BaseNetAppRestTransport._BaseDeleteReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6247,32 +5177,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteReplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6296,12 +5210,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6315,12 +5224,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6346,15 +5251,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.DeleteSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6397,30 +5294,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteSnapshot._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteSnapshot._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteSnapshot._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6444,12 +5327,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6463,12 +5341,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6489,22 +5363,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _DeleteStoragePool(
-        _BaseNetAppRestTransport._BaseDeleteStoragePool, NetAppRestStub
-    ):
+    class _DeleteStoragePool(_BaseNetAppRestTransport._BaseDeleteStoragePool, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteStoragePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6547,32 +5411,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteStoragePool._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteStoragePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_storage_pool(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteStoragePool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_storage_pool(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteStoragePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteStoragePool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteStoragePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6596,12 +5444,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteStoragePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6615,12 +5458,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_storage_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_storage_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_storage_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6646,15 +5485,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.DeleteVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6696,30 +5527,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteVolume._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_volume(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteVolume._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteVolume._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteVolume._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6742,14 +5559,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._DeleteVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._DeleteVolume._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6762,12 +5572,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_delete_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6793,15 +5599,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.EncryptVolumes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6845,34 +5643,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseEncryptVolumes._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseEncryptVolumes._get_http_options()
 
             request, metadata = self._interceptor.pre_encrypt_volumes(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseEncryptVolumes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseEncryptVolumes._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseEncryptVolumes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseEncryptVolumes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseEncryptVolumes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseEncryptVolumes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6896,13 +5678,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._EncryptVolumes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6916,12 +5692,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_encrypt_volumes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_encrypt_volumes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_encrypt_volumes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6942,22 +5714,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _EstablishPeering(
-        _BaseNetAppRestTransport._BaseEstablishPeering, NetAppRestStub
-    ):
+    class _EstablishPeering(_BaseNetAppRestTransport._BaseEstablishPeering, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.EstablishPeering")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7002,38 +5764,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseEstablishPeering._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseEstablishPeering._get_http_options()
 
-            request, metadata = self._interceptor.pre_establish_peering(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseEstablishPeering._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_establish_peering(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseEstablishPeering._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseEstablishPeering._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseEstablishPeering._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseEstablishPeering._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseEstablishPeering._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7057,13 +5799,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._EstablishPeering._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7077,12 +5813,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_establish_peering(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_establish_peering_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_establish_peering_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7103,22 +5835,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _GetActiveDirectory(
-        _BaseNetAppRestTransport._BaseGetActiveDirectory, NetAppRestStub
-    ):
+    class _GetActiveDirectory(_BaseNetAppRestTransport._BaseGetActiveDirectory, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.GetActiveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7161,30 +5883,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetActiveDirectory._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetActiveDirectory._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_active_directory(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseGetActiveDirectory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_active_directory(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseGetActiveDirectory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetActiveDirectory._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetActiveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7208,12 +5916,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._GetActiveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7229,16 +5932,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_active_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_active_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_active_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = active_directory.ActiveDirectory.to_json(
-                        response
-                    )
+                    response_payload = active_directory.ActiveDirectory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7262,15 +5959,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7313,25 +6002,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7354,14 +6031,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetBackup._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7376,12 +6046,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup.Backup.to_json(response)
                 except:
@@ -7402,22 +6068,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _GetBackupPolicy(
-        _BaseNetAppRestTransport._BaseGetBackupPolicy, NetAppRestStub
-    ):
+    class _GetBackupPolicy(_BaseNetAppRestTransport._BaseGetBackupPolicy, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.GetBackupPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7457,32 +6113,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     Backup Policy.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetBackupPolicy._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetBackupPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_policy(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetBackupPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_backup_policy(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseGetBackupPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetBackupPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetBackupPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7506,12 +6146,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._GetBackupPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7527,12 +6162,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_backup_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup_policy.BackupPolicy.to_json(response)
                 except:
@@ -7558,15 +6189,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7606,32 +6229,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     A NetApp BackupVault.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetBackupVault._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_vault(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_backup_vault(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseGetBackupVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetBackupVault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7655,12 +6262,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._GetBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7676,12 +6278,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup_vault.BackupVault.to_json(response)
                 except:
@@ -7707,15 +6305,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetKmsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7757,30 +6347,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetKmsConfig._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetKmsConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_kms_config(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetKmsConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetKmsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetKmsConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetKmsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7803,14 +6379,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetKmsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetKmsConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7825,12 +6394,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_kms_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_kms_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_kms_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = kms.KmsConfig.to_json(response)
                 except:
@@ -7856,15 +6421,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetQuotaRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7908,30 +6465,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetQuotaRule._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetQuotaRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_quota_rule(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetQuotaRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetQuotaRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetQuotaRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetQuotaRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7954,14 +6497,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetQuotaRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetQuotaRule._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7976,12 +6512,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_quota_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_quota_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_quota_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = quota_rule.QuotaRule.to_json(response)
                 except:
@@ -8007,15 +6539,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8059,30 +6583,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetReplication._get_http_options()
 
             request, metadata = self._interceptor.pre_get_replication(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetReplication._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8106,12 +6616,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._GetReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8127,12 +6632,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = replication.Replication.to_json(response)
                 except:
@@ -8158,15 +6659,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8211,25 +6704,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseGetSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetSnapshot._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetSnapshot._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8252,14 +6733,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetSnapshot._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8274,12 +6748,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = snapshot.Snapshot.to_json(response)
                 except:
@@ -8305,15 +6775,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetStoragePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8359,32 +6821,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetStoragePool._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetStoragePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_storage_pool(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetStoragePool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_storage_pool(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseGetStoragePool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetStoragePool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetStoragePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8408,12 +6854,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._GetStoragePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8429,12 +6870,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_storage_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_storage_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_storage_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storage_pool.StoragePool.to_json(response)
                 except:
@@ -8460,15 +6897,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8512,25 +6941,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseGetVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_get_volume(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetVolume._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetVolume._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetVolume._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8553,14 +6970,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetVolume._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8575,12 +6985,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_get_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.Volume.to_json(response)
                 except:
@@ -8601,22 +7007,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ListActiveDirectories(
-        _BaseNetAppRestTransport._BaseListActiveDirectories, NetAppRestStub
-    ):
+    class _ListActiveDirectories(_BaseNetAppRestTransport._BaseListActiveDirectories, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListActiveDirectories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8659,28 +7055,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListActiveDirectories._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListActiveDirectories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_active_directories(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseListActiveDirectories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_active_directories(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListActiveDirectories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseListActiveDirectories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseListActiveDirectories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8704,12 +7088,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListActiveDirectories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8725,16 +7104,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_active_directories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_active_directories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_active_directories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        active_directory.ListActiveDirectoriesResponse.to_json(response)
-                    )
+                    response_payload = active_directory.ListActiveDirectoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8753,22 +7126,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ListBackupPolicies(
-        _BaseNetAppRestTransport._BaseListBackupPolicies, NetAppRestStub
-    ):
+    class _ListBackupPolicies(_BaseNetAppRestTransport._BaseListBackupPolicies, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListBackupPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8810,30 +7173,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListBackupPolicies._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListBackupPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseListBackupPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_policies(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListBackupPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListBackupPolicies._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListBackupPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8857,12 +7206,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListBackupPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8878,16 +7222,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_backup_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backup_policy.ListBackupPoliciesResponse.to_json(
-                        response
-                    )
+                    response_payload = backup_policy.ListBackupPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8911,15 +7249,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8963,25 +7293,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9004,14 +7322,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._ListBackups._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -9026,12 +7337,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backup.ListBackupsResponse.to_json(response)
                 except:
@@ -9052,22 +7359,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ListBackupVaults(
-        _BaseNetAppRestTransport._BaseListBackupVaults, NetAppRestStub
-    ):
+    class _ListBackupVaults(_BaseNetAppRestTransport._BaseListBackupVaults, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListBackupVaults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9109,32 +7406,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListBackupVaults._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListBackupVaults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_vaults(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListBackupVaults._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_backup_vaults(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListBackupVaults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListBackupVaults._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListBackupVaults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9158,12 +7439,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListBackupVaults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9179,16 +7455,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_backup_vaults(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_vaults_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_vaults_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backup_vault.ListBackupVaultsResponse.to_json(
-                        response
-                    )
+                    response_payload = backup_vault.ListBackupVaultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9212,15 +7482,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListKmsConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9262,32 +7524,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListKmsConfigs._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListKmsConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_kms_configs(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListKmsConfigs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_kms_configs(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListKmsConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListKmsConfigs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListKmsConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9311,12 +7557,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListKmsConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9332,12 +7573,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_kms_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_kms_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_kms_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = kms.ListKmsConfigsResponse.to_json(response)
                 except:
@@ -9363,15 +7600,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListQuotaRules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9413,32 +7642,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListQuotaRules._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListQuotaRules._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_quota_rules(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListQuotaRules._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_quota_rules(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListQuotaRules._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListQuotaRules._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListQuotaRules._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9462,12 +7675,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListQuotaRules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9483,16 +7691,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_quota_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_quota_rules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_quota_rules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = quota_rule.ListQuotaRulesResponse.to_json(
-                        response
-                    )
+                    response_payload = quota_rule.ListQuotaRulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9511,22 +7713,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ListReplications(
-        _BaseNetAppRestTransport._BaseListReplications, NetAppRestStub
-    ):
+    class _ListReplications(_BaseNetAppRestTransport._BaseListReplications, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListReplications")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9567,32 +7759,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListReplications._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListReplications._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_replications(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListReplications._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_replications(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListReplications._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListReplications._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListReplications._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9616,12 +7792,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListReplications._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9637,16 +7808,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_replications(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_replications_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_replications_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = replication.ListReplicationsResponse.to_json(
-                        response
-                    )
+                    response_payload = replication.ListReplicationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9670,15 +7835,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListSnapshots")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9719,30 +7876,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListSnapshots._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListSnapshots._get_http_options()
 
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListSnapshots._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseListSnapshots._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListSnapshots._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListSnapshots._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9766,12 +7909,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListSnapshots._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9787,12 +7925,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_snapshots(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_snapshots_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_snapshots_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = snapshot.ListSnapshotsResponse.to_json(response)
                 except:
@@ -9813,22 +7947,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ListStoragePools(
-        _BaseNetAppRestTransport._BaseListStoragePools, NetAppRestStub
-    ):
+    class _ListStoragePools(_BaseNetAppRestTransport._BaseListStoragePools, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListStoragePools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9870,32 +7994,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListStoragePools._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListStoragePools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_storage_pools(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListStoragePools._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_storage_pools(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseListStoragePools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListStoragePools._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListStoragePools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9919,12 +8027,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListStoragePools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9940,16 +8043,10 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_storage_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_storage_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_storage_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = storage_pool.ListStoragePoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = storage_pool.ListStoragePoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9973,15 +8070,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListVolumes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10026,25 +8115,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseListVolumes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_volumes(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListVolumes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseListVolumes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListVolumes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListVolumes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10067,14 +8144,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._ListVolumes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._ListVolumes._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -10089,12 +8159,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_list_volumes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_volumes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_volumes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = volume.ListVolumesResponse.to_json(response)
                 except:
@@ -10115,22 +8181,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ResumeReplication(
-        _BaseNetAppRestTransport._BaseResumeReplication, NetAppRestStub
-    ):
+    class _ResumeReplication(_BaseNetAppRestTransport._BaseResumeReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ResumeReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10174,38 +8230,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseResumeReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseResumeReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseResumeReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_resume_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseResumeReplication._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseResumeReplication._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseResumeReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseResumeReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseResumeReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10229,13 +8265,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ResumeReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10249,12 +8279,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_resume_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10275,22 +8301,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ReverseReplicationDirection(
-        _BaseNetAppRestTransport._BaseReverseReplicationDirection, NetAppRestStub
-    ):
+    class _ReverseReplicationDirection(_BaseNetAppRestTransport._BaseReverseReplicationDirection, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ReverseReplicationDirection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10337,32 +8353,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_http_options()
 
-            request, metadata = self._interceptor.pre_reverse_replication_direction(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reverse_replication_direction(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseReverseReplicationDirection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10386,13 +8388,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ReverseReplicationDirection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10406,15 +8402,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_reverse_replication_direction(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_reverse_replication_direction_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reverse_replication_direction_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10440,15 +8429,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.RevertVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10492,34 +8473,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseRevertVolume._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseRevertVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_revert_volume(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseRevertVolume._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseRevertVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseRevertVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseRevertVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseRevertVolume._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseRevertVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10543,13 +8508,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._RevertVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10563,12 +8522,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_revert_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_revert_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_revert_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10589,22 +8544,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _StopReplication(
-        _BaseNetAppRestTransport._BaseStopReplication, NetAppRestStub
-    ):
+    class _StopReplication(_BaseNetAppRestTransport._BaseStopReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.StopReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10648,36 +8593,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseStopReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseStopReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseStopReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_stop_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseStopReplication._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseStopReplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseStopReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseStopReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseStopReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10701,13 +8628,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._StopReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10721,12 +8642,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_stop_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10747,22 +8664,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _SwitchActiveReplicaZone(
-        _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone, NetAppRestStub
-    ):
+    class _SwitchActiveReplicaZone(_BaseNetAppRestTransport._BaseSwitchActiveReplicaZone, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.SwitchActiveReplicaZone")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10808,32 +8715,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_http_options()
 
-            request, metadata = self._interceptor.pre_switch_active_replica_zone(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_switch_active_replica_zone(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseSwitchActiveReplicaZone._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10857,13 +8750,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._SwitchActiveReplicaZone._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10877,12 +8764,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_switch_active_replica_zone(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_switch_active_replica_zone_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_switch_active_replica_zone_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10903,22 +8786,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _SyncReplication(
-        _BaseNetAppRestTransport._BaseSyncReplication, NetAppRestStub
-    ):
+    class _SyncReplication(_BaseNetAppRestTransport._BaseSyncReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.SyncReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10962,36 +8835,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseSyncReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseSyncReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_sync_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseSyncReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_sync_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseSyncReplication._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseSyncReplication._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseSyncReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseSyncReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseSyncReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11015,13 +8870,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._SyncReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11035,12 +8884,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_sync_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sync_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sync_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11061,22 +8906,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateActiveDirectory(
-        _BaseNetAppRestTransport._BaseUpdateActiveDirectory, NetAppRestStub
-    ):
+    class _UpdateActiveDirectory(_BaseNetAppRestTransport._BaseUpdateActiveDirectory, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateActiveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11120,32 +8955,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_active_directory(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_active_directory(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateActiveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11169,13 +8990,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateActiveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11189,12 +9004,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_active_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_active_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_active_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11220,15 +9031,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.UpdateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11272,34 +9075,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11323,13 +9110,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11343,12 +9124,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11369,22 +9146,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateBackupPolicy(
-        _BaseNetAppRestTransport._BaseUpdateBackupPolicy, NetAppRestStub
-    ):
+    class _UpdateBackupPolicy(_BaseNetAppRestTransport._BaseUpdateBackupPolicy, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateBackupPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11428,36 +9195,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_policy(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateBackupPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11481,13 +9230,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateBackupPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11501,12 +9244,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_backup_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11527,22 +9266,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateBackupVault(
-        _BaseNetAppRestTransport._BaseUpdateBackupVault, NetAppRestStub
-    ):
+    class _UpdateBackupVault(_BaseNetAppRestTransport._BaseUpdateBackupVault, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11587,38 +9316,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateBackupVault._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_vault(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_backup_vault(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateBackupVault._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseUpdateBackupVault._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateBackupVault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateBackupVault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11642,13 +9351,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11662,12 +9365,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11688,22 +9387,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateKmsConfig(
-        _BaseNetAppRestTransport._BaseUpdateKmsConfig, NetAppRestStub
-    ):
+    class _UpdateKmsConfig(_BaseNetAppRestTransport._BaseUpdateKmsConfig, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateKmsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11747,36 +9436,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_kms_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_kms_config(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateKmsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11800,13 +9471,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateKmsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11820,12 +9485,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_kms_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_kms_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_kms_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11846,22 +9507,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateQuotaRule(
-        _BaseNetAppRestTransport._BaseUpdateQuotaRule, NetAppRestStub
-    ):
+    class _UpdateQuotaRule(_BaseNetAppRestTransport._BaseUpdateQuotaRule, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateQuotaRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11905,36 +9556,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_quota_rule(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_quota_rule(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateQuotaRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11958,13 +9591,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateQuotaRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11978,12 +9605,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_quota_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_quota_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_quota_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12004,22 +9627,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateReplication(
-        _BaseNetAppRestTransport._BaseUpdateReplication, NetAppRestStub
-    ):
+    class _UpdateReplication(_BaseNetAppRestTransport._BaseUpdateReplication, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateReplication")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12064,38 +9677,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateReplication._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateReplication._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_replication(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateReplication._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_replication(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateReplication._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseUpdateReplication._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateReplication._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateReplication._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateReplication._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12119,13 +9712,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateReplication._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12139,12 +9726,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_replication(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_replication_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_replication_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12170,15 +9753,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.UpdateSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12223,34 +9798,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateSnapshot._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateSnapshot._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateSnapshot._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12274,13 +9833,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12294,12 +9847,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12320,22 +9869,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _UpdateStoragePool(
-        _BaseNetAppRestTransport._BaseUpdateStoragePool, NetAppRestStub
-    ):
+    class _UpdateStoragePool(_BaseNetAppRestTransport._BaseUpdateStoragePool, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.UpdateStoragePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12379,38 +9918,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateStoragePool._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateStoragePool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_storage_pool(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateStoragePool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_storage_pool(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateStoragePool._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNetAppRestTransport._BaseUpdateStoragePool._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateStoragePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateStoragePool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateStoragePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12434,13 +9953,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateStoragePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12454,12 +9967,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_storage_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_storage_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_storage_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12485,15 +9994,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.UpdateVolume")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12536,34 +10037,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseUpdateVolume._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseUpdateVolume._get_http_options()
 
             request, metadata = self._interceptor.pre_update_volume(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseUpdateVolume._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseUpdateVolume._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseUpdateVolume._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseUpdateVolume._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseUpdateVolume._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseUpdateVolume._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12587,13 +10072,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._UpdateVolume._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12607,12 +10086,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_update_volume(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_volume_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_volume_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12633,22 +10108,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _ValidateDirectoryService(
-        _BaseNetAppRestTransport._BaseValidateDirectoryService, NetAppRestStub
-    ):
+    class _ValidateDirectoryService(_BaseNetAppRestTransport._BaseValidateDirectoryService, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ValidateDirectoryService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12694,32 +10159,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseValidateDirectoryService._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_http_options()
 
-            request, metadata = self._interceptor.pre_validate_directory_service(
-                request, metadata
-            )
-            transcoded_request = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_validate_directory_service(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNetAppRestTransport._BaseValidateDirectoryService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12743,13 +10194,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ValidateDirectoryService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12763,12 +10208,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_validate_directory_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_validate_directory_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_directory_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12789,22 +10230,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
-    class _VerifyKmsConfig(
-        _BaseNetAppRestTransport._BaseVerifyKmsConfig, NetAppRestStub
-    ):
+    class _VerifyKmsConfig(_BaseNetAppRestTransport._BaseVerifyKmsConfig, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.VerifyKmsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12848,36 +10279,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_verify_kms_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_verify_kms_config(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseVerifyKmsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12901,13 +10314,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._VerifyKmsConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12923,12 +10330,8 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             resp = self._interceptor.post_verify_kms_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_verify_kms_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_verify_kms_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = kms.VerifyKmsConfigResponse.to_json(response)
                 except:
@@ -12950,197 +10353,139 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return resp
 
     @property
-    def create_active_directory(
-        self,
-    ) -> Callable[
-        [gcn_active_directory.CreateActiveDirectoryRequest], operations_pb2.Operation
-    ]:
+    def create_active_directory(self) -> Callable[[gcn_active_directory.CreateActiveDirectoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[gcn_backup.CreateBackupRequest], operations_pb2.Operation]:
+    def create_backup(self) -> Callable[[gcn_backup.CreateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_policy(
-        self,
-    ) -> Callable[
-        [gcn_backup_policy.CreateBackupPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_backup_policy(self) -> Callable[[gcn_backup_policy.CreateBackupPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_vault(
-        self,
-    ) -> Callable[
-        [gcn_backup_vault.CreateBackupVaultRequest], operations_pb2.Operation
-    ]:
+    def create_backup_vault(self) -> Callable[[gcn_backup_vault.CreateBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_kms_config(
-        self,
-    ) -> Callable[[kms.CreateKmsConfigRequest], operations_pb2.Operation]:
+    def create_kms_config(self) -> Callable[[kms.CreateKmsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_quota_rule(
-        self,
-    ) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], operations_pb2.Operation]:
+    def create_quota_rule(self) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_replication(
-        self,
-    ) -> Callable[[gcn_replication.CreateReplicationRequest], operations_pb2.Operation]:
+    def create_replication(self) -> Callable[[gcn_replication.CreateReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[[gcn_snapshot.CreateSnapshotRequest], operations_pb2.Operation]:
+    def create_snapshot(self) -> Callable[[gcn_snapshot.CreateSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_storage_pool(
-        self,
-    ) -> Callable[
-        [gcn_storage_pool.CreateStoragePoolRequest], operations_pb2.Operation
-    ]:
+    def create_storage_pool(self) -> Callable[[gcn_storage_pool.CreateStoragePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateStoragePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_volume(
-        self,
-    ) -> Callable[[gcn_volume.CreateVolumeRequest], operations_pb2.Operation]:
+    def create_volume(self) -> Callable[[gcn_volume.CreateVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_active_directory(
-        self,
-    ) -> Callable[
-        [active_directory.DeleteActiveDirectoryRequest], operations_pb2.Operation
-    ]:
+    def delete_active_directory(self) -> Callable[[active_directory.DeleteActiveDirectoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[backup.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[backup.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_policy(
-        self,
-    ) -> Callable[[backup_policy.DeleteBackupPolicyRequest], operations_pb2.Operation]:
+    def delete_backup_policy(self) -> Callable[[backup_policy.DeleteBackupPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_vault(
-        self,
-    ) -> Callable[[backup_vault.DeleteBackupVaultRequest], operations_pb2.Operation]:
+    def delete_backup_vault(self) -> Callable[[backup_vault.DeleteBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_kms_config(
-        self,
-    ) -> Callable[[kms.DeleteKmsConfigRequest], operations_pb2.Operation]:
+    def delete_kms_config(self) -> Callable[[kms.DeleteKmsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_quota_rule(
-        self,
-    ) -> Callable[[quota_rule.DeleteQuotaRuleRequest], operations_pb2.Operation]:
+    def delete_quota_rule(self) -> Callable[[quota_rule.DeleteQuotaRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_replication(
-        self,
-    ) -> Callable[[replication.DeleteReplicationRequest], operations_pb2.Operation]:
+    def delete_replication(self) -> Callable[[replication.DeleteReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[[snapshot.DeleteSnapshotRequest], operations_pb2.Operation]:
+    def delete_snapshot(self) -> Callable[[snapshot.DeleteSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_storage_pool(
-        self,
-    ) -> Callable[[storage_pool.DeleteStoragePoolRequest], operations_pb2.Operation]:
+    def delete_storage_pool(self) -> Callable[[storage_pool.DeleteStoragePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteStoragePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_volume(
-        self,
-    ) -> Callable[[volume.DeleteVolumeRequest], operations_pb2.Operation]:
+    def delete_volume(self) -> Callable[[volume.DeleteVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def encrypt_volumes(
-        self,
-    ) -> Callable[[kms.EncryptVolumesRequest], operations_pb2.Operation]:
+    def encrypt_volumes(self) -> Callable[[kms.EncryptVolumesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EncryptVolumes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def establish_peering(
-        self,
-    ) -> Callable[[replication.EstablishPeeringRequest], operations_pb2.Operation]:
+    def establish_peering(self) -> Callable[[replication.EstablishPeeringRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EstablishPeering(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_active_directory(
-        self,
-    ) -> Callable[
-        [active_directory.GetActiveDirectoryRequest], active_directory.ActiveDirectory
-    ]:
+    def get_active_directory(self) -> Callable[[active_directory.GetActiveDirectoryRequest], active_directory.ActiveDirectory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
@@ -13152,17 +10497,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_policy(
-        self,
-    ) -> Callable[[backup_policy.GetBackupPolicyRequest], backup_policy.BackupPolicy]:
+    def get_backup_policy(self) -> Callable[[backup_policy.GetBackupPolicyRequest], backup_policy.BackupPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_vault(
-        self,
-    ) -> Callable[[backup_vault.GetBackupVaultRequest], backup_vault.BackupVault]:
+    def get_backup_vault(self) -> Callable[[backup_vault.GetBackupVaultRequest], backup_vault.BackupVault]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupVault(self._session, self._host, self._interceptor)  # type: ignore
@@ -13174,33 +10515,25 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._GetKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_quota_rule(
-        self,
-    ) -> Callable[[quota_rule.GetQuotaRuleRequest], quota_rule.QuotaRule]:
+    def get_quota_rule(self) -> Callable[[quota_rule.GetQuotaRuleRequest], quota_rule.QuotaRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_replication(
-        self,
-    ) -> Callable[[replication.GetReplicationRequest], replication.Replication]:
+    def get_replication(self) -> Callable[[replication.GetReplicationRequest], replication.Replication]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[[snapshot.GetSnapshotRequest], snapshot.Snapshot]:
+    def get_snapshot(self) -> Callable[[snapshot.GetSnapshotRequest], snapshot.Snapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_storage_pool(
-        self,
-    ) -> Callable[[storage_pool.GetStoragePoolRequest], storage_pool.StoragePool]:
+    def get_storage_pool(self) -> Callable[[storage_pool.GetStoragePoolRequest], storage_pool.StoragePool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStoragePool(self._session, self._host, self._interceptor)  # type: ignore
@@ -13212,253 +10545,169 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._GetVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_active_directories(
-        self,
-    ) -> Callable[
-        [active_directory.ListActiveDirectoriesRequest],
-        active_directory.ListActiveDirectoriesResponse,
-    ]:
+    def list_active_directories(self) -> Callable[[active_directory.ListActiveDirectoriesRequest], active_directory.ListActiveDirectoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListActiveDirectories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_policies(
-        self,
-    ) -> Callable[
-        [backup_policy.ListBackupPoliciesRequest],
-        backup_policy.ListBackupPoliciesResponse,
-    ]:
+    def list_backup_policies(self) -> Callable[[backup_policy.ListBackupPoliciesRequest], backup_policy.ListBackupPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[backup.ListBackupsRequest], backup.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[backup.ListBackupsRequest], backup.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_vaults(
-        self,
-    ) -> Callable[
-        [backup_vault.ListBackupVaultsRequest], backup_vault.ListBackupVaultsResponse
-    ]:
+    def list_backup_vaults(self) -> Callable[[backup_vault.ListBackupVaultsRequest], backup_vault.ListBackupVaultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_kms_configs(
-        self,
-    ) -> Callable[[kms.ListKmsConfigsRequest], kms.ListKmsConfigsResponse]:
+    def list_kms_configs(self) -> Callable[[kms.ListKmsConfigsRequest], kms.ListKmsConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListKmsConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_quota_rules(
-        self,
-    ) -> Callable[
-        [quota_rule.ListQuotaRulesRequest], quota_rule.ListQuotaRulesResponse
-    ]:
+    def list_quota_rules(self) -> Callable[[quota_rule.ListQuotaRulesRequest], quota_rule.ListQuotaRulesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQuotaRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_replications(
-        self,
-    ) -> Callable[
-        [replication.ListReplicationsRequest], replication.ListReplicationsResponse
-    ]:
+    def list_replications(self) -> Callable[[replication.ListReplicationsRequest], replication.ListReplicationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReplications(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_snapshots(
-        self,
-    ) -> Callable[[snapshot.ListSnapshotsRequest], snapshot.ListSnapshotsResponse]:
+    def list_snapshots(self) -> Callable[[snapshot.ListSnapshotsRequest], snapshot.ListSnapshotsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSnapshots(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_storage_pools(
-        self,
-    ) -> Callable[
-        [storage_pool.ListStoragePoolsRequest], storage_pool.ListStoragePoolsResponse
-    ]:
+    def list_storage_pools(self) -> Callable[[storage_pool.ListStoragePoolsRequest], storage_pool.ListStoragePoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListStoragePools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], volume.ListVolumesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_replication(
-        self,
-    ) -> Callable[[replication.ResumeReplicationRequest], operations_pb2.Operation]:
+    def resume_replication(self) -> Callable[[replication.ResumeReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reverse_replication_direction(
-        self,
-    ) -> Callable[
-        [replication.ReverseReplicationDirectionRequest], operations_pb2.Operation
-    ]:
+    def reverse_replication_direction(self) -> Callable[[replication.ReverseReplicationDirectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReverseReplicationDirection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def revert_volume(
-        self,
-    ) -> Callable[[volume.RevertVolumeRequest], operations_pb2.Operation]:
+    def revert_volume(self) -> Callable[[volume.RevertVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RevertVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_replication(
-        self,
-    ) -> Callable[[replication.StopReplicationRequest], operations_pb2.Operation]:
+    def stop_replication(self) -> Callable[[replication.StopReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def switch_active_replica_zone(
-        self,
-    ) -> Callable[
-        [storage_pool.SwitchActiveReplicaZoneRequest], operations_pb2.Operation
-    ]:
+    def switch_active_replica_zone(self) -> Callable[[storage_pool.SwitchActiveReplicaZoneRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SwitchActiveReplicaZone(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def sync_replication(
-        self,
-    ) -> Callable[[replication.SyncReplicationRequest], operations_pb2.Operation]:
+    def sync_replication(self) -> Callable[[replication.SyncReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SyncReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_active_directory(
-        self,
-    ) -> Callable[
-        [gcn_active_directory.UpdateActiveDirectoryRequest], operations_pb2.Operation
-    ]:
+    def update_active_directory(self) -> Callable[[gcn_active_directory.UpdateActiveDirectoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateActiveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[gcn_backup.UpdateBackupRequest], operations_pb2.Operation]:
+    def update_backup(self) -> Callable[[gcn_backup.UpdateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_policy(
-        self,
-    ) -> Callable[
-        [gcn_backup_policy.UpdateBackupPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_backup_policy(self) -> Callable[[gcn_backup_policy.UpdateBackupPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_vault(
-        self,
-    ) -> Callable[
-        [gcn_backup_vault.UpdateBackupVaultRequest], operations_pb2.Operation
-    ]:
+    def update_backup_vault(self) -> Callable[[gcn_backup_vault.UpdateBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_kms_config(
-        self,
-    ) -> Callable[[kms.UpdateKmsConfigRequest], operations_pb2.Operation]:
+    def update_kms_config(self) -> Callable[[kms.UpdateKmsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_quota_rule(
-        self,
-    ) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], operations_pb2.Operation]:
+    def update_quota_rule(self) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQuotaRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_replication(
-        self,
-    ) -> Callable[[gcn_replication.UpdateReplicationRequest], operations_pb2.Operation]:
+    def update_replication(self) -> Callable[[gcn_replication.UpdateReplicationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReplication(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_snapshot(
-        self,
-    ) -> Callable[[gcn_snapshot.UpdateSnapshotRequest], operations_pb2.Operation]:
+    def update_snapshot(self) -> Callable[[gcn_snapshot.UpdateSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_storage_pool(
-        self,
-    ) -> Callable[
-        [gcn_storage_pool.UpdateStoragePoolRequest], operations_pb2.Operation
-    ]:
+    def update_storage_pool(self) -> Callable[[gcn_storage_pool.UpdateStoragePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateStoragePool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[[gcn_volume.UpdateVolumeRequest], operations_pb2.Operation]:
+    def update_volume(self) -> Callable[[gcn_volume.UpdateVolumeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVolume(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def validate_directory_service(
-        self,
-    ) -> Callable[
-        [storage_pool.ValidateDirectoryServiceRequest], operations_pb2.Operation
-    ]:
+    def validate_directory_service(self) -> Callable[[storage_pool.ValidateDirectoryServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ValidateDirectoryService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def verify_kms_config(
-        self,
-    ) -> Callable[[kms.VerifyKmsConfigRequest], kms.VerifyKmsConfigResponse]:
+    def verify_kms_config(self) -> Callable[[kms.VerifyKmsConfigRequest], kms.VerifyKmsConfigResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._VerifyKmsConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -13472,15 +10721,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13521,25 +10762,13 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             http_options = _BaseNetAppRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13562,14 +10791,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -13580,9 +10802,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13612,15 +10832,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13658,30 +10870,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13705,12 +10903,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13722,9 +10915,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13749,22 +10940,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseNetAppRestTransport._BaseCancelOperation, NetAppRestStub
-    ):
+    class _CancelOperation(_BaseNetAppRestTransport._BaseCancelOperation, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13800,36 +10981,18 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseNetAppRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNetAppRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13853,13 +11016,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13873,22 +11030,12 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseNetAppRestTransport._BaseDeleteOperation, NetAppRestStub
-    ):
+    class _DeleteOperation(_BaseNetAppRestTransport._BaseDeleteOperation, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13923,32 +11070,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseNetAppRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13972,12 +11103,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13996,15 +11122,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14042,30 +11160,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14088,14 +11192,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
 
             # Send the request
-            response = NetAppRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NetAppRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -14106,9 +11203,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14138,15 +11233,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             return hash("NetAppRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14184,30 +11271,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNetAppRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNetAppRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseNetAppRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNetAppRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNetAppRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNetAppRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14231,12 +11304,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             # Send the request
             response = NetAppRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14248,9 +11316,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

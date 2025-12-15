@@ -22,9 +22,7 @@ from .grpc_asyncio import SampleQueryServiceGrpcAsyncIOTransport
 from .rest import SampleQueryServiceRestInterceptor, SampleQueryServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[SampleQueryServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[SampleQueryServiceTransport]]
 _transport_registry["grpc"] = SampleQueryServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = SampleQueryServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = SampleQueryServiceRestTransport

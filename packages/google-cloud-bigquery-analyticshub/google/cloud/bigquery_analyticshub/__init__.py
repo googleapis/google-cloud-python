@@ -18,12 +18,8 @@ from google.cloud.bigquery_analyticshub import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.async_client import (
-    AnalyticsHubServiceAsyncClient,
-)
-from google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.client import (
-    AnalyticsHubServiceClient,
-)
+from google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.async_client import AnalyticsHubServiceAsyncClient
+from google.cloud.bigquery_analyticshub_v1.services.analytics_hub_service.client import AnalyticsHubServiceClient
 from google.cloud.bigquery_analyticshub_v1.types.analyticshub import (
     ApproveQueryTemplateRequest,
     CreateDataExchangeRequest,

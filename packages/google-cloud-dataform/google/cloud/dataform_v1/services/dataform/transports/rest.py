@@ -495,13 +495,8 @@ class DataformRestInterceptor:
     """
 
     def pre_cancel_workflow_invocation(
-        self,
-        request: dataform.CancelWorkflowInvocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CancelWorkflowInvocationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.CancelWorkflowInvocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CancelWorkflowInvocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_workflow_invocation
 
         Override in a subclass to manipulate the request or metadata
@@ -509,9 +504,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_workflow_invocation(
-        self, response: dataform.CancelWorkflowInvocationResponse
-    ) -> dataform.CancelWorkflowInvocationResponse:
+    def post_cancel_workflow_invocation(self, response: dataform.CancelWorkflowInvocationResponse) -> dataform.CancelWorkflowInvocationResponse:
         """Post-rpc interceptor for cancel_workflow_invocation
 
         DEPRECATED. Please use the `post_cancel_workflow_invocation_with_metadata`
@@ -525,13 +518,8 @@ class DataformRestInterceptor:
         return response
 
     def post_cancel_workflow_invocation_with_metadata(
-        self,
-        response: dataform.CancelWorkflowInvocationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CancelWorkflowInvocationResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.CancelWorkflowInvocationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CancelWorkflowInvocationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_workflow_invocation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -547,12 +535,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_commit_repository_changes(
-        self,
-        request: dataform.CommitRepositoryChangesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CommitRepositoryChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CommitRepositoryChangesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CommitRepositoryChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for commit_repository_changes
 
         Override in a subclass to manipulate the request or metadata
@@ -560,9 +544,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_commit_repository_changes(
-        self, response: dataform.CommitRepositoryChangesResponse
-    ) -> dataform.CommitRepositoryChangesResponse:
+    def post_commit_repository_changes(self, response: dataform.CommitRepositoryChangesResponse) -> dataform.CommitRepositoryChangesResponse:
         """Post-rpc interceptor for commit_repository_changes
 
         DEPRECATED. Please use the `post_commit_repository_changes_with_metadata`
@@ -576,13 +558,8 @@ class DataformRestInterceptor:
         return response
 
     def post_commit_repository_changes_with_metadata(
-        self,
-        response: dataform.CommitRepositoryChangesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CommitRepositoryChangesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.CommitRepositoryChangesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CommitRepositoryChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for commit_repository_changes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -598,12 +575,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_commit_workspace_changes(
-        self,
-        request: dataform.CommitWorkspaceChangesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CommitWorkspaceChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CommitWorkspaceChangesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CommitWorkspaceChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for commit_workspace_changes
 
         Override in a subclass to manipulate the request or metadata
@@ -611,9 +584,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_commit_workspace_changes(
-        self, response: dataform.CommitWorkspaceChangesResponse
-    ) -> dataform.CommitWorkspaceChangesResponse:
+    def post_commit_workspace_changes(self, response: dataform.CommitWorkspaceChangesResponse) -> dataform.CommitWorkspaceChangesResponse:
         """Post-rpc interceptor for commit_workspace_changes
 
         DEPRECATED. Please use the `post_commit_workspace_changes_with_metadata`
@@ -627,12 +598,8 @@ class DataformRestInterceptor:
         return response
 
     def post_commit_workspace_changes_with_metadata(
-        self,
-        response: dataform.CommitWorkspaceChangesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CommitWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.CommitWorkspaceChangesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CommitWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for commit_workspace_changes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -648,13 +615,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_compute_repository_access_token_status(
-        self,
-        request: dataform.ComputeRepositoryAccessTokenStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ComputeRepositoryAccessTokenStatusRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.ComputeRepositoryAccessTokenStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ComputeRepositoryAccessTokenStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_repository_access_token_status
 
         Override in a subclass to manipulate the request or metadata
@@ -678,13 +640,8 @@ class DataformRestInterceptor:
         return response
 
     def post_compute_repository_access_token_status_with_metadata(
-        self,
-        response: dataform.ComputeRepositoryAccessTokenStatusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ComputeRepositoryAccessTokenStatusResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.ComputeRepositoryAccessTokenStatusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ComputeRepositoryAccessTokenStatusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_repository_access_token_status
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -700,12 +657,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_compilation_result(
-        self,
-        request: dataform.CreateCompilationResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateCompilationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CreateCompilationResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateCompilationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_compilation_result
 
         Override in a subclass to manipulate the request or metadata
@@ -713,9 +666,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_compilation_result(
-        self, response: dataform.CompilationResult
-    ) -> dataform.CompilationResult:
+    def post_create_compilation_result(self, response: dataform.CompilationResult) -> dataform.CompilationResult:
         """Post-rpc interceptor for create_compilation_result
 
         DEPRECATED. Please use the `post_create_compilation_result_with_metadata`
@@ -729,9 +680,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_compilation_result_with_metadata(
-        self,
-        response: dataform.CompilationResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.CompilationResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.CompilationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_compilation_result
 
@@ -748,12 +697,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_release_config(
-        self,
-        request: dataform.CreateReleaseConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CreateReleaseConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_release_config
 
         Override in a subclass to manipulate the request or metadata
@@ -761,9 +706,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_release_config(
-        self, response: dataform.ReleaseConfig
-    ) -> dataform.ReleaseConfig:
+    def post_create_release_config(self, response: dataform.ReleaseConfig) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for create_release_config
 
         DEPRECATED. Please use the `post_create_release_config_with_metadata`
@@ -777,9 +720,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_release_config_with_metadata(
-        self,
-        response: dataform.ReleaseConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.ReleaseConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_release_config
 
@@ -796,12 +737,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_repository(
-        self,
-        request: dataform.CreateRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CreateRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -809,9 +746,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_repository(
-        self, response: dataform.Repository
-    ) -> dataform.Repository:
+    def post_create_repository(self, response: dataform.Repository) -> dataform.Repository:
         """Post-rpc interceptor for create_repository
 
         DEPRECATED. Please use the `post_create_repository_with_metadata`
@@ -825,9 +760,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_repository_with_metadata(
-        self,
-        response: dataform.Repository,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Repository, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_repository
 
@@ -844,12 +777,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_workflow_config(
-        self,
-        request: dataform.CreateWorkflowConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CreateWorkflowConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_workflow_config
 
         Override in a subclass to manipulate the request or metadata
@@ -857,9 +786,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_workflow_config(
-        self, response: dataform.WorkflowConfig
-    ) -> dataform.WorkflowConfig:
+    def post_create_workflow_config(self, response: dataform.WorkflowConfig) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for create_workflow_config
 
         DEPRECATED. Please use the `post_create_workflow_config_with_metadata`
@@ -873,9 +800,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_workflow_config_with_metadata(
-        self,
-        response: dataform.WorkflowConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WorkflowConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_workflow_config
 
@@ -892,13 +817,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_workflow_invocation(
-        self,
-        request: dataform.CreateWorkflowInvocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateWorkflowInvocationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.CreateWorkflowInvocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateWorkflowInvocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_workflow_invocation
 
         Override in a subclass to manipulate the request or metadata
@@ -906,9 +826,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_create_workflow_invocation(
-        self, response: dataform.WorkflowInvocation
-    ) -> dataform.WorkflowInvocation:
+    def post_create_workflow_invocation(self, response: dataform.WorkflowInvocation) -> dataform.WorkflowInvocation:
         """Post-rpc interceptor for create_workflow_invocation
 
         DEPRECATED. Please use the `post_create_workflow_invocation_with_metadata`
@@ -922,9 +840,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_workflow_invocation_with_metadata(
-        self,
-        response: dataform.WorkflowInvocation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WorkflowInvocation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WorkflowInvocation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_workflow_invocation
 
@@ -941,12 +857,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_create_workspace(
-        self,
-        request: dataform.CreateWorkspaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.CreateWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.CreateWorkspaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.CreateWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_workspace
 
         Override in a subclass to manipulate the request or metadata
@@ -968,9 +880,7 @@ class DataformRestInterceptor:
         return response
 
     def post_create_workspace_with_metadata(
-        self,
-        response: dataform.Workspace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Workspace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_workspace
 
@@ -987,12 +897,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_delete_release_config(
-        self,
-        request: dataform.DeleteReleaseConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.DeleteReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.DeleteReleaseConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.DeleteReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_release_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1001,12 +907,8 @@ class DataformRestInterceptor:
         return request, metadata
 
     def pre_delete_repository(
-        self,
-        request: dataform.DeleteRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.DeleteRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.DeleteRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.DeleteRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -1015,12 +917,8 @@ class DataformRestInterceptor:
         return request, metadata
 
     def pre_delete_workflow_config(
-        self,
-        request: dataform.DeleteWorkflowConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.DeleteWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.DeleteWorkflowConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.DeleteWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_workflow_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1029,13 +927,8 @@ class DataformRestInterceptor:
         return request, metadata
 
     def pre_delete_workflow_invocation(
-        self,
-        request: dataform.DeleteWorkflowInvocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.DeleteWorkflowInvocationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.DeleteWorkflowInvocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.DeleteWorkflowInvocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_workflow_invocation
 
         Override in a subclass to manipulate the request or metadata
@@ -1044,12 +937,8 @@ class DataformRestInterceptor:
         return request, metadata
 
     def pre_delete_workspace(
-        self,
-        request: dataform.DeleteWorkspaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.DeleteWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.DeleteWorkspaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.DeleteWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_workspace
 
         Override in a subclass to manipulate the request or metadata
@@ -1058,9 +947,7 @@ class DataformRestInterceptor:
         return request, metadata
 
     def pre_fetch_file_diff(
-        self,
-        request: dataform.FetchFileDiffRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.FetchFileDiffRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.FetchFileDiffRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_file_diff
 
@@ -1069,9 +956,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_file_diff(
-        self, response: dataform.FetchFileDiffResponse
-    ) -> dataform.FetchFileDiffResponse:
+    def post_fetch_file_diff(self, response: dataform.FetchFileDiffResponse) -> dataform.FetchFileDiffResponse:
         """Post-rpc interceptor for fetch_file_diff
 
         DEPRECATED. Please use the `post_fetch_file_diff_with_metadata`
@@ -1085,9 +970,7 @@ class DataformRestInterceptor:
         return response
 
     def post_fetch_file_diff_with_metadata(
-        self,
-        response: dataform.FetchFileDiffResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.FetchFileDiffResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.FetchFileDiffResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_file_diff
 
@@ -1104,12 +987,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_fetch_file_git_statuses(
-        self,
-        request: dataform.FetchFileGitStatusesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchFileGitStatusesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.FetchFileGitStatusesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchFileGitStatusesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_file_git_statuses
 
         Override in a subclass to manipulate the request or metadata
@@ -1117,9 +996,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_file_git_statuses(
-        self, response: dataform.FetchFileGitStatusesResponse
-    ) -> dataform.FetchFileGitStatusesResponse:
+    def post_fetch_file_git_statuses(self, response: dataform.FetchFileGitStatusesResponse) -> dataform.FetchFileGitStatusesResponse:
         """Post-rpc interceptor for fetch_file_git_statuses
 
         DEPRECATED. Please use the `post_fetch_file_git_statuses_with_metadata`
@@ -1133,12 +1010,8 @@ class DataformRestInterceptor:
         return response
 
     def post_fetch_file_git_statuses_with_metadata(
-        self,
-        response: dataform.FetchFileGitStatusesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchFileGitStatusesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.FetchFileGitStatusesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchFileGitStatusesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_file_git_statuses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1154,12 +1027,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_fetch_git_ahead_behind(
-        self,
-        request: dataform.FetchGitAheadBehindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchGitAheadBehindRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.FetchGitAheadBehindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchGitAheadBehindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_git_ahead_behind
 
         Override in a subclass to manipulate the request or metadata
@@ -1167,9 +1036,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_git_ahead_behind(
-        self, response: dataform.FetchGitAheadBehindResponse
-    ) -> dataform.FetchGitAheadBehindResponse:
+    def post_fetch_git_ahead_behind(self, response: dataform.FetchGitAheadBehindResponse) -> dataform.FetchGitAheadBehindResponse:
         """Post-rpc interceptor for fetch_git_ahead_behind
 
         DEPRECATED. Please use the `post_fetch_git_ahead_behind_with_metadata`
@@ -1183,12 +1050,8 @@ class DataformRestInterceptor:
         return response
 
     def post_fetch_git_ahead_behind_with_metadata(
-        self,
-        response: dataform.FetchGitAheadBehindResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchGitAheadBehindResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.FetchGitAheadBehindResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchGitAheadBehindResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_git_ahead_behind
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1204,12 +1067,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_fetch_remote_branches(
-        self,
-        request: dataform.FetchRemoteBranchesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchRemoteBranchesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.FetchRemoteBranchesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchRemoteBranchesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_remote_branches
 
         Override in a subclass to manipulate the request or metadata
@@ -1217,9 +1076,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_remote_branches(
-        self, response: dataform.FetchRemoteBranchesResponse
-    ) -> dataform.FetchRemoteBranchesResponse:
+    def post_fetch_remote_branches(self, response: dataform.FetchRemoteBranchesResponse) -> dataform.FetchRemoteBranchesResponse:
         """Post-rpc interceptor for fetch_remote_branches
 
         DEPRECATED. Please use the `post_fetch_remote_branches_with_metadata`
@@ -1233,12 +1090,8 @@ class DataformRestInterceptor:
         return response
 
     def post_fetch_remote_branches_with_metadata(
-        self,
-        response: dataform.FetchRemoteBranchesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchRemoteBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.FetchRemoteBranchesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchRemoteBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_remote_branches
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1254,12 +1107,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_fetch_repository_history(
-        self,
-        request: dataform.FetchRepositoryHistoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchRepositoryHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.FetchRepositoryHistoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchRepositoryHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_repository_history
 
         Override in a subclass to manipulate the request or metadata
@@ -1267,9 +1116,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_repository_history(
-        self, response: dataform.FetchRepositoryHistoryResponse
-    ) -> dataform.FetchRepositoryHistoryResponse:
+    def post_fetch_repository_history(self, response: dataform.FetchRepositoryHistoryResponse) -> dataform.FetchRepositoryHistoryResponse:
         """Post-rpc interceptor for fetch_repository_history
 
         DEPRECATED. Please use the `post_fetch_repository_history_with_metadata`
@@ -1283,12 +1130,8 @@ class DataformRestInterceptor:
         return response
 
     def post_fetch_repository_history_with_metadata(
-        self,
-        response: dataform.FetchRepositoryHistoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.FetchRepositoryHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.FetchRepositoryHistoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.FetchRepositoryHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_repository_history
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1304,12 +1147,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_compilation_result(
-        self,
-        request: dataform.GetCompilationResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.GetCompilationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.GetCompilationResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.GetCompilationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_compilation_result
 
         Override in a subclass to manipulate the request or metadata
@@ -1317,9 +1156,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_compilation_result(
-        self, response: dataform.CompilationResult
-    ) -> dataform.CompilationResult:
+    def post_get_compilation_result(self, response: dataform.CompilationResult) -> dataform.CompilationResult:
         """Post-rpc interceptor for get_compilation_result
 
         DEPRECATED. Please use the `post_get_compilation_result_with_metadata`
@@ -1333,9 +1170,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_compilation_result_with_metadata(
-        self,
-        response: dataform.CompilationResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.CompilationResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.CompilationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_compilation_result
 
@@ -1352,9 +1187,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_config(
-        self,
-        request: dataform.GetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.GetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_config
 
@@ -1377,9 +1210,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_config_with_metadata(
-        self,
-        response: dataform.Config,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Config, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_config
 
@@ -1396,12 +1227,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_release_config(
-        self,
-        request: dataform.GetReleaseConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.GetReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.GetReleaseConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.GetReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_release_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1409,9 +1236,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_release_config(
-        self, response: dataform.ReleaseConfig
-    ) -> dataform.ReleaseConfig:
+    def post_get_release_config(self, response: dataform.ReleaseConfig) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for get_release_config
 
         DEPRECATED. Please use the `post_get_release_config_with_metadata`
@@ -1425,9 +1250,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_release_config_with_metadata(
-        self,
-        response: dataform.ReleaseConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.ReleaseConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_release_config
 
@@ -1444,9 +1267,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_repository(
-        self,
-        request: dataform.GetRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.GetRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.GetRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_repository
 
@@ -1469,9 +1290,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_repository_with_metadata(
-        self,
-        response: dataform.Repository,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Repository, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_repository
 
@@ -1488,12 +1307,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_workflow_config(
-        self,
-        request: dataform.GetWorkflowConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.GetWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.GetWorkflowConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.GetWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workflow_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1501,9 +1316,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_workflow_config(
-        self, response: dataform.WorkflowConfig
-    ) -> dataform.WorkflowConfig:
+    def post_get_workflow_config(self, response: dataform.WorkflowConfig) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for get_workflow_config
 
         DEPRECATED. Please use the `post_get_workflow_config_with_metadata`
@@ -1517,9 +1330,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_workflow_config_with_metadata(
-        self,
-        response: dataform.WorkflowConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WorkflowConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workflow_config
 
@@ -1536,12 +1347,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_workflow_invocation(
-        self,
-        request: dataform.GetWorkflowInvocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.GetWorkflowInvocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.GetWorkflowInvocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.GetWorkflowInvocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workflow_invocation
 
         Override in a subclass to manipulate the request or metadata
@@ -1549,9 +1356,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_workflow_invocation(
-        self, response: dataform.WorkflowInvocation
-    ) -> dataform.WorkflowInvocation:
+    def post_get_workflow_invocation(self, response: dataform.WorkflowInvocation) -> dataform.WorkflowInvocation:
         """Post-rpc interceptor for get_workflow_invocation
 
         DEPRECATED. Please use the `post_get_workflow_invocation_with_metadata`
@@ -1565,9 +1370,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_workflow_invocation_with_metadata(
-        self,
-        response: dataform.WorkflowInvocation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WorkflowInvocation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WorkflowInvocation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workflow_invocation
 
@@ -1584,9 +1387,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_workspace(
-        self,
-        request: dataform.GetWorkspaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.GetWorkspaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.GetWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workspace
 
@@ -1609,9 +1410,7 @@ class DataformRestInterceptor:
         return response
 
     def post_get_workspace_with_metadata(
-        self,
-        response: dataform.Workspace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Workspace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workspace
 
@@ -1628,12 +1427,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_install_npm_packages(
-        self,
-        request: dataform.InstallNpmPackagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.InstallNpmPackagesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.InstallNpmPackagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.InstallNpmPackagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for install_npm_packages
 
         Override in a subclass to manipulate the request or metadata
@@ -1641,9 +1436,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_install_npm_packages(
-        self, response: dataform.InstallNpmPackagesResponse
-    ) -> dataform.InstallNpmPackagesResponse:
+    def post_install_npm_packages(self, response: dataform.InstallNpmPackagesResponse) -> dataform.InstallNpmPackagesResponse:
         """Post-rpc interceptor for install_npm_packages
 
         DEPRECATED. Please use the `post_install_npm_packages_with_metadata`
@@ -1657,12 +1450,8 @@ class DataformRestInterceptor:
         return response
 
     def post_install_npm_packages_with_metadata(
-        self,
-        response: dataform.InstallNpmPackagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.InstallNpmPackagesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.InstallNpmPackagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.InstallNpmPackagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for install_npm_packages
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1678,12 +1467,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_compilation_results(
-        self,
-        request: dataform.ListCompilationResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListCompilationResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ListCompilationResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListCompilationResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_compilation_results
 
         Override in a subclass to manipulate the request or metadata
@@ -1691,9 +1476,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_compilation_results(
-        self, response: dataform.ListCompilationResultsResponse
-    ) -> dataform.ListCompilationResultsResponse:
+    def post_list_compilation_results(self, response: dataform.ListCompilationResultsResponse) -> dataform.ListCompilationResultsResponse:
         """Post-rpc interceptor for list_compilation_results
 
         DEPRECATED. Please use the `post_list_compilation_results_with_metadata`
@@ -1707,12 +1490,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_compilation_results_with_metadata(
-        self,
-        response: dataform.ListCompilationResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListCompilationResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ListCompilationResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListCompilationResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_compilation_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1728,12 +1507,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_release_configs(
-        self,
-        request: dataform.ListReleaseConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListReleaseConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ListReleaseConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListReleaseConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_release_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1741,9 +1516,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_release_configs(
-        self, response: dataform.ListReleaseConfigsResponse
-    ) -> dataform.ListReleaseConfigsResponse:
+    def post_list_release_configs(self, response: dataform.ListReleaseConfigsResponse) -> dataform.ListReleaseConfigsResponse:
         """Post-rpc interceptor for list_release_configs
 
         DEPRECATED. Please use the `post_list_release_configs_with_metadata`
@@ -1757,12 +1530,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_release_configs_with_metadata(
-        self,
-        response: dataform.ListReleaseConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListReleaseConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ListReleaseConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListReleaseConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_release_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1778,12 +1547,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_repositories(
-        self,
-        request: dataform.ListRepositoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ListRepositoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListRepositoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_repositories
 
         Override in a subclass to manipulate the request or metadata
@@ -1791,9 +1556,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_repositories(
-        self, response: dataform.ListRepositoriesResponse
-    ) -> dataform.ListRepositoriesResponse:
+    def post_list_repositories(self, response: dataform.ListRepositoriesResponse) -> dataform.ListRepositoriesResponse:
         """Post-rpc interceptor for list_repositories
 
         DEPRECATED. Please use the `post_list_repositories_with_metadata`
@@ -1807,12 +1570,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_repositories_with_metadata(
-        self,
-        response: dataform.ListRepositoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ListRepositoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListRepositoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_repositories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1828,12 +1587,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_workflow_configs(
-        self,
-        request: dataform.ListWorkflowConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListWorkflowConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ListWorkflowConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListWorkflowConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workflow_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1841,9 +1596,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_workflow_configs(
-        self, response: dataform.ListWorkflowConfigsResponse
-    ) -> dataform.ListWorkflowConfigsResponse:
+    def post_list_workflow_configs(self, response: dataform.ListWorkflowConfigsResponse) -> dataform.ListWorkflowConfigsResponse:
         """Post-rpc interceptor for list_workflow_configs
 
         DEPRECATED. Please use the `post_list_workflow_configs_with_metadata`
@@ -1857,12 +1610,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_workflow_configs_with_metadata(
-        self,
-        response: dataform.ListWorkflowConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListWorkflowConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ListWorkflowConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListWorkflowConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workflow_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1878,12 +1627,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_workflow_invocations(
-        self,
-        request: dataform.ListWorkflowInvocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListWorkflowInvocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ListWorkflowInvocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListWorkflowInvocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workflow_invocations
 
         Override in a subclass to manipulate the request or metadata
@@ -1891,9 +1636,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_workflow_invocations(
-        self, response: dataform.ListWorkflowInvocationsResponse
-    ) -> dataform.ListWorkflowInvocationsResponse:
+    def post_list_workflow_invocations(self, response: dataform.ListWorkflowInvocationsResponse) -> dataform.ListWorkflowInvocationsResponse:
         """Post-rpc interceptor for list_workflow_invocations
 
         DEPRECATED. Please use the `post_list_workflow_invocations_with_metadata`
@@ -1907,13 +1650,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_workflow_invocations_with_metadata(
-        self,
-        response: dataform.ListWorkflowInvocationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListWorkflowInvocationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.ListWorkflowInvocationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListWorkflowInvocationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workflow_invocations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1929,9 +1667,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_list_workspaces(
-        self,
-        request: dataform.ListWorkspacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.ListWorkspacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ListWorkspacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workspaces
 
@@ -1940,9 +1676,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_workspaces(
-        self, response: dataform.ListWorkspacesResponse
-    ) -> dataform.ListWorkspacesResponse:
+    def post_list_workspaces(self, response: dataform.ListWorkspacesResponse) -> dataform.ListWorkspacesResponse:
         """Post-rpc interceptor for list_workspaces
 
         DEPRECATED. Please use the `post_list_workspaces_with_metadata`
@@ -1956,12 +1690,8 @@ class DataformRestInterceptor:
         return response
 
     def post_list_workspaces_with_metadata(
-        self,
-        response: dataform.ListWorkspacesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ListWorkspacesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ListWorkspacesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ListWorkspacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workspaces
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1977,9 +1707,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_make_directory(
-        self,
-        request: dataform.MakeDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.MakeDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MakeDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for make_directory
 
@@ -1988,9 +1716,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_make_directory(
-        self, response: dataform.MakeDirectoryResponse
-    ) -> dataform.MakeDirectoryResponse:
+    def post_make_directory(self, response: dataform.MakeDirectoryResponse) -> dataform.MakeDirectoryResponse:
         """Post-rpc interceptor for make_directory
 
         DEPRECATED. Please use the `post_make_directory_with_metadata`
@@ -2004,9 +1730,7 @@ class DataformRestInterceptor:
         return response
 
     def post_make_directory_with_metadata(
-        self,
-        response: dataform.MakeDirectoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.MakeDirectoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MakeDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for make_directory
 
@@ -2023,9 +1747,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_move_directory(
-        self,
-        request: dataform.MoveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.MoveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MoveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_directory
 
@@ -2034,9 +1756,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_move_directory(
-        self, response: dataform.MoveDirectoryResponse
-    ) -> dataform.MoveDirectoryResponse:
+    def post_move_directory(self, response: dataform.MoveDirectoryResponse) -> dataform.MoveDirectoryResponse:
         """Post-rpc interceptor for move_directory
 
         DEPRECATED. Please use the `post_move_directory_with_metadata`
@@ -2050,9 +1770,7 @@ class DataformRestInterceptor:
         return response
 
     def post_move_directory_with_metadata(
-        self,
-        response: dataform.MoveDirectoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.MoveDirectoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MoveDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_directory
 
@@ -2069,9 +1787,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_move_file(
-        self,
-        request: dataform.MoveFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.MoveFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MoveFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_file
 
@@ -2080,9 +1796,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_move_file(
-        self, response: dataform.MoveFileResponse
-    ) -> dataform.MoveFileResponse:
+    def post_move_file(self, response: dataform.MoveFileResponse) -> dataform.MoveFileResponse:
         """Post-rpc interceptor for move_file
 
         DEPRECATED. Please use the `post_move_file_with_metadata`
@@ -2096,9 +1810,7 @@ class DataformRestInterceptor:
         return response
 
     def post_move_file_with_metadata(
-        self,
-        response: dataform.MoveFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.MoveFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.MoveFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_file
 
@@ -2115,9 +1827,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_pull_git_commits(
-        self,
-        request: dataform.PullGitCommitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.PullGitCommitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.PullGitCommitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pull_git_commits
 
@@ -2126,9 +1836,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_pull_git_commits(
-        self, response: dataform.PullGitCommitsResponse
-    ) -> dataform.PullGitCommitsResponse:
+    def post_pull_git_commits(self, response: dataform.PullGitCommitsResponse) -> dataform.PullGitCommitsResponse:
         """Post-rpc interceptor for pull_git_commits
 
         DEPRECATED. Please use the `post_pull_git_commits_with_metadata`
@@ -2142,12 +1850,8 @@ class DataformRestInterceptor:
         return response
 
     def post_pull_git_commits_with_metadata(
-        self,
-        response: dataform.PullGitCommitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.PullGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.PullGitCommitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.PullGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for pull_git_commits
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2163,9 +1867,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_push_git_commits(
-        self,
-        request: dataform.PushGitCommitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.PushGitCommitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.PushGitCommitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for push_git_commits
 
@@ -2174,9 +1876,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_push_git_commits(
-        self, response: dataform.PushGitCommitsResponse
-    ) -> dataform.PushGitCommitsResponse:
+    def post_push_git_commits(self, response: dataform.PushGitCommitsResponse) -> dataform.PushGitCommitsResponse:
         """Post-rpc interceptor for push_git_commits
 
         DEPRECATED. Please use the `post_push_git_commits_with_metadata`
@@ -2190,12 +1890,8 @@ class DataformRestInterceptor:
         return response
 
     def post_push_git_commits_with_metadata(
-        self,
-        response: dataform.PushGitCommitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.PushGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.PushGitCommitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.PushGitCommitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for push_git_commits
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2211,13 +1907,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_query_compilation_result_actions(
-        self,
-        request: dataform.QueryCompilationResultActionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryCompilationResultActionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.QueryCompilationResultActionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryCompilationResultActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_compilation_result_actions
 
         Override in a subclass to manipulate the request or metadata
@@ -2241,13 +1932,8 @@ class DataformRestInterceptor:
         return response
 
     def post_query_compilation_result_actions_with_metadata(
-        self,
-        response: dataform.QueryCompilationResultActionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryCompilationResultActionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.QueryCompilationResultActionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryCompilationResultActionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_compilation_result_actions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2263,12 +1949,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_query_directory_contents(
-        self,
-        request: dataform.QueryDirectoryContentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryDirectoryContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.QueryDirectoryContentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryDirectoryContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_directory_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -2276,9 +1958,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_query_directory_contents(
-        self, response: dataform.QueryDirectoryContentsResponse
-    ) -> dataform.QueryDirectoryContentsResponse:
+    def post_query_directory_contents(self, response: dataform.QueryDirectoryContentsResponse) -> dataform.QueryDirectoryContentsResponse:
         """Post-rpc interceptor for query_directory_contents
 
         DEPRECATED. Please use the `post_query_directory_contents_with_metadata`
@@ -2292,12 +1972,8 @@ class DataformRestInterceptor:
         return response
 
     def post_query_directory_contents_with_metadata(
-        self,
-        response: dataform.QueryDirectoryContentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryDirectoryContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.QueryDirectoryContentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryDirectoryContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_directory_contents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2313,13 +1989,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_query_repository_directory_contents(
-        self,
-        request: dataform.QueryRepositoryDirectoryContentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryRepositoryDirectoryContentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.QueryRepositoryDirectoryContentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryRepositoryDirectoryContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_repository_directory_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -2343,13 +2014,8 @@ class DataformRestInterceptor:
         return response
 
     def post_query_repository_directory_contents_with_metadata(
-        self,
-        response: dataform.QueryRepositoryDirectoryContentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryRepositoryDirectoryContentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.QueryRepositoryDirectoryContentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryRepositoryDirectoryContentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_repository_directory_contents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2365,13 +2031,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_query_workflow_invocation_actions(
-        self,
-        request: dataform.QueryWorkflowInvocationActionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryWorkflowInvocationActionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dataform.QueryWorkflowInvocationActionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryWorkflowInvocationActionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_workflow_invocation_actions
 
         Override in a subclass to manipulate the request or metadata
@@ -2395,13 +2056,8 @@ class DataformRestInterceptor:
         return response
 
     def post_query_workflow_invocation_actions_with_metadata(
-        self,
-        response: dataform.QueryWorkflowInvocationActionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.QueryWorkflowInvocationActionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dataform.QueryWorkflowInvocationActionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.QueryWorkflowInvocationActionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_workflow_invocation_actions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2417,9 +2073,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_read_file(
-        self,
-        request: dataform.ReadFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.ReadFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ReadFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for read_file
 
@@ -2428,9 +2082,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_read_file(
-        self, response: dataform.ReadFileResponse
-    ) -> dataform.ReadFileResponse:
+    def post_read_file(self, response: dataform.ReadFileResponse) -> dataform.ReadFileResponse:
         """Post-rpc interceptor for read_file
 
         DEPRECATED. Please use the `post_read_file_with_metadata`
@@ -2444,9 +2096,7 @@ class DataformRestInterceptor:
         return response
 
     def post_read_file_with_metadata(
-        self,
-        response: dataform.ReadFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.ReadFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ReadFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for read_file
 
@@ -2463,12 +2113,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_read_repository_file(
-        self,
-        request: dataform.ReadRepositoryFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ReadRepositoryFileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ReadRepositoryFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ReadRepositoryFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for read_repository_file
 
         Override in a subclass to manipulate the request or metadata
@@ -2476,9 +2122,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_read_repository_file(
-        self, response: dataform.ReadRepositoryFileResponse
-    ) -> dataform.ReadRepositoryFileResponse:
+    def post_read_repository_file(self, response: dataform.ReadRepositoryFileResponse) -> dataform.ReadRepositoryFileResponse:
         """Post-rpc interceptor for read_repository_file
 
         DEPRECATED. Please use the `post_read_repository_file_with_metadata`
@@ -2492,12 +2136,8 @@ class DataformRestInterceptor:
         return response
 
     def post_read_repository_file_with_metadata(
-        self,
-        response: dataform.ReadRepositoryFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ReadRepositoryFileResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ReadRepositoryFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ReadRepositoryFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for read_repository_file
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2513,12 +2153,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_remove_directory(
-        self,
-        request: dataform.RemoveDirectoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.RemoveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.RemoveDirectoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.RemoveDirectoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_directory
 
         Override in a subclass to manipulate the request or metadata
@@ -2526,9 +2162,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_directory(
-        self, response: dataform.RemoveDirectoryResponse
-    ) -> dataform.RemoveDirectoryResponse:
+    def post_remove_directory(self, response: dataform.RemoveDirectoryResponse) -> dataform.RemoveDirectoryResponse:
         """Post-rpc interceptor for remove_directory
 
         DEPRECATED. Please use the `post_remove_directory_with_metadata`
@@ -2542,12 +2176,8 @@ class DataformRestInterceptor:
         return response
 
     def post_remove_directory_with_metadata(
-        self,
-        response: dataform.RemoveDirectoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.RemoveDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.RemoveDirectoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.RemoveDirectoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_directory
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2563,9 +2193,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_remove_file(
-        self,
-        request: dataform.RemoveFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.RemoveFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.RemoveFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_file
 
@@ -2574,9 +2202,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_file(
-        self, response: dataform.RemoveFileResponse
-    ) -> dataform.RemoveFileResponse:
+    def post_remove_file(self, response: dataform.RemoveFileResponse) -> dataform.RemoveFileResponse:
         """Post-rpc interceptor for remove_file
 
         DEPRECATED. Please use the `post_remove_file_with_metadata`
@@ -2590,9 +2216,7 @@ class DataformRestInterceptor:
         return response
 
     def post_remove_file_with_metadata(
-        self,
-        response: dataform.RemoveFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.RemoveFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.RemoveFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_file
 
@@ -2609,12 +2233,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_reset_workspace_changes(
-        self,
-        request: dataform.ResetWorkspaceChangesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ResetWorkspaceChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.ResetWorkspaceChangesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ResetWorkspaceChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_workspace_changes
 
         Override in a subclass to manipulate the request or metadata
@@ -2622,9 +2242,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_workspace_changes(
-        self, response: dataform.ResetWorkspaceChangesResponse
-    ) -> dataform.ResetWorkspaceChangesResponse:
+    def post_reset_workspace_changes(self, response: dataform.ResetWorkspaceChangesResponse) -> dataform.ResetWorkspaceChangesResponse:
         """Post-rpc interceptor for reset_workspace_changes
 
         DEPRECATED. Please use the `post_reset_workspace_changes_with_metadata`
@@ -2638,12 +2256,8 @@ class DataformRestInterceptor:
         return response
 
     def post_reset_workspace_changes_with_metadata(
-        self,
-        response: dataform.ResetWorkspaceChangesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.ResetWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dataform.ResetWorkspaceChangesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.ResetWorkspaceChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_workspace_changes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2659,9 +2273,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_search_files(
-        self,
-        request: dataform.SearchFilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.SearchFilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.SearchFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_files
 
@@ -2670,9 +2282,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_search_files(
-        self, response: dataform.SearchFilesResponse
-    ) -> dataform.SearchFilesResponse:
+    def post_search_files(self, response: dataform.SearchFilesResponse) -> dataform.SearchFilesResponse:
         """Post-rpc interceptor for search_files
 
         DEPRECATED. Please use the `post_search_files_with_metadata`
@@ -2686,9 +2296,7 @@ class DataformRestInterceptor:
         return response
 
     def post_search_files_with_metadata(
-        self,
-        response: dataform.SearchFilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.SearchFilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.SearchFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_files
 
@@ -2705,9 +2313,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_update_config(
-        self,
-        request: dataform.UpdateConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.UpdateConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.UpdateConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_config
 
@@ -2730,9 +2336,7 @@ class DataformRestInterceptor:
         return response
 
     def post_update_config_with_metadata(
-        self,
-        response: dataform.Config,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Config, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_config
 
@@ -2749,12 +2353,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_update_release_config(
-        self,
-        request: dataform.UpdateReleaseConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.UpdateReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.UpdateReleaseConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.UpdateReleaseConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_release_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2762,9 +2362,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_release_config(
-        self, response: dataform.ReleaseConfig
-    ) -> dataform.ReleaseConfig:
+    def post_update_release_config(self, response: dataform.ReleaseConfig) -> dataform.ReleaseConfig:
         """Post-rpc interceptor for update_release_config
 
         DEPRECATED. Please use the `post_update_release_config_with_metadata`
@@ -2778,9 +2376,7 @@ class DataformRestInterceptor:
         return response
 
     def post_update_release_config_with_metadata(
-        self,
-        response: dataform.ReleaseConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.ReleaseConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.ReleaseConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_release_config
 
@@ -2797,12 +2393,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_update_repository(
-        self,
-        request: dataform.UpdateRepositoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.UpdateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.UpdateRepositoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.UpdateRepositoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_repository
 
         Override in a subclass to manipulate the request or metadata
@@ -2810,9 +2402,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_repository(
-        self, response: dataform.Repository
-    ) -> dataform.Repository:
+    def post_update_repository(self, response: dataform.Repository) -> dataform.Repository:
         """Post-rpc interceptor for update_repository
 
         DEPRECATED. Please use the `post_update_repository_with_metadata`
@@ -2826,9 +2416,7 @@ class DataformRestInterceptor:
         return response
 
     def post_update_repository_with_metadata(
-        self,
-        response: dataform.Repository,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.Repository, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.Repository, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_repository
 
@@ -2845,12 +2433,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_update_workflow_config(
-        self,
-        request: dataform.UpdateWorkflowConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dataform.UpdateWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dataform.UpdateWorkflowConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dataform.UpdateWorkflowConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_workflow_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2858,9 +2442,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_update_workflow_config(
-        self, response: dataform.WorkflowConfig
-    ) -> dataform.WorkflowConfig:
+    def post_update_workflow_config(self, response: dataform.WorkflowConfig) -> dataform.WorkflowConfig:
         """Post-rpc interceptor for update_workflow_config
 
         DEPRECATED. Please use the `post_update_workflow_config_with_metadata`
@@ -2874,9 +2456,7 @@ class DataformRestInterceptor:
         return response
 
     def post_update_workflow_config_with_metadata(
-        self,
-        response: dataform.WorkflowConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WorkflowConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WorkflowConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_workflow_config
 
@@ -2893,9 +2473,7 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_write_file(
-        self,
-        request: dataform.WriteFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataform.WriteFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WriteFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for write_file
 
@@ -2904,9 +2482,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_write_file(
-        self, response: dataform.WriteFileResponse
-    ) -> dataform.WriteFileResponse:
+    def post_write_file(self, response: dataform.WriteFileResponse) -> dataform.WriteFileResponse:
         """Post-rpc interceptor for write_file
 
         DEPRECATED. Please use the `post_write_file_with_metadata`
@@ -2920,9 +2496,7 @@ class DataformRestInterceptor:
         return response
 
     def post_write_file_with_metadata(
-        self,
-        response: dataform.WriteFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataform.WriteFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataform.WriteFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for write_file
 
@@ -2939,12 +2513,8 @@ class DataformRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2952,9 +2522,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2964,12 +2532,8 @@ class DataformRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2977,9 +2541,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2989,12 +2551,8 @@ class DataformRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -3012,12 +2570,8 @@ class DataformRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -3035,13 +2589,8 @@ class DataformRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -3049,9 +2598,7 @@ class DataformRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -3141,30 +2688,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataformRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CancelWorkflowInvocation(
-        _BaseDataformRestTransport._BaseCancelWorkflowInvocation, DataformRestStub
-    ):
+    class _CancelWorkflowInvocation(_BaseDataformRestTransport._BaseCancelWorkflowInvocation, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CancelWorkflowInvocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3205,32 +2740,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``CancelWorkflowInvocation`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_workflow_invocation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_workflow_invocation(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCancelWorkflowInvocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3254,13 +2775,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CancelWorkflowInvocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3276,16 +2791,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_cancel_workflow_invocation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_workflow_invocation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_workflow_invocation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dataform.CancelWorkflowInvocationResponse.to_json(response)
-                    )
+                    response_payload = dataform.CancelWorkflowInvocationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3304,22 +2813,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CommitRepositoryChanges(
-        _BaseDataformRestTransport._BaseCommitRepositoryChanges, DataformRestStub
-    ):
+    class _CommitRepositoryChanges(_BaseDataformRestTransport._BaseCommitRepositoryChanges, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CommitRepositoryChanges")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3359,32 +2858,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``CommitRepositoryChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_http_options()
 
-            request, metadata = self._interceptor.pre_commit_repository_changes(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_commit_repository_changes(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCommitRepositoryChanges._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3408,13 +2893,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CommitRepositoryChanges._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3430,16 +2909,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_commit_repository_changes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_commit_repository_changes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_commit_repository_changes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.CommitRepositoryChangesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.CommitRepositoryChangesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3458,22 +2931,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CommitWorkspaceChanges(
-        _BaseDataformRestTransport._BaseCommitWorkspaceChanges, DataformRestStub
-    ):
+    class _CommitWorkspaceChanges(_BaseDataformRestTransport._BaseCommitWorkspaceChanges, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CommitWorkspaceChanges")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3513,32 +2976,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``CommitWorkspaceChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_http_options()
 
-            request, metadata = self._interceptor.pre_commit_workspace_changes(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_commit_workspace_changes(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCommitWorkspaceChanges._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3562,13 +3011,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CommitWorkspaceChanges._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3584,16 +3027,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_commit_workspace_changes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_commit_workspace_changes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_commit_workspace_changes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.CommitWorkspaceChangesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.CommitWorkspaceChangesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3612,23 +3049,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ComputeRepositoryAccessTokenStatus(
-        _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus,
-        DataformRestStub,
-    ):
+    class _ComputeRepositoryAccessTokenStatus(_BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ComputeRepositoryAccessTokenStatus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3668,31 +3094,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``ComputeRepositoryAccessTokenStatus`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_compute_repository_access_token_status(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_repository_access_token_status(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseComputeRepositoryAccessTokenStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3715,15 +3126,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataformRestTransport._ComputeRepositoryAccessTokenStatus._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataformRestTransport._ComputeRepositoryAccessTokenStatus._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3739,21 +3143,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_compute_repository_access_token_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_compute_repository_access_token_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_repository_access_token_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dataform.ComputeRepositoryAccessTokenStatusResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = dataform.ComputeRepositoryAccessTokenStatusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3772,22 +3165,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateCompilationResult(
-        _BaseDataformRestTransport._BaseCreateCompilationResult, DataformRestStub
-    ):
+    class _CreateCompilationResult(_BaseDataformRestTransport._BaseCreateCompilationResult, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateCompilationResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3829,32 +3212,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateCompilationResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_compilation_result(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateCompilationResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_compilation_result(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateCompilationResult._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCreateCompilationResult._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCreateCompilationResult._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateCompilationResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateCompilationResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3878,13 +3247,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateCompilationResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3900,12 +3263,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_compilation_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_compilation_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_compilation_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.CompilationResult.to_json(response)
                 except:
@@ -3926,22 +3285,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateReleaseConfig(
-        _BaseDataformRestTransport._BaseCreateReleaseConfig, DataformRestStub
-    ):
+    class _CreateReleaseConfig(_BaseDataformRestTransport._BaseCreateReleaseConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateReleaseConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3983,32 +3332,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateReleaseConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_release_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_release_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateReleaseConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4032,13 +3367,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateReleaseConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4054,12 +3383,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_release_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_release_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_release_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
                 except:
@@ -4080,22 +3405,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateRepository(
-        _BaseDataformRestTransport._BaseCreateRepository, DataformRestStub
-    ):
+    class _CreateRepository(_BaseDataformRestTransport._BaseCreateRepository, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4135,36 +3450,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateRepository._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateRepository._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_repository(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateRepository._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_repository(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateRepository._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BaseCreateRepository._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BaseCreateRepository._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateRepository._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4188,13 +3485,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4210,12 +3501,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
                 except:
@@ -4236,22 +3523,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateWorkflowConfig(
-        _BaseDataformRestTransport._BaseCreateWorkflowConfig, DataformRestStub
-    ):
+    class _CreateWorkflowConfig(_BaseDataformRestTransport._BaseCreateWorkflowConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateWorkflowConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4293,32 +3570,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_workflow_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_workflow_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateWorkflowConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4342,13 +3605,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateWorkflowConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4364,12 +3621,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_workflow_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_workflow_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_workflow_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
                 except:
@@ -4390,22 +3643,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateWorkflowInvocation(
-        _BaseDataformRestTransport._BaseCreateWorkflowInvocation, DataformRestStub
-    ):
+    class _CreateWorkflowInvocation(_BaseDataformRestTransport._BaseCreateWorkflowInvocation, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateWorkflowInvocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4448,32 +3691,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_workflow_invocation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_workflow_invocation(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateWorkflowInvocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4497,13 +3726,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateWorkflowInvocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4519,12 +3742,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_workflow_invocation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_workflow_invocation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_workflow_invocation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowInvocation.to_json(response)
                 except:
@@ -4545,22 +3764,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _CreateWorkspace(
-        _BaseDataformRestTransport._BaseCreateWorkspace, DataformRestStub
-    ):
+    class _CreateWorkspace(_BaseDataformRestTransport._BaseCreateWorkspace, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.CreateWorkspace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4600,38 +3809,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     Represents a Dataform Git workspace.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseCreateWorkspace._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_workspace(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_workspace(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseCreateWorkspace._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BaseCreateWorkspace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseCreateWorkspace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseCreateWorkspace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4655,13 +3844,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._CreateWorkspace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4677,12 +3860,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_create_workspace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_workspace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_workspace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Workspace.to_json(response)
                 except:
@@ -4703,22 +3882,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _DeleteReleaseConfig(
-        _BaseDataformRestTransport._BaseDeleteReleaseConfig, DataformRestStub
-    ):
+    class _DeleteReleaseConfig(_BaseDataformRestTransport._BaseDeleteReleaseConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteReleaseConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4753,28 +3922,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_release_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_release_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseDeleteReleaseConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4798,12 +3955,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._DeleteReleaseConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4811,22 +3963,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteRepository(
-        _BaseDataformRestTransport._BaseDeleteRepository, DataformRestStub
-    ):
+    class _DeleteRepository(_BaseDataformRestTransport._BaseDeleteRepository, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4861,30 +4003,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteRepository._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteRepository._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_repository(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepository._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_repository(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteRepository._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteRepository._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseDeleteRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4908,12 +4036,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._DeleteRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4921,22 +4044,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkflowConfig(
-        _BaseDataformRestTransport._BaseDeleteWorkflowConfig, DataformRestStub
-    ):
+    class _DeleteWorkflowConfig(_BaseDataformRestTransport._BaseDeleteWorkflowConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteWorkflowConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4971,28 +4084,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_workflow_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_workflow_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5016,12 +4117,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._DeleteWorkflowConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5029,22 +4125,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkflowInvocation(
-        _BaseDataformRestTransport._BaseDeleteWorkflowInvocation, DataformRestStub
-    ):
+    class _DeleteWorkflowInvocation(_BaseDataformRestTransport._BaseDeleteWorkflowInvocation, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteWorkflowInvocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5080,28 +4166,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_workflow_invocation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_workflow_invocation(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseDeleteWorkflowInvocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5125,12 +4199,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._DeleteWorkflowInvocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5138,22 +4207,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkspace(
-        _BaseDataformRestTransport._BaseDeleteWorkspace, DataformRestStub
-    ):
+    class _DeleteWorkspace(_BaseDataformRestTransport._BaseDeleteWorkspace, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.DeleteWorkspace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5188,32 +4247,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseDeleteWorkspace._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseDeleteWorkspace._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_workspace(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseDeleteWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_workspace(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseDeleteWorkspace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseDeleteWorkspace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseDeleteWorkspace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5237,12 +4280,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._DeleteWorkspace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5250,22 +4288,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FetchFileDiff(
-        _BaseDataformRestTransport._BaseFetchFileDiff, DataformRestStub
-    ):
+    class _FetchFileDiff(_BaseDataformRestTransport._BaseFetchFileDiff, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.FetchFileDiff")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5304,30 +4332,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchFileDiff`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchFileDiff._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchFileDiff._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_file_diff(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseFetchFileDiff._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseFetchFileDiff._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseFetchFileDiff._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseFetchFileDiff._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5351,12 +4365,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._FetchFileDiff._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5372,12 +4381,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_fetch_file_diff(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_file_diff_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_file_diff_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.FetchFileDiffResponse.to_json(response)
                 except:
@@ -5398,22 +4403,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _FetchFileGitStatuses(
-        _BaseDataformRestTransport._BaseFetchFileGitStatuses, DataformRestStub
-    ):
+    class _FetchFileGitStatuses(_BaseDataformRestTransport._BaseFetchFileGitStatuses, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.FetchFileGitStatuses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5452,28 +4447,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchFileGitStatuses`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_file_git_statuses(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_file_git_statuses(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseFetchFileGitStatuses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5497,12 +4480,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._FetchFileGitStatuses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5518,16 +4496,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_fetch_file_git_statuses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_file_git_statuses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_file_git_statuses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.FetchFileGitStatusesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.FetchFileGitStatusesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5546,22 +4518,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _FetchGitAheadBehind(
-        _BaseDataformRestTransport._BaseFetchGitAheadBehind, DataformRestStub
-    ):
+    class _FetchGitAheadBehind(_BaseDataformRestTransport._BaseFetchGitAheadBehind, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.FetchGitAheadBehind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5600,28 +4562,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchGitAheadBehind`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_git_ahead_behind(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_git_ahead_behind(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseFetchGitAheadBehind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5645,12 +4595,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._FetchGitAheadBehind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5666,16 +4611,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_fetch_git_ahead_behind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_git_ahead_behind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_git_ahead_behind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.FetchGitAheadBehindResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.FetchGitAheadBehindResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5694,22 +4633,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _FetchRemoteBranches(
-        _BaseDataformRestTransport._BaseFetchRemoteBranches, DataformRestStub
-    ):
+    class _FetchRemoteBranches(_BaseDataformRestTransport._BaseFetchRemoteBranches, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.FetchRemoteBranches")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5748,28 +4677,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchRemoteBranches`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchRemoteBranches._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_remote_branches(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_remote_branches(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseFetchRemoteBranches._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5793,12 +4710,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._FetchRemoteBranches._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5814,16 +4726,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_fetch_remote_branches(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_remote_branches_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_remote_branches_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.FetchRemoteBranchesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.FetchRemoteBranchesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5842,22 +4748,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _FetchRepositoryHistory(
-        _BaseDataformRestTransport._BaseFetchRepositoryHistory, DataformRestStub
-    ):
+    class _FetchRepositoryHistory(_BaseDataformRestTransport._BaseFetchRepositoryHistory, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.FetchRepositoryHistory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5896,28 +4792,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``FetchRepositoryHistory`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_repository_history(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_repository_history(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseFetchRepositoryHistory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5941,12 +4825,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._FetchRepositoryHistory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5962,16 +4841,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_fetch_repository_history(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_repository_history_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_repository_history_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.FetchRepositoryHistoryResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.FetchRepositoryHistoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5990,22 +4863,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _GetCompilationResult(
-        _BaseDataformRestTransport._BaseGetCompilationResult, DataformRestStub
-    ):
+    class _GetCompilationResult(_BaseDataformRestTransport._BaseGetCompilationResult, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.GetCompilationResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6046,28 +4909,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetCompilationResult._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetCompilationResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_compilation_result(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseGetCompilationResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_compilation_result(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseGetCompilationResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetCompilationResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseGetCompilationResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6091,12 +4942,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetCompilationResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6112,12 +4958,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_compilation_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_compilation_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_compilation_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.CompilationResult.to_json(response)
                 except:
@@ -6143,15 +4985,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.GetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6195,25 +5029,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = _BaseDataformRestTransport._BaseGetConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_config(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseGetConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6236,14 +5058,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = DataformRestTransport._GetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = DataformRestTransport._GetConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6258,12 +5073,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Config.to_json(response)
                 except:
@@ -6284,22 +5095,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _GetReleaseConfig(
-        _BaseDataformRestTransport._BaseGetReleaseConfig, DataformRestStub
-    ):
+    class _GetReleaseConfig(_BaseDataformRestTransport._BaseGetReleaseConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.GetReleaseConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6340,30 +5141,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetReleaseConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetReleaseConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_release_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseGetReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_release_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseGetReleaseConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetReleaseConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetReleaseConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6387,12 +5174,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetReleaseConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6408,12 +5190,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_release_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_release_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_release_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
                 except:
@@ -6434,22 +5212,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _GetRepository(
-        _BaseDataformRestTransport._BaseGetRepository, DataformRestStub
-    ):
+    class _GetRepository(_BaseDataformRestTransport._BaseGetRepository, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.GetRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6488,30 +5256,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetRepository._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetRepository._get_http_options()
 
             request, metadata = self._interceptor.pre_get_repository(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetRepository._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseGetRepository._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetRepository._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6535,12 +5289,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6556,12 +5305,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
                 except:
@@ -6582,22 +5327,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _GetWorkflowConfig(
-        _BaseDataformRestTransport._BaseGetWorkflowConfig, DataformRestStub
-    ):
+    class _GetWorkflowConfig(_BaseDataformRestTransport._BaseGetWorkflowConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.GetWorkflowConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6638,28 +5373,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetWorkflowConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_workflow_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_workflow_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseGetWorkflowConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6683,12 +5406,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetWorkflowConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6704,12 +5422,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_workflow_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workflow_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workflow_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
                 except:
@@ -6730,22 +5444,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _GetWorkflowInvocation(
-        _BaseDataformRestTransport._BaseGetWorkflowInvocation, DataformRestStub
-    ):
+    class _GetWorkflowInvocation(_BaseDataformRestTransport._BaseGetWorkflowInvocation, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.GetWorkflowInvocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6786,28 +5490,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_workflow_invocation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_workflow_invocation(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseGetWorkflowInvocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6831,12 +5523,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetWorkflowInvocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6852,12 +5539,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_workflow_invocation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workflow_invocation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workflow_invocation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowInvocation.to_json(response)
                 except:
@@ -6883,15 +5566,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.GetWorkspace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6930,30 +5605,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     Represents a Dataform Git workspace.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetWorkspace._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetWorkspace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workspace(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetWorkspace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseGetWorkspace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetWorkspace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetWorkspace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6977,12 +5638,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetWorkspace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6998,12 +5654,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_get_workspace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workspace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workspace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Workspace.to_json(response)
                 except:
@@ -7024,22 +5676,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _InstallNpmPackages(
-        _BaseDataformRestTransport._BaseInstallNpmPackages, DataformRestStub
-    ):
+    class _InstallNpmPackages(_BaseDataformRestTransport._BaseInstallNpmPackages, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.InstallNpmPackages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7079,32 +5721,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``InstallNpmPackages`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseInstallNpmPackages._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseInstallNpmPackages._get_http_options()
 
-            request, metadata = self._interceptor.pre_install_npm_packages(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseInstallNpmPackages._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_install_npm_packages(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseInstallNpmPackages._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseInstallNpmPackages._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseInstallNpmPackages._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseInstallNpmPackages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseInstallNpmPackages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7128,13 +5756,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._InstallNpmPackages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7150,16 +5772,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_install_npm_packages(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_install_npm_packages_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_install_npm_packages_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.InstallNpmPackagesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.InstallNpmPackagesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7178,22 +5794,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListCompilationResults(
-        _BaseDataformRestTransport._BaseListCompilationResults, DataformRestStub
-    ):
+    class _ListCompilationResults(_BaseDataformRestTransport._BaseListCompilationResults, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListCompilationResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7232,28 +5838,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListCompilationResults`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListCompilationResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_compilation_results(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseListCompilationResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_compilation_results(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseListCompilationResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListCompilationResults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseListCompilationResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7277,12 +5871,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListCompilationResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7298,16 +5887,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_compilation_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_compilation_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_compilation_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ListCompilationResultsResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ListCompilationResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7326,22 +5909,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListReleaseConfigs(
-        _BaseDataformRestTransport._BaseListReleaseConfigs, DataformRestStub
-    ):
+    class _ListReleaseConfigs(_BaseDataformRestTransport._BaseListReleaseConfigs, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListReleaseConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7380,28 +5953,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListReleaseConfigs`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListReleaseConfigs._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListReleaseConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_release_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseListReleaseConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_release_configs(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseListReleaseConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListReleaseConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseListReleaseConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7425,12 +5986,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListReleaseConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7446,16 +6002,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_release_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_release_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_release_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ListReleaseConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ListReleaseConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7474,22 +6024,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListRepositories(
-        _BaseDataformRestTransport._BaseListRepositories, DataformRestStub
-    ):
+    class _ListRepositories(_BaseDataformRestTransport._BaseListRepositories, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListRepositories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7528,30 +6068,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListRepositories`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListRepositories._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListRepositories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_repositories(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseListRepositories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_repositories(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseListRepositories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListRepositories._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseListRepositories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7575,12 +6101,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListRepositories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7596,16 +6117,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_repositories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_repositories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_repositories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ListRepositoriesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ListRepositoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7624,22 +6139,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListWorkflowConfigs(
-        _BaseDataformRestTransport._BaseListWorkflowConfigs, DataformRestStub
-    ):
+    class _ListWorkflowConfigs(_BaseDataformRestTransport._BaseListWorkflowConfigs, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListWorkflowConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7678,28 +6183,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListWorkflowConfigs`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListWorkflowConfigs._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_workflow_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_workflow_configs(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseListWorkflowConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7723,12 +6216,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListWorkflowConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7744,16 +6232,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_workflow_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workflow_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workflow_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ListWorkflowConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ListWorkflowConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7772,22 +6254,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListWorkflowInvocations(
-        _BaseDataformRestTransport._BaseListWorkflowInvocations, DataformRestStub
-    ):
+    class _ListWorkflowInvocations(_BaseDataformRestTransport._BaseListWorkflowInvocations, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListWorkflowInvocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7826,28 +6298,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListWorkflowInvocations`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_workflow_invocations(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_workflow_invocations(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseListWorkflowInvocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7871,12 +6331,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListWorkflowInvocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7892,16 +6347,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_workflow_invocations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workflow_invocations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workflow_invocations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ListWorkflowInvocationsResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ListWorkflowInvocationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7920,22 +6369,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ListWorkspaces(
-        _BaseDataformRestTransport._BaseListWorkspaces, DataformRestStub
-    ):
+    class _ListWorkspaces(_BaseDataformRestTransport._BaseListWorkspaces, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListWorkspaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7974,30 +6413,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ListWorkspaces`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListWorkspaces._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListWorkspaces._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workspaces(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseListWorkspaces._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseListWorkspaces._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListWorkspaces._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseListWorkspaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8021,12 +6446,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListWorkspaces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8042,12 +6462,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_list_workspaces(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workspaces_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workspaces_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ListWorkspacesResponse.to_json(response)
                 except:
@@ -8068,22 +6484,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _MakeDirectory(
-        _BaseDataformRestTransport._BaseMakeDirectory, DataformRestStub
-    ):
+    class _MakeDirectory(_BaseDataformRestTransport._BaseMakeDirectory, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.MakeDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8123,34 +6529,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``MakeDirectory`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseMakeDirectory._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseMakeDirectory._get_http_options()
 
             request, metadata = self._interceptor.pre_make_directory(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMakeDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseMakeDirectory._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseMakeDirectory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseMakeDirectory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMakeDirectory._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseMakeDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8174,13 +6564,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._MakeDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8196,12 +6580,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_make_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_make_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_make_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MakeDirectoryResponse.to_json(response)
                 except:
@@ -8222,22 +6602,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _MoveDirectory(
-        _BaseDataformRestTransport._BaseMoveDirectory, DataformRestStub
-    ):
+    class _MoveDirectory(_BaseDataformRestTransport._BaseMoveDirectory, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.MoveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8277,34 +6647,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``MoveDirectory`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseMoveDirectory._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseMoveDirectory._get_http_options()
 
             request, metadata = self._interceptor.pre_move_directory(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseMoveDirectory._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseMoveDirectory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseMoveDirectory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveDirectory._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseMoveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8328,13 +6682,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._MoveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8350,12 +6698,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_move_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MoveDirectoryResponse.to_json(response)
                 except:
@@ -8381,15 +6725,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.MoveFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8432,29 +6768,15 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = _BaseDataformRestTransport._BaseMoveFile._get_http_options()
 
             request, metadata = self._interceptor.pre_move_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseMoveFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseMoveFile._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseMoveFile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseMoveFile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseMoveFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseMoveFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8478,13 +6800,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._MoveFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8500,12 +6816,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_move_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.MoveFileResponse.to_json(response)
                 except:
@@ -8526,22 +6838,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _PullGitCommits(
-        _BaseDataformRestTransport._BasePullGitCommits, DataformRestStub
-    ):
+    class _PullGitCommits(_BaseDataformRestTransport._BasePullGitCommits, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.PullGitCommits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8581,38 +6883,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``PullGitCommits`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BasePullGitCommits._get_http_options()
 
-            request, metadata = self._interceptor.pre_pull_git_commits(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_pull_git_commits(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BasePullGitCommits._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BasePullGitCommits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BasePullGitCommits._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BasePullGitCommits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8636,13 +6918,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._PullGitCommits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8658,12 +6934,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_pull_git_commits(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pull_git_commits_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pull_git_commits_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.PullGitCommitsResponse.to_json(response)
                 except:
@@ -8684,22 +6956,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _PushGitCommits(
-        _BaseDataformRestTransport._BasePushGitCommits, DataformRestStub
-    ):
+    class _PushGitCommits(_BaseDataformRestTransport._BasePushGitCommits, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.PushGitCommits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8739,38 +7001,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``PushGitCommits`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BasePushGitCommits._get_http_options()
 
-            request, metadata = self._interceptor.pre_push_git_commits(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_push_git_commits(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BasePushGitCommits._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BasePushGitCommits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BasePushGitCommits._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BasePushGitCommits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8794,13 +7036,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._PushGitCommits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8816,12 +7052,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_push_git_commits(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_push_git_commits_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_push_git_commits_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.PushGitCommitsResponse.to_json(response)
                 except:
@@ -8842,22 +7074,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _QueryCompilationResultActions(
-        _BaseDataformRestTransport._BaseQueryCompilationResultActions, DataformRestStub
-    ):
+    class _QueryCompilationResultActions(_BaseDataformRestTransport._BaseQueryCompilationResultActions, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.QueryCompilationResultActions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8897,28 +7119,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryCompilationResultActions`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_compilation_result_actions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_compilation_result_actions(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseQueryCompilationResultActions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8941,15 +7151,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataformRestTransport._QueryCompilationResultActions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataformRestTransport._QueryCompilationResultActions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8965,19 +7168,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_compilation_result_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_compilation_result_actions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_compilation_result_actions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dataform.QueryCompilationResultActionsResponse.to_json(response)
-                    )
+                    response_payload = dataform.QueryCompilationResultActionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8996,22 +7190,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _QueryDirectoryContents(
-        _BaseDataformRestTransport._BaseQueryDirectoryContents, DataformRestStub
-    ):
+    class _QueryDirectoryContents(_BaseDataformRestTransport._BaseQueryDirectoryContents, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.QueryDirectoryContents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9050,28 +7234,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``QueryDirectoryContents`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_directory_contents(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_directory_contents(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseQueryDirectoryContents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9095,12 +7267,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._QueryDirectoryContents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9116,16 +7283,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_directory_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_directory_contents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_directory_contents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.QueryDirectoryContentsResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.QueryDirectoryContentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9144,23 +7305,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _QueryRepositoryDirectoryContents(
-        _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents,
-        DataformRestStub,
-    ):
+    class _QueryRepositoryDirectoryContents(_BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.QueryRepositoryDirectoryContents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9200,31 +7350,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryRepositoryDirectoryContents`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_query_repository_directory_contents(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_repository_directory_contents(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseQueryRepositoryDirectoryContents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9247,15 +7382,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataformRestTransport._QueryRepositoryDirectoryContents._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataformRestTransport._QueryRepositoryDirectoryContents._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9271,21 +7399,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_repository_directory_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_repository_directory_contents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_repository_directory_contents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dataform.QueryRepositoryDirectoryContentsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = dataform.QueryRepositoryDirectoryContentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9304,22 +7421,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _QueryWorkflowInvocationActions(
-        _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions, DataformRestStub
-    ):
+    class _QueryWorkflowInvocationActions(_BaseDataformRestTransport._BaseQueryWorkflowInvocationActions, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.QueryWorkflowInvocationActions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9359,28 +7466,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                         ``QueryWorkflowInvocationActions`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_workflow_invocation_actions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_workflow_invocation_actions(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseQueryWorkflowInvocationActions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9403,15 +7498,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataformRestTransport._QueryWorkflowInvocationActions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataformRestTransport._QueryWorkflowInvocationActions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9427,21 +7515,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_query_workflow_invocation_actions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_workflow_invocation_actions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_workflow_invocation_actions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dataform.QueryWorkflowInvocationActionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = dataform.QueryWorkflowInvocationActionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9465,15 +7542,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.ReadFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9515,25 +7584,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = _BaseDataformRestTransport._BaseReadFile._get_http_options()
 
             request, metadata = self._interceptor.pre_read_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseReadFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseReadFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseReadFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseReadFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9556,14 +7613,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
 
             # Send the request
-            response = DataformRestTransport._ReadFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = DataformRestTransport._ReadFile._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -9578,12 +7628,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_read_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_read_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_read_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReadFileResponse.to_json(response)
                 except:
@@ -9604,22 +7650,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ReadRepositoryFile(
-        _BaseDataformRestTransport._BaseReadRepositoryFile, DataformRestStub
-    ):
+    class _ReadRepositoryFile(_BaseDataformRestTransport._BaseReadRepositoryFile, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ReadRepositoryFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9658,28 +7694,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ReadRepositoryFile`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseReadRepositoryFile._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseReadRepositoryFile._get_http_options()
 
-            request, metadata = self._interceptor.pre_read_repository_file(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseReadRepositoryFile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_read_repository_file(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseReadRepositoryFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseReadRepositoryFile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseReadRepositoryFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9703,12 +7727,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ReadRepositoryFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9724,16 +7743,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_read_repository_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_read_repository_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_read_repository_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ReadRepositoryFileResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ReadRepositoryFileResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9752,22 +7765,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _RemoveDirectory(
-        _BaseDataformRestTransport._BaseRemoveDirectory, DataformRestStub
-    ):
+    class _RemoveDirectory(_BaseDataformRestTransport._BaseRemoveDirectory, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.RemoveDirectory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9807,38 +7810,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``RemoveDirectory`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseRemoveDirectory._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_directory(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_remove_directory(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseRemoveDirectory._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BaseRemoveDirectory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseRemoveDirectory._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseRemoveDirectory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9862,13 +7845,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._RemoveDirectory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9884,16 +7861,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_remove_directory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_directory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_directory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.RemoveDirectoryResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.RemoveDirectoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9917,15 +7888,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.RemoveFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9965,34 +7928,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``RemoveFile`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseRemoveFile._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseRemoveFile._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseRemoveFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseRemoveFile._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseRemoveFile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseRemoveFile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseRemoveFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseRemoveFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10016,13 +7963,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._RemoveFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10038,12 +7979,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_remove_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.RemoveFileResponse.to_json(response)
                 except:
@@ -10064,22 +8001,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _ResetWorkspaceChanges(
-        _BaseDataformRestTransport._BaseResetWorkspaceChanges, DataformRestStub
-    ):
+    class _ResetWorkspaceChanges(_BaseDataformRestTransport._BaseResetWorkspaceChanges, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ResetWorkspaceChanges")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10119,32 +8046,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     ``ResetWorkspaceChanges`` response message.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_http_options()
 
-            request, metadata = self._interceptor.pre_reset_workspace_changes(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reset_workspace_changes(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseResetWorkspaceChanges._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10168,13 +8081,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ResetWorkspaceChanges._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10190,16 +8097,10 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_reset_workspace_changes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_workspace_changes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_workspace_changes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dataform.ResetWorkspaceChangesResponse.to_json(
-                        response
-                    )
+                    response_payload = dataform.ResetWorkspaceChangesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10223,15 +8124,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.SearchFiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10273,30 +8166,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseSearchFiles._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseSearchFiles._get_http_options()
 
             request, metadata = self._interceptor.pre_search_files(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseSearchFiles._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseSearchFiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseSearchFiles._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseSearchFiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10320,12 +8199,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._SearchFiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10341,12 +8215,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_search_files(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_files_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_files_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.SearchFilesResponse.to_json(response)
                 except:
@@ -10372,15 +8242,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.UpdateConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10422,34 +8284,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseUpdateConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseUpdateConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_config(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseUpdateConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseUpdateConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseUpdateConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseUpdateConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10473,13 +8319,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._UpdateConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10495,12 +8335,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_update_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Config.to_json(response)
                 except:
@@ -10521,22 +8357,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _UpdateReleaseConfig(
-        _BaseDataformRestTransport._BaseUpdateReleaseConfig, DataformRestStub
-    ):
+    class _UpdateReleaseConfig(_BaseDataformRestTransport._BaseUpdateReleaseConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.UpdateReleaseConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10578,32 +8404,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_release_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_release_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseUpdateReleaseConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10627,13 +8439,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._UpdateReleaseConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10649,12 +8455,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_update_release_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_release_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_release_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.ReleaseConfig.to_json(response)
                 except:
@@ -10675,22 +8477,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _UpdateRepository(
-        _BaseDataformRestTransport._BaseUpdateRepository, DataformRestStub
-    ):
+    class _UpdateRepository(_BaseDataformRestTransport._BaseUpdateRepository, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.UpdateRepository")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10730,36 +8522,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                     Represents a Dataform Git repository.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseUpdateRepository._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseUpdateRepository._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_repository(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateRepository._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_repository(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateRepository._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataformRestTransport._BaseUpdateRepository._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataformRestTransport._BaseUpdateRepository._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseUpdateRepository._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseUpdateRepository._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10783,13 +8557,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._UpdateRepository._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10805,12 +8573,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_update_repository(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_repository_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_repository_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.Repository.to_json(response)
                 except:
@@ -10831,22 +8595,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 )
             return resp
 
-    class _UpdateWorkflowConfig(
-        _BaseDataformRestTransport._BaseUpdateWorkflowConfig, DataformRestStub
-    ):
+    class _UpdateWorkflowConfig(_BaseDataformRestTransport._BaseUpdateWorkflowConfig, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.UpdateWorkflowConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10888,32 +8642,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_workflow_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_workflow_config(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseUpdateWorkflowConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10937,13 +8677,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._UpdateWorkflowConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10959,12 +8693,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_update_workflow_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_workflow_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_workflow_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WorkflowConfig.to_json(response)
                 except:
@@ -10990,15 +8720,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.WriteFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11041,29 +8763,15 @@ class DataformRestTransport(_BaseDataformRestTransport):
             http_options = _BaseDataformRestTransport._BaseWriteFile._get_http_options()
 
             request, metadata = self._interceptor.pre_write_file(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseWriteFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseWriteFile._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseWriteFile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseWriteFile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseWriteFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseWriteFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11087,13 +8795,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._WriteFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11109,12 +8811,8 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             resp = self._interceptor.post_write_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_write_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_write_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataform.WriteFileResponse.to_json(response)
                 except:
@@ -11136,34 +8834,19 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return resp
 
     @property
-    def cancel_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.CancelWorkflowInvocationRequest],
-        dataform.CancelWorkflowInvocationResponse,
-    ]:
+    def cancel_workflow_invocation(self) -> Callable[[dataform.CancelWorkflowInvocationRequest], dataform.CancelWorkflowInvocationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def commit_repository_changes(
-        self,
-    ) -> Callable[
-        [dataform.CommitRepositoryChangesRequest],
-        dataform.CommitRepositoryChangesResponse,
-    ]:
+    def commit_repository_changes(self) -> Callable[[dataform.CommitRepositoryChangesRequest], dataform.CommitRepositoryChangesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitRepositoryChanges(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def commit_workspace_changes(
-        self,
-    ) -> Callable[
-        [dataform.CommitWorkspaceChangesRequest],
-        dataform.CommitWorkspaceChangesResponse,
-    ]:
+    def commit_workspace_changes(self) -> Callable[[dataform.CommitWorkspaceChangesRequest], dataform.CommitWorkspaceChangesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CommitWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
@@ -11171,159 +8854,109 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def compute_repository_access_token_status(
         self,
-    ) -> Callable[
-        [dataform.ComputeRepositoryAccessTokenStatusRequest],
-        dataform.ComputeRepositoryAccessTokenStatusResponse,
-    ]:
+    ) -> Callable[[dataform.ComputeRepositoryAccessTokenStatusRequest], dataform.ComputeRepositoryAccessTokenStatusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeRepositoryAccessTokenStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_compilation_result(
-        self,
-    ) -> Callable[
-        [dataform.CreateCompilationResultRequest], dataform.CompilationResult
-    ]:
+    def create_compilation_result(self) -> Callable[[dataform.CreateCompilationResultRequest], dataform.CompilationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_release_config(
-        self,
-    ) -> Callable[[dataform.CreateReleaseConfigRequest], dataform.ReleaseConfig]:
+    def create_release_config(self) -> Callable[[dataform.CreateReleaseConfigRequest], dataform.ReleaseConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[[dataform.CreateRepositoryRequest], dataform.Repository]:
+    def create_repository(self) -> Callable[[dataform.CreateRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_workflow_config(
-        self,
-    ) -> Callable[[dataform.CreateWorkflowConfigRequest], dataform.WorkflowConfig]:
+    def create_workflow_config(self) -> Callable[[dataform.CreateWorkflowConfigRequest], dataform.WorkflowConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.CreateWorkflowInvocationRequest], dataform.WorkflowInvocation
-    ]:
+    def create_workflow_invocation(self) -> Callable[[dataform.CreateWorkflowInvocationRequest], dataform.WorkflowInvocation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_workspace(
-        self,
-    ) -> Callable[[dataform.CreateWorkspaceRequest], dataform.Workspace]:
+    def create_workspace(self) -> Callable[[dataform.CreateWorkspaceRequest], dataform.Workspace]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_release_config(
-        self,
-    ) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
+    def delete_release_config(self) -> Callable[[dataform.DeleteReleaseConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[[dataform.DeleteRepositoryRequest], empty_pb2.Empty]:
+    def delete_repository(self) -> Callable[[dataform.DeleteRepositoryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_workflow_config(
-        self,
-    ) -> Callable[[dataform.DeleteWorkflowConfigRequest], empty_pb2.Empty]:
+    def delete_workflow_config(self) -> Callable[[dataform.DeleteWorkflowConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_workflow_invocation(
-        self,
-    ) -> Callable[[dataform.DeleteWorkflowInvocationRequest], empty_pb2.Empty]:
+    def delete_workflow_invocation(self) -> Callable[[dataform.DeleteWorkflowInvocationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_workspace(
-        self,
-    ) -> Callable[[dataform.DeleteWorkspaceRequest], empty_pb2.Empty]:
+    def delete_workspace(self) -> Callable[[dataform.DeleteWorkspaceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_file_diff(
-        self,
-    ) -> Callable[[dataform.FetchFileDiffRequest], dataform.FetchFileDiffResponse]:
+    def fetch_file_diff(self) -> Callable[[dataform.FetchFileDiffRequest], dataform.FetchFileDiffResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchFileDiff(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_file_git_statuses(
-        self,
-    ) -> Callable[
-        [dataform.FetchFileGitStatusesRequest], dataform.FetchFileGitStatusesResponse
-    ]:
+    def fetch_file_git_statuses(self) -> Callable[[dataform.FetchFileGitStatusesRequest], dataform.FetchFileGitStatusesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchFileGitStatuses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_git_ahead_behind(
-        self,
-    ) -> Callable[
-        [dataform.FetchGitAheadBehindRequest], dataform.FetchGitAheadBehindResponse
-    ]:
+    def fetch_git_ahead_behind(self) -> Callable[[dataform.FetchGitAheadBehindRequest], dataform.FetchGitAheadBehindResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchGitAheadBehind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_remote_branches(
-        self,
-    ) -> Callable[
-        [dataform.FetchRemoteBranchesRequest], dataform.FetchRemoteBranchesResponse
-    ]:
+    def fetch_remote_branches(self) -> Callable[[dataform.FetchRemoteBranchesRequest], dataform.FetchRemoteBranchesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchRemoteBranches(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_repository_history(
-        self,
-    ) -> Callable[
-        [dataform.FetchRepositoryHistoryRequest],
-        dataform.FetchRepositoryHistoryResponse,
-    ]:
+    def fetch_repository_history(self) -> Callable[[dataform.FetchRepositoryHistoryRequest], dataform.FetchRepositoryHistoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchRepositoryHistory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_compilation_result(
-        self,
-    ) -> Callable[[dataform.GetCompilationResultRequest], dataform.CompilationResult]:
+    def get_compilation_result(self) -> Callable[[dataform.GetCompilationResultRequest], dataform.CompilationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCompilationResult(self._session, self._host, self._interceptor)  # type: ignore
@@ -11335,151 +8968,103 @@ class DataformRestTransport(_BaseDataformRestTransport):
         return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_release_config(
-        self,
-    ) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
+    def get_release_config(self) -> Callable[[dataform.GetReleaseConfigRequest], dataform.ReleaseConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[[dataform.GetRepositoryRequest], dataform.Repository]:
+    def get_repository(self) -> Callable[[dataform.GetRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workflow_config(
-        self,
-    ) -> Callable[[dataform.GetWorkflowConfigRequest], dataform.WorkflowConfig]:
+    def get_workflow_config(self) -> Callable[[dataform.GetWorkflowConfigRequest], dataform.WorkflowConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workflow_invocation(
-        self,
-    ) -> Callable[[dataform.GetWorkflowInvocationRequest], dataform.WorkflowInvocation]:
+    def get_workflow_invocation(self) -> Callable[[dataform.GetWorkflowInvocationRequest], dataform.WorkflowInvocation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkflowInvocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workspace(
-        self,
-    ) -> Callable[[dataform.GetWorkspaceRequest], dataform.Workspace]:
+    def get_workspace(self) -> Callable[[dataform.GetWorkspaceRequest], dataform.Workspace]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkspace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def install_npm_packages(
-        self,
-    ) -> Callable[
-        [dataform.InstallNpmPackagesRequest], dataform.InstallNpmPackagesResponse
-    ]:
+    def install_npm_packages(self) -> Callable[[dataform.InstallNpmPackagesRequest], dataform.InstallNpmPackagesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InstallNpmPackages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_compilation_results(
-        self,
-    ) -> Callable[
-        [dataform.ListCompilationResultsRequest],
-        dataform.ListCompilationResultsResponse,
-    ]:
+    def list_compilation_results(self) -> Callable[[dataform.ListCompilationResultsRequest], dataform.ListCompilationResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCompilationResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_release_configs(
-        self,
-    ) -> Callable[
-        [dataform.ListReleaseConfigsRequest], dataform.ListReleaseConfigsResponse
-    ]:
+    def list_release_configs(self) -> Callable[[dataform.ListReleaseConfigsRequest], dataform.ListReleaseConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReleaseConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_repositories(
-        self,
-    ) -> Callable[
-        [dataform.ListRepositoriesRequest], dataform.ListRepositoriesResponse
-    ]:
+    def list_repositories(self) -> Callable[[dataform.ListRepositoriesRequest], dataform.ListRepositoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRepositories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workflow_configs(
-        self,
-    ) -> Callable[
-        [dataform.ListWorkflowConfigsRequest], dataform.ListWorkflowConfigsResponse
-    ]:
+    def list_workflow_configs(self) -> Callable[[dataform.ListWorkflowConfigsRequest], dataform.ListWorkflowConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkflowConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workflow_invocations(
-        self,
-    ) -> Callable[
-        [dataform.ListWorkflowInvocationsRequest],
-        dataform.ListWorkflowInvocationsResponse,
-    ]:
+    def list_workflow_invocations(self) -> Callable[[dataform.ListWorkflowInvocationsRequest], dataform.ListWorkflowInvocationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkflowInvocations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workspaces(
-        self,
-    ) -> Callable[[dataform.ListWorkspacesRequest], dataform.ListWorkspacesResponse]:
+    def list_workspaces(self) -> Callable[[dataform.ListWorkspacesRequest], dataform.ListWorkspacesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkspaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def make_directory(
-        self,
-    ) -> Callable[[dataform.MakeDirectoryRequest], dataform.MakeDirectoryResponse]:
+    def make_directory(self) -> Callable[[dataform.MakeDirectoryRequest], dataform.MakeDirectoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MakeDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_directory(
-        self,
-    ) -> Callable[[dataform.MoveDirectoryRequest], dataform.MoveDirectoryResponse]:
+    def move_directory(self) -> Callable[[dataform.MoveDirectoryRequest], dataform.MoveDirectoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_file(
-        self,
-    ) -> Callable[[dataform.MoveFileRequest], dataform.MoveFileResponse]:
+    def move_file(self) -> Callable[[dataform.MoveFileRequest], dataform.MoveFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pull_git_commits(
-        self,
-    ) -> Callable[[dataform.PullGitCommitsRequest], dataform.PullGitCommitsResponse]:
+    def pull_git_commits(self) -> Callable[[dataform.PullGitCommitsRequest], dataform.PullGitCommitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PullGitCommits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def push_git_commits(
-        self,
-    ) -> Callable[[dataform.PushGitCommitsRequest], dataform.PushGitCommitsResponse]:
+    def push_git_commits(self) -> Callable[[dataform.PushGitCommitsRequest], dataform.PushGitCommitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PushGitCommits(self._session, self._host, self._interceptor)  # type: ignore
@@ -11487,21 +9072,13 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def query_compilation_result_actions(
         self,
-    ) -> Callable[
-        [dataform.QueryCompilationResultActionsRequest],
-        dataform.QueryCompilationResultActionsResponse,
-    ]:
+    ) -> Callable[[dataform.QueryCompilationResultActionsRequest], dataform.QueryCompilationResultActionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryCompilationResultActions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_directory_contents(
-        self,
-    ) -> Callable[
-        [dataform.QueryDirectoryContentsRequest],
-        dataform.QueryDirectoryContentsResponse,
-    ]:
+    def query_directory_contents(self) -> Callable[[dataform.QueryDirectoryContentsRequest], dataform.QueryDirectoryContentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
@@ -11509,10 +9086,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def query_repository_directory_contents(
         self,
-    ) -> Callable[
-        [dataform.QueryRepositoryDirectoryContentsRequest],
-        dataform.QueryRepositoryDirectoryContentsResponse,
-    ]:
+    ) -> Callable[[dataform.QueryRepositoryDirectoryContentsRequest], dataform.QueryRepositoryDirectoryContentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryRepositoryDirectoryContents(self._session, self._host, self._interceptor)  # type: ignore
@@ -11520,102 +9094,73 @@ class DataformRestTransport(_BaseDataformRestTransport):
     @property
     def query_workflow_invocation_actions(
         self,
-    ) -> Callable[
-        [dataform.QueryWorkflowInvocationActionsRequest],
-        dataform.QueryWorkflowInvocationActionsResponse,
-    ]:
+    ) -> Callable[[dataform.QueryWorkflowInvocationActionsRequest], dataform.QueryWorkflowInvocationActionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryWorkflowInvocationActions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def read_file(
-        self,
-    ) -> Callable[[dataform.ReadFileRequest], dataform.ReadFileResponse]:
+    def read_file(self) -> Callable[[dataform.ReadFileRequest], dataform.ReadFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReadFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def read_repository_file(
-        self,
-    ) -> Callable[
-        [dataform.ReadRepositoryFileRequest], dataform.ReadRepositoryFileResponse
-    ]:
+    def read_repository_file(self) -> Callable[[dataform.ReadRepositoryFileRequest], dataform.ReadRepositoryFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReadRepositoryFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_directory(
-        self,
-    ) -> Callable[[dataform.RemoveDirectoryRequest], dataform.RemoveDirectoryResponse]:
+    def remove_directory(self) -> Callable[[dataform.RemoveDirectoryRequest], dataform.RemoveDirectoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveDirectory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_file(
-        self,
-    ) -> Callable[[dataform.RemoveFileRequest], dataform.RemoveFileResponse]:
+    def remove_file(self) -> Callable[[dataform.RemoveFileRequest], dataform.RemoveFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_workspace_changes(
-        self,
-    ) -> Callable[
-        [dataform.ResetWorkspaceChangesRequest], dataform.ResetWorkspaceChangesResponse
-    ]:
+    def reset_workspace_changes(self) -> Callable[[dataform.ResetWorkspaceChangesRequest], dataform.ResetWorkspaceChangesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetWorkspaceChanges(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_files(
-        self,
-    ) -> Callable[[dataform.SearchFilesRequest], dataform.SearchFilesResponse]:
+    def search_files(self) -> Callable[[dataform.SearchFilesRequest], dataform.SearchFilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchFiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[[dataform.UpdateConfigRequest], dataform.Config]:
+    def update_config(self) -> Callable[[dataform.UpdateConfigRequest], dataform.Config]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_release_config(
-        self,
-    ) -> Callable[[dataform.UpdateReleaseConfigRequest], dataform.ReleaseConfig]:
+    def update_release_config(self) -> Callable[[dataform.UpdateReleaseConfigRequest], dataform.ReleaseConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReleaseConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_repository(
-        self,
-    ) -> Callable[[dataform.UpdateRepositoryRequest], dataform.Repository]:
+    def update_repository(self) -> Callable[[dataform.UpdateRepositoryRequest], dataform.Repository]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRepository(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_workflow_config(
-        self,
-    ) -> Callable[[dataform.UpdateWorkflowConfigRequest], dataform.WorkflowConfig]:
+    def update_workflow_config(self) -> Callable[[dataform.UpdateWorkflowConfigRequest], dataform.WorkflowConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWorkflowConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def write_file(
-        self,
-    ) -> Callable[[dataform.WriteFileRequest], dataform.WriteFileResponse]:
+    def write_file(self) -> Callable[[dataform.WriteFileRequest], dataform.WriteFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._WriteFile(self._session, self._host, self._interceptor)  # type: ignore
@@ -11629,15 +9174,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11675,30 +9212,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11722,12 +9245,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11739,9 +9257,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11766,22 +9282,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataformRestTransport._BaseListLocations, DataformRestStub
-    ):
+    class _ListLocations(_BaseDataformRestTransport._BaseListLocations, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11819,30 +9325,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11866,12 +9358,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11883,9 +9370,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11915,15 +9400,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11961,30 +9438,16 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12008,12 +9471,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12025,9 +9483,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12057,15 +9513,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             return hash("DataformRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12104,34 +9552,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataformRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataformRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12155,13 +9587,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12173,9 +9599,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12200,22 +9624,12 @@ class DataformRestTransport(_BaseDataformRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub
-    ):
+    class _TestIamPermissions(_BaseDataformRestTransport._BaseTestIamPermissions, DataformRestStub):
         def __hash__(self):
             return hash("DataformRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12254,32 +9668,18 @@ class DataformRestTransport(_BaseDataformRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDataformRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseDataformRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataformRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataformRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12303,13 +9703,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
 
             # Send the request
             response = DataformRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12321,9 +9715,7 @@ class DataformRestTransport(_BaseDataformRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -46,13 +46,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +58,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +77,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -266,18 +255,14 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -313,9 +298,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -330,11 +313,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._grpc_channel
 
     @property
-    def get_conference_record(
-        self,
-    ) -> Callable[
-        [service.GetConferenceRecordRequest], Awaitable[resource.ConferenceRecord]
-    ]:
+    def get_conference_record(self) -> Callable[[service.GetConferenceRecordRequest], Awaitable[resource.ConferenceRecord]]:
         r"""Return a callable for the get conference record method over gRPC.
 
         Gets a conference record by conference ID.
@@ -358,12 +337,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_conference_record"]
 
     @property
-    def list_conference_records(
-        self,
-    ) -> Callable[
-        [service.ListConferenceRecordsRequest],
-        Awaitable[service.ListConferenceRecordsResponse],
-    ]:
+    def list_conference_records(self) -> Callable[[service.ListConferenceRecordsRequest], Awaitable[service.ListConferenceRecordsResponse]]:
         r"""Return a callable for the list conference records method over gRPC.
 
         Lists the conference records. By default, ordered by
@@ -388,9 +362,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["list_conference_records"]
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[[service.GetParticipantRequest], Awaitable[resource.Participant]]:
+    def get_participant(self) -> Callable[[service.GetParticipantRequest], Awaitable[resource.Participant]]:
         r"""Return a callable for the get participant method over gRPC.
 
         Gets a participant by participant ID.
@@ -414,11 +386,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_participant"]
 
     @property
-    def list_participants(
-        self,
-    ) -> Callable[
-        [service.ListParticipantsRequest], Awaitable[service.ListParticipantsResponse]
-    ]:
+    def list_participants(self) -> Callable[[service.ListParticipantsRequest], Awaitable[service.ListParticipantsResponse]]:
         r"""Return a callable for the list participants method over gRPC.
 
         Lists the participants in a conference record. By default,
@@ -446,11 +414,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["list_participants"]
 
     @property
-    def get_participant_session(
-        self,
-    ) -> Callable[
-        [service.GetParticipantSessionRequest], Awaitable[resource.ParticipantSession]
-    ]:
+    def get_participant_session(self) -> Callable[[service.GetParticipantSessionRequest], Awaitable[resource.ParticipantSession]]:
         r"""Return a callable for the get participant session method over gRPC.
 
         Gets a participant session by participant session ID.
@@ -474,12 +438,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_participant_session"]
 
     @property
-    def list_participant_sessions(
-        self,
-    ) -> Callable[
-        [service.ListParticipantSessionsRequest],
-        Awaitable[service.ListParticipantSessionsResponse],
-    ]:
+    def list_participant_sessions(self) -> Callable[[service.ListParticipantSessionsRequest], Awaitable[service.ListParticipantSessionsResponse]]:
         r"""Return a callable for the list participant sessions method over gRPC.
 
         Lists the participant sessions of a participant in a conference
@@ -508,9 +467,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["list_participant_sessions"]
 
     @property
-    def get_recording(
-        self,
-    ) -> Callable[[service.GetRecordingRequest], Awaitable[resource.Recording]]:
+    def get_recording(self) -> Callable[[service.GetRecordingRequest], Awaitable[resource.Recording]]:
         r"""Return a callable for the get recording method over gRPC.
 
         Gets a recording by recording ID.
@@ -534,11 +491,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_recording"]
 
     @property
-    def list_recordings(
-        self,
-    ) -> Callable[
-        [service.ListRecordingsRequest], Awaitable[service.ListRecordingsResponse]
-    ]:
+    def list_recordings(self) -> Callable[[service.ListRecordingsRequest], Awaitable[service.ListRecordingsResponse]]:
         r"""Return a callable for the list recordings method over gRPC.
 
         Lists the recording resources from the conference
@@ -564,9 +517,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["list_recordings"]
 
     @property
-    def get_transcript(
-        self,
-    ) -> Callable[[service.GetTranscriptRequest], Awaitable[resource.Transcript]]:
+    def get_transcript(self) -> Callable[[service.GetTranscriptRequest], Awaitable[resource.Transcript]]:
         r"""Return a callable for the get transcript method over gRPC.
 
         Gets a transcript by transcript ID.
@@ -590,11 +541,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_transcript"]
 
     @property
-    def list_transcripts(
-        self,
-    ) -> Callable[
-        [service.ListTranscriptsRequest], Awaitable[service.ListTranscriptsResponse]
-    ]:
+    def list_transcripts(self) -> Callable[[service.ListTranscriptsRequest], Awaitable[service.ListTranscriptsResponse]]:
         r"""Return a callable for the list transcripts method over gRPC.
 
         Lists the set of transcripts from the conference
@@ -620,11 +567,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["list_transcripts"]
 
     @property
-    def get_transcript_entry(
-        self,
-    ) -> Callable[
-        [service.GetTranscriptEntryRequest], Awaitable[resource.TranscriptEntry]
-    ]:
+    def get_transcript_entry(self) -> Callable[[service.GetTranscriptEntryRequest], Awaitable[resource.TranscriptEntry]]:
         r"""Return a callable for the get transcript entry method over gRPC.
 
         Gets a ``TranscriptEntry`` resource by entry ID.
@@ -653,12 +596,7 @@ class ConferenceRecordsServiceGrpcAsyncIOTransport(ConferenceRecordsServiceTrans
         return self._stubs["get_transcript_entry"]
 
     @property
-    def list_transcript_entries(
-        self,
-    ) -> Callable[
-        [service.ListTranscriptEntriesRequest],
-        Awaitable[service.ListTranscriptEntriesResponse],
-    ]:
+    def list_transcript_entries(self) -> Callable[[service.ListTranscriptEntriesRequest], Awaitable[service.ListTranscriptEntriesResponse]]:
         r"""Return a callable for the list transcript entries method over gRPC.
 
         Lists the structured transcript entries per

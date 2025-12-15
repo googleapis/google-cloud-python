@@ -112,9 +112,7 @@ class IDSRestInterceptor:
     """
 
     def pre_create_endpoint(
-        self,
-        request: ids.CreateEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ids.CreateEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ids.CreateEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_endpoint
 
@@ -123,9 +121,7 @@ class IDSRestInterceptor:
         """
         return request, metadata
 
-    def post_create_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_endpoint
 
         DEPRECATED. Please use the `post_create_endpoint_with_metadata`
@@ -139,9 +135,7 @@ class IDSRestInterceptor:
         return response
 
     def post_create_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_endpoint
 
@@ -158,9 +152,7 @@ class IDSRestInterceptor:
         return response, metadata
 
     def pre_delete_endpoint(
-        self,
-        request: ids.DeleteEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ids.DeleteEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ids.DeleteEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_endpoint
 
@@ -169,9 +161,7 @@ class IDSRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_endpoint(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_endpoint(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_endpoint
 
         DEPRECATED. Please use the `post_delete_endpoint_with_metadata`
@@ -185,9 +175,7 @@ class IDSRestInterceptor:
         return response
 
     def post_delete_endpoint_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_endpoint
 
@@ -204,9 +192,7 @@ class IDSRestInterceptor:
         return response, metadata
 
     def pre_get_endpoint(
-        self,
-        request: ids.GetEndpointRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ids.GetEndpointRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ids.GetEndpointRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_endpoint
 
@@ -246,9 +232,7 @@ class IDSRestInterceptor:
         return response, metadata
 
     def pre_list_endpoints(
-        self,
-        request: ids.ListEndpointsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: ids.ListEndpointsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ids.ListEndpointsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_endpoints
 
@@ -257,9 +241,7 @@ class IDSRestInterceptor:
         """
         return request, metadata
 
-    def post_list_endpoints(
-        self, response: ids.ListEndpointsResponse
-    ) -> ids.ListEndpointsResponse:
+    def post_list_endpoints(self, response: ids.ListEndpointsResponse) -> ids.ListEndpointsResponse:
         """Post-rpc interceptor for list_endpoints
 
         DEPRECATED. Please use the `post_list_endpoints_with_metadata`
@@ -273,9 +255,7 @@ class IDSRestInterceptor:
         return response
 
     def post_list_endpoints_with_metadata(
-        self,
-        response: ids.ListEndpointsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ids.ListEndpointsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ids.ListEndpointsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_endpoints
 
@@ -371,9 +351,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -426,9 +404,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -438,15 +414,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             return hash("IDSRestTransport.CreateEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -492,29 +460,15 @@ class IDSRestTransport(_BaseIDSRestTransport):
             http_options = _BaseIDSRestTransport._BaseCreateEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_create_endpoint(request, metadata)
-            transcoded_request = (
-                _BaseIDSRestTransport._BaseCreateEndpoint._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIDSRestTransport._BaseCreateEndpoint._get_transcoded_request(http_options, request)
 
-            body = _BaseIDSRestTransport._BaseCreateEndpoint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIDSRestTransport._BaseCreateEndpoint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIDSRestTransport._BaseCreateEndpoint._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIDSRestTransport._BaseCreateEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -538,13 +492,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
 
             # Send the request
             response = IDSRestTransport._CreateEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -558,12 +506,8 @@ class IDSRestTransport(_BaseIDSRestTransport):
 
             resp = self._interceptor.post_create_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -589,15 +533,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             return hash("IDSRestTransport.DeleteEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -642,25 +578,13 @@ class IDSRestTransport(_BaseIDSRestTransport):
             http_options = _BaseIDSRestTransport._BaseDeleteEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_endpoint(request, metadata)
-            transcoded_request = (
-                _BaseIDSRestTransport._BaseDeleteEndpoint._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIDSRestTransport._BaseDeleteEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIDSRestTransport._BaseDeleteEndpoint._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIDSRestTransport._BaseDeleteEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -683,14 +607,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 )
 
             # Send the request
-            response = IDSRestTransport._DeleteEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IDSRestTransport._DeleteEndpoint._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -703,12 +620,8 @@ class IDSRestTransport(_BaseIDSRestTransport):
 
             resp = self._interceptor.post_delete_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -734,15 +647,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             return hash("IDSRestTransport.GetEndpoint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -788,25 +693,13 @@ class IDSRestTransport(_BaseIDSRestTransport):
             http_options = _BaseIDSRestTransport._BaseGetEndpoint._get_http_options()
 
             request, metadata = self._interceptor.pre_get_endpoint(request, metadata)
-            transcoded_request = (
-                _BaseIDSRestTransport._BaseGetEndpoint._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIDSRestTransport._BaseGetEndpoint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIDSRestTransport._BaseGetEndpoint._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIDSRestTransport._BaseGetEndpoint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -829,14 +722,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 )
 
             # Send the request
-            response = IDSRestTransport._GetEndpoint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IDSRestTransport._GetEndpoint._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -851,12 +737,8 @@ class IDSRestTransport(_BaseIDSRestTransport):
 
             resp = self._interceptor.post_get_endpoint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_endpoint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_endpoint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ids.Endpoint.to_json(response)
                 except:
@@ -882,15 +764,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
             return hash("IDSRestTransport.ListEndpoints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -932,25 +806,13 @@ class IDSRestTransport(_BaseIDSRestTransport):
             http_options = _BaseIDSRestTransport._BaseListEndpoints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_endpoints(request, metadata)
-            transcoded_request = (
-                _BaseIDSRestTransport._BaseListEndpoints._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIDSRestTransport._BaseListEndpoints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIDSRestTransport._BaseListEndpoints._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIDSRestTransport._BaseListEndpoints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -973,14 +835,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
                 )
 
             # Send the request
-            response = IDSRestTransport._ListEndpoints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IDSRestTransport._ListEndpoints._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -995,12 +850,8 @@ class IDSRestTransport(_BaseIDSRestTransport):
 
             resp = self._interceptor.post_list_endpoints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_endpoints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_endpoints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ids.ListEndpointsResponse.to_json(response)
                 except:
@@ -1022,17 +873,13 @@ class IDSRestTransport(_BaseIDSRestTransport):
             return resp
 
     @property
-    def create_endpoint(
-        self,
-    ) -> Callable[[ids.CreateEndpointRequest], operations_pb2.Operation]:
+    def create_endpoint(self) -> Callable[[ids.CreateEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_endpoint(
-        self,
-    ) -> Callable[[ids.DeleteEndpointRequest], operations_pb2.Operation]:
+    def delete_endpoint(self) -> Callable[[ids.DeleteEndpointRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEndpoint(self._session, self._host, self._interceptor)  # type: ignore
@@ -1044,9 +891,7 @@ class IDSRestTransport(_BaseIDSRestTransport):
         return self._GetEndpoint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_endpoints(
-        self,
-    ) -> Callable[[ids.ListEndpointsRequest], ids.ListEndpointsResponse]:
+    def list_endpoints(self) -> Callable[[ids.ListEndpointsRequest], ids.ListEndpointsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEndpoints(self._session, self._host, self._interceptor)  # type: ignore

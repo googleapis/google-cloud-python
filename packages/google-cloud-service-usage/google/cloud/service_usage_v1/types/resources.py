@@ -187,9 +187,7 @@ class ServiceConfig(proto.Message):
         number=18,
         message=endpoint_pb2.Endpoint,
     )
-    monitored_resources: MutableSequence[
-        monitored_resource_pb2.MonitoredResourceDescriptor
-    ] = proto.RepeatedField(
+    monitored_resources: MutableSequence[monitored_resource_pb2.MonitoredResourceDescriptor] = proto.RepeatedField(
         proto.MESSAGE,
         number=25,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,

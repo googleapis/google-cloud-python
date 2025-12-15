@@ -76,20 +76,14 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCancelMetadataJob:
@@ -100,11 +94,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -127,9 +117,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -140,11 +128,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -159,11 +143,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -186,9 +166,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -199,11 +177,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateAspectType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -218,11 +192,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -245,9 +215,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -258,11 +226,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateEntry._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateEntry._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -277,11 +241,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -304,9 +264,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -317,11 +275,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -336,11 +290,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -363,9 +313,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -376,11 +324,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -395,11 +339,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -422,9 +362,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -435,11 +373,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateEntryType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -452,11 +386,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -479,9 +409,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -492,11 +420,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -509,11 +433,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -539,11 +459,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -556,11 +472,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -586,11 +498,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseDeleteEntry._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -603,11 +511,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -633,11 +537,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -650,11 +550,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -680,11 +576,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -697,11 +589,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -727,11 +615,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -744,11 +628,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -774,11 +654,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetAspectType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetAspectType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -791,11 +667,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -821,11 +693,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetEntry._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetEntry._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -838,11 +706,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -868,11 +732,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -885,11 +745,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -915,11 +771,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetEntryLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -932,11 +784,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -962,11 +810,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetEntryType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetEntryType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -979,11 +823,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1009,11 +849,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1026,11 +862,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1056,11 +888,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseListAspectTypes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1073,11 +901,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1103,11 +927,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseListEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseListEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1120,11 +940,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1150,11 +966,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseListEntryGroups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1167,11 +979,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1197,11 +1005,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseListEntryTypes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1214,11 +1018,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1244,11 +1044,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1263,11 +1059,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1293,11 +1085,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseLookupEntry._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseLookupEntry._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1312,11 +1100,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1342,11 +1126,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseSearchEntries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseSearchEntries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1361,11 +1141,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1388,9 +1164,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1401,11 +1175,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1418,11 +1188,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1445,9 +1211,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1458,11 +1222,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseUpdateEntry._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1477,11 +1237,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1504,9 +1260,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1517,11 +1271,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1536,11 +1286,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1563,9 +1309,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1576,11 +1320,7 @@ class _BaseCatalogServiceRestTransport(CatalogServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

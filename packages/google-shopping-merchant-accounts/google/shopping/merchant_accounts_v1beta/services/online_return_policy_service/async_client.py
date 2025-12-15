@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -46,12 +35,8 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.services.online_return_policy_service import (
-    pagers,
-)
-from google.shopping.merchant_accounts_v1beta.types import (
-    online_return_policy as gsma_online_return_policy,
-)
+from google.shopping.merchant_accounts_v1beta.services.online_return_policy_service import pagers
+from google.shopping.merchant_accounts_v1beta.types import online_return_policy as gsma_online_return_policy
 from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 from .client import OnlineReturnPolicyServiceClient
@@ -84,47 +69,21 @@ class OnlineReturnPolicyServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = OnlineReturnPolicyServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = OnlineReturnPolicyServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        OnlineReturnPolicyServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = OnlineReturnPolicyServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = OnlineReturnPolicyServiceClient._DEFAULT_UNIVERSE
 
-    online_return_policy_path = staticmethod(
-        OnlineReturnPolicyServiceClient.online_return_policy_path
-    )
-    parse_online_return_policy_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_online_return_policy_path
-    )
-    common_billing_account_path = staticmethod(
-        OnlineReturnPolicyServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        OnlineReturnPolicyServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        OnlineReturnPolicyServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        OnlineReturnPolicyServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        OnlineReturnPolicyServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        OnlineReturnPolicyServiceClient.parse_common_location_path
-    )
+    online_return_policy_path = staticmethod(OnlineReturnPolicyServiceClient.online_return_policy_path)
+    parse_online_return_policy_path = staticmethod(OnlineReturnPolicyServiceClient.parse_online_return_policy_path)
+    common_billing_account_path = staticmethod(OnlineReturnPolicyServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(OnlineReturnPolicyServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(OnlineReturnPolicyServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(OnlineReturnPolicyServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(OnlineReturnPolicyServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(OnlineReturnPolicyServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(OnlineReturnPolicyServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(OnlineReturnPolicyServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(OnlineReturnPolicyServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(OnlineReturnPolicyServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -160,9 +119,7 @@ class OnlineReturnPolicyServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -229,13 +186,7 @@ class OnlineReturnPolicyServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                OnlineReturnPolicyServiceTransport,
-                Callable[..., OnlineReturnPolicyServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, OnlineReturnPolicyServiceTransport, Callable[..., OnlineReturnPolicyServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -295,20 +246,14 @@ class OnlineReturnPolicyServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.accounts_v1beta.OnlineReturnPolicyServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -319,9 +264,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
     async def get_online_return_policy(
         self,
-        request: Optional[
-            Union[online_return_policy.GetOnlineReturnPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[online_return_policy.GetOnlineReturnPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -387,14 +330,9 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -408,15 +346,11 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_online_return_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_online_return_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -434,9 +368,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
     async def list_online_return_policies(
         self,
-        request: Optional[
-            Union[online_return_policy.ListOnlineReturnPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[online_return_policy.ListOnlineReturnPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -505,20 +437,13 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, online_return_policy.ListOnlineReturnPoliciesRequest
-        ):
+        if not isinstance(request, online_return_policy.ListOnlineReturnPoliciesRequest):
             request = online_return_policy.ListOnlineReturnPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -528,15 +453,11 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_online_return_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_online_return_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -565,14 +486,10 @@ class OnlineReturnPolicyServiceAsyncClient:
 
     async def create_online_return_policy(
         self,
-        request: Optional[
-            Union[gsma_online_return_policy.CreateOnlineReturnPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gsma_online_return_policy.CreateOnlineReturnPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        online_return_policy: Optional[
-            gsma_online_return_policy.OnlineReturnPolicy
-        ] = None,
+        online_return_policy: Optional[gsma_online_return_policy.OnlineReturnPolicy] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -648,20 +565,13 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, online_return_policy]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gsma_online_return_policy.CreateOnlineReturnPolicyRequest
-        ):
+        if not isinstance(request, gsma_online_return_policy.CreateOnlineReturnPolicyRequest):
             request = gsma_online_return_policy.CreateOnlineReturnPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -673,15 +583,11 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_online_return_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_online_return_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -699,13 +605,9 @@ class OnlineReturnPolicyServiceAsyncClient:
 
     async def update_online_return_policy(
         self,
-        request: Optional[
-            Union[gsma_online_return_policy.UpdateOnlineReturnPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gsma_online_return_policy.UpdateOnlineReturnPolicyRequest, dict]] = None,
         *,
-        online_return_policy: Optional[
-            gsma_online_return_policy.OnlineReturnPolicy
-        ] = None,
+        online_return_policy: Optional[gsma_online_return_policy.OnlineReturnPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -797,20 +699,13 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [online_return_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gsma_online_return_policy.UpdateOnlineReturnPolicyRequest
-        ):
+        if not isinstance(request, gsma_online_return_policy.UpdateOnlineReturnPolicyRequest):
             request = gsma_online_return_policy.UpdateOnlineReturnPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -822,17 +717,11 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_online_return_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_online_return_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("online_return_policy.name", request.online_return_policy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("online_return_policy.name", request.online_return_policy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -850,9 +739,7 @@ class OnlineReturnPolicyServiceAsyncClient:
 
     async def delete_online_return_policy(
         self,
-        request: Optional[
-            Union[online_return_policy.DeleteOnlineReturnPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[online_return_policy.DeleteOnlineReturnPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -908,20 +795,13 @@ class OnlineReturnPolicyServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, online_return_policy.DeleteOnlineReturnPolicyRequest
-        ):
+        if not isinstance(request, online_return_policy.DeleteOnlineReturnPolicyRequest):
             request = online_return_policy.DeleteOnlineReturnPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -931,15 +811,11 @@ class OnlineReturnPolicyServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_online_return_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_online_return_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -959,9 +835,7 @@ class OnlineReturnPolicyServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.marketingplatform_admin_v1alpha.types import (
-    marketingplatform_admin,
-    resources,
-)
+from google.ads.marketingplatform_admin_v1alpha.types import marketingplatform_admin, resources
 
 
 class ListOrganizationsPager:
@@ -104,12 +89,7 @@ class ListOrganizationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.Organization]:
@@ -140,9 +120,7 @@ class ListOrganizationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[marketingplatform_admin.ListOrganizationsResponse]
-        ],
+        method: Callable[..., Awaitable[marketingplatform_admin.ListOrganizationsResponse]],
         request: marketingplatform_admin.ListOrganizationsRequest,
         response: marketingplatform_admin.ListOrganizationsResponse,
         *,
@@ -178,18 +156,11 @@ class ListOrganizationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[marketingplatform_admin.ListOrganizationsResponse]:
+    async def pages(self) -> AsyncIterator[marketingplatform_admin.ListOrganizationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.Organization]:
@@ -224,9 +195,7 @@ class ListAnalyticsAccountLinksPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., marketingplatform_admin.ListAnalyticsAccountLinksResponse
-        ],
+        method: Callable[..., marketingplatform_admin.ListAnalyticsAccountLinksResponse],
         request: marketingplatform_admin.ListAnalyticsAccountLinksRequest,
         response: marketingplatform_admin.ListAnalyticsAccountLinksResponse,
         *,
@@ -252,9 +221,7 @@ class ListAnalyticsAccountLinksPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = marketingplatform_admin.ListAnalyticsAccountLinksRequest(
-            request
-        )
+        self._request = marketingplatform_admin.ListAnalyticsAccountLinksRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -264,18 +231,11 @@ class ListAnalyticsAccountLinksPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[marketingplatform_admin.ListAnalyticsAccountLinksResponse]:
+    def pages(self) -> Iterator[marketingplatform_admin.ListAnalyticsAccountLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resources.AnalyticsAccountLink]:
@@ -306,9 +266,7 @@ class ListAnalyticsAccountLinksAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[marketingplatform_admin.ListAnalyticsAccountLinksResponse]
-        ],
+        method: Callable[..., Awaitable[marketingplatform_admin.ListAnalyticsAccountLinksResponse]],
         request: marketingplatform_admin.ListAnalyticsAccountLinksRequest,
         response: marketingplatform_admin.ListAnalyticsAccountLinksResponse,
         *,
@@ -334,9 +292,7 @@ class ListAnalyticsAccountLinksAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = marketingplatform_admin.ListAnalyticsAccountLinksRequest(
-            request
-        )
+        self._request = marketingplatform_admin.ListAnalyticsAccountLinksRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -346,18 +302,11 @@ class ListAnalyticsAccountLinksAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[marketingplatform_admin.ListAnalyticsAccountLinksResponse]:
+    async def pages(self) -> AsyncIterator[marketingplatform_admin.ListAnalyticsAccountLinksResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resources.AnalyticsAccountLink]:

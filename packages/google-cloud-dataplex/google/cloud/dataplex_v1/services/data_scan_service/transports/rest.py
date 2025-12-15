@@ -155,12 +155,8 @@ class DataScanServiceRestInterceptor:
     """
 
     def pre_create_data_scan(
-        self,
-        request: datascans.CreateDataScanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.CreateDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datascans.CreateDataScanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.CreateDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_scan
 
         Override in a subclass to manipulate the request or metadata
@@ -168,9 +164,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_scan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_scan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_scan
 
         DEPRECATED. Please use the `post_create_data_scan_with_metadata`
@@ -184,9 +178,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_create_data_scan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_scan
 
@@ -203,12 +195,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_scan(
-        self,
-        request: datascans.DeleteDataScanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.DeleteDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datascans.DeleteDataScanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.DeleteDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_scan
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +204,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_scan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_scan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_scan
 
         DEPRECATED. Please use the `post_delete_data_scan_with_metadata`
@@ -232,9 +218,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_delete_data_scan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_scan
 
@@ -251,13 +235,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_data_quality_rules(
-        self,
-        request: datascans.GenerateDataQualityRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.GenerateDataQualityRulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datascans.GenerateDataQualityRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.GenerateDataQualityRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_data_quality_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -265,9 +244,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_data_quality_rules(
-        self, response: datascans.GenerateDataQualityRulesResponse
-    ) -> datascans.GenerateDataQualityRulesResponse:
+    def post_generate_data_quality_rules(self, response: datascans.GenerateDataQualityRulesResponse) -> datascans.GenerateDataQualityRulesResponse:
         """Post-rpc interceptor for generate_data_quality_rules
 
         DEPRECATED. Please use the `post_generate_data_quality_rules_with_metadata`
@@ -281,13 +258,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_generate_data_quality_rules_with_metadata(
-        self,
-        response: datascans.GenerateDataQualityRulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.GenerateDataQualityRulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datascans.GenerateDataQualityRulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.GenerateDataQualityRulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_data_quality_rules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -303,9 +275,7 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_scan(
-        self,
-        request: datascans.GetDataScanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datascans.GetDataScanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.GetDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_scan
 
@@ -328,9 +298,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_get_data_scan_with_metadata(
-        self,
-        response: datascans.DataScan,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datascans.DataScan, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.DataScan, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_scan
 
@@ -347,12 +315,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_scan_job(
-        self,
-        request: datascans.GetDataScanJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.GetDataScanJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datascans.GetDataScanJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.GetDataScanJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_scan_job
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +324,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_scan_job(
-        self, response: datascans.DataScanJob
-    ) -> datascans.DataScanJob:
+    def post_get_data_scan_job(self, response: datascans.DataScanJob) -> datascans.DataScanJob:
         """Post-rpc interceptor for get_data_scan_job
 
         DEPRECATED. Please use the `post_get_data_scan_job_with_metadata`
@@ -376,9 +338,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_get_data_scan_job_with_metadata(
-        self,
-        response: datascans.DataScanJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datascans.DataScanJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.DataScanJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_scan_job
 
@@ -395,12 +355,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_scan_jobs(
-        self,
-        request: datascans.ListDataScanJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.ListDataScanJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datascans.ListDataScanJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.ListDataScanJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_scan_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -408,9 +364,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_scan_jobs(
-        self, response: datascans.ListDataScanJobsResponse
-    ) -> datascans.ListDataScanJobsResponse:
+    def post_list_data_scan_jobs(self, response: datascans.ListDataScanJobsResponse) -> datascans.ListDataScanJobsResponse:
         """Post-rpc interceptor for list_data_scan_jobs
 
         DEPRECATED. Please use the `post_list_data_scan_jobs_with_metadata`
@@ -424,12 +378,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_list_data_scan_jobs_with_metadata(
-        self,
-        response: datascans.ListDataScanJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.ListDataScanJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datascans.ListDataScanJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.ListDataScanJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_scan_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -445,9 +395,7 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_scans(
-        self,
-        request: datascans.ListDataScansRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datascans.ListDataScansRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.ListDataScansRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_scans
 
@@ -456,9 +404,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_scans(
-        self, response: datascans.ListDataScansResponse
-    ) -> datascans.ListDataScansResponse:
+    def post_list_data_scans(self, response: datascans.ListDataScansResponse) -> datascans.ListDataScansResponse:
         """Post-rpc interceptor for list_data_scans
 
         DEPRECATED. Please use the `post_list_data_scans_with_metadata`
@@ -472,12 +418,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_list_data_scans_with_metadata(
-        self,
-        response: datascans.ListDataScansResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.ListDataScansResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datascans.ListDataScansResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.ListDataScansResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_scans
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -493,9 +435,7 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_run_data_scan(
-        self,
-        request: datascans.RunDataScanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datascans.RunDataScanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.RunDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_data_scan
 
@@ -504,9 +444,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_run_data_scan(
-        self, response: datascans.RunDataScanResponse
-    ) -> datascans.RunDataScanResponse:
+    def post_run_data_scan(self, response: datascans.RunDataScanResponse) -> datascans.RunDataScanResponse:
         """Post-rpc interceptor for run_data_scan
 
         DEPRECATED. Please use the `post_run_data_scan_with_metadata`
@@ -520,9 +458,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_run_data_scan_with_metadata(
-        self,
-        response: datascans.RunDataScanResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datascans.RunDataScanResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datascans.RunDataScanResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_data_scan
 
@@ -539,12 +475,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_scan(
-        self,
-        request: datascans.UpdateDataScanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datascans.UpdateDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datascans.UpdateDataScanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datascans.UpdateDataScanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_scan
 
         Override in a subclass to manipulate the request or metadata
@@ -552,9 +484,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_scan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_scan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_scan
 
         DEPRECATED. Please use the `post_update_data_scan_with_metadata`
@@ -568,9 +498,7 @@ class DataScanServiceRestInterceptor:
         return response
 
     def post_update_data_scan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_scan
 
@@ -587,12 +515,8 @@ class DataScanServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -600,9 +524,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -612,12 +534,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -625,9 +543,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -637,12 +553,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -660,12 +572,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -683,12 +591,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -696,9 +600,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -708,12 +610,8 @@ class DataScanServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -721,9 +619,7 @@ class DataScanServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -815,9 +711,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -887,29 +781,17 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataScan(
-        _BaseDataScanServiceRestTransport._BaseCreateDataScan, DataScanServiceRestStub
-    ):
+    class _CreateDataScan(_BaseDataScanServiceRestTransport._BaseCreateDataScan, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.CreateDataScan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -952,32 +834,18 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_scan(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_scan(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_transcoded_request(http_options, request)
 
-            body = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseCreateDataScan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1001,13 +869,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._CreateDataScan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1021,12 +883,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_create_data_scan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_scan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_scan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1047,22 +905,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataScan(
-        _BaseDataScanServiceRestTransport._BaseDeleteDataScan, DataScanServiceRestStub
-    ):
+    class _DeleteDataScan(_BaseDataScanServiceRestTransport._BaseDeleteDataScan, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.DeleteDataScan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1104,28 +952,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_scan(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_scan(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseDeleteDataScan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1149,12 +985,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._DeleteDataScan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1168,12 +999,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_scan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_scan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_scan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1194,23 +1021,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _GenerateDataQualityRules(
-        _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules,
-        DataScanServiceRestStub,
-    ):
+    class _GenerateDataQualityRules(_BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.GenerateDataQualityRules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1254,32 +1070,18 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_data_quality_rules(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_data_quality_rules(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_transcoded_request(http_options, request)
 
-            body = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseGenerateDataQualityRules._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1302,16 +1104,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataScanServiceRestTransport._GenerateDataQualityRules._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataScanServiceRestTransport._GenerateDataQualityRules._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1327,16 +1121,10 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_generate_data_quality_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_data_quality_rules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_data_quality_rules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datascans.GenerateDataQualityRulesResponse.to_json(response)
-                    )
+                    response_payload = datascans.GenerateDataQualityRulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1355,22 +1143,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _GetDataScan(
-        _BaseDataScanServiceRestTransport._BaseGetDataScan, DataScanServiceRestStub
-    ):
+    class _GetDataScan(_BaseDataScanServiceRestTransport._BaseGetDataScan, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.GetDataScan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1433,26 +1211,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGetDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGetDataScan._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_scan(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetDataScan._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetDataScan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseGetDataScan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseGetDataScan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1476,12 +1244,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._GetDataScan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1497,12 +1260,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_get_data_scan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_scan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_scan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datascans.DataScan.to_json(response)
                 except:
@@ -1523,22 +1282,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _GetDataScanJob(
-        _BaseDataScanServiceRestTransport._BaseGetDataScanJob, DataScanServiceRestStub
-    ):
+    class _GetDataScanJob(_BaseDataScanServiceRestTransport._BaseGetDataScanJob, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.GetDataScanJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1579,28 +1328,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_data_scan_job(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_data_scan_job(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseGetDataScanJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1624,12 +1361,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._GetDataScanJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1645,12 +1377,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_get_data_scan_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_scan_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_scan_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datascans.DataScanJob.to_json(response)
                 except:
@@ -1671,22 +1399,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _ListDataScanJobs(
-        _BaseDataScanServiceRestTransport._BaseListDataScanJobs, DataScanServiceRestStub
-    ):
+    class _ListDataScanJobs(_BaseDataScanServiceRestTransport._BaseListDataScanJobs, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.ListDataScanJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1725,28 +1443,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     List DataScanJobs response.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_scan_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_scan_jobs(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseListDataScanJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1770,12 +1476,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._ListDataScanJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1791,16 +1492,10 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_list_data_scan_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_scan_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_scan_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datascans.ListDataScanJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = datascans.ListDataScanJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1819,22 +1514,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _ListDataScans(
-        _BaseDataScanServiceRestTransport._BaseListDataScans, DataScanServiceRestStub
-    ):
+    class _ListDataScans(_BaseDataScanServiceRestTransport._BaseListDataScans, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.ListDataScans")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1873,26 +1558,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     List dataScans response.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListDataScans._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListDataScans._get_http_options()
 
             request, metadata = self._interceptor.pre_list_data_scans(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseListDataScans._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseListDataScans._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseListDataScans._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseListDataScans._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1916,12 +1591,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._ListDataScans._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1937,12 +1607,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_list_data_scans(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_scans_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_scans_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datascans.ListDataScansResponse.to_json(response)
                 except:
@@ -1963,22 +1629,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _RunDataScan(
-        _BaseDataScanServiceRestTransport._BaseRunDataScan, DataScanServiceRestStub
-    ):
+    class _RunDataScan(_BaseDataScanServiceRestTransport._BaseRunDataScan, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.RunDataScan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2018,30 +1674,18 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     Run DataScan Response.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseRunDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_http_options()
 
             request, metadata = self._interceptor.pre_run_data_scan(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_transcoded_request(http_options, request)
 
-            body = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseRunDataScan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2065,13 +1709,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._RunDataScan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2087,12 +1725,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_run_data_scan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_data_scan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_data_scan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datascans.RunDataScanResponse.to_json(response)
                 except:
@@ -2113,22 +1747,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataScan(
-        _BaseDataScanServiceRestTransport._BaseUpdateDataScan, DataScanServiceRestStub
-    ):
+    class _UpdateDataScan(_BaseDataScanServiceRestTransport._BaseUpdateDataScan, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.UpdateDataScan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2171,32 +1795,18 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_scan(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_scan(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_transcoded_request(http_options, request)
 
-            body = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseUpdateDataScan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2220,13 +1830,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._UpdateDataScan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2240,12 +1844,8 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             resp = self._interceptor.post_update_data_scan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_scan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_scan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2267,78 +1867,55 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             return resp
 
     @property
-    def create_data_scan(
-        self,
-    ) -> Callable[[datascans.CreateDataScanRequest], operations_pb2.Operation]:
+    def create_data_scan(self) -> Callable[[datascans.CreateDataScanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataScan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_scan(
-        self,
-    ) -> Callable[[datascans.DeleteDataScanRequest], operations_pb2.Operation]:
+    def delete_data_scan(self) -> Callable[[datascans.DeleteDataScanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataScan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_data_quality_rules(
-        self,
-    ) -> Callable[
-        [datascans.GenerateDataQualityRulesRequest],
-        datascans.GenerateDataQualityRulesResponse,
-    ]:
+    def generate_data_quality_rules(self) -> Callable[[datascans.GenerateDataQualityRulesRequest], datascans.GenerateDataQualityRulesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateDataQualityRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_scan(
-        self,
-    ) -> Callable[[datascans.GetDataScanRequest], datascans.DataScan]:
+    def get_data_scan(self) -> Callable[[datascans.GetDataScanRequest], datascans.DataScan]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataScan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_scan_job(
-        self,
-    ) -> Callable[[datascans.GetDataScanJobRequest], datascans.DataScanJob]:
+    def get_data_scan_job(self) -> Callable[[datascans.GetDataScanJobRequest], datascans.DataScanJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataScanJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_scan_jobs(
-        self,
-    ) -> Callable[
-        [datascans.ListDataScanJobsRequest], datascans.ListDataScanJobsResponse
-    ]:
+    def list_data_scan_jobs(self) -> Callable[[datascans.ListDataScanJobsRequest], datascans.ListDataScanJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataScanJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_scans(
-        self,
-    ) -> Callable[[datascans.ListDataScansRequest], datascans.ListDataScansResponse]:
+    def list_data_scans(self) -> Callable[[datascans.ListDataScansRequest], datascans.ListDataScansResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataScans(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_data_scan(
-        self,
-    ) -> Callable[[datascans.RunDataScanRequest], datascans.RunDataScanResponse]:
+    def run_data_scan(self) -> Callable[[datascans.RunDataScanRequest], datascans.RunDataScanResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunDataScan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_scan(
-        self,
-    ) -> Callable[[datascans.UpdateDataScanRequest], operations_pb2.Operation]:
+    def update_data_scan(self) -> Callable[[datascans.UpdateDataScanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataScan(self._session, self._host, self._interceptor)  # type: ignore
@@ -2347,22 +1924,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataScanServiceRestTransport._BaseGetLocation, DataScanServiceRestStub
-    ):
+    class _GetLocation(_BaseDataScanServiceRestTransport._BaseGetLocation, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2400,26 +1967,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2443,12 +2000,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2460,9 +2012,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2487,22 +2037,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataScanServiceRestTransport._BaseListLocations, DataScanServiceRestStub
-    ):
+    class _ListLocations(_BaseDataScanServiceRestTransport._BaseListLocations, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2540,26 +2080,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2583,12 +2113,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2600,9 +2125,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2627,22 +2150,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataScanServiceRestTransport._BaseCancelOperation, DataScanServiceRestStub
-    ):
+    class _CancelOperation(_BaseDataScanServiceRestTransport._BaseCancelOperation, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2678,32 +2191,18 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2727,13 +2226,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2747,22 +2240,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataScanServiceRestTransport._BaseDeleteOperation, DataScanServiceRestStub
-    ):
+    class _DeleteOperation(_BaseDataScanServiceRestTransport._BaseDeleteOperation, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2797,28 +2280,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2842,12 +2313,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2861,22 +2327,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataScanServiceRestTransport._BaseGetOperation, DataScanServiceRestStub
-    ):
+    class _GetOperation(_BaseDataScanServiceRestTransport._BaseGetOperation, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2914,26 +2370,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2957,12 +2403,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2974,9 +2415,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3001,22 +2440,12 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataScanServiceRestTransport._BaseListOperations, DataScanServiceRestStub
-    ):
+    class _ListOperations(_BaseDataScanServiceRestTransport._BaseListOperations, DataScanServiceRestStub):
         def __hash__(self):
             return hash("DataScanServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3054,26 +2483,16 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataScanServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataScanServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataScanServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataScanServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataScanServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataScanServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3097,12 +2516,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
 
             # Send the request
             response = DataScanServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3114,9 +2528,7 @@ class DataScanServiceRestTransport(_BaseDataScanServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

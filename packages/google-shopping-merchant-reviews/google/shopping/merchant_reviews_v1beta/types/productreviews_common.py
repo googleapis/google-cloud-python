@@ -479,12 +479,10 @@ class ProductReviewStatus(proto.Message):
             proto.STRING,
             number=1,
         )
-        severity: "ProductReviewStatus.ProductReviewItemLevelIssue.Severity" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="ProductReviewStatus.ProductReviewItemLevelIssue.Severity",
-            )
+        severity: "ProductReviewStatus.ProductReviewItemLevelIssue.Severity" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ProductReviewStatus.ProductReviewItemLevelIssue.Severity",
         )
         resolution: str = proto.Field(
             proto.STRING,
@@ -512,16 +510,12 @@ class ProductReviewStatus(proto.Message):
             number=8,
         )
 
-    destination_statuses: MutableSequence[
-        ProductReviewDestinationStatus
-    ] = proto.RepeatedField(
+    destination_statuses: MutableSequence[ProductReviewDestinationStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ProductReviewDestinationStatus,
     )
-    item_level_issues: MutableSequence[
-        ProductReviewItemLevelIssue
-    ] = proto.RepeatedField(
+    item_level_issues: MutableSequence[ProductReviewItemLevelIssue] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=ProductReviewItemLevelIssue,

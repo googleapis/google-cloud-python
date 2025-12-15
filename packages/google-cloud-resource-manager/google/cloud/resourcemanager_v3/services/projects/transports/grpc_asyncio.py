@@ -49,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -270,18 +259,14 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -317,9 +302,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -342,17 +325,13 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_project(
-        self,
-    ) -> Callable[[projects.GetProjectRequest], Awaitable[projects.Project]]:
+    def get_project(self) -> Callable[[projects.GetProjectRequest], Awaitable[projects.Project]]:
         r"""Return a callable for the get project method over gRPC.
 
         Retrieves the project identified by the specified ``name`` (for
@@ -380,11 +359,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["get_project"]
 
     @property
-    def list_projects(
-        self,
-    ) -> Callable[
-        [projects.ListProjectsRequest], Awaitable[projects.ListProjectsResponse]
-    ]:
+    def list_projects(self) -> Callable[[projects.ListProjectsRequest], Awaitable[projects.ListProjectsResponse]]:
         r"""Return a callable for the list projects method over gRPC.
 
         Lists projects that are direct children of the specified folder
@@ -414,11 +389,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["list_projects"]
 
     @property
-    def search_projects(
-        self,
-    ) -> Callable[
-        [projects.SearchProjectsRequest], Awaitable[projects.SearchProjectsResponse]
-    ]:
+    def search_projects(self) -> Callable[[projects.SearchProjectsRequest], Awaitable[projects.SearchProjectsResponse]]:
         r"""Return a callable for the search projects method over gRPC.
 
         Search for projects that the caller has both
@@ -454,9 +425,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["search_projects"]
 
     @property
-    def create_project(
-        self,
-    ) -> Callable[[projects.CreateProjectRequest], Awaitable[operations_pb2.Operation]]:
+    def create_project(self) -> Callable[[projects.CreateProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create project method over gRPC.
 
         Request that a new project be created. The result is an
@@ -485,9 +454,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["create_project"]
 
     @property
-    def update_project(
-        self,
-    ) -> Callable[[projects.UpdateProjectRequest], Awaitable[operations_pb2.Operation]]:
+    def update_project(self) -> Callable[[projects.UpdateProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update project method over gRPC.
 
         Updates the ``display_name`` and labels of the project
@@ -517,9 +484,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["update_project"]
 
     @property
-    def move_project(
-        self,
-    ) -> Callable[[projects.MoveProjectRequest], Awaitable[operations_pb2.Operation]]:
+    def move_project(self) -> Callable[[projects.MoveProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the move project method over gRPC.
 
         Move a project to another place in your resource hierarchy,
@@ -558,9 +523,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["move_project"]
 
     @property
-    def delete_project(
-        self,
-    ) -> Callable[[projects.DeleteProjectRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_project(self) -> Callable[[projects.DeleteProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete project method over gRPC.
 
         Marks the project identified by the specified ``name`` (for
@@ -618,11 +581,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["delete_project"]
 
     @property
-    def undelete_project(
-        self,
-    ) -> Callable[
-        [projects.UndeleteProjectRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def undelete_project(self) -> Callable[[projects.UndeleteProjectRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undelete project method over gRPC.
 
         Restores the project identified by the specified ``name`` (for
@@ -653,9 +612,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["undelete_project"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Returns the IAM access control policy for the specified project,
@@ -682,9 +639,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM access control policy for the specified project, in
@@ -755,12 +710,7 @@ class ProjectsGrpcAsyncIOTransport(ProjectsTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that a caller has on the specified project,

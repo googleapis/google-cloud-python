@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -74,30 +63,16 @@ class LanguageServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = LanguageServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = LanguageServiceClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        LanguageServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        LanguageServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(LanguageServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(LanguageServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(LanguageServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        LanguageServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        LanguageServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        LanguageServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(LanguageServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(LanguageServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(LanguageServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(LanguageServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        LanguageServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(LanguageServiceClient.parse_common_project_path)
     common_location_path = staticmethod(LanguageServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        LanguageServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(LanguageServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -133,9 +108,7 @@ class LanguageServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -202,11 +175,7 @@ class LanguageServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, LanguageServiceTransport, Callable[..., LanguageServiceTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, LanguageServiceTransport, Callable[..., LanguageServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -266,20 +235,14 @@ class LanguageServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.language_v2.LanguageServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.language.v2.LanguageService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -363,14 +326,9 @@ class LanguageServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document, encoding_type]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -386,9 +344,7 @@ class LanguageServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.analyze_sentiment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_sentiment]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -479,14 +435,9 @@ class LanguageServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document, encoding_type]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -502,9 +453,7 @@ class LanguageServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.analyze_entities
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.analyze_entities]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -587,14 +536,9 @@ class LanguageServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -608,9 +552,7 @@ class LanguageServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.classify_text
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.classify_text]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -694,14 +636,9 @@ class LanguageServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -715,9 +652,7 @@ class LanguageServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.moderate_text
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.moderate_text]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -816,14 +751,9 @@ class LanguageServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [document, features, encoding_type]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -841,9 +771,7 @@ class LanguageServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.annotate_text
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.annotate_text]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -866,9 +794,7 @@ class LanguageServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

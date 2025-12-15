@@ -18,25 +18,13 @@ from google.cloud.gke_backup import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.gke_backup_v1.services.backup_for_gke.async_client import (
-    BackupForGKEAsyncClient,
-)
+from google.cloud.gke_backup_v1.services.backup_for_gke.async_client import BackupForGKEAsyncClient
 from google.cloud.gke_backup_v1.services.backup_for_gke.client import BackupForGKEClient
 from google.cloud.gke_backup_v1.types.backup import Backup
 from google.cloud.gke_backup_v1.types.backup_channel import BackupChannel
-from google.cloud.gke_backup_v1.types.backup_plan import (
-    BackupPlan,
-    ExclusionWindow,
-    RpoConfig,
-)
+from google.cloud.gke_backup_v1.types.backup_plan import BackupPlan, ExclusionWindow, RpoConfig
 from google.cloud.gke_backup_v1.types.backup_plan_binding import BackupPlanBinding
-from google.cloud.gke_backup_v1.types.common import (
-    EncryptionKey,
-    NamespacedName,
-    NamespacedNames,
-    Namespaces,
-    VolumeTypeEnum,
-)
+from google.cloud.gke_backup_v1.types.common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces, VolumeTypeEnum
 from google.cloud.gke_backup_v1.types.gkebackup import (
     CreateBackupChannelRequest,
     CreateBackupPlanRequest,
@@ -90,12 +78,7 @@ from google.cloud.gke_backup_v1.types.gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from google.cloud.gke_backup_v1.types.restore import (
-    ResourceSelector,
-    Restore,
-    RestoreConfig,
-    VolumeDataRestorePolicyOverride,
-)
+from google.cloud.gke_backup_v1.types.restore import ResourceSelector, Restore, RestoreConfig, VolumeDataRestorePolicyOverride
 from google.cloud.gke_backup_v1.types.restore_channel import RestoreChannel
 from google.cloud.gke_backup_v1.types.restore_plan import RestorePlan
 from google.cloud.gke_backup_v1.types.restore_plan_binding import RestorePlanBinding

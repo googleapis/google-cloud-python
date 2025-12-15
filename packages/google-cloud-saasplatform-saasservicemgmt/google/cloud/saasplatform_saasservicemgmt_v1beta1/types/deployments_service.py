@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    deployments_resources,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import deployments_resources
 
 __protobuf__ = proto.module(
     package="google.cloud.saasplatform.saasservicemgmt.v1beta1",
@@ -1225,9 +1223,7 @@ class ListUnitOperationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    unit_operations: MutableSequence[
-        deployments_resources.UnitOperation
-    ] = proto.RepeatedField(
+    unit_operations: MutableSequence[deployments_resources.UnitOperation] = proto.RepeatedField(
         proto.MESSAGE,
         number=10509,
         message=deployments_resources.UnitOperation,

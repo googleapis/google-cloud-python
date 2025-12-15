@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -291,18 +280,14 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -338,9 +323,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -363,20 +346,13 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListInstancesRequest],
-        Awaitable[cloud_filestore_service.ListInstancesResponse],
-    ]:
+    def list_instances(self) -> Callable[[cloud_filestore_service.ListInstancesRequest], Awaitable[cloud_filestore_service.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists all instances in a project for either a
@@ -401,12 +377,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetInstanceRequest],
-        Awaitable[cloud_filestore_service.Instance],
-    ]:
+    def get_instance(self) -> Callable[[cloud_filestore_service.GetInstanceRequest], Awaitable[cloud_filestore_service.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Gets the details of a specific instance.
@@ -430,12 +401,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_instance(self) -> Callable[[cloud_filestore_service.CreateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates an instance.
@@ -463,12 +429,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["create_instance"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_instance(self) -> Callable[[cloud_filestore_service.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update instance method over gRPC.
 
         Updates the settings of a specific instance.
@@ -492,12 +453,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["update_instance"]
 
     @property
-    def restore_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.RestoreInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def restore_instance(self) -> Callable[[cloud_filestore_service.RestoreInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restore instance method over gRPC.
 
         Restores an existing instance's file share from a
@@ -525,12 +481,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["restore_instance"]
 
     @property
-    def revert_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.RevertInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def revert_instance(self) -> Callable[[cloud_filestore_service.RevertInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the revert instance method over gRPC.
 
         Revert an existing instance's file system to a
@@ -555,12 +506,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["revert_instance"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteInstanceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_instance(self) -> Callable[[cloud_filestore_service.DeleteInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes an instance.
@@ -584,12 +530,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def list_snapshots(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListSnapshotsRequest],
-        Awaitable[cloud_filestore_service.ListSnapshotsResponse],
-    ]:
+    def list_snapshots(self) -> Callable[[cloud_filestore_service.ListSnapshotsRequest], Awaitable[cloud_filestore_service.ListSnapshotsResponse]]:
         r"""Return a callable for the list snapshots method over gRPC.
 
         Lists all snapshots in a project for either a
@@ -614,12 +555,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["list_snapshots"]
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetSnapshotRequest],
-        Awaitable[cloud_filestore_service.Snapshot],
-    ]:
+    def get_snapshot(self) -> Callable[[cloud_filestore_service.GetSnapshotRequest], Awaitable[cloud_filestore_service.Snapshot]]:
         r"""Return a callable for the get snapshot method over gRPC.
 
         Gets the details of a specific snapshot.
@@ -643,12 +579,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["get_snapshot"]
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateSnapshotRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_snapshot(self) -> Callable[[cloud_filestore_service.CreateSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create snapshot method over gRPC.
 
         Creates a snapshot.
@@ -672,12 +603,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["create_snapshot"]
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteSnapshotRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_snapshot(self) -> Callable[[cloud_filestore_service.DeleteSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete snapshot method over gRPC.
 
         Deletes a snapshot.
@@ -701,12 +627,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["delete_snapshot"]
 
     @property
-    def update_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateSnapshotRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_snapshot(self) -> Callable[[cloud_filestore_service.UpdateSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update snapshot method over gRPC.
 
         Updates the settings of a specific snapshot.
@@ -730,12 +651,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["update_snapshot"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListBackupsRequest],
-        Awaitable[cloud_filestore_service.ListBackupsResponse],
-    ]:
+    def list_backups(self) -> Callable[[cloud_filestore_service.ListBackupsRequest], Awaitable[cloud_filestore_service.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists all backups in a project for either a specified
@@ -760,12 +676,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["list_backups"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetBackupRequest],
-        Awaitable[cloud_filestore_service.Backup],
-    ]:
+    def get_backup(self) -> Callable[[cloud_filestore_service.GetBackupRequest], Awaitable[cloud_filestore_service.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Gets the details of a specific backup.
@@ -789,12 +700,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["get_backup"]
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateBackupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_backup(self) -> Callable[[cloud_filestore_service.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
         Creates a backup.
@@ -818,12 +724,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["create_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteBackupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_backup(self) -> Callable[[cloud_filestore_service.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a backup.
@@ -847,12 +748,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateBackupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_backup(self) -> Callable[[cloud_filestore_service.UpdateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup method over gRPC.
 
         Updates the settings of a specific backup.
@@ -876,12 +772,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
         return self._stubs["update_backup"]
 
     @property
-    def promote_replica(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.PromoteReplicaRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def promote_replica(self) -> Callable[[cloud_filestore_service.PromoteReplicaRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the promote replica method over gRPC.
 
         Promote the standby instance (replica).
@@ -1131,9 +1022,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1150,9 +1039,7 @@ class CloudFilestoreManagerGrpcAsyncIOTransport(CloudFilestoreManagerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

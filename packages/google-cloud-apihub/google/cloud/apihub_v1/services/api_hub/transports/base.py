@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.apihub_v1 import gapic_version as package_version
 from google.cloud.apihub_v1.types import apihub_service, common_fields
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class ApiHubTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -521,173 +511,87 @@ class ApiHubTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_api(
-        self,
-    ) -> Callable[
-        [apihub_service.CreateApiRequest],
-        Union[common_fields.Api, Awaitable[common_fields.Api]],
-    ]:
+    def create_api(self) -> Callable[[apihub_service.CreateApiRequest], Union[common_fields.Api, Awaitable[common_fields.Api]]]:
         raise NotImplementedError()
 
     @property
-    def get_api(
-        self,
-    ) -> Callable[
-        [apihub_service.GetApiRequest],
-        Union[common_fields.Api, Awaitable[common_fields.Api]],
-    ]:
+    def get_api(self) -> Callable[[apihub_service.GetApiRequest], Union[common_fields.Api, Awaitable[common_fields.Api]]]:
         raise NotImplementedError()
 
     @property
     def list_apis(
         self,
-    ) -> Callable[
-        [apihub_service.ListApisRequest],
-        Union[
-            apihub_service.ListApisResponse, Awaitable[apihub_service.ListApisResponse]
-        ],
-    ]:
+    ) -> Callable[[apihub_service.ListApisRequest], Union[apihub_service.ListApisResponse, Awaitable[apihub_service.ListApisResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_api(
-        self,
-    ) -> Callable[
-        [apihub_service.UpdateApiRequest],
-        Union[common_fields.Api, Awaitable[common_fields.Api]],
-    ]:
+    def update_api(self) -> Callable[[apihub_service.UpdateApiRequest], Union[common_fields.Api, Awaitable[common_fields.Api]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteApiRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api(self) -> Callable[[apihub_service.DeleteApiRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[
-        [apihub_service.CreateVersionRequest],
-        Union[common_fields.Version, Awaitable[common_fields.Version]],
-    ]:
+    def create_version(self) -> Callable[[apihub_service.CreateVersionRequest], Union[common_fields.Version, Awaitable[common_fields.Version]]]:
         raise NotImplementedError()
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [apihub_service.GetVersionRequest],
-        Union[common_fields.Version, Awaitable[common_fields.Version]],
-    ]:
+    def get_version(self) -> Callable[[apihub_service.GetVersionRequest], Union[common_fields.Version, Awaitable[common_fields.Version]]]:
         raise NotImplementedError()
 
     @property
     def list_versions(
         self,
-    ) -> Callable[
-        [apihub_service.ListVersionsRequest],
-        Union[
-            apihub_service.ListVersionsResponse,
-            Awaitable[apihub_service.ListVersionsResponse],
-        ],
-    ]:
+    ) -> Callable[[apihub_service.ListVersionsRequest], Union[apihub_service.ListVersionsResponse, Awaitable[apihub_service.ListVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[
-        [apihub_service.UpdateVersionRequest],
-        Union[common_fields.Version, Awaitable[common_fields.Version]],
-    ]:
+    def update_version(self) -> Callable[[apihub_service.UpdateVersionRequest], Union[common_fields.Version, Awaitable[common_fields.Version]]]:
         raise NotImplementedError()
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteVersionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_version(self) -> Callable[[apihub_service.DeleteVersionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_spec(
-        self,
-    ) -> Callable[
-        [apihub_service.CreateSpecRequest],
-        Union[common_fields.Spec, Awaitable[common_fields.Spec]],
-    ]:
+    def create_spec(self) -> Callable[[apihub_service.CreateSpecRequest], Union[common_fields.Spec, Awaitable[common_fields.Spec]]]:
         raise NotImplementedError()
 
     @property
-    def get_spec(
-        self,
-    ) -> Callable[
-        [apihub_service.GetSpecRequest],
-        Union[common_fields.Spec, Awaitable[common_fields.Spec]],
-    ]:
+    def get_spec(self) -> Callable[[apihub_service.GetSpecRequest], Union[common_fields.Spec, Awaitable[common_fields.Spec]]]:
         raise NotImplementedError()
 
     @property
     def get_spec_contents(
         self,
-    ) -> Callable[
-        [apihub_service.GetSpecContentsRequest],
-        Union[common_fields.SpecContents, Awaitable[common_fields.SpecContents]],
-    ]:
+    ) -> Callable[[apihub_service.GetSpecContentsRequest], Union[common_fields.SpecContents, Awaitable[common_fields.SpecContents]]]:
         raise NotImplementedError()
 
     @property
     def list_specs(
         self,
-    ) -> Callable[
-        [apihub_service.ListSpecsRequest],
-        Union[
-            apihub_service.ListSpecsResponse,
-            Awaitable[apihub_service.ListSpecsResponse],
-        ],
-    ]:
+    ) -> Callable[[apihub_service.ListSpecsRequest], Union[apihub_service.ListSpecsResponse, Awaitable[apihub_service.ListSpecsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_spec(
-        self,
-    ) -> Callable[
-        [apihub_service.UpdateSpecRequest],
-        Union[common_fields.Spec, Awaitable[common_fields.Spec]],
-    ]:
+    def update_spec(self) -> Callable[[apihub_service.UpdateSpecRequest], Union[common_fields.Spec, Awaitable[common_fields.Spec]]]:
         raise NotImplementedError()
 
     @property
-    def delete_spec(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteSpecRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_spec(self) -> Callable[[apihub_service.DeleteSpecRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_api_operation(
         self,
-    ) -> Callable[
-        [apihub_service.CreateApiOperationRequest],
-        Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]],
-    ]:
+    ) -> Callable[[apihub_service.CreateApiOperationRequest], Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]]]:
         raise NotImplementedError()
 
     @property
     def get_api_operation(
         self,
-    ) -> Callable[
-        [apihub_service.GetApiOperationRequest],
-        Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]],
-    ]:
+    ) -> Callable[[apihub_service.GetApiOperationRequest], Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]]]:
         raise NotImplementedError()
 
     @property
@@ -695,133 +599,77 @@ class ApiHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apihub_service.ListApiOperationsRequest],
-        Union[
-            apihub_service.ListApiOperationsResponse,
-            Awaitable[apihub_service.ListApiOperationsResponse],
-        ],
+        Union[apihub_service.ListApiOperationsResponse, Awaitable[apihub_service.ListApiOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_api_operation(
         self,
-    ) -> Callable[
-        [apihub_service.UpdateApiOperationRequest],
-        Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]],
-    ]:
+    ) -> Callable[[apihub_service.UpdateApiOperationRequest], Union[common_fields.ApiOperation, Awaitable[common_fields.ApiOperation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api_operation(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteApiOperationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api_operation(self) -> Callable[[apihub_service.DeleteApiOperationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_definition(
-        self,
-    ) -> Callable[
-        [apihub_service.GetDefinitionRequest],
-        Union[common_fields.Definition, Awaitable[common_fields.Definition]],
-    ]:
+    def get_definition(self) -> Callable[[apihub_service.GetDefinitionRequest], Union[common_fields.Definition, Awaitable[common_fields.Definition]]]:
         raise NotImplementedError()
 
     @property
     def create_deployment(
         self,
-    ) -> Callable[
-        [apihub_service.CreateDeploymentRequest],
-        Union[common_fields.Deployment, Awaitable[common_fields.Deployment]],
-    ]:
+    ) -> Callable[[apihub_service.CreateDeploymentRequest], Union[common_fields.Deployment, Awaitable[common_fields.Deployment]]]:
         raise NotImplementedError()
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[
-        [apihub_service.GetDeploymentRequest],
-        Union[common_fields.Deployment, Awaitable[common_fields.Deployment]],
-    ]:
+    def get_deployment(self) -> Callable[[apihub_service.GetDeploymentRequest], Union[common_fields.Deployment, Awaitable[common_fields.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def list_deployments(
         self,
     ) -> Callable[
-        [apihub_service.ListDeploymentsRequest],
-        Union[
-            apihub_service.ListDeploymentsResponse,
-            Awaitable[apihub_service.ListDeploymentsResponse],
-        ],
+        [apihub_service.ListDeploymentsRequest], Union[apihub_service.ListDeploymentsResponse, Awaitable[apihub_service.ListDeploymentsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_deployment(
         self,
-    ) -> Callable[
-        [apihub_service.UpdateDeploymentRequest],
-        Union[common_fields.Deployment, Awaitable[common_fields.Deployment]],
-    ]:
+    ) -> Callable[[apihub_service.UpdateDeploymentRequest], Union[common_fields.Deployment, Awaitable[common_fields.Deployment]]]:
         raise NotImplementedError()
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_deployment(self) -> Callable[[apihub_service.DeleteDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_attribute(
         self,
-    ) -> Callable[
-        [apihub_service.CreateAttributeRequest],
-        Union[common_fields.Attribute, Awaitable[common_fields.Attribute]],
-    ]:
+    ) -> Callable[[apihub_service.CreateAttributeRequest], Union[common_fields.Attribute, Awaitable[common_fields.Attribute]]]:
         raise NotImplementedError()
 
     @property
-    def get_attribute(
-        self,
-    ) -> Callable[
-        [apihub_service.GetAttributeRequest],
-        Union[common_fields.Attribute, Awaitable[common_fields.Attribute]],
-    ]:
+    def get_attribute(self) -> Callable[[apihub_service.GetAttributeRequest], Union[common_fields.Attribute, Awaitable[common_fields.Attribute]]]:
         raise NotImplementedError()
 
     @property
     def update_attribute(
         self,
-    ) -> Callable[
-        [apihub_service.UpdateAttributeRequest],
-        Union[common_fields.Attribute, Awaitable[common_fields.Attribute]],
-    ]:
+    ) -> Callable[[apihub_service.UpdateAttributeRequest], Union[common_fields.Attribute, Awaitable[common_fields.Attribute]]]:
         raise NotImplementedError()
 
     @property
-    def delete_attribute(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteAttributeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_attribute(self) -> Callable[[apihub_service.DeleteAttributeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_attributes(
         self,
     ) -> Callable[
-        [apihub_service.ListAttributesRequest],
-        Union[
-            apihub_service.ListAttributesResponse,
-            Awaitable[apihub_service.ListAttributesResponse],
-        ],
+        [apihub_service.ListAttributesRequest], Union[apihub_service.ListAttributesResponse, Awaitable[apihub_service.ListAttributesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -829,59 +677,37 @@ class ApiHubTransport(abc.ABC):
     def search_resources(
         self,
     ) -> Callable[
-        [apihub_service.SearchResourcesRequest],
-        Union[
-            apihub_service.SearchResourcesResponse,
-            Awaitable[apihub_service.SearchResourcesResponse],
-        ],
+        [apihub_service.SearchResourcesRequest], Union[apihub_service.SearchResourcesResponse, Awaitable[apihub_service.SearchResourcesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_external_api(
         self,
-    ) -> Callable[
-        [apihub_service.CreateExternalApiRequest],
-        Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]],
-    ]:
+    ) -> Callable[[apihub_service.CreateExternalApiRequest], Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]]]:
         raise NotImplementedError()
 
     @property
     def get_external_api(
         self,
-    ) -> Callable[
-        [apihub_service.GetExternalApiRequest],
-        Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]],
-    ]:
+    ) -> Callable[[apihub_service.GetExternalApiRequest], Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]]]:
         raise NotImplementedError()
 
     @property
     def update_external_api(
         self,
-    ) -> Callable[
-        [apihub_service.UpdateExternalApiRequest],
-        Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]],
-    ]:
+    ) -> Callable[[apihub_service.UpdateExternalApiRequest], Union[common_fields.ExternalApi, Awaitable[common_fields.ExternalApi]]]:
         raise NotImplementedError()
 
     @property
-    def delete_external_api(
-        self,
-    ) -> Callable[
-        [apihub_service.DeleteExternalApiRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_external_api(self) -> Callable[[apihub_service.DeleteExternalApiRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_external_apis(
         self,
     ) -> Callable[
-        [apihub_service.ListExternalApisRequest],
-        Union[
-            apihub_service.ListExternalApisResponse,
-            Awaitable[apihub_service.ListExternalApisResponse],
-        ],
+        [apihub_service.ListExternalApisRequest], Union[apihub_service.ListExternalApisResponse, Awaitable[apihub_service.ListExternalApisResponse]]
     ]:
         raise NotImplementedError()
 
@@ -890,20 +716,14 @@ class ApiHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -921,22 +741,13 @@ class ApiHubTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

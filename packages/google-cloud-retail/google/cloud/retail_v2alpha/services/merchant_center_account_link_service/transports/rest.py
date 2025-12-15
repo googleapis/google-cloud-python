@@ -102,13 +102,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
     """
 
     def pre_create_merchant_center_account_link(
-        self,
-        request: merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_merchant_center_account_link
 
         Override in a subclass to manipulate the request or metadata
@@ -116,9 +111,7 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_merchant_center_account_link(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_merchant_center_account_link(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_merchant_center_account_link
 
         DEPRECATED. Please use the `post_create_merchant_center_account_link_with_metadata`
@@ -132,9 +125,7 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return response
 
     def post_create_merchant_center_account_link_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_merchant_center_account_link
 
@@ -151,13 +142,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_merchant_center_account_link(
-        self,
-        request: merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_merchant_center_account_link
 
         Override in a subclass to manipulate the request or metadata
@@ -166,13 +152,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return request, metadata
 
     def pre_list_merchant_center_account_links(
-        self,
-        request: merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchant_center_account_link_service.ListMerchantCenterAccountLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_merchant_center_account_links
 
         Override in a subclass to manipulate the request or metadata
@@ -181,8 +162,7 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return request, metadata
 
     def post_list_merchant_center_account_links(
-        self,
-        response: merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse,
+        self, response: merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse
     ) -> merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse:
         """Post-rpc interceptor for list_merchant_center_account_links
 
@@ -197,13 +177,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return response
 
     def post_list_merchant_center_account_links_with_metadata(
-        self,
-        response: merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_merchant_center_account_links
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -219,12 +194,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -232,9 +203,7 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -244,12 +213,8 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +222,7 @@ class MerchantCenterAccountLinkServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -276,9 +239,7 @@ class MerchantCenterAccountLinkServiceRestStub:
     _interceptor: MerchantCenterAccountLinkServiceRestInterceptor
 
 
-class MerchantCenterAccountLinkServiceRestTransport(
-    _BaseMerchantCenterAccountLinkServiceRestTransport
-):
+class MerchantCenterAccountLinkServiceRestTransport(_BaseMerchantCenterAccountLinkServiceRestTransport):
     """REST backend synchronous transport for MerchantCenterAccountLinkService.
 
     Merchant Center Link service to link a Branch to a Merchant
@@ -351,15 +312,11 @@ class MerchantCenterAccountLinkServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or MerchantCenterAccountLinkServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or MerchantCenterAccountLinkServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -419,32 +376,19 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 path_prefix="v2alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _CreateMerchantCenterAccountLink(
-        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink,
-        MerchantCenterAccountLinkServiceRestStub,
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink, MerchantCenterAccountLinkServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MerchantCenterAccountLinkServiceRestTransport.CreateMerchantCenterAccountLink"
-            )
+            return hash("MerchantCenterAccountLinkServiceRestTransport.CreateMerchantCenterAccountLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -490,35 +434,22 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_merchant_center_account_link(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_merchant_center_account_link(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseCreateMerchantCenterAccountLink._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -542,13 +473,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._CreateMerchantCenterAccountLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -562,15 +487,8 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             resp = self._interceptor.post_create_merchant_center_account_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_merchant_center_account_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_merchant_center_account_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -592,24 +510,13 @@ class MerchantCenterAccountLinkServiceRestTransport(
             return resp
 
     class _DeleteMerchantCenterAccountLink(
-        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink,
-        MerchantCenterAccountLinkServiceRestStub,
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink, MerchantCenterAccountLinkServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MerchantCenterAccountLinkServiceRestTransport.DeleteMerchantCenterAccountLink"
-            )
+            return hash("MerchantCenterAccountLinkServiceRestTransport.DeleteMerchantCenterAccountLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -647,16 +554,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_merchant_center_account_link(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_merchant_center_account_link(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseDeleteMerchantCenterAccountLink._get_transcoded_request(
                 http_options, request
             )
@@ -666,12 +566,8 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -695,12 +591,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._DeleteMerchantCenterAccountLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -709,24 +600,13 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
     class _ListMerchantCenterAccountLinks(
-        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks,
-        MerchantCenterAccountLinkServiceRestStub,
+        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks, MerchantCenterAccountLinkServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MerchantCenterAccountLinkServiceRestTransport.ListMerchantCenterAccountLinks"
-            )
+            return hash("MerchantCenterAccountLinkServiceRestTransport.ListMerchantCenterAccountLinks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -746,9 +626,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse
-        ):
+        ) -> merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse:
             r"""Call the list merchant center
             account links method over HTTP.
 
@@ -773,16 +651,9 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_merchant_center_account_links(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_merchant_center_account_links(request, metadata)
             transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListMerchantCenterAccountLinks._get_transcoded_request(
                 http_options, request
             )
@@ -792,12 +663,8 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -821,12 +688,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._ListMerchantCenterAccountLinks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -835,30 +697,17 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
-            )
-            pb_resp = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.pb(
-                resp
-            )
+            resp = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse()
+            pb_resp = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_merchant_center_account_links(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_merchant_center_account_links_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_merchant_center_account_links_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.to_json(
-                        response
-                    )
+                    response_payload = merchant_center_account_link_service.ListMerchantCenterAccountLinksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -880,10 +729,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
     @property
     def create_merchant_center_account_link(
         self,
-    ) -> Callable[
-        [merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[merchant_center_account_link_service.CreateMerchantCenterAccountLinkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMerchantCenterAccountLink(self._session, self._host, self._interceptor)  # type: ignore
@@ -891,10 +737,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
     @property
     def delete_merchant_center_account_link(
         self,
-    ) -> Callable[
-        [merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[merchant_center_account_link_service.DeleteMerchantCenterAccountLinkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMerchantCenterAccountLink(self._session, self._host, self._interceptor)  # type: ignore
@@ -914,23 +757,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation,
-        MerchantCenterAccountLinkServiceRestStub,
-    ):
+    class _GetOperation(_BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation, MerchantCenterAccountLinkServiceRestStub):
         def __hash__(self):
             return hash("MerchantCenterAccountLinkServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -968,26 +800,16 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1011,12 +833,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1028,9 +845,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1055,23 +870,12 @@ class MerchantCenterAccountLinkServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations,
-        MerchantCenterAccountLinkServiceRestStub,
-    ):
+    class _ListOperations(_BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations, MerchantCenterAccountLinkServiceRestStub):
         def __hash__(self):
             return hash("MerchantCenterAccountLinkServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1109,26 +913,16 @@ class MerchantCenterAccountLinkServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMerchantCenterAccountLinkServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1152,12 +946,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
 
             # Send the request
             response = MerchantCenterAccountLinkServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1169,9 +958,7 @@ class MerchantCenterAccountLinkServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

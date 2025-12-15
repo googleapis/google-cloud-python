@@ -567,30 +567,22 @@ class SearchVehiclesRequest(proto.Message):
         number=10,
         message=duration_pb2.Duration,
     )
-    vehicle_types: MutableSequence[
-        mf_vehicles.Vehicle.VehicleType
-    ] = proto.RepeatedField(
+    vehicle_types: MutableSequence[mf_vehicles.Vehicle.VehicleType] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message=mf_vehicles.Vehicle.VehicleType,
     )
-    required_attributes: MutableSequence[
-        fleetengine.VehicleAttribute
-    ] = proto.RepeatedField(
+    required_attributes: MutableSequence[fleetengine.VehicleAttribute] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=fleetengine.VehicleAttribute,
     )
-    required_one_of_attributes: MutableSequence[
-        "VehicleAttributeList"
-    ] = proto.RepeatedField(
+    required_one_of_attributes: MutableSequence["VehicleAttributeList"] = proto.RepeatedField(
         proto.MESSAGE,
         number=15,
         message="VehicleAttributeList",
     )
-    required_one_of_attribute_sets: MutableSequence[
-        "VehicleAttributeList"
-    ] = proto.RepeatedField(
+    required_one_of_attribute_sets: MutableSequence["VehicleAttributeList"] = proto.RepeatedField(
         proto.MESSAGE,
         number=20,
         message="VehicleAttributeList",
@@ -810,9 +802,7 @@ class ListVehiclesRequest(proto.Message):
         number=8,
         message=duration_pb2.Duration,
     )
-    vehicle_type_categories: MutableSequence[
-        mf_vehicles.Vehicle.VehicleType.Category
-    ] = proto.RepeatedField(
+    vehicle_type_categories: MutableSequence[mf_vehicles.Vehicle.VehicleType.Category] = proto.RepeatedField(
         proto.ENUM,
         number=9,
         enum=mf_vehicles.Vehicle.VehicleType.Category,

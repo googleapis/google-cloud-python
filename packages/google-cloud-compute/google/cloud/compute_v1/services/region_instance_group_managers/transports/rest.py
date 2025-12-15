@@ -263,13 +263,8 @@ class RegionInstanceGroupManagersRestInterceptor:
     """
 
     def pre_abandon_instances(
-        self,
-        request: compute.AbandonInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AbandonInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AbandonInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AbandonInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for abandon_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -291,9 +286,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_abandon_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for abandon_instances
 
@@ -310,13 +303,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_apply_updates_to_instances(
-        self,
-        request: compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for apply_updates_to_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -324,9 +312,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_apply_updates_to_instances(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_apply_updates_to_instances(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for apply_updates_to_instances
 
         DEPRECATED. Please use the `post_apply_updates_to_instances_with_metadata`
@@ -340,9 +326,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_apply_updates_to_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for apply_updates_to_instances
 
@@ -359,13 +343,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_create_instances(
-        self,
-        request: compute.CreateInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.CreateInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.CreateInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.CreateInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -387,9 +366,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_create_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instances
 
@@ -406,13 +383,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -434,9 +406,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -453,13 +423,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_delete_instances(
-        self,
-        request: compute.DeleteInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -481,9 +446,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_delete_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instances
 
@@ -500,13 +463,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_delete_per_instance_configs(
-        self,
-        request: compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_per_instance_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -514,9 +472,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_per_instance_configs(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_delete_per_instance_configs(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for delete_per_instance_configs
 
         DEPRECATED. Please use the `post_delete_per_instance_configs_with_metadata`
@@ -530,9 +486,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_delete_per_instance_configs_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_per_instance_configs
 
@@ -549,13 +503,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -563,9 +512,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.InstanceGroupManager
-    ) -> compute.InstanceGroupManager:
+    def post_get(self, response: compute.InstanceGroupManager) -> compute.InstanceGroupManager:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -579,9 +526,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.InstanceGroupManager,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.InstanceGroupManager, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InstanceGroupManager, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -598,13 +543,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -626,9 +566,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -645,13 +583,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionInstanceGroupManagersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionInstanceGroupManagersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -659,9 +592,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.RegionInstanceGroupManagerList
-    ) -> compute.RegionInstanceGroupManagerList:
+    def post_list(self, response: compute.RegionInstanceGroupManagerList) -> compute.RegionInstanceGroupManagerList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -675,12 +606,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.RegionInstanceGroupManagerList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RegionInstanceGroupManagerList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.RegionInstanceGroupManagerList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RegionInstanceGroupManagerList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -696,13 +623,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_list_errors(
-        self,
-        request: compute.ListErrorsRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListErrorsRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListErrorsRegionInstanceGroupManagersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListErrorsRegionInstanceGroupManagersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_errors
 
         Override in a subclass to manipulate the request or metadata
@@ -726,13 +648,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_list_errors_with_metadata(
-        self,
-        response: compute.RegionInstanceGroupManagersListErrorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RegionInstanceGroupManagersListErrorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.RegionInstanceGroupManagersListErrorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RegionInstanceGroupManagersListErrorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_errors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -748,13 +665,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_list_managed_instances(
-        self,
-        request: compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListManagedInstancesRegionInstanceGroupManagersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListManagedInstancesRegionInstanceGroupManagersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_managed_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -778,13 +690,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_list_managed_instances_with_metadata(
-        self,
-        response: compute.RegionInstanceGroupManagersListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RegionInstanceGroupManagersListInstancesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.RegionInstanceGroupManagersListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RegionInstanceGroupManagersListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_managed_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -800,13 +707,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_list_per_instance_configs(
-        self,
-        request: compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_per_instance_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -830,13 +732,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_list_per_instance_configs_with_metadata(
-        self,
-        response: compute.RegionInstanceGroupManagersListInstanceConfigsResp,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RegionInstanceGroupManagersListInstanceConfigsResp,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.RegionInstanceGroupManagersListInstanceConfigsResp, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RegionInstanceGroupManagersListInstanceConfigsResp, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_per_instance_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -852,13 +749,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -880,9 +772,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -899,13 +789,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_patch_per_instance_configs(
-        self,
-        request: compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_per_instance_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -913,9 +798,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_patch_per_instance_configs(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_patch_per_instance_configs(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch_per_instance_configs
 
         DEPRECATED. Please use the `post_patch_per_instance_configs_with_metadata`
@@ -929,9 +812,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_patch_per_instance_configs_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch_per_instance_configs
 
@@ -948,13 +829,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_recreate_instances(
-        self,
-        request: compute.RecreateInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RecreateInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RecreateInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RecreateInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for recreate_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -976,9 +852,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_recreate_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for recreate_instances
 
@@ -995,13 +869,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_resize(
-        self,
-        request: compute.ResizeRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ResizeRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ResizeRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ResizeRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resize
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,9 +892,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_resize_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resize
 
@@ -1042,13 +909,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_resume_instances(
-        self,
-        request: compute.ResumeInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ResumeInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ResumeInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ResumeInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -1070,9 +932,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_resume_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_instances
 
@@ -1089,13 +949,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_set_instance_template(
-        self,
-        request: compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_instance_template
 
         Override in a subclass to manipulate the request or metadata
@@ -1103,9 +958,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_set_instance_template(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_instance_template(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_instance_template
 
         DEPRECATED. Please use the `post_set_instance_template_with_metadata`
@@ -1119,9 +972,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_set_instance_template_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_instance_template
 
@@ -1138,13 +989,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_set_target_pools(
-        self,
-        request: compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetTargetPoolsRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetTargetPoolsRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_target_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -1166,9 +1012,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_set_target_pools_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_target_pools
 
@@ -1185,13 +1029,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_start_instances(
-        self,
-        request: compute.StartInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StartInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.StartInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StartInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -1213,9 +1052,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_start_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_instances
 
@@ -1232,13 +1069,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_stop_instances(
-        self,
-        request: compute.StopInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StopInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.StopInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StopInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -1260,9 +1092,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_stop_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_instances
 
@@ -1279,13 +1109,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_suspend_instances(
-        self,
-        request: compute.SuspendInstancesRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SuspendInstancesRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SuspendInstancesRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SuspendInstancesRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suspend_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -1307,9 +1132,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_suspend_instances_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suspend_instances
 
@@ -1326,13 +1149,8 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response, metadata
 
     def pre_update_per_instance_configs(
-        self,
-        request: compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_per_instance_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1340,9 +1158,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_per_instance_configs(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_update_per_instance_configs(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for update_per_instance_configs
 
         DEPRECATED. Please use the `post_update_per_instance_configs_with_metadata`
@@ -1356,9 +1172,7 @@ class RegionInstanceGroupManagersRestInterceptor:
         return response
 
     def post_update_per_instance_configs_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_per_instance_configs
 
@@ -1382,9 +1196,7 @@ class RegionInstanceGroupManagersRestStub:
     _interceptor: RegionInstanceGroupManagersRestInterceptor
 
 
-class RegionInstanceGroupManagersRestTransport(
-    _BaseRegionInstanceGroupManagersRestTransport
-):
+class RegionInstanceGroupManagersRestTransport(_BaseRegionInstanceGroupManagersRestTransport):
     """REST backend synchronous transport for RegionInstanceGroupManagers.
 
     The RegionInstanceGroupManagers API.
@@ -1460,31 +1272,18 @@ class RegionInstanceGroupManagersRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionInstanceGroupManagersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AbandonInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _AbandonInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.AbandonInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1543,32 +1342,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_abandon_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_abandon_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseAbandonInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1592,13 +1377,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._AbandonInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1614,12 +1393,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_abandon_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_abandon_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_abandon_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1640,25 +1415,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _ApplyUpdatesToInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _ApplyUpdatesToInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
-            return hash(
-                "RegionInstanceGroupManagersRestTransport.ApplyUpdatesToInstances"
-            )
+            return hash("RegionInstanceGroupManagersRestTransport.ApplyUpdatesToInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1718,32 +1480,20 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_apply_updates_to_instances(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_apply_updates_to_instances(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseApplyUpdatesToInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1767,13 +1517,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ApplyUpdatesToInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1789,12 +1533,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_apply_updates_to_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_apply_updates_to_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_apply_updates_to_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1815,23 +1555,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _CreateInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _CreateInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.CreateInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1890,32 +1619,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseCreateInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1938,16 +1653,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._CreateInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._CreateInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1963,12 +1670,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_create_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1989,23 +1692,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _Delete(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseDelete,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _Delete(_BaseRegionInstanceGroupManagersRestTransport._BaseDelete, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2063,26 +1755,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2106,12 +1788,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2127,12 +1804,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2153,23 +1826,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _DeleteInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _DeleteInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.DeleteInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2228,32 +1890,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeleteInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2276,16 +1924,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._DeleteInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._DeleteInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2301,12 +1941,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_delete_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2327,25 +1963,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _DeletePerInstanceConfigs(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _DeletePerInstanceConfigs(_BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
-            return hash(
-                "RegionInstanceGroupManagersRestTransport.DeletePerInstanceConfigs"
-            )
+            return hash("RegionInstanceGroupManagersRestTransport.DeletePerInstanceConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2405,32 +2028,20 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_per_instance_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_per_instance_configs(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseDeletePerInstanceConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2454,13 +2065,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._DeletePerInstanceConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2476,12 +2081,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_delete_per_instance_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_per_instance_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_per_instance_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2502,23 +2103,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _Get(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseGet,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _Get(_BaseRegionInstanceGroupManagersRestTransport._BaseGet, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2568,26 +2158,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2611,12 +2191,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2633,9 +2208,7 @@ class RegionInstanceGroupManagersRestTransport(
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.InstanceGroupManager.to_json(response)
                 except:
@@ -2656,23 +2229,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseInsert,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _Insert(_BaseRegionInstanceGroupManagersRestTransport._BaseInsert, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2731,30 +2293,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2778,13 +2328,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2800,12 +2344,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2826,23 +2366,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _List(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseList,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _List(_BaseRegionInstanceGroupManagersRestTransport._BaseList, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2885,26 +2414,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2928,12 +2447,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2950,13 +2464,9 @@ class RegionInstanceGroupManagersRestTransport(
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.RegionInstanceGroupManagerList.to_json(
-                        response
-                    )
+                    response_payload = compute.RegionInstanceGroupManagerList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2975,23 +2485,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _ListErrors(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _ListErrors(_BaseRegionInstanceGroupManagersRestTransport._BaseListErrors, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.ListErrors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3032,26 +2531,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListErrors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3074,15 +2563,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._ListErrors._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RegionInstanceGroupManagersRestTransport._ListErrors._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3098,18 +2580,10 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_list_errors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_errors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_errors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = compute.RegionInstanceGroupManagersListErrorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3128,23 +2602,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _ListManagedInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _ListManagedInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.ListManagedInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3185,28 +2648,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_managed_instances(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_managed_instances(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListManagedInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3230,12 +2683,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ListManagedInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3251,16 +2699,10 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_list_managed_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_managed_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_managed_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
-                        response
-                    )
+                    response_payload = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3279,25 +2721,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _ListPerInstanceConfigs(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _ListPerInstanceConfigs(_BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
-            return hash(
-                "RegionInstanceGroupManagersRestTransport.ListPerInstanceConfigs"
-            )
+            return hash("RegionInstanceGroupManagersRestTransport.ListPerInstanceConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3338,28 +2767,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_per_instance_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_per_instance_configs(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseListPerInstanceConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3383,12 +2802,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._ListPerInstanceConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3398,24 +2812,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Return the response
             resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp()
-            pb_resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp.pb(
-                resp
-            )
+            pb_resp = compute.RegionInstanceGroupManagersListInstanceConfigsResp.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_per_instance_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_per_instance_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_per_instance_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
-                        response
-                    )
+                    response_payload = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3434,23 +2840,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _Patch(
-        _BaseRegionInstanceGroupManagersRestTransport._BasePatch,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _Patch(_BaseRegionInstanceGroupManagersRestTransport._BasePatch, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3509,30 +2904,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3556,13 +2939,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3578,12 +2955,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3604,25 +2977,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _PatchPerInstanceConfigs(
-        _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _PatchPerInstanceConfigs(_BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
-            return hash(
-                "RegionInstanceGroupManagersRestTransport.PatchPerInstanceConfigs"
-            )
+            return hash("RegionInstanceGroupManagersRestTransport.PatchPerInstanceConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3682,32 +3042,20 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_patch_per_instance_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_patch_per_instance_configs(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BasePatchPerInstanceConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3731,13 +3079,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._PatchPerInstanceConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3753,12 +3095,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_patch_per_instance_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_per_instance_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_per_instance_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3779,23 +3117,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _RecreateInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _RecreateInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.RecreateInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3854,32 +3181,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_recreate_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_recreate_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseRecreateInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3903,13 +3216,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._RecreateInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3925,12 +3232,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_recreate_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_recreate_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_recreate_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3951,23 +3254,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _Resize(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseResize,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _Resize(_BaseRegionInstanceGroupManagersRestTransport._BaseResize, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.Resize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4025,26 +3317,16 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_http_options()
 
             request, metadata = self._interceptor.pre_resize(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4068,12 +3350,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._Resize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4089,12 +3366,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_resize(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resize_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resize_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4115,23 +3388,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _ResumeInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _ResumeInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.ResumeInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4190,32 +3452,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseResumeInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4238,16 +3486,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._ResumeInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._ResumeInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4263,12 +3503,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_resume_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4289,23 +3525,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _SetInstanceTemplate(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _SetInstanceTemplate(_BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.SetInstanceTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4364,32 +3589,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_instance_template(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_instance_template(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetInstanceTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4413,13 +3624,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._SetInstanceTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4435,12 +3640,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_set_instance_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_instance_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_instance_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4461,23 +3662,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _SetTargetPools(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _SetTargetPools(_BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.SetTargetPools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4536,32 +3726,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_target_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_target_pools(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSetTargetPools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4584,16 +3760,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._SetTargetPools._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._SetTargetPools._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4609,12 +3777,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_set_target_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_target_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_target_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4635,23 +3799,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _StartInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _StartInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.StartInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4710,30 +3863,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_start_instances(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStartInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4756,16 +3897,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._StartInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._StartInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4781,12 +3914,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_start_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4807,23 +3936,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _StopInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _StopInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.StopInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4882,30 +4000,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_instances(request, metadata)
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseStopInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4928,16 +4034,8 @@ class RegionInstanceGroupManagersRestTransport(
                 )
 
             # Send the request
-            response = (
-                RegionInstanceGroupManagersRestTransport._StopInstances._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RegionInstanceGroupManagersRestTransport._StopInstances._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4953,12 +4051,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_stop_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -4979,23 +4073,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _SuspendInstances(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _SuspendInstances(_BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
             return hash("RegionInstanceGroupManagersRestTransport.SuspendInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5054,32 +4137,18 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_http_options()
 
-            request, metadata = self._interceptor.pre_suspend_instances(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_suspend_instances(request, metadata)
+            transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseSuspendInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5103,13 +4172,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._SuspendInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5125,12 +4188,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_suspend_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suspend_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suspend_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -5151,25 +4210,12 @@ class RegionInstanceGroupManagersRestTransport(
                 )
             return resp
 
-    class _UpdatePerInstanceConfigs(
-        _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs,
-        RegionInstanceGroupManagersRestStub,
-    ):
+    class _UpdatePerInstanceConfigs(_BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs, RegionInstanceGroupManagersRestStub):
         def __hash__(self):
-            return hash(
-                "RegionInstanceGroupManagersRestTransport.UpdatePerInstanceConfigs"
-            )
+            return hash("RegionInstanceGroupManagersRestTransport.UpdatePerInstanceConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5229,32 +4275,20 @@ class RegionInstanceGroupManagersRestTransport(
 
             """
 
-            http_options = (
-                _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
-            )
+            http_options = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_per_instance_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_per_instance_configs(request, metadata)
             transcoded_request = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstanceGroupManagersRestTransport._BaseUpdatePerInstanceConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5278,13 +4312,7 @@ class RegionInstanceGroupManagersRestTransport(
 
             # Send the request
             response = RegionInstanceGroupManagersRestTransport._UpdatePerInstanceConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5300,12 +4328,8 @@ class RegionInstanceGroupManagersRestTransport(
 
             resp = self._interceptor.post_update_per_instance_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_per_instance_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_per_instance_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -5327,101 +4351,61 @@ class RegionInstanceGroupManagersRestTransport(
             return resp
 
     @property
-    def abandon_instances(
-        self,
-    ) -> Callable[
-        [compute.AbandonInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def abandon_instances(self) -> Callable[[compute.AbandonInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AbandonInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def apply_updates_to_instances(
-        self,
-    ) -> Callable[
-        [compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest],
-        compute.Operation,
-    ]:
+    def apply_updates_to_instances(self) -> Callable[[compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApplyUpdatesToInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instances(
-        self,
-    ) -> Callable[
-        [compute.CreateInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def create_instances(self) -> Callable[[compute.CreateInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionInstanceGroupManagerRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instances(
-        self,
-    ) -> Callable[
-        [compute.DeleteInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def delete_instances(self) -> Callable[[compute.DeleteInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_per_instance_configs(
-        self,
-    ) -> Callable[
-        [compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest],
-        compute.Operation,
-    ]:
+    def delete_per_instance_configs(self) -> Callable[[compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetRegionInstanceGroupManagerRequest], compute.InstanceGroupManager
-    ]:
+    def get(self) -> Callable[[compute.GetRegionInstanceGroupManagerRequest], compute.InstanceGroupManager]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionInstanceGroupManagerRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionInstanceGroupManagersRequest],
-        compute.RegionInstanceGroupManagerList,
-    ]:
+    def list(self) -> Callable[[compute.ListRegionInstanceGroupManagersRequest], compute.RegionInstanceGroupManagerList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_errors(
-        self,
-    ) -> Callable[
-        [compute.ListErrorsRegionInstanceGroupManagersRequest],
-        compute.RegionInstanceGroupManagersListErrorsResponse,
-    ]:
+    def list_errors(self) -> Callable[[compute.ListErrorsRegionInstanceGroupManagersRequest], compute.RegionInstanceGroupManagersListErrorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListErrors(self._session, self._host, self._interceptor)  # type: ignore
@@ -5429,10 +4413,7 @@ class RegionInstanceGroupManagersRestTransport(
     @property
     def list_managed_instances(
         self,
-    ) -> Callable[
-        [compute.ListManagedInstancesRegionInstanceGroupManagersRequest],
-        compute.RegionInstanceGroupManagersListInstancesResponse,
-    ]:
+    ) -> Callable[[compute.ListManagedInstancesRegionInstanceGroupManagersRequest], compute.RegionInstanceGroupManagersListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListManagedInstances(self._session, self._host, self._interceptor)  # type: ignore
@@ -5440,119 +4421,73 @@ class RegionInstanceGroupManagersRestTransport(
     @property
     def list_per_instance_configs(
         self,
-    ) -> Callable[
-        [compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest],
-        compute.RegionInstanceGroupManagersListInstanceConfigsResp,
-    ]:
+    ) -> Callable[[compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest], compute.RegionInstanceGroupManagersListInstanceConfigsResp]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchRegionInstanceGroupManagerRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch_per_instance_configs(
-        self,
-    ) -> Callable[
-        [compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest],
-        compute.Operation,
-    ]:
+    def patch_per_instance_configs(self) -> Callable[[compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PatchPerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def recreate_instances(
-        self,
-    ) -> Callable[
-        [compute.RecreateInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def recreate_instances(self) -> Callable[[compute.RecreateInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RecreateInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resize(
-        self,
-    ) -> Callable[[compute.ResizeRegionInstanceGroupManagerRequest], compute.Operation]:
+    def resize(self) -> Callable[[compute.ResizeRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_instances(
-        self,
-    ) -> Callable[
-        [compute.ResumeInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def resume_instances(self) -> Callable[[compute.ResumeInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_instance_template(
-        self,
-    ) -> Callable[
-        [compute.SetInstanceTemplateRegionInstanceGroupManagerRequest],
-        compute.Operation,
-    ]:
+    def set_instance_template(self) -> Callable[[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetInstanceTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_target_pools(
-        self,
-    ) -> Callable[
-        [compute.SetTargetPoolsRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def set_target_pools(self) -> Callable[[compute.SetTargetPoolsRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetTargetPools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_instances(
-        self,
-    ) -> Callable[
-        [compute.StartInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def start_instances(self) -> Callable[[compute.StartInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_instances(
-        self,
-    ) -> Callable[
-        [compute.StopInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def stop_instances(self) -> Callable[[compute.StopInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suspend_instances(
-        self,
-    ) -> Callable[
-        [compute.SuspendInstancesRegionInstanceGroupManagerRequest], compute.Operation
-    ]:
+    def suspend_instances(self) -> Callable[[compute.SuspendInstancesRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuspendInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_per_instance_configs(
-        self,
-    ) -> Callable[
-        [compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest],
-        compute.Operation,
-    ]:
+    def update_per_instance_configs(self) -> Callable[[compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePerInstanceConfigs(self._session, self._host, self._interceptor)  # type: ignore

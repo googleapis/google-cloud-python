@@ -18,16 +18,9 @@ from google.shopping.merchant_ordertracking import gapic_version as package_vers
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_ordertracking_v1.services.order_tracking_signals_service.async_client import (
-    OrderTrackingSignalsServiceAsyncClient,
-)
-from google.shopping.merchant_ordertracking_v1.services.order_tracking_signals_service.client import (
-    OrderTrackingSignalsServiceClient,
-)
-from google.shopping.merchant_ordertracking_v1.types.order_tracking_signals import (
-    CreateOrderTrackingSignalRequest,
-    OrderTrackingSignal,
-)
+from google.shopping.merchant_ordertracking_v1.services.order_tracking_signals_service.async_client import OrderTrackingSignalsServiceAsyncClient
+from google.shopping.merchant_ordertracking_v1.services.order_tracking_signals_service.client import OrderTrackingSignalsServiceClient
+from google.shopping.merchant_ordertracking_v1.types.order_tracking_signals import CreateOrderTrackingSignalRequest, OrderTrackingSignal
 
 __all__ = (
     "OrderTrackingSignalsServiceClient",

@@ -119,9 +119,7 @@ class PagesRestInterceptor:
     """
 
     def pre_create_page(
-        self,
-        request: gcdc_page.CreatePageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_page.CreatePageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_page.CreatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_page
 
@@ -144,9 +142,7 @@ class PagesRestInterceptor:
         return response
 
     def post_create_page_with_metadata(
-        self,
-        response: gcdc_page.Page,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_page.Page, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_page
 
@@ -163,9 +159,7 @@ class PagesRestInterceptor:
         return response, metadata
 
     def pre_delete_page(
-        self,
-        request: page.DeletePageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: page.DeletePageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[page.DeletePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_page
 
@@ -175,9 +169,7 @@ class PagesRestInterceptor:
         return request, metadata
 
     def pre_get_page(
-        self,
-        request: page.GetPageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: page.GetPageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[page.GetPageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_page
 
@@ -217,9 +209,7 @@ class PagesRestInterceptor:
         return response, metadata
 
     def pre_list_pages(
-        self,
-        request: page.ListPagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: page.ListPagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[page.ListPagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_pages
 
@@ -228,9 +218,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_pages(
-        self, response: page.ListPagesResponse
-    ) -> page.ListPagesResponse:
+    def post_list_pages(self, response: page.ListPagesResponse) -> page.ListPagesResponse:
         """Post-rpc interceptor for list_pages
 
         DEPRECATED. Please use the `post_list_pages_with_metadata`
@@ -244,9 +232,7 @@ class PagesRestInterceptor:
         return response
 
     def post_list_pages_with_metadata(
-        self,
-        response: page.ListPagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: page.ListPagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[page.ListPagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_pages
 
@@ -263,9 +249,7 @@ class PagesRestInterceptor:
         return response, metadata
 
     def pre_update_page(
-        self,
-        request: gcdc_page.UpdatePageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_page.UpdatePageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_page.UpdatePageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_page
 
@@ -288,9 +272,7 @@ class PagesRestInterceptor:
         return response
 
     def post_update_page_with_metadata(
-        self,
-        response: gcdc_page.Page,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_page.Page, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_page.Page, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_page
 
@@ -307,12 +289,8 @@ class PagesRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -320,9 +298,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -332,12 +308,8 @@ class PagesRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -345,9 +317,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -357,12 +327,8 @@ class PagesRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -380,12 +346,8 @@ class PagesRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -393,9 +355,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -405,12 +365,8 @@ class PagesRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -418,9 +374,7 @@ class PagesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -510,9 +464,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PagesRestInterceptor()
@@ -523,15 +475,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.CreatePage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -596,29 +540,15 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseCreatePage._get_http_options()
 
             request, metadata = self._interceptor.pre_create_page(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseCreatePage._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseCreatePage._get_transcoded_request(http_options, request)
 
-            body = _BasePagesRestTransport._BaseCreatePage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePagesRestTransport._BaseCreatePage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseCreatePage._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseCreatePage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -642,13 +572,7 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             # Send the request
             response = PagesRestTransport._CreatePage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -664,12 +588,8 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             resp = self._interceptor.post_create_page(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_page_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_page_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_page.Page.to_json(response)
                 except:
@@ -695,15 +615,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.DeletePage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -742,25 +654,13 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseDeletePage._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_page(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseDeletePage._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseDeletePage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseDeletePage._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseDeletePage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -783,14 +683,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._DeletePage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._DeletePage._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -802,15 +695,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.GetPage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -874,23 +759,13 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseGetPage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_page(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseGetPage._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseGetPage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePagesRestTransport._BaseGetPage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePagesRestTransport._BaseGetPage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -913,14 +788,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._GetPage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._GetPage._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -935,12 +803,8 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             resp = self._interceptor.post_get_page(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_page_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_page_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = page.Page.to_json(response)
                 except:
@@ -966,15 +830,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.ListPages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1019,25 +875,13 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseListPages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pages(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseListPages._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseListPages._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseListPages._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseListPages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1060,14 +904,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._ListPages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._ListPages._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1082,12 +919,8 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             resp = self._interceptor.post_list_pages(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_pages_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_pages_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = page.ListPagesResponse.to_json(response)
                 except:
@@ -1113,15 +946,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.UpdatePage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1186,29 +1011,15 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseUpdatePage._get_http_options()
 
             request, metadata = self._interceptor.pre_update_page(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseUpdatePage._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseUpdatePage._get_transcoded_request(http_options, request)
 
-            body = _BasePagesRestTransport._BaseUpdatePage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePagesRestTransport._BaseUpdatePage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseUpdatePage._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseUpdatePage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1232,13 +1043,7 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             # Send the request
             response = PagesRestTransport._UpdatePage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1254,12 +1059,8 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             resp = self._interceptor.post_update_page(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_page_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_page_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_page.Page.to_json(response)
                 except:
@@ -1319,15 +1120,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1368,25 +1161,13 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1409,14 +1190,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1427,9 +1201,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1459,15 +1231,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1505,30 +1269,16 @@ class PagesRestTransport(_BasePagesRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BasePagesRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BasePagesRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1551,14 +1301,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1569,9 +1312,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1601,15 +1342,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1644,32 +1377,16 @@ class PagesRestTransport(_BasePagesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePagesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BasePagesRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BasePagesRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BasePagesRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1693,12 +1410,7 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             # Send the request
             response = PagesRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1717,15 +1429,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1766,25 +1470,13 @@ class PagesRestTransport(_BasePagesRestTransport):
             http_options = _BasePagesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1807,14 +1499,7 @@ class PagesRestTransport(_BasePagesRestTransport):
                 )
 
             # Send the request
-            response = PagesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PagesRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1825,9 +1510,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1857,15 +1540,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             return hash("PagesRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1903,30 +1578,16 @@ class PagesRestTransport(_BasePagesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePagesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePagesRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BasePagesRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePagesRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePagesRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePagesRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1950,12 +1611,7 @@ class PagesRestTransport(_BasePagesRestTransport):
 
             # Send the request
             response = PagesRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1967,9 +1623,7 @@ class PagesRestTransport(_BasePagesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

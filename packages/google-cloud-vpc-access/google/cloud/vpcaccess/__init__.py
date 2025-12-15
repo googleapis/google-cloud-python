@@ -18,12 +18,8 @@ from google.cloud.vpcaccess import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.vpcaccess_v1.services.vpc_access_service.async_client import (
-    VpcAccessServiceAsyncClient,
-)
-from google.cloud.vpcaccess_v1.services.vpc_access_service.client import (
-    VpcAccessServiceClient,
-)
+from google.cloud.vpcaccess_v1.services.vpc_access_service.async_client import VpcAccessServiceAsyncClient
+from google.cloud.vpcaccess_v1.services.vpc_access_service.client import VpcAccessServiceClient
 from google.cloud.vpcaccess_v1.types.vpc_access import (
     Connector,
     CreateConnectorRequest,

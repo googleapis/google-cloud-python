@@ -339,9 +339,7 @@ class AdvancedCompleteQueryRequest(proto.Message):
                 number=2,
             )
 
-        condition_boost_specs: MutableSequence[
-            "AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence["AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec",
@@ -480,12 +478,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        person_type: "AdvancedCompleteQueryResponse.PersonSuggestion.PersonType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="AdvancedCompleteQueryResponse.PersonSuggestion.PersonType",
-            )
+        person_type: "AdvancedCompleteQueryResponse.PersonSuggestion.PersonType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="AdvancedCompleteQueryResponse.PersonSuggestion.PersonType",
         )
         document: gcd_document.Document = proto.Field(
             proto.MESSAGE,
@@ -533,12 +529,10 @@ class AdvancedCompleteQueryResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        content_type: "AdvancedCompleteQueryResponse.ContentSuggestion.ContentType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="AdvancedCompleteQueryResponse.ContentSuggestion.ContentType",
-            )
+        content_type: "AdvancedCompleteQueryResponse.ContentSuggestion.ContentType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="AdvancedCompleteQueryResponse.ContentSuggestion.ContentType",
         )
         document: gcd_document.Document = proto.Field(
             proto.MESSAGE,
@@ -589,9 +583,7 @@ class AdvancedCompleteQueryResponse(proto.Message):
         number=4,
         message=ContentSuggestion,
     )
-    recent_search_suggestions: MutableSequence[
-        RecentSearchSuggestion
-    ] = proto.RepeatedField(
+    recent_search_suggestions: MutableSequence[RecentSearchSuggestion] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=RecentSearchSuggestion,

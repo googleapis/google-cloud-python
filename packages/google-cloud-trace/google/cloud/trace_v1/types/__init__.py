@@ -13,15 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .trace import (
-    GetTraceRequest,
-    ListTracesRequest,
-    ListTracesResponse,
-    PatchTracesRequest,
-    Trace,
-    Traces,
-    TraceSpan,
-)
+from .trace import GetTraceRequest, ListTracesRequest, ListTracesResponse, PatchTracesRequest, Trace, Traces, TraceSpan
 
 __all__ = (
     "GetTraceRequest",

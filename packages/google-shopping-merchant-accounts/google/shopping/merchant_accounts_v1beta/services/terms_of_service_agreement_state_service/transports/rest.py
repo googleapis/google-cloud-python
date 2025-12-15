@@ -95,13 +95,8 @@ class TermsOfServiceAgreementStateServiceRestInterceptor:
     """
 
     def pre_get_terms_of_service_agreement_state(
-        self,
-        request: termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_terms_of_service_agreement_state
 
         Override in a subclass to manipulate the request or metadata
@@ -125,13 +120,8 @@ class TermsOfServiceAgreementStateServiceRestInterceptor:
         return response
 
     def post_get_terms_of_service_agreement_state_with_metadata(
-        self,
-        response: termsofserviceagreementstate.TermsOfServiceAgreementState,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofserviceagreementstate.TermsOfServiceAgreementState,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: termsofserviceagreementstate.TermsOfServiceAgreementState, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofserviceagreementstate.TermsOfServiceAgreementState, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_terms_of_service_agreement_state
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,10 +140,7 @@ class TermsOfServiceAgreementStateServiceRestInterceptor:
         self,
         request: termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_for_application_terms_of_service_agreement_state
 
         Override in a subclass to manipulate the request or metadata
@@ -177,13 +164,8 @@ class TermsOfServiceAgreementStateServiceRestInterceptor:
         return response
 
     def post_retrieve_for_application_terms_of_service_agreement_state_with_metadata(
-        self,
-        response: termsofserviceagreementstate.TermsOfServiceAgreementState,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofserviceagreementstate.TermsOfServiceAgreementState,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: termsofserviceagreementstate.TermsOfServiceAgreementState, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofserviceagreementstate.TermsOfServiceAgreementState, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_for_application_terms_of_service_agreement_state
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -206,9 +188,7 @@ class TermsOfServiceAgreementStateServiceRestStub:
     _interceptor: TermsOfServiceAgreementStateServiceRestInterceptor
 
 
-class TermsOfServiceAgreementStateServiceRestTransport(
-    _BaseTermsOfServiceAgreementStateServiceRestTransport
-):
+class TermsOfServiceAgreementStateServiceRestTransport(_BaseTermsOfServiceAgreementStateServiceRestTransport):
     """REST backend synchronous transport for TermsOfServiceAgreementStateService.
 
     Service to support ``TermsOfServiceAgreementState`` API.
@@ -232,9 +212,7 @@ class TermsOfServiceAgreementStateServiceRestTransport(
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[
-            TermsOfServiceAgreementStateServiceRestInterceptor
-        ] = None,
+        interceptor: Optional[TermsOfServiceAgreementStateServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -282,35 +260,20 @@ class TermsOfServiceAgreementStateServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or TermsOfServiceAgreementStateServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or TermsOfServiceAgreementStateServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GetTermsOfServiceAgreementState(
-        _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState,
-        TermsOfServiceAgreementStateServiceRestStub,
+        _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState, TermsOfServiceAgreementStateServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "TermsOfServiceAgreementStateServiceRestTransport.GetTermsOfServiceAgreementState"
-            )
+            return hash("TermsOfServiceAgreementStateServiceRestTransport.GetTermsOfServiceAgreementState")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -379,16 +342,9 @@ class TermsOfServiceAgreementStateServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_terms_of_service_agreement_state(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_terms_of_service_agreement_state(request, metadata)
             transcoded_request = _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseGetTermsOfServiceAgreementState._get_transcoded_request(
                 http_options, request
             )
@@ -398,12 +354,8 @@ class TermsOfServiceAgreementStateServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -427,12 +379,7 @@ class TermsOfServiceAgreementStateServiceRestTransport(
 
             # Send the request
             response = TermsOfServiceAgreementStateServiceRestTransport._GetTermsOfServiceAgreementState._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -448,19 +395,10 @@ class TermsOfServiceAgreementStateServiceRestTransport(
 
             resp = self._interceptor.post_get_terms_of_service_agreement_state(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_terms_of_service_agreement_state_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_terms_of_service_agreement_state_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = termsofserviceagreementstate.TermsOfServiceAgreementState.to_json(
-                        response
-                    )
+                    response_payload = termsofserviceagreementstate.TermsOfServiceAgreementState.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -484,20 +422,10 @@ class TermsOfServiceAgreementStateServiceRestTransport(
         TermsOfServiceAgreementStateServiceRestStub,
     ):
         def __hash__(self):
-            return hash(
-                "TermsOfServiceAgreementStateServiceRestTransport.RetrieveForApplicationTermsOfServiceAgreementState"
-            )
+            return hash("TermsOfServiceAgreementStateServiceRestTransport.RetrieveForApplicationTermsOfServiceAgreementState")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -571,27 +499,22 @@ class TermsOfServiceAgreementStateServiceRestTransport(
                 _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseRetrieveForApplicationTermsOfServiceAgreementState._get_http_options()
             )
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_retrieve_for_application_terms_of_service_agreement_state(
-                request, metadata
-            )
-            transcoded_request = _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseRetrieveForApplicationTermsOfServiceAgreementState._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_retrieve_for_application_terms_of_service_agreement_state(request, metadata)
+            transcoded_request = (
+                _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseRetrieveForApplicationTermsOfServiceAgreementState._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
-            query_params = _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseRetrieveForApplicationTermsOfServiceAgreementState._get_query_params_json(
-                transcoded_request
+            query_params = (
+                _BaseTermsOfServiceAgreementStateServiceRestTransport._BaseRetrieveForApplicationTermsOfServiceAgreementState._get_query_params_json(
+                    transcoded_request
+                )
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -615,12 +538,7 @@ class TermsOfServiceAgreementStateServiceRestTransport(
 
             # Send the request
             response = TermsOfServiceAgreementStateServiceRestTransport._RetrieveForApplicationTermsOfServiceAgreementState._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -634,23 +552,12 @@ class TermsOfServiceAgreementStateServiceRestTransport(
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_retrieve_for_application_terms_of_service_agreement_state(
-                resp
-            )
+            resp = self._interceptor.post_retrieve_for_application_terms_of_service_agreement_state(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_retrieve_for_application_terms_of_service_agreement_state_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_for_application_terms_of_service_agreement_state_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = termsofserviceagreementstate.TermsOfServiceAgreementState.to_json(
-                        response
-                    )
+                    response_payload = termsofserviceagreementstate.TermsOfServiceAgreementState.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -672,10 +579,7 @@ class TermsOfServiceAgreementStateServiceRestTransport(
     @property
     def get_terms_of_service_agreement_state(
         self,
-    ) -> Callable[
-        [termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest],
-        termsofserviceagreementstate.TermsOfServiceAgreementState,
-    ]:
+    ) -> Callable[[termsofserviceagreementstate.GetTermsOfServiceAgreementStateRequest], termsofserviceagreementstate.TermsOfServiceAgreementState]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTermsOfServiceAgreementState(self._session, self._host, self._interceptor)  # type: ignore
@@ -684,9 +588,7 @@ class TermsOfServiceAgreementStateServiceRestTransport(
     def retrieve_for_application_terms_of_service_agreement_state(
         self,
     ) -> Callable[
-        [
-            termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest
-        ],
+        [termsofserviceagreementstate.RetrieveForApplicationTermsOfServiceAgreementStateRequest],
         termsofserviceagreementstate.TermsOfServiceAgreementState,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.

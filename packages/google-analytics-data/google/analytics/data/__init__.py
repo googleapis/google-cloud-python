@@ -18,12 +18,8 @@ from google.analytics.data import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.analytics.data_v1beta.services.beta_analytics_data.async_client import (
-    BetaAnalyticsDataAsyncClient,
-)
-from google.analytics.data_v1beta.services.beta_analytics_data.client import (
-    BetaAnalyticsDataClient,
-)
+from google.analytics.data_v1beta.services.beta_analytics_data.async_client import BetaAnalyticsDataAsyncClient
+from google.analytics.data_v1beta.services.beta_analytics_data.client import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types.analytics_data_api import (
     AudienceDimension,
     AudienceDimensionValue,

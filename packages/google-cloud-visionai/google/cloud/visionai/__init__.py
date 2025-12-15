@@ -18,37 +18,17 @@ from google.cloud.visionai import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.visionai_v1.services.app_platform.async_client import (
-    AppPlatformAsyncClient,
-)
+from google.cloud.visionai_v1.services.app_platform.async_client import AppPlatformAsyncClient
 from google.cloud.visionai_v1.services.app_platform.client import AppPlatformClient
-from google.cloud.visionai_v1.services.health_check_service.async_client import (
-    HealthCheckServiceAsyncClient,
-)
-from google.cloud.visionai_v1.services.health_check_service.client import (
-    HealthCheckServiceClient,
-)
-from google.cloud.visionai_v1.services.live_video_analytics.async_client import (
-    LiveVideoAnalyticsAsyncClient,
-)
-from google.cloud.visionai_v1.services.live_video_analytics.client import (
-    LiveVideoAnalyticsClient,
-)
-from google.cloud.visionai_v1.services.streaming_service.async_client import (
-    StreamingServiceAsyncClient,
-)
-from google.cloud.visionai_v1.services.streaming_service.client import (
-    StreamingServiceClient,
-)
-from google.cloud.visionai_v1.services.streams_service.async_client import (
-    StreamsServiceAsyncClient,
-)
-from google.cloud.visionai_v1.services.streams_service.client import (
-    StreamsServiceClient,
-)
-from google.cloud.visionai_v1.services.warehouse.async_client import (
-    WarehouseAsyncClient,
-)
+from google.cloud.visionai_v1.services.health_check_service.async_client import HealthCheckServiceAsyncClient
+from google.cloud.visionai_v1.services.health_check_service.client import HealthCheckServiceClient
+from google.cloud.visionai_v1.services.live_video_analytics.async_client import LiveVideoAnalyticsAsyncClient
+from google.cloud.visionai_v1.services.live_video_analytics.client import LiveVideoAnalyticsClient
+from google.cloud.visionai_v1.services.streaming_service.async_client import StreamingServiceAsyncClient
+from google.cloud.visionai_v1.services.streaming_service.client import StreamingServiceClient
+from google.cloud.visionai_v1.services.streams_service.async_client import StreamsServiceAsyncClient
+from google.cloud.visionai_v1.services.streams_service.client import StreamsServiceClient
+from google.cloud.visionai_v1.services.warehouse.async_client import WarehouseAsyncClient
 from google.cloud.visionai_v1.services.warehouse.client import WarehouseClient
 from google.cloud.visionai_v1.types.annotations import (
     AppPlatformCloudFunctionRequest,
@@ -72,11 +52,7 @@ from google.cloud.visionai_v1.types.annotations import (
     VideoObjectTrackingPredictionResult,
 )
 from google.cloud.visionai_v1.types.common import Cluster, GcsSource, OperationMetadata
-from google.cloud.visionai_v1.types.health_service import (
-    ClusterInfo,
-    HealthCheckRequest,
-    HealthCheckResponse,
-)
+from google.cloud.visionai_v1.types.health_service import ClusterInfo, HealthCheckRequest, HealthCheckResponse
 from google.cloud.visionai_v1.types.lva import (
     AnalysisDefinition,
     AnalyzerDefinition,
@@ -223,12 +199,7 @@ from google.cloud.visionai_v1.types.streaming_service import (
     SendPacketsRequest,
     SendPacketsResponse,
 )
-from google.cloud.visionai_v1.types.streams_resources import (
-    Channel,
-    Event,
-    Series,
-    Stream,
-)
+from google.cloud.visionai_v1.types.streams_resources import Channel, Event, Series, Stream
 from google.cloud.visionai_v1.types.streams_service import (
     CreateClusterRequest,
     CreateEventRequest,

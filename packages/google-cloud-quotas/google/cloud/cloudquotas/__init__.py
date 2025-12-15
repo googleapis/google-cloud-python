@@ -18,9 +18,7 @@ from google.cloud.cloudquotas import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.cloudquotas_v1.services.cloud_quotas.async_client import (
-    CloudQuotasAsyncClient,
-)
+from google.cloud.cloudquotas_v1.services.cloud_quotas.async_client import CloudQuotasAsyncClient
 from google.cloud.cloudquotas_v1.services.cloud_quotas.client import CloudQuotasClient
 from google.cloud.cloudquotas_v1.types.cloudquotas import (
     CreateQuotaPreferenceRequest,

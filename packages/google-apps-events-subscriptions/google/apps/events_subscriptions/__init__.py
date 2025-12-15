@@ -18,17 +18,9 @@ from google.apps.events_subscriptions import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.apps.events_subscriptions_v1.services.subscriptions_service.async_client import (
-    SubscriptionsServiceAsyncClient,
-)
-from google.apps.events_subscriptions_v1.services.subscriptions_service.client import (
-    SubscriptionsServiceClient,
-)
-from google.apps.events_subscriptions_v1.types.subscription_resource import (
-    NotificationEndpoint,
-    PayloadOptions,
-    Subscription,
-)
+from google.apps.events_subscriptions_v1.services.subscriptions_service.async_client import SubscriptionsServiceAsyncClient
+from google.apps.events_subscriptions_v1.services.subscriptions_service.client import SubscriptionsServiceClient
+from google.apps.events_subscriptions_v1.types.subscription_resource import NotificationEndpoint, PayloadOptions, Subscription
 from google.apps.events_subscriptions_v1.types.subscriptions_service import (
     CreateSubscriptionMetadata,
     CreateSubscriptionRequest,

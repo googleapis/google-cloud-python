@@ -55,9 +55,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +65,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +84,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -240,18 +231,14 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -285,9 +272,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -354,17 +339,13 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def import_apt_artifacts(
-        self,
-    ) -> Callable[[apt_artifact.ImportAptArtifactsRequest], operations_pb2.Operation]:
+    def import_apt_artifacts(self) -> Callable[[apt_artifact.ImportAptArtifactsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import apt artifacts method over gRPC.
 
         Imports Apt artifacts. The returned Operation will
@@ -392,9 +373,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["import_apt_artifacts"]
 
     @property
-    def import_yum_artifacts(
-        self,
-    ) -> Callable[[yum_artifact.ImportYumArtifactsRequest], operations_pb2.Operation]:
+    def import_yum_artifacts(self) -> Callable[[yum_artifact.ImportYumArtifactsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import yum artifacts method over gRPC.
 
         Imports Yum (RPM) artifacts. The returned Operation
@@ -422,11 +401,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["import_yum_artifacts"]
 
     @property
-    def list_repositories(
-        self,
-    ) -> Callable[
-        [repository.ListRepositoriesRequest], repository.ListRepositoriesResponse
-    ]:
+    def list_repositories(self) -> Callable[[repository.ListRepositoriesRequest], repository.ListRepositoriesResponse]:
         r"""Return a callable for the list repositories method over gRPC.
 
         Lists repositories.
@@ -450,9 +425,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["list_repositories"]
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[[repository.GetRepositoryRequest], repository.Repository]:
+    def get_repository(self) -> Callable[[repository.GetRepositoryRequest], repository.Repository]:
         r"""Return a callable for the get repository method over gRPC.
 
         Gets a repository.
@@ -476,9 +449,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["get_repository"]
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[[gda_repository.CreateRepositoryRequest], operations_pb2.Operation]:
+    def create_repository(self) -> Callable[[gda_repository.CreateRepositoryRequest], operations_pb2.Operation]:
         r"""Return a callable for the create repository method over gRPC.
 
         Creates a repository. The returned Operation will
@@ -504,9 +475,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["create_repository"]
 
     @property
-    def update_repository(
-        self,
-    ) -> Callable[[gda_repository.UpdateRepositoryRequest], gda_repository.Repository]:
+    def update_repository(self) -> Callable[[gda_repository.UpdateRepositoryRequest], gda_repository.Repository]:
         r"""Return a callable for the update repository method over gRPC.
 
         Updates a repository.
@@ -530,9 +499,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["update_repository"]
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[[repository.DeleteRepositoryRequest], operations_pb2.Operation]:
+    def delete_repository(self) -> Callable[[repository.DeleteRepositoryRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a repository and all of its contents. The
@@ -559,9 +526,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["delete_repository"]
 
     @property
-    def list_packages(
-        self,
-    ) -> Callable[[package.ListPackagesRequest], package.ListPackagesResponse]:
+    def list_packages(self) -> Callable[[package.ListPackagesRequest], package.ListPackagesResponse]:
         r"""Return a callable for the list packages method over gRPC.
 
         Lists packages.
@@ -609,9 +574,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["get_package"]
 
     @property
-    def delete_package(
-        self,
-    ) -> Callable[[package.DeletePackageRequest], operations_pb2.Operation]:
+    def delete_package(self) -> Callable[[package.DeletePackageRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete package method over gRPC.
 
         Deletes a package and all of its versions and tags.
@@ -637,9 +600,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["delete_package"]
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[[version.ListVersionsRequest], version.ListVersionsResponse]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], version.ListVersionsResponse]:
         r"""Return a callable for the list versions method over gRPC.
 
         Lists versions.
@@ -687,9 +648,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["get_version"]
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[version.DeleteVersionRequest], operations_pb2.Operation]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete version method over gRPC.
 
         Deletes a version and all of its content. The
@@ -883,9 +842,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["delete_tag"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Updates the IAM policy for a given resource.
@@ -909,9 +866,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a given resource.
@@ -935,12 +890,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests if the caller has a list of permissions on a
@@ -965,9 +915,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
-    def get_project_settings(
-        self,
-    ) -> Callable[[settings.GetProjectSettingsRequest], settings.ProjectSettings]:
+    def get_project_settings(self) -> Callable[[settings.GetProjectSettingsRequest], settings.ProjectSettings]:
         r"""Return a callable for the get project settings method over gRPC.
 
         Retrieves the Settings for the Project.
@@ -991,9 +939,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
         return self._stubs["get_project_settings"]
 
     @property
-    def update_project_settings(
-        self,
-    ) -> Callable[[settings.UpdateProjectSettingsRequest], settings.ProjectSettings]:
+    def update_project_settings(self) -> Callable[[settings.UpdateProjectSettingsRequest], settings.ProjectSettings]:
         r"""Return a callable for the update project settings method over gRPC.
 
         Updates the Settings for the Project.
@@ -1022,9 +968,7 @@ class ArtifactRegistryGrpcTransport(ArtifactRegistryTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

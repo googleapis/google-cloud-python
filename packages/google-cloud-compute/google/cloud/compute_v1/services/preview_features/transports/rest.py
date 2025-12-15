@@ -103,12 +103,8 @@ class PreviewFeaturesRestInterceptor:
     """
 
     def pre_get(
-        self,
-        request: compute.GetPreviewFeatureRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetPreviewFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetPreviewFeatureRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetPreviewFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -130,9 +126,7 @@ class PreviewFeaturesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.PreviewFeature,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.PreviewFeature, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PreviewFeature, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -149,12 +143,8 @@ class PreviewFeaturesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListPreviewFeaturesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListPreviewFeaturesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListPreviewFeaturesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListPreviewFeaturesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -162,9 +152,7 @@ class PreviewFeaturesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.PreviewFeatureList
-    ) -> compute.PreviewFeatureList:
+    def post_list(self, response: compute.PreviewFeatureList) -> compute.PreviewFeatureList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -178,9 +166,7 @@ class PreviewFeaturesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.PreviewFeatureList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.PreviewFeatureList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PreviewFeatureList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -197,12 +183,8 @@ class PreviewFeaturesRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdatePreviewFeatureRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdatePreviewFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdatePreviewFeatureRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdatePreviewFeatureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -224,9 +206,7 @@ class PreviewFeaturesRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -326,9 +306,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PreviewFeaturesRestInterceptor()
@@ -339,15 +317,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             return hash("PreviewFeaturesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -390,30 +360,16 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             """
 
-            http_options = (
-                _BasePreviewFeaturesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BasePreviewFeaturesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BasePreviewFeaturesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePreviewFeaturesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePreviewFeaturesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePreviewFeaturesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -436,14 +392,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
                 )
 
             # Send the request
-            response = PreviewFeaturesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PreviewFeaturesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -459,9 +408,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.PreviewFeature.to_json(response)
                 except:
@@ -487,15 +434,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             return hash("PreviewFeaturesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -536,30 +475,16 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             """
 
-            http_options = (
-                _BasePreviewFeaturesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BasePreviewFeaturesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BasePreviewFeaturesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePreviewFeaturesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePreviewFeaturesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePreviewFeaturesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -583,12 +508,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             # Send the request
             response = PreviewFeaturesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -605,9 +525,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.PreviewFeatureList.to_json(response)
                 except:
@@ -628,22 +546,12 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
                 )
             return resp
 
-    class _Update(
-        _BasePreviewFeaturesRestTransport._BaseUpdate, PreviewFeaturesRestStub
-    ):
+    class _Update(_BasePreviewFeaturesRestTransport._BaseUpdate, PreviewFeaturesRestStub):
         def __hash__(self):
             return hash("PreviewFeaturesRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -702,34 +610,18 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             """
 
-            http_options = (
-                _BasePreviewFeaturesRestTransport._BaseUpdate._get_http_options()
-            )
+            http_options = _BasePreviewFeaturesRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BasePreviewFeaturesRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePreviewFeaturesRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = _BasePreviewFeaturesRestTransport._BaseUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePreviewFeaturesRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePreviewFeaturesRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePreviewFeaturesRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -753,13 +645,7 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             # Send the request
             response = PreviewFeaturesRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -775,12 +661,8 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -802,25 +684,19 @@ class PreviewFeaturesRestTransport(_BasePreviewFeaturesRestTransport):
             return resp
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetPreviewFeatureRequest], compute.PreviewFeature]:
+    def get(self) -> Callable[[compute.GetPreviewFeatureRequest], compute.PreviewFeature]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListPreviewFeaturesRequest], compute.PreviewFeatureList]:
+    def list(self) -> Callable[[compute.ListPreviewFeaturesRequest], compute.PreviewFeatureList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update(
-        self,
-    ) -> Callable[[compute.UpdatePreviewFeatureRequest], compute.Operation]:
+    def update(self) -> Callable[[compute.UpdatePreviewFeatureRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore

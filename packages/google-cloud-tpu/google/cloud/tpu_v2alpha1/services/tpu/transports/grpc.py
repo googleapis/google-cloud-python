@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -221,18 +212,14 @@ class TpuGrpcTransport(TpuTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -266,9 +253,7 @@ class TpuGrpcTransport(TpuTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -335,17 +320,13 @@ class TpuGrpcTransport(TpuTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[cloud_tpu.ListNodesRequest], cloud_tpu.ListNodesResponse]:
+    def list_nodes(self) -> Callable[[cloud_tpu.ListNodesRequest], cloud_tpu.ListNodesResponse]:
         r"""Return a callable for the list nodes method over gRPC.
 
         Lists nodes.
@@ -393,9 +374,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["get_node"]
 
     @property
-    def create_node(
-        self,
-    ) -> Callable[[cloud_tpu.CreateNodeRequest], operations_pb2.Operation]:
+    def create_node(self) -> Callable[[cloud_tpu.CreateNodeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create node method over gRPC.
 
         Creates a node.
@@ -419,9 +398,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["create_node"]
 
     @property
-    def delete_node(
-        self,
-    ) -> Callable[[cloud_tpu.DeleteNodeRequest], operations_pb2.Operation]:
+    def delete_node(self) -> Callable[[cloud_tpu.DeleteNodeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete node method over gRPC.
 
         Deletes a node.
@@ -445,9 +422,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["delete_node"]
 
     @property
-    def stop_node(
-        self,
-    ) -> Callable[[cloud_tpu.StopNodeRequest], operations_pb2.Operation]:
+    def stop_node(self) -> Callable[[cloud_tpu.StopNodeRequest], operations_pb2.Operation]:
         r"""Return a callable for the stop node method over gRPC.
 
         Stops a node. This operation is only available with
@@ -472,9 +447,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["stop_node"]
 
     @property
-    def start_node(
-        self,
-    ) -> Callable[[cloud_tpu.StartNodeRequest], operations_pb2.Operation]:
+    def start_node(self) -> Callable[[cloud_tpu.StartNodeRequest], operations_pb2.Operation]:
         r"""Return a callable for the start node method over gRPC.
 
         Starts a node.
@@ -498,9 +471,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["start_node"]
 
     @property
-    def update_node(
-        self,
-    ) -> Callable[[cloud_tpu.UpdateNodeRequest], operations_pb2.Operation]:
+    def update_node(self) -> Callable[[cloud_tpu.UpdateNodeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update node method over gRPC.
 
         Updates the configurations of a node.
@@ -524,9 +495,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["update_node"]
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[[cloud_tpu.PerformMaintenanceRequest], operations_pb2.Operation]:
+    def perform_maintenance(self) -> Callable[[cloud_tpu.PerformMaintenanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the perform maintenance method over gRPC.
 
         Perform manual maintenance on a node.
@@ -550,11 +519,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["perform_maintenance"]
 
     @property
-    def list_queued_resources(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListQueuedResourcesRequest], cloud_tpu.ListQueuedResourcesResponse
-    ]:
+    def list_queued_resources(self) -> Callable[[cloud_tpu.ListQueuedResourcesRequest], cloud_tpu.ListQueuedResourcesResponse]:
         r"""Return a callable for the list queued resources method over gRPC.
 
         Lists queued resources.
@@ -578,9 +543,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["list_queued_resources"]
 
     @property
-    def get_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.GetQueuedResourceRequest], cloud_tpu.QueuedResource]:
+    def get_queued_resource(self) -> Callable[[cloud_tpu.GetQueuedResourceRequest], cloud_tpu.QueuedResource]:
         r"""Return a callable for the get queued resource method over gRPC.
 
         Gets details of a queued resource.
@@ -604,9 +567,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["get_queued_resource"]
 
     @property
-    def create_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.CreateQueuedResourceRequest], operations_pb2.Operation]:
+    def create_queued_resource(self) -> Callable[[cloud_tpu.CreateQueuedResourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create queued resource method over gRPC.
 
         Creates a QueuedResource TPU instance.
@@ -630,9 +591,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["create_queued_resource"]
 
     @property
-    def delete_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.DeleteQueuedResourceRequest], operations_pb2.Operation]:
+    def delete_queued_resource(self) -> Callable[[cloud_tpu.DeleteQueuedResourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete queued resource method over gRPC.
 
         Deletes a QueuedResource TPU instance.
@@ -656,9 +615,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["delete_queued_resource"]
 
     @property
-    def reset_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.ResetQueuedResourceRequest], operations_pb2.Operation]:
+    def reset_queued_resource(self) -> Callable[[cloud_tpu.ResetQueuedResourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the reset queued resource method over gRPC.
 
         Resets a QueuedResource TPU instance
@@ -682,11 +639,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["reset_queued_resource"]
 
     @property
-    def perform_maintenance_queued_resource(
-        self,
-    ) -> Callable[
-        [cloud_tpu.PerformMaintenanceQueuedResourceRequest], operations_pb2.Operation
-    ]:
+    def perform_maintenance_queued_resource(self) -> Callable[[cloud_tpu.PerformMaintenanceQueuedResourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the perform maintenance queued
         resource method over gRPC.
 
@@ -704,9 +657,7 @@ class TpuGrpcTransport(TpuTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "perform_maintenance_queued_resource" not in self._stubs:
-            self._stubs[
-                "perform_maintenance_queued_resource"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["perform_maintenance_queued_resource"] = self._logged_channel.unary_unary(
                 "/google.cloud.tpu.v2alpha1.Tpu/PerformMaintenanceQueuedResource",
                 request_serializer=cloud_tpu.PerformMaintenanceQueuedResourceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -714,12 +665,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["perform_maintenance_queued_resource"]
 
     @property
-    def generate_service_identity(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GenerateServiceIdentityRequest],
-        cloud_tpu.GenerateServiceIdentityResponse,
-    ]:
+    def generate_service_identity(self) -> Callable[[cloud_tpu.GenerateServiceIdentityRequest], cloud_tpu.GenerateServiceIdentityResponse]:
         r"""Return a callable for the generate service identity method over gRPC.
 
         Generates the Cloud TPU service identity for the
@@ -744,11 +690,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["generate_service_identity"]
 
     @property
-    def list_accelerator_types(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListAcceleratorTypesRequest], cloud_tpu.ListAcceleratorTypesResponse
-    ]:
+    def list_accelerator_types(self) -> Callable[[cloud_tpu.ListAcceleratorTypesRequest], cloud_tpu.ListAcceleratorTypesResponse]:
         r"""Return a callable for the list accelerator types method over gRPC.
 
         Lists accelerator types supported by this API.
@@ -772,9 +714,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["list_accelerator_types"]
 
     @property
-    def get_accelerator_type(
-        self,
-    ) -> Callable[[cloud_tpu.GetAcceleratorTypeRequest], cloud_tpu.AcceleratorType]:
+    def get_accelerator_type(self) -> Callable[[cloud_tpu.GetAcceleratorTypeRequest], cloud_tpu.AcceleratorType]:
         r"""Return a callable for the get accelerator type method over gRPC.
 
         Gets AcceleratorType.
@@ -798,11 +738,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["get_accelerator_type"]
 
     @property
-    def list_runtime_versions(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListRuntimeVersionsRequest], cloud_tpu.ListRuntimeVersionsResponse
-    ]:
+    def list_runtime_versions(self) -> Callable[[cloud_tpu.ListRuntimeVersionsRequest], cloud_tpu.ListRuntimeVersionsResponse]:
         r"""Return a callable for the list runtime versions method over gRPC.
 
         Lists runtime versions supported by this API.
@@ -826,9 +762,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["list_runtime_versions"]
 
     @property
-    def get_runtime_version(
-        self,
-    ) -> Callable[[cloud_tpu.GetRuntimeVersionRequest], cloud_tpu.RuntimeVersion]:
+    def get_runtime_version(self) -> Callable[[cloud_tpu.GetRuntimeVersionRequest], cloud_tpu.RuntimeVersion]:
         r"""Return a callable for the get runtime version method over gRPC.
 
         Gets a runtime version.
@@ -852,11 +786,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["get_runtime_version"]
 
     @property
-    def get_guest_attributes(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GetGuestAttributesRequest], cloud_tpu.GetGuestAttributesResponse
-    ]:
+    def get_guest_attributes(self) -> Callable[[cloud_tpu.GetGuestAttributesRequest], cloud_tpu.GetGuestAttributesResponse]:
         r"""Return a callable for the get guest attributes method over gRPC.
 
         Retrieves the guest attributes for the node.
@@ -880,11 +810,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["get_guest_attributes"]
 
     @property
-    def list_reservations(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListReservationsRequest], cloud_tpu.ListReservationsResponse
-    ]:
+    def list_reservations(self) -> Callable[[cloud_tpu.ListReservationsRequest], cloud_tpu.ListReservationsResponse]:
         r"""Return a callable for the list reservations method over gRPC.
 
         Retrieves the reservations for the given project in
@@ -909,11 +835,7 @@ class TpuGrpcTransport(TpuTransport):
         return self._stubs["list_reservations"]
 
     @property
-    def simulate_maintenance_event(
-        self,
-    ) -> Callable[
-        [cloud_tpu.SimulateMaintenanceEventRequest], operations_pb2.Operation
-    ]:
+    def simulate_maintenance_event(self) -> Callable[[cloud_tpu.SimulateMaintenanceEventRequest], operations_pb2.Operation]:
         r"""Return a callable for the simulate maintenance event method over gRPC.
 
         Simulates a maintenance event.
@@ -929,9 +851,7 @@ class TpuGrpcTransport(TpuTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "simulate_maintenance_event" not in self._stubs:
-            self._stubs[
-                "simulate_maintenance_event"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["simulate_maintenance_event"] = self._logged_channel.unary_unary(
                 "/google.cloud.tpu.v2alpha1.Tpu/SimulateMaintenanceEvent",
                 request_serializer=cloud_tpu.SimulateMaintenanceEventRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -995,9 +915,7 @@ class TpuGrpcTransport(TpuTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1014,9 +932,7 @@ class TpuGrpcTransport(TpuTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

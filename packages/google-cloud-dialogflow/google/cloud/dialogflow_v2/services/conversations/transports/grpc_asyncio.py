@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,12 +318,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._grpc_channel
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [gcd_conversation.CreateConversationRequest],
-        Awaitable[gcd_conversation.Conversation],
-    ]:
+    def create_conversation(self) -> Callable[[gcd_conversation.CreateConversationRequest], Awaitable[gcd_conversation.Conversation]]:
         r"""Return a callable for the create conversation method over gRPC.
 
         Creates a new conversation. Conversations are auto-completed
@@ -384,12 +362,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["create_conversation"]
 
     @property
-    def list_conversations(
-        self,
-    ) -> Callable[
-        [conversation.ListConversationsRequest],
-        Awaitable[conversation.ListConversationsResponse],
-    ]:
+    def list_conversations(self) -> Callable[[conversation.ListConversationsRequest], Awaitable[conversation.ListConversationsResponse]]:
         r"""Return a callable for the list conversations method over gRPC.
 
         Returns the list of all conversations in the
@@ -414,11 +387,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["list_conversations"]
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[
-        [conversation.GetConversationRequest], Awaitable[conversation.Conversation]
-    ]:
+    def get_conversation(self) -> Callable[[conversation.GetConversationRequest], Awaitable[conversation.Conversation]]:
         r"""Return a callable for the get conversation method over gRPC.
 
         Retrieves the specific conversation.
@@ -442,11 +411,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["get_conversation"]
 
     @property
-    def complete_conversation(
-        self,
-    ) -> Callable[
-        [conversation.CompleteConversationRequest], Awaitable[conversation.Conversation]
-    ]:
+    def complete_conversation(self) -> Callable[[conversation.CompleteConversationRequest], Awaitable[conversation.Conversation]]:
         r"""Return a callable for the complete conversation method over gRPC.
 
         Completes the specified conversation. Finished
@@ -474,10 +439,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def ingest_context_references(
         self,
-    ) -> Callable[
-        [gcd_conversation.IngestContextReferencesRequest],
-        Awaitable[gcd_conversation.IngestContextReferencesResponse],
-    ]:
+    ) -> Callable[[gcd_conversation.IngestContextReferencesRequest], Awaitable[gcd_conversation.IngestContextReferencesResponse]]:
         r"""Return a callable for the ingest context references method over gRPC.
 
         Data ingestion API.
@@ -502,11 +464,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["ingest_context_references"]
 
     @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [conversation.ListMessagesRequest], Awaitable[conversation.ListMessagesResponse]
-    ]:
+    def list_messages(self) -> Callable[[conversation.ListMessagesRequest], Awaitable[conversation.ListMessagesResponse]]:
         r"""Return a callable for the list messages method over gRPC.
 
         Lists messages that belong to a given conversation. ``messages``
@@ -536,10 +494,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def suggest_conversation_summary(
         self,
-    ) -> Callable[
-        [gcd_conversation.SuggestConversationSummaryRequest],
-        Awaitable[gcd_conversation.SuggestConversationSummaryResponse],
-    ]:
+    ) -> Callable[[gcd_conversation.SuggestConversationSummaryRequest], Awaitable[gcd_conversation.SuggestConversationSummaryResponse]]:
         r"""Return a callable for the suggest conversation summary method over gRPC.
 
         Suggests summary for a conversation based on specific
@@ -557,9 +512,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "suggest_conversation_summary" not in self._stubs:
-            self._stubs[
-                "suggest_conversation_summary"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["suggest_conversation_summary"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.Conversations/SuggestConversationSummary",
                 request_serializer=gcd_conversation.SuggestConversationSummaryRequest.serialize,
                 response_deserializer=gcd_conversation.SuggestConversationSummaryResponse.deserialize,
@@ -569,10 +522,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def generate_stateless_summary(
         self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSummaryRequest],
-        Awaitable[conversation.GenerateStatelessSummaryResponse],
-    ]:
+    ) -> Callable[[conversation.GenerateStatelessSummaryRequest], Awaitable[conversation.GenerateStatelessSummaryResponse]]:
         r"""Return a callable for the generate stateless summary method over gRPC.
 
         Generates and returns a summary for a conversation
@@ -589,9 +539,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_stateless_summary" not in self._stubs:
-            self._stubs[
-                "generate_stateless_summary"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_stateless_summary"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.Conversations/GenerateStatelessSummary",
                 request_serializer=conversation.GenerateStatelessSummaryRequest.serialize,
                 response_deserializer=conversation.GenerateStatelessSummaryResponse.deserialize,
@@ -601,10 +549,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def generate_stateless_suggestion(
         self,
-    ) -> Callable[
-        [conversation.GenerateStatelessSuggestionRequest],
-        Awaitable[conversation.GenerateStatelessSuggestionResponse],
-    ]:
+    ) -> Callable[[conversation.GenerateStatelessSuggestionRequest], Awaitable[conversation.GenerateStatelessSuggestionResponse]]:
         r"""Return a callable for the generate stateless suggestion method over gRPC.
 
         Generates and returns a suggestion for a conversation
@@ -621,9 +566,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_stateless_suggestion" not in self._stubs:
-            self._stubs[
-                "generate_stateless_suggestion"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_stateless_suggestion"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.Conversations/GenerateStatelessSuggestion",
                 request_serializer=conversation.GenerateStatelessSuggestionRequest.serialize,
                 response_deserializer=conversation.GenerateStatelessSuggestionResponse.deserialize,
@@ -631,12 +574,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["generate_stateless_suggestion"]
 
     @property
-    def search_knowledge(
-        self,
-    ) -> Callable[
-        [conversation.SearchKnowledgeRequest],
-        Awaitable[conversation.SearchKnowledgeResponse],
-    ]:
+    def search_knowledge(self) -> Callable[[conversation.SearchKnowledgeRequest], Awaitable[conversation.SearchKnowledgeResponse]]:
         r"""Return a callable for the search knowledge method over gRPC.
 
         Get answers for the given query based on knowledge
@@ -661,12 +599,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
         return self._stubs["search_knowledge"]
 
     @property
-    def generate_suggestions(
-        self,
-    ) -> Callable[
-        [gcd_conversation.GenerateSuggestionsRequest],
-        Awaitable[participant.GenerateSuggestionsResponse],
-    ]:
+    def generate_suggestions(self) -> Callable[[gcd_conversation.GenerateSuggestionsRequest], Awaitable[participant.GenerateSuggestionsResponse]]:
         r"""Return a callable for the generate suggestions method over gRPC.
 
         Generates all the suggestions using generators
@@ -825,9 +758,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -844,9 +775,7 @@ class ConversationsGrpcAsyncIOTransport(ConversationsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

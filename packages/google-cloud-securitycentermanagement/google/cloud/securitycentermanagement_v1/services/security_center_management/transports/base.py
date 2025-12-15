@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.securitycentermanagement_v1 import gapic_version as package_version
 from google.cloud.securitycentermanagement_v1.types import security_center_management
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class SecurityCenterManagementTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -385,14 +375,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def list_effective_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -401,14 +387,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def get_effective_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
-            Awaitable[
-                security_center_management.EffectiveSecurityHealthAnalyticsCustomModule
-            ],
+            Awaitable[security_center_management.EffectiveSecurityHealthAnalyticsCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -420,9 +402,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         [security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -431,14 +411,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def list_descendant_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
         Union[
             security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -449,8 +425,7 @@ class SecurityCenterManagementTransport(abc.ABC):
     ) -> Callable[
         [security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest],
         Union[
-            security_center_management.SecurityHealthAnalyticsCustomModule,
-            Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule],
+            security_center_management.SecurityHealthAnalyticsCustomModule, Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule]
         ],
     ]:
         raise NotImplementedError()
@@ -461,8 +436,7 @@ class SecurityCenterManagementTransport(abc.ABC):
     ) -> Callable[
         [security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
-            security_center_management.SecurityHealthAnalyticsCustomModule,
-            Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule],
+            security_center_management.SecurityHealthAnalyticsCustomModule, Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule]
         ],
     ]:
         raise NotImplementedError()
@@ -473,8 +447,7 @@ class SecurityCenterManagementTransport(abc.ABC):
     ) -> Callable[
         [security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
-            security_center_management.SecurityHealthAnalyticsCustomModule,
-            Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule],
+            security_center_management.SecurityHealthAnalyticsCustomModule, Awaitable[security_center_management.SecurityHealthAnalyticsCustomModule]
         ],
     ]:
         raise NotImplementedError()
@@ -482,10 +455,7 @@ class SecurityCenterManagementTransport(abc.ABC):
     @property
     def delete_security_health_analytics_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -495,9 +465,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         [security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest],
         Union[
             security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
-            Awaitable[
-                security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse
-            ],
+            Awaitable[security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -506,14 +474,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def list_effective_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest],
         Union[
             security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -522,14 +486,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def get_effective_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest],
         Union[
             security_center_management.EffectiveEventThreatDetectionCustomModule,
-            Awaitable[
-                security_center_management.EffectiveEventThreatDetectionCustomModule
-            ],
+            Awaitable[security_center_management.EffectiveEventThreatDetectionCustomModule],
         ],
     ]:
         raise NotImplementedError()
@@ -541,9 +501,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         [security_center_management.ListEventThreatDetectionCustomModulesRequest],
         Union[
             security_center_management.ListEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -552,14 +510,10 @@ class SecurityCenterManagementTransport(abc.ABC):
     def list_descendant_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest],
         Union[
             security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
-            Awaitable[
-                security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
-            ],
+            Awaitable[security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -569,10 +523,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_center_management.GetEventThreatDetectionCustomModuleRequest],
-        Union[
-            security_center_management.EventThreatDetectionCustomModule,
-            Awaitable[security_center_management.EventThreatDetectionCustomModule],
-        ],
+        Union[security_center_management.EventThreatDetectionCustomModule, Awaitable[security_center_management.EventThreatDetectionCustomModule]],
     ]:
         raise NotImplementedError()
 
@@ -581,10 +532,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_center_management.CreateEventThreatDetectionCustomModuleRequest],
-        Union[
-            security_center_management.EventThreatDetectionCustomModule,
-            Awaitable[security_center_management.EventThreatDetectionCustomModule],
-        ],
+        Union[security_center_management.EventThreatDetectionCustomModule, Awaitable[security_center_management.EventThreatDetectionCustomModule]],
     ]:
         raise NotImplementedError()
 
@@ -593,20 +541,14 @@ class SecurityCenterManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_center_management.UpdateEventThreatDetectionCustomModuleRequest],
-        Union[
-            security_center_management.EventThreatDetectionCustomModule,
-            Awaitable[security_center_management.EventThreatDetectionCustomModule],
-        ],
+        Union[security_center_management.EventThreatDetectionCustomModule, Awaitable[security_center_management.EventThreatDetectionCustomModule]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_event_threat_detection_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteEventThreatDetectionCustomModuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[security_center_management.DeleteEventThreatDetectionCustomModuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -616,9 +558,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         [security_center_management.ValidateEventThreatDetectionCustomModuleRequest],
         Union[
             security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
-            Awaitable[
-                security_center_management.ValidateEventThreatDetectionCustomModuleResponse
-            ],
+            Awaitable[security_center_management.ValidateEventThreatDetectionCustomModuleResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -628,10 +568,7 @@ class SecurityCenterManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_center_management.GetSecurityCenterServiceRequest],
-        Union[
-            security_center_management.SecurityCenterService,
-            Awaitable[security_center_management.SecurityCenterService],
-        ],
+        Union[security_center_management.SecurityCenterService, Awaitable[security_center_management.SecurityCenterService]],
     ]:
         raise NotImplementedError()
 
@@ -641,8 +578,7 @@ class SecurityCenterManagementTransport(abc.ABC):
     ) -> Callable[
         [security_center_management.ListSecurityCenterServicesRequest],
         Union[
-            security_center_management.ListSecurityCenterServicesResponse,
-            Awaitable[security_center_management.ListSecurityCenterServicesResponse],
+            security_center_management.ListSecurityCenterServicesResponse, Awaitable[security_center_management.ListSecurityCenterServicesResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -652,32 +588,20 @@ class SecurityCenterManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [security_center_management.UpdateSecurityCenterServiceRequest],
-        Union[
-            security_center_management.SecurityCenterService,
-            Awaitable[security_center_management.SecurityCenterService],
-        ],
+        Union[security_center_management.SecurityCenterService, Awaitable[security_center_management.SecurityCenterService]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

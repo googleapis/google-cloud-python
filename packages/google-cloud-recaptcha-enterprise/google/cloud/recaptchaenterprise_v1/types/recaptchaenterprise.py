@@ -1658,9 +1658,7 @@ class FraudSignals(proto.Message):
             VIRTUAL = 2
             UNEXPECTED_LOCATION = 3
 
-        card_labels: MutableSequence[
-            "FraudSignals.CardSignals.CardLabel"
-        ] = proto.RepeatedField(
+        card_labels: MutableSequence["FraudSignals.CardSignals.CardLabel"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="FraudSignals.CardSignals.CardLabel",
@@ -2929,9 +2927,7 @@ class ListRelatedAccountGroupMembershipsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_group_memberships: MutableSequence[
-        "RelatedAccountGroupMembership"
-    ] = proto.RepeatedField(
+    related_account_group_memberships: MutableSequence["RelatedAccountGroupMembership"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroupMembership",
@@ -2996,9 +2992,7 @@ class ListRelatedAccountGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_groups: MutableSequence[
-        "RelatedAccountGroup"
-    ] = proto.RepeatedField(
+    related_account_groups: MutableSequence["RelatedAccountGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroup",
@@ -3085,9 +3079,7 @@ class SearchRelatedAccountGroupMembershipsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    related_account_group_memberships: MutableSequence[
-        "RelatedAccountGroupMembership"
-    ] = proto.RepeatedField(
+    related_account_group_memberships: MutableSequence["RelatedAccountGroupMembership"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RelatedAccountGroupMembership",

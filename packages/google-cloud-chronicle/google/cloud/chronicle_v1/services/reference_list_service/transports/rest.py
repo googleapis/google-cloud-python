@@ -113,13 +113,8 @@ class ReferenceListServiceRestInterceptor:
     """
 
     def pre_create_reference_list(
-        self,
-        request: gcc_reference_list.CreateReferenceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_reference_list.CreateReferenceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcc_reference_list.CreateReferenceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_reference_list.CreateReferenceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_reference_list
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +122,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_reference_list(
-        self, response: gcc_reference_list.ReferenceList
-    ) -> gcc_reference_list.ReferenceList:
+    def post_create_reference_list(self, response: gcc_reference_list.ReferenceList) -> gcc_reference_list.ReferenceList:
         """Post-rpc interceptor for create_reference_list
 
         DEPRECATED. Please use the `post_create_reference_list_with_metadata`
@@ -143,12 +136,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def post_create_reference_list_with_metadata(
-        self,
-        response: gcc_reference_list.ReferenceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_reference_list.ReferenceList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcc_reference_list.ReferenceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_reference_list.ReferenceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_reference_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -164,12 +153,8 @@ class ReferenceListServiceRestInterceptor:
         return response, metadata
 
     def pre_get_reference_list(
-        self,
-        request: reference_list.GetReferenceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reference_list.GetReferenceListRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reference_list.GetReferenceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reference_list.GetReferenceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_reference_list
 
         Override in a subclass to manipulate the request or metadata
@@ -177,9 +162,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_reference_list(
-        self, response: reference_list.ReferenceList
-    ) -> reference_list.ReferenceList:
+    def post_get_reference_list(self, response: reference_list.ReferenceList) -> reference_list.ReferenceList:
         """Post-rpc interceptor for get_reference_list
 
         DEPRECATED. Please use the `post_get_reference_list_with_metadata`
@@ -193,9 +176,7 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def post_get_reference_list_with_metadata(
-        self,
-        response: reference_list.ReferenceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reference_list.ReferenceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reference_list.ReferenceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_reference_list
 
@@ -212,13 +193,8 @@ class ReferenceListServiceRestInterceptor:
         return response, metadata
 
     def pre_list_reference_lists(
-        self,
-        request: reference_list.ListReferenceListsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reference_list.ListReferenceListsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reference_list.ListReferenceListsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reference_list.ListReferenceListsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reference_lists
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +202,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reference_lists(
-        self, response: reference_list.ListReferenceListsResponse
-    ) -> reference_list.ListReferenceListsResponse:
+    def post_list_reference_lists(self, response: reference_list.ListReferenceListsResponse) -> reference_list.ListReferenceListsResponse:
         """Post-rpc interceptor for list_reference_lists
 
         DEPRECATED. Please use the `post_list_reference_lists_with_metadata`
@@ -242,13 +216,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def post_list_reference_lists_with_metadata(
-        self,
-        response: reference_list.ListReferenceListsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reference_list.ListReferenceListsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reference_list.ListReferenceListsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reference_list.ListReferenceListsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reference_lists
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -264,13 +233,8 @@ class ReferenceListServiceRestInterceptor:
         return response, metadata
 
     def pre_update_reference_list(
-        self,
-        request: gcc_reference_list.UpdateReferenceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_reference_list.UpdateReferenceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcc_reference_list.UpdateReferenceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_reference_list.UpdateReferenceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_reference_list
 
         Override in a subclass to manipulate the request or metadata
@@ -278,9 +242,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_reference_list(
-        self, response: gcc_reference_list.ReferenceList
-    ) -> gcc_reference_list.ReferenceList:
+    def post_update_reference_list(self, response: gcc_reference_list.ReferenceList) -> gcc_reference_list.ReferenceList:
         """Post-rpc interceptor for update_reference_list
 
         DEPRECATED. Please use the `post_update_reference_list_with_metadata`
@@ -294,12 +256,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def post_update_reference_list_with_metadata(
-        self,
-        response: gcc_reference_list.ReferenceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_reference_list.ReferenceList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcc_reference_list.ReferenceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_reference_list.ReferenceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_reference_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -315,12 +273,8 @@ class ReferenceListServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -338,12 +292,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -361,12 +311,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -374,9 +320,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -386,12 +330,8 @@ class ReferenceListServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +339,7 @@ class ReferenceListServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -491,31 +429,18 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ReferenceListServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateReferenceList(
-        _BaseReferenceListServiceRestTransport._BaseCreateReferenceList,
-        ReferenceListServiceRestStub,
-    ):
+    class _CreateReferenceList(_BaseReferenceListServiceRestTransport._BaseCreateReferenceList, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.CreateReferenceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -559,32 +484,18 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_reference_list(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_reference_list(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_transcoded_request(http_options, request)
 
-            body = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseCreateReferenceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -607,16 +518,8 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReferenceListServiceRestTransport._CreateReferenceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReferenceListServiceRestTransport._CreateReferenceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -632,16 +535,10 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             resp = self._interceptor.post_create_reference_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_reference_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_reference_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcc_reference_list.ReferenceList.to_json(
-                        response
-                    )
+                    response_payload = gcc_reference_list.ReferenceList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -660,23 +557,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
             return resp
 
-    class _GetReferenceList(
-        _BaseReferenceListServiceRestTransport._BaseGetReferenceList,
-        ReferenceListServiceRestStub,
-    ):
+    class _GetReferenceList(_BaseReferenceListServiceRestTransport._BaseGetReferenceList, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.GetReferenceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -720,28 +606,16 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_reference_list(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_reference_list(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseGetReferenceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -764,15 +638,8 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReferenceListServiceRestTransport._GetReferenceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReferenceListServiceRestTransport._GetReferenceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -788,12 +655,8 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             resp = self._interceptor.post_get_reference_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_reference_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_reference_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reference_list.ReferenceList.to_json(response)
                 except:
@@ -814,23 +677,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
             return resp
 
-    class _ListReferenceLists(
-        _BaseReferenceListServiceRestTransport._BaseListReferenceLists,
-        ReferenceListServiceRestStub,
-    ):
+    class _ListReferenceLists(_BaseReferenceListServiceRestTransport._BaseListReferenceLists, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.ListReferenceLists")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -872,28 +724,16 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_reference_lists(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_reference_lists(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseListReferenceLists._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -916,15 +756,8 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReferenceListServiceRestTransport._ListReferenceLists._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReferenceListServiceRestTransport._ListReferenceLists._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -940,16 +773,10 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             resp = self._interceptor.post_list_reference_lists(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reference_lists_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reference_lists_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        reference_list.ListReferenceListsResponse.to_json(response)
-                    )
+                    response_payload = reference_list.ListReferenceListsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -968,23 +795,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
             return resp
 
-    class _UpdateReferenceList(
-        _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList,
-        ReferenceListServiceRestStub,
-    ):
+    class _UpdateReferenceList(_BaseReferenceListServiceRestTransport._BaseUpdateReferenceList, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.UpdateReferenceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1028,32 +844,18 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_reference_list(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_reference_list(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_transcoded_request(http_options, request)
 
-            body = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseUpdateReferenceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1076,16 +878,8 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReferenceListServiceRestTransport._UpdateReferenceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReferenceListServiceRestTransport._UpdateReferenceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1101,16 +895,10 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             resp = self._interceptor.post_update_reference_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_reference_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_reference_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcc_reference_list.ReferenceList.to_json(
-                        response
-                    )
+                    response_payload = gcc_reference_list.ReferenceList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1130,44 +918,25 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
             return resp
 
     @property
-    def create_reference_list(
-        self,
-    ) -> Callable[
-        [gcc_reference_list.CreateReferenceListRequest],
-        gcc_reference_list.ReferenceList,
-    ]:
+    def create_reference_list(self) -> Callable[[gcc_reference_list.CreateReferenceListRequest], gcc_reference_list.ReferenceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReferenceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_reference_list(
-        self,
-    ) -> Callable[
-        [reference_list.GetReferenceListRequest], reference_list.ReferenceList
-    ]:
+    def get_reference_list(self) -> Callable[[reference_list.GetReferenceListRequest], reference_list.ReferenceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReferenceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reference_lists(
-        self,
-    ) -> Callable[
-        [reference_list.ListReferenceListsRequest],
-        reference_list.ListReferenceListsResponse,
-    ]:
+    def list_reference_lists(self) -> Callable[[reference_list.ListReferenceListsRequest], reference_list.ListReferenceListsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReferenceLists(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_reference_list(
-        self,
-    ) -> Callable[
-        [gcc_reference_list.UpdateReferenceListRequest],
-        gcc_reference_list.ReferenceList,
-    ]:
+    def update_reference_list(self) -> Callable[[gcc_reference_list.UpdateReferenceListRequest], gcc_reference_list.ReferenceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReferenceList(self._session, self._host, self._interceptor)  # type: ignore
@@ -1176,23 +945,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseReferenceListServiceRestTransport._BaseCancelOperation,
-        ReferenceListServiceRestStub,
-    ):
+    class _CancelOperation(_BaseReferenceListServiceRestTransport._BaseCancelOperation, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1228,32 +986,18 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1277,13 +1021,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             # Send the request
             response = ReferenceListServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1297,23 +1035,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseReferenceListServiceRestTransport._BaseDeleteOperation,
-        ReferenceListServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseReferenceListServiceRestTransport._BaseDeleteOperation, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1348,28 +1075,16 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1393,12 +1108,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             # Send the request
             response = ReferenceListServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1412,23 +1122,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseReferenceListServiceRestTransport._BaseGetOperation,
-        ReferenceListServiceRestStub,
-    ):
+    class _GetOperation(_BaseReferenceListServiceRestTransport._BaseGetOperation, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1466,26 +1165,16 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1509,12 +1198,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             # Send the request
             response = ReferenceListServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1526,9 +1210,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1553,23 +1235,12 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseReferenceListServiceRestTransport._BaseListOperations,
-        ReferenceListServiceRestStub,
-    ):
+    class _ListOperations(_BaseReferenceListServiceRestTransport._BaseListOperations, ReferenceListServiceRestStub):
         def __hash__(self):
             return hash("ReferenceListServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1607,26 +1278,16 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseReferenceListServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseReferenceListServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseReferenceListServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReferenceListServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReferenceListServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReferenceListServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1650,12 +1311,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
 
             # Send the request
             response = ReferenceListServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1667,9 +1323,7 @@ class ReferenceListServiceRestTransport(_BaseReferenceListServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

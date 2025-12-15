@@ -14,18 +14,8 @@
 # limitations under the License.
 #
 from .accessright import AccessRight
-from .account_tax import (
-    AccountTax,
-    GetAccountTaxRequest,
-    ListAccountTaxRequest,
-    ListAccountTaxResponse,
-    UpdateAccountTaxRequest,
-)
-from .accountissue import (
-    AccountIssue,
-    ListAccountIssuesRequest,
-    ListAccountIssuesResponse,
-)
+from .account_tax import AccountTax, GetAccountTaxRequest, ListAccountTaxRequest, ListAccountTaxResponse, UpdateAccountTaxRequest
+from .accountissue import AccountIssue, ListAccountIssuesRequest, ListAccountIssuesResponse
 from .accounts import (
     Account,
     CreateAndConfigureAccountRequest,
@@ -38,11 +28,7 @@ from .accounts import (
     UpdateAccountRequest,
 )
 from .accountservices import AccountAggregation
-from .autofeedsettings import (
-    AutofeedSettings,
-    GetAutofeedSettingsRequest,
-    UpdateAutofeedSettingsRequest,
-)
+from .autofeedsettings import AutofeedSettings, GetAutofeedSettingsRequest, UpdateAutofeedSettingsRequest
 from .automaticimprovements import (
     AutomaticImageImprovements,
     AutomaticImprovements,
@@ -51,16 +37,8 @@ from .automaticimprovements import (
     GetAutomaticImprovementsRequest,
     UpdateAutomaticImprovementsRequest,
 )
-from .businessidentity import (
-    BusinessIdentity,
-    GetBusinessIdentityRequest,
-    UpdateBusinessIdentityRequest,
-)
-from .businessinfo import (
-    BusinessInfo,
-    GetBusinessInfoRequest,
-    UpdateBusinessInfoRequest,
-)
+from .businessidentity import BusinessIdentity, GetBusinessIdentityRequest, UpdateBusinessIdentityRequest
+from .businessinfo import BusinessInfo, GetBusinessInfoRequest, UpdateBusinessInfoRequest
 from .checkoutsettings import (
     CheckoutSettings,
     CreateCheckoutSettingsRequest,
@@ -70,32 +48,10 @@ from .checkoutsettings import (
     UriSettings,
 )
 from .customerservice import CustomerService
-from .emailpreferences import (
-    EmailPreferences,
-    GetEmailPreferencesRequest,
-    UpdateEmailPreferencesRequest,
-)
-from .gbpaccounts import (
-    GbpAccount,
-    LinkGbpAccountRequest,
-    LinkGbpAccountResponse,
-    ListGbpAccountsRequest,
-    ListGbpAccountsResponse,
-)
-from .homepage import (
-    ClaimHomepageRequest,
-    GetHomepageRequest,
-    Homepage,
-    UnclaimHomepageRequest,
-    UpdateHomepageRequest,
-)
-from .lfpproviders import (
-    FindLfpProvidersRequest,
-    FindLfpProvidersResponse,
-    LfpProvider,
-    LinkLfpProviderRequest,
-    LinkLfpProviderResponse,
-)
+from .emailpreferences import EmailPreferences, GetEmailPreferencesRequest, UpdateEmailPreferencesRequest
+from .gbpaccounts import GbpAccount, LinkGbpAccountRequest, LinkGbpAccountResponse, ListGbpAccountsRequest, ListGbpAccountsResponse
+from .homepage import ClaimHomepageRequest, GetHomepageRequest, Homepage, UnclaimHomepageRequest, UpdateHomepageRequest
+from .lfpproviders import FindLfpProvidersRequest, FindLfpProvidersResponse, LfpProvider, LinkLfpProviderRequest, LinkLfpProviderResponse
 from .omnichannelsettings import (
     About,
     CreateOmnichannelSettingRequest,
@@ -123,23 +79,8 @@ from .online_return_policy import (
     UpdateOnlineReturnPolicyRequest,
 )
 from .phoneverificationstate import PhoneVerificationState
-from .programs import (
-    DisableProgramRequest,
-    EnableProgramRequest,
-    GetProgramRequest,
-    ListProgramsRequest,
-    ListProgramsResponse,
-    Program,
-)
-from .regions import (
-    CreateRegionRequest,
-    DeleteRegionRequest,
-    GetRegionRequest,
-    ListRegionsRequest,
-    ListRegionsResponse,
-    Region,
-    UpdateRegionRequest,
-)
+from .programs import DisableProgramRequest, EnableProgramRequest, GetProgramRequest, ListProgramsRequest, ListProgramsResponse, Program
+from .regions import CreateRegionRequest, DeleteRegionRequest, GetRegionRequest, ListRegionsRequest, ListRegionsResponse, Region, UpdateRegionRequest
 from .shippingsettings import (
     Address,
     BusinessDayConfig,
@@ -164,12 +105,7 @@ from .shippingsettings import (
     WarehouseCutoffTime,
 )
 from .tax_rule import TaxRule
-from .termsofservice import (
-    AcceptTermsOfServiceRequest,
-    GetTermsOfServiceRequest,
-    RetrieveLatestTermsOfServiceRequest,
-    TermsOfService,
-)
+from .termsofservice import AcceptTermsOfServiceRequest, GetTermsOfServiceRequest, RetrieveLatestTermsOfServiceRequest, TermsOfService
 from .termsofserviceagreementstate import (
     Accepted,
     GetTermsOfServiceAgreementStateRequest,
@@ -178,15 +114,7 @@ from .termsofserviceagreementstate import (
     TermsOfServiceAgreementState,
 )
 from .termsofservicekind import TermsOfServiceKind
-from .user import (
-    CreateUserRequest,
-    DeleteUserRequest,
-    GetUserRequest,
-    ListUsersRequest,
-    ListUsersResponse,
-    UpdateUserRequest,
-    User,
-)
+from .user import CreateUserRequest, DeleteUserRequest, GetUserRequest, ListUsersRequest, ListUsersResponse, UpdateUserRequest, User
 from .verificationmailsettings import VerificationMailSettings
 
 __all__ = (

@@ -550,9 +550,7 @@ class ListContinuousTestResultsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    continuous_test_results: MutableSequence[
-        "ContinuousTestResult"
-    ] = proto.RepeatedField(
+    continuous_test_results: MutableSequence["ContinuousTestResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ContinuousTestResult",

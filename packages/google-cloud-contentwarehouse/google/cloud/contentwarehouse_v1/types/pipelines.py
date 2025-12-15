@@ -189,17 +189,13 @@ class RunPipelineMetadata(proto.Message):
         oneof="pipeline_metadata",
         message=ExportToCdwPipelineMetadata,
     )
-    process_with_doc_ai_pipeline_metadata: ProcessWithDocAiPipelineMetadata = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="pipeline_metadata",
-            message=ProcessWithDocAiPipelineMetadata,
-        )
+    process_with_doc_ai_pipeline_metadata: ProcessWithDocAiPipelineMetadata = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="pipeline_metadata",
+        message=ProcessWithDocAiPipelineMetadata,
     )
-    individual_document_statuses: MutableSequence[
-        IndividualDocumentStatus
-    ] = proto.RepeatedField(
+    individual_document_statuses: MutableSequence[IndividualDocumentStatus] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=IndividualDocumentStatus,

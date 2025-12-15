@@ -39,9 +39,7 @@ def sample_update_security_health_analytics_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = (
-        securitycentermanagement_v1.UpdateSecurityHealthAnalyticsCustomModuleRequest()
-    )
+    request = securitycentermanagement_v1.UpdateSecurityHealthAnalyticsCustomModuleRequest()
 
     # Make the request
     response = client.update_security_health_analytics_custom_module(request=request)

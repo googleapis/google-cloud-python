@@ -31,9 +31,7 @@ from google.cloud.dialogflow_v2 import gapic_version as package_version
 from google.cloud.dialogflow_v2.types import participant
 from google.cloud.dialogflow_v2.types import participant as gcd_participant
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class ParticipantsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -237,51 +227,32 @@ class ParticipantsTransport(abc.ABC):
     @property
     def create_participant(
         self,
-    ) -> Callable[
-        [gcd_participant.CreateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
-    ]:
+    ) -> Callable[[gcd_participant.CreateParticipantRequest], Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]]]:
         raise NotImplementedError()
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[
-        [participant.GetParticipantRequest],
-        Union[participant.Participant, Awaitable[participant.Participant]],
-    ]:
+    def get_participant(self) -> Callable[[participant.GetParticipantRequest], Union[participant.Participant, Awaitable[participant.Participant]]]:
         raise NotImplementedError()
 
     @property
     def list_participants(
         self,
     ) -> Callable[
-        [participant.ListParticipantsRequest],
-        Union[
-            participant.ListParticipantsResponse,
-            Awaitable[participant.ListParticipantsResponse],
-        ],
+        [participant.ListParticipantsRequest], Union[participant.ListParticipantsResponse, Awaitable[participant.ListParticipantsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_participant(
         self,
-    ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest],
-        Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]],
-    ]:
+    ) -> Callable[[gcd_participant.UpdateParticipantRequest], Union[gcd_participant.Participant, Awaitable[gcd_participant.Participant]]]:
         raise NotImplementedError()
 
     @property
     def analyze_content(
         self,
     ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest],
-        Union[
-            gcd_participant.AnalyzeContentResponse,
-            Awaitable[gcd_participant.AnalyzeContentResponse],
-        ],
+        [gcd_participant.AnalyzeContentRequest], Union[gcd_participant.AnalyzeContentResponse, Awaitable[gcd_participant.AnalyzeContentResponse]]
     ]:
         raise NotImplementedError()
 
@@ -290,34 +261,21 @@ class ParticipantsTransport(abc.ABC):
         self,
     ) -> Callable[
         [participant.StreamingAnalyzeContentRequest],
-        Union[
-            participant.StreamingAnalyzeContentResponse,
-            Awaitable[participant.StreamingAnalyzeContentResponse],
-        ],
+        Union[participant.StreamingAnalyzeContentResponse, Awaitable[participant.StreamingAnalyzeContentResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def suggest_articles(
         self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest],
-        Union[
-            participant.SuggestArticlesResponse,
-            Awaitable[participant.SuggestArticlesResponse],
-        ],
-    ]:
+    ) -> Callable[[participant.SuggestArticlesRequest], Union[participant.SuggestArticlesResponse, Awaitable[participant.SuggestArticlesResponse]]]:
         raise NotImplementedError()
 
     @property
     def suggest_faq_answers(
         self,
     ) -> Callable[
-        [participant.SuggestFaqAnswersRequest],
-        Union[
-            participant.SuggestFaqAnswersResponse,
-            Awaitable[participant.SuggestFaqAnswersResponse],
-        ],
+        [participant.SuggestFaqAnswersRequest], Union[participant.SuggestFaqAnswersResponse, Awaitable[participant.SuggestFaqAnswersResponse]]
     ]:
         raise NotImplementedError()
 
@@ -325,11 +283,7 @@ class ParticipantsTransport(abc.ABC):
     def suggest_smart_replies(
         self,
     ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        Union[
-            participant.SuggestSmartRepliesResponse,
-            Awaitable[participant.SuggestSmartRepliesResponse],
-        ],
+        [participant.SuggestSmartRepliesRequest], Union[participant.SuggestSmartRepliesResponse, Awaitable[participant.SuggestSmartRepliesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -338,10 +292,7 @@ class ParticipantsTransport(abc.ABC):
         self,
     ) -> Callable[
         [participant.SuggestKnowledgeAssistRequest],
-        Union[
-            participant.SuggestKnowledgeAssistResponse,
-            Awaitable[participant.SuggestKnowledgeAssistResponse],
-        ],
+        Union[participant.SuggestKnowledgeAssistResponse, Awaitable[participant.SuggestKnowledgeAssistResponse]],
     ]:
         raise NotImplementedError()
 
@@ -350,20 +301,14 @@ class ParticipantsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -375,22 +320,13 @@ class ParticipantsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

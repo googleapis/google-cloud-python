@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -350,9 +335,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["get_account"]
 
     @property
-    def create_and_configure_account(
-        self,
-    ) -> Callable[[accounts.CreateAndConfigureAccountRequest], accounts.Account]:
+    def create_and_configure_account(self) -> Callable[[accounts.CreateAndConfigureAccountRequest], accounts.Account]:
         r"""Return a callable for the create and configure account method over gRPC.
 
         Creates a Merchant Center account with additional
@@ -370,9 +353,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_and_configure_account" not in self._stubs:
-            self._stubs[
-                "create_and_configure_account"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_and_configure_account"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1.AccountsService/CreateAndConfigureAccount",
                 request_serializer=accounts.CreateAndConfigureAccountRequest.serialize,
                 response_deserializer=accounts.Account.deserialize,
@@ -380,9 +361,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["create_and_configure_account"]
 
     @property
-    def delete_account(
-        self,
-    ) -> Callable[[accounts.DeleteAccountRequest], empty_pb2.Empty]:
+    def delete_account(self) -> Callable[[accounts.DeleteAccountRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete account method over gRPC.
 
         Deletes the specified account regardless of its type:
@@ -416,9 +395,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["delete_account"]
 
     @property
-    def update_account(
-        self,
-    ) -> Callable[[accounts.UpdateAccountRequest], accounts.Account]:
+    def update_account(self) -> Callable[[accounts.UpdateAccountRequest], accounts.Account]:
         r"""Return a callable for the update account method over gRPC.
 
         Updates an account regardless of its type:
@@ -444,9 +421,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["update_account"]
 
     @property
-    def list_accounts(
-        self,
-    ) -> Callable[[accounts.ListAccountsRequest], accounts.ListAccountsResponse]:
+    def list_accounts(self) -> Callable[[accounts.ListAccountsRequest], accounts.ListAccountsResponse]:
         r"""Return a callable for the list accounts method over gRPC.
 
         Note: For the ``accounts.list`` method, quota and limits usage
@@ -474,9 +449,7 @@ class AccountsServiceGrpcTransport(AccountsServiceTransport):
         return self._stubs["list_accounts"]
 
     @property
-    def list_sub_accounts(
-        self,
-    ) -> Callable[[accounts.ListSubAccountsRequest], accounts.ListSubAccountsResponse]:
+    def list_sub_accounts(self) -> Callable[[accounts.ListSubAccountsRequest], accounts.ListSubAccountsResponse]:
         r"""Return a callable for the list sub accounts method over gRPC.
 
         List all sub-accounts for a given advanced account. This is a

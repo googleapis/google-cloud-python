@@ -18,12 +18,8 @@ from google.cloud.container import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.container_v1.services.cluster_manager.async_client import (
-    ClusterManagerAsyncClient,
-)
-from google.cloud.container_v1.services.cluster_manager.client import (
-    ClusterManagerClient,
-)
+from google.cloud.container_v1.services.cluster_manager.async_client import ClusterManagerAsyncClient
+from google.cloud.container_v1.services.cluster_manager.client import ClusterManagerClient
 from google.cloud.container_v1.types.cluster_service import (
     AcceleratorConfig,
     AdditionalIPRangesConfig,

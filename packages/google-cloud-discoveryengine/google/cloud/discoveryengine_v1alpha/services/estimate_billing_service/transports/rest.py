@@ -89,13 +89,8 @@ class EstimateBillingServiceRestInterceptor:
     """
 
     def pre_estimate_data_size(
-        self,
-        request: estimate_billing_service.EstimateDataSizeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        estimate_billing_service.EstimateDataSizeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: estimate_billing_service.EstimateDataSizeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[estimate_billing_service.EstimateDataSizeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for estimate_data_size
 
         Override in a subclass to manipulate the request or metadata
@@ -103,9 +98,7 @@ class EstimateBillingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_estimate_data_size(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_estimate_data_size(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for estimate_data_size
 
         DEPRECATED. Please use the `post_estimate_data_size_with_metadata`
@@ -119,9 +112,7 @@ class EstimateBillingServiceRestInterceptor:
         return response
 
     def post_estimate_data_size_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for estimate_data_size
 
@@ -138,12 +129,8 @@ class EstimateBillingServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -161,12 +148,8 @@ class EstimateBillingServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -174,9 +157,7 @@ class EstimateBillingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -186,12 +167,8 @@ class EstimateBillingServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -199,9 +176,7 @@ class EstimateBillingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -290,9 +265,7 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -464,30 +437,17 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _EstimateDataSize(
-        _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize,
-        EstimateBillingServiceRestStub,
-    ):
+    class _EstimateDataSize(_BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize, EstimateBillingServiceRestStub):
         def __hash__(self):
             return hash("EstimateBillingServiceRestTransport.EstimateDataSize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -532,32 +492,18 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_http_options()
-            )
+            http_options = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_http_options()
 
-            request, metadata = self._interceptor.pre_estimate_data_size(
-                request, metadata
-            )
-            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_estimate_data_size(request, metadata)
+            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_transcoded_request(http_options, request)
 
-            body = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEstimateBillingServiceRestTransport._BaseEstimateDataSize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -580,16 +526,8 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                EstimateBillingServiceRestTransport._EstimateDataSize._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EstimateBillingServiceRestTransport._EstimateDataSize._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -603,12 +541,8 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
 
             resp = self._interceptor.post_estimate_data_size(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_estimate_data_size_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_estimate_data_size_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -630,11 +564,7 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             return resp
 
     @property
-    def estimate_data_size(
-        self,
-    ) -> Callable[
-        [estimate_billing_service.EstimateDataSizeRequest], operations_pb2.Operation
-    ]:
+    def estimate_data_size(self) -> Callable[[estimate_billing_service.EstimateDataSizeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._EstimateDataSize(self._session, self._host, self._interceptor)  # type: ignore
@@ -643,23 +573,12 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEstimateBillingServiceRestTransport._BaseCancelOperation,
-        EstimateBillingServiceRestStub,
-    ):
+    class _CancelOperation(_BaseEstimateBillingServiceRestTransport._BaseCancelOperation, EstimateBillingServiceRestStub):
         def __hash__(self):
             return hash("EstimateBillingServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -695,32 +614,18 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEstimateBillingServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -743,16 +648,8 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                EstimateBillingServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = EstimateBillingServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -766,23 +663,12 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEstimateBillingServiceRestTransport._BaseGetOperation,
-        EstimateBillingServiceRestStub,
-    ):
+    class _GetOperation(_BaseEstimateBillingServiceRestTransport._BaseGetOperation, EstimateBillingServiceRestStub):
         def __hash__(self):
             return hash("EstimateBillingServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -820,26 +706,16 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEstimateBillingServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -863,12 +739,7 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
 
             # Send the request
             response = EstimateBillingServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -880,9 +751,7 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -907,23 +776,12 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEstimateBillingServiceRestTransport._BaseListOperations,
-        EstimateBillingServiceRestStub,
-    ):
+    class _ListOperations(_BaseEstimateBillingServiceRestTransport._BaseListOperations, EstimateBillingServiceRestStub):
         def __hash__(self):
             return hash("EstimateBillingServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -961,26 +819,16 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEstimateBillingServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1003,15 +851,8 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                EstimateBillingServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EstimateBillingServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1023,9 +864,7 @@ class EstimateBillingServiceRestTransport(_BaseEstimateBillingServiceRestTranspo
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

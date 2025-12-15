@@ -611,9 +611,7 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            buttons: MutableSequence[
-                "Intent.Message.Card.Button"
-            ] = proto.RepeatedField(
+            buttons: MutableSequence["Intent.Message.Card.Button"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.Card.Button",
@@ -658,9 +656,7 @@ class Intent(proto.Message):
                     Required. The list of simple responses.
             """
 
-            simple_responses: MutableSequence[
-                "Intent.Message.SimpleResponse"
-            ] = proto.RepeatedField(
+            simple_responses: MutableSequence["Intent.Message.SimpleResponse"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.SimpleResponse",
@@ -711,12 +707,10 @@ class Intent(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                open_uri_action: "Intent.Message.BasicCard.Button.OpenUriAction" = (
-                    proto.Field(
-                        proto.MESSAGE,
-                        number=2,
-                        message="Intent.Message.BasicCard.Button.OpenUriAction",
-                    )
+                open_uri_action: "Intent.Message.BasicCard.Button.OpenUriAction" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="Intent.Message.BasicCard.Button.OpenUriAction",
                 )
 
             title: str = proto.Field(
@@ -736,9 +730,7 @@ class Intent(proto.Message):
                 number=4,
                 message="Intent.Message.Image",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Intent.Message.BasicCard.Button",
@@ -767,9 +759,7 @@ class Intent(proto.Message):
                     Required. The list of suggested replies.
             """
 
-            suggestions: MutableSequence[
-                "Intent.Message.Suggestion"
-            ] = proto.RepeatedField(
+            suggestions: MutableSequence["Intent.Message.Suggestion"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.Suggestion",
@@ -847,9 +837,7 @@ class Intent(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            items: MutableSequence[
-                "Intent.Message.ListSelect.Item"
-            ] = proto.RepeatedField(
+            items: MutableSequence["Intent.Message.ListSelect.Item"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.ListSelect.Item",
@@ -901,9 +889,7 @@ class Intent(proto.Message):
                     message="Intent.Message.Image",
                 )
 
-            items: MutableSequence[
-                "Intent.Message.CarouselSelect.Item"
-            ] = proto.RepeatedField(
+            items: MutableSequence["Intent.Message.CarouselSelect.Item"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.CarouselSelect.Item",
@@ -1013,9 +999,7 @@ class Intent(proto.Message):
                 number=1,
                 enum="Intent.Message.MediaContent.ResponseMediaType",
             )
-            media_objects: MutableSequence[
-                "Intent.Message.MediaContent.ResponseMediaObject"
-            ] = proto.RepeatedField(
+            media_objects: MutableSequence["Intent.Message.MediaContent.ResponseMediaObject"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Intent.Message.MediaContent.ResponseMediaObject",
@@ -1153,9 +1137,7 @@ class Intent(proto.Message):
                     number=5,
                 )
 
-            items: MutableSequence[
-                "Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem"
-            ] = proto.RepeatedField(
+            items: MutableSequence["Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.BrowseCarouselCard.BrowseCarouselCardItem",
@@ -1199,9 +1181,7 @@ class Intent(proto.Message):
                 number=3,
                 message="Intent.Message.Image",
             )
-            column_properties: MutableSequence[
-                "Intent.Message.ColumnProperties"
-            ] = proto.RepeatedField(
+            column_properties: MutableSequence["Intent.Message.ColumnProperties"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Intent.Message.ColumnProperties",
@@ -1211,9 +1191,7 @@ class Intent(proto.Message):
                 number=5,
                 message="Intent.Message.TableCardRow",
             )
-            buttons: MutableSequence[
-                "Intent.Message.BasicCard.Button"
-            ] = proto.RepeatedField(
+            buttons: MutableSequence["Intent.Message.BasicCard.Button"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="Intent.Message.BasicCard.Button",
@@ -1275,9 +1253,7 @@ class Intent(proto.Message):
                     after this row.
             """
 
-            cells: MutableSequence[
-                "Intent.Message.TableCardCell"
-            ] = proto.RepeatedField(
+            cells: MutableSequence["Intent.Message.TableCardCell"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="Intent.Message.TableCardCell",

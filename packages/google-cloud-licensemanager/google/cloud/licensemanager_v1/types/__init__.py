@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .api_entities import (
-    ActivationState,
-    BillingInfo,
-    Configuration,
-    Instance,
-    LicenseType,
-    Product,
-    Usage,
-    UserCountBillingInfo,
-    UserCountUsage,
-)
+from .api_entities import ActivationState, BillingInfo, Configuration, Instance, LicenseType, Product, Usage, UserCountBillingInfo, UserCountUsage
 from .licensemanager import (
     AggregateUsageRequest,
     AggregateUsageResponse,

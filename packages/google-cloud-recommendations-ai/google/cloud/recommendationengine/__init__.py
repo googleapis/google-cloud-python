@@ -18,35 +18,15 @@ from google.cloud.recommendationengine import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.recommendationengine_v1beta1.services.catalog_service.async_client import (
-    CatalogServiceAsyncClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.catalog_service.client import (
-    CatalogServiceClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.async_client import (
-    PredictionApiKeyRegistryAsyncClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.client import (
-    PredictionApiKeyRegistryClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.prediction_service.async_client import (
-    PredictionServiceAsyncClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.prediction_service.client import (
-    PredictionServiceClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.user_event_service.async_client import (
-    UserEventServiceAsyncClient,
-)
-from google.cloud.recommendationengine_v1beta1.services.user_event_service.client import (
-    UserEventServiceClient,
-)
-from google.cloud.recommendationengine_v1beta1.types.catalog import (
-    CatalogItem,
-    Image,
-    ProductCatalogItem,
-)
+from google.cloud.recommendationengine_v1beta1.services.catalog_service.async_client import CatalogServiceAsyncClient
+from google.cloud.recommendationengine_v1beta1.services.catalog_service.client import CatalogServiceClient
+from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.async_client import PredictionApiKeyRegistryAsyncClient
+from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.client import PredictionApiKeyRegistryClient
+from google.cloud.recommendationengine_v1beta1.services.prediction_service.async_client import PredictionServiceAsyncClient
+from google.cloud.recommendationengine_v1beta1.services.prediction_service.client import PredictionServiceClient
+from google.cloud.recommendationengine_v1beta1.services.user_event_service.async_client import UserEventServiceAsyncClient
+from google.cloud.recommendationengine_v1beta1.services.user_event_service.client import UserEventServiceClient
+from google.cloud.recommendationengine_v1beta1.types.catalog import CatalogItem, Image, ProductCatalogItem
 from google.cloud.recommendationengine_v1beta1.types.catalog_service import (
     CreateCatalogItemRequest,
     DeleteCatalogItemRequest,
@@ -76,10 +56,7 @@ from google.cloud.recommendationengine_v1beta1.types.prediction_apikey_registry_
     ListPredictionApiKeyRegistrationsResponse,
     PredictionApiKeyRegistration,
 )
-from google.cloud.recommendationengine_v1beta1.types.prediction_service import (
-    PredictRequest,
-    PredictResponse,
-)
+from google.cloud.recommendationengine_v1beta1.types.prediction_service import PredictRequest, PredictResponse
 from google.cloud.recommendationengine_v1beta1.types.user_event import (
     EventDetail,
     ProductDetail,

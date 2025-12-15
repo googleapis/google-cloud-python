@@ -153,13 +153,8 @@ class AdaptationRestInterceptor:
     """
 
     def pre_create_custom_class(
-        self,
-        request: cloud_speech_adaptation.CreateCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.CreateCustomClassRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.CreateCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.CreateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -167,9 +162,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_custom_class(
-        self, response: resource.CustomClass
-    ) -> resource.CustomClass:
+    def post_create_custom_class(self, response: resource.CustomClass) -> resource.CustomClass:
         """Post-rpc interceptor for create_custom_class
 
         DEPRECATED. Please use the `post_create_custom_class_with_metadata`
@@ -183,9 +176,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_create_custom_class_with_metadata(
-        self,
-        response: resource.CustomClass,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.CustomClass, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_custom_class
 
@@ -202,13 +193,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_create_phrase_set(
-        self,
-        request: cloud_speech_adaptation.CreatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.CreatePhraseSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.CreatePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.CreatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +202,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_phrase_set(
-        self, response: resource.PhraseSet
-    ) -> resource.PhraseSet:
+    def post_create_phrase_set(self, response: resource.PhraseSet) -> resource.PhraseSet:
         """Post-rpc interceptor for create_phrase_set
 
         DEPRECATED. Please use the `post_create_phrase_set_with_metadata`
@@ -232,9 +216,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_create_phrase_set_with_metadata(
-        self,
-        response: resource.PhraseSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.PhraseSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_phrase_set
 
@@ -251,13 +233,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_delete_custom_class(
-        self,
-        request: cloud_speech_adaptation.DeleteCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.DeleteCustomClassRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.DeleteCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.DeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -266,13 +243,8 @@ class AdaptationRestInterceptor:
         return request, metadata
 
     def pre_delete_phrase_set(
-        self,
-        request: cloud_speech_adaptation.DeletePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.DeletePhraseSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.DeletePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.DeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -281,13 +253,8 @@ class AdaptationRestInterceptor:
         return request, metadata
 
     def pre_get_custom_class(
-        self,
-        request: cloud_speech_adaptation.GetCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.GetCustomClassRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.GetCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.GetCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -295,9 +262,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_custom_class(
-        self, response: resource.CustomClass
-    ) -> resource.CustomClass:
+    def post_get_custom_class(self, response: resource.CustomClass) -> resource.CustomClass:
         """Post-rpc interceptor for get_custom_class
 
         DEPRECATED. Please use the `post_get_custom_class_with_metadata`
@@ -311,9 +276,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_get_custom_class_with_metadata(
-        self,
-        response: resource.CustomClass,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.CustomClass, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_custom_class
 
@@ -330,13 +293,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_get_phrase_set(
-        self,
-        request: cloud_speech_adaptation.GetPhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.GetPhraseSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.GetPhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.GetPhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +316,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_get_phrase_set_with_metadata(
-        self,
-        response: resource.PhraseSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.PhraseSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_phrase_set
 
@@ -377,13 +333,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_list_custom_classes(
-        self,
-        request: cloud_speech_adaptation.ListCustomClassesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.ListCustomClassesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.ListCustomClassesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.ListCustomClassesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_classes
 
         Override in a subclass to manipulate the request or metadata
@@ -407,13 +358,8 @@ class AdaptationRestInterceptor:
         return response
 
     def post_list_custom_classes_with_metadata(
-        self,
-        response: cloud_speech_adaptation.ListCustomClassesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.ListCustomClassesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_speech_adaptation.ListCustomClassesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.ListCustomClassesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_classes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -429,13 +375,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_list_phrase_set(
-        self,
-        request: cloud_speech_adaptation.ListPhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.ListPhraseSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.ListPhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.ListPhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -443,9 +384,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_phrase_set(
-        self, response: cloud_speech_adaptation.ListPhraseSetResponse
-    ) -> cloud_speech_adaptation.ListPhraseSetResponse:
+    def post_list_phrase_set(self, response: cloud_speech_adaptation.ListPhraseSetResponse) -> cloud_speech_adaptation.ListPhraseSetResponse:
         """Post-rpc interceptor for list_phrase_set
 
         DEPRECATED. Please use the `post_list_phrase_set_with_metadata`
@@ -459,13 +398,8 @@ class AdaptationRestInterceptor:
         return response
 
     def post_list_phrase_set_with_metadata(
-        self,
-        response: cloud_speech_adaptation.ListPhraseSetResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.ListPhraseSetResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_speech_adaptation.ListPhraseSetResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.ListPhraseSetResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_phrase_set
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -481,13 +415,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_update_custom_class(
-        self,
-        request: cloud_speech_adaptation.UpdateCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.UpdateCustomClassRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.UpdateCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.UpdateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -495,9 +424,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_custom_class(
-        self, response: resource.CustomClass
-    ) -> resource.CustomClass:
+    def post_update_custom_class(self, response: resource.CustomClass) -> resource.CustomClass:
         """Post-rpc interceptor for update_custom_class
 
         DEPRECATED. Please use the `post_update_custom_class_with_metadata`
@@ -511,9 +438,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_update_custom_class_with_metadata(
-        self,
-        response: resource.CustomClass,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.CustomClass, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_custom_class
 
@@ -530,13 +455,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_update_phrase_set(
-        self,
-        request: cloud_speech_adaptation.UpdatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech_adaptation.UpdatePhraseSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_speech_adaptation.UpdatePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech_adaptation.UpdatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -544,9 +464,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_phrase_set(
-        self, response: resource.PhraseSet
-    ) -> resource.PhraseSet:
+    def post_update_phrase_set(self, response: resource.PhraseSet) -> resource.PhraseSet:
         """Post-rpc interceptor for update_phrase_set
 
         DEPRECATED. Please use the `post_update_phrase_set_with_metadata`
@@ -560,9 +478,7 @@ class AdaptationRestInterceptor:
         return response
 
     def post_update_phrase_set_with_metadata(
-        self,
-        response: resource.PhraseSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.PhraseSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_phrase_set
 
@@ -579,12 +495,8 @@ class AdaptationRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -592,9 +504,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -604,12 +514,8 @@ class AdaptationRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -617,9 +523,7 @@ class AdaptationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -708,30 +612,18 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AdaptationRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCustomClass(
-        _BaseAdaptationRestTransport._BaseCreateCustomClass, AdaptationRestStub
-    ):
+    class _CreateCustomClass(_BaseAdaptationRestTransport._BaseCreateCustomClass, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.CreateCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -779,32 +671,18 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseCreateCustomClass._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_custom_class(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_custom_class(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_transcoded_request(http_options, request)
 
-            body = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseCreateCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -828,13 +706,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._CreateCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -850,12 +722,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_create_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.CustomClass.to_json(response)
                 except:
@@ -876,22 +744,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _CreatePhraseSet(
-        _BaseAdaptationRestTransport._BaseCreatePhraseSet, AdaptationRestStub
-    ):
+    class _CreatePhraseSet(_BaseAdaptationRestTransport._BaseCreatePhraseSet, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.CreatePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -935,32 +793,18 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_phrase_set(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_phrase_set(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_transcoded_request(http_options, request)
 
-            body = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseCreatePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -984,13 +828,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._CreatePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1006,12 +844,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_create_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.PhraseSet.to_json(response)
                 except:
@@ -1032,22 +866,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _DeleteCustomClass(
-        _BaseAdaptationRestTransport._BaseDeleteCustomClass, AdaptationRestStub
-    ):
+    class _DeleteCustomClass(_BaseAdaptationRestTransport._BaseDeleteCustomClass, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.DeleteCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1083,28 +907,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_custom_class(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_custom_class(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseDeleteCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1128,12 +940,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._DeleteCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1141,22 +948,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeletePhraseSet(
-        _BaseAdaptationRestTransport._BaseDeletePhraseSet, AdaptationRestStub
-    ):
+    class _DeletePhraseSet(_BaseAdaptationRestTransport._BaseDeletePhraseSet, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.DeletePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1192,28 +989,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_phrase_set(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_phrase_set(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseDeletePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1237,12 +1022,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._DeletePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1250,22 +1030,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetCustomClass(
-        _BaseAdaptationRestTransport._BaseGetCustomClass, AdaptationRestStub
-    ):
+    class _GetCustomClass(_BaseAdaptationRestTransport._BaseGetCustomClass, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.GetCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1312,30 +1082,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseGetCustomClass._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseGetCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_custom_class(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseGetCustomClass._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_custom_class(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseGetCustomClass._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdaptationRestTransport._BaseGetCustomClass._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdaptationRestTransport._BaseGetCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1359,12 +1115,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._GetCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1380,12 +1131,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_get_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.CustomClass.to_json(response)
                 except:
@@ -1406,22 +1153,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _GetPhraseSet(
-        _BaseAdaptationRestTransport._BaseGetPhraseSet, AdaptationRestStub
-    ):
+    class _GetPhraseSet(_BaseAdaptationRestTransport._BaseGetPhraseSet, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.GetPhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1464,30 +1201,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseGetPhraseSet._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseGetPhraseSet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_phrase_set(request, metadata)
-            transcoded_request = (
-                _BaseAdaptationRestTransport._BaseGetPhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAdaptationRestTransport._BaseGetPhraseSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdaptationRestTransport._BaseGetPhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdaptationRestTransport._BaseGetPhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1511,12 +1234,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._GetPhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1532,12 +1250,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_get_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.PhraseSet.to_json(response)
                 except:
@@ -1558,22 +1272,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _ListCustomClasses(
-        _BaseAdaptationRestTransport._BaseListCustomClasses, AdaptationRestStub
-    ):
+    class _ListCustomClasses(_BaseAdaptationRestTransport._BaseListCustomClasses, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.ListCustomClasses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1615,28 +1319,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseListCustomClasses._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseListCustomClasses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_classes(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseListCustomClasses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_custom_classes(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseListCustomClasses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseListCustomClasses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseListCustomClasses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1660,12 +1352,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._ListCustomClasses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1681,18 +1368,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_list_custom_classes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_speech_adaptation.ListCustomClassesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = cloud_speech_adaptation.ListCustomClassesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1711,22 +1390,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _ListPhraseSet(
-        _BaseAdaptationRestTransport._BaseListPhraseSet, AdaptationRestStub
-    ):
+    class _ListPhraseSet(_BaseAdaptationRestTransport._BaseListPhraseSet, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.ListPhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1768,30 +1437,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseListPhraseSet._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseListPhraseSet._get_http_options()
 
             request, metadata = self._interceptor.pre_list_phrase_set(request, metadata)
-            transcoded_request = (
-                _BaseAdaptationRestTransport._BaseListPhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAdaptationRestTransport._BaseListPhraseSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdaptationRestTransport._BaseListPhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdaptationRestTransport._BaseListPhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1815,12 +1470,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._ListPhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1836,16 +1486,10 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_list_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_speech_adaptation.ListPhraseSetResponse.to_json(response)
-                    )
+                    response_payload = cloud_speech_adaptation.ListPhraseSetResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1864,22 +1508,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _UpdateCustomClass(
-        _BaseAdaptationRestTransport._BaseUpdateCustomClass, AdaptationRestStub
-    ):
+    class _UpdateCustomClass(_BaseAdaptationRestTransport._BaseUpdateCustomClass, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.UpdateCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1927,32 +1561,18 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_custom_class(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_custom_class(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_transcoded_request(http_options, request)
 
-            body = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseUpdateCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1976,13 +1596,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._UpdateCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1998,12 +1612,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_update_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.CustomClass.to_json(response)
                 except:
@@ -2024,22 +1634,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 )
             return resp
 
-    class _UpdatePhraseSet(
-        _BaseAdaptationRestTransport._BaseUpdatePhraseSet, AdaptationRestStub
-    ):
+    class _UpdatePhraseSet(_BaseAdaptationRestTransport._BaseUpdatePhraseSet, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.UpdatePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2083,32 +1683,18 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_phrase_set(
-                request, metadata
-            )
-            transcoded_request = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_phrase_set(request, metadata)
+            transcoded_request = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_transcoded_request(http_options, request)
 
-            body = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdaptationRestTransport._BaseUpdatePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2132,13 +1718,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._UpdatePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,12 +1734,8 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             resp = self._interceptor.post_update_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.PhraseSet.to_json(response)
                 except:
@@ -2181,93 +1757,61 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             return resp
 
     @property
-    def create_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.CreateCustomClassRequest], resource.CustomClass
-    ]:
+    def create_custom_class(self) -> Callable[[cloud_speech_adaptation.CreateCustomClassRequest], resource.CustomClass]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.CreatePhraseSetRequest], resource.PhraseSet]:
+    def create_phrase_set(self) -> Callable[[cloud_speech_adaptation.CreatePhraseSetRequest], resource.PhraseSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.DeleteCustomClassRequest], empty_pb2.Empty]:
+    def delete_custom_class(self) -> Callable[[cloud_speech_adaptation.DeleteCustomClassRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.DeletePhraseSetRequest], empty_pb2.Empty]:
+    def delete_phrase_set(self) -> Callable[[cloud_speech_adaptation.DeletePhraseSetRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.GetCustomClassRequest], resource.CustomClass
-    ]:
+    def get_custom_class(self) -> Callable[[cloud_speech_adaptation.GetCustomClassRequest], resource.CustomClass]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.GetPhraseSetRequest], resource.PhraseSet]:
+    def get_phrase_set(self) -> Callable[[cloud_speech_adaptation.GetPhraseSetRequest], resource.PhraseSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_custom_classes(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.ListCustomClassesRequest],
-        cloud_speech_adaptation.ListCustomClassesResponse,
-    ]:
+    def list_custom_classes(self) -> Callable[[cloud_speech_adaptation.ListCustomClassesRequest], cloud_speech_adaptation.ListCustomClassesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomClasses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_phrase_set(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.ListPhraseSetRequest],
-        cloud_speech_adaptation.ListPhraseSetResponse,
-    ]:
+    def list_phrase_set(self) -> Callable[[cloud_speech_adaptation.ListPhraseSetRequest], cloud_speech_adaptation.ListPhraseSetResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_custom_class(
-        self,
-    ) -> Callable[
-        [cloud_speech_adaptation.UpdateCustomClassRequest], resource.CustomClass
-    ]:
+    def update_custom_class(self) -> Callable[[cloud_speech_adaptation.UpdateCustomClassRequest], resource.CustomClass]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech_adaptation.UpdatePhraseSetRequest], resource.PhraseSet]:
+    def update_phrase_set(self) -> Callable[[cloud_speech_adaptation.UpdatePhraseSetRequest], resource.PhraseSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
@@ -2276,22 +1820,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAdaptationRestTransport._BaseGetOperation, AdaptationRestStub
-    ):
+    class _GetOperation(_BaseAdaptationRestTransport._BaseGetOperation, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2329,30 +1863,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAdaptationRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAdaptationRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdaptationRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdaptationRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2376,12 +1896,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2393,9 +1908,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2420,22 +1933,12 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAdaptationRestTransport._BaseListOperations, AdaptationRestStub
-    ):
+    class _ListOperations(_BaseAdaptationRestTransport._BaseListOperations, AdaptationRestStub):
         def __hash__(self):
             return hash("AdaptationRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2473,28 +1976,16 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAdaptationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAdaptationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAdaptationRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdaptationRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdaptationRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdaptationRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2518,12 +2009,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
 
             # Send the request
             response = AdaptationRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2535,9 +2021,7 @@ class AdaptationRestTransport(_BaseAdaptationRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

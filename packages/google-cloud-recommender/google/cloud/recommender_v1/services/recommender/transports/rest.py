@@ -28,12 +28,8 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.recommender_v1.types import (
-    insight_type_config as gcr_insight_type_config,
-)
-from google.cloud.recommender_v1.types import (
-    recommender_config as gcr_recommender_config,
-)
+from google.cloud.recommender_v1.types import insight_type_config as gcr_insight_type_config
+from google.cloud.recommender_v1.types import recommender_config as gcr_recommender_config
 from google.cloud.recommender_v1.types import insight
 from google.cloud.recommender_v1.types import insight_type_config
 from google.cloud.recommender_v1.types import recommendation
@@ -193,12 +189,8 @@ class RecommenderRestInterceptor:
     """
 
     def pre_get_insight(
-        self,
-        request: recommender_service.GetInsightRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.GetInsightRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: recommender_service.GetInsightRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.GetInsightRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_insight
 
         Override in a subclass to manipulate the request or metadata
@@ -220,9 +212,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_get_insight_with_metadata(
-        self,
-        response: insight.Insight,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: insight.Insight, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[insight.Insight, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_insight
 
@@ -239,13 +229,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_get_insight_type_config(
-        self,
-        request: recommender_service.GetInsightTypeConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.GetInsightTypeConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.GetInsightTypeConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.GetInsightTypeConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_insight_type_config
 
         Override in a subclass to manipulate the request or metadata
@@ -253,9 +238,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_get_insight_type_config(
-        self, response: insight_type_config.InsightTypeConfig
-    ) -> insight_type_config.InsightTypeConfig:
+    def post_get_insight_type_config(self, response: insight_type_config.InsightTypeConfig) -> insight_type_config.InsightTypeConfig:
         """Post-rpc interceptor for get_insight_type_config
 
         DEPRECATED. Please use the `post_get_insight_type_config_with_metadata`
@@ -269,12 +252,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_get_insight_type_config_with_metadata(
-        self,
-        response: insight_type_config.InsightTypeConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insight_type_config.InsightTypeConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: insight_type_config.InsightTypeConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insight_type_config.InsightTypeConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_insight_type_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -290,13 +269,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_get_recommendation(
-        self,
-        request: recommender_service.GetRecommendationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.GetRecommendationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.GetRecommendationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.GetRecommendationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_recommendation
 
         Override in a subclass to manipulate the request or metadata
@@ -304,9 +278,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_get_recommendation(
-        self, response: recommendation.Recommendation
-    ) -> recommendation.Recommendation:
+    def post_get_recommendation(self, response: recommendation.Recommendation) -> recommendation.Recommendation:
         """Post-rpc interceptor for get_recommendation
 
         DEPRECATED. Please use the `post_get_recommendation_with_metadata`
@@ -320,9 +292,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_get_recommendation_with_metadata(
-        self,
-        response: recommendation.Recommendation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: recommendation.Recommendation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_recommendation
 
@@ -339,13 +309,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_get_recommender_config(
-        self,
-        request: recommender_service.GetRecommenderConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.GetRecommenderConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.GetRecommenderConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.GetRecommenderConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_recommender_config
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +318,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_get_recommender_config(
-        self, response: recommender_config.RecommenderConfig
-    ) -> recommender_config.RecommenderConfig:
+    def post_get_recommender_config(self, response: recommender_config.RecommenderConfig) -> recommender_config.RecommenderConfig:
         """Post-rpc interceptor for get_recommender_config
 
         DEPRECATED. Please use the `post_get_recommender_config_with_metadata`
@@ -369,12 +332,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_get_recommender_config_with_metadata(
-        self,
-        response: recommender_config.RecommenderConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_config.RecommenderConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: recommender_config.RecommenderConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_config.RecommenderConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_recommender_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -390,12 +349,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_list_insights(
-        self,
-        request: recommender_service.ListInsightsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.ListInsightsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: recommender_service.ListInsightsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.ListInsightsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_insights
 
         Override in a subclass to manipulate the request or metadata
@@ -403,9 +358,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_list_insights(
-        self, response: recommender_service.ListInsightsResponse
-    ) -> recommender_service.ListInsightsResponse:
+    def post_list_insights(self, response: recommender_service.ListInsightsResponse) -> recommender_service.ListInsightsResponse:
         """Post-rpc interceptor for list_insights
 
         DEPRECATED. Please use the `post_list_insights_with_metadata`
@@ -419,13 +372,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_list_insights_with_metadata(
-        self,
-        response: recommender_service.ListInsightsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.ListInsightsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: recommender_service.ListInsightsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.ListInsightsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_insights
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -441,13 +389,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_list_recommendations(
-        self,
-        request: recommender_service.ListRecommendationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.ListRecommendationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.ListRecommendationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.ListRecommendationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_recommendations
 
         Override in a subclass to manipulate the request or metadata
@@ -455,9 +398,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_list_recommendations(
-        self, response: recommender_service.ListRecommendationsResponse
-    ) -> recommender_service.ListRecommendationsResponse:
+    def post_list_recommendations(self, response: recommender_service.ListRecommendationsResponse) -> recommender_service.ListRecommendationsResponse:
         """Post-rpc interceptor for list_recommendations
 
         DEPRECATED. Please use the `post_list_recommendations_with_metadata`
@@ -471,13 +412,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_list_recommendations_with_metadata(
-        self,
-        response: recommender_service.ListRecommendationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.ListRecommendationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: recommender_service.ListRecommendationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.ListRecommendationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_recommendations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -493,13 +429,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_mark_insight_accepted(
-        self,
-        request: recommender_service.MarkInsightAcceptedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.MarkInsightAcceptedRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.MarkInsightAcceptedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.MarkInsightAcceptedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mark_insight_accepted
 
         Override in a subclass to manipulate the request or metadata
@@ -521,9 +452,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_mark_insight_accepted_with_metadata(
-        self,
-        response: insight.Insight,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: insight.Insight, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[insight.Insight, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mark_insight_accepted
 
@@ -540,13 +469,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_mark_recommendation_claimed(
-        self,
-        request: recommender_service.MarkRecommendationClaimedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.MarkRecommendationClaimedRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.MarkRecommendationClaimedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.MarkRecommendationClaimedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mark_recommendation_claimed
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +478,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_mark_recommendation_claimed(
-        self, response: recommendation.Recommendation
-    ) -> recommendation.Recommendation:
+    def post_mark_recommendation_claimed(self, response: recommendation.Recommendation) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_claimed
 
         DEPRECATED. Please use the `post_mark_recommendation_claimed_with_metadata`
@@ -570,9 +492,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_mark_recommendation_claimed_with_metadata(
-        self,
-        response: recommendation.Recommendation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: recommendation.Recommendation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mark_recommendation_claimed
 
@@ -589,13 +509,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_mark_recommendation_dismissed(
-        self,
-        request: recommender_service.MarkRecommendationDismissedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.MarkRecommendationDismissedRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.MarkRecommendationDismissedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.MarkRecommendationDismissedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mark_recommendation_dismissed
 
         Override in a subclass to manipulate the request or metadata
@@ -603,9 +518,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_mark_recommendation_dismissed(
-        self, response: recommendation.Recommendation
-    ) -> recommendation.Recommendation:
+    def post_mark_recommendation_dismissed(self, response: recommendation.Recommendation) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_dismissed
 
         DEPRECATED. Please use the `post_mark_recommendation_dismissed_with_metadata`
@@ -619,9 +532,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_mark_recommendation_dismissed_with_metadata(
-        self,
-        response: recommendation.Recommendation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: recommendation.Recommendation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mark_recommendation_dismissed
 
@@ -638,13 +549,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_mark_recommendation_failed(
-        self,
-        request: recommender_service.MarkRecommendationFailedRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.MarkRecommendationFailedRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.MarkRecommendationFailedRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.MarkRecommendationFailedRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mark_recommendation_failed
 
         Override in a subclass to manipulate the request or metadata
@@ -652,9 +558,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_mark_recommendation_failed(
-        self, response: recommendation.Recommendation
-    ) -> recommendation.Recommendation:
+    def post_mark_recommendation_failed(self, response: recommendation.Recommendation) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_failed
 
         DEPRECATED. Please use the `post_mark_recommendation_failed_with_metadata`
@@ -668,9 +572,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_mark_recommendation_failed_with_metadata(
-        self,
-        response: recommendation.Recommendation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: recommendation.Recommendation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mark_recommendation_failed
 
@@ -687,13 +589,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_mark_recommendation_succeeded(
-        self,
-        request: recommender_service.MarkRecommendationSucceededRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.MarkRecommendationSucceededRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.MarkRecommendationSucceededRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.MarkRecommendationSucceededRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for mark_recommendation_succeeded
 
         Override in a subclass to manipulate the request or metadata
@@ -701,9 +598,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_mark_recommendation_succeeded(
-        self, response: recommendation.Recommendation
-    ) -> recommendation.Recommendation:
+    def post_mark_recommendation_succeeded(self, response: recommendation.Recommendation) -> recommendation.Recommendation:
         """Post-rpc interceptor for mark_recommendation_succeeded
 
         DEPRECATED. Please use the `post_mark_recommendation_succeeded_with_metadata`
@@ -717,9 +612,7 @@ class RecommenderRestInterceptor:
         return response
 
     def post_mark_recommendation_succeeded_with_metadata(
-        self,
-        response: recommendation.Recommendation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: recommendation.Recommendation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[recommendation.Recommendation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for mark_recommendation_succeeded
 
@@ -736,13 +629,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_update_insight_type_config(
-        self,
-        request: recommender_service.UpdateInsightTypeConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.UpdateInsightTypeConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.UpdateInsightTypeConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.UpdateInsightTypeConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_insight_type_config
 
         Override in a subclass to manipulate the request or metadata
@@ -750,9 +638,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_update_insight_type_config(
-        self, response: gcr_insight_type_config.InsightTypeConfig
-    ) -> gcr_insight_type_config.InsightTypeConfig:
+    def post_update_insight_type_config(self, response: gcr_insight_type_config.InsightTypeConfig) -> gcr_insight_type_config.InsightTypeConfig:
         """Post-rpc interceptor for update_insight_type_config
 
         DEPRECATED. Please use the `post_update_insight_type_config_with_metadata`
@@ -766,13 +652,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_update_insight_type_config_with_metadata(
-        self,
-        response: gcr_insight_type_config.InsightTypeConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcr_insight_type_config.InsightTypeConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcr_insight_type_config.InsightTypeConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcr_insight_type_config.InsightTypeConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_insight_type_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -788,13 +669,8 @@ class RecommenderRestInterceptor:
         return response, metadata
 
     def pre_update_recommender_config(
-        self,
-        request: recommender_service.UpdateRecommenderConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        recommender_service.UpdateRecommenderConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: recommender_service.UpdateRecommenderConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[recommender_service.UpdateRecommenderConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_recommender_config
 
         Override in a subclass to manipulate the request or metadata
@@ -802,9 +678,7 @@ class RecommenderRestInterceptor:
         """
         return request, metadata
 
-    def post_update_recommender_config(
-        self, response: gcr_recommender_config.RecommenderConfig
-    ) -> gcr_recommender_config.RecommenderConfig:
+    def post_update_recommender_config(self, response: gcr_recommender_config.RecommenderConfig) -> gcr_recommender_config.RecommenderConfig:
         """Post-rpc interceptor for update_recommender_config
 
         DEPRECATED. Please use the `post_update_recommender_config_with_metadata`
@@ -818,13 +692,8 @@ class RecommenderRestInterceptor:
         return response
 
     def post_update_recommender_config_with_metadata(
-        self,
-        response: gcr_recommender_config.RecommenderConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcr_recommender_config.RecommenderConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcr_recommender_config.RecommenderConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcr_recommender_config.RecommenderConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_recommender_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -923,30 +792,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RecommenderRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetInsight(
-        _BaseRecommenderRestTransport._BaseGetInsight, RecommenderRestStub
-    ):
+    class _GetInsight(_BaseRecommenderRestTransport._BaseGetInsight, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.GetInsight")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -989,30 +846,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetInsight._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetInsight._get_http_options()
 
             request, metadata = self._interceptor.pre_get_insight(request, metadata)
-            transcoded_request = (
-                _BaseRecommenderRestTransport._BaseGetInsight._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRecommenderRestTransport._BaseGetInsight._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRecommenderRestTransport._BaseGetInsight._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRecommenderRestTransport._BaseGetInsight._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1036,12 +879,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._GetInsight._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1057,12 +895,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_get_insight(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_insight_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_insight_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = insight.Insight.to_json(response)
                 except:
@@ -1083,22 +917,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _GetInsightTypeConfig(
-        _BaseRecommenderRestTransport._BaseGetInsightTypeConfig, RecommenderRestStub
-    ):
+    class _GetInsightTypeConfig(_BaseRecommenderRestTransport._BaseGetInsightTypeConfig, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.GetInsightTypeConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1137,28 +961,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for an InsightType.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_insight_type_config(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_insight_type_config(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseGetInsightTypeConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1182,12 +994,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._GetInsightTypeConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1203,16 +1010,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_get_insight_type_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_insight_type_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_insight_type_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = insight_type_config.InsightTypeConfig.to_json(
-                        response
-                    )
+                    response_payload = insight_type_config.InsightTypeConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1231,22 +1032,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _GetRecommendation(
-        _BaseRecommenderRestTransport._BaseGetRecommendation, RecommenderRestStub
-    ):
+    class _GetRecommendation(_BaseRecommenderRestTransport._BaseGetRecommendation, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.GetRecommendation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1289,28 +1080,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetRecommendation._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetRecommendation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_recommendation(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseGetRecommendation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_recommendation(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseGetRecommendation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseGetRecommendation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseGetRecommendation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1334,12 +1113,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._GetRecommendation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1355,12 +1129,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_get_recommendation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_recommendation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_recommendation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
                 except:
@@ -1381,22 +1151,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _GetRecommenderConfig(
-        _BaseRecommenderRestTransport._BaseGetRecommenderConfig, RecommenderRestStub
-    ):
+    class _GetRecommenderConfig(_BaseRecommenderRestTransport._BaseGetRecommenderConfig, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.GetRecommenderConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1435,28 +1195,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for a Recommender.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_recommender_config(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_recommender_config(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseGetRecommenderConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1480,12 +1228,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._GetRecommenderConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1501,16 +1244,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_get_recommender_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_recommender_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_recommender_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = recommender_config.RecommenderConfig.to_json(
-                        response
-                    )
+                    response_payload = recommender_config.RecommenderConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1529,22 +1266,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _ListInsights(
-        _BaseRecommenderRestTransport._BaseListInsights, RecommenderRestStub
-    ):
+    class _ListInsights(_BaseRecommenderRestTransport._BaseListInsights, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.ListInsights")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1583,30 +1310,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Response to the ``ListInsights`` method.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseListInsights._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseListInsights._get_http_options()
 
             request, metadata = self._interceptor.pre_list_insights(request, metadata)
-            transcoded_request = (
-                _BaseRecommenderRestTransport._BaseListInsights._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRecommenderRestTransport._BaseListInsights._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRecommenderRestTransport._BaseListInsights._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRecommenderRestTransport._BaseListInsights._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1630,12 +1343,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._ListInsights._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1651,16 +1359,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_list_insights(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_insights_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_insights_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = recommender_service.ListInsightsResponse.to_json(
-                        response
-                    )
+                    response_payload = recommender_service.ListInsightsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1679,22 +1381,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _ListRecommendations(
-        _BaseRecommenderRestTransport._BaseListRecommendations, RecommenderRestStub
-    ):
+    class _ListRecommendations(_BaseRecommenderRestTransport._BaseListRecommendations, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.ListRecommendations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1733,28 +1425,16 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Response to the ``ListRecommendations`` method.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseListRecommendations._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseListRecommendations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_recommendations(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseListRecommendations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_recommendations(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseListRecommendations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseListRecommendations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseListRecommendations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1778,12 +1458,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._ListRecommendations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1799,18 +1474,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_list_recommendations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_recommendations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_recommendations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        recommender_service.ListRecommendationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = recommender_service.ListRecommendationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1829,22 +1496,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _MarkInsightAccepted(
-        _BaseRecommenderRestTransport._BaseMarkInsightAccepted, RecommenderRestStub
-    ):
+    class _MarkInsightAccepted(_BaseRecommenderRestTransport._BaseMarkInsightAccepted, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.MarkInsightAccepted")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1888,32 +1545,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_http_options()
 
-            request, metadata = self._interceptor.pre_mark_insight_accepted(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_mark_insight_accepted(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseMarkInsightAccepted._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1937,13 +1580,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._MarkInsightAccepted._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1959,12 +1596,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_insight_accepted(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_mark_insight_accepted_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mark_insight_accepted_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = insight.Insight.to_json(response)
                 except:
@@ -1985,23 +1618,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _MarkRecommendationClaimed(
-        _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed,
-        RecommenderRestStub,
-    ):
+    class _MarkRecommendationClaimed(_BaseRecommenderRestTransport._BaseMarkRecommendationClaimed, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.MarkRecommendationClaimed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2046,32 +1668,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_http_options()
 
-            request, metadata = self._interceptor.pre_mark_recommendation_claimed(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_mark_recommendation_claimed(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationClaimed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2094,16 +1702,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
 
             # Send the request
-            response = (
-                RecommenderRestTransport._MarkRecommendationClaimed._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RecommenderRestTransport._MarkRecommendationClaimed._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2119,12 +1719,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_recommendation_claimed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_mark_recommendation_claimed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mark_recommendation_claimed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
                 except:
@@ -2145,23 +1741,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _MarkRecommendationDismissed(
-        _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed,
-        RecommenderRestStub,
-    ):
+    class _MarkRecommendationDismissed(_BaseRecommenderRestTransport._BaseMarkRecommendationDismissed, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.MarkRecommendationDismissed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2206,32 +1791,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_http_options()
 
-            request, metadata = self._interceptor.pre_mark_recommendation_dismissed(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_mark_recommendation_dismissed(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationDismissed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2254,16 +1825,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
 
             # Send the request
-            response = (
-                RecommenderRestTransport._MarkRecommendationDismissed._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RecommenderRestTransport._MarkRecommendationDismissed._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2279,15 +1842,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_recommendation_dismissed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_mark_recommendation_dismissed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mark_recommendation_dismissed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
                 except:
@@ -2308,22 +1864,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _MarkRecommendationFailed(
-        _BaseRecommenderRestTransport._BaseMarkRecommendationFailed, RecommenderRestStub
-    ):
+    class _MarkRecommendationFailed(_BaseRecommenderRestTransport._BaseMarkRecommendationFailed, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.MarkRecommendationFailed")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2368,32 +1914,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_http_options()
 
-            request, metadata = self._interceptor.pre_mark_recommendation_failed(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_mark_recommendation_failed(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationFailed._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2417,13 +1949,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._MarkRecommendationFailed._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2439,12 +1965,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_recommendation_failed(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_mark_recommendation_failed_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mark_recommendation_failed_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
                 except:
@@ -2465,23 +1987,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _MarkRecommendationSucceeded(
-        _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded,
-        RecommenderRestStub,
-    ):
+    class _MarkRecommendationSucceeded(_BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.MarkRecommendationSucceeded")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2526,32 +2037,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_http_options()
 
-            request, metadata = self._interceptor.pre_mark_recommendation_succeeded(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_mark_recommendation_succeeded(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseMarkRecommendationSucceeded._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2574,16 +2071,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
 
             # Send the request
-            response = (
-                RecommenderRestTransport._MarkRecommendationSucceeded._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RecommenderRestTransport._MarkRecommendationSucceeded._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2599,15 +2088,8 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_mark_recommendation_succeeded(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_mark_recommendation_succeeded_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_mark_recommendation_succeeded_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = recommendation.Recommendation.to_json(response)
                 except:
@@ -2628,22 +2110,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _UpdateInsightTypeConfig(
-        _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig, RecommenderRestStub
-    ):
+    class _UpdateInsightTypeConfig(_BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.UpdateInsightTypeConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2684,32 +2156,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                         Configuration for an InsightType.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_insight_type_config(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_insight_type_config(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseUpdateInsightTypeConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2733,13 +2191,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._UpdateInsightTypeConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2755,16 +2207,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_update_insight_type_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_insight_type_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_insight_type_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcr_insight_type_config.InsightTypeConfig.to_json(response)
-                    )
+                    response_payload = gcr_insight_type_config.InsightTypeConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2783,22 +2229,12 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                 )
             return resp
 
-    class _UpdateRecommenderConfig(
-        _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig, RecommenderRestStub
-    ):
+    class _UpdateRecommenderConfig(_BaseRecommenderRestTransport._BaseUpdateRecommenderConfig, RecommenderRestStub):
         def __hash__(self):
             return hash("RecommenderRestTransport.UpdateRecommenderConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2838,32 +2274,18 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
                     Configuration for a Recommender.
             """
 
-            http_options = (
-                _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_http_options()
-            )
+            http_options = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_recommender_config(
-                request, metadata
-            )
-            transcoded_request = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_recommender_config(request, metadata)
+            transcoded_request = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRecommenderRestTransport._BaseUpdateRecommenderConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2887,13 +2309,7 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             # Send the request
             response = RecommenderRestTransport._UpdateRecommenderConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2909,16 +2325,10 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
 
             resp = self._interceptor.post_update_recommender_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_recommender_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_recommender_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcr_recommender_config.RecommenderConfig.to_json(
-                        response
-                    )
+                    response_payload = gcr_recommender_config.RecommenderConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2938,137 +2348,79 @@ class RecommenderRestTransport(_BaseRecommenderRestTransport):
             return resp
 
     @property
-    def get_insight(
-        self,
-    ) -> Callable[[recommender_service.GetInsightRequest], insight.Insight]:
+    def get_insight(self) -> Callable[[recommender_service.GetInsightRequest], insight.Insight]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInsight(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_insight_type_config(
-        self,
-    ) -> Callable[
-        [recommender_service.GetInsightTypeConfigRequest],
-        insight_type_config.InsightTypeConfig,
-    ]:
+    def get_insight_type_config(self) -> Callable[[recommender_service.GetInsightTypeConfigRequest], insight_type_config.InsightTypeConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInsightTypeConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_recommendation(
-        self,
-    ) -> Callable[
-        [recommender_service.GetRecommendationRequest], recommendation.Recommendation
-    ]:
+    def get_recommendation(self) -> Callable[[recommender_service.GetRecommendationRequest], recommendation.Recommendation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRecommendation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_recommender_config(
-        self,
-    ) -> Callable[
-        [recommender_service.GetRecommenderConfigRequest],
-        recommender_config.RecommenderConfig,
-    ]:
+    def get_recommender_config(self) -> Callable[[recommender_service.GetRecommenderConfigRequest], recommender_config.RecommenderConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRecommenderConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_insights(
-        self,
-    ) -> Callable[
-        [recommender_service.ListInsightsRequest],
-        recommender_service.ListInsightsResponse,
-    ]:
+    def list_insights(self) -> Callable[[recommender_service.ListInsightsRequest], recommender_service.ListInsightsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInsights(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_recommendations(
-        self,
-    ) -> Callable[
-        [recommender_service.ListRecommendationsRequest],
-        recommender_service.ListRecommendationsResponse,
-    ]:
+    def list_recommendations(self) -> Callable[[recommender_service.ListRecommendationsRequest], recommender_service.ListRecommendationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRecommendations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mark_insight_accepted(
-        self,
-    ) -> Callable[[recommender_service.MarkInsightAcceptedRequest], insight.Insight]:
+    def mark_insight_accepted(self) -> Callable[[recommender_service.MarkInsightAcceptedRequest], insight.Insight]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkInsightAccepted(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mark_recommendation_claimed(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationClaimedRequest],
-        recommendation.Recommendation,
-    ]:
+    def mark_recommendation_claimed(self) -> Callable[[recommender_service.MarkRecommendationClaimedRequest], recommendation.Recommendation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkRecommendationClaimed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mark_recommendation_dismissed(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationDismissedRequest],
-        recommendation.Recommendation,
-    ]:
+    def mark_recommendation_dismissed(self) -> Callable[[recommender_service.MarkRecommendationDismissedRequest], recommendation.Recommendation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkRecommendationDismissed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mark_recommendation_failed(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationFailedRequest],
-        recommendation.Recommendation,
-    ]:
+    def mark_recommendation_failed(self) -> Callable[[recommender_service.MarkRecommendationFailedRequest], recommendation.Recommendation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkRecommendationFailed(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def mark_recommendation_succeeded(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkRecommendationSucceededRequest],
-        recommendation.Recommendation,
-    ]:
+    def mark_recommendation_succeeded(self) -> Callable[[recommender_service.MarkRecommendationSucceededRequest], recommendation.Recommendation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MarkRecommendationSucceeded(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_insight_type_config(
-        self,
-    ) -> Callable[
-        [recommender_service.UpdateInsightTypeConfigRequest],
-        gcr_insight_type_config.InsightTypeConfig,
-    ]:
+    def update_insight_type_config(self) -> Callable[[recommender_service.UpdateInsightTypeConfigRequest], gcr_insight_type_config.InsightTypeConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInsightTypeConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_recommender_config(
-        self,
-    ) -> Callable[
-        [recommender_service.UpdateRecommenderConfigRequest],
-        gcr_recommender_config.RecommenderConfig,
-    ]:
+    def update_recommender_config(self) -> Callable[[recommender_service.UpdateRecommenderConfigRequest], gcr_recommender_config.RecommenderConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRecommenderConfig(self._session, self._host, self._interceptor)  # type: ignore

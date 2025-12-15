@@ -46,32 +46,11 @@ from .audio_config import (
     VoiceSelectionParams,
 )
 from .bigquery_export import BigQueryExportSettings
-from .changelog import (
-    Changelog,
-    GetChangelogRequest,
-    ListChangelogsRequest,
-    ListChangelogsResponse,
-)
+from .changelog import Changelog, GetChangelogRequest, ListChangelogsRequest, ListChangelogsResponse
 from .code_block import CodeBlock
-from .conversation_history import (
-    Conversation,
-    DeleteConversationRequest,
-    GetConversationRequest,
-    ListConversationsRequest,
-    ListConversationsResponse,
-)
-from .data_store_connection import (
-    DataStoreConnection,
-    DataStoreConnectionSignals,
-    DataStoreType,
-    DocumentProcessingMode,
-)
-from .deployment import (
-    Deployment,
-    GetDeploymentRequest,
-    ListDeploymentsRequest,
-    ListDeploymentsResponse,
-)
+from .conversation_history import Conversation, DeleteConversationRequest, GetConversationRequest, ListConversationsRequest, ListConversationsResponse
+from .data_store_connection import DataStoreConnection, DataStoreConnectionSignals, DataStoreType, DocumentProcessingMode
+from .deployment import Deployment, GetDeploymentRequest, ListDeploymentsRequest, ListDeploymentsResponse
 from .entity_type import (
     CreateEntityTypeRequest,
     DeleteEntityTypeRequest,
@@ -194,12 +173,7 @@ from .page import (
     TransitionRoute,
     UpdatePageRequest,
 )
-from .parameter_definition import (
-    DataType,
-    InlineSchema,
-    ParameterDefinition,
-    TypeSchema,
-)
+from .parameter_definition import DataType, InlineSchema, ParameterDefinition, TypeSchema
 from .playbook import (
     CreatePlaybookRequest,
     CreatePlaybookVersionRequest,

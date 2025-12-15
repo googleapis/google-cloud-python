@@ -49,13 +49,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +61,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +80,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -273,18 +262,14 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +305,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -345,17 +328,13 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_folder(
-        self,
-    ) -> Callable[[folders.GetFolderRequest], Awaitable[folders.Folder]]:
+    def get_folder(self) -> Callable[[folders.GetFolderRequest], Awaitable[folders.Folder]]:
         r"""Return a callable for the get folder method over gRPC.
 
         Retrieves a folder identified by the supplied resource name.
@@ -383,9 +362,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["get_folder"]
 
     @property
-    def list_folders(
-        self,
-    ) -> Callable[[folders.ListFoldersRequest], Awaitable[folders.ListFoldersResponse]]:
+    def list_folders(self) -> Callable[[folders.ListFoldersRequest], Awaitable[folders.ListFoldersResponse]]:
         r"""Return a callable for the list folders method over gRPC.
 
         Lists the folders that are direct descendants of supplied parent
@@ -415,11 +392,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["list_folders"]
 
     @property
-    def search_folders(
-        self,
-    ) -> Callable[
-        [folders.SearchFoldersRequest], Awaitable[folders.SearchFoldersResponse]
-    ]:
+    def search_folders(self) -> Callable[[folders.SearchFoldersRequest], Awaitable[folders.SearchFoldersResponse]]:
         r"""Return a callable for the search folders method over gRPC.
 
         Search for folders that match specific filter criteria.
@@ -449,9 +422,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["search_folders"]
 
     @property
-    def create_folder(
-        self,
-    ) -> Callable[[folders.CreateFolderRequest], Awaitable[operations_pb2.Operation]]:
+    def create_folder(self) -> Callable[[folders.CreateFolderRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create folder method over gRPC.
 
         Creates a folder in the resource hierarchy. Returns an
@@ -503,9 +474,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["create_folder"]
 
     @property
-    def update_folder(
-        self,
-    ) -> Callable[[folders.UpdateFolderRequest], Awaitable[operations_pb2.Operation]]:
+    def update_folder(self) -> Callable[[folders.UpdateFolderRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update folder method over gRPC.
 
         Updates a folder, changing its ``display_name``. Changes to the
@@ -546,9 +515,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["update_folder"]
 
     @property
-    def move_folder(
-        self,
-    ) -> Callable[[folders.MoveFolderRequest], Awaitable[operations_pb2.Operation]]:
+    def move_folder(self) -> Callable[[folders.MoveFolderRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the move folder method over gRPC.
 
         Moves a folder under a new resource parent. Returns an
@@ -589,9 +556,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["move_folder"]
 
     @property
-    def delete_folder(
-        self,
-    ) -> Callable[[folders.DeleteFolderRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_folder(self) -> Callable[[folders.DeleteFolderRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete folder method over gRPC.
 
         Requests deletion of a folder. The folder is moved into the
@@ -626,9 +591,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["delete_folder"]
 
     @property
-    def undelete_folder(
-        self,
-    ) -> Callable[[folders.UndeleteFolderRequest], Awaitable[operations_pb2.Operation]]:
+    def undelete_folder(self) -> Callable[[folders.UndeleteFolderRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undelete folder method over gRPC.
 
         Cancels the deletion request for a folder. This method may be
@@ -664,9 +627,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["undelete_folder"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a folder. The returned policy
@@ -695,9 +656,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on a folder, replacing any
@@ -725,12 +684,7 @@ class FoldersGrpcAsyncIOTransport(FoldersTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that a caller has on the specified folder.

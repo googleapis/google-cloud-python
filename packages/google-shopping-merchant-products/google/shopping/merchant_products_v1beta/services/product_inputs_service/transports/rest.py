@@ -100,12 +100,8 @@ class ProductInputsServiceRestInterceptor:
     """
 
     def pre_delete_product_input(
-        self,
-        request: productinputs.DeleteProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productinputs.DeleteProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: productinputs.DeleteProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productinputs.DeleteProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -114,12 +110,8 @@ class ProductInputsServiceRestInterceptor:
         return request, metadata
 
     def pre_insert_product_input(
-        self,
-        request: productinputs.InsertProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productinputs.InsertProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: productinputs.InsertProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productinputs.InsertProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -127,9 +119,7 @@ class ProductInputsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_product_input(
-        self, response: productinputs.ProductInput
-    ) -> productinputs.ProductInput:
+    def post_insert_product_input(self, response: productinputs.ProductInput) -> productinputs.ProductInput:
         """Post-rpc interceptor for insert_product_input
 
         DEPRECATED. Please use the `post_insert_product_input_with_metadata`
@@ -143,9 +133,7 @@ class ProductInputsServiceRestInterceptor:
         return response
 
     def post_insert_product_input_with_metadata(
-        self,
-        response: productinputs.ProductInput,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: productinputs.ProductInput, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[productinputs.ProductInput, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_product_input
 
@@ -162,12 +150,8 @@ class ProductInputsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_product_input(
-        self,
-        request: productinputs.UpdateProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        productinputs.UpdateProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: productinputs.UpdateProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[productinputs.UpdateProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +159,7 @@ class ProductInputsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_product_input(
-        self, response: productinputs.ProductInput
-    ) -> productinputs.ProductInput:
+    def post_update_product_input(self, response: productinputs.ProductInput) -> productinputs.ProductInput:
         """Post-rpc interceptor for update_product_input
 
         DEPRECATED. Please use the `post_update_product_input_with_metadata`
@@ -191,9 +173,7 @@ class ProductInputsServiceRestInterceptor:
         return response
 
     def post_update_product_input_with_metadata(
-        self,
-        response: productinputs.ProductInput,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: productinputs.ProductInput, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[productinputs.ProductInput, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_product_input
 
@@ -290,31 +270,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ProductInputsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteProductInput(
-        _BaseProductInputsServiceRestTransport._BaseDeleteProductInput,
-        ProductInputsServiceRestStub,
-    ):
+    class _DeleteProductInput(_BaseProductInputsServiceRestTransport._BaseDeleteProductInput, ProductInputsServiceRestStub):
         def __hash__(self):
             return hash("ProductInputsServiceRestTransport.DeleteProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -350,28 +317,16 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_product_input(request, metadata)
+            transcoded_request = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductInputsServiceRestTransport._BaseDeleteProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -394,15 +349,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ProductInputsServiceRestTransport._DeleteProductInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ProductInputsServiceRestTransport._DeleteProductInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -410,23 +358,12 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _InsertProductInput(
-        _BaseProductInputsServiceRestTransport._BaseInsertProductInput,
-        ProductInputsServiceRestStub,
-    ):
+    class _InsertProductInput(_BaseProductInputsServiceRestTransport._BaseInsertProductInput, ProductInputsServiceRestStub):
         def __hash__(self):
             return hash("ProductInputsServiceRestTransport.InsertProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -501,32 +438,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_product_input(request, metadata)
+            transcoded_request = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_transcoded_request(http_options, request)
 
-            body = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductInputsServiceRestTransport._BaseInsertProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -549,16 +472,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ProductInputsServiceRestTransport._InsertProductInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ProductInputsServiceRestTransport._InsertProductInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -574,12 +489,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             resp = self._interceptor.post_insert_product_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_product_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_product_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = productinputs.ProductInput.to_json(response)
                 except:
@@ -600,23 +511,12 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateProductInput(
-        _BaseProductInputsServiceRestTransport._BaseUpdateProductInput,
-        ProductInputsServiceRestStub,
-    ):
+    class _UpdateProductInput(_BaseProductInputsServiceRestTransport._BaseUpdateProductInput, ProductInputsServiceRestStub):
         def __hash__(self):
             return hash("ProductInputsServiceRestTransport.UpdateProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -696,32 +596,18 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
-            )
+            http_options = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_product_input(request, metadata)
+            transcoded_request = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_transcoded_request(http_options, request)
 
-            body = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductInputsServiceRestTransport._BaseUpdateProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -744,16 +630,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ProductInputsServiceRestTransport._UpdateProductInput._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ProductInputsServiceRestTransport._UpdateProductInput._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -769,12 +647,8 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
 
             resp = self._interceptor.post_update_product_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_product_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_product_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = productinputs.ProductInput.to_json(response)
                 except:
@@ -796,29 +670,19 @@ class ProductInputsServiceRestTransport(_BaseProductInputsServiceRestTransport):
             return resp
 
     @property
-    def delete_product_input(
-        self,
-    ) -> Callable[[productinputs.DeleteProductInputRequest], empty_pb2.Empty]:
+    def delete_product_input(self) -> Callable[[productinputs.DeleteProductInputRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProductInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_product_input(
-        self,
-    ) -> Callable[
-        [productinputs.InsertProductInputRequest], productinputs.ProductInput
-    ]:
+    def insert_product_input(self) -> Callable[[productinputs.InsertProductInputRequest], productinputs.ProductInput]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertProductInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_product_input(
-        self,
-    ) -> Callable[
-        [productinputs.UpdateProductInputRequest], productinputs.ProductInput
-    ]:
+    def update_product_input(self) -> Callable[[productinputs.UpdateProductInputRequest], productinputs.ProductInput]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProductInput(self._session, self._host, self._interceptor)  # type: ignore

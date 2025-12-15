@@ -119,12 +119,8 @@ class TenantServiceRestInterceptor:
     """
 
     def pre_create_tenant(
-        self,
-        request: tenant_service.CreateTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.CreateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tenant_service.CreateTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.CreateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -146,9 +142,7 @@ class TenantServiceRestInterceptor:
         return response
 
     def post_create_tenant_with_metadata(
-        self,
-        response: gct_tenant.Tenant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gct_tenant.Tenant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gct_tenant.Tenant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tenant
 
@@ -165,12 +159,8 @@ class TenantServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_tenant(
-        self,
-        request: tenant_service.DeleteTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.DeleteTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tenant_service.DeleteTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.DeleteTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -179,12 +169,8 @@ class TenantServiceRestInterceptor:
         return request, metadata
 
     def pre_get_tenant(
-        self,
-        request: tenant_service.GetTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.GetTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tenant_service.GetTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.GetTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -223,12 +209,8 @@ class TenantServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tenants(
-        self,
-        request: tenant_service.ListTenantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.ListTenantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tenant_service.ListTenantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.ListTenantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tenants
 
         Override in a subclass to manipulate the request or metadata
@@ -236,9 +218,7 @@ class TenantServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tenants(
-        self, response: tenant_service.ListTenantsResponse
-    ) -> tenant_service.ListTenantsResponse:
+    def post_list_tenants(self, response: tenant_service.ListTenantsResponse) -> tenant_service.ListTenantsResponse:
         """Post-rpc interceptor for list_tenants
 
         DEPRECATED. Please use the `post_list_tenants_with_metadata`
@@ -252,12 +232,8 @@ class TenantServiceRestInterceptor:
         return response
 
     def post_list_tenants_with_metadata(
-        self,
-        response: tenant_service.ListTenantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.ListTenantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: tenant_service.ListTenantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.ListTenantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tenants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,12 +249,8 @@ class TenantServiceRestInterceptor:
         return response, metadata
 
     def pre_update_tenant(
-        self,
-        request: tenant_service.UpdateTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tenant_service.UpdateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tenant_service.UpdateTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tenant_service.UpdateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -300,9 +272,7 @@ class TenantServiceRestInterceptor:
         return response
 
     def post_update_tenant_with_metadata(
-        self,
-        response: gct_tenant.Tenant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gct_tenant.Tenant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gct_tenant.Tenant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_tenant
 
@@ -319,12 +289,8 @@ class TenantServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -332,9 +298,7 @@ class TenantServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -424,30 +388,18 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TenantServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateTenant(
-        _BaseTenantServiceRestTransport._BaseCreateTenant, TenantServiceRestStub
-    ):
+    class _CreateTenant(_BaseTenantServiceRestTransport._BaseCreateTenant, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.CreateTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -495,30 +447,18 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseCreateTenant._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseCreateTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tenant(request, metadata)
-            transcoded_request = _BaseTenantServiceRestTransport._BaseCreateTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseCreateTenant._get_transcoded_request(http_options, request)
 
-            body = _BaseTenantServiceRestTransport._BaseCreateTenant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTenantServiceRestTransport._BaseCreateTenant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTenantServiceRestTransport._BaseCreateTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseCreateTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -542,13 +482,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._CreateTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -564,12 +498,8 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             resp = self._interceptor.post_create_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_tenant.Tenant.to_json(response)
                 except:
@@ -590,22 +520,12 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 )
             return resp
 
-    class _DeleteTenant(
-        _BaseTenantServiceRestTransport._BaseDeleteTenant, TenantServiceRestStub
-    ):
+    class _DeleteTenant(_BaseTenantServiceRestTransport._BaseDeleteTenant, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.DeleteTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -640,26 +560,16 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseDeleteTenant._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tenant(request, metadata)
-            transcoded_request = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseDeleteTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -683,12 +593,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._DeleteTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,22 +601,12 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetTenant(
-        _BaseTenantServiceRestTransport._BaseGetTenant, TenantServiceRestStub
-    ):
+    class _GetTenant(_BaseTenantServiceRestTransport._BaseGetTenant, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.GetTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -757,30 +652,16 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseGetTenant._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseGetTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tenant(request, metadata)
-            transcoded_request = (
-                _BaseTenantServiceRestTransport._BaseGetTenant._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseGetTenant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTenantServiceRestTransport._BaseGetTenant._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseGetTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -804,12 +685,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._GetTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -825,12 +701,8 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             resp = self._interceptor.post_get_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tenant.Tenant.to_json(response)
                 except:
@@ -851,22 +723,12 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 )
             return resp
 
-    class _ListTenants(
-        _BaseTenantServiceRestTransport._BaseListTenants, TenantServiceRestStub
-    ):
+    class _ListTenants(_BaseTenantServiceRestTransport._BaseListTenants, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.ListTenants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -906,28 +768,16 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                     The List tenants response object.
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseListTenants._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseListTenants._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tenants(request, metadata)
-            transcoded_request = _BaseTenantServiceRestTransport._BaseListTenants._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseListTenants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTenantServiceRestTransport._BaseListTenants._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseListTenants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -951,12 +801,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._ListTenants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -972,16 +817,10 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             resp = self._interceptor.post_list_tenants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tenants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tenants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = tenant_service.ListTenantsResponse.to_json(
-                        response
-                    )
+                    response_payload = tenant_service.ListTenantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1000,22 +839,12 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTenant(
-        _BaseTenantServiceRestTransport._BaseUpdateTenant, TenantServiceRestStub
-    ):
+    class _UpdateTenant(_BaseTenantServiceRestTransport._BaseUpdateTenant, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.UpdateTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1063,30 +892,18 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseUpdateTenant._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tenant(request, metadata)
-            transcoded_request = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_transcoded_request(http_options, request)
 
-            body = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseUpdateTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1110,13 +927,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._UpdateTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1132,12 +943,8 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             resp = self._interceptor.post_update_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_tenant.Tenant.to_json(response)
                 except:
@@ -1159,17 +966,13 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             return resp
 
     @property
-    def create_tenant(
-        self,
-    ) -> Callable[[tenant_service.CreateTenantRequest], gct_tenant.Tenant]:
+    def create_tenant(self) -> Callable[[tenant_service.CreateTenantRequest], gct_tenant.Tenant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tenant(
-        self,
-    ) -> Callable[[tenant_service.DeleteTenantRequest], empty_pb2.Empty]:
+    def delete_tenant(self) -> Callable[[tenant_service.DeleteTenantRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTenant(self._session, self._host, self._interceptor)  # type: ignore
@@ -1181,19 +984,13 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
         return self._GetTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tenants(
-        self,
-    ) -> Callable[
-        [tenant_service.ListTenantsRequest], tenant_service.ListTenantsResponse
-    ]:
+    def list_tenants(self) -> Callable[[tenant_service.ListTenantsRequest], tenant_service.ListTenantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTenants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_tenant(
-        self,
-    ) -> Callable[[tenant_service.UpdateTenantRequest], gct_tenant.Tenant]:
+    def update_tenant(self) -> Callable[[tenant_service.UpdateTenantRequest], gct_tenant.Tenant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTenant(self._session, self._host, self._interceptor)  # type: ignore
@@ -1202,22 +999,12 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTenantServiceRestTransport._BaseGetOperation, TenantServiceRestStub
-    ):
+    class _GetOperation(_BaseTenantServiceRestTransport._BaseGetOperation, TenantServiceRestStub):
         def __hash__(self):
             return hash("TenantServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1255,26 +1042,16 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTenantServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTenantServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTenantServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTenantServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTenantServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTenantServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1298,12 +1075,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
 
             # Send the request
             response = TenantServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1315,9 +1087,7 @@ class TenantServiceRestTransport(_BaseTenantServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

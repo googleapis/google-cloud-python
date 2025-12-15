@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import GlobalForwardingRulesTransport
-from .rest import (
-    GlobalForwardingRulesRestInterceptor,
-    GlobalForwardingRulesRestTransport,
-)
+from .rest import GlobalForwardingRulesRestInterceptor, GlobalForwardingRulesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GlobalForwardingRulesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GlobalForwardingRulesTransport]]
 _transport_registry["rest"] = GlobalForwardingRulesRestTransport
 
 __all__ = (

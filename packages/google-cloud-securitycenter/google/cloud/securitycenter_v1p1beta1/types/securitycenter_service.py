@@ -23,15 +23,9 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1p1beta1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1p1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1p1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1p1beta1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1p1beta1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1p1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1p1beta1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1p1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1p1beta1.types import folder
@@ -759,9 +753,7 @@ class ListNotificationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_configs: MutableSequence[
-        gcs_notification_config.NotificationConfig
-    ] = proto.RepeatedField(
+    notification_configs: MutableSequence[gcs_notification_config.NotificationConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_notification_config.NotificationConfig,
@@ -1418,12 +1410,10 @@ class ListFindingsResponse(proto.Message):
             number=1,
             message=gcs_finding.Finding,
         )
-        state_change: "ListFindingsResponse.ListFindingsResult.StateChange" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="ListFindingsResponse.ListFindingsResult.StateChange",
-            )
+        state_change: "ListFindingsResponse.ListFindingsResult.StateChange" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ListFindingsResponse.ListFindingsResult.StateChange",
         )
         resource: "ListFindingsResponse.ListFindingsResult.Resource" = proto.Field(
             proto.MESSAGE,

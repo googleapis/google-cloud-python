@@ -21,9 +21,7 @@ from .grpc import AnalyticsHubServiceGrpcTransport
 from .grpc_asyncio import AnalyticsHubServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AnalyticsHubServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AnalyticsHubServiceTransport]]
 _transport_registry["grpc"] = AnalyticsHubServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AnalyticsHubServiceGrpcAsyncIOTransport
 

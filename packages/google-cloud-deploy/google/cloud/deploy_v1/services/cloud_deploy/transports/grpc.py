@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +214,14 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +255,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -337,20 +322,13 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_delivery_pipelines(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListDeliveryPipelinesRequest],
-        cloud_deploy.ListDeliveryPipelinesResponse,
-    ]:
+    def list_delivery_pipelines(self) -> Callable[[cloud_deploy.ListDeliveryPipelinesRequest], cloud_deploy.ListDeliveryPipelinesResponse]:
         r"""Return a callable for the list delivery pipelines method over gRPC.
 
         Lists DeliveryPipelines in a given project and
@@ -375,11 +353,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_delivery_pipelines"]
 
     @property
-    def get_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetDeliveryPipelineRequest], cloud_deploy.DeliveryPipeline
-    ]:
+    def get_delivery_pipeline(self) -> Callable[[cloud_deploy.GetDeliveryPipelineRequest], cloud_deploy.DeliveryPipeline]:
         r"""Return a callable for the get delivery pipeline method over gRPC.
 
         Gets details of a single DeliveryPipeline.
@@ -403,11 +377,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_delivery_pipeline"]
 
     @property
-    def create_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def create_delivery_pipeline(self) -> Callable[[cloud_deploy.CreateDeliveryPipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the create delivery pipeline method over gRPC.
 
         Creates a new DeliveryPipeline in a given project and
@@ -432,11 +402,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_delivery_pipeline"]
 
     @property
-    def update_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def update_delivery_pipeline(self) -> Callable[[cloud_deploy.UpdateDeliveryPipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the update delivery pipeline method over gRPC.
 
         Updates the parameters of a single DeliveryPipeline.
@@ -460,11 +426,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["update_delivery_pipeline"]
 
     @property
-    def delete_delivery_pipeline(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteDeliveryPipelineRequest], operations_pb2.Operation
-    ]:
+    def delete_delivery_pipeline(self) -> Callable[[cloud_deploy.DeleteDeliveryPipelineRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete delivery pipeline method over gRPC.
 
         Deletes a single DeliveryPipeline.
@@ -488,9 +450,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_delivery_pipeline"]
 
     @property
-    def list_targets(
-        self,
-    ) -> Callable[[cloud_deploy.ListTargetsRequest], cloud_deploy.ListTargetsResponse]:
+    def list_targets(self) -> Callable[[cloud_deploy.ListTargetsRequest], cloud_deploy.ListTargetsResponse]:
         r"""Return a callable for the list targets method over gRPC.
 
         Lists Targets in a given project and location.
@@ -514,11 +474,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_targets"]
 
     @property
-    def rollback_target(
-        self,
-    ) -> Callable[
-        [cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse
-    ]:
+    def rollback_target(self) -> Callable[[cloud_deploy.RollbackTargetRequest], cloud_deploy.RollbackTargetResponse]:
         r"""Return a callable for the rollback target method over gRPC.
 
         Creates a ``Rollout`` to roll back the specified target.
@@ -542,9 +498,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["rollback_target"]
 
     @property
-    def get_target(
-        self,
-    ) -> Callable[[cloud_deploy.GetTargetRequest], cloud_deploy.Target]:
+    def get_target(self) -> Callable[[cloud_deploy.GetTargetRequest], cloud_deploy.Target]:
         r"""Return a callable for the get target method over gRPC.
 
         Gets details of a single Target.
@@ -568,9 +522,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_target"]
 
     @property
-    def create_target(
-        self,
-    ) -> Callable[[cloud_deploy.CreateTargetRequest], operations_pb2.Operation]:
+    def create_target(self) -> Callable[[cloud_deploy.CreateTargetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create target method over gRPC.
 
         Creates a new Target in a given project and location.
@@ -594,9 +546,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_target"]
 
     @property
-    def update_target(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateTargetRequest], operations_pb2.Operation]:
+    def update_target(self) -> Callable[[cloud_deploy.UpdateTargetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update target method over gRPC.
 
         Updates the parameters of a single Target.
@@ -620,9 +570,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["update_target"]
 
     @property
-    def delete_target(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteTargetRequest], operations_pb2.Operation]:
+    def delete_target(self) -> Callable[[cloud_deploy.DeleteTargetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete target method over gRPC.
 
         Deletes a single Target.
@@ -646,12 +594,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_target"]
 
     @property
-    def list_custom_target_types(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListCustomTargetTypesRequest],
-        cloud_deploy.ListCustomTargetTypesResponse,
-    ]:
+    def list_custom_target_types(self) -> Callable[[cloud_deploy.ListCustomTargetTypesRequest], cloud_deploy.ListCustomTargetTypesResponse]:
         r"""Return a callable for the list custom target types method over gRPC.
 
         Lists CustomTargetTypes in a given project and
@@ -676,11 +619,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_custom_target_types"]
 
     @property
-    def get_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType
-    ]:
+    def get_custom_target_type(self) -> Callable[[cloud_deploy.GetCustomTargetTypeRequest], cloud_deploy.CustomTargetType]:
         r"""Return a callable for the get custom target type method over gRPC.
 
         Gets details of a single CustomTargetType.
@@ -704,11 +643,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_custom_target_type"]
 
     @property
-    def create_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def create_custom_target_type(self) -> Callable[[cloud_deploy.CreateCustomTargetTypeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create custom target type method over gRPC.
 
         Creates a new CustomTargetType in a given project and
@@ -733,11 +668,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_custom_target_type"]
 
     @property
-    def update_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def update_custom_target_type(self) -> Callable[[cloud_deploy.UpdateCustomTargetTypeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update custom target type method over gRPC.
 
         Updates a single CustomTargetType.
@@ -761,11 +692,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["update_custom_target_type"]
 
     @property
-    def delete_custom_target_type(
-        self,
-    ) -> Callable[
-        [cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation
-    ]:
+    def delete_custom_target_type(self) -> Callable[[cloud_deploy.DeleteCustomTargetTypeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete custom target type method over gRPC.
 
         Deletes a single CustomTargetType.
@@ -789,11 +716,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_custom_target_type"]
 
     @property
-    def list_releases(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListReleasesRequest], cloud_deploy.ListReleasesResponse
-    ]:
+    def list_releases(self) -> Callable[[cloud_deploy.ListReleasesRequest], cloud_deploy.ListReleasesResponse]:
         r"""Return a callable for the list releases method over gRPC.
 
         Lists Releases in a given project and location.
@@ -817,9 +740,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_releases"]
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[[cloud_deploy.GetReleaseRequest], cloud_deploy.Release]:
+    def get_release(self) -> Callable[[cloud_deploy.GetReleaseRequest], cloud_deploy.Release]:
         r"""Return a callable for the get release method over gRPC.
 
         Gets details of a single Release.
@@ -843,9 +764,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_release"]
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[[cloud_deploy.CreateReleaseRequest], operations_pb2.Operation]:
+    def create_release(self) -> Callable[[cloud_deploy.CreateReleaseRequest], operations_pb2.Operation]:
         r"""Return a callable for the create release method over gRPC.
 
         Creates a new Release in a given project and
@@ -870,11 +789,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_release"]
 
     @property
-    def abandon_release(
-        self,
-    ) -> Callable[
-        [cloud_deploy.AbandonReleaseRequest], cloud_deploy.AbandonReleaseResponse
-    ]:
+    def abandon_release(self) -> Callable[[cloud_deploy.AbandonReleaseRequest], cloud_deploy.AbandonReleaseResponse]:
         r"""Return a callable for the abandon release method over gRPC.
 
         Abandons a Release in the Delivery Pipeline.
@@ -898,9 +813,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["abandon_release"]
 
     @property
-    def create_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], operations_pb2.Operation]:
+    def create_deploy_policy(self) -> Callable[[cloud_deploy.CreateDeployPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create deploy policy method over gRPC.
 
         Creates a new DeployPolicy in a given project and
@@ -925,9 +838,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_deploy_policy"]
 
     @property
-    def update_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], operations_pb2.Operation]:
+    def update_deploy_policy(self) -> Callable[[cloud_deploy.UpdateDeployPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update deploy policy method over gRPC.
 
         Updates the parameters of a single DeployPolicy.
@@ -951,9 +862,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["update_deploy_policy"]
 
     @property
-    def delete_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], operations_pb2.Operation]:
+    def delete_deploy_policy(self) -> Callable[[cloud_deploy.DeleteDeployPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete deploy policy method over gRPC.
 
         Deletes a single DeployPolicy.
@@ -977,12 +886,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_deploy_policy"]
 
     @property
-    def list_deploy_policies(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListDeployPoliciesRequest],
-        cloud_deploy.ListDeployPoliciesResponse,
-    ]:
+    def list_deploy_policies(self) -> Callable[[cloud_deploy.ListDeployPoliciesRequest], cloud_deploy.ListDeployPoliciesResponse]:
         r"""Return a callable for the list deploy policies method over gRPC.
 
         Lists DeployPolicies in a given project and location.
@@ -1006,9 +910,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_deploy_policies"]
 
     @property
-    def get_deploy_policy(
-        self,
-    ) -> Callable[[cloud_deploy.GetDeployPolicyRequest], cloud_deploy.DeployPolicy]:
+    def get_deploy_policy(self) -> Callable[[cloud_deploy.GetDeployPolicyRequest], cloud_deploy.DeployPolicy]:
         r"""Return a callable for the get deploy policy method over gRPC.
 
         Gets details of a single DeployPolicy.
@@ -1032,11 +934,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_deploy_policy"]
 
     @property
-    def approve_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ApproveRolloutRequest], cloud_deploy.ApproveRolloutResponse
-    ]:
+    def approve_rollout(self) -> Callable[[cloud_deploy.ApproveRolloutRequest], cloud_deploy.ApproveRolloutResponse]:
         r"""Return a callable for the approve rollout method over gRPC.
 
         Approves a Rollout.
@@ -1060,11 +958,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["approve_rollout"]
 
     @property
-    def advance_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.AdvanceRolloutRequest], cloud_deploy.AdvanceRolloutResponse
-    ]:
+    def advance_rollout(self) -> Callable[[cloud_deploy.AdvanceRolloutRequest], cloud_deploy.AdvanceRolloutResponse]:
         r"""Return a callable for the advance rollout method over gRPC.
 
         Advances a Rollout in a given project and location.
@@ -1088,11 +982,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["advance_rollout"]
 
     @property
-    def cancel_rollout(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CancelRolloutRequest], cloud_deploy.CancelRolloutResponse
-    ]:
+    def cancel_rollout(self) -> Callable[[cloud_deploy.CancelRolloutRequest], cloud_deploy.CancelRolloutResponse]:
         r"""Return a callable for the cancel rollout method over gRPC.
 
         Cancels a Rollout in a given project and location.
@@ -1116,11 +1006,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["cancel_rollout"]
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListRolloutsRequest], cloud_deploy.ListRolloutsResponse
-    ]:
+    def list_rollouts(self) -> Callable[[cloud_deploy.ListRolloutsRequest], cloud_deploy.ListRolloutsResponse]:
         r"""Return a callable for the list rollouts method over gRPC.
 
         Lists Rollouts in a given project and location.
@@ -1144,9 +1030,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_rollouts"]
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[[cloud_deploy.GetRolloutRequest], cloud_deploy.Rollout]:
+    def get_rollout(self) -> Callable[[cloud_deploy.GetRolloutRequest], cloud_deploy.Rollout]:
         r"""Return a callable for the get rollout method over gRPC.
 
         Gets details of a single Rollout.
@@ -1170,9 +1054,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_rollout"]
 
     @property
-    def create_rollout(
-        self,
-    ) -> Callable[[cloud_deploy.CreateRolloutRequest], operations_pb2.Operation]:
+    def create_rollout(self) -> Callable[[cloud_deploy.CreateRolloutRequest], operations_pb2.Operation]:
         r"""Return a callable for the create rollout method over gRPC.
 
         Creates a new Rollout in a given project and
@@ -1197,9 +1079,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_rollout"]
 
     @property
-    def ignore_job(
-        self,
-    ) -> Callable[[cloud_deploy.IgnoreJobRequest], cloud_deploy.IgnoreJobResponse]:
+    def ignore_job(self) -> Callable[[cloud_deploy.IgnoreJobRequest], cloud_deploy.IgnoreJobResponse]:
         r"""Return a callable for the ignore job method over gRPC.
 
         Ignores the specified Job in a Rollout.
@@ -1223,9 +1103,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["ignore_job"]
 
     @property
-    def retry_job(
-        self,
-    ) -> Callable[[cloud_deploy.RetryJobRequest], cloud_deploy.RetryJobResponse]:
+    def retry_job(self) -> Callable[[cloud_deploy.RetryJobRequest], cloud_deploy.RetryJobResponse]:
         r"""Return a callable for the retry job method over gRPC.
 
         Retries the specified Job in a Rollout.
@@ -1249,9 +1127,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["retry_job"]
 
     @property
-    def list_job_runs(
-        self,
-    ) -> Callable[[cloud_deploy.ListJobRunsRequest], cloud_deploy.ListJobRunsResponse]:
+    def list_job_runs(self) -> Callable[[cloud_deploy.ListJobRunsRequest], cloud_deploy.ListJobRunsResponse]:
         r"""Return a callable for the list job runs method over gRPC.
 
         Lists JobRuns in a given project and location.
@@ -1275,9 +1151,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_job_runs"]
 
     @property
-    def get_job_run(
-        self,
-    ) -> Callable[[cloud_deploy.GetJobRunRequest], cloud_deploy.JobRun]:
+    def get_job_run(self) -> Callable[[cloud_deploy.GetJobRunRequest], cloud_deploy.JobRun]:
         r"""Return a callable for the get job run method over gRPC.
 
         Gets details of a single JobRun.
@@ -1301,11 +1175,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_job_run"]
 
     @property
-    def terminate_job_run(
-        self,
-    ) -> Callable[
-        [cloud_deploy.TerminateJobRunRequest], cloud_deploy.TerminateJobRunResponse
-    ]:
+    def terminate_job_run(self) -> Callable[[cloud_deploy.TerminateJobRunRequest], cloud_deploy.TerminateJobRunResponse]:
         r"""Return a callable for the terminate job run method over gRPC.
 
         Terminates a Job Run in a given project and location.
@@ -1329,9 +1199,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["terminate_job_run"]
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[[cloud_deploy.GetConfigRequest], cloud_deploy.Config]:
+    def get_config(self) -> Callable[[cloud_deploy.GetConfigRequest], cloud_deploy.Config]:
         r"""Return a callable for the get config method over gRPC.
 
         Gets the configuration for a location.
@@ -1355,9 +1223,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_config"]
 
     @property
-    def create_automation(
-        self,
-    ) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
+    def create_automation(self) -> Callable[[cloud_deploy.CreateAutomationRequest], operations_pb2.Operation]:
         r"""Return a callable for the create automation method over gRPC.
 
         Creates a new Automation in a given project and
@@ -1382,9 +1248,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["create_automation"]
 
     @property
-    def update_automation(
-        self,
-    ) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
+    def update_automation(self) -> Callable[[cloud_deploy.UpdateAutomationRequest], operations_pb2.Operation]:
         r"""Return a callable for the update automation method over gRPC.
 
         Updates the parameters of a single Automation
@@ -1409,9 +1273,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["update_automation"]
 
     @property
-    def delete_automation(
-        self,
-    ) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
+    def delete_automation(self) -> Callable[[cloud_deploy.DeleteAutomationRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete automation method over gRPC.
 
         Deletes a single Automation resource.
@@ -1435,9 +1297,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["delete_automation"]
 
     @property
-    def get_automation(
-        self,
-    ) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
+    def get_automation(self) -> Callable[[cloud_deploy.GetAutomationRequest], cloud_deploy.Automation]:
         r"""Return a callable for the get automation method over gRPC.
 
         Gets details of a single Automation.
@@ -1461,11 +1321,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_automation"]
 
     @property
-    def list_automations(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse
-    ]:
+    def list_automations(self) -> Callable[[cloud_deploy.ListAutomationsRequest], cloud_deploy.ListAutomationsResponse]:
         r"""Return a callable for the list automations method over gRPC.
 
         Lists Automations in a given project and location.
@@ -1489,9 +1345,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_automations"]
 
     @property
-    def get_automation_run(
-        self,
-    ) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
+    def get_automation_run(self) -> Callable[[cloud_deploy.GetAutomationRunRequest], cloud_deploy.AutomationRun]:
         r"""Return a callable for the get automation run method over gRPC.
 
         Gets details of a single AutomationRun.
@@ -1515,12 +1369,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["get_automation_run"]
 
     @property
-    def list_automation_runs(
-        self,
-    ) -> Callable[
-        [cloud_deploy.ListAutomationRunsRequest],
-        cloud_deploy.ListAutomationRunsResponse,
-    ]:
+    def list_automation_runs(self) -> Callable[[cloud_deploy.ListAutomationRunsRequest], cloud_deploy.ListAutomationRunsResponse]:
         r"""Return a callable for the list automation runs method over gRPC.
 
         Lists AutomationRuns in a given project and location.
@@ -1544,12 +1393,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
         return self._stubs["list_automation_runs"]
 
     @property
-    def cancel_automation_run(
-        self,
-    ) -> Callable[
-        [cloud_deploy.CancelAutomationRunRequest],
-        cloud_deploy.CancelAutomationRunResponse,
-    ]:
+    def cancel_automation_run(self) -> Callable[[cloud_deploy.CancelAutomationRunRequest], cloud_deploy.CancelAutomationRunResponse]:
         r"""Return a callable for the cancel automation run method over gRPC.
 
         Cancels an AutomationRun. The ``state`` of the ``AutomationRun``
@@ -1633,9 +1477,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1652,9 +1494,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1739,10 +1579,7 @@ class CloudDeployGrpcTransport(CloudDeployTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

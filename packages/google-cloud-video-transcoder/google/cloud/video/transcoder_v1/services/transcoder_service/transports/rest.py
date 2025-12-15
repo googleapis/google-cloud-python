@@ -136,9 +136,7 @@ class TranscoderServiceRestInterceptor:
     """
 
     def pre_create_job(
-        self,
-        request: services.CreateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: services.CreateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.CreateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job
 
@@ -178,12 +176,8 @@ class TranscoderServiceRestInterceptor:
         return response, metadata
 
     def pre_create_job_template(
-        self,
-        request: services.CreateJobTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        services.CreateJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: services.CreateJobTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[services.CreateJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job_template
 
         Override in a subclass to manipulate the request or metadata
@@ -191,9 +185,7 @@ class TranscoderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_job_template(
-        self, response: resources.JobTemplate
-    ) -> resources.JobTemplate:
+    def post_create_job_template(self, response: resources.JobTemplate) -> resources.JobTemplate:
         """Post-rpc interceptor for create_job_template
 
         DEPRECATED. Please use the `post_create_job_template_with_metadata`
@@ -207,9 +199,7 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def post_create_job_template_with_metadata(
-        self,
-        response: resources.JobTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.JobTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.JobTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_job_template
 
@@ -226,9 +216,7 @@ class TranscoderServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_job(
-        self,
-        request: services.DeleteJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: services.DeleteJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
@@ -238,12 +226,8 @@ class TranscoderServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_job_template(
-        self,
-        request: services.DeleteJobTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        services.DeleteJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: services.DeleteJobTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[services.DeleteJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job_template
 
         Override in a subclass to manipulate the request or metadata
@@ -252,9 +236,7 @@ class TranscoderServiceRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self,
-        request: services.GetJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: services.GetJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
@@ -294,9 +276,7 @@ class TranscoderServiceRestInterceptor:
         return response, metadata
 
     def pre_get_job_template(
-        self,
-        request: services.GetJobTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: services.GetJobTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.GetJobTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_template
 
@@ -305,9 +285,7 @@ class TranscoderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_job_template(
-        self, response: resources.JobTemplate
-    ) -> resources.JobTemplate:
+    def post_get_job_template(self, response: resources.JobTemplate) -> resources.JobTemplate:
         """Post-rpc interceptor for get_job_template
 
         DEPRECATED. Please use the `post_get_job_template_with_metadata`
@@ -321,9 +299,7 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def post_get_job_template_with_metadata(
-        self,
-        response: resources.JobTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.JobTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.JobTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_job_template
 
@@ -340,9 +316,7 @@ class TranscoderServiceRestInterceptor:
         return response, metadata
 
     def pre_list_jobs(
-        self,
-        request: services.ListJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: services.ListJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
@@ -351,9 +325,7 @@ class TranscoderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_jobs(
-        self, response: services.ListJobsResponse
-    ) -> services.ListJobsResponse:
+    def post_list_jobs(self, response: services.ListJobsResponse) -> services.ListJobsResponse:
         """Post-rpc interceptor for list_jobs
 
         DEPRECATED. Please use the `post_list_jobs_with_metadata`
@@ -367,9 +339,7 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def post_list_jobs_with_metadata(
-        self,
-        response: services.ListJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: services.ListJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[services.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_jobs
 
@@ -386,12 +356,8 @@ class TranscoderServiceRestInterceptor:
         return response, metadata
 
     def pre_list_job_templates(
-        self,
-        request: services.ListJobTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        services.ListJobTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: services.ListJobTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[services.ListJobTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_job_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +365,7 @@ class TranscoderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_job_templates(
-        self, response: services.ListJobTemplatesResponse
-    ) -> services.ListJobTemplatesResponse:
+    def post_list_job_templates(self, response: services.ListJobTemplatesResponse) -> services.ListJobTemplatesResponse:
         """Post-rpc interceptor for list_job_templates
 
         DEPRECATED. Please use the `post_list_job_templates_with_metadata`
@@ -415,12 +379,8 @@ class TranscoderServiceRestInterceptor:
         return response
 
     def post_list_job_templates_with_metadata(
-        self,
-        response: services.ListJobTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        services.ListJobTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: services.ListJobTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[services.ListJobTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_job_templates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -521,30 +481,18 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TranscoderServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateJob(
-        _BaseTranscoderServiceRestTransport._BaseCreateJob, TranscoderServiceRestStub
-    ):
+    class _CreateJob(_BaseTranscoderServiceRestTransport._BaseCreateJob, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.CreateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -584,30 +532,18 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseCreateJob._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_job(request, metadata)
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_transcoded_request(http_options, request)
 
-            body = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseCreateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -631,13 +567,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._CreateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -653,12 +583,8 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_create_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Job.to_json(response)
                 except:
@@ -679,23 +605,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 )
             return resp
 
-    class _CreateJobTemplate(
-        _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate,
-        TranscoderServiceRestStub,
-    ):
+    class _CreateJobTemplate(_BaseTranscoderServiceRestTransport._BaseCreateJobTemplate, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.CreateJobTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -736,32 +651,18 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job template resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_job_template(
-                request, metadata
-            )
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_job_template(request, metadata)
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseCreateJobTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -785,13 +686,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._CreateJobTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -807,12 +702,8 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_create_job_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.JobTemplate.to_json(response)
                 except:
@@ -833,22 +724,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 )
             return resp
 
-    class _DeleteJob(
-        _BaseTranscoderServiceRestTransport._BaseDeleteJob, TranscoderServiceRestStub
-    ):
+    class _DeleteJob(_BaseTranscoderServiceRestTransport._BaseDeleteJob, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.DeleteJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -883,26 +764,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -926,12 +797,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._DeleteJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -939,23 +805,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteJobTemplate(
-        _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate,
-        TranscoderServiceRestStub,
-    ):
+    class _DeleteJobTemplate(_BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.DeleteJobTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -991,28 +846,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_job_template(
-                request, metadata
-            )
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_job_template(request, metadata)
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseDeleteJobTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1036,12 +879,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._DeleteJobTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1049,22 +887,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetJob(
-        _BaseTranscoderServiceRestTransport._BaseGetJob, TranscoderServiceRestStub
-    ):
+    class _GetJob(_BaseTranscoderServiceRestTransport._BaseGetJob, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.GetJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1103,30 +931,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseGetJob._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = (
-                _BaseTranscoderServiceRestTransport._BaseGetJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTranscoderServiceRestTransport._BaseGetJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1150,12 +964,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._GetJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1171,12 +980,8 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Job.to_json(response)
                 except:
@@ -1197,23 +1002,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 )
             return resp
 
-    class _GetJobTemplate(
-        _BaseTranscoderServiceRestTransport._BaseGetJobTemplate,
-        TranscoderServiceRestStub,
-    ):
+    class _GetJobTemplate(_BaseTranscoderServiceRestTransport._BaseGetJobTemplate, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.GetJobTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1253,28 +1047,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Transcoding job template resource.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_job_template(
-                request, metadata
-            )
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_job_template(request, metadata)
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseGetJobTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1298,12 +1080,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._GetJobTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1319,12 +1096,8 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_get_job_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.JobTemplate.to_json(response)
                 except:
@@ -1345,22 +1118,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 )
             return resp
 
-    class _ListJobs(
-        _BaseTranscoderServiceRestTransport._BaseListJobs, TranscoderServiceRestStub
-    ):
+    class _ListJobs(_BaseTranscoderServiceRestTransport._BaseListJobs, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.ListJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1401,26 +1164,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                     Response message for ``TranscoderService.ListJobs``.
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseListJobs._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseListJobs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseListJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1444,12 +1197,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._ListJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1465,12 +1213,8 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = services.ListJobsResponse.to_json(response)
                 except:
@@ -1491,23 +1235,12 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
                 )
             return resp
 
-    class _ListJobTemplates(
-        _BaseTranscoderServiceRestTransport._BaseListJobTemplates,
-        TranscoderServiceRestStub,
-    ):
+    class _ListJobTemplates(_BaseTranscoderServiceRestTransport._BaseListJobTemplates, TranscoderServiceRestStub):
         def __hash__(self):
             return hash("TranscoderServiceRestTransport.ListJobTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1549,28 +1282,16 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_http_options()
-            )
+            http_options = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_job_templates(
-                request, metadata
-            )
-            transcoded_request = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_job_templates(request, metadata)
+            transcoded_request = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranscoderServiceRestTransport._BaseListJobTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1594,12 +1315,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             # Send the request
             response = TranscoderServiceRestTransport._ListJobTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1615,16 +1331,10 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
 
             resp = self._interceptor.post_list_job_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_job_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_job_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = services.ListJobTemplatesResponse.to_json(
-                        response
-                    )
+                    response_payload = services.ListJobTemplatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1650,9 +1360,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
         return self._CreateJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_job_template(
-        self,
-    ) -> Callable[[services.CreateJobTemplateRequest], resources.JobTemplate]:
+    def create_job_template(self) -> Callable[[services.CreateJobTemplateRequest], resources.JobTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateJobTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -1664,9 +1372,7 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
         return self._DeleteJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_job_template(
-        self,
-    ) -> Callable[[services.DeleteJobTemplateRequest], empty_pb2.Empty]:
+    def delete_job_template(self) -> Callable[[services.DeleteJobTemplateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteJobTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -1678,27 +1384,19 @@ class TranscoderServiceRestTransport(_BaseTranscoderServiceRestTransport):
         return self._GetJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_job_template(
-        self,
-    ) -> Callable[[services.GetJobTemplateRequest], resources.JobTemplate]:
+    def get_job_template(self) -> Callable[[services.GetJobTemplateRequest], resources.JobTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetJobTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[[services.ListJobsRequest], services.ListJobsResponse]:
+    def list_jobs(self) -> Callable[[services.ListJobsRequest], services.ListJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_job_templates(
-        self,
-    ) -> Callable[
-        [services.ListJobTemplatesRequest], services.ListJobTemplatesResponse
-    ]:
+    def list_job_templates(self) -> Callable[[services.ListJobTemplatesRequest], services.ListJobTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobTemplates(self._session, self._host, self._interceptor)  # type: ignore

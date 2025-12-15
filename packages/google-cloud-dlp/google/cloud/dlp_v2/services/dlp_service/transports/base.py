@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dlp_v2 import gapic_version as package_version
 from google.cloud.dlp_v2.types import dlp
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class DlpServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -742,505 +732,261 @@ class DlpServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def inspect_content(
-        self,
-    ) -> Callable[
-        [dlp.InspectContentRequest],
-        Union[dlp.InspectContentResponse, Awaitable[dlp.InspectContentResponse]],
-    ]:
+    def inspect_content(self) -> Callable[[dlp.InspectContentRequest], Union[dlp.InspectContentResponse, Awaitable[dlp.InspectContentResponse]]]:
         raise NotImplementedError()
 
     @property
-    def redact_image(
-        self,
-    ) -> Callable[
-        [dlp.RedactImageRequest],
-        Union[dlp.RedactImageResponse, Awaitable[dlp.RedactImageResponse]],
-    ]:
+    def redact_image(self) -> Callable[[dlp.RedactImageRequest], Union[dlp.RedactImageResponse, Awaitable[dlp.RedactImageResponse]]]:
         raise NotImplementedError()
 
     @property
     def deidentify_content(
         self,
-    ) -> Callable[
-        [dlp.DeidentifyContentRequest],
-        Union[dlp.DeidentifyContentResponse, Awaitable[dlp.DeidentifyContentResponse]],
-    ]:
+    ) -> Callable[[dlp.DeidentifyContentRequest], Union[dlp.DeidentifyContentResponse, Awaitable[dlp.DeidentifyContentResponse]]]:
         raise NotImplementedError()
 
     @property
     def reidentify_content(
         self,
-    ) -> Callable[
-        [dlp.ReidentifyContentRequest],
-        Union[dlp.ReidentifyContentResponse, Awaitable[dlp.ReidentifyContentResponse]],
-    ]:
+    ) -> Callable[[dlp.ReidentifyContentRequest], Union[dlp.ReidentifyContentResponse, Awaitable[dlp.ReidentifyContentResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_info_types(
-        self,
-    ) -> Callable[
-        [dlp.ListInfoTypesRequest],
-        Union[dlp.ListInfoTypesResponse, Awaitable[dlp.ListInfoTypesResponse]],
-    ]:
+    def list_info_types(self) -> Callable[[dlp.ListInfoTypesRequest], Union[dlp.ListInfoTypesResponse, Awaitable[dlp.ListInfoTypesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_inspect_template(
-        self,
-    ) -> Callable[
-        [dlp.CreateInspectTemplateRequest],
-        Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]],
-    ]:
+    def create_inspect_template(self) -> Callable[[dlp.CreateInspectTemplateRequest], Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]]]:
         raise NotImplementedError()
 
     @property
-    def update_inspect_template(
-        self,
-    ) -> Callable[
-        [dlp.UpdateInspectTemplateRequest],
-        Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]],
-    ]:
+    def update_inspect_template(self) -> Callable[[dlp.UpdateInspectTemplateRequest], Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]]]:
         raise NotImplementedError()
 
     @property
-    def get_inspect_template(
-        self,
-    ) -> Callable[
-        [dlp.GetInspectTemplateRequest],
-        Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]],
-    ]:
+    def get_inspect_template(self) -> Callable[[dlp.GetInspectTemplateRequest], Union[dlp.InspectTemplate, Awaitable[dlp.InspectTemplate]]]:
         raise NotImplementedError()
 
     @property
     def list_inspect_templates(
         self,
-    ) -> Callable[
-        [dlp.ListInspectTemplatesRequest],
-        Union[
-            dlp.ListInspectTemplatesResponse,
-            Awaitable[dlp.ListInspectTemplatesResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListInspectTemplatesRequest], Union[dlp.ListInspectTemplatesResponse, Awaitable[dlp.ListInspectTemplatesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_inspect_template(
-        self,
-    ) -> Callable[
-        [dlp.DeleteInspectTemplateRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_inspect_template(self) -> Callable[[dlp.DeleteInspectTemplateRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_deidentify_template(
         self,
-    ) -> Callable[
-        [dlp.CreateDeidentifyTemplateRequest],
-        Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]],
-    ]:
+    ) -> Callable[[dlp.CreateDeidentifyTemplateRequest], Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]]]:
         raise NotImplementedError()
 
     @property
     def update_deidentify_template(
         self,
-    ) -> Callable[
-        [dlp.UpdateDeidentifyTemplateRequest],
-        Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]],
-    ]:
+    ) -> Callable[[dlp.UpdateDeidentifyTemplateRequest], Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]]]:
         raise NotImplementedError()
 
     @property
     def get_deidentify_template(
         self,
-    ) -> Callable[
-        [dlp.GetDeidentifyTemplateRequest],
-        Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]],
-    ]:
+    ) -> Callable[[dlp.GetDeidentifyTemplateRequest], Union[dlp.DeidentifyTemplate, Awaitable[dlp.DeidentifyTemplate]]]:
         raise NotImplementedError()
 
     @property
     def list_deidentify_templates(
         self,
-    ) -> Callable[
-        [dlp.ListDeidentifyTemplatesRequest],
-        Union[
-            dlp.ListDeidentifyTemplatesResponse,
-            Awaitable[dlp.ListDeidentifyTemplatesResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListDeidentifyTemplatesRequest], Union[dlp.ListDeidentifyTemplatesResponse, Awaitable[dlp.ListDeidentifyTemplatesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_deidentify_template(
-        self,
-    ) -> Callable[
-        [dlp.DeleteDeidentifyTemplateRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_deidentify_template(self) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.CreateJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]
-    ]:
+    def create_job_trigger(self) -> Callable[[dlp.CreateJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]]:
         raise NotImplementedError()
 
     @property
-    def update_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.UpdateJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]
-    ]:
+    def update_job_trigger(self) -> Callable[[dlp.UpdateJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]]:
         raise NotImplementedError()
 
     @property
     def hybrid_inspect_job_trigger(
         self,
-    ) -> Callable[
-        [dlp.HybridInspectJobTriggerRequest],
-        Union[dlp.HybridInspectResponse, Awaitable[dlp.HybridInspectResponse]],
-    ]:
+    ) -> Callable[[dlp.HybridInspectJobTriggerRequest], Union[dlp.HybridInspectResponse, Awaitable[dlp.HybridInspectResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.GetJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]
-    ]:
+    def get_job_trigger(self) -> Callable[[dlp.GetJobTriggerRequest], Union[dlp.JobTrigger, Awaitable[dlp.JobTrigger]]]:
         raise NotImplementedError()
 
     @property
-    def list_job_triggers(
-        self,
-    ) -> Callable[
-        [dlp.ListJobTriggersRequest],
-        Union[dlp.ListJobTriggersResponse, Awaitable[dlp.ListJobTriggersResponse]],
-    ]:
+    def list_job_triggers(self) -> Callable[[dlp.ListJobTriggersRequest], Union[dlp.ListJobTriggersResponse, Awaitable[dlp.ListJobTriggersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.DeleteJobTriggerRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_job_trigger(self) -> Callable[[dlp.DeleteJobTriggerRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def activate_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.ActivateJobTriggerRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]
-    ]:
+    def activate_job_trigger(self) -> Callable[[dlp.ActivateJobTriggerRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]]:
         raise NotImplementedError()
 
     @property
-    def create_discovery_config(
-        self,
-    ) -> Callable[
-        [dlp.CreateDiscoveryConfigRequest],
-        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
-    ]:
+    def create_discovery_config(self) -> Callable[[dlp.CreateDiscoveryConfigRequest], Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]]]:
         raise NotImplementedError()
 
     @property
-    def update_discovery_config(
-        self,
-    ) -> Callable[
-        [dlp.UpdateDiscoveryConfigRequest],
-        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
-    ]:
+    def update_discovery_config(self) -> Callable[[dlp.UpdateDiscoveryConfigRequest], Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]]]:
         raise NotImplementedError()
 
     @property
-    def get_discovery_config(
-        self,
-    ) -> Callable[
-        [dlp.GetDiscoveryConfigRequest],
-        Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]],
-    ]:
+    def get_discovery_config(self) -> Callable[[dlp.GetDiscoveryConfigRequest], Union[dlp.DiscoveryConfig, Awaitable[dlp.DiscoveryConfig]]]:
         raise NotImplementedError()
 
     @property
     def list_discovery_configs(
         self,
-    ) -> Callable[
-        [dlp.ListDiscoveryConfigsRequest],
-        Union[
-            dlp.ListDiscoveryConfigsResponse,
-            Awaitable[dlp.ListDiscoveryConfigsResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListDiscoveryConfigsRequest], Union[dlp.ListDiscoveryConfigsResponse, Awaitable[dlp.ListDiscoveryConfigsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_discovery_config(
-        self,
-    ) -> Callable[
-        [dlp.DeleteDiscoveryConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_discovery_config(self) -> Callable[[dlp.DeleteDiscoveryConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_dlp_job(
-        self,
-    ) -> Callable[[dlp.CreateDlpJobRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]]:
+    def create_dlp_job(self) -> Callable[[dlp.CreateDlpJobRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]]:
         raise NotImplementedError()
 
     @property
-    def list_dlp_jobs(
-        self,
-    ) -> Callable[
-        [dlp.ListDlpJobsRequest],
-        Union[dlp.ListDlpJobsResponse, Awaitable[dlp.ListDlpJobsResponse]],
-    ]:
+    def list_dlp_jobs(self) -> Callable[[dlp.ListDlpJobsRequest], Union[dlp.ListDlpJobsResponse, Awaitable[dlp.ListDlpJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_dlp_job(
-        self,
-    ) -> Callable[[dlp.GetDlpJobRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]]:
+    def get_dlp_job(self) -> Callable[[dlp.GetDlpJobRequest], Union[dlp.DlpJob, Awaitable[dlp.DlpJob]]]:
         raise NotImplementedError()
 
     @property
-    def delete_dlp_job(
-        self,
-    ) -> Callable[
-        [dlp.DeleteDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_dlp_job(self) -> Callable[[dlp.DeleteDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_dlp_job(
-        self,
-    ) -> Callable[
-        [dlp.CancelDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def cancel_dlp_job(self) -> Callable[[dlp.CancelDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_stored_info_type(
-        self,
-    ) -> Callable[
-        [dlp.CreateStoredInfoTypeRequest],
-        Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]],
-    ]:
+    def create_stored_info_type(self) -> Callable[[dlp.CreateStoredInfoTypeRequest], Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]]]:
         raise NotImplementedError()
 
     @property
-    def update_stored_info_type(
-        self,
-    ) -> Callable[
-        [dlp.UpdateStoredInfoTypeRequest],
-        Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]],
-    ]:
+    def update_stored_info_type(self) -> Callable[[dlp.UpdateStoredInfoTypeRequest], Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]]]:
         raise NotImplementedError()
 
     @property
-    def get_stored_info_type(
-        self,
-    ) -> Callable[
-        [dlp.GetStoredInfoTypeRequest],
-        Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]],
-    ]:
+    def get_stored_info_type(self) -> Callable[[dlp.GetStoredInfoTypeRequest], Union[dlp.StoredInfoType, Awaitable[dlp.StoredInfoType]]]:
         raise NotImplementedError()
 
     @property
     def list_stored_info_types(
         self,
-    ) -> Callable[
-        [dlp.ListStoredInfoTypesRequest],
-        Union[
-            dlp.ListStoredInfoTypesResponse, Awaitable[dlp.ListStoredInfoTypesResponse]
-        ],
-    ]:
+    ) -> Callable[[dlp.ListStoredInfoTypesRequest], Union[dlp.ListStoredInfoTypesResponse, Awaitable[dlp.ListStoredInfoTypesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_stored_info_type(
-        self,
-    ) -> Callable[
-        [dlp.DeleteStoredInfoTypeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_stored_info_type(self) -> Callable[[dlp.DeleteStoredInfoTypeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_project_data_profiles(
         self,
-    ) -> Callable[
-        [dlp.ListProjectDataProfilesRequest],
-        Union[
-            dlp.ListProjectDataProfilesResponse,
-            Awaitable[dlp.ListProjectDataProfilesResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListProjectDataProfilesRequest], Union[dlp.ListProjectDataProfilesResponse, Awaitable[dlp.ListProjectDataProfilesResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_table_data_profiles(
         self,
-    ) -> Callable[
-        [dlp.ListTableDataProfilesRequest],
-        Union[
-            dlp.ListTableDataProfilesResponse,
-            Awaitable[dlp.ListTableDataProfilesResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListTableDataProfilesRequest], Union[dlp.ListTableDataProfilesResponse, Awaitable[dlp.ListTableDataProfilesResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_column_data_profiles(
         self,
-    ) -> Callable[
-        [dlp.ListColumnDataProfilesRequest],
-        Union[
-            dlp.ListColumnDataProfilesResponse,
-            Awaitable[dlp.ListColumnDataProfilesResponse],
-        ],
-    ]:
+    ) -> Callable[[dlp.ListColumnDataProfilesRequest], Union[dlp.ListColumnDataProfilesResponse, Awaitable[dlp.ListColumnDataProfilesResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_project_data_profile(
         self,
-    ) -> Callable[
-        [dlp.GetProjectDataProfileRequest],
-        Union[dlp.ProjectDataProfile, Awaitable[dlp.ProjectDataProfile]],
-    ]:
+    ) -> Callable[[dlp.GetProjectDataProfileRequest], Union[dlp.ProjectDataProfile, Awaitable[dlp.ProjectDataProfile]]]:
         raise NotImplementedError()
 
     @property
     def list_file_store_data_profiles(
         self,
     ) -> Callable[
-        [dlp.ListFileStoreDataProfilesRequest],
-        Union[
-            dlp.ListFileStoreDataProfilesResponse,
-            Awaitable[dlp.ListFileStoreDataProfilesResponse],
-        ],
+        [dlp.ListFileStoreDataProfilesRequest], Union[dlp.ListFileStoreDataProfilesResponse, Awaitable[dlp.ListFileStoreDataProfilesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_file_store_data_profile(
         self,
-    ) -> Callable[
-        [dlp.GetFileStoreDataProfileRequest],
-        Union[dlp.FileStoreDataProfile, Awaitable[dlp.FileStoreDataProfile]],
-    ]:
+    ) -> Callable[[dlp.GetFileStoreDataProfileRequest], Union[dlp.FileStoreDataProfile, Awaitable[dlp.FileStoreDataProfile]]]:
         raise NotImplementedError()
 
     @property
-    def delete_file_store_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.DeleteFileStoreDataProfileRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_file_store_data_profile(self) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_table_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.GetTableDataProfileRequest],
-        Union[dlp.TableDataProfile, Awaitable[dlp.TableDataProfile]],
-    ]:
+    def get_table_data_profile(self) -> Callable[[dlp.GetTableDataProfileRequest], Union[dlp.TableDataProfile, Awaitable[dlp.TableDataProfile]]]:
         raise NotImplementedError()
 
     @property
-    def get_column_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.GetColumnDataProfileRequest],
-        Union[dlp.ColumnDataProfile, Awaitable[dlp.ColumnDataProfile]],
-    ]:
+    def get_column_data_profile(self) -> Callable[[dlp.GetColumnDataProfileRequest], Union[dlp.ColumnDataProfile, Awaitable[dlp.ColumnDataProfile]]]:
         raise NotImplementedError()
 
     @property
-    def delete_table_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.DeleteTableDataProfileRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_table_data_profile(self) -> Callable[[dlp.DeleteTableDataProfileRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def hybrid_inspect_dlp_job(
         self,
-    ) -> Callable[
-        [dlp.HybridInspectDlpJobRequest],
-        Union[dlp.HybridInspectResponse, Awaitable[dlp.HybridInspectResponse]],
-    ]:
+    ) -> Callable[[dlp.HybridInspectDlpJobRequest], Union[dlp.HybridInspectResponse, Awaitable[dlp.HybridInspectResponse]]]:
         raise NotImplementedError()
 
     @property
-    def finish_dlp_job(
-        self,
-    ) -> Callable[
-        [dlp.FinishDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def finish_dlp_job(self) -> Callable[[dlp.FinishDlpJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[
-        [dlp.CreateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
-    ]:
+    def create_connection(self) -> Callable[[dlp.CreateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]]:
         raise NotImplementedError()
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[
-        [dlp.GetConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
-    ]:
+    def get_connection(self) -> Callable[[dlp.GetConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]]:
         raise NotImplementedError()
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[
-        [dlp.ListConnectionsRequest],
-        Union[dlp.ListConnectionsResponse, Awaitable[dlp.ListConnectionsResponse]],
-    ]:
+    def list_connections(self) -> Callable[[dlp.ListConnectionsRequest], Union[dlp.ListConnectionsResponse, Awaitable[dlp.ListConnectionsResponse]]]:
         raise NotImplementedError()
 
     @property
     def search_connections(
         self,
-    ) -> Callable[
-        [dlp.SearchConnectionsRequest],
-        Union[dlp.SearchConnectionsResponse, Awaitable[dlp.SearchConnectionsResponse]],
-    ]:
+    ) -> Callable[[dlp.SearchConnectionsRequest], Union[dlp.SearchConnectionsResponse, Awaitable[dlp.SearchConnectionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[
-        [dlp.DeleteConnectionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_connection(self) -> Callable[[dlp.DeleteConnectionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[
-        [dlp.UpdateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]
-    ]:
+    def update_connection(self) -> Callable[[dlp.UpdateConnectionRequest], Union[dlp.Connection, Awaitable[dlp.Connection]]]:
         raise NotImplementedError()
 
     @property

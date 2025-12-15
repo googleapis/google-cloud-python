@@ -166,19 +166,15 @@ class DataQualitySpec(proto.Message):
                 number=2,
                 message="DataQualitySpec.PostScanActions.ScoreThresholdTrigger",
             )
-            job_failure_trigger: "DataQualitySpec.PostScanActions.JobFailureTrigger" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=4,
-                    message="DataQualitySpec.PostScanActions.JobFailureTrigger",
-                )
+            job_failure_trigger: "DataQualitySpec.PostScanActions.JobFailureTrigger" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="DataQualitySpec.PostScanActions.JobFailureTrigger",
             )
-            job_end_trigger: "DataQualitySpec.PostScanActions.JobEndTrigger" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=5,
-                    message="DataQualitySpec.PostScanActions.JobEndTrigger",
-                )
+            job_end_trigger: "DataQualitySpec.PostScanActions.JobEndTrigger" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="DataQualitySpec.PostScanActions.JobEndTrigger",
             )
 
         bigquery_export: "DataQualitySpec.PostScanActions.BigQueryExport" = proto.Field(
@@ -186,12 +182,10 @@ class DataQualitySpec(proto.Message):
             number=1,
             message="DataQualitySpec.PostScanActions.BigQueryExport",
         )
-        notification_report: "DataQualitySpec.PostScanActions.NotificationReport" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="DataQualitySpec.PostScanActions.NotificationReport",
-            )
+        notification_report: "DataQualitySpec.PostScanActions.NotificationReport" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="DataQualitySpec.PostScanActions.NotificationReport",
         )
 
     rules: MutableSequence["DataQualityRule"] = proto.RepeatedField(
@@ -399,12 +393,10 @@ class DataQualityResult(proto.Message):
         number=8,
         message=PostScanActionsResult,
     )
-    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = (
-        proto.Field(
-            proto.MESSAGE,
-            number=11,
-            message=datascans_common.DataScanCatalogPublishingStatus,
-        )
+    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=datascans_common.DataScanCatalogPublishingStatus,
     )
     anomaly_detection_generated_assets: AnomalyDetectionGeneratedAssets = proto.Field(
         proto.MESSAGE,
@@ -793,12 +785,10 @@ class DataQualityRule(proto.Message):
             MIN = 2
             MAX = 3
 
-        statistic: "DataQualityRule.StatisticRangeExpectation.ColumnStatistic" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="DataQualityRule.StatisticRangeExpectation.ColumnStatistic",
-            )
+        statistic: "DataQualityRule.StatisticRangeExpectation.ColumnStatistic" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DataQualityRule.StatisticRangeExpectation.ColumnStatistic",
         )
         min_value: str = proto.Field(
             proto.STRING,

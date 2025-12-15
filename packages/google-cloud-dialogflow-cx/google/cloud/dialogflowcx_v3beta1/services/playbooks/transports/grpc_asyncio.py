@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +261,14 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +304,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -344,19 +327,13 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_playbook(
-        self,
-    ) -> Callable[
-        [gcdc_playbook.CreatePlaybookRequest], Awaitable[gcdc_playbook.Playbook]
-    ]:
+    def create_playbook(self) -> Callable[[gcdc_playbook.CreatePlaybookRequest], Awaitable[gcdc_playbook.Playbook]]:
         r"""Return a callable for the create playbook method over gRPC.
 
         Creates a playbook in a specified agent.
@@ -380,9 +357,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["create_playbook"]
 
     @property
-    def delete_playbook(
-        self,
-    ) -> Callable[[playbook.DeletePlaybookRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_playbook(self) -> Callable[[playbook.DeletePlaybookRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete playbook method over gRPC.
 
         Deletes a specified playbook.
@@ -406,11 +381,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["delete_playbook"]
 
     @property
-    def list_playbooks(
-        self,
-    ) -> Callable[
-        [playbook.ListPlaybooksRequest], Awaitable[playbook.ListPlaybooksResponse]
-    ]:
+    def list_playbooks(self) -> Callable[[playbook.ListPlaybooksRequest], Awaitable[playbook.ListPlaybooksResponse]]:
         r"""Return a callable for the list playbooks method over gRPC.
 
         Returns a list of playbooks in the specified agent.
@@ -434,9 +405,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["list_playbooks"]
 
     @property
-    def get_playbook(
-        self,
-    ) -> Callable[[playbook.GetPlaybookRequest], Awaitable[playbook.Playbook]]:
+    def get_playbook(self) -> Callable[[playbook.GetPlaybookRequest], Awaitable[playbook.Playbook]]:
         r"""Return a callable for the get playbook method over gRPC.
 
         Retrieves the specified Playbook.
@@ -460,11 +429,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["get_playbook"]
 
     @property
-    def export_playbook(
-        self,
-    ) -> Callable[
-        [playbook.ExportPlaybookRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_playbook(self) -> Callable[[playbook.ExportPlaybookRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export playbook method over gRPC.
 
         Exports the specified playbook to a binary file.
@@ -491,11 +456,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["export_playbook"]
 
     @property
-    def import_playbook(
-        self,
-    ) -> Callable[
-        [playbook.ImportPlaybookRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_playbook(self) -> Callable[[playbook.ImportPlaybookRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import playbook method over gRPC.
 
         Imports the specified playbook to the specified agent
@@ -520,11 +481,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["import_playbook"]
 
     @property
-    def update_playbook(
-        self,
-    ) -> Callable[
-        [gcdc_playbook.UpdatePlaybookRequest], Awaitable[gcdc_playbook.Playbook]
-    ]:
+    def update_playbook(self) -> Callable[[gcdc_playbook.UpdatePlaybookRequest], Awaitable[gcdc_playbook.Playbook]]:
         r"""Return a callable for the update playbook method over gRPC.
 
         Updates the specified Playbook.
@@ -548,11 +505,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["update_playbook"]
 
     @property
-    def create_playbook_version(
-        self,
-    ) -> Callable[
-        [playbook.CreatePlaybookVersionRequest], Awaitable[playbook.PlaybookVersion]
-    ]:
+    def create_playbook_version(self) -> Callable[[playbook.CreatePlaybookVersionRequest], Awaitable[playbook.PlaybookVersion]]:
         r"""Return a callable for the create playbook version method over gRPC.
 
         Creates a version for the specified Playbook.
@@ -576,11 +529,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["create_playbook_version"]
 
     @property
-    def get_playbook_version(
-        self,
-    ) -> Callable[
-        [playbook.GetPlaybookVersionRequest], Awaitable[playbook.PlaybookVersion]
-    ]:
+    def get_playbook_version(self) -> Callable[[playbook.GetPlaybookVersionRequest], Awaitable[playbook.PlaybookVersion]]:
         r"""Return a callable for the get playbook version method over gRPC.
 
         Retrieves the specified version of the Playbook.
@@ -604,12 +553,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["get_playbook_version"]
 
     @property
-    def restore_playbook_version(
-        self,
-    ) -> Callable[
-        [playbook.RestorePlaybookVersionRequest],
-        Awaitable[playbook.RestorePlaybookVersionResponse],
-    ]:
+    def restore_playbook_version(self) -> Callable[[playbook.RestorePlaybookVersionRequest], Awaitable[playbook.RestorePlaybookVersionResponse]]:
         r"""Return a callable for the restore playbook version method over gRPC.
 
         Retrieves the specified version of the Playbook and
@@ -635,12 +579,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["restore_playbook_version"]
 
     @property
-    def list_playbook_versions(
-        self,
-    ) -> Callable[
-        [playbook.ListPlaybookVersionsRequest],
-        Awaitable[playbook.ListPlaybookVersionsResponse],
-    ]:
+    def list_playbook_versions(self) -> Callable[[playbook.ListPlaybookVersionsRequest], Awaitable[playbook.ListPlaybookVersionsResponse]]:
         r"""Return a callable for the list playbook versions method over gRPC.
 
         Lists versions for the specified Playbook.
@@ -664,9 +603,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
         return self._stubs["list_playbook_versions"]
 
     @property
-    def delete_playbook_version(
-        self,
-    ) -> Callable[[playbook.DeletePlaybookVersionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_playbook_version(self) -> Callable[[playbook.DeletePlaybookVersionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete playbook version method over gRPC.
 
         Deletes the specified version of the Playbook.
@@ -828,9 +765,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -847,9 +782,7 @@ class PlaybooksGrpcAsyncIOTransport(PlaybooksTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -243,9 +243,7 @@ class ListAnalyticsAccountLinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    analytics_account_links: MutableSequence[
-        resources.AnalyticsAccountLink
-    ] = proto.RepeatedField(
+    analytics_account_links: MutableSequence[resources.AnalyticsAccountLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.AnalyticsAccountLink,

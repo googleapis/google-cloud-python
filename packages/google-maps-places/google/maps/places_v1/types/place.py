@@ -729,9 +729,7 @@ class Place(proto.Message):
             number=4,
             enum="Place.OpeningHours.SecondaryHoursType",
         )
-        special_days: MutableSequence[
-            "Place.OpeningHours.SpecialDay"
-        ] = proto.RepeatedField(
+        special_days: MutableSequence["Place.OpeningHours.SpecialDay"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="Place.OpeningHours.SpecialDay",
@@ -1422,16 +1420,12 @@ class Place(proto.Message):
         number=46,
         message=OpeningHours,
     )
-    current_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
+    current_secondary_opening_hours: MutableSequence[OpeningHours] = proto.RepeatedField(
         proto.MESSAGE,
         number=47,
         message=OpeningHours,
     )
-    regular_secondary_opening_hours: MutableSequence[
-        OpeningHours
-    ] = proto.RepeatedField(
+    regular_secondary_opening_hours: MutableSequence[OpeningHours] = proto.RepeatedField(
         proto.MESSAGE,
         number=49,
         message=OpeningHours,

@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.beyondcorp_clientconnectorservices import (
-    gapic_version as package_version,
-)
+from google.cloud.beyondcorp_clientconnectorservices import gapic_version as package_version
 
 __version__ = package_version.__version__
 
@@ -23,9 +21,7 @@ __version__ = package_version.__version__
 from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service.async_client import (
     ClientConnectorServicesServiceAsyncClient,
 )
-from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service.client import (
-    ClientConnectorServicesServiceClient,
-)
+from google.cloud.beyondcorp_clientconnectorservices_v1.services.client_connector_services_service.client import ClientConnectorServicesServiceClient
 from google.cloud.beyondcorp_clientconnectorservices_v1.types.client_connector_services_service import (
     ClientConnectorService,
     ClientConnectorServiceOperationMetadata,

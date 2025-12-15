@@ -18,12 +18,8 @@ from google.area120.tables import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.area120.tables_v1alpha1.services.tables_service.async_client import (
-    TablesServiceAsyncClient,
-)
-from google.area120.tables_v1alpha1.services.tables_service.client import (
-    TablesServiceClient,
-)
+from google.area120.tables_v1alpha1.services.tables_service.async_client import TablesServiceAsyncClient
+from google.area120.tables_v1alpha1.services.tables_service.client import TablesServiceClient
 from google.area120.tables_v1alpha1.types.tables import (
     BatchCreateRowsRequest,
     BatchCreateRowsResponse,

@@ -119,12 +119,8 @@ class VersionsRestInterceptor:
     """
 
     def pre_create_version(
-        self,
-        request: gcd_version.CreateVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_version.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_version.CreateVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_version.CreateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_version
 
         Override in a subclass to manipulate the request or metadata
@@ -146,9 +142,7 @@ class VersionsRestInterceptor:
         return response
 
     def post_create_version_with_metadata(
-        self,
-        response: gcd_version.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_version.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_version
 
@@ -165,9 +159,7 @@ class VersionsRestInterceptor:
         return response, metadata
 
     def pre_delete_version(
-        self,
-        request: version.DeleteVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: version.DeleteVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[version.DeleteVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_version
 
@@ -177,9 +169,7 @@ class VersionsRestInterceptor:
         return request, metadata
 
     def pre_get_version(
-        self,
-        request: version.GetVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: version.GetVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[version.GetVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_version
 
@@ -202,9 +192,7 @@ class VersionsRestInterceptor:
         return response
 
     def post_get_version_with_metadata(
-        self,
-        response: version.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: version.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_version
 
@@ -221,9 +209,7 @@ class VersionsRestInterceptor:
         return response, metadata
 
     def pre_list_versions(
-        self,
-        request: version.ListVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: version.ListVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[version.ListVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_versions
 
@@ -232,9 +218,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_versions(
-        self, response: version.ListVersionsResponse
-    ) -> version.ListVersionsResponse:
+    def post_list_versions(self, response: version.ListVersionsResponse) -> version.ListVersionsResponse:
         """Post-rpc interceptor for list_versions
 
         DEPRECATED. Please use the `post_list_versions_with_metadata`
@@ -248,9 +232,7 @@ class VersionsRestInterceptor:
         return response
 
     def post_list_versions_with_metadata(
-        self,
-        response: version.ListVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: version.ListVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[version.ListVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_versions
 
@@ -267,12 +249,8 @@ class VersionsRestInterceptor:
         return response, metadata
 
     def pre_update_version(
-        self,
-        request: gcd_version.UpdateVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_version.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_version.UpdateVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_version.UpdateVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_version
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +272,7 @@ class VersionsRestInterceptor:
         return response
 
     def post_update_version_with_metadata(
-        self,
-        response: gcd_version.Version,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_version.Version, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_version.Version, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_version
 
@@ -313,12 +289,8 @@ class VersionsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -326,9 +298,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -338,12 +308,8 @@ class VersionsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -351,9 +317,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -363,12 +327,8 @@ class VersionsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -386,12 +346,8 @@ class VersionsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +355,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -411,12 +365,8 @@ class VersionsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -424,9 +374,7 @@ class VersionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -515,30 +463,18 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or VersionsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateVersion(
-        _BaseVersionsRestTransport._BaseCreateVersion, VersionsRestStub
-    ):
+    class _CreateVersion(_BaseVersionsRestTransport._BaseCreateVersion, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.CreateVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -598,34 +534,18 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseCreateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseCreateVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseVersionsRestTransport._BaseCreateVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVersionsRestTransport._BaseCreateVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseCreateVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseCreateVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -649,13 +569,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._CreateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -671,12 +585,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             resp = self._interceptor.post_create_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_version.Version.to_json(response)
                 except:
@@ -697,22 +607,12 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 )
             return resp
 
-    class _DeleteVersion(
-        _BaseVersionsRestTransport._BaseDeleteVersion, VersionsRestStub
-    ):
+    class _DeleteVersion(_BaseVersionsRestTransport._BaseDeleteVersion, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.DeleteVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -748,30 +648,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseDeleteVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseDeleteVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseDeleteVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseDeleteVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -795,12 +681,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._DeleteVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -813,15 +694,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             return hash("VersionsRestTransport.GetVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -880,30 +753,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseGetVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseGetVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseGetVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -926,14 +785,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 )
 
             # Send the request
-            response = VersionsRestTransport._GetVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = VersionsRestTransport._GetVersion._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -948,12 +800,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             resp = self._interceptor.post_get_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = version.Version.to_json(response)
                 except:
@@ -979,15 +827,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             return hash("VersionsRestTransport.ListVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1029,30 +869,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListVersions._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseListVersions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_versions(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseListVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListVersions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseListVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1076,12 +902,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._ListVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1097,12 +918,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             resp = self._interceptor.post_list_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = version.ListVersionsResponse.to_json(response)
                 except:
@@ -1123,22 +940,12 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 )
             return resp
 
-    class _UpdateVersion(
-        _BaseVersionsRestTransport._BaseUpdateVersion, VersionsRestStub
-    ):
+    class _UpdateVersion(_BaseVersionsRestTransport._BaseUpdateVersion, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.UpdateVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1198,34 +1005,18 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseUpdateVersion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_version(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseUpdateVersion._get_transcoded_request(http_options, request)
 
-            body = _BaseVersionsRestTransport._BaseUpdateVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVersionsRestTransport._BaseUpdateVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseUpdateVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseUpdateVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1249,13 +1040,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._UpdateVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1271,12 +1056,8 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             resp = self._interceptor.post_update_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_version.Version.to_json(response)
                 except:
@@ -1298,17 +1079,13 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             return resp
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[[gcd_version.CreateVersionRequest], gcd_version.Version]:
+    def create_version(self) -> Callable[[gcd_version.CreateVersionRequest], gcd_version.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[[version.DeleteVersionRequest], empty_pb2.Empty]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -1320,17 +1097,13 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
         return self._GetVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[[version.ListVersionsRequest], version.ListVersionsResponse]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], version.ListVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[[gcd_version.UpdateVersionRequest], gcd_version.Version]:
+    def update_version(self) -> Callable[[gcd_version.UpdateVersionRequest], gcd_version.Version]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -1344,15 +1117,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             return hash("VersionsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1390,30 +1155,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1437,12 +1188,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1454,9 +1200,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1481,22 +1225,12 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVersionsRestTransport._BaseListLocations, VersionsRestStub
-    ):
+    class _ListLocations(_BaseVersionsRestTransport._BaseListLocations, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1534,30 +1268,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1581,12 +1301,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1598,9 +1313,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1625,22 +1338,12 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVersionsRestTransport._BaseCancelOperation, VersionsRestStub
-    ):
+    class _CancelOperation(_BaseVersionsRestTransport._BaseCancelOperation, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1675,32 +1378,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseVersionsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1724,12 +1411,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1748,15 +1430,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             return hash("VersionsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1794,30 +1468,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1841,12 +1501,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1858,9 +1513,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1885,22 +1538,12 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVersionsRestTransport._BaseListOperations, VersionsRestStub
-    ):
+    class _ListOperations(_BaseVersionsRestTransport._BaseListOperations, VersionsRestStub):
         def __hash__(self):
             return hash("VersionsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1938,30 +1581,16 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVersionsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVersionsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseVersionsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVersionsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVersionsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVersionsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1985,12 +1614,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
 
             # Send the request
             response = VersionsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2002,9 +1626,7 @@ class VersionsRestTransport(_BaseVersionsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

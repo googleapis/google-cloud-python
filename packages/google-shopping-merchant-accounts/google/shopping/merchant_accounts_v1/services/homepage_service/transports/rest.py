@@ -112,9 +112,7 @@ class HomepageServiceRestInterceptor:
     """
 
     def pre_claim_homepage(
-        self,
-        request: homepage.ClaimHomepageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: homepage.ClaimHomepageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[homepage.ClaimHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for claim_homepage
 
@@ -137,9 +135,7 @@ class HomepageServiceRestInterceptor:
         return response
 
     def post_claim_homepage_with_metadata(
-        self,
-        response: homepage.Homepage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: homepage.Homepage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for claim_homepage
 
@@ -156,9 +152,7 @@ class HomepageServiceRestInterceptor:
         return response, metadata
 
     def pre_get_homepage(
-        self,
-        request: homepage.GetHomepageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: homepage.GetHomepageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[homepage.GetHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_homepage
 
@@ -181,9 +175,7 @@ class HomepageServiceRestInterceptor:
         return response
 
     def post_get_homepage_with_metadata(
-        self,
-        response: homepage.Homepage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: homepage.Homepage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_homepage
 
@@ -200,12 +192,8 @@ class HomepageServiceRestInterceptor:
         return response, metadata
 
     def pre_unclaim_homepage(
-        self,
-        request: homepage.UnclaimHomepageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        homepage.UnclaimHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: homepage.UnclaimHomepageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[homepage.UnclaimHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for unclaim_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -227,9 +215,7 @@ class HomepageServiceRestInterceptor:
         return response
 
     def post_unclaim_homepage_with_metadata(
-        self,
-        response: homepage.Homepage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: homepage.Homepage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for unclaim_homepage
 
@@ -246,12 +232,8 @@ class HomepageServiceRestInterceptor:
         return response, metadata
 
     def pre_update_homepage(
-        self,
-        request: gsma_homepage.UpdateHomepageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsma_homepage.UpdateHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsma_homepage.UpdateHomepageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsma_homepage.UpdateHomepageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_homepage
 
         Override in a subclass to manipulate the request or metadata
@@ -259,9 +241,7 @@ class HomepageServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_homepage(
-        self, response: gsma_homepage.Homepage
-    ) -> gsma_homepage.Homepage:
+    def post_update_homepage(self, response: gsma_homepage.Homepage) -> gsma_homepage.Homepage:
         """Post-rpc interceptor for update_homepage
 
         DEPRECATED. Please use the `post_update_homepage_with_metadata`
@@ -275,9 +255,7 @@ class HomepageServiceRestInterceptor:
         return response
 
     def post_update_homepage_with_metadata(
-        self,
-        response: gsma_homepage.Homepage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsma_homepage.Homepage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsma_homepage.Homepage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_homepage
 
@@ -373,30 +351,18 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or HomepageServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ClaimHomepage(
-        _BaseHomepageServiceRestTransport._BaseClaimHomepage, HomepageServiceRestStub
-    ):
+    class _ClaimHomepage(_BaseHomepageServiceRestTransport._BaseClaimHomepage, HomepageServiceRestStub):
         def __hash__(self):
             return hash("HomepageServiceRestTransport.ClaimHomepage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -447,30 +413,18 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_http_options()
-            )
+            http_options = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_http_options()
 
             request, metadata = self._interceptor.pre_claim_homepage(request, metadata)
-            transcoded_request = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_transcoded_request(http_options, request)
 
-            body = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHomepageServiceRestTransport._BaseClaimHomepage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -494,13 +448,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             # Send the request
             response = HomepageServiceRestTransport._ClaimHomepage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -516,12 +464,8 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             resp = self._interceptor.post_claim_homepage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_claim_homepage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_claim_homepage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = homepage.Homepage.to_json(response)
                 except:
@@ -542,22 +486,12 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 )
             return resp
 
-    class _GetHomepage(
-        _BaseHomepageServiceRestTransport._BaseGetHomepage, HomepageServiceRestStub
-    ):
+    class _GetHomepage(_BaseHomepageServiceRestTransport._BaseGetHomepage, HomepageServiceRestStub):
         def __hash__(self):
             return hash("HomepageServiceRestTransport.GetHomepage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -607,26 +541,16 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHomepageServiceRestTransport._BaseGetHomepage._get_http_options()
-            )
+            http_options = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_homepage(request, metadata)
-            transcoded_request = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHomepageServiceRestTransport._BaseGetHomepage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -650,12 +574,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             # Send the request
             response = HomepageServiceRestTransport._GetHomepage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -671,12 +590,8 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             resp = self._interceptor.post_get_homepage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_homepage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_homepage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = homepage.Homepage.to_json(response)
                 except:
@@ -697,22 +612,12 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 )
             return resp
 
-    class _UnclaimHomepage(
-        _BaseHomepageServiceRestTransport._BaseUnclaimHomepage, HomepageServiceRestStub
-    ):
+    class _UnclaimHomepage(_BaseHomepageServiceRestTransport._BaseUnclaimHomepage, HomepageServiceRestStub):
         def __hash__(self):
             return hash("HomepageServiceRestTransport.UnclaimHomepage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -763,32 +668,18 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_http_options()
-            )
+            http_options = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_http_options()
 
-            request, metadata = self._interceptor.pre_unclaim_homepage(
-                request, metadata
-            )
-            transcoded_request = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_unclaim_homepage(request, metadata)
+            transcoded_request = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_transcoded_request(http_options, request)
 
-            body = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHomepageServiceRestTransport._BaseUnclaimHomepage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -812,13 +703,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             # Send the request
             response = HomepageServiceRestTransport._UnclaimHomepage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -834,12 +719,8 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             resp = self._interceptor.post_unclaim_homepage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_unclaim_homepage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_unclaim_homepage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = homepage.Homepage.to_json(response)
                 except:
@@ -860,22 +741,12 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
                 )
             return resp
 
-    class _UpdateHomepage(
-        _BaseHomepageServiceRestTransport._BaseUpdateHomepage, HomepageServiceRestStub
-    ):
+    class _UpdateHomepage(_BaseHomepageServiceRestTransport._BaseUpdateHomepage, HomepageServiceRestStub):
         def __hash__(self):
             return hash("HomepageServiceRestTransport.UpdateHomepage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -926,30 +797,18 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_http_options()
-            )
+            http_options = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_http_options()
 
             request, metadata = self._interceptor.pre_update_homepage(request, metadata)
-            transcoded_request = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_transcoded_request(http_options, request)
 
-            body = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHomepageServiceRestTransport._BaseUpdateHomepage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -973,13 +832,7 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             # Send the request
             response = HomepageServiceRestTransport._UpdateHomepage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -995,12 +848,8 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
 
             resp = self._interceptor.post_update_homepage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_homepage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_homepage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsma_homepage.Homepage.to_json(response)
                 except:
@@ -1022,33 +871,25 @@ class HomepageServiceRestTransport(_BaseHomepageServiceRestTransport):
             return resp
 
     @property
-    def claim_homepage(
-        self,
-    ) -> Callable[[homepage.ClaimHomepageRequest], homepage.Homepage]:
+    def claim_homepage(self) -> Callable[[homepage.ClaimHomepageRequest], homepage.Homepage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ClaimHomepage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_homepage(
-        self,
-    ) -> Callable[[homepage.GetHomepageRequest], homepage.Homepage]:
+    def get_homepage(self) -> Callable[[homepage.GetHomepageRequest], homepage.Homepage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHomepage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def unclaim_homepage(
-        self,
-    ) -> Callable[[homepage.UnclaimHomepageRequest], homepage.Homepage]:
+    def unclaim_homepage(self) -> Callable[[homepage.UnclaimHomepageRequest], homepage.Homepage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UnclaimHomepage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_homepage(
-        self,
-    ) -> Callable[[gsma_homepage.UpdateHomepageRequest], gsma_homepage.Homepage]:
+    def update_homepage(self) -> Callable[[gsma_homepage.UpdateHomepageRequest], gsma_homepage.Homepage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateHomepage(self._session, self._host, self._interceptor)  # type: ignore

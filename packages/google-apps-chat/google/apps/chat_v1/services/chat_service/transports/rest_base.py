@@ -21,9 +21,7 @@ from google.api_core import gapic_v1, path_template
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.apps.chat_v1.types import (
-    space_notification_setting as gc_space_notification_setting,
-)
+from google.apps.chat_v1.types import space_notification_setting as gc_space_notification_setting
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -88,20 +86,14 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCompleteImportSpace:
@@ -112,11 +104,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -139,9 +127,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -152,11 +138,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCompleteImportSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCompleteImportSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -169,11 +151,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -196,9 +174,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -209,11 +185,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCreateCustomEmoji._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -226,11 +198,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -253,9 +221,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -266,11 +232,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCreateMembership._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCreateMembership._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -283,11 +245,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -310,9 +268,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -323,11 +279,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCreateMessage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCreateMessage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -340,11 +292,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -367,9 +315,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -380,11 +326,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCreateReaction._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCreateReaction._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -397,11 +339,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -424,9 +362,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -437,11 +373,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseCreateSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseCreateSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -454,11 +386,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -484,11 +412,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseDeleteCustomEmoji._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseDeleteCustomEmoji._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -501,11 +425,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -531,11 +451,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseDeleteMembership._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseDeleteMembership._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -548,11 +464,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -578,11 +490,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseDeleteMessage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseDeleteMessage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -595,11 +503,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -625,11 +529,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseDeleteReaction._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseDeleteReaction._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -642,11 +542,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -672,11 +568,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseDeleteSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseDeleteSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -691,11 +583,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -721,11 +609,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseFindDirectMessage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseFindDirectMessage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -738,11 +622,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -768,11 +648,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -785,11 +661,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -815,11 +687,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetCustomEmoji._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetCustomEmoji._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -832,11 +700,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -862,11 +726,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetMembership._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetMembership._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -879,11 +739,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -909,11 +765,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetMessage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetMessage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -926,11 +778,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -956,11 +804,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -973,11 +817,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1003,11 +843,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetSpaceEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetSpaceEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1020,11 +856,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1038,11 +870,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                space_notification_setting.GetSpaceNotificationSettingRequest.pb(
-                    request
-                )
-            )
+            pb_request = space_notification_setting.GetSpaceNotificationSettingRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1054,11 +882,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetSpaceNotificationSetting._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1071,11 +895,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1101,11 +921,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetSpaceReadState._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetSpaceReadState._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1118,11 +934,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1148,11 +960,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseGetThreadReadState._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseGetThreadReadState._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1197,11 +1005,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1227,11 +1031,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseListMemberships._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseListMemberships._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1244,11 +1044,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1274,11 +1070,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseListMessages._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseListMessages._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1291,11 +1083,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1321,11 +1109,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseListReactions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseListReactions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1340,11 +1124,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1370,11 +1150,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseListSpaceEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseListSpaceEvents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1421,11 +1197,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1451,11 +1223,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseSearchSpaces._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseSearchSpaces._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1468,11 +1236,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1495,9 +1259,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1508,11 +1270,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseSetUpSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseSetUpSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1527,11 +1285,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1554,9 +1308,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1567,11 +1319,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUpdateMembership._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUpdateMembership._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1586,11 +1334,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1618,9 +1362,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1631,11 +1373,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUpdateMessage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUpdateMessage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1650,11 +1388,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1677,9 +1411,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1690,11 +1422,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUpdateSpace._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUpdateSpace._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1709,11 +1437,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1728,11 +1452,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = (
-                gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.pb(
-                    request
-                )
-            )
+            pb_request = gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1740,9 +1460,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1753,11 +1471,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUpdateSpaceNotificationSetting._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1772,11 +1486,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1799,9 +1509,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1812,11 +1520,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUpdateSpaceReadState._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1829,11 +1533,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1856,9 +1556,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1869,11 +1567,7 @@ class _BaseChatServiceRestTransport(ChatServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseChatServiceRestTransport._BaseUploadAttachment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseChatServiceRestTransport._BaseUploadAttachment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

@@ -98,9 +98,7 @@ class EstimateDataSizeRequest(proto.Message):
                 number=3,
             )
 
-        estimator_uri_patterns: MutableSequence[
-            "EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern"
-        ] = proto.RepeatedField(
+        estimator_uri_patterns: MutableSequence["EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern",

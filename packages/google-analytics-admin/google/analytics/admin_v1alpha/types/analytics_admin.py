@@ -22,12 +22,8 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
-from google.analytics.admin_v1alpha.types import (
-    expanded_data_set as gaa_expanded_data_set,
-)
-from google.analytics.admin_v1alpha.types import (
-    subproperty_event_filter as gaa_subproperty_event_filter,
-)
+from google.analytics.admin_v1alpha.types import expanded_data_set as gaa_expanded_data_set
+from google.analytics.admin_v1alpha.types import subproperty_event_filter as gaa_subproperty_event_filter
 from google.analytics.admin_v1alpha.types import access_report
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import event_create_and_edit
@@ -430,16 +426,12 @@ class RunAccessReportResponse(proto.Message):
             with account-level requests.
     """
 
-    dimension_headers: MutableSequence[
-        access_report.AccessDimensionHeader
-    ] = proto.RepeatedField(
+    dimension_headers: MutableSequence[access_report.AccessDimensionHeader] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=access_report.AccessDimensionHeader,
     )
-    metric_headers: MutableSequence[
-        access_report.AccessMetricHeader
-    ] = proto.RepeatedField(
+    metric_headers: MutableSequence[access_report.AccessMetricHeader] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=access_report.AccessMetricHeader,
@@ -1198,9 +1190,7 @@ class SearchChangeHistoryEventsRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    resource_type: MutableSequence[
-        resources.ChangeHistoryResourceType
-    ] = proto.RepeatedField(
+    resource_type: MutableSequence[resources.ChangeHistoryResourceType] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=resources.ChangeHistoryResourceType,
@@ -1250,9 +1240,7 @@ class SearchChangeHistoryEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    change_history_events: MutableSequence[
-        resources.ChangeHistoryEvent
-    ] = proto.RepeatedField(
+    change_history_events: MutableSequence[resources.ChangeHistoryEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.ChangeHistoryEvent,
@@ -1398,9 +1386,7 @@ class ListMeasurementProtocolSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    measurement_protocol_secrets: MutableSequence[
-        resources.MeasurementProtocolSecret
-    ] = proto.RepeatedField(
+    measurement_protocol_secrets: MutableSequence[resources.MeasurementProtocolSecret] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.MeasurementProtocolSecret,
@@ -1445,12 +1431,10 @@ class CreateSKAdNetworkConversionValueSchemaRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=resources.SKAdNetworkConversionValueSchema,
-        )
+    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.SKAdNetworkConversionValueSchema,
     )
 
 
@@ -1484,12 +1468,10 @@ class UpdateSKAdNetworkConversionValueSchemaRequest(proto.Message):
             Omitted fields will not be updated.
     """
 
-    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=resources.SKAdNetworkConversionValueSchema,
-        )
+    skadnetwork_conversion_value_schema: resources.SKAdNetworkConversionValueSchema = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.SKAdNetworkConversionValueSchema,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -1556,9 +1538,7 @@ class ListSKAdNetworkConversionValueSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    skadnetwork_conversion_value_schemas: MutableSequence[
-        resources.SKAdNetworkConversionValueSchema
-    ] = proto.RepeatedField(
+    skadnetwork_conversion_value_schemas: MutableSequence[resources.SKAdNetworkConversionValueSchema] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.SKAdNetworkConversionValueSchema,
@@ -1965,9 +1945,7 @@ class ListDisplayVideo360AdvertiserLinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    display_video_360_advertiser_links: MutableSequence[
-        resources.DisplayVideo360AdvertiserLink
-    ] = proto.RepeatedField(
+    display_video_360_advertiser_links: MutableSequence[resources.DisplayVideo360AdvertiserLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.DisplayVideo360AdvertiserLink,
@@ -1993,12 +1971,10 @@ class CreateDisplayVideo360AdvertiserLinkRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=resources.DisplayVideo360AdvertiserLink,
-        )
+    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
 
 
@@ -2031,12 +2007,10 @@ class UpdateDisplayVideo360AdvertiserLinkRequest(proto.Message):
             path with the string "\*" to match all fields.
     """
 
-    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=resources.DisplayVideo360AdvertiserLink,
-        )
+    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -2117,9 +2091,7 @@ class ListDisplayVideo360AdvertiserLinkProposalsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    display_video_360_advertiser_link_proposals: MutableSequence[
-        resources.DisplayVideo360AdvertiserLinkProposal
-    ] = proto.RepeatedField(
+    display_video_360_advertiser_link_proposals: MutableSequence[resources.DisplayVideo360AdvertiserLinkProposal] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.DisplayVideo360AdvertiserLinkProposal,
@@ -2199,12 +2171,10 @@ class ApproveDisplayVideo360AdvertiserLinkProposalResponse(proto.Message):
             a result of approving the proposal.
     """
 
-    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=resources.DisplayVideo360AdvertiserLink,
-        )
+    display_video_360_advertiser_link: resources.DisplayVideo360AdvertiserLink = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.DisplayVideo360AdvertiserLink,
     )
 
 
@@ -2293,9 +2263,7 @@ class ListSearchAds360LinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    search_ads_360_links: MutableSequence[
-        resources.SearchAds360Link
-    ] = proto.RepeatedField(
+    search_ads_360_links: MutableSequence[resources.SearchAds360Link] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.SearchAds360Link,
@@ -2773,9 +2741,7 @@ class ListCalculatedMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    calculated_metrics: MutableSequence[
-        resources.CalculatedMetric
-    ] = proto.RepeatedField(
+    calculated_metrics: MutableSequence[resources.CalculatedMetric] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CalculatedMetric,
@@ -3604,9 +3570,7 @@ class ListExpandedDataSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    expanded_data_sets: MutableSequence[
-        gaa_expanded_data_set.ExpandedDataSet
-    ] = proto.RepeatedField(
+    expanded_data_sets: MutableSequence[gaa_expanded_data_set.ExpandedDataSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gaa_expanded_data_set.ExpandedDataSet,
@@ -3750,9 +3714,7 @@ class ListChannelGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_groups: MutableSequence[
-        gaa_channel_group.ChannelGroup
-    ] = proto.RepeatedField(
+    channel_groups: MutableSequence[gaa_channel_group.ChannelGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gaa_channel_group.ChannelGroup,
@@ -4246,9 +4208,7 @@ class ListEventCreateRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    event_create_rules: MutableSequence[
-        event_create_and_edit.EventCreateRule
-    ] = proto.RepeatedField(
+    event_create_rules: MutableSequence[event_create_and_edit.EventCreateRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=event_create_and_edit.EventCreateRule,
@@ -4392,9 +4352,7 @@ class ListEventEditRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    event_edit_rules: MutableSequence[
-        event_create_and_edit.EventEditRule
-    ] = proto.RepeatedField(
+    event_edit_rules: MutableSequence[event_create_and_edit.EventEditRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=event_create_and_edit.EventEditRule,
@@ -4467,9 +4425,7 @@ class CreateRollupPropertyResponse(proto.Message):
         number=1,
         message=resources.Property,
     )
-    rollup_property_source_links: MutableSequence[
-        resources.RollupPropertySourceLink
-    ] = proto.RepeatedField(
+    rollup_property_source_links: MutableSequence[resources.RollupPropertySourceLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=resources.RollupPropertySourceLink,
@@ -4546,9 +4502,7 @@ class ListRollupPropertySourceLinksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rollup_property_source_links: MutableSequence[
-        resources.RollupPropertySourceLink
-    ] = proto.RepeatedField(
+    rollup_property_source_links: MutableSequence[resources.RollupPropertySourceLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.RollupPropertySourceLink,
@@ -4618,12 +4572,10 @@ class ProvisionSubpropertyRequest(proto.Message):
         number=2,
         message=resources.Property,
     )
-    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
-        )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gaa_subproperty_event_filter.SubpropertyEventFilter,
     )
     custom_dimension_and_metric_synchronization_mode: resources.SubpropertySyncConfig.SynchronizationMode = proto.Field(
         proto.ENUM,
@@ -4647,12 +4599,10 @@ class ProvisionSubpropertyResponse(proto.Message):
         number=1,
         message=resources.Property,
     )
-    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
-        )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gaa_subproperty_event_filter.SubpropertyEventFilter,
     )
 
 
@@ -4673,12 +4623,10 @@ class CreateSubpropertyEventFilterRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
-        )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gaa_subproperty_event_filter.SubpropertyEventFilter,
     )
 
 
@@ -4751,9 +4699,7 @@ class ListSubpropertyEventFiltersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subproperty_event_filters: MutableSequence[
-        gaa_subproperty_event_filter.SubpropertyEventFilter
-    ] = proto.RepeatedField(
+    subproperty_event_filters: MutableSequence[gaa_subproperty_event_filter.SubpropertyEventFilter] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gaa_subproperty_event_filter.SubpropertyEventFilter,
@@ -4778,12 +4724,10 @@ class UpdateSubpropertyEventFilterRequest(proto.Message):
             use one path with the string "\*" to match all fields.
     """
 
-    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=gaa_subproperty_event_filter.SubpropertyEventFilter,
-        )
+    subproperty_event_filter: gaa_subproperty_event_filter.SubpropertyEventFilter = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gaa_subproperty_event_filter.SubpropertyEventFilter,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -4957,9 +4901,7 @@ class ListReportingDataAnnotationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reporting_data_annotations: MutableSequence[
-        resources.ReportingDataAnnotation
-    ] = proto.RepeatedField(
+    reporting_data_annotations: MutableSequence[resources.ReportingDataAnnotation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.ReportingDataAnnotation,
@@ -5175,9 +5117,7 @@ class ListSubpropertySyncConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    subproperty_sync_configs: MutableSequence[
-        resources.SubpropertySyncConfig
-    ] = proto.RepeatedField(
+    subproperty_sync_configs: MutableSequence[resources.SubpropertySyncConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.SubpropertySyncConfig,

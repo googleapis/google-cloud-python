@@ -120,9 +120,7 @@ class CloudShellServiceRestInterceptor:
     """
 
     def pre_add_public_key(
-        self,
-        request: cloudshell.AddPublicKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudshell.AddPublicKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudshell.AddPublicKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_public_key
 
@@ -131,9 +129,7 @@ class CloudShellServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_add_public_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_public_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_public_key
 
         DEPRECATED. Please use the `post_add_public_key_with_metadata`
@@ -147,9 +143,7 @@ class CloudShellServiceRestInterceptor:
         return response
 
     def post_add_public_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_public_key
 
@@ -166,12 +160,8 @@ class CloudShellServiceRestInterceptor:
         return response, metadata
 
     def pre_authorize_environment(
-        self,
-        request: cloudshell.AuthorizeEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudshell.AuthorizeEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudshell.AuthorizeEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudshell.AuthorizeEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for authorize_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -179,9 +169,7 @@ class CloudShellServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_authorize_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_authorize_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for authorize_environment
 
         DEPRECATED. Please use the `post_authorize_environment_with_metadata`
@@ -195,9 +183,7 @@ class CloudShellServiceRestInterceptor:
         return response
 
     def post_authorize_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for authorize_environment
 
@@ -214,12 +200,8 @@ class CloudShellServiceRestInterceptor:
         return response, metadata
 
     def pre_get_environment(
-        self,
-        request: cloudshell.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudshell.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudshell.GetEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudshell.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -227,9 +209,7 @@ class CloudShellServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_environment(
-        self, response: cloudshell.Environment
-    ) -> cloudshell.Environment:
+    def post_get_environment(self, response: cloudshell.Environment) -> cloudshell.Environment:
         """Post-rpc interceptor for get_environment
 
         DEPRECATED. Please use the `post_get_environment_with_metadata`
@@ -243,9 +223,7 @@ class CloudShellServiceRestInterceptor:
         return response
 
     def post_get_environment_with_metadata(
-        self,
-        response: cloudshell.Environment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudshell.Environment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudshell.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_environment
 
@@ -262,12 +240,8 @@ class CloudShellServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_public_key(
-        self,
-        request: cloudshell.RemovePublicKeyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudshell.RemovePublicKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudshell.RemovePublicKeyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudshell.RemovePublicKeyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_public_key
 
         Override in a subclass to manipulate the request or metadata
@@ -275,9 +249,7 @@ class CloudShellServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_public_key(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_public_key(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_public_key
 
         DEPRECATED. Please use the `post_remove_public_key_with_metadata`
@@ -291,9 +263,7 @@ class CloudShellServiceRestInterceptor:
         return response
 
     def post_remove_public_key_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_public_key
 
@@ -310,12 +280,8 @@ class CloudShellServiceRestInterceptor:
         return response, metadata
 
     def pre_start_environment(
-        self,
-        request: cloudshell.StartEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudshell.StartEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudshell.StartEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudshell.StartEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -323,9 +289,7 @@ class CloudShellServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_start_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_environment
 
         DEPRECATED. Please use the `post_start_environment_with_metadata`
@@ -339,9 +303,7 @@ class CloudShellServiceRestInterceptor:
         return response
 
     def post_start_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_environment
 
@@ -444,9 +406,7 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -473,29 +433,17 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddPublicKey(
-        _BaseCloudShellServiceRestTransport._BaseAddPublicKey, CloudShellServiceRestStub
-    ):
+    class _AddPublicKey(_BaseCloudShellServiceRestTransport._BaseAddPublicKey, CloudShellServiceRestStub):
         def __hash__(self):
             return hash("CloudShellServiceRestTransport.AddPublicKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -539,30 +487,18 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_http_options()
-            )
+            http_options = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_http_options()
 
             request, metadata = self._interceptor.pre_add_public_key(request, metadata)
-            transcoded_request = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudShellServiceRestTransport._BaseAddPublicKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -586,13 +522,7 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             # Send the request
             response = CloudShellServiceRestTransport._AddPublicKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -606,12 +536,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             resp = self._interceptor.post_add_public_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_public_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_public_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -632,23 +558,12 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 )
             return resp
 
-    class _AuthorizeEnvironment(
-        _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment,
-        CloudShellServiceRestStub,
-    ):
+    class _AuthorizeEnvironment(_BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment, CloudShellServiceRestStub):
         def __hash__(self):
             return hash("CloudShellServiceRestTransport.AuthorizeEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -692,32 +607,18 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_http_options()
-            )
+            http_options = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_authorize_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_authorize_environment(request, metadata)
+            transcoded_request = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudShellServiceRestTransport._BaseAuthorizeEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -740,16 +641,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                CloudShellServiceRestTransport._AuthorizeEnvironment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudShellServiceRestTransport._AuthorizeEnvironment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -763,12 +656,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             resp = self._interceptor.post_authorize_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_authorize_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_authorize_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -789,23 +678,12 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 )
             return resp
 
-    class _GetEnvironment(
-        _BaseCloudShellServiceRestTransport._BaseGetEnvironment,
-        CloudShellServiceRestStub,
-    ):
+    class _GetEnvironment(_BaseCloudShellServiceRestTransport._BaseGetEnvironment, CloudShellServiceRestStub):
         def __hash__(self):
             return hash("CloudShellServiceRestTransport.GetEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -853,26 +731,16 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_http_options()
-            )
+            http_options = _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
-            transcoded_request = _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudShellServiceRestTransport._BaseGetEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -896,12 +764,7 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             # Send the request
             response = CloudShellServiceRestTransport._GetEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -917,12 +780,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             resp = self._interceptor.post_get_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudshell.Environment.to_json(response)
                 except:
@@ -943,23 +802,12 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 )
             return resp
 
-    class _RemovePublicKey(
-        _BaseCloudShellServiceRestTransport._BaseRemovePublicKey,
-        CloudShellServiceRestStub,
-    ):
+    class _RemovePublicKey(_BaseCloudShellServiceRestTransport._BaseRemovePublicKey, CloudShellServiceRestStub):
         def __hash__(self):
             return hash("CloudShellServiceRestTransport.RemovePublicKey")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1003,32 +851,18 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_http_options()
-            )
+            http_options = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_public_key(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_public_key(request, metadata)
+            transcoded_request = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudShellServiceRestTransport._BaseRemovePublicKey._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1052,13 +886,7 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             # Send the request
             response = CloudShellServiceRestTransport._RemovePublicKey._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1072,12 +900,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             resp = self._interceptor.post_remove_public_key(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_public_key_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_public_key_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1098,23 +922,12 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
                 )
             return resp
 
-    class _StartEnvironment(
-        _BaseCloudShellServiceRestTransport._BaseStartEnvironment,
-        CloudShellServiceRestStub,
-    ):
+    class _StartEnvironment(_BaseCloudShellServiceRestTransport._BaseStartEnvironment, CloudShellServiceRestStub):
         def __hash__(self):
             return hash("CloudShellServiceRestTransport.StartEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1158,32 +971,18 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_http_options()
-            )
+            http_options = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_environment(request, metadata)
+            transcoded_request = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudShellServiceRestTransport._BaseStartEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1207,13 +1006,7 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             # Send the request
             response = CloudShellServiceRestTransport._StartEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1227,12 +1020,8 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
 
             resp = self._interceptor.post_start_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1254,41 +1043,31 @@ class CloudShellServiceRestTransport(_BaseCloudShellServiceRestTransport):
             return resp
 
     @property
-    def add_public_key(
-        self,
-    ) -> Callable[[cloudshell.AddPublicKeyRequest], operations_pb2.Operation]:
+    def add_public_key(self) -> Callable[[cloudshell.AddPublicKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddPublicKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def authorize_environment(
-        self,
-    ) -> Callable[[cloudshell.AuthorizeEnvironmentRequest], operations_pb2.Operation]:
+    def authorize_environment(self) -> Callable[[cloudshell.AuthorizeEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AuthorizeEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[cloudshell.GetEnvironmentRequest], cloudshell.Environment]:
+    def get_environment(self) -> Callable[[cloudshell.GetEnvironmentRequest], cloudshell.Environment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_public_key(
-        self,
-    ) -> Callable[[cloudshell.RemovePublicKeyRequest], operations_pb2.Operation]:
+    def remove_public_key(self) -> Callable[[cloudshell.RemovePublicKeyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemovePublicKey(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_environment(
-        self,
-    ) -> Callable[[cloudshell.StartEnvironmentRequest], operations_pb2.Operation]:
+    def start_environment(self) -> Callable[[cloudshell.StartEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartEnvironment(self._session, self._host, self._interceptor)  # type: ignore

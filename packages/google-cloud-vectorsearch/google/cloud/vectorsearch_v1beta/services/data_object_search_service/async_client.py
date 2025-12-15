@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -49,10 +38,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 
 from google.cloud.vectorsearch_v1beta.services.data_object_search_service import pagers
-from google.cloud.vectorsearch_v1beta.types import (
-    data_object,
-    data_object_search_service,
-)
+from google.cloud.vectorsearch_v1beta.types import data_object, data_object_search_service
 
 from .client import DataObjectSearchServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataObjectSearchServiceTransport
@@ -77,47 +63,23 @@ class DataObjectSearchServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = DataObjectSearchServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DataObjectSearchServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        DataObjectSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = DataObjectSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataObjectSearchServiceClient._DEFAULT_UNIVERSE
 
     collection_path = staticmethod(DataObjectSearchServiceClient.collection_path)
-    parse_collection_path = staticmethod(
-        DataObjectSearchServiceClient.parse_collection_path
-    )
+    parse_collection_path = staticmethod(DataObjectSearchServiceClient.parse_collection_path)
     data_object_path = staticmethod(DataObjectSearchServiceClient.data_object_path)
-    parse_data_object_path = staticmethod(
-        DataObjectSearchServiceClient.parse_data_object_path
-    )
-    common_billing_account_path = staticmethod(
-        DataObjectSearchServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataObjectSearchServiceClient.parse_common_billing_account_path
-    )
+    parse_data_object_path = staticmethod(DataObjectSearchServiceClient.parse_data_object_path)
+    common_billing_account_path = staticmethod(DataObjectSearchServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataObjectSearchServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DataObjectSearchServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DataObjectSearchServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DataObjectSearchServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DataObjectSearchServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        DataObjectSearchServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        DataObjectSearchServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        DataObjectSearchServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        DataObjectSearchServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(DataObjectSearchServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DataObjectSearchServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DataObjectSearchServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(DataObjectSearchServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(DataObjectSearchServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(DataObjectSearchServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(DataObjectSearchServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -153,9 +115,7 @@ class DataObjectSearchServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -222,13 +182,7 @@ class DataObjectSearchServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DataObjectSearchServiceTransport,
-                Callable[..., DataObjectSearchServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DataObjectSearchServiceTransport, Callable[..., DataObjectSearchServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -288,20 +242,14 @@ class DataObjectSearchServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.vectorsearch_v1beta.DataObjectSearchServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.vectorsearch.v1beta.DataObjectSearchService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -312,9 +260,7 @@ class DataObjectSearchServiceAsyncClient:
 
     async def search_data_objects(
         self,
-        request: Optional[
-            Union[data_object_search_service.SearchDataObjectsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_object_search_service.SearchDataObjectsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -383,15 +329,11 @@ class DataObjectSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_data_objects
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_data_objects]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -420,9 +362,7 @@ class DataObjectSearchServiceAsyncClient:
 
     async def query_data_objects(
         self,
-        request: Optional[
-            Union[data_object_search_service.QueryDataObjectsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_object_search_service.QueryDataObjectsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -486,15 +426,11 @@ class DataObjectSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_data_objects
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.query_data_objects]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -523,9 +459,7 @@ class DataObjectSearchServiceAsyncClient:
 
     async def aggregate_data_objects(
         self,
-        request: Optional[
-            Union[data_object_search_service.AggregateDataObjectsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_object_search_service.AggregateDataObjectsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -581,22 +515,16 @@ class DataObjectSearchServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_object_search_service.AggregateDataObjectsRequest
-        ):
+        if not isinstance(request, data_object_search_service.AggregateDataObjectsRequest):
             request = data_object_search_service.AggregateDataObjectsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.aggregate_data_objects
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.aggregate_data_objects]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -614,9 +542,7 @@ class DataObjectSearchServiceAsyncClient:
 
     async def batch_search_data_objects(
         self,
-        request: Optional[
-            Union[data_object_search_service.BatchSearchDataObjectsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_object_search_service.BatchSearchDataObjectsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -676,22 +602,16 @@ class DataObjectSearchServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_object_search_service.BatchSearchDataObjectsRequest
-        ):
+        if not isinstance(request, data_object_search_service.BatchSearchDataObjectsRequest):
             request = data_object_search_service.BatchSearchDataObjectsRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_search_data_objects
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_search_data_objects]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -744,9 +664,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -799,9 +717,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -858,9 +774,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -913,9 +827,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -965,9 +877,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1020,9 +930,7 @@ class DataObjectSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1045,9 +953,7 @@ class DataObjectSearchServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

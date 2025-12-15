@@ -34,9 +34,7 @@ from google.cloud.retail_v2beta.types import product
 from google.cloud.retail_v2beta.types import product as gcr_product
 from google.cloud.retail_v2beta.types import product_service, purge_config
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class ProductServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -241,123 +231,71 @@ class ProductServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_product(
-        self,
-    ) -> Callable[
-        [product_service.CreateProductRequest],
-        Union[gcr_product.Product, Awaitable[gcr_product.Product]],
-    ]:
+    def create_product(self) -> Callable[[product_service.CreateProductRequest], Union[gcr_product.Product, Awaitable[gcr_product.Product]]]:
         raise NotImplementedError()
 
     @property
-    def get_product(
-        self,
-    ) -> Callable[
-        [product_service.GetProductRequest],
-        Union[product.Product, Awaitable[product.Product]],
-    ]:
+    def get_product(self) -> Callable[[product_service.GetProductRequest], Union[product.Product, Awaitable[product.Product]]]:
         raise NotImplementedError()
 
     @property
     def list_products(
         self,
     ) -> Callable[
-        [product_service.ListProductsRequest],
-        Union[
-            product_service.ListProductsResponse,
-            Awaitable[product_service.ListProductsResponse],
-        ],
+        [product_service.ListProductsRequest], Union[product_service.ListProductsResponse, Awaitable[product_service.ListProductsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update_product(
-        self,
-    ) -> Callable[
-        [product_service.UpdateProductRequest],
-        Union[gcr_product.Product, Awaitable[gcr_product.Product]],
-    ]:
+    def update_product(self) -> Callable[[product_service.UpdateProductRequest], Union[gcr_product.Product, Awaitable[gcr_product.Product]]]:
         raise NotImplementedError()
 
     @property
-    def delete_product(
-        self,
-    ) -> Callable[
-        [product_service.DeleteProductRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_product(self) -> Callable[[product_service.DeleteProductRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def purge_products(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeProductsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def purge_products(self) -> Callable[[purge_config.PurgeProductsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_products(
         self,
-    ) -> Callable[
-        [import_config.ImportProductsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[import_config.ImportProductsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_products(
         self,
-    ) -> Callable[
-        [export_config.ExportProductsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[export_config.ExportProductsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_inventory(
-        self,
-    ) -> Callable[
-        [product_service.SetInventoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def set_inventory(self) -> Callable[[product_service.SetInventoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def add_fulfillment_places(
         self,
-    ) -> Callable[
-        [product_service.AddFulfillmentPlacesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[product_service.AddFulfillmentPlacesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_fulfillment_places(
         self,
-    ) -> Callable[
-        [product_service.RemoveFulfillmentPlacesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[product_service.RemoveFulfillmentPlacesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def add_local_inventories(
         self,
-    ) -> Callable[
-        [product_service.AddLocalInventoriesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[product_service.AddLocalInventoriesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_local_inventories(
         self,
-    ) -> Callable[
-        [product_service.RemoveLocalInventoriesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[product_service.RemoveLocalInventoriesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -365,20 +303,14 @@ class ProductServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

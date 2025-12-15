@@ -18,40 +18,14 @@ from google.cloud.video.stitcher import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.video.stitcher_v1.services.video_stitcher_service.async_client import (
-    VideoStitcherServiceAsyncClient,
-)
-from google.cloud.video.stitcher_v1.services.video_stitcher_service.client import (
-    VideoStitcherServiceClient,
-)
-from google.cloud.video.stitcher_v1.types.ad_tag_details import (
-    AdRequest,
-    LiveAdTagDetail,
-    RequestMetadata,
-    ResponseMetadata,
-    VodAdTagDetail,
-)
-from google.cloud.video.stitcher_v1.types.cdn_keys import (
-    AkamaiCdnKey,
-    CdnKey,
-    GoogleCdnKey,
-    MediaCdnKey,
-)
-from google.cloud.video.stitcher_v1.types.companions import (
-    Companion,
-    CompanionAds,
-    HtmlAdResource,
-    IframeAdResource,
-    StaticAdResource,
-)
+from google.cloud.video.stitcher_v1.services.video_stitcher_service.async_client import VideoStitcherServiceAsyncClient
+from google.cloud.video.stitcher_v1.services.video_stitcher_service.client import VideoStitcherServiceClient
+from google.cloud.video.stitcher_v1.types.ad_tag_details import AdRequest, LiveAdTagDetail, RequestMetadata, ResponseMetadata, VodAdTagDetail
+from google.cloud.video.stitcher_v1.types.cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey, MediaCdnKey
+from google.cloud.video.stitcher_v1.types.companions import Companion, CompanionAds, HtmlAdResource, IframeAdResource, StaticAdResource
 from google.cloud.video.stitcher_v1.types.events import Event, ProgressEvent
 from google.cloud.video.stitcher_v1.types.fetch_options import FetchOptions
-from google.cloud.video.stitcher_v1.types.live_configs import (
-    AdTracking,
-    GamLiveConfig,
-    LiveConfig,
-    PrefetchConfig,
-)
+from google.cloud.video.stitcher_v1.types.live_configs import AdTracking, GamLiveConfig, LiveConfig, PrefetchConfig
 from google.cloud.video.stitcher_v1.types.sessions import (
     Interstitials,
     LiveSession,
@@ -63,10 +37,7 @@ from google.cloud.video.stitcher_v1.types.sessions import (
     VodSessionContent,
 )
 from google.cloud.video.stitcher_v1.types.slates import Slate
-from google.cloud.video.stitcher_v1.types.stitch_details import (
-    AdStitchDetail,
-    VodStitchDetail,
-)
+from google.cloud.video.stitcher_v1.types.stitch_details import AdStitchDetail, VodStitchDetail
 from google.cloud.video.stitcher_v1.types.video_stitcher_service import (
     CreateCdnKeyRequest,
     CreateLiveConfigRequest,

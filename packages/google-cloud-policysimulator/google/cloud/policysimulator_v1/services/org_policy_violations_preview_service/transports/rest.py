@@ -112,13 +112,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
     """
 
     def pre_create_org_policy_violations_preview(
-        self,
-        request: gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_org_policy_violations_preview
 
         Override in a subclass to manipulate the request or metadata
@@ -126,9 +121,7 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_org_policy_violations_preview(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_org_policy_violations_preview(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_org_policy_violations_preview
 
         DEPRECATED. Please use the `post_create_org_policy_violations_preview_with_metadata`
@@ -142,9 +135,7 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response
 
     def post_create_org_policy_violations_preview_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_org_policy_violations_preview
 
@@ -161,13 +152,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response, metadata
 
     def pre_get_org_policy_violations_preview(
-        self,
-        request: gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_org_policy_violations_preview
 
         Override in a subclass to manipulate the request or metadata
@@ -175,9 +161,7 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_org_policy_violations_preview(
-        self, response: gcp_orgpolicy.OrgPolicyViolationsPreview
-    ) -> gcp_orgpolicy.OrgPolicyViolationsPreview:
+    def post_get_org_policy_violations_preview(self, response: gcp_orgpolicy.OrgPolicyViolationsPreview) -> gcp_orgpolicy.OrgPolicyViolationsPreview:
         """Post-rpc interceptor for get_org_policy_violations_preview
 
         DEPRECATED. Please use the `post_get_org_policy_violations_preview_with_metadata`
@@ -191,13 +175,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response
 
     def post_get_org_policy_violations_preview_with_metadata(
-        self,
-        response: gcp_orgpolicy.OrgPolicyViolationsPreview,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.OrgPolicyViolationsPreview,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcp_orgpolicy.OrgPolicyViolationsPreview, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.OrgPolicyViolationsPreview, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_org_policy_violations_preview
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -213,13 +192,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response, metadata
 
     def pre_list_org_policy_violations(
-        self,
-        request: gcp_orgpolicy.ListOrgPolicyViolationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.ListOrgPolicyViolationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcp_orgpolicy.ListOrgPolicyViolationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.ListOrgPolicyViolationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_org_policy_violations
 
         Override in a subclass to manipulate the request or metadata
@@ -243,13 +217,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response
 
     def post_list_org_policy_violations_with_metadata(
-        self,
-        response: gcp_orgpolicy.ListOrgPolicyViolationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.ListOrgPolicyViolationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcp_orgpolicy.ListOrgPolicyViolationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.ListOrgPolicyViolationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_org_policy_violations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -265,13 +234,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response, metadata
 
     def pre_list_org_policy_violations_previews(
-        self,
-        request: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_org_policy_violations_previews
 
         Override in a subclass to manipulate the request or metadata
@@ -295,13 +259,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response
 
     def post_list_org_policy_violations_previews_with_metadata(
-        self,
-        response: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_org_policy_violations_previews
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -317,12 +276,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -330,9 +285,7 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -342,12 +295,8 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -355,9 +304,7 @@ class OrgPolicyViolationsPreviewServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -374,9 +321,7 @@ class OrgPolicyViolationsPreviewServiceRestStub:
     _interceptor: OrgPolicyViolationsPreviewServiceRestInterceptor
 
 
-class OrgPolicyViolationsPreviewServiceRestTransport(
-    _BaseOrgPolicyViolationsPreviewServiceRestTransport
-):
+class OrgPolicyViolationsPreviewServiceRestTransport(_BaseOrgPolicyViolationsPreviewServiceRestTransport):
     """REST backend synchronous transport for OrgPolicyViolationsPreviewService.
 
     Violations Preview API service for OrgPolicy.
@@ -459,15 +404,11 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or OrgPolicyViolationsPreviewServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or OrgPolicyViolationsPreviewServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -551,32 +492,19 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _CreateOrgPolicyViolationsPreview(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview,
-        OrgPolicyViolationsPreviewServiceRestStub,
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview, OrgPolicyViolationsPreviewServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrgPolicyViolationsPreviewServiceRestTransport.CreateOrgPolicyViolationsPreview"
-            )
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.CreateOrgPolicyViolationsPreview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -622,16 +550,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_org_policy_violations_preview(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_org_policy_violations_preview(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseCreateOrgPolicyViolationsPreview._get_transcoded_request(
                 http_options, request
             )
@@ -645,12 +566,8 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -674,13 +591,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._CreateOrgPolicyViolationsPreview._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -694,15 +605,8 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_create_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_org_policy_violations_preview_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_org_policy_violations_preview_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -724,24 +628,13 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             return resp
 
     class _GetOrgPolicyViolationsPreview(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview,
-        OrgPolicyViolationsPreviewServiceRestStub,
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview, OrgPolicyViolationsPreviewServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrgPolicyViolationsPreviewServiceRestTransport.GetOrgPolicyViolationsPreview"
-            )
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.GetOrgPolicyViolationsPreview")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -792,13 +685,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_org_policy_violations_preview(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_org_policy_violations_preview(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOrgPolicyViolationsPreview._get_transcoded_request(
                 http_options, request
             )
@@ -808,12 +697,8 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -837,12 +722,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._GetOrgPolicyViolationsPreview._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -858,19 +738,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_get_org_policy_violations_preview(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_org_policy_violations_preview_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_org_policy_violations_preview_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcp_orgpolicy.OrgPolicyViolationsPreview.to_json(
-                        response
-                    )
+                    response_payload = gcp_orgpolicy.OrgPolicyViolationsPreview.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -890,24 +761,13 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             return resp
 
     class _ListOrgPolicyViolations(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations,
-        OrgPolicyViolationsPreviewServiceRestStub,
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations, OrgPolicyViolationsPreviewServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolations"
-            )
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -952,28 +812,18 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_org_policy_violations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_org_policy_violations(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -997,12 +847,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._ListOrgPolicyViolations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1018,16 +863,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_list_org_policy_violations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_org_policy_violations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_org_policy_violations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcp_orgpolicy.ListOrgPolicyViolationsResponse.to_json(response)
-                    )
+                    response_payload = gcp_orgpolicy.ListOrgPolicyViolationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1047,24 +886,13 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             return resp
 
     class _ListOrgPolicyViolationsPreviews(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews,
-        OrgPolicyViolationsPreviewServiceRestStub,
+        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews, OrgPolicyViolationsPreviewServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolationsPreviews"
-            )
+            return hash("OrgPolicyViolationsPreviewServiceRestTransport.ListOrgPolicyViolationsPreviews")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1109,16 +937,9 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_org_policy_violations_previews(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_org_policy_violations_previews(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOrgPolicyViolationsPreviews._get_transcoded_request(
                 http_options, request
             )
@@ -1128,12 +949,8 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1157,12 +974,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._ListOrgPolicyViolationsPreviews._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1178,21 +990,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             resp = self._interceptor.post_list_org_policy_violations_previews(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_org_policy_violations_previews_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_org_policy_violations_previews_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1212,12 +1013,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             return resp
 
     @property
-    def create_org_policy_violations_preview(
-        self,
-    ) -> Callable[
-        [gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_org_policy_violations_preview(self) -> Callable[[gcp_orgpolicy.CreateOrgPolicyViolationsPreviewRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
@@ -1225,21 +1021,13 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     @property
     def get_org_policy_violations_preview(
         self,
-    ) -> Callable[
-        [gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest],
-        gcp_orgpolicy.OrgPolicyViolationsPreview,
-    ]:
+    ) -> Callable[[gcp_orgpolicy.GetOrgPolicyViolationsPreviewRequest], gcp_orgpolicy.OrgPolicyViolationsPreview]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrgPolicyViolationsPreview(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_org_policy_violations(
-        self,
-    ) -> Callable[
-        [gcp_orgpolicy.ListOrgPolicyViolationsRequest],
-        gcp_orgpolicy.ListOrgPolicyViolationsResponse,
-    ]:
+    def list_org_policy_violations(self) -> Callable[[gcp_orgpolicy.ListOrgPolicyViolationsRequest], gcp_orgpolicy.ListOrgPolicyViolationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrgPolicyViolations(self._session, self._host, self._interceptor)  # type: ignore
@@ -1247,10 +1035,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     @property
     def list_org_policy_violations_previews(
         self,
-    ) -> Callable[
-        [gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest],
-        gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse,
-    ]:
+    ) -> Callable[[gcp_orgpolicy.ListOrgPolicyViolationsPreviewsRequest], gcp_orgpolicy.ListOrgPolicyViolationsPreviewsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrgPolicyViolationsPreviews(self._session, self._host, self._interceptor)  # type: ignore
@@ -1259,23 +1044,12 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation,
-        OrgPolicyViolationsPreviewServiceRestStub,
-    ):
+    class _GetOperation(_BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation, OrgPolicyViolationsPreviewServiceRestStub):
         def __hash__(self):
             return hash("OrgPolicyViolationsPreviewServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1313,26 +1087,16 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1356,12 +1120,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1373,9 +1132,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1400,23 +1157,12 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations,
-        OrgPolicyViolationsPreviewServiceRestStub,
-    ):
+    class _ListOperations(_BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations, OrgPolicyViolationsPreviewServiceRestStub):
         def __hash__(self):
             return hash("OrgPolicyViolationsPreviewServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1454,9 +1200,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_transcoded_request(
@@ -1464,16 +1208,10 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrgPolicyViolationsPreviewServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1497,12 +1235,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
 
             # Send the request
             response = OrgPolicyViolationsPreviewServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1514,9 +1247,7 @@ class OrgPolicyViolationsPreviewServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

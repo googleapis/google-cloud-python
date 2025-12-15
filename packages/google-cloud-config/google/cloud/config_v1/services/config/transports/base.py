@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.config_v1 import gapic_version as package_version
 from google.cloud.config_v1.types import config
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class ConfigTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -337,255 +327,125 @@ class ConfigTransport(abc.ABC):
     @property
     def list_deployments(
         self,
-    ) -> Callable[
-        [config.ListDeploymentsRequest],
-        Union[
-            config.ListDeploymentsResponse, Awaitable[config.ListDeploymentsResponse]
-        ],
-    ]:
+    ) -> Callable[[config.ListDeploymentsRequest], Union[config.ListDeploymentsResponse, Awaitable[config.ListDeploymentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[
-        [config.GetDeploymentRequest],
-        Union[config.Deployment, Awaitable[config.Deployment]],
-    ]:
+    def get_deployment(self) -> Callable[[config.GetDeploymentRequest], Union[config.Deployment, Awaitable[config.Deployment]]]:
         raise NotImplementedError()
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[
-        [config.CreateDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_deployment(self) -> Callable[[config.CreateDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[
-        [config.UpdateDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_deployment(self) -> Callable[[config.UpdateDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[
-        [config.DeleteDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_deployment(self) -> Callable[[config.DeleteDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_revisions(
-        self,
-    ) -> Callable[
-        [config.ListRevisionsRequest],
-        Union[config.ListRevisionsResponse, Awaitable[config.ListRevisionsResponse]],
-    ]:
+    def list_revisions(self) -> Callable[[config.ListRevisionsRequest], Union[config.ListRevisionsResponse, Awaitable[config.ListRevisionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_revision(
-        self,
-    ) -> Callable[
-        [config.GetRevisionRequest], Union[config.Revision, Awaitable[config.Revision]]
-    ]:
+    def get_revision(self) -> Callable[[config.GetRevisionRequest], Union[config.Revision, Awaitable[config.Revision]]]:
         raise NotImplementedError()
 
     @property
-    def get_resource(
-        self,
-    ) -> Callable[
-        [config.GetResourceRequest], Union[config.Resource, Awaitable[config.Resource]]
-    ]:
+    def get_resource(self) -> Callable[[config.GetResourceRequest], Union[config.Resource, Awaitable[config.Resource]]]:
         raise NotImplementedError()
 
     @property
-    def list_resources(
-        self,
-    ) -> Callable[
-        [config.ListResourcesRequest],
-        Union[config.ListResourcesResponse, Awaitable[config.ListResourcesResponse]],
-    ]:
+    def list_resources(self) -> Callable[[config.ListResourcesRequest], Union[config.ListResourcesResponse, Awaitable[config.ListResourcesResponse]]]:
         raise NotImplementedError()
 
     @property
     def export_deployment_statefile(
         self,
-    ) -> Callable[
-        [config.ExportDeploymentStatefileRequest],
-        Union[config.Statefile, Awaitable[config.Statefile]],
-    ]:
+    ) -> Callable[[config.ExportDeploymentStatefileRequest], Union[config.Statefile, Awaitable[config.Statefile]]]:
         raise NotImplementedError()
 
     @property
-    def export_revision_statefile(
-        self,
-    ) -> Callable[
-        [config.ExportRevisionStatefileRequest],
-        Union[config.Statefile, Awaitable[config.Statefile]],
-    ]:
+    def export_revision_statefile(self) -> Callable[[config.ExportRevisionStatefileRequest], Union[config.Statefile, Awaitable[config.Statefile]]]:
         raise NotImplementedError()
 
     @property
-    def import_statefile(
-        self,
-    ) -> Callable[
-        [config.ImportStatefileRequest],
-        Union[config.Statefile, Awaitable[config.Statefile]],
-    ]:
+    def import_statefile(self) -> Callable[[config.ImportStatefileRequest], Union[config.Statefile, Awaitable[config.Statefile]]]:
         raise NotImplementedError()
 
     @property
-    def delete_statefile(
-        self,
-    ) -> Callable[
-        [config.DeleteStatefileRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_statefile(self) -> Callable[[config.DeleteStatefileRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def lock_deployment(
-        self,
-    ) -> Callable[
-        [config.LockDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def lock_deployment(self) -> Callable[[config.LockDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def unlock_deployment(
-        self,
-    ) -> Callable[
-        [config.UnlockDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def unlock_deployment(self) -> Callable[[config.UnlockDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_lock_info(
-        self,
-    ) -> Callable[
-        [config.ExportLockInfoRequest],
-        Union[config.LockInfo, Awaitable[config.LockInfo]],
-    ]:
+    def export_lock_info(self) -> Callable[[config.ExportLockInfoRequest], Union[config.LockInfo, Awaitable[config.LockInfo]]]:
         raise NotImplementedError()
 
     @property
-    def create_preview(
-        self,
-    ) -> Callable[
-        [config.CreatePreviewRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_preview(self) -> Callable[[config.CreatePreviewRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_preview(
-        self,
-    ) -> Callable[
-        [config.GetPreviewRequest], Union[config.Preview, Awaitable[config.Preview]]
-    ]:
+    def get_preview(self) -> Callable[[config.GetPreviewRequest], Union[config.Preview, Awaitable[config.Preview]]]:
         raise NotImplementedError()
 
     @property
-    def list_previews(
-        self,
-    ) -> Callable[
-        [config.ListPreviewsRequest],
-        Union[config.ListPreviewsResponse, Awaitable[config.ListPreviewsResponse]],
-    ]:
+    def list_previews(self) -> Callable[[config.ListPreviewsRequest], Union[config.ListPreviewsResponse, Awaitable[config.ListPreviewsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_preview(
-        self,
-    ) -> Callable[
-        [config.DeletePreviewRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_preview(self) -> Callable[[config.DeletePreviewRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_preview_result(
         self,
-    ) -> Callable[
-        [config.ExportPreviewResultRequest],
-        Union[
-            config.ExportPreviewResultResponse,
-            Awaitable[config.ExportPreviewResultResponse],
-        ],
-    ]:
+    ) -> Callable[[config.ExportPreviewResultRequest], Union[config.ExportPreviewResultResponse, Awaitable[config.ExportPreviewResultResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_terraform_versions(
         self,
     ) -> Callable[
-        [config.ListTerraformVersionsRequest],
-        Union[
-            config.ListTerraformVersionsResponse,
-            Awaitable[config.ListTerraformVersionsResponse],
-        ],
+        [config.ListTerraformVersionsRequest], Union[config.ListTerraformVersionsResponse, Awaitable[config.ListTerraformVersionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_terraform_version(
         self,
-    ) -> Callable[
-        [config.GetTerraformVersionRequest],
-        Union[config.TerraformVersion, Awaitable[config.TerraformVersion]],
-    ]:
+    ) -> Callable[[config.GetTerraformVersionRequest], Union[config.TerraformVersion, Awaitable[config.TerraformVersion]]]:
         raise NotImplementedError()
 
     @property
     def list_resource_changes(
         self,
-    ) -> Callable[
-        [config.ListResourceChangesRequest],
-        Union[
-            config.ListResourceChangesResponse,
-            Awaitable[config.ListResourceChangesResponse],
-        ],
-    ]:
+    ) -> Callable[[config.ListResourceChangesRequest], Union[config.ListResourceChangesResponse, Awaitable[config.ListResourceChangesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_resource_change(
-        self,
-    ) -> Callable[
-        [config.GetResourceChangeRequest],
-        Union[config.ResourceChange, Awaitable[config.ResourceChange]],
-    ]:
+    def get_resource_change(self) -> Callable[[config.GetResourceChangeRequest], Union[config.ResourceChange, Awaitable[config.ResourceChange]]]:
         raise NotImplementedError()
 
     @property
     def list_resource_drifts(
         self,
-    ) -> Callable[
-        [config.ListResourceDriftsRequest],
-        Union[
-            config.ListResourceDriftsResponse,
-            Awaitable[config.ListResourceDriftsResponse],
-        ],
-    ]:
+    ) -> Callable[[config.ListResourceDriftsRequest], Union[config.ListResourceDriftsResponse, Awaitable[config.ListResourceDriftsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_resource_drift(
-        self,
-    ) -> Callable[
-        [config.GetResourceDriftRequest],
-        Union[config.ResourceDrift, Awaitable[config.ResourceDrift]],
-    ]:
+    def get_resource_drift(self) -> Callable[[config.GetResourceDriftRequest], Union[config.ResourceDrift, Awaitable[config.ResourceDrift]]]:
         raise NotImplementedError()
 
     @property
@@ -593,20 +453,14 @@ class ConfigTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -624,19 +478,13 @@ class ConfigTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -654,22 +502,13 @@ class ConfigTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

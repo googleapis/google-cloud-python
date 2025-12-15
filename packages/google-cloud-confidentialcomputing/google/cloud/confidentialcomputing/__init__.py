@@ -18,12 +18,8 @@ from google.cloud.confidentialcomputing import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.confidentialcomputing_v1.services.confidential_computing.async_client import (
-    ConfidentialComputingAsyncClient,
-)
-from google.cloud.confidentialcomputing_v1.services.confidential_computing.client import (
-    ConfidentialComputingClient,
-)
+from google.cloud.confidentialcomputing_v1.services.confidential_computing.async_client import ConfidentialComputingAsyncClient
+from google.cloud.confidentialcomputing_v1.services.confidential_computing.client import ConfidentialComputingClient
 from google.cloud.confidentialcomputing_v1.types.service import (
     AwsPrincipalTagsOptions,
     Challenge,

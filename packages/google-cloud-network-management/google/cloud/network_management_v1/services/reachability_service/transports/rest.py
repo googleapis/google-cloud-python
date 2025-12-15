@@ -131,13 +131,8 @@ class ReachabilityServiceRestInterceptor:
     """
 
     def pre_create_connectivity_test(
-        self,
-        request: reachability.CreateConnectivityTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.CreateConnectivityTestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reachability.CreateConnectivityTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.CreateConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connectivity_test
 
         Override in a subclass to manipulate the request or metadata
@@ -145,9 +140,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connectivity_test(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_connectivity_test(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connectivity_test
 
         DEPRECATED. Please use the `post_create_connectivity_test_with_metadata`
@@ -161,9 +154,7 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_create_connectivity_test_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connectivity_test
 
@@ -180,13 +171,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_connectivity_test(
-        self,
-        request: reachability.DeleteConnectivityTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.DeleteConnectivityTestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reachability.DeleteConnectivityTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.DeleteConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connectivity_test
 
         Override in a subclass to manipulate the request or metadata
@@ -194,9 +180,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_connectivity_test(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_connectivity_test(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connectivity_test
 
         DEPRECATED. Please use the `post_delete_connectivity_test_with_metadata`
@@ -210,9 +194,7 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_delete_connectivity_test_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_connectivity_test
 
@@ -229,12 +211,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_connectivity_test(
-        self,
-        request: reachability.GetConnectivityTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.GetConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reachability.GetConnectivityTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.GetConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connectivity_test
 
         Override in a subclass to manipulate the request or metadata
@@ -242,9 +220,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connectivity_test(
-        self, response: connectivity_test.ConnectivityTest
-    ) -> connectivity_test.ConnectivityTest:
+    def post_get_connectivity_test(self, response: connectivity_test.ConnectivityTest) -> connectivity_test.ConnectivityTest:
         """Post-rpc interceptor for get_connectivity_test
 
         DEPRECATED. Please use the `post_get_connectivity_test_with_metadata`
@@ -258,12 +234,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_get_connectivity_test_with_metadata(
-        self,
-        response: connectivity_test.ConnectivityTest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        connectivity_test.ConnectivityTest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: connectivity_test.ConnectivityTest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[connectivity_test.ConnectivityTest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connectivity_test
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -279,13 +251,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_list_connectivity_tests(
-        self,
-        request: reachability.ListConnectivityTestsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.ListConnectivityTestsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reachability.ListConnectivityTestsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.ListConnectivityTestsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connectivity_tests
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +260,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connectivity_tests(
-        self, response: reachability.ListConnectivityTestsResponse
-    ) -> reachability.ListConnectivityTestsResponse:
+    def post_list_connectivity_tests(self, response: reachability.ListConnectivityTestsResponse) -> reachability.ListConnectivityTestsResponse:
         """Post-rpc interceptor for list_connectivity_tests
 
         DEPRECATED. Please use the `post_list_connectivity_tests_with_metadata`
@@ -309,13 +274,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_list_connectivity_tests_with_metadata(
-        self,
-        response: reachability.ListConnectivityTestsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.ListConnectivityTestsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reachability.ListConnectivityTestsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.ListConnectivityTestsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connectivity_tests
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -331,13 +291,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_rerun_connectivity_test(
-        self,
-        request: reachability.RerunConnectivityTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.RerunConnectivityTestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reachability.RerunConnectivityTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.RerunConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rerun_connectivity_test
 
         Override in a subclass to manipulate the request or metadata
@@ -345,9 +300,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_rerun_connectivity_test(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_rerun_connectivity_test(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for rerun_connectivity_test
 
         DEPRECATED. Please use the `post_rerun_connectivity_test_with_metadata`
@@ -361,9 +314,7 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_rerun_connectivity_test_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rerun_connectivity_test
 
@@ -380,13 +331,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_update_connectivity_test(
-        self,
-        request: reachability.UpdateConnectivityTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reachability.UpdateConnectivityTestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reachability.UpdateConnectivityTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reachability.UpdateConnectivityTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connectivity_test
 
         Override in a subclass to manipulate the request or metadata
@@ -394,9 +340,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connectivity_test(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_connectivity_test(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connectivity_test
 
         DEPRECATED. Please use the `post_update_connectivity_test_with_metadata`
@@ -410,9 +354,7 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def post_update_connectivity_test_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connectivity_test
 
@@ -429,12 +371,8 @@ class ReachabilityServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -442,9 +380,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -454,12 +390,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -467,9 +399,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -479,12 +409,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -502,12 +428,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -525,13 +447,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -539,9 +456,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -551,12 +466,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -574,12 +485,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -597,12 +504,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -610,9 +513,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -622,12 +523,8 @@ class ReachabilityServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -635,9 +532,7 @@ class ReachabilityServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -735,9 +630,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -807,30 +700,17 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateConnectivityTest(
-        _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest,
-        ReachabilityServiceRestStub,
-    ):
+    class _CreateConnectivityTest(_BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.CreateConnectivityTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -873,32 +753,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connectivity_test(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connectivity_test(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseCreateConnectivityTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -921,16 +787,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._CreateConnectivityTest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReachabilityServiceRestTransport._CreateConnectivityTest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -944,12 +802,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_create_connectivity_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connectivity_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connectivity_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -970,23 +824,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
             return resp
 
-    class _DeleteConnectivityTest(
-        _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest,
-        ReachabilityServiceRestStub,
-    ):
+    class _DeleteConnectivityTest(_BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.DeleteConnectivityTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1028,28 +871,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connectivity_test(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connectivity_test(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseDeleteConnectivityTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1072,15 +903,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._DeleteConnectivityTest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReachabilityServiceRestTransport._DeleteConnectivityTest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1094,12 +918,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_delete_connectivity_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_connectivity_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_connectivity_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1120,23 +940,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
             return resp
 
-    class _GetConnectivityTest(
-        _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest,
-        ReachabilityServiceRestStub,
-    ):
+    class _GetConnectivityTest(_BaseReachabilityServiceRestTransport._BaseGetConnectivityTest, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.GetConnectivityTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1177,28 +986,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_connectivity_test(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_connectivity_test(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseGetConnectivityTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1221,15 +1018,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._GetConnectivityTest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReachabilityServiceRestTransport._GetConnectivityTest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1245,16 +1035,10 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_get_connectivity_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connectivity_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connectivity_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = connectivity_test.ConnectivityTest.to_json(
-                        response
-                    )
+                    response_payload = connectivity_test.ConnectivityTest.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1273,23 +1057,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
             return resp
 
-    class _ListConnectivityTests(
-        _BaseReachabilityServiceRestTransport._BaseListConnectivityTests,
-        ReachabilityServiceRestStub,
-    ):
+    class _ListConnectivityTests(_BaseReachabilityServiceRestTransport._BaseListConnectivityTests, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.ListConnectivityTests")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1328,28 +1101,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     Response for the ``ListConnectivityTests`` method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connectivity_tests(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connectivity_tests(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseListConnectivityTests._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1372,15 +1133,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._ListConnectivityTests._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReachabilityServiceRestTransport._ListConnectivityTests._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1396,16 +1150,10 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_list_connectivity_tests(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connectivity_tests_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connectivity_tests_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        reachability.ListConnectivityTestsResponse.to_json(response)
-                    )
+                    response_payload = reachability.ListConnectivityTestsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1424,23 +1172,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
             return resp
 
-    class _RerunConnectivityTest(
-        _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest,
-        ReachabilityServiceRestStub,
-    ):
+    class _RerunConnectivityTest(_BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.RerunConnectivityTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1483,32 +1220,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_rerun_connectivity_test(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_rerun_connectivity_test(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseRerunConnectivityTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1531,16 +1254,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._RerunConnectivityTest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReachabilityServiceRestTransport._RerunConnectivityTest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1554,12 +1269,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_rerun_connectivity_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rerun_connectivity_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rerun_connectivity_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1580,23 +1291,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
             return resp
 
-    class _UpdateConnectivityTest(
-        _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest,
-        ReachabilityServiceRestStub,
-    ):
+    class _UpdateConnectivityTest(_BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.UpdateConnectivityTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1639,32 +1339,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connectivity_test(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connectivity_test(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseUpdateConnectivityTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1687,16 +1373,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._UpdateConnectivityTest._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReachabilityServiceRestTransport._UpdateConnectivityTest._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1710,12 +1388,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             resp = self._interceptor.post_update_connectivity_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connectivity_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connectivity_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1737,62 +1411,37 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             return resp
 
     @property
-    def create_connectivity_test(
-        self,
-    ) -> Callable[
-        [reachability.CreateConnectivityTestRequest], operations_pb2.Operation
-    ]:
+    def create_connectivity_test(self) -> Callable[[reachability.CreateConnectivityTestRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connectivity_test(
-        self,
-    ) -> Callable[
-        [reachability.DeleteConnectivityTestRequest], operations_pb2.Operation
-    ]:
+    def delete_connectivity_test(self) -> Callable[[reachability.DeleteConnectivityTestRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connectivity_test(
-        self,
-    ) -> Callable[
-        [reachability.GetConnectivityTestRequest], connectivity_test.ConnectivityTest
-    ]:
+    def get_connectivity_test(self) -> Callable[[reachability.GetConnectivityTestRequest], connectivity_test.ConnectivityTest]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connectivity_tests(
-        self,
-    ) -> Callable[
-        [reachability.ListConnectivityTestsRequest],
-        reachability.ListConnectivityTestsResponse,
-    ]:
+    def list_connectivity_tests(self) -> Callable[[reachability.ListConnectivityTestsRequest], reachability.ListConnectivityTestsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnectivityTests(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rerun_connectivity_test(
-        self,
-    ) -> Callable[
-        [reachability.RerunConnectivityTestRequest], operations_pb2.Operation
-    ]:
+    def rerun_connectivity_test(self) -> Callable[[reachability.RerunConnectivityTestRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RerunConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connectivity_test(
-        self,
-    ) -> Callable[
-        [reachability.UpdateConnectivityTestRequest], operations_pb2.Operation
-    ]:
+    def update_connectivity_test(self) -> Callable[[reachability.UpdateConnectivityTestRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnectivityTest(self._session, self._host, self._interceptor)  # type: ignore
@@ -1801,23 +1450,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseReachabilityServiceRestTransport._BaseGetLocation,
-        ReachabilityServiceRestStub,
-    ):
+    class _GetLocation(_BaseReachabilityServiceRestTransport._BaseGetLocation, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1855,26 +1493,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1898,12 +1526,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1915,9 +1538,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1942,23 +1563,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseReachabilityServiceRestTransport._BaseListLocations,
-        ReachabilityServiceRestStub,
-    ):
+    class _ListLocations(_BaseReachabilityServiceRestTransport._BaseListLocations, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1996,26 +1606,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2039,12 +1639,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2056,9 +1651,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2083,23 +1676,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseReachabilityServiceRestTransport._BaseGetIamPolicy,
-        ReachabilityServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseReachabilityServiceRestTransport._BaseGetIamPolicy, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2137,26 +1719,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2180,12 +1752,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2197,9 +1764,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2224,23 +1789,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseReachabilityServiceRestTransport._BaseSetIamPolicy,
-        ReachabilityServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseReachabilityServiceRestTransport._BaseSetIamPolicy, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2279,30 +1833,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2326,13 +1868,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2344,9 +1880,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2371,23 +1905,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseReachabilityServiceRestTransport._BaseTestIamPermissions,
-        ReachabilityServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseReachabilityServiceRestTransport._BaseTestIamPermissions, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2426,32 +1949,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2474,16 +1983,8 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReachabilityServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReachabilityServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2495,9 +1996,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2522,23 +2021,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseReachabilityServiceRestTransport._BaseCancelOperation,
-        ReachabilityServiceRestStub,
-    ):
+    class _CancelOperation(_BaseReachabilityServiceRestTransport._BaseCancelOperation, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2574,32 +2062,18 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2623,13 +2097,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2643,23 +2111,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseReachabilityServiceRestTransport._BaseDeleteOperation,
-        ReachabilityServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseReachabilityServiceRestTransport._BaseDeleteOperation, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2694,28 +2151,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2739,12 +2184,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2758,23 +2198,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseReachabilityServiceRestTransport._BaseGetOperation,
-        ReachabilityServiceRestStub,
-    ):
+    class _GetOperation(_BaseReachabilityServiceRestTransport._BaseGetOperation, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2812,26 +2241,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2855,12 +2274,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2872,9 +2286,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2899,23 +2311,12 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseReachabilityServiceRestTransport._BaseListOperations,
-        ReachabilityServiceRestStub,
-    ):
+    class _ListOperations(_BaseReachabilityServiceRestTransport._BaseListOperations, ReachabilityServiceRestStub):
         def __hash__(self):
             return hash("ReachabilityServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2953,26 +2354,16 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseReachabilityServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseReachabilityServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReachabilityServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReachabilityServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReachabilityServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2996,12 +2387,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
 
             # Send the request
             response = ReachabilityServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3013,9 +2399,7 @@ class ReachabilityServiceRestTransport(_BaseReachabilityServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

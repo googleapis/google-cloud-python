@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,16 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.shopping.merchant_issueresolution_v1beta.types import (
-    aggregateproductstatuses,
-)
+from google.shopping.merchant_issueresolution_v1beta.types import aggregateproductstatuses
 
 
 class ListAggregateProductStatusesPager:
@@ -63,9 +49,7 @@ class ListAggregateProductStatusesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., aggregateproductstatuses.ListAggregateProductStatusesResponse
-        ],
+        method: Callable[..., aggregateproductstatuses.ListAggregateProductStatusesResponse],
         request: aggregateproductstatuses.ListAggregateProductStatusesRequest,
         response: aggregateproductstatuses.ListAggregateProductStatusesResponse,
         *,
@@ -91,9 +75,7 @@ class ListAggregateProductStatusesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = aggregateproductstatuses.ListAggregateProductStatusesRequest(
-            request
-        )
+        self._request = aggregateproductstatuses.ListAggregateProductStatusesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -103,18 +85,11 @@ class ListAggregateProductStatusesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[aggregateproductstatuses.ListAggregateProductStatusesResponse]:
+    def pages(self) -> Iterator[aggregateproductstatuses.ListAggregateProductStatusesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[aggregateproductstatuses.AggregateProductStatus]:
@@ -145,10 +120,7 @@ class ListAggregateProductStatusesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[aggregateproductstatuses.ListAggregateProductStatusesResponse],
-        ],
+        method: Callable[..., Awaitable[aggregateproductstatuses.ListAggregateProductStatusesResponse]],
         request: aggregateproductstatuses.ListAggregateProductStatusesRequest,
         response: aggregateproductstatuses.ListAggregateProductStatusesResponse,
         *,
@@ -174,9 +146,7 @@ class ListAggregateProductStatusesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = aggregateproductstatuses.ListAggregateProductStatusesRequest(
-            request
-        )
+        self._request = aggregateproductstatuses.ListAggregateProductStatusesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -186,23 +156,14 @@ class ListAggregateProductStatusesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[aggregateproductstatuses.ListAggregateProductStatusesResponse]:
+    async def pages(self) -> AsyncIterator[aggregateproductstatuses.ListAggregateProductStatusesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[aggregateproductstatuses.AggregateProductStatus]:
+    def __aiter__(self) -> AsyncIterator[aggregateproductstatuses.AggregateProductStatus]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.aggregate_product_statuses:

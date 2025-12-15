@@ -506,9 +506,7 @@ class ListAzureNodePoolsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    azure_node_pools: MutableSequence[
-        azure_resources.AzureNodePool
-    ] = proto.RepeatedField(
+    azure_node_pools: MutableSequence[azure_resources.AzureNodePool] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=azure_resources.AzureNodePool,

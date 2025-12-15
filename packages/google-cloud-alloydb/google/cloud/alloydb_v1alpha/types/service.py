@@ -958,16 +958,12 @@ class UpgradeClusterResponse(proto.Message):
             number=4,
             enum=resources.DatabaseVersion,
         )
-        stage_info: MutableSequence[
-            "UpgradeClusterResponse.StageInfo"
-        ] = proto.RepeatedField(
+        stage_info: MutableSequence["UpgradeClusterResponse.StageInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="UpgradeClusterResponse.StageInfo",
         )
-        instance_upgrade_details: MutableSequence[
-            "UpgradeClusterResponse.InstanceUpgradeDetails"
-        ] = proto.RepeatedField(
+        instance_upgrade_details: MutableSequence["UpgradeClusterResponse.InstanceUpgradeDetails"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="UpgradeClusterResponse.InstanceUpgradeDetails",
@@ -982,9 +978,7 @@ class UpgradeClusterResponse(proto.Message):
         proto.STRING,
         number=2,
     )
-    cluster_upgrade_details: MutableSequence[
-        ClusterUpgradeDetails
-    ] = proto.RepeatedField(
+    cluster_upgrade_details: MutableSequence[ClusterUpgradeDetails] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=ClusterUpgradeDetails,
@@ -1491,9 +1485,7 @@ class CreateInstanceRequests(proto.Message):
             to be created. This list should not be empty.
     """
 
-    create_instance_requests: MutableSequence[
-        "CreateInstanceRequest"
-    ] = proto.RepeatedField(
+    create_instance_requests: MutableSequence["CreateInstanceRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CreateInstanceRequest",
@@ -1586,9 +1578,7 @@ class BatchCreateInstancesMetadata(proto.Message):
         proto.STRING,
         number=1,
     )
-    instance_statuses: MutableMapping[
-        str, "BatchCreateInstanceStatus"
-    ] = proto.MapField(
+    instance_statuses: MutableMapping[str, "BatchCreateInstanceStatus"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
@@ -2486,9 +2476,7 @@ class ListSupportedDatabaseFlagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    supported_database_flags: MutableSequence[
-        resources.SupportedDatabaseFlag
-    ] = proto.RepeatedField(
+    supported_database_flags: MutableSequence[resources.SupportedDatabaseFlag] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.SupportedDatabaseFlag,

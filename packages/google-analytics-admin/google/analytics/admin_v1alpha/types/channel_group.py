@@ -213,9 +213,7 @@ class ChannelGroupFilterExpressionList(proto.Message):
             A list of Channel Group filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "ChannelGroupFilterExpression"
-    ] = proto.RepeatedField(
+    filter_expressions: MutableSequence["ChannelGroupFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ChannelGroupFilterExpression",

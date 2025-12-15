@@ -31,10 +31,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import (
-    policytagmanager,
-    policytagmanagerserialization,
-)
+from google.cloud.datacatalog_v1.types import policytagmanager, policytagmanagerserialization
 
 from .base import DEFAULT_CLIENT_INFO, PolicyTagManagerSerializationTransport
 
@@ -50,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -113,9 +101,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class PolicyTagManagerSerializationGrpcTransport(
-    PolicyTagManagerSerializationTransport
-):
+class PolicyTagManagerSerializationGrpcTransport(PolicyTagManagerSerializationTransport):
     """gRPC backend transport for PolicyTagManagerSerialization.
 
     Policy Tag Manager Serialization API service allows you to
@@ -228,18 +214,14 @@ class PolicyTagManagerSerializationGrpcTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -273,9 +255,7 @@ class PolicyTagManagerSerializationGrpcTransport(
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,12 +314,7 @@ class PolicyTagManagerSerializationGrpcTransport(
         return self._grpc_channel
 
     @property
-    def replace_taxonomy(
-        self,
-    ) -> Callable[
-        [policytagmanagerserialization.ReplaceTaxonomyRequest],
-        policytagmanager.Taxonomy,
-    ]:
+    def replace_taxonomy(self) -> Callable[[policytagmanagerserialization.ReplaceTaxonomyRequest], policytagmanager.Taxonomy]:
         r"""Return a callable for the replace taxonomy method over gRPC.
 
         Replaces (updates) a taxonomy and all its policy tags.
@@ -377,10 +352,7 @@ class PolicyTagManagerSerializationGrpcTransport(
     @property
     def import_taxonomies(
         self,
-    ) -> Callable[
-        [policytagmanagerserialization.ImportTaxonomiesRequest],
-        policytagmanagerserialization.ImportTaxonomiesResponse,
-    ]:
+    ) -> Callable[[policytagmanagerserialization.ImportTaxonomiesRequest], policytagmanagerserialization.ImportTaxonomiesResponse]:
         r"""Return a callable for the import taxonomies method over gRPC.
 
         Creates new taxonomies (including their policy tags)
@@ -414,10 +386,7 @@ class PolicyTagManagerSerializationGrpcTransport(
     @property
     def export_taxonomies(
         self,
-    ) -> Callable[
-        [policytagmanagerserialization.ExportTaxonomiesRequest],
-        policytagmanagerserialization.ExportTaxonomiesResponse,
-    ]:
+    ) -> Callable[[policytagmanagerserialization.ExportTaxonomiesRequest], policytagmanagerserialization.ExportTaxonomiesResponse]:
         r"""Return a callable for the export taxonomies method over gRPC.
 
         Exports taxonomies in the requested type and returns them,
@@ -503,9 +472,7 @@ class PolicyTagManagerSerializationGrpcTransport(
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -61,10 +49,7 @@ class ListRuntimeProjectAttachmentsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse,
-        ],
+        method: Callable[..., runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse],
         request: runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
         response: runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse,
         *,
@@ -90,11 +75,7 @@ class ListRuntimeProjectAttachmentsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
-                request
-            )
-        )
+        self._request = runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,25 +85,14 @@ class ListRuntimeProjectAttachmentsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse
-    ]:
+    def pages(self) -> Iterator[runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[runtime_project_attachment_service.RuntimeProjectAttachment]:
+    def __iter__(self) -> Iterator[runtime_project_attachment_service.RuntimeProjectAttachment]:
         for page in self.pages:
             yield from page.runtime_project_attachments
 
@@ -150,12 +120,7 @@ class ListRuntimeProjectAttachmentsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse]],
         request: runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest,
         response: runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse,
         *,
@@ -181,11 +146,7 @@ class ListRuntimeProjectAttachmentsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(
-                request
-            )
-        )
+        self._request = runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -195,25 +156,14 @@ class ListRuntimeProjectAttachmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse
-    ]:
+    async def pages(self) -> AsyncIterator[runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[runtime_project_attachment_service.RuntimeProjectAttachment]:
+    def __aiter__(self) -> AsyncIterator[runtime_project_attachment_service.RuntimeProjectAttachment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.runtime_project_attachments:

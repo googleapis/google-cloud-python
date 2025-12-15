@@ -22,10 +22,7 @@ from google.type import phone_number_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import (
-    customerservice,
-    phoneverificationstate,
-)
+from google.shopping.merchant_accounts_v1beta.types import customerservice, phoneverificationstate
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.accounts.v1beta",
@@ -89,13 +86,11 @@ class BusinessInfo(proto.Message):
         optional=True,
         message=phone_number_pb2.PhoneNumber,
     )
-    phone_verification_state: phoneverificationstate.PhoneVerificationState = (
-        proto.Field(
-            proto.ENUM,
-            number=4,
-            optional=True,
-            enum=phoneverificationstate.PhoneVerificationState,
-        )
+    phone_verification_state: phoneverificationstate.PhoneVerificationState = proto.Field(
+        proto.ENUM,
+        number=4,
+        optional=True,
+        enum=phoneverificationstate.PhoneVerificationState,
     )
     customer_service: customerservice.CustomerService = proto.Field(
         proto.MESSAGE,

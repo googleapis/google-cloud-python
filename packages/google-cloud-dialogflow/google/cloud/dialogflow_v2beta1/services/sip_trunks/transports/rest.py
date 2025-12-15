@@ -119,12 +119,8 @@ class SipTrunksRestInterceptor:
     """
 
     def pre_create_sip_trunk(
-        self,
-        request: gcd_sip_trunk.CreateSipTrunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_sip_trunk.CreateSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_sip_trunk.CreateSipTrunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_sip_trunk.CreateSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_sip_trunk
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +128,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_create_sip_trunk(
-        self, response: gcd_sip_trunk.SipTrunk
-    ) -> gcd_sip_trunk.SipTrunk:
+    def post_create_sip_trunk(self, response: gcd_sip_trunk.SipTrunk) -> gcd_sip_trunk.SipTrunk:
         """Post-rpc interceptor for create_sip_trunk
 
         DEPRECATED. Please use the `post_create_sip_trunk_with_metadata`
@@ -148,9 +142,7 @@ class SipTrunksRestInterceptor:
         return response
 
     def post_create_sip_trunk_with_metadata(
-        self,
-        response: gcd_sip_trunk.SipTrunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_sip_trunk.SipTrunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_sip_trunk.SipTrunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_sip_trunk
 
@@ -167,12 +159,8 @@ class SipTrunksRestInterceptor:
         return response, metadata
 
     def pre_delete_sip_trunk(
-        self,
-        request: sip_trunk.DeleteSipTrunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sip_trunk.DeleteSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sip_trunk.DeleteSipTrunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sip_trunk.DeleteSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_sip_trunk
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +169,7 @@ class SipTrunksRestInterceptor:
         return request, metadata
 
     def pre_get_sip_trunk(
-        self,
-        request: sip_trunk.GetSipTrunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sip_trunk.GetSipTrunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sip_trunk.GetSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sip_trunk
 
@@ -206,9 +192,7 @@ class SipTrunksRestInterceptor:
         return response
 
     def post_get_sip_trunk_with_metadata(
-        self,
-        response: sip_trunk.SipTrunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sip_trunk.SipTrunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sip_trunk.SipTrunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_sip_trunk
 
@@ -225,9 +209,7 @@ class SipTrunksRestInterceptor:
         return response, metadata
 
     def pre_list_sip_trunks(
-        self,
-        request: sip_trunk.ListSipTrunksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: sip_trunk.ListSipTrunksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sip_trunk.ListSipTrunksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sip_trunks
 
@@ -236,9 +218,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sip_trunks(
-        self, response: sip_trunk.ListSipTrunksResponse
-    ) -> sip_trunk.ListSipTrunksResponse:
+    def post_list_sip_trunks(self, response: sip_trunk.ListSipTrunksResponse) -> sip_trunk.ListSipTrunksResponse:
         """Post-rpc interceptor for list_sip_trunks
 
         DEPRECATED. Please use the `post_list_sip_trunks_with_metadata`
@@ -252,12 +232,8 @@ class SipTrunksRestInterceptor:
         return response
 
     def post_list_sip_trunks_with_metadata(
-        self,
-        response: sip_trunk.ListSipTrunksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sip_trunk.ListSipTrunksResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: sip_trunk.ListSipTrunksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sip_trunk.ListSipTrunksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sip_trunks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,12 +249,8 @@ class SipTrunksRestInterceptor:
         return response, metadata
 
     def pre_update_sip_trunk(
-        self,
-        request: gcd_sip_trunk.UpdateSipTrunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_sip_trunk.UpdateSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_sip_trunk.UpdateSipTrunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_sip_trunk.UpdateSipTrunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_sip_trunk
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +258,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_update_sip_trunk(
-        self, response: gcd_sip_trunk.SipTrunk
-    ) -> gcd_sip_trunk.SipTrunk:
+    def post_update_sip_trunk(self, response: gcd_sip_trunk.SipTrunk) -> gcd_sip_trunk.SipTrunk:
         """Post-rpc interceptor for update_sip_trunk
 
         DEPRECATED. Please use the `post_update_sip_trunk_with_metadata`
@@ -302,9 +272,7 @@ class SipTrunksRestInterceptor:
         return response
 
     def post_update_sip_trunk_with_metadata(
-        self,
-        response: gcd_sip_trunk.SipTrunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_sip_trunk.SipTrunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_sip_trunk.SipTrunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_sip_trunk
 
@@ -321,12 +289,8 @@ class SipTrunksRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -334,9 +298,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -346,12 +308,8 @@ class SipTrunksRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -359,9 +317,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -371,12 +327,8 @@ class SipTrunksRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -394,12 +346,8 @@ class SipTrunksRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -407,9 +355,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -419,12 +365,8 @@ class SipTrunksRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -432,9 +374,7 @@ class SipTrunksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -524,30 +464,18 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SipTrunksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateSipTrunk(
-        _BaseSipTrunksRestTransport._BaseCreateSipTrunk, SipTrunksRestStub
-    ):
+    class _CreateSipTrunk(_BaseSipTrunksRestTransport._BaseCreateSipTrunk, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.CreateSipTrunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -592,38 +520,18 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_sip_trunk(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_sip_trunk(request, metadata)
+            transcoded_request = _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseCreateSipTrunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -647,13 +555,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._CreateSipTrunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -669,12 +571,8 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             resp = self._interceptor.post_create_sip_trunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_sip_trunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_sip_trunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_sip_trunk.SipTrunk.to_json(response)
                 except:
@@ -695,22 +593,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 )
             return resp
 
-    class _DeleteSipTrunk(
-        _BaseSipTrunksRestTransport._BaseDeleteSipTrunk, SipTrunksRestStub
-    ):
+    class _DeleteSipTrunk(_BaseSipTrunksRestTransport._BaseDeleteSipTrunk, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.DeleteSipTrunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -746,32 +634,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_sip_trunk(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_sip_trunk(request, metadata)
+            transcoded_request = _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseDeleteSipTrunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -795,12 +667,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._DeleteSipTrunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -813,15 +680,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             return hash("SipTrunksRestTransport.GetSipTrunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -865,30 +724,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_http_options()
 
             request, metadata = self._interceptor.pre_get_sip_trunk(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseGetSipTrunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -912,12 +757,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._GetSipTrunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -933,12 +773,8 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             resp = self._interceptor.post_get_sip_trunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sip_trunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sip_trunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sip_trunk.SipTrunk.to_json(response)
                 except:
@@ -959,22 +795,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 )
             return resp
 
-    class _ListSipTrunks(
-        _BaseSipTrunksRestTransport._BaseListSipTrunks, SipTrunksRestStub
-    ):
+    class _ListSipTrunks(_BaseSipTrunksRestTransport._BaseListSipTrunks, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.ListSipTrunks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1016,30 +842,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseListSipTrunks._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseListSipTrunks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sip_trunks(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseListSipTrunks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseListSipTrunks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseListSipTrunks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseListSipTrunks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1063,12 +875,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._ListSipTrunks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1084,12 +891,8 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             resp = self._interceptor.post_list_sip_trunks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sip_trunks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sip_trunks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sip_trunk.ListSipTrunksResponse.to_json(response)
                 except:
@@ -1110,22 +913,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 )
             return resp
 
-    class _UpdateSipTrunk(
-        _BaseSipTrunksRestTransport._BaseUpdateSipTrunk, SipTrunksRestStub
-    ):
+    class _UpdateSipTrunk(_BaseSipTrunksRestTransport._BaseUpdateSipTrunk, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.UpdateSipTrunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1170,38 +963,18 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_sip_trunk(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_sip_trunk(request, metadata)
+            transcoded_request = _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseUpdateSipTrunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1225,13 +998,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._UpdateSipTrunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1247,12 +1014,8 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             resp = self._interceptor.post_update_sip_trunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_sip_trunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_sip_trunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_sip_trunk.SipTrunk.to_json(response)
                 except:
@@ -1274,41 +1037,31 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             return resp
 
     @property
-    def create_sip_trunk(
-        self,
-    ) -> Callable[[gcd_sip_trunk.CreateSipTrunkRequest], gcd_sip_trunk.SipTrunk]:
+    def create_sip_trunk(self) -> Callable[[gcd_sip_trunk.CreateSipTrunkRequest], gcd_sip_trunk.SipTrunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSipTrunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_sip_trunk(
-        self,
-    ) -> Callable[[sip_trunk.DeleteSipTrunkRequest], empty_pb2.Empty]:
+    def delete_sip_trunk(self) -> Callable[[sip_trunk.DeleteSipTrunkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSipTrunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_sip_trunk(
-        self,
-    ) -> Callable[[sip_trunk.GetSipTrunkRequest], sip_trunk.SipTrunk]:
+    def get_sip_trunk(self) -> Callable[[sip_trunk.GetSipTrunkRequest], sip_trunk.SipTrunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSipTrunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sip_trunks(
-        self,
-    ) -> Callable[[sip_trunk.ListSipTrunksRequest], sip_trunk.ListSipTrunksResponse]:
+    def list_sip_trunks(self) -> Callable[[sip_trunk.ListSipTrunksRequest], sip_trunk.ListSipTrunksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSipTrunks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_sip_trunk(
-        self,
-    ) -> Callable[[gcd_sip_trunk.UpdateSipTrunkRequest], gcd_sip_trunk.SipTrunk]:
+    def update_sip_trunk(self) -> Callable[[gcd_sip_trunk.UpdateSipTrunkRequest], gcd_sip_trunk.SipTrunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSipTrunk(self._session, self._host, self._interceptor)  # type: ignore
@@ -1322,15 +1075,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             return hash("SipTrunksRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1368,30 +1113,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1415,12 +1146,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1432,9 +1158,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1459,22 +1183,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSipTrunksRestTransport._BaseListLocations, SipTrunksRestStub
-    ):
+    class _ListLocations(_BaseSipTrunksRestTransport._BaseListLocations, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1512,30 +1226,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1559,12 +1259,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1576,9 +1271,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1603,22 +1296,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSipTrunksRestTransport._BaseCancelOperation, SipTrunksRestStub
-    ):
+    class _CancelOperation(_BaseSipTrunksRestTransport._BaseCancelOperation, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1653,30 +1336,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSipTrunksRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSipTrunksRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1700,12 +1369,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1719,22 +1383,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSipTrunksRestTransport._BaseGetOperation, SipTrunksRestStub
-    ):
+    class _GetOperation(_BaseSipTrunksRestTransport._BaseGetOperation, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1772,30 +1426,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1819,12 +1459,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1836,9 +1471,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1863,22 +1496,12 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSipTrunksRestTransport._BaseListOperations, SipTrunksRestStub
-    ):
+    class _ListOperations(_BaseSipTrunksRestTransport._BaseListOperations, SipTrunksRestStub):
         def __hash__(self):
             return hash("SipTrunksRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1916,30 +1539,16 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSipTrunksRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSipTrunksRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseSipTrunksRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSipTrunksRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSipTrunksRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSipTrunksRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1963,12 +1572,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
 
             # Send the request
             response = SipTrunksRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1980,9 +1584,7 @@ class SipTrunksRestTransport(_BaseSipTrunksRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

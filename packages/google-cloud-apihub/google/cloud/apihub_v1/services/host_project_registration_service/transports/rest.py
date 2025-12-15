@@ -105,13 +105,8 @@ class HostProjectRegistrationServiceRestInterceptor:
     """
 
     def pre_create_host_project_registration(
-        self,
-        request: host_project_registration_service.CreateHostProjectRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.CreateHostProjectRegistrationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: host_project_registration_service.CreateHostProjectRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.CreateHostProjectRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_host_project_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -135,13 +130,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def post_create_host_project_registration_with_metadata(
-        self,
-        response: host_project_registration_service.HostProjectRegistration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.HostProjectRegistration,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: host_project_registration_service.HostProjectRegistration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.HostProjectRegistration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_host_project_registration
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -157,13 +147,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_host_project_registration(
-        self,
-        request: host_project_registration_service.GetHostProjectRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.GetHostProjectRegistrationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: host_project_registration_service.GetHostProjectRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.GetHostProjectRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_host_project_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -187,13 +172,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def post_get_host_project_registration_with_metadata(
-        self,
-        response: host_project_registration_service.HostProjectRegistration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.HostProjectRegistration,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: host_project_registration_service.HostProjectRegistration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.HostProjectRegistration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_host_project_registration
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -209,13 +189,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_host_project_registrations(
-        self,
-        request: host_project_registration_service.ListHostProjectRegistrationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.ListHostProjectRegistrationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: host_project_registration_service.ListHostProjectRegistrationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.ListHostProjectRegistrationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_host_project_registrations
 
         Override in a subclass to manipulate the request or metadata
@@ -224,8 +199,7 @@ class HostProjectRegistrationServiceRestInterceptor:
         return request, metadata
 
     def post_list_host_project_registrations(
-        self,
-        response: host_project_registration_service.ListHostProjectRegistrationsResponse,
+        self, response: host_project_registration_service.ListHostProjectRegistrationsResponse
     ) -> host_project_registration_service.ListHostProjectRegistrationsResponse:
         """Post-rpc interceptor for list_host_project_registrations
 
@@ -240,13 +214,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def post_list_host_project_registrations_with_metadata(
-        self,
-        response: host_project_registration_service.ListHostProjectRegistrationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        host_project_registration_service.ListHostProjectRegistrationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: host_project_registration_service.ListHostProjectRegistrationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[host_project_registration_service.ListHostProjectRegistrationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_host_project_registrations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -262,12 +231,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -275,9 +240,7 @@ class HostProjectRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -287,12 +250,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -300,9 +259,7 @@ class HostProjectRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -312,12 +269,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -335,12 +288,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -358,12 +307,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -371,9 +316,7 @@ class HostProjectRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -383,12 +326,8 @@ class HostProjectRegistrationServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -396,9 +335,7 @@ class HostProjectRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -415,9 +352,7 @@ class HostProjectRegistrationServiceRestStub:
     _interceptor: HostProjectRegistrationServiceRestInterceptor
 
 
-class HostProjectRegistrationServiceRestTransport(
-    _BaseHostProjectRegistrationServiceRestTransport
-):
+class HostProjectRegistrationServiceRestTransport(_BaseHostProjectRegistrationServiceRestTransport):
     """REST backend synchronous transport for HostProjectRegistrationService.
 
     This service is used for managing the host project
@@ -490,35 +425,20 @@ class HostProjectRegistrationServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or HostProjectRegistrationServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or HostProjectRegistrationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreateHostProjectRegistration(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration,
-        HostProjectRegistrationServiceRestStub,
+        _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration, HostProjectRegistrationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "HostProjectRegistrationServiceRestTransport.CreateHostProjectRegistration"
-            )
+            return hash("HostProjectRegistrationServiceRestTransport.CreateHostProjectRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -571,32 +491,22 @@ class HostProjectRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_host_project_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_host_project_registration(request, metadata)
             transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseCreateHostProjectRegistration._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -620,13 +530,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._CreateHostProjectRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -642,19 +546,10 @@ class HostProjectRegistrationServiceRestTransport(
 
             resp = self._interceptor.post_create_host_project_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_host_project_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_host_project_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = host_project_registration_service.HostProjectRegistration.to_json(
-                        response
-                    )
+                    response_payload = host_project_registration_service.HostProjectRegistration.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -674,24 +569,13 @@ class HostProjectRegistrationServiceRestTransport(
             return resp
 
     class _GetHostProjectRegistration(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration,
-        HostProjectRegistrationServiceRestStub,
+        _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration, HostProjectRegistrationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "HostProjectRegistrationServiceRestTransport.GetHostProjectRegistration"
-            )
+            return hash("HostProjectRegistrationServiceRestTransport.GetHostProjectRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -743,28 +627,18 @@ class HostProjectRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_host_project_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_host_project_registration(request, metadata)
             transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetHostProjectRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -788,12 +662,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._GetHostProjectRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -809,19 +678,10 @@ class HostProjectRegistrationServiceRestTransport(
 
             resp = self._interceptor.post_get_host_project_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_host_project_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_host_project_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = host_project_registration_service.HostProjectRegistration.to_json(
-                        response
-                    )
+                    response_payload = host_project_registration_service.HostProjectRegistration.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -841,24 +701,13 @@ class HostProjectRegistrationServiceRestTransport(
             return resp
 
     class _ListHostProjectRegistrations(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseListHostProjectRegistrations,
-        HostProjectRegistrationServiceRestStub,
+        _BaseHostProjectRegistrationServiceRestTransport._BaseListHostProjectRegistrations, HostProjectRegistrationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "HostProjectRegistrationServiceRestTransport.ListHostProjectRegistrations"
-            )
+            return hash("HostProjectRegistrationServiceRestTransport.ListHostProjectRegistrations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -903,13 +752,9 @@ class HostProjectRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseListHostProjectRegistrations._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseListHostProjectRegistrations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_host_project_registrations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_host_project_registrations(request, metadata)
             transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseListHostProjectRegistrations._get_transcoded_request(
                 http_options, request
             )
@@ -919,12 +764,8 @@ class HostProjectRegistrationServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -948,12 +789,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._ListHostProjectRegistrations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -962,30 +798,17 @@ class HostProjectRegistrationServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                host_project_registration_service.ListHostProjectRegistrationsResponse()
-            )
-            pb_resp = host_project_registration_service.ListHostProjectRegistrationsResponse.pb(
-                resp
-            )
+            resp = host_project_registration_service.ListHostProjectRegistrationsResponse()
+            pb_resp = host_project_registration_service.ListHostProjectRegistrationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_host_project_registrations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_host_project_registrations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_host_project_registrations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = host_project_registration_service.ListHostProjectRegistrationsResponse.to_json(
-                        response
-                    )
+                    response_payload = host_project_registration_service.ListHostProjectRegistrationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1008,8 +831,7 @@ class HostProjectRegistrationServiceRestTransport(
     def create_host_project_registration(
         self,
     ) -> Callable[
-        [host_project_registration_service.CreateHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
+        [host_project_registration_service.CreateHostProjectRegistrationRequest], host_project_registration_service.HostProjectRegistration
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1018,10 +840,7 @@ class HostProjectRegistrationServiceRestTransport(
     @property
     def get_host_project_registration(
         self,
-    ) -> Callable[
-        [host_project_registration_service.GetHostProjectRegistrationRequest],
-        host_project_registration_service.HostProjectRegistration,
-    ]:
+    ) -> Callable[[host_project_registration_service.GetHostProjectRegistrationRequest], host_project_registration_service.HostProjectRegistration]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHostProjectRegistration(self._session, self._host, self._interceptor)  # type: ignore
@@ -1041,23 +860,12 @@ class HostProjectRegistrationServiceRestTransport(
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _GetLocation(_BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1095,26 +903,16 @@ class HostProjectRegistrationServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1137,15 +935,8 @@ class HostProjectRegistrationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                HostProjectRegistrationServiceRestTransport._GetLocation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = HostProjectRegistrationServiceRestTransport._GetLocation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1157,9 +948,7 @@ class HostProjectRegistrationServiceRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1184,23 +973,12 @@ class HostProjectRegistrationServiceRestTransport(
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _ListLocations(_BaseHostProjectRegistrationServiceRestTransport._BaseListLocations, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1238,26 +1016,16 @@ class HostProjectRegistrationServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1281,12 +1049,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1298,9 +1061,7 @@ class HostProjectRegistrationServiceRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1325,23 +1086,12 @@ class HostProjectRegistrationServiceRestTransport(
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _CancelOperation(_BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1377,32 +1127,18 @@ class HostProjectRegistrationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1426,13 +1162,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1446,23 +1176,12 @@ class HostProjectRegistrationServiceRestTransport(
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1497,28 +1216,16 @@ class HostProjectRegistrationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1542,12 +1249,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1561,23 +1263,12 @@ class HostProjectRegistrationServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _GetOperation(_BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1615,26 +1306,16 @@ class HostProjectRegistrationServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1657,15 +1338,8 @@ class HostProjectRegistrationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                HostProjectRegistrationServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = HostProjectRegistrationServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1677,9 +1351,7 @@ class HostProjectRegistrationServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1704,23 +1376,12 @@ class HostProjectRegistrationServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations,
-        HostProjectRegistrationServiceRestStub,
-    ):
+    class _ListOperations(_BaseHostProjectRegistrationServiceRestTransport._BaseListOperations, HostProjectRegistrationServiceRestStub):
         def __hash__(self):
             return hash("HostProjectRegistrationServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1758,26 +1419,16 @@ class HostProjectRegistrationServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseHostProjectRegistrationServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1801,12 +1452,7 @@ class HostProjectRegistrationServiceRestTransport(
 
             # Send the request
             response = HostProjectRegistrationServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1818,9 +1464,7 @@ class HostProjectRegistrationServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

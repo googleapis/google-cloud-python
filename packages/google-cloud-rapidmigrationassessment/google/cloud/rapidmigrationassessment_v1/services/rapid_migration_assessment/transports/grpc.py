@@ -30,10 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.rapidmigrationassessment_v1.types import (
-    api_entities,
-    rapidmigrationassessment,
-)
+from google.cloud.rapidmigrationassessment_v1.types import api_entities, rapidmigrationassessment
 
 from .base import DEFAULT_CLIENT_INFO, RapidMigrationAssessmentTransport
 
@@ -49,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +210,14 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +251,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,19 +318,13 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.CreateCollectorRequest], operations_pb2.Operation
-    ]:
+    def create_collector(self) -> Callable[[rapidmigrationassessment.CreateCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the create collector method over gRPC.
 
         Create a Collector to manage the on-prem appliance
@@ -373,11 +349,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["create_collector"]
 
     @property
-    def create_annotation(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.CreateAnnotationRequest], operations_pb2.Operation
-    ]:
+    def create_annotation(self) -> Callable[[rapidmigrationassessment.CreateAnnotationRequest], operations_pb2.Operation]:
         r"""Return a callable for the create annotation method over gRPC.
 
         Creates an Annotation
@@ -401,11 +373,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["create_annotation"]
 
     @property
-    def get_annotation(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.GetAnnotationRequest], api_entities.Annotation
-    ]:
+    def get_annotation(self) -> Callable[[rapidmigrationassessment.GetAnnotationRequest], api_entities.Annotation]:
         r"""Return a callable for the get annotation method over gRPC.
 
         Gets details of a single Annotation.
@@ -429,12 +397,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["get_annotation"]
 
     @property
-    def list_collectors(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.ListCollectorsRequest],
-        rapidmigrationassessment.ListCollectorsResponse,
-    ]:
+    def list_collectors(self) -> Callable[[rapidmigrationassessment.ListCollectorsRequest], rapidmigrationassessment.ListCollectorsResponse]:
         r"""Return a callable for the list collectors method over gRPC.
 
         Lists Collectors in a given project and location.
@@ -458,11 +421,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["list_collectors"]
 
     @property
-    def get_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.GetCollectorRequest], api_entities.Collector
-    ]:
+    def get_collector(self) -> Callable[[rapidmigrationassessment.GetCollectorRequest], api_entities.Collector]:
         r"""Return a callable for the get collector method over gRPC.
 
         Gets details of a single Collector.
@@ -486,11 +445,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["get_collector"]
 
     @property
-    def update_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.UpdateCollectorRequest], operations_pb2.Operation
-    ]:
+    def update_collector(self) -> Callable[[rapidmigrationassessment.UpdateCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the update collector method over gRPC.
 
         Updates the parameters of a single Collector.
@@ -514,11 +469,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["update_collector"]
 
     @property
-    def delete_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.DeleteCollectorRequest], operations_pb2.Operation
-    ]:
+    def delete_collector(self) -> Callable[[rapidmigrationassessment.DeleteCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete collector method over gRPC.
 
         Deletes a single Collector - changes state of
@@ -544,11 +495,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["delete_collector"]
 
     @property
-    def resume_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.ResumeCollectorRequest], operations_pb2.Operation
-    ]:
+    def resume_collector(self) -> Callable[[rapidmigrationassessment.ResumeCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the resume collector method over gRPC.
 
         Resumes the given collector.
@@ -572,11 +519,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["resume_collector"]
 
     @property
-    def register_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.RegisterCollectorRequest], operations_pb2.Operation
-    ]:
+    def register_collector(self) -> Callable[[rapidmigrationassessment.RegisterCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the register collector method over gRPC.
 
         Registers the given collector.
@@ -600,11 +543,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
         return self._stubs["register_collector"]
 
     @property
-    def pause_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.PauseCollectorRequest], operations_pb2.Operation
-    ]:
+    def pause_collector(self) -> Callable[[rapidmigrationassessment.PauseCollectorRequest], operations_pb2.Operation]:
         r"""Return a callable for the pause collector method over gRPC.
 
         Pauses the given collector.
@@ -684,9 +623,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -703,9 +640,7 @@ class RapidMigrationAssessmentGrpcTransport(RapidMigrationAssessmentTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

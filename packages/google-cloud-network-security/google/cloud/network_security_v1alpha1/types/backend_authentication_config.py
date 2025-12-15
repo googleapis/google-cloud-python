@@ -222,9 +222,7 @@ class ListBackendAuthenticationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backend_authentication_configs: MutableSequence[
-        "BackendAuthenticationConfig"
-    ] = proto.RepeatedField(
+    backend_authentication_configs: MutableSequence["BackendAuthenticationConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BackendAuthenticationConfig",

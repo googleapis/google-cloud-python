@@ -572,9 +572,7 @@ class AlertPolicy(proto.Message):
                 proto.STRING,
                 number=9,
             )
-            denominator_aggregations: MutableSequence[
-                common.Aggregation
-            ] = proto.RepeatedField(
+            denominator_aggregations: MutableSequence[common.Aggregation] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=10,
                 message=common.Aggregation,
@@ -603,12 +601,10 @@ class AlertPolicy(proto.Message):
                 number=7,
                 message="AlertPolicy.Condition.Trigger",
             )
-            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=11,
-                    enum="AlertPolicy.Condition.EvaluationMissingData",
-                )
+            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = proto.Field(
+                proto.ENUM,
+                number=11,
+                enum="AlertPolicy.Condition.EvaluationMissingData",
             )
 
         class MetricAbsence(proto.Message):
@@ -767,12 +763,10 @@ class AlertPolicy(proto.Message):
                 number=3,
                 message="AlertPolicy.Condition.Trigger",
             )
-            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=4,
-                    enum="AlertPolicy.Condition.EvaluationMissingData",
-                )
+            evaluation_missing_data: "AlertPolicy.Condition.EvaluationMissingData" = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="AlertPolicy.Condition.EvaluationMissingData",
             )
 
         class PrometheusQueryLanguageCondition(proto.Message):
@@ -1109,21 +1103,17 @@ class AlertPolicy(proto.Message):
                 oneof="schedule",
                 message="AlertPolicy.Condition.SqlCondition.Daily",
             )
-            row_count_test: "AlertPolicy.Condition.SqlCondition.RowCountTest" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=5,
-                    oneof="evaluate",
-                    message="AlertPolicy.Condition.SqlCondition.RowCountTest",
-                )
+            row_count_test: "AlertPolicy.Condition.SqlCondition.RowCountTest" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                oneof="evaluate",
+                message="AlertPolicy.Condition.SqlCondition.RowCountTest",
             )
-            boolean_test: "AlertPolicy.Condition.SqlCondition.BooleanTest" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=6,
-                    oneof="evaluate",
-                    message="AlertPolicy.Condition.SqlCondition.BooleanTest",
-                )
+            boolean_test: "AlertPolicy.Condition.SqlCondition.BooleanTest" = proto.Field(
+                proto.MESSAGE,
+                number=6,
+                oneof="evaluate",
+                message="AlertPolicy.Condition.SqlCondition.BooleanTest",
             )
 
         name: str = proto.Field(
@@ -1256,16 +1246,12 @@ class AlertPolicy(proto.Message):
                 message=duration_pb2.Duration,
             )
 
-        notification_rate_limit: "AlertPolicy.AlertStrategy.NotificationRateLimit" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="AlertPolicy.AlertStrategy.NotificationRateLimit",
-            )
+        notification_rate_limit: "AlertPolicy.AlertStrategy.NotificationRateLimit" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="AlertPolicy.AlertStrategy.NotificationRateLimit",
         )
-        notification_prompts: MutableSequence[
-            "AlertPolicy.AlertStrategy.NotificationPrompt"
-        ] = proto.RepeatedField(
+        notification_prompts: MutableSequence["AlertPolicy.AlertStrategy.NotificationPrompt"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="AlertPolicy.AlertStrategy.NotificationPrompt",
@@ -1275,9 +1261,7 @@ class AlertPolicy(proto.Message):
             number=3,
             message=duration_pb2.Duration,
         )
-        notification_channel_strategy: MutableSequence[
-            "AlertPolicy.AlertStrategy.NotificationChannelStrategy"
-        ] = proto.RepeatedField(
+        notification_channel_strategy: MutableSequence["AlertPolicy.AlertStrategy.NotificationChannelStrategy"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="AlertPolicy.AlertStrategy.NotificationChannelStrategy",

@@ -123,9 +123,7 @@ class CommonAddOnManifest(proto.Message):
         number=6,
         message=extension_point.HomepageExtensionPoint,
     )
-    universal_actions: MutableSequence[
-        extension_point.UniversalActionExtensionPoint
-    ] = proto.RepeatedField(
+    universal_actions: MutableSequence[extension_point.UniversalActionExtensionPoint] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=extension_point.UniversalActionExtensionPoint,

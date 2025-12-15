@@ -21,9 +21,7 @@ from .grpc import PolicyTagManagerSerializationGrpcTransport
 from .grpc_asyncio import PolicyTagManagerSerializationGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PolicyTagManagerSerializationTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PolicyTagManagerSerializationTransport]]
 _transport_registry["grpc"] = PolicyTagManagerSerializationGrpcTransport
 _transport_registry["grpc_asyncio"] = PolicyTagManagerSerializationGrpcAsyncIOTransport
 

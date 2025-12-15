@@ -135,12 +135,8 @@ class ModelServiceRestInterceptor:
     """
 
     def pre_create_tuned_model(
-        self,
-        request: model_service.CreateTunedModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.CreateTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.CreateTunedModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.CreateTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tuned_model
 
         Override in a subclass to manipulate the request or metadata
@@ -148,9 +144,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_tuned_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_tuned_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tuned_model
 
         DEPRECATED. Please use the `post_create_tuned_model_with_metadata`
@@ -164,9 +158,7 @@ class ModelServiceRestInterceptor:
         return response
 
     def post_create_tuned_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tuned_model
 
@@ -183,12 +175,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_tuned_model(
-        self,
-        request: model_service.DeleteTunedModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.DeleteTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.DeleteTunedModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.DeleteTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tuned_model
 
         Override in a subclass to manipulate the request or metadata
@@ -197,9 +185,7 @@ class ModelServiceRestInterceptor:
         return request, metadata
 
     def pre_get_model(
-        self,
-        request: model_service.GetModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: model_service.GetModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[model_service.GetModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_model
 
@@ -239,12 +225,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_get_tuned_model(
-        self,
-        request: model_service.GetTunedModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.GetTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.GetTunedModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.GetTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tuned_model
 
         Override in a subclass to manipulate the request or metadata
@@ -252,9 +234,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_tuned_model(
-        self, response: tuned_model.TunedModel
-    ) -> tuned_model.TunedModel:
+    def post_get_tuned_model(self, response: tuned_model.TunedModel) -> tuned_model.TunedModel:
         """Post-rpc interceptor for get_tuned_model
 
         DEPRECATED. Please use the `post_get_tuned_model_with_metadata`
@@ -268,9 +248,7 @@ class ModelServiceRestInterceptor:
         return response
 
     def post_get_tuned_model_with_metadata(
-        self,
-        response: tuned_model.TunedModel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tuned_model.TunedModel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tuned_model.TunedModel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_tuned_model
 
@@ -287,12 +265,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_list_models(
-        self,
-        request: model_service.ListModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.ListModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.ListModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.ListModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_models
 
         Override in a subclass to manipulate the request or metadata
@@ -300,9 +274,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_models(
-        self, response: model_service.ListModelsResponse
-    ) -> model_service.ListModelsResponse:
+    def post_list_models(self, response: model_service.ListModelsResponse) -> model_service.ListModelsResponse:
         """Post-rpc interceptor for list_models
 
         DEPRECATED. Please use the `post_list_models_with_metadata`
@@ -316,12 +288,8 @@ class ModelServiceRestInterceptor:
         return response
 
     def post_list_models_with_metadata(
-        self,
-        response: model_service.ListModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.ListModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: model_service.ListModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.ListModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -337,12 +305,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tuned_models(
-        self,
-        request: model_service.ListTunedModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.ListTunedModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.ListTunedModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.ListTunedModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tuned_models
 
         Override in a subclass to manipulate the request or metadata
@@ -350,9 +314,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tuned_models(
-        self, response: model_service.ListTunedModelsResponse
-    ) -> model_service.ListTunedModelsResponse:
+    def post_list_tuned_models(self, response: model_service.ListTunedModelsResponse) -> model_service.ListTunedModelsResponse:
         """Post-rpc interceptor for list_tuned_models
 
         DEPRECATED. Please use the `post_list_tuned_models_with_metadata`
@@ -366,12 +328,8 @@ class ModelServiceRestInterceptor:
         return response
 
     def post_list_tuned_models_with_metadata(
-        self,
-        response: model_service.ListTunedModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.ListTunedModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: model_service.ListTunedModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.ListTunedModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tuned_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -387,12 +345,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_update_tuned_model(
-        self,
-        request: model_service.UpdateTunedModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        model_service.UpdateTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: model_service.UpdateTunedModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[model_service.UpdateTunedModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tuned_model
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +354,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_tuned_model(
-        self, response: gag_tuned_model.TunedModel
-    ) -> gag_tuned_model.TunedModel:
+    def post_update_tuned_model(self, response: gag_tuned_model.TunedModel) -> gag_tuned_model.TunedModel:
         """Post-rpc interceptor for update_tuned_model
 
         DEPRECATED. Please use the `post_update_tuned_model_with_metadata`
@@ -416,9 +368,7 @@ class ModelServiceRestInterceptor:
         return response
 
     def post_update_tuned_model_with_metadata(
-        self,
-        response: gag_tuned_model.TunedModel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gag_tuned_model.TunedModel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gag_tuned_model.TunedModel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_tuned_model
 
@@ -435,12 +385,8 @@ class ModelServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -448,9 +394,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -460,12 +404,8 @@ class ModelServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -473,9 +413,7 @@ class ModelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -565,9 +503,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -619,29 +555,17 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateTunedModel(
-        _BaseModelServiceRestTransport._BaseCreateTunedModel, ModelServiceRestStub
-    ):
+    class _CreateTunedModel(_BaseModelServiceRestTransport._BaseCreateTunedModel, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.CreateTunedModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -684,32 +608,18 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseCreateTunedModel._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_tuned_model(
-                request, metadata
-            )
-            transcoded_request = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_tuned_model(request, metadata)
+            transcoded_request = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_transcoded_request(http_options, request)
 
-            body = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseCreateTunedModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -733,13 +643,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._CreateTunedModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -753,12 +657,8 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_create_tuned_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tuned_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tuned_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -779,22 +679,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 )
             return resp
 
-    class _DeleteTunedModel(
-        _BaseModelServiceRestTransport._BaseDeleteTunedModel, ModelServiceRestStub
-    ):
+    class _DeleteTunedModel(_BaseModelServiceRestTransport._BaseDeleteTunedModel, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.DeleteTunedModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -829,28 +719,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_tuned_model(
-                request, metadata
-            )
-            transcoded_request = _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_tuned_model(request, metadata)
+            transcoded_request = _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseDeleteTunedModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -874,12 +752,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._DeleteTunedModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -892,15 +765,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             return hash("ModelServiceRestTransport.GetModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -942,30 +807,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseGetModel._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseGetModel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_model(request, metadata)
-            transcoded_request = (
-                _BaseModelServiceRestTransport._BaseGetModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelServiceRestTransport._BaseGetModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelServiceRestTransport._BaseGetModel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelServiceRestTransport._BaseGetModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -989,12 +840,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._GetModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1010,12 +856,8 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_get_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = model.Model.to_json(response)
                 except:
@@ -1036,22 +878,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 )
             return resp
 
-    class _GetTunedModel(
-        _BaseModelServiceRestTransport._BaseGetTunedModel, ModelServiceRestStub
-    ):
+    class _GetTunedModel(_BaseModelServiceRestTransport._BaseGetTunedModel, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.GetTunedModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1093,26 +925,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseGetTunedModel._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseGetTunedModel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tuned_model(request, metadata)
-            transcoded_request = _BaseModelServiceRestTransport._BaseGetTunedModel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelServiceRestTransport._BaseGetTunedModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseGetTunedModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseGetTunedModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1136,12 +958,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._GetTunedModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1157,12 +974,8 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_get_tuned_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tuned_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tuned_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tuned_model.TunedModel.to_json(response)
                 except:
@@ -1183,22 +996,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 )
             return resp
 
-    class _ListModels(
-        _BaseModelServiceRestTransport._BaseListModels, ModelServiceRestStub
-    ):
+    class _ListModels(_BaseModelServiceRestTransport._BaseListModels, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.ListModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1239,30 +1042,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseListModels._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseListModels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_models(request, metadata)
-            transcoded_request = (
-                _BaseModelServiceRestTransport._BaseListModels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseModelServiceRestTransport._BaseListModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelServiceRestTransport._BaseListModels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelServiceRestTransport._BaseListModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1286,12 +1075,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._ListModels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1307,16 +1091,10 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_list_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = model_service.ListModelsResponse.to_json(
-                        response
-                    )
+                    response_payload = model_service.ListModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1335,22 +1113,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 )
             return resp
 
-    class _ListTunedModels(
-        _BaseModelServiceRestTransport._BaseListTunedModels, ModelServiceRestStub
-    ):
+    class _ListTunedModels(_BaseModelServiceRestTransport._BaseListTunedModels, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.ListTunedModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1391,28 +1159,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseListTunedModels._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseListTunedModels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_tuned_models(
-                request, metadata
-            )
-            transcoded_request = _BaseModelServiceRestTransport._BaseListTunedModels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_tuned_models(request, metadata)
+            transcoded_request = _BaseModelServiceRestTransport._BaseListTunedModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseListTunedModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseListTunedModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1436,12 +1192,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._ListTunedModels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1457,16 +1208,10 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_list_tuned_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tuned_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tuned_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = model_service.ListTunedModelsResponse.to_json(
-                        response
-                    )
+                    response_payload = model_service.ListTunedModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1485,22 +1230,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTunedModel(
-        _BaseModelServiceRestTransport._BaseUpdateTunedModel, ModelServiceRestStub
-    ):
+    class _UpdateTunedModel(_BaseModelServiceRestTransport._BaseUpdateTunedModel, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.UpdateTunedModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1542,32 +1277,18 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_tuned_model(
-                request, metadata
-            )
-            transcoded_request = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_tuned_model(request, metadata)
+            transcoded_request = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_transcoded_request(http_options, request)
 
-            body = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseUpdateTunedModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1591,13 +1312,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._UpdateTunedModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1613,12 +1328,8 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             resp = self._interceptor.post_update_tuned_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_tuned_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_tuned_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gag_tuned_model.TunedModel.to_json(response)
                 except:
@@ -1640,17 +1351,13 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             return resp
 
     @property
-    def create_tuned_model(
-        self,
-    ) -> Callable[[model_service.CreateTunedModelRequest], operations_pb2.Operation]:
+    def create_tuned_model(self) -> Callable[[model_service.CreateTunedModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTunedModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tuned_model(
-        self,
-    ) -> Callable[[model_service.DeleteTunedModelRequest], empty_pb2.Empty]:
+    def delete_tuned_model(self) -> Callable[[model_service.DeleteTunedModelRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTunedModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -1662,35 +1369,25 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
         return self._GetModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_tuned_model(
-        self,
-    ) -> Callable[[model_service.GetTunedModelRequest], tuned_model.TunedModel]:
+    def get_tuned_model(self) -> Callable[[model_service.GetTunedModelRequest], tuned_model.TunedModel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTunedModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_models(
-        self,
-    ) -> Callable[[model_service.ListModelsRequest], model_service.ListModelsResponse]:
+    def list_models(self) -> Callable[[model_service.ListModelsRequest], model_service.ListModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tuned_models(
-        self,
-    ) -> Callable[
-        [model_service.ListTunedModelsRequest], model_service.ListTunedModelsResponse
-    ]:
+    def list_tuned_models(self) -> Callable[[model_service.ListTunedModelsRequest], model_service.ListTunedModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTunedModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_tuned_model(
-        self,
-    ) -> Callable[[model_service.UpdateTunedModelRequest], gag_tuned_model.TunedModel]:
+    def update_tuned_model(self) -> Callable[[model_service.UpdateTunedModelRequest], gag_tuned_model.TunedModel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTunedModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -1699,22 +1396,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseModelServiceRestTransport._BaseGetOperation, ModelServiceRestStub
-    ):
+    class _GetOperation(_BaseModelServiceRestTransport._BaseGetOperation, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1752,28 +1439,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseModelServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseModelServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseModelServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1797,12 +1472,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1814,9 +1484,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1841,22 +1509,12 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseModelServiceRestTransport._BaseListOperations, ModelServiceRestStub
-    ):
+    class _ListOperations(_BaseModelServiceRestTransport._BaseListOperations, ModelServiceRestStub):
         def __hash__(self):
             return hash("ModelServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1894,26 +1552,16 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseModelServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseModelServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseModelServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseModelServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseModelServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseModelServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1937,12 +1585,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
 
             # Send the request
             response = ModelServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1954,9 +1597,7 @@ class ModelServiceRestTransport(_BaseModelServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

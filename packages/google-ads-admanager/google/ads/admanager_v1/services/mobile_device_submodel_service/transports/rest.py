@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    mobile_device_submodel_messages,
-    mobile_device_submodel_service,
-)
+from google.ads.admanager_v1.types import mobile_device_submodel_messages, mobile_device_submodel_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseMobileDeviceSubmodelServiceRestTransport
@@ -99,13 +96,8 @@ class MobileDeviceSubmodelServiceRestInterceptor:
     """
 
     def pre_get_mobile_device_submodel(
-        self,
-        request: mobile_device_submodel_service.GetMobileDeviceSubmodelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mobile_device_submodel_service.GetMobileDeviceSubmodelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mobile_device_submodel_service.GetMobileDeviceSubmodelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mobile_device_submodel_service.GetMobileDeviceSubmodelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_mobile_device_submodel
 
         Override in a subclass to manipulate the request or metadata
@@ -129,13 +121,8 @@ class MobileDeviceSubmodelServiceRestInterceptor:
         return response
 
     def post_get_mobile_device_submodel_with_metadata(
-        self,
-        response: mobile_device_submodel_messages.MobileDeviceSubmodel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mobile_device_submodel_messages.MobileDeviceSubmodel,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mobile_device_submodel_messages.MobileDeviceSubmodel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mobile_device_submodel_messages.MobileDeviceSubmodel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_mobile_device_submodel
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +138,8 @@ class MobileDeviceSubmodelServiceRestInterceptor:
         return response, metadata
 
     def pre_list_mobile_device_submodels(
-        self,
-        request: mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_mobile_device_submodels
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +163,8 @@ class MobileDeviceSubmodelServiceRestInterceptor:
         return response
 
     def post_list_mobile_device_submodels_with_metadata(
-        self,
-        response: mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_mobile_device_submodels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +180,8 @@ class MobileDeviceSubmodelServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +189,7 @@ class MobileDeviceSubmodelServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -235,9 +206,7 @@ class MobileDeviceSubmodelServiceRestStub:
     _interceptor: MobileDeviceSubmodelServiceRestInterceptor
 
 
-class MobileDeviceSubmodelServiceRestTransport(
-    _BaseMobileDeviceSubmodelServiceRestTransport
-):
+class MobileDeviceSubmodelServiceRestTransport(_BaseMobileDeviceSubmodelServiceRestTransport):
     """REST backend synchronous transport for MobileDeviceSubmodelService.
 
     Provides methods for handling ``MobileDeviceSubmodel`` objects.
@@ -309,33 +278,18 @@ class MobileDeviceSubmodelServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MobileDeviceSubmodelServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetMobileDeviceSubmodel(
-        _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel,
-        MobileDeviceSubmodelServiceRestStub,
-    ):
+    class _GetMobileDeviceSubmodel(_BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel, MobileDeviceSubmodelServiceRestStub):
         def __hash__(self):
-            return hash(
-                "MobileDeviceSubmodelServiceRestTransport.GetMobileDeviceSubmodel"
-            )
+            return hash("MobileDeviceSubmodelServiceRestTransport.GetMobileDeviceSubmodel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -375,28 +329,18 @@ class MobileDeviceSubmodelServiceRestTransport(
                         Represents a mobile device submodel.
             """
 
-            http_options = (
-                _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel._get_http_options()
-            )
+            http_options = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_mobile_device_submodel(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_mobile_device_submodel(request, metadata)
             transcoded_request = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetMobileDeviceSubmodel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -420,12 +364,7 @@ class MobileDeviceSubmodelServiceRestTransport(
 
             # Send the request
             response = MobileDeviceSubmodelServiceRestTransport._GetMobileDeviceSubmodel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -441,18 +380,10 @@ class MobileDeviceSubmodelServiceRestTransport(
 
             resp = self._interceptor.post_get_mobile_device_submodel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_mobile_device_submodel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_mobile_device_submodel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        mobile_device_submodel_messages.MobileDeviceSubmodel.to_json(
-                            response
-                        )
-                    )
+                    response_payload = mobile_device_submodel_messages.MobileDeviceSubmodel.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -472,24 +403,13 @@ class MobileDeviceSubmodelServiceRestTransport(
             return resp
 
     class _ListMobileDeviceSubmodels(
-        _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels,
-        MobileDeviceSubmodelServiceRestStub,
+        _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels, MobileDeviceSubmodelServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "MobileDeviceSubmodelServiceRestTransport.ListMobileDeviceSubmodels"
-            )
+            return hash("MobileDeviceSubmodelServiceRestTransport.ListMobileDeviceSubmodels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -531,28 +451,18 @@ class MobileDeviceSubmodelServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels._get_http_options()
-            )
+            http_options = _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_mobile_device_submodels(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_mobile_device_submodels(request, metadata)
             transcoded_request = _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseListMobileDeviceSubmodels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -576,12 +486,7 @@ class MobileDeviceSubmodelServiceRestTransport(
 
             # Send the request
             response = MobileDeviceSubmodelServiceRestTransport._ListMobileDeviceSubmodels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,26 +496,16 @@ class MobileDeviceSubmodelServiceRestTransport(
 
             # Return the response
             resp = mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse()
-            pb_resp = (
-                mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_mobile_device_submodels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_mobile_device_submodels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_mobile_device_submodels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse.to_json(
-                        response
-                    )
+                    response_payload = mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -632,10 +527,7 @@ class MobileDeviceSubmodelServiceRestTransport(
     @property
     def get_mobile_device_submodel(
         self,
-    ) -> Callable[
-        [mobile_device_submodel_service.GetMobileDeviceSubmodelRequest],
-        mobile_device_submodel_messages.MobileDeviceSubmodel,
-    ]:
+    ) -> Callable[[mobile_device_submodel_service.GetMobileDeviceSubmodelRequest], mobile_device_submodel_messages.MobileDeviceSubmodel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMobileDeviceSubmodel(self._session, self._host, self._interceptor)  # type: ignore
@@ -644,8 +536,7 @@ class MobileDeviceSubmodelServiceRestTransport(
     def list_mobile_device_submodels(
         self,
     ) -> Callable[
-        [mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest],
-        mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse,
+        [mobile_device_submodel_service.ListMobileDeviceSubmodelsRequest], mobile_device_submodel_service.ListMobileDeviceSubmodelsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -655,23 +546,12 @@ class MobileDeviceSubmodelServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation,
-        MobileDeviceSubmodelServiceRestStub,
-    ):
+    class _GetOperation(_BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation, MobileDeviceSubmodelServiceRestStub):
         def __hash__(self):
             return hash("MobileDeviceSubmodelServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -709,26 +589,16 @@ class MobileDeviceSubmodelServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMobileDeviceSubmodelServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -751,15 +621,8 @@ class MobileDeviceSubmodelServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                MobileDeviceSubmodelServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = MobileDeviceSubmodelServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -771,9 +634,7 @@ class MobileDeviceSubmodelServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

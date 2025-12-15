@@ -18,9 +18,7 @@ from google.cloud.edgenetwork import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.edgenetwork_v1.services.edge_network.async_client import (
-    EdgeNetworkAsyncClient,
-)
+from google.cloud.edgenetwork_v1.services.edge_network.async_client import EdgeNetworkAsyncClient
 from google.cloud.edgenetwork_v1.services.edge_network.client import EdgeNetworkClient
 from google.cloud.edgenetwork_v1.types.resources import (
     Interconnect,

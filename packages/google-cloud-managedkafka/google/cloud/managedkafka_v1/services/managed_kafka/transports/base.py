@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.managedkafka_v1 import gapic_version as package_version
 from google.cloud.managedkafka_v1.types import managed_kafka, resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class ManagedKafkaTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -344,97 +334,45 @@ class ManagedKafkaTransport(abc.ABC):
     @property
     def list_clusters(
         self,
-    ) -> Callable[
-        [managed_kafka.ListClustersRequest],
-        Union[
-            managed_kafka.ListClustersResponse,
-            Awaitable[managed_kafka.ListClustersResponse],
-        ],
-    ]:
+    ) -> Callable[[managed_kafka.ListClustersRequest], Union[managed_kafka.ListClustersResponse, Awaitable[managed_kafka.ListClustersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka.GetClusterRequest],
-        Union[resources.Cluster, Awaitable[resources.Cluster]],
-    ]:
+    def get_cluster(self) -> Callable[[managed_kafka.GetClusterRequest], Union[resources.Cluster, Awaitable[resources.Cluster]]]:
         raise NotImplementedError()
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka.CreateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_cluster(self) -> Callable[[managed_kafka.CreateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka.UpdateClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_cluster(self) -> Callable[[managed_kafka.UpdateClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[
-        [managed_kafka.DeleteClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_cluster(self) -> Callable[[managed_kafka.DeleteClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_topics(
         self,
-    ) -> Callable[
-        [managed_kafka.ListTopicsRequest],
-        Union[
-            managed_kafka.ListTopicsResponse,
-            Awaitable[managed_kafka.ListTopicsResponse],
-        ],
-    ]:
+    ) -> Callable[[managed_kafka.ListTopicsRequest], Union[managed_kafka.ListTopicsResponse, Awaitable[managed_kafka.ListTopicsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_topic(
-        self,
-    ) -> Callable[
-        [managed_kafka.GetTopicRequest],
-        Union[resources.Topic, Awaitable[resources.Topic]],
-    ]:
+    def get_topic(self) -> Callable[[managed_kafka.GetTopicRequest], Union[resources.Topic, Awaitable[resources.Topic]]]:
         raise NotImplementedError()
 
     @property
-    def create_topic(
-        self,
-    ) -> Callable[
-        [managed_kafka.CreateTopicRequest],
-        Union[resources.Topic, Awaitable[resources.Topic]],
-    ]:
+    def create_topic(self) -> Callable[[managed_kafka.CreateTopicRequest], Union[resources.Topic, Awaitable[resources.Topic]]]:
         raise NotImplementedError()
 
     @property
-    def update_topic(
-        self,
-    ) -> Callable[
-        [managed_kafka.UpdateTopicRequest],
-        Union[resources.Topic, Awaitable[resources.Topic]],
-    ]:
+    def update_topic(self) -> Callable[[managed_kafka.UpdateTopicRequest], Union[resources.Topic, Awaitable[resources.Topic]]]:
         raise NotImplementedError()
 
     @property
-    def delete_topic(
-        self,
-    ) -> Callable[
-        [managed_kafka.DeleteTopicRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_topic(self) -> Callable[[managed_kafka.DeleteTopicRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -442,105 +380,59 @@ class ManagedKafkaTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_kafka.ListConsumerGroupsRequest],
-        Union[
-            managed_kafka.ListConsumerGroupsResponse,
-            Awaitable[managed_kafka.ListConsumerGroupsResponse],
-        ],
+        Union[managed_kafka.ListConsumerGroupsResponse, Awaitable[managed_kafka.ListConsumerGroupsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_consumer_group(
         self,
-    ) -> Callable[
-        [managed_kafka.GetConsumerGroupRequest],
-        Union[resources.ConsumerGroup, Awaitable[resources.ConsumerGroup]],
-    ]:
+    ) -> Callable[[managed_kafka.GetConsumerGroupRequest], Union[resources.ConsumerGroup, Awaitable[resources.ConsumerGroup]]]:
         raise NotImplementedError()
 
     @property
     def update_consumer_group(
         self,
-    ) -> Callable[
-        [managed_kafka.UpdateConsumerGroupRequest],
-        Union[resources.ConsumerGroup, Awaitable[resources.ConsumerGroup]],
-    ]:
+    ) -> Callable[[managed_kafka.UpdateConsumerGroupRequest], Union[resources.ConsumerGroup, Awaitable[resources.ConsumerGroup]]]:
         raise NotImplementedError()
 
     @property
-    def delete_consumer_group(
-        self,
-    ) -> Callable[
-        [managed_kafka.DeleteConsumerGroupRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_consumer_group(self) -> Callable[[managed_kafka.DeleteConsumerGroupRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_acls(
         self,
-    ) -> Callable[
-        [managed_kafka.ListAclsRequest],
-        Union[
-            managed_kafka.ListAclsResponse, Awaitable[managed_kafka.ListAclsResponse]
-        ],
-    ]:
+    ) -> Callable[[managed_kafka.ListAclsRequest], Union[managed_kafka.ListAclsResponse, Awaitable[managed_kafka.ListAclsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_acl(
-        self,
-    ) -> Callable[
-        [managed_kafka.GetAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]
-    ]:
+    def get_acl(self) -> Callable[[managed_kafka.GetAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]]:
         raise NotImplementedError()
 
     @property
-    def create_acl(
-        self,
-    ) -> Callable[
-        [managed_kafka.CreateAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]
-    ]:
+    def create_acl(self) -> Callable[[managed_kafka.CreateAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]]:
         raise NotImplementedError()
 
     @property
-    def update_acl(
-        self,
-    ) -> Callable[
-        [managed_kafka.UpdateAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]
-    ]:
+    def update_acl(self) -> Callable[[managed_kafka.UpdateAclRequest], Union[resources.Acl, Awaitable[resources.Acl]]]:
         raise NotImplementedError()
 
     @property
-    def delete_acl(
-        self,
-    ) -> Callable[
-        [managed_kafka.DeleteAclRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_acl(self) -> Callable[[managed_kafka.DeleteAclRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def add_acl_entry(
         self,
-    ) -> Callable[
-        [managed_kafka.AddAclEntryRequest],
-        Union[
-            managed_kafka.AddAclEntryResponse,
-            Awaitable[managed_kafka.AddAclEntryResponse],
-        ],
-    ]:
+    ) -> Callable[[managed_kafka.AddAclEntryRequest], Union[managed_kafka.AddAclEntryResponse, Awaitable[managed_kafka.AddAclEntryResponse]]]:
         raise NotImplementedError()
 
     @property
     def remove_acl_entry(
         self,
     ) -> Callable[
-        [managed_kafka.RemoveAclEntryRequest],
-        Union[
-            managed_kafka.RemoveAclEntryResponse,
-            Awaitable[managed_kafka.RemoveAclEntryResponse],
-        ],
+        [managed_kafka.RemoveAclEntryRequest], Union[managed_kafka.RemoveAclEntryResponse, Awaitable[managed_kafka.RemoveAclEntryResponse]]
     ]:
         raise NotImplementedError()
 
@@ -549,20 +441,14 @@ class ManagedKafkaTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -580,22 +466,13 @@ class ManagedKafkaTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

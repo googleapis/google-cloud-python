@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.capacityplanner_v1beta import gapic_version as package_version
 from google.cloud.capacityplanner_v1beta.types import usage_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class UsageServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -188,10 +178,7 @@ class UsageServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [usage_service.QueryUsageHistoriesRequest],
-        Union[
-            usage_service.QueryUsageHistoriesResponse,
-            Awaitable[usage_service.QueryUsageHistoriesResponse],
-        ],
+        Union[usage_service.QueryUsageHistoriesResponse, Awaitable[usage_service.QueryUsageHistoriesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -199,11 +186,7 @@ class UsageServiceTransport(abc.ABC):
     def query_forecasts(
         self,
     ) -> Callable[
-        [usage_service.QueryForecastsRequest],
-        Union[
-            usage_service.QueryForecastsResponse,
-            Awaitable[usage_service.QueryForecastsResponse],
-        ],
+        [usage_service.QueryForecastsRequest], Union[usage_service.QueryForecastsResponse, Awaitable[usage_service.QueryForecastsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -211,39 +194,26 @@ class UsageServiceTransport(abc.ABC):
     def query_reservations(
         self,
     ) -> Callable[
-        [usage_service.QueryReservationsRequest],
-        Union[
-            usage_service.QueryReservationsResponse,
-            Awaitable[usage_service.QueryReservationsResponse],
-        ],
+        [usage_service.QueryReservationsRequest], Union[usage_service.QueryReservationsResponse, Awaitable[usage_service.QueryReservationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def export_usage_histories(
         self,
-    ) -> Callable[
-        [usage_service.ExportUsageHistoriesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[usage_service.ExportUsageHistoriesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_forecasts(
         self,
-    ) -> Callable[
-        [usage_service.ExportForecastsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[usage_service.ExportForecastsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_reservations_usage(
         self,
-    ) -> Callable[
-        [usage_service.ExportReservationsUsageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[usage_service.ExportReservationsUsageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property

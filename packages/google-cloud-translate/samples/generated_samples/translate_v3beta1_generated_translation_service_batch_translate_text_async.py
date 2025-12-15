@@ -48,10 +48,7 @@ async def sample_batch_translate_text():
     request = translate_v3beta1.BatchTranslateTextRequest(
         parent="parent_value",
         source_language_code="source_language_code_value",
-        target_language_codes=[
-            "target_language_codes_value1",
-            "target_language_codes_value2",
-        ],
+        target_language_codes=["target_language_codes_value1", "target_language_codes_value2"],
         input_configs=input_configs,
         output_config=output_config,
     )

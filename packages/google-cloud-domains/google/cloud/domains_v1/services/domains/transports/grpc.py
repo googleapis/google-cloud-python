@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class DomainsGrpcTransport(DomainsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class DomainsGrpcTransport(DomainsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -333,17 +318,13 @@ class DomainsGrpcTransport(DomainsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def search_domains(
-        self,
-    ) -> Callable[[domains.SearchDomainsRequest], domains.SearchDomainsResponse]:
+    def search_domains(self) -> Callable[[domains.SearchDomainsRequest], domains.SearchDomainsResponse]:
         r"""Return a callable for the search domains method over gRPC.
 
         Searches for available domain names similar to the provided
@@ -372,12 +353,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["search_domains"]
 
     @property
-    def retrieve_register_parameters(
-        self,
-    ) -> Callable[
-        [domains.RetrieveRegisterParametersRequest],
-        domains.RetrieveRegisterParametersResponse,
-    ]:
+    def retrieve_register_parameters(self) -> Callable[[domains.RetrieveRegisterParametersRequest], domains.RetrieveRegisterParametersResponse]:
         r"""Return a callable for the retrieve register parameters method over gRPC.
 
         Gets parameters needed to register a new domain name, including
@@ -395,9 +371,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_register_parameters" not in self._stubs:
-            self._stubs[
-                "retrieve_register_parameters"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["retrieve_register_parameters"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1.Domains/RetrieveRegisterParameters",
                 request_serializer=domains.RetrieveRegisterParametersRequest.serialize,
                 response_deserializer=domains.RetrieveRegisterParametersResponse.deserialize,
@@ -405,9 +379,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["retrieve_register_parameters"]
 
     @property
-    def register_domain(
-        self,
-    ) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
+    def register_domain(self) -> Callable[[domains.RegisterDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the register domain method over gRPC.
 
         Registers a new domain name and creates a corresponding
@@ -444,12 +416,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["register_domain"]
 
     @property
-    def retrieve_transfer_parameters(
-        self,
-    ) -> Callable[
-        [domains.RetrieveTransferParametersRequest],
-        domains.RetrieveTransferParametersResponse,
-    ]:
+    def retrieve_transfer_parameters(self) -> Callable[[domains.RetrieveTransferParametersRequest], domains.RetrieveTransferParametersResponse]:
         r"""Return a callable for the retrieve transfer parameters method over gRPC.
 
         Gets parameters needed to transfer a domain name from another
@@ -469,9 +436,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_transfer_parameters" not in self._stubs:
-            self._stubs[
-                "retrieve_transfer_parameters"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["retrieve_transfer_parameters"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1.Domains/RetrieveTransferParameters",
                 request_serializer=domains.RetrieveTransferParametersRequest.serialize,
                 response_deserializer=domains.RetrieveTransferParametersResponse.deserialize,
@@ -479,9 +444,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["retrieve_transfer_parameters"]
 
     @property
-    def transfer_domain(
-        self,
-    ) -> Callable[[domains.TransferDomainRequest], operations_pb2.Operation]:
+    def transfer_domain(self) -> Callable[[domains.TransferDomainRequest], operations_pb2.Operation]:
         r"""Return a callable for the transfer domain method over gRPC.
 
         Transfers a domain name from another registrar to Cloud Domains.
@@ -528,11 +491,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["transfer_domain"]
 
     @property
-    def list_registrations(
-        self,
-    ) -> Callable[
-        [domains.ListRegistrationsRequest], domains.ListRegistrationsResponse
-    ]:
+    def list_registrations(self) -> Callable[[domains.ListRegistrationsRequest], domains.ListRegistrationsResponse]:
         r"""Return a callable for the list registrations method over gRPC.
 
         Lists the ``Registration`` resources in a project.
@@ -556,9 +515,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["list_registrations"]
 
     @property
-    def get_registration(
-        self,
-    ) -> Callable[[domains.GetRegistrationRequest], domains.Registration]:
+    def get_registration(self) -> Callable[[domains.GetRegistrationRequest], domains.Registration]:
         r"""Return a callable for the get registration method over gRPC.
 
         Gets the details of a ``Registration`` resource.
@@ -582,9 +539,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["get_registration"]
 
     @property
-    def update_registration(
-        self,
-    ) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
+    def update_registration(self) -> Callable[[domains.UpdateRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the update registration method over gRPC.
 
         Updates select fields of a ``Registration`` resource, notably
@@ -616,11 +571,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["update_registration"]
 
     @property
-    def configure_management_settings(
-        self,
-    ) -> Callable[
-        [domains.ConfigureManagementSettingsRequest], operations_pb2.Operation
-    ]:
+    def configure_management_settings(self) -> Callable[[domains.ConfigureManagementSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the configure management settings method over gRPC.
 
         Updates a ``Registration``'s management settings.
@@ -636,9 +587,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_management_settings" not in self._stubs:
-            self._stubs[
-                "configure_management_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["configure_management_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1.Domains/ConfigureManagementSettings",
                 request_serializer=domains.ConfigureManagementSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -646,9 +595,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["configure_management_settings"]
 
     @property
-    def configure_dns_settings(
-        self,
-    ) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
+    def configure_dns_settings(self) -> Callable[[domains.ConfigureDnsSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the configure dns settings method over gRPC.
 
         Updates a ``Registration``'s DNS settings.
@@ -672,9 +619,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["configure_dns_settings"]
 
     @property
-    def configure_contact_settings(
-        self,
-    ) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
+    def configure_contact_settings(self) -> Callable[[domains.ConfigureContactSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the configure contact settings method over gRPC.
 
         Updates a ``Registration``'s contact settings. Some changes
@@ -691,9 +636,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "configure_contact_settings" not in self._stubs:
-            self._stubs[
-                "configure_contact_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["configure_contact_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1.Domains/ConfigureContactSettings",
                 request_serializer=domains.ConfigureContactSettingsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -701,9 +644,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["configure_contact_settings"]
 
     @property
-    def export_registration(
-        self,
-    ) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
+    def export_registration(self) -> Callable[[domains.ExportRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the export registration method over gRPC.
 
         Exports a ``Registration`` resource, such that it is no longer
@@ -736,9 +677,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["export_registration"]
 
     @property
-    def delete_registration(
-        self,
-    ) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
+    def delete_registration(self) -> Callable[[domains.DeleteRegistrationRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete registration method over gRPC.
 
         Deletes a ``Registration`` resource.
@@ -783,11 +722,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["delete_registration"]
 
     @property
-    def retrieve_authorization_code(
-        self,
-    ) -> Callable[
-        [domains.RetrieveAuthorizationCodeRequest], domains.AuthorizationCode
-    ]:
+    def retrieve_authorization_code(self) -> Callable[[domains.RetrieveAuthorizationCodeRequest], domains.AuthorizationCode]:
         r"""Return a callable for the retrieve authorization code method over gRPC.
 
         Gets the authorization code of the ``Registration`` for the
@@ -807,9 +742,7 @@ class DomainsGrpcTransport(DomainsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_authorization_code" not in self._stubs:
-            self._stubs[
-                "retrieve_authorization_code"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["retrieve_authorization_code"] = self._logged_channel.unary_unary(
                 "/google.cloud.domains.v1.Domains/RetrieveAuthorizationCode",
                 request_serializer=domains.RetrieveAuthorizationCodeRequest.serialize,
                 response_deserializer=domains.AuthorizationCode.deserialize,
@@ -817,9 +750,7 @@ class DomainsGrpcTransport(DomainsTransport):
         return self._stubs["retrieve_authorization_code"]
 
     @property
-    def reset_authorization_code(
-        self,
-    ) -> Callable[[domains.ResetAuthorizationCodeRequest], domains.AuthorizationCode]:
+    def reset_authorization_code(self) -> Callable[[domains.ResetAuthorizationCodeRequest], domains.AuthorizationCode]:
         r"""Return a callable for the reset authorization code method over gRPC.
 
         Resets the authorization code of the ``Registration`` to a new

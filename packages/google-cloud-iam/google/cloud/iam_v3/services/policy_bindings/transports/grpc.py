@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,19 +319,13 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.CreatePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def create_policy_binding(self) -> Callable[[policy_bindings_service.CreatePolicyBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the create policy binding method over gRPC.
 
         Creates a policy binding and returns a long-running
@@ -373,12 +352,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
         return self._stubs["create_policy_binding"]
 
     @property
-    def get_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.GetPolicyBindingRequest],
-        policy_binding_resources.PolicyBinding,
-    ]:
+    def get_policy_binding(self) -> Callable[[policy_bindings_service.GetPolicyBindingRequest], policy_binding_resources.PolicyBinding]:
         r"""Return a callable for the get policy binding method over gRPC.
 
         Gets a policy binding.
@@ -402,11 +376,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
         return self._stubs["get_policy_binding"]
 
     @property
-    def update_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.UpdatePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def update_policy_binding(self) -> Callable[[policy_bindings_service.UpdatePolicyBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the update policy binding method over gRPC.
 
         Updates a policy binding and returns a long-running
@@ -436,11 +406,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
         return self._stubs["update_policy_binding"]
 
     @property
-    def delete_policy_binding(
-        self,
-    ) -> Callable[
-        [policy_bindings_service.DeletePolicyBindingRequest], operations_pb2.Operation
-    ]:
+    def delete_policy_binding(self) -> Callable[[policy_bindings_service.DeletePolicyBindingRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete policy binding method over gRPC.
 
         Deletes a policy binding and returns a long-running
@@ -469,10 +435,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
     @property
     def list_policy_bindings(
         self,
-    ) -> Callable[
-        [policy_bindings_service.ListPolicyBindingsRequest],
-        policy_bindings_service.ListPolicyBindingsResponse,
-    ]:
+    ) -> Callable[[policy_bindings_service.ListPolicyBindingsRequest], policy_bindings_service.ListPolicyBindingsResponse]:
         r"""Return a callable for the list policy bindings method over gRPC.
 
         Lists policy bindings.
@@ -498,10 +461,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
     @property
     def search_target_policy_bindings(
         self,
-    ) -> Callable[
-        [policy_bindings_service.SearchTargetPolicyBindingsRequest],
-        policy_bindings_service.SearchTargetPolicyBindingsResponse,
-    ]:
+    ) -> Callable[[policy_bindings_service.SearchTargetPolicyBindingsRequest], policy_bindings_service.SearchTargetPolicyBindingsResponse]:
         r"""Return a callable for the search target policy bindings method over gRPC.
 
         Search policy bindings by target. Returns all policy
@@ -518,9 +478,7 @@ class PolicyBindingsGrpcTransport(PolicyBindingsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_target_policy_bindings" not in self._stubs:
-            self._stubs[
-                "search_target_policy_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_target_policy_bindings"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PolicyBindings/SearchTargetPolicyBindings",
                 request_serializer=policy_bindings_service.SearchTargetPolicyBindingsRequest.serialize,
                 response_deserializer=policy_bindings_service.SearchTargetPolicyBindingsResponse.deserialize,
