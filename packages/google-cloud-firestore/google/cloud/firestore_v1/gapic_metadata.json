@@ -40,6 +40,11 @@
                 "delete_document"
               ]
             },
+            "ExecutePipeline": {
+              "methods": [
+                "execute_pipeline"
+              ]
+            },
             "GetDocument": {
               "methods": [
                 "get_document"
@@ -125,6 +130,11 @@
                 "delete_document"
               ]
             },
+            "ExecutePipeline": {
+              "methods": [
+                "execute_pipeline"
+              ]
+            },
             "GetDocument": {
               "methods": [
                 "get_document"
@@ -208,6 +218,11 @@
             "DeleteDocument": {
               "methods": [
                 "delete_document"
+              ]
+            },
+            "ExecutePipeline": {
+              "methods": [
+                "execute_pipeline"
               ]
             },
             "GetDocument": {

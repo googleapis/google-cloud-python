@@ -1,8 +1,8 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:eec191fc4904c204cd717c79812cd66997b5559776483ee223f69c8f43e99224
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:b8058df4c45e9a6e07f6b4d65b458d0d059241dd34c814f151c8bf6b89211209
 libraries:
   - id: google-cloud-firestore
     version: 2.21.0
-    last_generated_commit: 659ea6e98acc7d58661ce2aa7b4cf76a7ef3fd42
+    last_generated_commit: 1a9d00bed77e6db82ff67764ffe14e3b5209f5cd
     apis:
       - path: google/firestore/v1
         service_config: firestore_v1.yaml
