@@ -219,7 +219,7 @@ def verify_result(client, table, futures):
     query = client.query(f"SELECT DISTINCT int64_col FROM `{bq_table}`;")
     query_result = query.result().to_dataframe()
 
-    assert query_result.iloc[0, 0] == TABLE_LENGTH
+    assert len(query_result) == TABLE_LENGTH
 
     # Verify that table was split into multiple requests.
     assert len(futures) == 21
