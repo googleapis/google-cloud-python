@@ -212,7 +212,9 @@ class Transaction(Batch):
 
         This method is called automatically when entering a with
         statement, however it can be called explicitly if you don't want
-        to use a context manager.
+        to use a context manager. If used outside a context manager,
+        `client.get` calls targeting the transaction and commit/rollback calls
+        will need to be managed explicitly as well.
 
         :type retry: :class:`google.api_core.retry.Retry`
         :param retry:

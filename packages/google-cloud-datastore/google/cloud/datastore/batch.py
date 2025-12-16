@@ -281,7 +281,9 @@ class Batch(object):
 
         This method is called automatically when entering a with
         statement, however it can be called explicitly if you don't want
-        to use a context manager.
+        to use a context manager. If used outside a context manager,
+        `client.get` calls targeting the batch and commit/rollback calls
+        will need to be managed explicitly as well
 
         Overridden by :class:`google.cloud.datastore.transaction.Transaction`.
 
@@ -364,6 +366,10 @@ class Batch(object):
         """Rolls back the current batch.
 
         Marks the batch as aborted (can't be used again).
+
+        This is called automatically upon exiting a with statement,
+        however it can be called explicitly if you don't want to use a
+        context manager.
 
         Overridden by :class:`google.cloud.datastore.transaction.Transaction`.
 

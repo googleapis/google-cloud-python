@@ -148,15 +148,53 @@ def test_failure_with_contention(datastore_client, entities_to_delete, database_
 
     entities_to_delete.append(orig_entity)
 
-    with pytest.raises(Conflict):
-        with local_client.transaction() as txn:
-            entity_in_txn = local_client.get(key)
+    with local_client.transaction() as txn:
+        entity_in_txn = local_client.get(key)
 
-            # Update the original entity outside the transaction.
-            orig_entity[contention_prop_name] = "outside"
+        # Update the original entity outside the transaction.
+        orig_entity[contention_prop_name] = "outside"
+        with pytest.raises(Conflict):
             datastore_client.put(orig_entity)
 
-            # Try to update the entity which we already updated outside the
-            # transaction.
-            entity_in_txn[contention_prop_name] = "inside"
-            txn.put(entity_in_txn)
+        # Try to update the entity which we already updated outside the
+        # transaction.
+        entity_in_txn[contention_prop_name] = "inside"
+        txn.put(entity_in_txn)
+    # now that transaction is complete, should be able to update outside
+    datastore_client.put(orig_entity)
+
+
+@pytest.mark.parametrize("database_id", [None, _helpers.TEST_DATABASE], indirect=True)
+def test_failure_with_contention_no_context_manager(
+    datastore_client, entities_to_delete, database_id
+):
+    contention_prop_name = "baz"
+    local_client = _helpers.clone_client(datastore_client)
+
+    # Insert an entity which will be retrieved in a transaction
+    # and updated outside it with a contentious value.
+    key = local_client.key("BreakTxnCM3", 1234)
+    orig_entity = datastore.Entity(key=key)
+    orig_entity["foo"] = "bar"
+    local_client.put(orig_entity)
+
+    entities_to_delete.append(orig_entity)
+
+    txn = local_client.transaction()
+    txn.begin()
+
+    entity_in_txn = local_client.get(key, transaction=txn)
+
+    # Update the original entity outside the transaction.
+    # should fail due to contention
+    orig_entity[contention_prop_name] = "outside"
+    with pytest.raises(Conflict):
+        datastore_client.put(orig_entity)
+
+    # Try to update the entity inside the transaction
+    entity_in_txn[contention_prop_name] = "inside"
+    txn.put(entity_in_txn)
+    txn.commit()
+
+    # now that transaction is complete, should be able to update outside
+    datastore_client.put(orig_entity)

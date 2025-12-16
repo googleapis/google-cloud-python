@@ -407,7 +407,7 @@ class Client(ClientWithProject):
 
     @property
     def current_batch(self):
-        """Currently-active batch.
+        """Currently-active batch, if within the scope of a Batch context manager.
 
         :rtype: :class:`google.cloud.datastore.batch.Batch`, or an object
                 implementing its API, or ``NoneType`` (if no batch is active).
@@ -417,7 +417,8 @@ class Client(ClientWithProject):
 
     @property
     def current_transaction(self):
-        """Currently-active transaction.
+        """Currently-active transaction, if within the scope of a Transaction
+        context manager.
 
         :rtype: :class:`google.cloud.datastore.transaction.Transaction`, or an
                 object implementing its API, or ``NoneType`` (if no transaction
