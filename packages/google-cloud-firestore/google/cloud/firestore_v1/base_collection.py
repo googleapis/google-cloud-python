@@ -35,6 +35,7 @@ from typing import (
 from google.api_core import retry as retries
 
 from google.cloud.firestore_v1 import _helpers
+from google.cloud.firestore_v1.base_document import BaseDocumentReference
 from google.cloud.firestore_v1.base_query import QueryType
 
 if TYPE_CHECKING:  # pragma: NO COVER
@@ -133,7 +134,7 @@ class BaseCollectionReference(Generic[QueryType]):
     def _vector_query(self) -> BaseVectorQuery:
         raise NotImplementedError
 
-    def document(self, document_id: Optional[str] = None):
+    def document(self, document_id: Optional[str] = None) -> BaseDocumentReference:
         """Create a sub-document underneath the current collection.
 
         Args:

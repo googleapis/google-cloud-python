@@ -57,7 +57,7 @@ from google.cloud.firestore_v1.base_document import (
     DocumentSnapshot,
 )
 from google.cloud.firestore_v1.base_query import BaseQuery
-from google.cloud.firestore_v1.base_transaction import BaseTransaction
+from google.cloud.firestore_v1.base_transaction import MAX_ATTEMPTS, BaseTransaction
 from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.services.firestore import client as firestore_client
@@ -497,7 +497,9 @@ class BaseClient(ClientWithProject):
     def batch(self) -> BaseWriteBatch:
         raise NotImplementedError
 
-    def transaction(self, **kwargs) -> BaseTransaction:
+    def transaction(
+        self, max_attempts: int = MAX_ATTEMPTS, read_only: bool = False
+    ) -> BaseTransaction:
         raise NotImplementedError
 
 

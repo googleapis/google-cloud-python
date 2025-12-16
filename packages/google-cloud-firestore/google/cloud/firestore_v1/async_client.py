@@ -25,7 +25,15 @@ In the hierarchy of API concepts
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, AsyncGenerator, Iterable, List, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    AsyncGenerator,
+    Iterable,
+    List,
+    Optional,
+    Union,
+)
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
@@ -40,6 +48,7 @@ from google.cloud.firestore_v1.async_query import AsyncCollectionGroup
 from google.cloud.firestore_v1.async_transaction import AsyncTransaction
 from google.cloud.firestore_v1.base_client import _parse_batch_get  # type: ignore
 from google.cloud.firestore_v1.base_client import _CLIENT_INFO, BaseClient, _path_helper
+from google.cloud.firestore_v1.base_transaction import MAX_ATTEMPTS
 from google.cloud.firestore_v1.field_path import FieldPath
 from google.cloud.firestore_v1.services.firestore import (
     async_client as firestore_client,
@@ -410,7 +419,9 @@ class AsyncClient(BaseClient):
         """
         return AsyncWriteBatch(self)
 
-    def transaction(self, **kwargs) -> AsyncTransaction:
+    def transaction(
+        self, max_attempts: int = MAX_ATTEMPTS, read_only: bool = False
+    ) -> AsyncTransaction:
         """Get a transaction that uses this client.
 
         See :class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction` for
@@ -426,4 +437,4 @@ class AsyncClient(BaseClient):
             :class:`~google.cloud.firestore_v1.async_transaction.AsyncTransaction`:
             A transaction attached to this client.
         """
-        return AsyncTransaction(self, **kwargs)
+        return AsyncTransaction(self, max_attempts=max_attempts, read_only=read_only)

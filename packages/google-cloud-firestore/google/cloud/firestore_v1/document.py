@@ -169,7 +169,7 @@ class DocumentReference(BaseDocumentReference):
 
     def update(
         self,
-        field_updates: dict,
+        field_updates: dict[str, Any],
         option: _helpers.WriteOption | None = None,
         retry: retries.Retry | object | None = gapic_v1.method.DEFAULT,
         timeout: float | None = None,

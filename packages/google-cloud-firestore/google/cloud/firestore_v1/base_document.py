@@ -418,7 +418,7 @@ class DocumentSnapshot(object):
         return self._reference._client
 
     @property
-    def exists(self):
+    def exists(self) -> bool:
         """Existence flag.
 
         Indicates if the document existed at the time this snapshot
@@ -430,7 +430,7 @@ class DocumentSnapshot(object):
         return self._exists
 
     @property
-    def id(self):
+    def id(self) -> str:
         """The document identifier (within its collection).
 
         Returns:
@@ -439,7 +439,7 @@ class DocumentSnapshot(object):
         return self._reference.id
 
     @property
-    def reference(self):
+    def reference(self) -> BaseDocumentReference:
         """Document reference corresponding to document that owns this data.
 
         Returns:

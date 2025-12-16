@@ -15,7 +15,7 @@
 """Helpers for batch requests to the Google Cloud Firestore API."""
 from __future__ import annotations
 import abc
-from typing import Dict, Union
+from typing import Any, Dict, Union
 
 # Types needed only for Type Hints
 from google.api_core import retry as retries
@@ -67,7 +67,9 @@ class BaseBatch(metaclass=abc.ABCMeta):
         write depend on the implementing class."""
         raise NotImplementedError()
 
-    def create(self, reference: BaseDocumentReference, document_data: dict) -> None:
+    def create(
+        self, reference: BaseDocumentReference, document_data: dict[str, Any]
+    ) -> None:
         """Add a "change" to this batch to create a document.
 
         If the document given by ``reference`` already exists, then this
@@ -120,7 +122,7 @@ class BaseBatch(metaclass=abc.ABCMeta):
     def update(
         self,
         reference: BaseDocumentReference,
-        field_updates: dict,
+        field_updates: dict[str, Any],
         option: _helpers.WriteOption | None = None,
     ) -> None:
         """Add a "change" to update a document.

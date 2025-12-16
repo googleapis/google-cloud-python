@@ -15,7 +15,7 @@
 """Classes for representing collections for the Google Cloud Firestore API."""
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, Tuple
+from typing import TYPE_CHECKING, Any, AsyncGenerator, Optional, Tuple, cast
 
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
@@ -153,7 +153,8 @@ class AsyncCollectionReference(BaseCollectionReference[async_query.AsyncQuery]):
             :class:`~google.cloud.firestore_v1.document.async_document.AsyncDocumentReference`:
             The child document.
         """
-        return super(AsyncCollectionReference, self).document(document_id)
+        doc = super(AsyncCollectionReference, self).document(document_id)
+        return cast("AsyncDocumentReference", doc)
 
     async def list_documents(
         self,
