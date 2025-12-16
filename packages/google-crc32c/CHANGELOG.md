@@ -9,6 +9,19 @@
 
 ### Features
 
+* Add support for Python 3.14 ([d3118d9](https://github.com/googleapis/python-crc32c/commit/d3118d938b0acabc68fbc9d009aeb1e00445bc4c))
+* Support Python 3.14 ([#315](https://github.com/googleapis/python-crc32c/issues/315)) ([49d0a36](https://github.com/googleapis/python-crc32c/commit/49d0a36f3334048833d0201788fd864d3342d1b2))
+
+
+### Bug Fixes
+
+* Update toml file with setup.cfg content ([#319](https://github.com/googleapis/python-crc32c/issues/319)) ([42e5268](https://github.com/googleapis/python-crc32c/commit/42e5268c7e6077a71e54b342ada4ed2843dbc01e))
+
+## [1.8.0](https://github.com/googleapis/python-crc32c/compare/v1.7.1...v1.8.0) (2025-12-15)
+
+
+### Features
+
 * support Python 3.14 (#315) ([49d0a36f3334048833d0201788fd864d3342d1b2](https://github.com/googleapis/python-crc32c/commit/49d0a36f3334048833d0201788fd864d3342d1b2))
 
 
