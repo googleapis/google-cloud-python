@@ -28,31 +28,32 @@ from google.cloud.firestore_v1.types import document
 __protobuf__ = proto.module(
     package="google.firestore.v1",
     manifest={
-        "AggregationResult",
+        "StructuredPipeline",
     },
 )
 
 
-class AggregationResult(proto.Message):
-    r"""The result of a single bucket from a Firestore aggregation query.
+class StructuredPipeline(proto.Message):
+    r"""A Firestore query represented as an ordered list of operations /
+    stages.
 
-    The keys of ``aggregate_fields`` are the same for all results in an
-    aggregation query, unlike document queries which can have different
-    fields present for each result.
+    This is considered the top-level function which plans and executes a
+    query. It is logically equivalent to ``query(stages, options)``, but
+    prevents the client from having to build a function wrapper.
 
     Attributes:
-        aggregate_fields (MutableMapping[str, google.cloud.firestore_v1.types.Value]):
-            The result of the aggregation functions, ex:
-            ``COUNT(*) AS total_docs``.
-
-            The key is the
-            [alias][google.firestore.v1.StructuredAggregationQuery.Aggregation.alias]
-            assigned to the aggregation function on input and the size
-            of this map equals the number of aggregation functions in
-            the query.
+        pipeline (google.cloud.firestore_v1.types.Pipeline):
+            Required. The pipeline query to execute.
+        options (MutableMapping[str, google.cloud.firestore_v1.types.Value]):
+            Optional. Optional query-level arguments.
     """
 
-    aggregate_fields: MutableMapping[str, document.Value] = proto.MapField(
+    pipeline: document.Pipeline = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=document.Pipeline,
+    )
+    options: MutableMapping[str, document.Value] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,

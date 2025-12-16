@@ -21,21 +21,37 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import any_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package="google.firestore.admin.v1",
+    package="google.firestore.v1",
     manifest={
-        "LocationMetadata",
+        "ExplainStats",
     },
 )
 
 
-class LocationMetadata(proto.Message):
-    r"""The metadata message for
-    [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
+class ExplainStats(proto.Message):
+    r"""Pipeline explain stats.
 
+    Depending on the explain options in the original request, this
+    can contain the optimized plan and / or execution stats.
+
+    Attributes:
+        data (google.protobuf.any_pb2.Any):
+            The format depends on the ``output_format`` options in the
+            request.
+
+            Currently there are two supported options: ``TEXT`` and
+            ``JSON``. Both supply a ``google.protobuf.StringValue``.
     """
+
+    data: any_pb2.Any = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=any_pb2.Any,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
