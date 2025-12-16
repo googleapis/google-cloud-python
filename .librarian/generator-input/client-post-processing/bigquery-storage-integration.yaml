@@ -183,8 +183,8 @@ replacements:
           "ReadRowsStream",
           "ReadSession",
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
     ]
@@ -230,8 +230,8 @@ replacements:
       class BigQueryWriteClient(client.BigQueryWriteClient):
           __doc__ = client.BigQueryWriteClient.__doc__\n\n
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
     ]
@@ -286,8 +286,8 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1alpha/__init__.py,
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
@@ -323,8 +323,8 @@ replacements:
       \)\n
     after: ""
     count: 2
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1alpha/__init__.py,
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
@@ -358,8 +358,8 @@ replacements:
     after: |
       )
     count: 2
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta2/__init__.py,
     ]
@@ -398,8 +398,8 @@ replacements:
       class BigQueryWriteClient(client.BigQueryWriteClient):
           __doc__ = client.BigQueryWriteClient.__doc__\n\n
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta2/__init__.py,
     ]
@@ -451,9 +451,6 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
-    # We could also consider updating the docs/index.rst template so that the majority of handwritten changes are not required
   - paths: [
       packages/google-cloud-bigquery-storage/testing/constraints-3.7.txt,
     ]
@@ -468,6 +465,8 @@ replacements:
       pyarrow==0.15.0
       google-auth==2.14.1
     count: 1
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/docs/index.rst,
     ]
