@@ -179,7 +179,7 @@ def generate_write_requests(pyarrow_table):
     batches_in_request = []
     current_size = 0
 
-    # Split table into batches of one row.
+    # Split table into batches with one row.
     for row_batch in pyarrow_table.to_batches(max_chunksize=1):
         serialized_batch = row_batch.serialize().to_pybytes()
         batch_size = len(serialized_batch)
@@ -216,11 +216,10 @@ def verify_result(client, table, futures):
     assert bq_table.schema == BQ_SCHEMA
 
     # Verify table size.
-    query = client.query(f"SELECT COUNT(1) FROM `{bq_table}`;")
+    query = client.query(f"SELECT DISTINCT int64_col FROM `{bq_table}`;")
     query_result = query.result().to_dataframe()
 
-    # There might be extra rows due to retries.
-    assert query_result.iloc[0, 0] >= TABLE_LENGTH
+    assert query_result.iloc[0, 0] == TABLE_LENGTH
 
     # Verify that table was split into multiple requests.
     assert len(futures) == 21
