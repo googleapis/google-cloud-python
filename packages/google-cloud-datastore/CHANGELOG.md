@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datastore/#history
 
+## [2.23.0](https://github.com/googleapis/python-datastore/compare/v2.22.0...v2.23.0) (2025-12-16)
+
+
+### Features
+
+* support mTLS certificates when available (#658) ([85c023287daebb0d5c1a009e2beaccf0c6ea75eb](https://github.com/googleapis/python-datastore/commit/85c023287daebb0d5c1a009e2beaccf0c6ea75eb))
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datastore-v2.21.0...google-cloud-datastore-v2.22.0) (2025-12-12)
 
 
