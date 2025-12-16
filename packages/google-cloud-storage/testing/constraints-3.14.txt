@@ -7,7 +7,7 @@
 # Then this file should have google-cloud-foo>=1
 google-api-core>=2
 google-auth>=2
-grpcio>=1
+grpcio>=1.75.1
 proto-plus>=1
 protobuf>=6
 grpc-google-iam-v1>=0

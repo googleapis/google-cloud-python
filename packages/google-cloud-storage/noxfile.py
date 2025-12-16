@@ -26,9 +26,16 @@ import nox
 BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
-DEFAULT_PYTHON_VERSION = "3.12"
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.12"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+DEFAULT_PYTHON_VERSION = "3.14"
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.9", "3.14"]
+UNIT_TEST_PYTHON_VERSIONS = [
+    "3.9",
+    "3.10",
+    "3.11",
+    "3.12",
+    "3.13",
+    "3.14",
+]
 CONFORMANCE_TEST_PYTHON_VERSIONS = ["3.12"]
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
@@ -51,6 +58,7 @@ nox.options.sessions = [
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
+    "unit-3.14",
     # cover must be last to avoid error `No data to report`
     "cover",
 ]
@@ -65,7 +73,7 @@ def lint(session):
     """
     # Pin flake8 to 6.0.0
     # See https://github.com/googleapis/python-storage/issues/1102
-    session.install("flake8==6.0.0", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION)
     session.run(
         "black",
         "--check",
@@ -117,6 +125,8 @@ def default(session, install_extras=True):
         session.install("opentelemetry-api", "opentelemetry-sdk")
 
     session.install("-e", ".", "-c", constraints_path)
+
+    session.run("python", "-m", "pip", "freeze")
 
     # This dependency is included in setup.py for backwards compatibility only
     # and the client library is expected to pass all tests without it. See

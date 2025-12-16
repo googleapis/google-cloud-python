@@ -22,7 +22,7 @@ In order to add a feature:
   documentation.
 
 - The feature must work fully on the following CPython versions:
-  3.7, 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13 on both UNIX and Windows.
+  3.7, 3.8, 3.9, 3.10, 3.11, 3.12, 3.13 and 3.14 on both UNIX and Windows.
 
 - The feature must not add unnecessary dependencies (where
   "unnecessary" is of course subjective, but new dependencies should
@@ -69,8 +69,7 @@ We use `nox <https://nox.readthedocs.io/en/latest/>`__ to instrument our tests.
 
 - To test your changes, run unit tests with ``nox``::
 
-    $ nox -s unit-2.7
-    $ nox -s unit-3.7
+    $ nox -s unit-3.9
     $ ...
 
   .. note::
@@ -133,14 +132,11 @@ Running System Tests
 
 - To run system tests, you can execute::
 
-   $ nox -s system-3.8
-   $ nox -s system-2.7
+   $ nox -s system-3.14
 
   .. note::
 
-      System tests are only configured to run under Python 2.7 and
-      Python 3.8. For expediency, we do not run them in older versions
-      of Python 3.
+      System tests are configured to run under Python 3.14 in ``noxfile.py``.
 
   This alone will not run the tests. You'll need to change some local
   auth settings and change some configuration in your project to
@@ -202,25 +198,27 @@ Supported Python Versions
 
 We support:
 
--  `Python 3.5`_
--  `Python 3.6`_
 -  `Python 3.7`_
 -  `Python 3.8`_
+-  `Python 3.9`_
+-  `Python 3.10`_
+-  `Python 3.11`_
+-  `Python 3.12`_
+-  `Python 3.13`_
+-  `Python 3.14`_
 
-.. _Python 3.5: https://docs.python.org/3.5/
-.. _Python 3.6: https://docs.python.org/3.6/
 .. _Python 3.7: https://docs.python.org/3.7/
 .. _Python 3.8: https://docs.python.org/3.8/
-
+.. _Python 3.9: https://docs.python.org/3.9/
+.. _Python 3.10: https://docs.python.org/3.10/
+.. _Python 3.11: https://docs.python.org/3.11/
+.. _Python 3.12: https://docs.python.org/3.12/
+.. _Python 3.13: https://docs.python.org/3.13/
+.. _Python 3.14: https://docs.python.org/3.14/
 
 Supported versions can be found in our ``noxfile.py`` `config`_.
 
-.. _config: https://github.com/googleapis/python-storage/blob/main/noxfile.py
-
-Python 2.7 support is deprecated. All code changes should maintain Python 2.7 compatibility until January 1, 2020.
-
-We also explicitly decided to support Python 3 beginning with version
-3.5. Reasons for this include:
+We also explicitly decided to support Python 3 beginning with version 3.9. Reasons for this include:
 
 -  Encouraging use of newest versions of Python 3
 -  Taking the lead of `prominent`_ open-source `projects`_
