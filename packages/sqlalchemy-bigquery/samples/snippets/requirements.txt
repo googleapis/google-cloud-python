@@ -32,4 +32,4 @@ shapely==2.1.2; python_version >= '3.10'
 six==1.17.0
 sqlalchemy===1.4.27
 typing-extensions==4.15.0; python_version >= '3.9'
-urllib3==2.5.0; python_version >= '3.9'
+urllib3==2.6.0; python_version >= '3.9'
