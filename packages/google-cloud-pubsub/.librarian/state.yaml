@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:b8058df4c45e9a6e07f6b4d65b458d0d059241dd34c814f151c8bf6b89211209
 libraries:
   - id: google-cloud-pubsub
-    version: 2.33.0
+    version: 2.34.0
     last_generated_commit: 9fcfbea0aa5b50fa22e190faceb073d74504172b
     apis:
       - path: google/pubsub/v1

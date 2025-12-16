@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
+## [2.34.0](https://github.com/googleapis/python-pubsub/compare/v2.33.0...v2.34.0) (2025-12-16)
+
+
+### Features
+
+* support mTLS certificates when available (#1566) ([24761a2fedeb17f5af98a72a62306ad59306a553](https://github.com/googleapis/python-pubsub/commit/24761a2fedeb17f5af98a72a62306ad59306a553))
+
 
 ## [2.33.0](https://github.com/googleapis/python-pubsub/compare/v2.32.0...v2.33.0) (2025-10-30)
 
