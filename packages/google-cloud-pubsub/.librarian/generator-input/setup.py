@@ -98,7 +98,6 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras,
     python_requires=">=3.7",
-    scripts=["scripts/fixup_pubsub_v1_keywords.py"],
     include_package_data=True,
     zip_safe=False,
 )
