@@ -413,13 +413,19 @@ def _copy_files_needed_for_post_processing(
     destination_dir = f"{output}/{path_to_library}"
 
     if Path(source_dir).exists():
-        shutil.copytree(
-            source_dir,
-            destination_dir,
-            dirs_exist_ok=True,
-        )
-        # Apply headers only to the generator-input files copied above.
-        _add_header_to_files(destination_dir)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            shutil.copytree(
+                source_dir,
+                tmp_dir,
+                dirs_exist_ok=True,
+            )
+            # Apply headers only to the generator-input files copied above.
+            _add_header_to_files(tmp_dir)
+            shutil.copytree(
+                tmp_dir,
+                destination_dir,
+                dirs_exist_ok=True,
+            )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
     os.makedirs(
