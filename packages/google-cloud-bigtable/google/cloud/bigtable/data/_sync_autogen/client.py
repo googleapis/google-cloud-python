@@ -365,7 +365,9 @@ class BigtableDataClient(ClientWithProject):
             old_channel = super_channel.swap_channel(new_channel)
             self._invalidate_channel_stubs()
             if grace_period:
-                self._is_closed.wait(grace_period)
+                CrossSync._Sync_Impl.event_wait(
+                    self._is_closed, grace_period, async_break_early=False
+                )
             old_channel.close()
             next_refresh = random.uniform(refresh_interval_min, refresh_interval_max)
             next_sleep = max(next_refresh - (time.monotonic() - start_timestamp), 0)

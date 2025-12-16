@@ -266,49 +266,49 @@ class TestSystemAsync:
     @CrossSync.pytest
     async def test_channel_refresh(self, table_id, instance_id, temp_rows):
         """
-        change grpc channel to refresh after 1 second. Schedule a read_rows call after refresh,
-        to ensure new channel works
+        perform requests while swapping out the grpc channel. Requests should continue without error
         """
-        await temp_rows.add_row(b"row_key_1")
-        await temp_rows.add_row(b"row_key_2")
-        client = self._make_client()
-        # start custom refresh task
-        try:
+        import time
+
+        await temp_rows.add_row(b"test_row")
+        async with self._make_client() as client:
+            client._channel_refresh_task.cancel()
+            channel_wrapper = client.transport.grpc_channel
+            first_channel = channel_wrapper._channel
+            # swap channels frequently, with large grace windows
             client._channel_refresh_task = CrossSync.create_task(
                 client._manage_channel,
-                refresh_interval_min=1,
-                refresh_interval_max=1,
+                refresh_interval_min=0.1,
+                refresh_interval_max=0.1,
+                grace_period=1,
                 sync_executor=client._executor,
             )
-            # let task run
-            await CrossSync.yield_to_event_loop()
+
+            # hit channels with frequent requests
+            end_time = time.monotonic() + 3
             async with client.get_table(instance_id, table_id) as table:
-                rows = await table.read_rows({})
-                channel_wrapper = client.transport.grpc_channel
-                first_channel = channel_wrapper._channel
-                assert len(rows) == 2
-                await CrossSync.sleep(2)
-                rows_after_refresh = await table.read_rows({})
-                assert len(rows_after_refresh) == 2
-                assert client.transport.grpc_channel is channel_wrapper
-                updated_channel = channel_wrapper._channel
-                assert updated_channel is not first_channel
-                # ensure interceptors are kept (gapic's logging interceptor, and metric interceptor)
-                if CrossSync.is_async:
-                    unary_interceptors = updated_channel._unary_unary_interceptors
-                    assert len(unary_interceptors) == 2
-                    assert GapicInterceptor in [type(i) for i in unary_interceptors]
-                    assert client._metrics_interceptor in unary_interceptors
-                    stream_interceptors = updated_channel._unary_stream_interceptors
-                    assert len(stream_interceptors) == 1
-                    assert client._metrics_interceptor in stream_interceptors
-                else:
-                    assert isinstance(
-                        client.transport._logged_channel._interceptor, GapicInterceptor
-                    )
-                    assert updated_channel._interceptor == client._metrics_interceptor
-        finally:
-            await client.close()
+                while time.monotonic() < end_time:
+                    # we expect a CancelledError if a channel is closed before completion
+                    rows = await table.read_rows({})
+                    assert len(rows) == 1
+                    await CrossSync.yield_to_event_loop()
+            # ensure channel was updated
+            updated_channel = channel_wrapper._channel
+            assert updated_channel is not first_channel
+            # ensure interceptors are kept (gapic's logging interceptor, and metric interceptor)
+            if CrossSync.is_async:
+                unary_interceptors = updated_channel._unary_unary_interceptors
+                assert len(unary_interceptors) == 2
+                assert GapicInterceptor in [type(i) for i in unary_interceptors]
+                assert client._metrics_interceptor in unary_interceptors
+                stream_interceptors = updated_channel._unary_stream_interceptors
+                assert len(stream_interceptors) == 1
+                assert client._metrics_interceptor in stream_interceptors
+            else:
+                assert isinstance(
+                    client.transport._logged_channel._interceptor, GapicInterceptor
+                )
+                assert updated_channel._interceptor == client._metrics_interceptor
 
     @CrossSync.pytest
     @pytest.mark.usefixtures("target")
