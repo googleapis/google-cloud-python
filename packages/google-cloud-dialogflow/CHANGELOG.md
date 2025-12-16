@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow/#history
 
+## [2.44.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.43.0...google-cloud-dialogflow-v2.44.0) (2025-12-04)
+
+
+### Documentation
+
+* Add further clarification for when the event Type CONVERSATION_FINISHED is fired ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* Update evaluator version from output only to optional. ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
+
+### Features
+
+* add agentDesktopSource field to the Participant object ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
 ## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-v2.42.0...google-cloud-dialogflow-v2.43.0) (2025-10-28)
 
 

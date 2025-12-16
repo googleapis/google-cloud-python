@@ -254,6 +254,9 @@ class Condition(proto.Message):
                 cancelled.
             DELETED (5):
                 The execution was deleted.
+            DELAYED_START_PENDING (6):
+                A delayed execution is waiting for a start
+                time.
         """
         EXECUTION_REASON_UNDEFINED = 0
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
@@ -261,6 +264,7 @@ class Condition(proto.Message):
         CANCELLED = 3
         CANCELLING = 4
         DELETED = 5
+        DELAYED_START_PENDING = 6
 
     type_: str = proto.Field(
         proto.STRING,

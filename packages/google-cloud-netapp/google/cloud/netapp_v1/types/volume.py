@@ -793,7 +793,43 @@ class SimpleExportPolicyRule(proto.Message):
             ignored if this is enabled.
 
             This field is a member of `oneof`_ ``_kerberos_5p_read_write``.
+        squash_mode (google.cloud.netapp_v1.types.SimpleExportPolicyRule.SquashMode):
+            Optional. Defines how user identity squashing is applied for
+            this export rule. This field is the preferred way to
+            configure squashing behavior and takes precedence over
+            ``has_root_access`` if both are provided.
+
+            This field is a member of `oneof`_ ``_squash_mode``.
+        anon_uid (int):
+            Optional. An integer representing the anonymous user ID.
+            Range is 0 to 4294967295. Required when squash_mode is
+            ROOT_SQUASH or ALL_SQUASH.
+
+            This field is a member of `oneof`_ ``_anon_uid``.
     """
+
+    class SquashMode(proto.Enum):
+        r"""SquashMode defines how remote user privileges are restricted
+        when accessing an NFS export. It controls how user identities
+        (like root) are mapped to anonymous users to limit access and
+        enforce security.
+
+        Values:
+            SQUASH_MODE_UNSPECIFIED (0):
+                Defaults to NO_ROOT_SQUASH.
+            NO_ROOT_SQUASH (1):
+                The root user (UID 0) retains full access.
+                Other users are unaffected.
+            ROOT_SQUASH (2):
+                The root user (UID 0) is squashed to
+                anonymous user ID. Other users are unaffected.
+            ALL_SQUASH (3):
+                All users are squashed to anonymous user ID.
+        """
+        SQUASH_MODE_UNSPECIFIED = 0
+        NO_ROOT_SQUASH = 1
+        ROOT_SQUASH = 2
+        ALL_SQUASH = 3
 
     allowed_clients: str = proto.Field(
         proto.STRING,
@@ -849,6 +885,17 @@ class SimpleExportPolicyRule(proto.Message):
     kerberos_5p_read_write: bool = proto.Field(
         proto.BOOL,
         number=11,
+        optional=True,
+    )
+    squash_mode: SquashMode = proto.Field(
+        proto.ENUM,
+        number=12,
+        optional=True,
+        enum=SquashMode,
+    )
+    anon_uid: int = proto.Field(
+        proto.INT64,
+        number=13,
         optional=True,
     )
 

@@ -765,7 +765,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> cms_metadata_value_messages.CmsMetadataValue:
-        r"""API to retrieve a ``CmsMetadataKey`` object.
+        r"""API to retrieve a ``CmsMetadataValue`` object.
 
         .. code-block:: python
 
@@ -797,7 +797,7 @@ class CmsMetadataValueServiceClient(metaclass=CmsMetadataValueServiceClientMeta)
             request (Union[google.ads.admanager_v1.types.GetCmsMetadataValueRequest, dict]):
                 The request object. Request object for ``GetCmsMetadataValue`` method.
             name (str):
-                Required. The resource name of the CmsMetadataKey.
+                Required. The resource name of the CmsMetadataValue.
                 Format:
                 ``networks/{network_code}/cmsMetadataValues/{cms_metadata_value_id}``
 

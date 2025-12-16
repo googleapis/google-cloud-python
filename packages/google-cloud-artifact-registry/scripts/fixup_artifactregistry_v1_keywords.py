@@ -51,6 +51,7 @@ class artifactregistryCallTransformer(cst.CSTTransformer):
         'delete_rule': ('name', ),
         'delete_tag': ('name', ),
         'delete_version': ('name', 'force', ),
+        'export_artifact': ('repository', 'source_version', 'source_tag', 'gcs_path', ),
         'get_attachment': ('name', ),
         'get_docker_image': ('name', ),
         'get_file': ('name', ),

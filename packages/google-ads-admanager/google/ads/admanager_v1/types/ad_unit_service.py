@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.ads.admanager_v1.types import ad_unit_messages
@@ -27,8 +28,20 @@ __protobuf__ = proto.module(
         "GetAdUnitRequest",
         "ListAdUnitsRequest",
         "ListAdUnitsResponse",
+        "CreateAdUnitRequest",
+        "UpdateAdUnitRequest",
+        "BatchCreateAdUnitsRequest",
+        "BatchCreateAdUnitsResponse",
+        "BatchUpdateAdUnitsRequest",
+        "BatchUpdateAdUnitsResponse",
         "ListAdUnitSizesRequest",
         "ListAdUnitSizesResponse",
+        "BatchActivateAdUnitsRequest",
+        "BatchActivateAdUnitsResponse",
+        "BatchDeactivateAdUnitsRequest",
+        "BatchDeactivateAdUnitsResponse",
+        "BatchArchiveAdUnitsRequest",
+        "BatchArchiveAdUnitsResponse",
     },
 )
 
@@ -153,6 +166,132 @@ class ListAdUnitsResponse(proto.Message):
     )
 
 
+class CreateAdUnitRequest(proto.Message):
+    r"""Request object for ``CreateAdUnit`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where this ``AdUnit`` will be
+            created. Format: ``networks/{network_code}``
+        ad_unit (google.ads.admanager_v1.types.AdUnit):
+            Required. The ``AdUnit`` to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ad_unit: ad_unit_messages.AdUnit = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ad_unit_messages.AdUnit,
+    )
+
+
+class UpdateAdUnitRequest(proto.Message):
+    r"""Request object for ``UpdateAdUnit`` method.
+
+    Attributes:
+        ad_unit (google.ads.admanager_v1.types.AdUnit):
+            Required. The ``AdUnit`` to update.
+
+            The ``AdUnit``'s name is used to identify the ``AdUnit`` to
+            update. Format:
+            ``networks/{network_code}/adUnits/{ad_unit_id}``
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to update.
+    """
+
+    ad_unit: ad_unit_messages.AdUnit = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=ad_unit_messages.AdUnit,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class BatchCreateAdUnitsRequest(proto.Message):
+    r"""Request object for ``BatchCreateAdUnits`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``AdUnits`` will be
+            created. Format: ``networks/{network_code}`` The parent
+            field in the CreateAdUnitRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.CreateAdUnitRequest]):
+            Required. The ``AdUnit`` objects to create. A maximum of 100
+            objects can be created in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["CreateAdUnitRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="CreateAdUnitRequest",
+    )
+
+
+class BatchCreateAdUnitsResponse(proto.Message):
+    r"""Response object for ``BatchCreateAdUnits`` method.
+
+    Attributes:
+        ad_units (MutableSequence[google.ads.admanager_v1.types.AdUnit]):
+            The ``AdUnit`` objects created.
+    """
+
+    ad_units: MutableSequence[ad_unit_messages.AdUnit] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ad_unit_messages.AdUnit,
+    )
+
+
+class BatchUpdateAdUnitsRequest(proto.Message):
+    r"""Request object for ``BatchUpdateAdUnits`` method.
+
+    Attributes:
+        parent (str):
+            Required. The parent resource where ``AdUnits`` will be
+            updated. Format: ``networks/{network_code}`` The parent
+            field in the UpdateAdUnitRequest must match this field.
+        requests (MutableSequence[google.ads.admanager_v1.types.UpdateAdUnitRequest]):
+            Required. The ``AdUnit`` objects to update. A maximum of 100
+            objects can be updated in a batch.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    requests: MutableSequence["UpdateAdUnitRequest"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="UpdateAdUnitRequest",
+    )
+
+
+class BatchUpdateAdUnitsResponse(proto.Message):
+    r"""Response object for ``BatchUpdateAdUnits`` method.
+
+    Attributes:
+        ad_units (MutableSequence[google.ads.admanager_v1.types.AdUnit]):
+            The ``AdUnit`` objects updated.
+    """
+
+    ad_units: MutableSequence[ad_unit_messages.AdUnit] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ad_unit_messages.AdUnit,
+    )
+
+
 class ListAdUnitSizesRequest(proto.Message):
     r"""Request object for ListAdUnitSizes method.
 
@@ -257,6 +396,84 @@ class ListAdUnitSizesResponse(proto.Message):
         proto.INT32,
         number=3,
     )
+
+
+class BatchActivateAdUnitsRequest(proto.Message):
+    r"""Request object for ``BatchActivateAdUnits`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``AdUnit``\ s to
+            activate. Format:
+            ``networks/{network_code}/adUnits/{ad_unit_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchActivateAdUnitsResponse(proto.Message):
+    r"""Response object for ``BatchActivateAdUnits`` method."""
+
+
+class BatchDeactivateAdUnitsRequest(proto.Message):
+    r"""Request object for ``BatchDeactivateAdUnits`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``AdUnit``\ s to
+            deactivate. Format:
+            ``networks/{network_code}/adUnits/{ad_unit_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchDeactivateAdUnitsResponse(proto.Message):
+    r"""Response object for ``BatchDeactivateAdUnits`` method."""
+
+
+class BatchArchiveAdUnitsRequest(proto.Message):
+    r"""Request object for ``BatchArchiveAdUnits`` method.
+
+    Attributes:
+        parent (str):
+            Required. Format: ``networks/{network_code}``
+        names (MutableSequence[str]):
+            Required. The resource names of the ``AdUnit``\ s to
+            archive. Format:
+            ``networks/{network_code}/adUnits/{ad_unit_id}``
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class BatchArchiveAdUnitsResponse(proto.Message):
+    r"""Response object for ``BatchArchiveAdUnits`` method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

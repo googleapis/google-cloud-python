@@ -40,7 +40,6 @@ async def sample_unregister_subscriber():
 
     # Initialize request argument(s)
     request = channel_v1.UnregisterSubscriberRequest(
-        account="account_value",
         service_account="service_account_value",
     )
 

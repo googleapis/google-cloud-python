@@ -55,6 +55,7 @@ from google.oauth2 import service_account
 
 from google.ads.admanager_v1.services.network_service import (
     NetworkServiceClient,
+    pagers,
     transports,
 )
 from google.ads.admanager_v1.types import network_messages, network_service
@@ -1157,6 +1158,69 @@ def test_list_networks_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
+def test_list_networks_rest_pager(transport: str = "rest"):
+    client = NetworkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            network_service.ListNetworksResponse(
+                networks=[
+                    network_messages.Network(),
+                    network_messages.Network(),
+                    network_messages.Network(),
+                ],
+                next_page_token="abc",
+            ),
+            network_service.ListNetworksResponse(
+                networks=[],
+                next_page_token="def",
+            ),
+            network_service.ListNetworksResponse(
+                networks=[
+                    network_messages.Network(),
+                ],
+                next_page_token="ghi",
+            ),
+            network_service.ListNetworksResponse(
+                networks=[
+                    network_messages.Network(),
+                    network_messages.Network(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            network_service.ListNetworksResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {}
+
+        pager = client.list_networks(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, network_messages.Network) for i in results)
+
+        pages = list(client.list_networks(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.NetworkServiceRestTransport(
@@ -1426,7 +1490,10 @@ def test_list_networks_rest_call_success(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = network_service.ListNetworksResponse()
+        return_value = network_service.ListNetworksResponse(
+            next_page_token="next_page_token_value",
+            total_size=1086,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -1441,7 +1508,9 @@ def test_list_networks_rest_call_success(request_type):
         response = client.list_networks(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, network_service.ListNetworksResponse)
+    assert isinstance(response, pagers.ListNetworksPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.total_size == 1086
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

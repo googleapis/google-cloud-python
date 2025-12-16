@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "PaymentType",
         "ResourceType",
         "PeriodType",
+        "DiscountType",
         "Offer",
         "ParameterDefinition",
         "Constraints",
@@ -41,6 +42,7 @@ __protobuf__ = proto.module(
         "PricePhase",
         "PriceTier",
         "Period",
+        "DiscountComponent",
     },
 )
 
@@ -168,6 +170,31 @@ class PeriodType(proto.Enum):
     DAY = 1
     MONTH = 2
     YEAR = 3
+
+
+class DiscountType(proto.Enum):
+    r"""Discount Type.
+
+    Values:
+        DISCOUNT_TYPE_UNSPECIFIED (0):
+            Not used.
+        REGIONAL_DISCOUNT (1):
+            Regional discount.
+        PROMOTIONAL_DISCOUNT (2):
+            Promotional discount.
+        SALES_DISCOUNT (3):
+            Sales-provided discount.
+        RESELLER_MARGIN (4):
+            Reseller margin.
+        DEAL_CODE (5):
+            Deal code discount.
+    """
+    DISCOUNT_TYPE_UNSPECIFIED = 0
+    REGIONAL_DISCOUNT = 1
+    PROMOTIONAL_DISCOUNT = 2
+    SALES_DISCOUNT = 3
+    RESELLER_MARGIN = 4
+    DEAL_CODE = 5
 
 
 class Offer(proto.Message):
@@ -478,9 +505,17 @@ class Price(proto.Message):
             0.2.
         effective_price (google.type.money_pb2.Money):
             Effective Price after applying the discounts.
+        price_period (google.cloud.channel_v1.types.Period):
+            The time period with respect to which base
+            and effective prices are defined.
+            Example: 1 month, 6 months, 1 year, etc.
         external_price_uri (str):
             Link to external price list, such as link to
             Google Voice rate card.
+        discount_components (MutableSequence[google.cloud.channel_v1.types.DiscountComponent]):
+            Breakdown of the discount into its
+            components. This will be empty if there is no
+            discount present.
     """
 
     base_price: money_pb2.Money = proto.Field(
@@ -497,9 +532,19 @@ class Price(proto.Message):
         number=3,
         message=money_pb2.Money,
     )
+    price_period: "Period" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="Period",
+    )
     external_price_uri: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    discount_components: MutableSequence["DiscountComponent"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="DiscountComponent",
     )
 
 
@@ -601,6 +646,50 @@ class Period(proto.Message):
         proto.ENUM,
         number=2,
         enum="PeriodType",
+    )
+
+
+class DiscountComponent(proto.Message):
+    r"""Represents a single component of the total discount
+    applicable on a Price.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        discount_percentage (float):
+            Discount percentage, represented as decimal.
+            For example, a 20% discount will be represented
+            as 0.2.
+
+            This field is a member of `oneof`_ ``discount_value``.
+        discount_absolute (google.type.money_pb2.Money):
+            Fixed value discount.
+
+            This field is a member of `oneof`_ ``discount_value``.
+        discount_type (google.cloud.channel_v1.types.DiscountType):
+            Type of the discount.
+    """
+
+    discount_percentage: float = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        oneof="discount_value",
+    )
+    discount_absolute: money_pb2.Money = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="discount_value",
+        message=money_pb2.Money,
+    )
+    discount_type: "DiscountType" = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DiscountType",
     )
 
 

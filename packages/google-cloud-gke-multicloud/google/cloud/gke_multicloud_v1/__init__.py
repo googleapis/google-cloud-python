@@ -35,6 +35,9 @@ from .types.attached_resources import (
     AttachedProxyConfig,
     AttachedServerConfig,
     KubernetesSecret,
+    Label,
+    SystemComponentsConfig,
+    Toleration,
 )
 from .types.attached_service import (
     CreateAttachedClusterRequest,
@@ -278,6 +281,7 @@ __all__ = (
     "ImportAttachedClusterRequest",
     "Jwk",
     "KubernetesSecret",
+    "Label",
     "ListAttachedClustersRequest",
     "ListAttachedClustersResponse",
     "ListAwsClustersRequest",
@@ -303,6 +307,8 @@ __all__ = (
     "SecurityPostureConfig",
     "SpotConfig",
     "SurgeSettings",
+    "SystemComponentsConfig",
+    "Toleration",
     "UpdateAttachedClusterRequest",
     "UpdateAwsClusterRequest",
     "UpdateAwsNodePoolRequest",

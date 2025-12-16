@@ -61,8 +61,8 @@ class Order(proto.Message):
 
             This field is a member of `oneof`_ ``_trafficker``.
         advertiser_contacts (MutableSequence[str]):
-            Optional. The resource names of Contacts from the advertiser
-            of this Order. Format:
+            Optional. Unordered list. The resource names of Contacts
+            from the advertiser of this Order. Format:
             "networks/{network_code}/contacts/{contact_id}".
         advertiser (str):
             Required. The resource name of the Company, which is of type

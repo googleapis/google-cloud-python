@@ -4,6 +4,35 @@
 
 [1]: https://pypi.org/project/google-cloud-channel/#history
 
+## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.24.0...google-cloud-channel-v1.25.0) (2025-12-04)
+
+
+### Documentation
+
+* A comment for field `owned` in message `.google.cloud.channel.v1.CloudIdentityCustomerAccount` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `customer_attestation_state` in message `.google.cloud.channel.v1.Customer` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `event_type` in message `.google.cloud.channel.v1.CustomerEvent` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for method `RegisterSubscriber` in service `CloudChannelService` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `account` in message `.google.cloud.channel.v1.RegisterSubscriberRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for message `ChangeParametersRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `account` in message `.google.cloud.channel.v1.ListSubscribersRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `offers` in message `.google.cloud.channel.v1.ListOffersResponse` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `page_token` in message `.google.cloud.channel.v1.ListSkuGroupBillableSkusRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for method `UnregisterSubscriber` in service `CloudChannelService` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `entitlement_granularity` in message `.google.cloud.channel.v1.RepricingConfig` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `account` in message `.google.cloud.channel.v1.UnregisterSubscriberRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `event_type` in message `.google.cloud.channel.v1.EntitlementEvent` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `page_token` in message `.google.cloud.channel.v1.ListSkuGroupsRequest` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `next_page_token` in message `.google.cloud.channel.v1.ListSkuGroupsResponse` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for field `next_page_token` in message `.google.cloud.channel.v1.ListSkuGroupBillableSkusResponse` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for enum `CustomerAttestationState` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A comment for method `ListSubscribers` in service `CloudChannelService` is changed ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
+
+### Bug Fixes
+
+* Changed field behavior for an existing field `entitlement_granularity` in message `.google.cloud.channel.v1.RepricingConfig` ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
 ## [1.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.23.0...google-cloud-channel-v1.24.0) (2025-10-16)
 
 

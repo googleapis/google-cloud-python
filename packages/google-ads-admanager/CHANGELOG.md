@@ -4,6 +4,30 @@
 
 [1]: https://pypi.org/project/google-ads-admanager/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.6.0...google-ads-admanager-v0.7.0) (2025-12-11)
+
+
+### Documentation
+
+* Updated documentation for Report metrics and dimensions ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Made `status` optional for SearchAdReviewCenterAds ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Updated documentation for `ad_review_center_ad_id` filter ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
+
+### Features
+
+* Added write methods for AdUnits ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Added write methods for CustomTargetingKeys ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Added LineItem service ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Added additional Report metrics and dimensions ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
+
+### Bug Fixes
+
+* Renamed `USER_MESSAGES_CCPA_MESSAGES_SHOWN` `Metric` to `USER_MESSAGES_US_STATES_MESSAGES_SHOWN` ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Added proto3 optional to Network primitive fields ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+* Added pagination to ListNetworks ([4927067384eb6ed2018bb886f90265b7bcfc800e](https://github.com/googleapis/google-cloud-python/commit/4927067384eb6ed2018bb886f90265b7bcfc800e))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-ads-admanager-v0.5.0...google-ads-admanager-v0.6.0) (2025-10-28)
 
 

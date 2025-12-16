@@ -144,8 +144,8 @@ class RepricingConfig(proto.Message):
 
     Attributes:
         entitlement_granularity (google.cloud.channel_v1.types.RepricingConfig.EntitlementGranularity):
-            Applies the repricing configuration at the entitlement
-            level.
+            Required. Applies the repricing configuration at the
+            entitlement level.
 
             Note: If a
             [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]

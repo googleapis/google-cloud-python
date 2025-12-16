@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-parallelstore/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.3.0...google-cloud-parallelstore-v0.4.0) (2025-12-04)
+
+
+### Documentation
+
+* update tickets component number ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
+
+### Features
+
+* add transfer metadata options proto definition ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.2.15...google-cloud-parallelstore-v0.3.0) (2025-10-20)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-backupdr/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.4.0...google-cloud-backupdr-v0.5.0) (2025-12-04)
+
+
+### Features
+
+* Adding new fields for CMEK and Retention Inheritance features ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* Adding `unreachable` field to `ListDataSourceReferences` API ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.3.0...google-cloud-backupdr-v0.4.0) (2025-11-06)
 
 

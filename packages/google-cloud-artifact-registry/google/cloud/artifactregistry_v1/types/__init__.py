@@ -48,6 +48,11 @@ from .attachment import (
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
+from .export import (
+    ExportArtifactMetadata,
+    ExportArtifactRequest,
+    ExportArtifactResponse,
+)
 from .file import (
     DeleteFileRequest,
     File,
@@ -158,6 +163,9 @@ __all__ = (
     "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
+    "ExportArtifactMetadata",
+    "ExportArtifactRequest",
+    "ExportArtifactResponse",
     "DeleteFileRequest",
     "File",
     "GetFileRequest",

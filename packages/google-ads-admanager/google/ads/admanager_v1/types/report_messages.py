@@ -81,11 +81,17 @@ class Report(proto.Message):
                 configured the UI to show them.
             SAVED (2):
                 Reports with saved visibility will appear in
-                the Ad Manager UI by default.
+                the Ad Manager UI by default. Alias for VISIBLE
+                and will be replaced in the future.
+            VISIBLE (2):
+                Reports with this visibility will appear in
+                the Ad Manager UI.
         """
+        _pb_options = {"allow_alias": True}
         HIDDEN = 0
         DRAFT = 1
         SAVED = 2
+        VISIBLE = 2
 
     name: str = proto.Field(
         proto.STRING,

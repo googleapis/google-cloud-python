@@ -51,6 +51,7 @@ class geminidataanalyticsCallTransformer(cst.CSTTransformer):
         'list_conversations': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_data_agents': ('parent', 'page_size', 'page_token', 'filter', 'order_by', 'show_deleted', ),
         'list_messages': ('parent', 'page_size', 'page_token', 'filter', ),
+        'query_data': ('parent', 'prompt', 'context', 'generation_options', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'update_data_agent': ('data_agent', 'update_mask', 'request_id', ),
     }

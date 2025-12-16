@@ -34,6 +34,13 @@ class GoogleApiSource(proto.Message):
     r"""A GoogleApiSource represents a subscription of 1P events from
     a MessageBus.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         name (str):
             Identifier. Resource name of the form
@@ -73,7 +80,56 @@ class GoogleApiSource(proto.Message):
         logging_config (google.cloud.eventarc_v1.types.LoggingConfig):
             Optional. Config to control Platform logging
             for the GoogleApiSource.
+        organization_subscription (google.cloud.eventarc_v1.types.GoogleApiSource.OrganizationSubscription):
+            Optional. Config to enable subscribing to
+            events from all projects in the
+            GoogleApiSource's org.
+
+            This field is a member of `oneof`_ ``wide_scope_subscription``.
+        project_subscriptions (google.cloud.eventarc_v1.types.GoogleApiSource.ProjectSubscriptions):
+            Optional. Config to enable subscribing to all
+            events from a list of projects.
+
+            All the projects must be in the same org as the
+            GoogleApiSource.
+
+            This field is a member of `oneof`_ ``wide_scope_subscription``.
     """
+
+    class ProjectSubscriptions(proto.Message):
+        r"""Config to enable subscribing to all events from a list of
+        projects.
+
+        Attributes:
+            list_ (MutableSequence[str]):
+                Required. A list of projects to receive
+                events from.
+                All the projects must be in the same org. The
+                listed projects should have the format
+                project/{identifier} where identifier can be
+                either the project id for project number. A
+                single list may contain both formats. At most
+                100 projects can be listed.
+        """
+
+        list_: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+
+    class OrganizationSubscription(proto.Message):
+        r"""Config to enabled subscribing to events from other projects
+        in the org.
+
+        Attributes:
+            enabled (bool):
+                Required. Enable org level subscription.
+        """
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -123,6 +179,18 @@ class GoogleApiSource(proto.Message):
         proto.MESSAGE,
         number=11,
         message=gce_logging_config.LoggingConfig,
+    )
+    organization_subscription: OrganizationSubscription = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="wide_scope_subscription",
+        message=OrganizationSubscription,
+    )
+    project_subscriptions: ProjectSubscriptions = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="wide_scope_subscription",
+        message=ProjectSubscriptions,
     )
 
 

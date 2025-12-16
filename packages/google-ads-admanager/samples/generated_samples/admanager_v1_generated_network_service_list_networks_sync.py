@@ -42,10 +42,11 @@ def sample_list_networks():
     request = admanager_v1.ListNetworksRequest()
 
     # Make the request
-    response = client.list_networks(request=request)
+    page_result = client.list_networks(request=request)
 
     # Handle the response
-    print(response)
+    for response in page_result:
+        print(response)
 
 
 # [END admanager_v1_generated_NetworkService_ListNetworks_sync]

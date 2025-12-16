@@ -236,6 +236,21 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         return self._transport
 
     @staticmethod
+    def account_path(
+        account: str,
+    ) -> str:
+        """Returns a fully-qualified account string."""
+        return "accounts/{account}".format(
+            account=account,
+        )
+
+    @staticmethod
+    def parse_account_path(path: str) -> Dict[str, str]:
+        """Parses a account path into its component segments."""
+        m = re.match(r"^accounts/(?P<account>.+?)$", path)
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def billing_account_path(
         account: str,
         billing_account: str,
@@ -2489,7 +2504,7 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Args:
             request (Union[google.cloud.channel_v1.types.ChangeParametersRequest, dict]):
                 The request object. Request message for
-                [CloudChannelService.ChangeParametersRequest][].
+                [CloudChannelService.ChangeParameters][google.cloud.channel.v1.CloudChannelService.ChangeParameters].
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -6545,8 +6560,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service.RegisterSubscriberResponse:
         r"""Registers a service account with subscriber privileges on the
-        Cloud Pub/Sub topic for this Channel Services account. After you
-        create a subscriber, you get the events through
+        Pub/Sub topic for this Channel Services account or integrator.
+        After you create a subscriber, you get the events through
         [SubscriberEvent][google.cloud.channel.v1.SubscriberEvent]
 
         Possible error codes:
@@ -6581,7 +6596,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = channel_v1.RegisterSubscriberRequest(
-                    account="account_value",
                     service_account="service_account_value",
                 )
 
@@ -6648,10 +6662,10 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> service.UnregisterSubscriberResponse:
         r"""Unregisters a service account with subscriber privileges on the
-        Cloud Pub/Sub topic created for this Channel Services account.
-        If there are no service accounts left with subscriber
-        privileges, this deletes the topic. You can call ListSubscribers
-        to check for these accounts.
+        Pub/Sub topic created for this Channel Services account or
+        integrator. If there are no service accounts left with
+        subscriber privileges, this deletes the topic. You can call
+        ListSubscribers to check for these accounts.
 
         Possible error codes:
 
@@ -6687,7 +6701,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = channel_v1.UnregisterSubscriberRequest(
-                    account="account_value",
                     service_account="service_account_value",
                 )
 
@@ -6753,8 +6766,8 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSubscribersPager:
-        r"""Lists service accounts with subscriber privileges on the Cloud
-        Pub/Sub topic created for this Channel Services account.
+        r"""Lists service accounts with subscriber privileges on the Pub/Sub
+        topic created for this Channel Services account or integrator.
 
         Possible error codes:
 
@@ -6788,7 +6801,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
                 # Initialize request argument(s)
                 request = channel_v1.ListSubscribersRequest(
-                    account="account_value",
                 )
 
                 # Make the request

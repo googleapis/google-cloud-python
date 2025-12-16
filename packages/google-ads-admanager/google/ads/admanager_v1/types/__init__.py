@@ -36,11 +36,23 @@ from .ad_review_center_ad_service import (
 from .ad_unit_enums import AdUnitStatusEnum, SmartSizeModeEnum, TargetWindowEnum
 from .ad_unit_messages import AdUnit, AdUnitParent, AdUnitSize, LabelFrequencyCap
 from .ad_unit_service import (
+    BatchActivateAdUnitsRequest,
+    BatchActivateAdUnitsResponse,
+    BatchArchiveAdUnitsRequest,
+    BatchArchiveAdUnitsResponse,
+    BatchCreateAdUnitsRequest,
+    BatchCreateAdUnitsResponse,
+    BatchDeactivateAdUnitsRequest,
+    BatchDeactivateAdUnitsResponse,
+    BatchUpdateAdUnitsRequest,
+    BatchUpdateAdUnitsResponse,
+    CreateAdUnitRequest,
     GetAdUnitRequest,
     ListAdUnitSizesRequest,
     ListAdUnitSizesResponse,
     ListAdUnitsRequest,
     ListAdUnitsResponse,
+    UpdateAdUnitRequest,
 )
 from .admanager_error import AdManagerError
 from .application_messages import Application
@@ -165,9 +177,19 @@ from .custom_targeting_key_enums import (
 )
 from .custom_targeting_key_messages import CustomTargetingKey
 from .custom_targeting_key_service import (
+    BatchActivateCustomTargetingKeysRequest,
+    BatchActivateCustomTargetingKeysResponse,
+    BatchCreateCustomTargetingKeysRequest,
+    BatchCreateCustomTargetingKeysResponse,
+    BatchDeactivateCustomTargetingKeysRequest,
+    BatchDeactivateCustomTargetingKeysResponse,
+    BatchUpdateCustomTargetingKeysRequest,
+    BatchUpdateCustomTargetingKeysResponse,
+    CreateCustomTargetingKeyRequest,
     GetCustomTargetingKeyRequest,
     ListCustomTargetingKeysRequest,
     ListCustomTargetingKeysResponse,
+    UpdateCustomTargetingKeyRequest,
 )
 from .custom_targeting_value_enums import (
     CustomTargetingValueMatchTypeEnum,
@@ -220,7 +242,16 @@ from .geo_target_service import (
     ListGeoTargetsRequest,
     ListGeoTargetsResponse,
 )
+from .goal import Goal
+from .goal_enums import GoalTypeEnum, UnitTypeEnum
 from .label_messages import Label
+from .line_item_enums import LineItemTypeEnum
+from .line_item_messages import LineItem
+from .line_item_service import (
+    GetLineItemRequest,
+    ListLineItemsRequest,
+    ListLineItemsResponse,
+)
 from .live_stream_event_messages import LiveStreamEvent
 from .mobile_carrier_messages import MobileCarrier
 from .mobile_carrier_service import (
@@ -424,11 +455,23 @@ __all__ = (
     "AdUnitParent",
     "AdUnitSize",
     "LabelFrequencyCap",
+    "BatchActivateAdUnitsRequest",
+    "BatchActivateAdUnitsResponse",
+    "BatchArchiveAdUnitsRequest",
+    "BatchArchiveAdUnitsResponse",
+    "BatchCreateAdUnitsRequest",
+    "BatchCreateAdUnitsResponse",
+    "BatchDeactivateAdUnitsRequest",
+    "BatchDeactivateAdUnitsResponse",
+    "BatchUpdateAdUnitsRequest",
+    "BatchUpdateAdUnitsResponse",
+    "CreateAdUnitRequest",
     "GetAdUnitRequest",
     "ListAdUnitSizesRequest",
     "ListAdUnitSizesResponse",
     "ListAdUnitsRequest",
     "ListAdUnitsResponse",
+    "UpdateAdUnitRequest",
     "AdManagerError",
     "Application",
     "GetApplicationRequest",
@@ -522,9 +565,19 @@ __all__ = (
     "CustomTargetingKeyStatusEnum",
     "CustomTargetingKeyTypeEnum",
     "CustomTargetingKey",
+    "BatchActivateCustomTargetingKeysRequest",
+    "BatchActivateCustomTargetingKeysResponse",
+    "BatchCreateCustomTargetingKeysRequest",
+    "BatchCreateCustomTargetingKeysResponse",
+    "BatchDeactivateCustomTargetingKeysRequest",
+    "BatchDeactivateCustomTargetingKeysResponse",
+    "BatchUpdateCustomTargetingKeysRequest",
+    "BatchUpdateCustomTargetingKeysResponse",
+    "CreateCustomTargetingKeyRequest",
     "GetCustomTargetingKeyRequest",
     "ListCustomTargetingKeysRequest",
     "ListCustomTargetingKeysResponse",
+    "UpdateCustomTargetingKeyRequest",
     "CustomTargetingValueMatchTypeEnum",
     "CustomTargetingValueStatusEnum",
     "CustomTargetingValue",
@@ -562,7 +615,15 @@ __all__ = (
     "GetGeoTargetRequest",
     "ListGeoTargetsRequest",
     "ListGeoTargetsResponse",
+    "Goal",
+    "GoalTypeEnum",
+    "UnitTypeEnum",
     "Label",
+    "LineItemTypeEnum",
+    "LineItem",
+    "GetLineItemRequest",
+    "ListLineItemsRequest",
+    "ListLineItemsResponse",
     "LiveStreamEvent",
     "MobileCarrier",
     "GetMobileCarrierRequest",

@@ -512,6 +512,35 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
             )
         return self._stubs["list_messages"]
 
+    @property
+    def query_data(
+        self,
+    ) -> Callable[
+        [data_chat_service.QueryDataRequest],
+        Awaitable[data_chat_service.QueryDataResponse],
+    ]:
+        r"""Return a callable for the query data method over gRPC.
+
+        Queries data from a natural language user query.
+
+        Returns:
+            Callable[[~.QueryDataRequest],
+                    Awaitable[~.QueryDataResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_data" not in self._stubs:
+            self._stubs["query_data"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.DataChatService/QueryData",
+                request_serializer=data_chat_service.QueryDataRequest.serialize,
+                response_deserializer=data_chat_service.QueryDataResponse.deserialize,
+            )
+        return self._stubs["query_data"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -542,6 +571,11 @@ class DataChatServiceGrpcAsyncIOTransport(DataChatServiceTransport):
             ),
             self.list_messages: self._wrap_method(
                 self.list_messages,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_data: self._wrap_method(
+                self.query_data,
                 default_timeout=None,
                 client_info=client_info,
             ),

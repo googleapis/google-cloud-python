@@ -59,6 +59,11 @@ from google.cloud.artifactregistry_v1.types.attachment import (
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
+from google.cloud.artifactregistry_v1.types.export import (
+    ExportArtifactMetadata,
+    ExportArtifactRequest,
+    ExportArtifactResponse,
+)
 from google.cloud.artifactregistry_v1.types.file import (
     DeleteFileRequest,
     File,
@@ -175,6 +180,9 @@ __all__ = (
     "GetAttachmentRequest",
     "ListAttachmentsRequest",
     "ListAttachmentsResponse",
+    "ExportArtifactMetadata",
+    "ExportArtifactRequest",
+    "ExportArtifactResponse",
     "DeleteFileRequest",
     "File",
     "GetFileRequest",

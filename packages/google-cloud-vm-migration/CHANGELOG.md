@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-vm-migration/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.13.0...google-cloud-vm-migration-v1.14.0) (2025-12-04)
+
+
+### Documentation
+
+* A comment for message `DataDiskImageImport` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for method `CancelImageImportJob` in service `VmMigration` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+
+
+### Features
+
+* add adaptation modifiers and guest OS features to ImageImport target details ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* add adaptation modifiers and storage pools to MigratingVM target defaults ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vm-migration-v1.12.0...google-cloud-vm-migration-v1.13.0) (2025-10-20)
 
 

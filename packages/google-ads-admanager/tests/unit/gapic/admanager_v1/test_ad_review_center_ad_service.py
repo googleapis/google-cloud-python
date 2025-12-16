@@ -1157,12 +1157,7 @@ def test_search_ad_review_center_ads_rest_unset_required_fields():
                 "status",
             )
         )
-        & set(
-            (
-                "parent",
-                "status",
-            )
-        )
+        & set(("parent",))
     )
 
 

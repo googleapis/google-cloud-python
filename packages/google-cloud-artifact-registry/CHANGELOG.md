@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-artifact-registry/#history
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.17.0...google-cloud-artifact-registry-v1.18.0) (2025-12-04)
+
+
+### Documentation
+
+* A comment for enum value `ENABLEMENT_CONFIG_UNSPECIFIED` in enum `EnablementConfig` is changed ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* A comment for field `name` in message `.google.devtools.artifactregistry.v1.DockerImage` is changed ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* A comment for field `satisfies_pzs` in message `.google.devtools.artifactregistry.v1.Repository` is changed ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* A comment for field `satisfies_pzi` in message `.google.devtools.artifactregistry.v1.Repository` is changed ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
+
+### Features
+
+* add ExportArtifact API ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* add artifact_type field in DockerImage ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* add image_manifest field in DockerImage ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+* add Ruby format in VulnerabilityScanningConfig ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.16.1...google-cloud-artifact-registry-v1.17.0) (2025-10-16)
 
 

@@ -74,11 +74,13 @@ class SearchAdReviewCenterAdsRequest(proto.Message):
             returned from a previous Search request, or
             empty.
         status (google.ads.admanager_v1.types.AdReviewCenterAdStatusEnum.AdReviewCenterAdStatus):
-            Required. Only return ads with the given
+            Optional. Only return ads with the given
             status.
         ad_review_center_ad_id (MutableSequence[str]):
-            Optional. If provided, only return ads with
-            the given AdReviewCenterAd IDs.
+            Optional. Only return ads with the given
+            AdReviewCenterAd IDs. If provided, no other
+            filter can be set (other than page size and page
+            token).
         date_time_range (google.type.interval_pb2.Interval):
             Optional. If provided, only return ads that
             served within the given date range (inclusive).

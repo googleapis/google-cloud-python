@@ -292,6 +292,11 @@ class ServiceScaling(proto.Message):
             on the percent of traffic they are receiving.
         scaling_mode (google.cloud.run_v2.types.ServiceScaling.ScalingMode):
             Optional. The scaling mode for the service.
+        max_instance_count (int):
+            Optional. total max instances for the
+            service. This number of instances is divided
+            among all revisions with specified traffic based
+            on the percent of traffic they are receiving.
         manual_instance_count (int):
             Optional. total instance count for the
             service in manual scaling mode. This number of
@@ -328,6 +333,10 @@ class ServiceScaling(proto.Message):
         proto.ENUM,
         number=3,
         enum=ScalingMode,
+    )
+    max_instance_count: int = proto.Field(
+        proto.INT32,
+        number=4,
     )
     manual_instance_count: int = proto.Field(
         proto.INT32,

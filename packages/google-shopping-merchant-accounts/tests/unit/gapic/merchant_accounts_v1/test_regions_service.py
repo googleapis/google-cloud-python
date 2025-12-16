@@ -53,6 +53,7 @@ from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 from google.shopping.merchant_accounts_v1.services.regions_service import (
     RegionsServiceAsyncClient,
@@ -5738,6 +5739,12 @@ def test_create_region_rest_call_success(request_type):
         "geotarget_area": {"geotarget_criteria_ids": [2324, 2325]},
         "regional_inventory_eligible": {"value": True},
         "shipping_eligible": {},
+        "radius_area": {
+            "region_code": "region_code_value",
+            "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+            "radius": 0.648,
+            "radius_units": 1,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -6068,6 +6075,12 @@ def test_update_region_rest_call_success(request_type):
         "geotarget_area": {"geotarget_criteria_ids": [2324, 2325]},
         "regional_inventory_eligible": {"value": True},
         "shipping_eligible": {},
+        "radius_area": {
+            "region_code": "region_code_value",
+            "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+            "radius": 0.648,
+            "radius_units": 1,
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -871,7 +871,7 @@ class Cluster(proto.Message):
             maintenance.
         initial_user (google.cloud.alloydb_v1.types.UserPassword):
             Input only. Initial user to setup during cluster creation.
-            Required. If used in ``RestoreCluster`` this is ignored.
+            If used in ``RestoreCluster`` this is ignored.
         automated_backup_policy (google.cloud.alloydb_v1.types.AutomatedBackupPolicy):
             The automated backup policy for this cluster.
 

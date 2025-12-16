@@ -4,6 +4,39 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-accounts/#history
 
+## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.1.0...google-shopping-merchant-accounts-v1.2.0) (2025-12-04)
+
+
+### Documentation
+
+* A comment for message `User` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for enum `AccessRight` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for enum `State` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for message `Program` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for enum value `API_DEVELOPER` in enum `AccessRight` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for method `DeleteAccount` in service `AccountsService` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A comment for field `developer_email` in message `.google.shopping.merchant.accounts.v1.RegisterGcpRequest` is changed ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+
+
+### Features
+
+* A new field `radius_area` is added to message `.google.shopping.merchant.accounts.v1.Region` ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* A new field `comparison_shopping` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `products_management` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new method `GetAccountForGcpRegistration` is added to service `DeveloperRegistrationService` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `account_management` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `external_account_id` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new message `SetAliasForRelationship` is added ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new method `VerifySelf` is added to service `UserService` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new message `VerifySelfRequest` is added ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new message `VerificationMailSettings` is added ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `comparison_shopping` is added to message `.google.shopping.merchant.accounts.v1.AccountService` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `campaigns_management` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new message `ComparisonShopping` is added ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new message `GetAccountForGcpRegistrationResponse` is added ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `verification_mail_settings` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+* A new field `set_alias` is added to message `.google.shopping.merchant.accounts.v1.CreateAndConfigureAccountRequest` ([c958ebdfe9351d3d4e80d388a6e95804b515d030](https://github.com/googleapis/google-cloud-python/commit/c958ebdfe9351d3d4e80d388a6e95804b515d030))
+
 ## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-accounts-v1.0.0...google-shopping-merchant-accounts-v1.1.0) (2025-10-20)
 
 

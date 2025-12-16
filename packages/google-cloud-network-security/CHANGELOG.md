@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-network-security/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.21...google-cloud-network-security-v0.10.0) (2025-12-04)
+
+
+### Features
+
+* publish networksecurity v1beta1 api ([2da5c2afe0241e6dcb33aa9a0e5032012bf63df4](https://github.com/googleapis/google-cloud-python/commit/2da5c2afe0241e6dcb33aa9a0e5032012bf63df4))
+* publish networksecurity v1alpha1 api ([d4e6a4ab7b428e821a59b053c689343b5f5511f9](https://github.com/googleapis/google-cloud-python/commit/d4e6a4ab7b428e821a59b053c689343b5f5511f9))
+
 ## [0.9.21](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-security-v0.9.20...google-cloud-network-security-v0.9.21) (2025-10-14)
 
 

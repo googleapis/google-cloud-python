@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-shopping-merchant-quota/#history
 
+## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v1.1.0...google-shopping-merchant-quota-v1.2.0) (2025-12-04)
+
+
+### Features
+
+* Add the AccountLimit resource and its service to the quota bundle ([03e69912a61695deefca6ffaae1add8119f026e4](https://github.com/googleapis/google-cloud-python/commit/03e69912a61695deefca6ffaae1add8119f026e4))
+
 ## [1.1.0](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-quota-v1.0.0...google-shopping-merchant-quota-v1.1.0) (2025-10-20)
 
 

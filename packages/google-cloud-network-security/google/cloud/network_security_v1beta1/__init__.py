@@ -18,6 +18,10 @@ from google.cloud.network_security_v1beta1 import gapic_version as package_versi
 __version__ = package_version.__version__
 
 
+from .services.dns_threat_detector_service import (
+    DnsThreatDetectorServiceAsyncClient,
+    DnsThreatDetectorServiceClient,
+)
 from .services.network_security import NetworkSecurityAsyncClient, NetworkSecurityClient
 from .types.authorization_policy import (
     AuthorizationPolicy,
@@ -38,6 +42,15 @@ from .types.client_tls_policy import (
     UpdateClientTlsPolicyRequest,
 )
 from .types.common import OperationMetadata
+from .types.dns_threat_detector import (
+    CreateDnsThreatDetectorRequest,
+    DeleteDnsThreatDetectorRequest,
+    DnsThreatDetector,
+    GetDnsThreatDetectorRequest,
+    ListDnsThreatDetectorsRequest,
+    ListDnsThreatDetectorsResponse,
+    UpdateDnsThreatDetectorRequest,
+)
 from .types.server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,
@@ -55,6 +68,7 @@ from .types.tls import (
 )
 
 __all__ = (
+    "DnsThreatDetectorServiceAsyncClient",
     "NetworkSecurityAsyncClient",
     "AuthorizationPolicy",
     "CertificateProvider",
@@ -62,18 +76,25 @@ __all__ = (
     "ClientTlsPolicy",
     "CreateAuthorizationPolicyRequest",
     "CreateClientTlsPolicyRequest",
+    "CreateDnsThreatDetectorRequest",
     "CreateServerTlsPolicyRequest",
     "DeleteAuthorizationPolicyRequest",
     "DeleteClientTlsPolicyRequest",
+    "DeleteDnsThreatDetectorRequest",
     "DeleteServerTlsPolicyRequest",
+    "DnsThreatDetector",
+    "DnsThreatDetectorServiceClient",
     "GetAuthorizationPolicyRequest",
     "GetClientTlsPolicyRequest",
+    "GetDnsThreatDetectorRequest",
     "GetServerTlsPolicyRequest",
     "GrpcEndpoint",
     "ListAuthorizationPoliciesRequest",
     "ListAuthorizationPoliciesResponse",
     "ListClientTlsPoliciesRequest",
     "ListClientTlsPoliciesResponse",
+    "ListDnsThreatDetectorsRequest",
+    "ListDnsThreatDetectorsResponse",
     "ListServerTlsPoliciesRequest",
     "ListServerTlsPoliciesResponse",
     "NetworkSecurityClient",
@@ -81,6 +102,7 @@ __all__ = (
     "ServerTlsPolicy",
     "UpdateAuthorizationPolicyRequest",
     "UpdateClientTlsPolicyRequest",
+    "UpdateDnsThreatDetectorRequest",
     "UpdateServerTlsPolicyRequest",
     "ValidationCA",
 )

@@ -38,7 +38,8 @@ class CustomerEvent(proto.Message):
             Resource name of the customer. Format:
             accounts/{account_id}/customers/{customer_id}
         event_type (google.cloud.channel_v1.types.CustomerEvent.Type):
-            Type of event which happened on the customer.
+            Type of event which happened for the
+            customer.
     """
 
     class Type(proto.Enum):
@@ -77,7 +78,7 @@ class EntitlementEvent(proto.Message):
             Resource name of an entitlement of the form:
             accounts/{account_id}/customers/{customer_id}/entitlements/{entitlement_id}
         event_type (google.cloud.channel_v1.types.EntitlementEvent.Type):
-            Type of event which happened on the
+            Type of event which happened for the
             entitlement.
     """
 

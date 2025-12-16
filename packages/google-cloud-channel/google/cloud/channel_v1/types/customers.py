@@ -89,15 +89,13 @@ class Customer(proto.Message):
             Populated only if a CRM ID exists for this
             customer.
         customer_attestation_state (google.cloud.channel_v1.types.Customer.CustomerAttestationState):
-            Optional. Indicate whether a customer is
-            attesting about the correctness of provided
-            information. Only required if creating a GCP
-            Entitlement.
+            Optional. Indicate if a customer is attesting
+            about the correctness of provided information.
+            Only required if creating a GCP Entitlement.
     """
 
     class CustomerAttestationState(proto.Enum):
-        r"""The enum represents whether a customer belongs to public
-        sector
+        r"""The enum represents if a customer belongs to public sector
 
         Values:
             CUSTOMER_ATTESTATION_STATE_UNSPECIFIED (0):

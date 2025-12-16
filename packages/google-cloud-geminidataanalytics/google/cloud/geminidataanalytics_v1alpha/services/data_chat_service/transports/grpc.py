@@ -497,6 +497,34 @@ class DataChatServiceGrpcTransport(DataChatServiceTransport):
             )
         return self._stubs["list_messages"]
 
+    @property
+    def query_data(
+        self,
+    ) -> Callable[
+        [data_chat_service.QueryDataRequest], data_chat_service.QueryDataResponse
+    ]:
+        r"""Return a callable for the query data method over gRPC.
+
+        Queries data from a natural language user query.
+
+        Returns:
+            Callable[[~.QueryDataRequest],
+                    ~.QueryDataResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_data" not in self._stubs:
+            self._stubs["query_data"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1alpha.DataChatService/QueryData",
+                request_serializer=data_chat_service.QueryDataRequest.serialize,
+                response_deserializer=data_chat_service.QueryDataResponse.deserialize,
+            )
+        return self._stubs["query_data"]
+
     def close(self):
         self._logged_channel.close()
 

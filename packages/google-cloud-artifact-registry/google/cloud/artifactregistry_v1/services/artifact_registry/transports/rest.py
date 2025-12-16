@@ -37,6 +37,7 @@ from google.cloud.artifactregistry_v1.types import vpcsc_config as gda_vpcsc_con
 from google.cloud.artifactregistry_v1.types import apt_artifact, artifact
 from google.cloud.artifactregistry_v1.types import attachment
 from google.cloud.artifactregistry_v1.types import attachment as gda_attachment
+from google.cloud.artifactregistry_v1.types import export
 from google.cloud.artifactregistry_v1.types import file
 from google.cloud.artifactregistry_v1.types import file as gda_file
 from google.cloud.artifactregistry_v1.types import package
@@ -180,6 +181,14 @@ class ArtifactRegistryRestInterceptor:
                 return request, metadata
 
             def post_delete_version(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_export_artifact(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_export_artifact(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -968,6 +977,52 @@ class ArtifactRegistryRestInterceptor:
         `post_delete_version` interceptor. The (possibly modified) response returned by
         `post_delete_version` will be passed to
         `post_delete_version_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_export_artifact(
+        self,
+        request: export.ExportArtifactRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[export.ExportArtifactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for export_artifact
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the ArtifactRegistry server.
+        """
+        return request, metadata
+
+    def post_export_artifact(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for export_artifact
+
+        DEPRECATED. Please use the `post_export_artifact_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the ArtifactRegistry server but before
+        it is returned to user code. This `post_export_artifact` interceptor runs
+        before the `post_export_artifact_with_metadata` interceptor.
+        """
+        return response
+
+    def post_export_artifact_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for export_artifact
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the ArtifactRegistry server but before it is returned to user code.
+
+        We recommend only using this `post_export_artifact_with_metadata`
+        interceptor in new development instead of the `post_export_artifact` interceptor.
+        When both interceptors are used, this `post_export_artifact_with_metadata` interceptor runs after the
+        `post_export_artifact` interceptor. The (possibly modified) response returned by
+        `post_export_artifact` will be passed to
+        `post_export_artifact_with_metadata`.
         """
         return response, metadata
 
@@ -4617,6 +4672,158 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
                     extra={
                         "serviceName": "google.devtools.artifactregistry.v1.ArtifactRegistry",
                         "rpcName": "DeleteVersion",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _ExportArtifact(
+        _BaseArtifactRegistryRestTransport._BaseExportArtifact, ArtifactRegistryRestStub
+    ):
+        def __hash__(self):
+            return hash("ArtifactRegistryRestTransport.ExportArtifact")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: export.ExportArtifactRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the export artifact method over HTTP.
+
+            Args:
+                request (~.export.ExportArtifactRequest):
+                    The request object. The request for exporting an artifact
+                to a destination.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_export_artifact(request, metadata)
+            transcoded_request = _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseArtifactRegistryRestTransport._BaseExportArtifact._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.devtools.artifactregistry_v1.ArtifactRegistryClient.ExportArtifact",
+                    extra={
+                        "serviceName": "google.devtools.artifactregistry.v1.ArtifactRegistry",
+                        "rpcName": "ExportArtifact",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = ArtifactRegistryRestTransport._ExportArtifact._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_export_artifact(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_export_artifact_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.devtools.artifactregistry_v1.ArtifactRegistryClient.export_artifact",
+                    extra={
+                        "serviceName": "google.devtools.artifactregistry.v1.ArtifactRegistry",
+                        "rpcName": "ExportArtifact",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -10425,6 +10632,14 @@ class ArtifactRegistryRestTransport(_BaseArtifactRegistryRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVersion(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def export_artifact(
+        self,
+    ) -> Callable[[export.ExportArtifactRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ExportArtifact(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_attachment(
