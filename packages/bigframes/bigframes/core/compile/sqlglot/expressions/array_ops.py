@@ -30,9 +30,12 @@ register_nary_op = scalar_compiler.scalar_op_compiler.register_nary_op
 
 @register_unary_op(ops.ArrayIndexOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.ArrayIndexOp) -> sge.Expression:
+    if expr.dtype == dtypes.STRING_DTYPE:
+        return _string_index(expr, op)
+
     return sge.Bracket(
         this=expr.expr,
-        expressions=[sge.Literal.number(op.index)],
+        expressions=[sge.convert(op.index)],
         safe=True,
         offset=False,
     )
@@ -115,3 +118,16 @@ def _coerce_bool_to_int(typed_expr: TypedExpr) -> sge.Expression:
     if typed_expr.dtype == dtypes.BOOL_DTYPE:
         return sge.Cast(this=typed_expr.expr, to="INT64")
     return typed_expr.expr
+
+
+def _string_index(expr: TypedExpr, op: ops.ArrayIndexOp) -> sge.Expression:
+    sub_str = sge.Substring(
+        this=expr.expr,
+        start=sge.convert(op.index + 1),
+        length=sge.convert(1),
+    )
+    return sge.If(
+        this=sge.NEQ(this=sub_str, expression=sge.convert("")),
+        true=sub_str,
+        false=sge.Null(),
+    )

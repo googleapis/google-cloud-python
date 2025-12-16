@@ -5,7 +5,11 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    REGEXP_EXTRACT(`string_col`, '([a-z]*)') AS `bfcol_1`
+    IF(
+      REGEXP_CONTAINS(`string_col`, '([a-z]*)'),
+      REGEXP_REPLACE(`string_col`, CONCAT('.*?', '([a-z]*)', '.*'), '\\1'),
+      NULL
+    ) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

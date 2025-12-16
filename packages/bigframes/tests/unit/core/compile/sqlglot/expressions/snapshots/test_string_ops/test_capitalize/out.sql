@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    INITCAP(`string_col`) AS `bfcol_1`
+    INITCAP(`string_col`, '') AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

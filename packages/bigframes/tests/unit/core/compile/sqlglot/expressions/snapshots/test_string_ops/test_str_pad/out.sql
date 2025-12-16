@@ -10,7 +10,7 @@ WITH `bfcte_0` AS (
     RPAD(
       LPAD(
         `string_col`,
-        CAST(SAFE_DIVIDE(GREATEST(LENGTH(`string_col`), 10) - LENGTH(`string_col`), 2) AS INT64) + LENGTH(`string_col`),
+        CAST(FLOOR(SAFE_DIVIDE(GREATEST(LENGTH(`string_col`), 10) - LENGTH(`string_col`), 2)) AS INT64) + LENGTH(`string_col`),
         '-'
       ),
       GREATEST(LENGTH(`string_col`), 10),

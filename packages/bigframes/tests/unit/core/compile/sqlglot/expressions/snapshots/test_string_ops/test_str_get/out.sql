@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    SUBSTRING(`string_col`, 2, 1) AS `bfcol_1`
+    IF(SUBSTRING(`string_col`, 2, 1) <> '', SUBSTRING(`string_col`, 2, 1), NULL) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT
