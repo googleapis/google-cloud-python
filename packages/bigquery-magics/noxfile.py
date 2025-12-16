@@ -34,7 +34,7 @@ LINT_PATHS = ["docs", "bigquery_magics", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.10"
 
-UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.11", "3.12", "3.13", "3.14"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -67,9 +67,14 @@ UNIT_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "bigframes",
         "geopandas",
     ],
+    "3.14": [
+        "bqstorage",
+        "bigframes",
+        "geopandas",
+    ],
 }
 
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.11", "3.12", "3.13"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.9", "3.11", "3.12", "3.13", "3.14"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "mock",
     "pytest",
@@ -95,6 +100,11 @@ SYSTEM_TEST_EXTRAS_BY_PYTHON: Dict[str, List[str]] = {
         "spanner-graph-notebook",
     ],
     "3.13": [
+        "bqstorage",
+        "bigframes",
+        "geopandas",
+    ],
+    "3.14": [
         "bqstorage",
         "bigframes",
         "geopandas",
@@ -208,7 +218,12 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
