@@ -216,7 +216,8 @@ class AsyncMultiRangeDownloader:
 
         :type read_ranges: List[Tuple[int, int, "BytesIO"]]
         :param read_ranges: A list of tuples, where each tuple represents a
-            byte range (start_byte, bytes_to_read, writeable_buffer). Buffer has
+            combintaion of byte_range and writeable buffer in format -
+            (`start_byte`, `bytes_to_read`, `writeable_buffer`). Buffer has
             to be provided by the user, and user has to make sure appropriate
             memory is available in the application to avoid out-of-memory crash.
 

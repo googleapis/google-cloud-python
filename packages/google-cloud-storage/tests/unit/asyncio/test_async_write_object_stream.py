@@ -55,6 +55,7 @@ async def instantiate_write_obj_stream(mock_client, mock_cls_async_bidi_rpc, ope
     mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
     mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
     mock_response.resource.generation = GENERATION
+    mock_response.resource.size = 0
     mock_response.write_handle = WRITE_HANDLE
     socket_like_rpc.recv = AsyncMock(return_value=mock_response)
 
@@ -129,6 +130,7 @@ async def test_open_for_new_object(mock_async_bidi_rpc, mock_client):
     mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
     mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
     mock_response.resource.generation = GENERATION
+    mock_response.resource.size = 0
     mock_response.write_handle = WRITE_HANDLE
     socket_like_rpc.recv = mock.AsyncMock(return_value=mock_response)
 
@@ -143,6 +145,7 @@ async def test_open_for_new_object(mock_async_bidi_rpc, mock_client):
     socket_like_rpc.recv.assert_called_once()
     assert stream.generation_number == GENERATION
     assert stream.write_handle == WRITE_HANDLE
+    assert stream.persisted_size == 0
 
 
 @pytest.mark.asyncio
@@ -158,6 +161,7 @@ async def test_open_for_existing_object(mock_async_bidi_rpc, mock_client):
 
     mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
     mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
+    mock_response.resource.size = 1024
     mock_response.resource.generation = GENERATION
     mock_response.write_handle = WRITE_HANDLE
     socket_like_rpc.recv = mock.AsyncMock(return_value=mock_response)
@@ -175,6 +179,7 @@ async def test_open_for_existing_object(mock_async_bidi_rpc, mock_client):
     socket_like_rpc.recv.assert_called_once()
     assert stream.generation_number == GENERATION
     assert stream.write_handle == WRITE_HANDLE
+    assert stream.persisted_size == 1024
 
 
 @pytest.mark.asyncio
@@ -191,6 +196,7 @@ async def test_open_when_already_open_raises_error(mock_async_bidi_rpc, mock_cli
     mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
     mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
     mock_response.resource.generation = GENERATION
+    mock_response.resource.size = 0
     mock_response.write_handle = WRITE_HANDLE
     socket_like_rpc.recv = mock.AsyncMock(return_value=mock_response)
 

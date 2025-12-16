@@ -133,15 +133,10 @@ async def test_open_appendable_object_writer(mock_write_object_stream, mock_clie
     writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
     mock_stream = mock_write_object_stream.return_value
     mock_stream.open = mock.AsyncMock()
-    mock_stream.send = mock.AsyncMock()
-    mock_stream.recv = mock.AsyncMock()
-
-    mock_state_response = mock.MagicMock()
-    mock_state_response.persisted_size = 1024
-    mock_stream.recv.return_value = mock_state_response
 
     mock_stream.generation_number = GENERATION
     mock_stream.write_handle = WRITE_HANDLE
+    mock_stream.persisted_size = 0
 
     # Act
     await writer.open()
@@ -151,11 +146,37 @@ async def test_open_appendable_object_writer(mock_write_object_stream, mock_clie
     assert writer._is_stream_open
     assert writer.generation == GENERATION
     assert writer.write_handle == WRITE_HANDLE
+    assert writer.persisted_size == 0
 
-    expected_request = _storage_v2.BidiWriteObjectRequest(state_lookup=True)
-    mock_stream.send.assert_awaited_once_with(expected_request)
-    mock_stream.recv.assert_awaited_once()
-    assert writer.persisted_size == 1024
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+async def test_open_appendable_object_writer_existing_object(
+    mock_write_object_stream, mock_client
+):
+    """Test the open method."""
+    # Arrange
+    writer = AsyncAppendableObjectWriter(
+        mock_client, BUCKET, OBJECT, generation=GENERATION
+    )
+    mock_stream = mock_write_object_stream.return_value
+    mock_stream.open = mock.AsyncMock()
+
+    mock_stream.generation_number = GENERATION
+    mock_stream.write_handle = WRITE_HANDLE
+    mock_stream.persisted_size = PERSISTED_SIZE
+
+    # Act
+    await writer.open()
+
+    # Assert
+    mock_stream.open.assert_awaited_once()
+    assert writer._is_stream_open
+    assert writer.generation == GENERATION
+    assert writer.write_handle == WRITE_HANDLE
+    assert writer.persisted_size == PERSISTED_SIZE
 
 
 @pytest.mark.asyncio

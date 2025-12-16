@@ -114,7 +114,11 @@ class AsyncAppendableObjectWriter:
             write_handle=self.write_handle,
         )
         self._is_stream_open: bool = False
+        # `offset` is the latest size of the object without staleless.
         self.offset: Optional[int] = None
+        # `persisted_size` is the total_bytes persisted in the GCS server.
+        # Please note: `offset` and `persisted_size` are same when the stream is
+        # opened.
         self.persisted_size: Optional[int] = None
 
     async def state_lookup(self) -> int:
@@ -152,17 +156,17 @@ class AsyncAppendableObjectWriter:
         if self.generation is None:
             self.generation = self.write_obj_stream.generation_number
         self.write_handle = self.write_obj_stream.write_handle
-
-        # Update self.persisted_size
-        _ = await self.state_lookup()
+        self.persisted_size = self.write_obj_stream.persisted_size
 
     async def append(self, data: bytes) -> None:
         """Appends data to the Appendable object.
 
-        This method sends the provided data to the GCS server in chunks. It
-        maintains an internal threshold `_MAX_BUFFER_SIZE_BYTES` and will
-        automatically flush the data to make it visible to readers when that
-        threshold has reached.
+        calling `self.append` will append bytes at the end of the current size
+        ie. `self.offset` bytes relative to the begining of the object.
+
+        This method sends the provided `data` to the GCS server in chunks.
+        and persists data in GCS at every `_MAX_BUFFER_SIZE_BYTES` bytes by
+        calling `self.simple_flush`.
 
         :type data: bytes
         :param data: The bytes to append to the object.

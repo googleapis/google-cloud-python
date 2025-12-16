@@ -117,7 +117,6 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                     object=self.object_name,
                     generation=self.generation_number,
                 ),
-                state_lookup=True,
             )
 
         self.socket_like_rpc = AsyncBidiRpc(
@@ -136,11 +135,17 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             raise ValueError(
                 "Failed to obtain object generation after opening the stream"
             )
-        self.generation_number = response.resource.generation
 
         if not response.write_handle:
             raise ValueError("Failed to obtain write_handle after opening the stream")
 
+        if not response.resource.size:
+            # Appending to a 0 byte appendable object.
+            self.persisted_size = 0
+        else:
+            self.persisted_size = response.resource.size
+
+        self.generation_number = response.resource.generation
         self.write_handle = response.write_handle
 
     async def close(self) -> None:
