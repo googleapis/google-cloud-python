@@ -6,4 +6,3 @@ google-auth
 grpcio
 proto-plus
 protobuf
-grpc-google-iam-v1

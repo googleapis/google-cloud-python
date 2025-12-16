@@ -35,7 +35,7 @@ LINT_PATHS = ["google", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.14"
 
 DEFAULT_MOCK_SERVER_TESTS_PYTHON_VERSION = "3.12"
-SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS: List[str] = ["3.14"]
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.9",
@@ -43,6 +43,7 @@ UNIT_TEST_PYTHON_VERSIONS: List[str] = [
     "3.11",
     "3.12",
     "3.13",
+    "3.14",
 ]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
@@ -81,6 +82,7 @@ nox.options.sessions = [
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
+    "unit-3.14",
     "system",
     "cover",
     "lint",
@@ -195,7 +197,12 @@ def install_unittest_dependencies(session, *constraints):
 def unit(session, protobuf_implementation):
     # Install all test dependencies, then install this package in-place.
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
@@ -213,6 +220,7 @@ def unit(session, protobuf_implementation):
     session.run(
         "py.test",
         "--quiet",
+        "-s",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
         "--cov=google",
         "--cov=tests/unit",
@@ -326,7 +334,12 @@ def system(session, protobuf_implementation, database_dialect):
             "Only run system tests on real Spanner with one protobuf implementation to speed up the build"
         )
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install pyopenssl for mTLS testing.
@@ -470,7 +483,7 @@ def docfx(session):
     )
 
 
-@nox.session(python="3.13")
+@nox.session(python="3.14")
 @nox.parametrize(
     "protobuf_implementation,database_dialect",
     [
@@ -485,7 +498,12 @@ def docfx(session):
 def prerelease_deps(session, protobuf_implementation, database_dialect):
     """Run all tests with prerelease versions of dependencies installed."""
 
-    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13"):
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
