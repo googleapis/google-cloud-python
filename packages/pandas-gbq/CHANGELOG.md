@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.32.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.31.1...pandas-gbq-v0.32.0) (2025-12-16)
+
+
+### Features
+
+* Add support for Python 3.14 (#976) ([89b008d81e5992966ccab675511bc944682d0549](https://github.com/googleapis/google-cloud-python/commit/89b008d81e5992966ccab675511bc944682d0549))
+
+
+### Bug Fixes
+
+* boolean round-trip test and CSV datetime loading errors (#1000) ([d4431030e1b537e12f850d8206741b62ff4d7d67](https://github.com/googleapis/google-cloud-python/commit/d4431030e1b537e12f850d8206741b62ff4d7d67))
+
 ## [0.31.1](https://github.com/googleapis/python-bigquery-pandas/compare/v0.31.0...v0.31.1) (2025-12-08)
 
 ### Dependencies
