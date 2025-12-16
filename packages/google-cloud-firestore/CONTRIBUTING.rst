@@ -246,6 +246,7 @@ We support:
 .. _Python 3.10: https://docs.python.org/3.10/
 .. _Python 3.11: https://docs.python.org/3.11/
 .. _Python 3.12: https://docs.python.org/3.12/
+.. _Python 3.13: https://docs.python.org/3.13/
 .. _Python 3.14: https://docs.python.org/3.14/
 
 
