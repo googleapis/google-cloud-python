@@ -128,19 +128,14 @@ def unit(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
-    session.env["PIP_EXTRA_INDEX_URL"] = "https://pypi.org/simple"
-    session.install("-e", ".[testing]")
-    session.run(
-        "pytest",
-        "--cov=google.auth",
-        "--cov=google.oauth2",
-        "--cov=tests",
-        "--cov=tests_async",
-        "--cov-report=term-missing",
-        "tests",
-        "tests_async",
-    )
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "erase")
 
 
 @nox.session(python="3.10")
