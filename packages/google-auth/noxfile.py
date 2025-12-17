@@ -36,7 +36,7 @@ BLACK_PATHS = [
 DEFAULT_PYTHON_VERSION = "3.10"
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1787):
 # Remove or restore testing for Python 3.7/3.8
-UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -53,6 +53,7 @@ nox.options.sessions = [
     "unit-3.11",
     "unit-3.12",
     "unit-3.13",
+    "unit-3.14",
     # cover must be last to avoid error `No data to report`
     "cover",
     "docs",
@@ -105,6 +106,7 @@ def mypy(session):
         "types-requests",
         "types-setuptools",
         "types-mock",
+        "pytest<8.0.0",
     )
     session.run("mypy", "-p", "google", "-p", "tests", "-p", "tests_async")
 
@@ -129,6 +131,7 @@ def unit(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
+    session.env["PIP_EXTRA_INDEX_URL"] = "https://pypi.org/simple"
     session.install("-e", ".[testing]")
     session.run(
         "pytest",
@@ -143,7 +146,7 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
 
-@nox.session(python="3.10")
+@nox.session(python="3.9")
 def docs(session):
     """Build the docs for this library."""
 
@@ -156,52 +159,6 @@ def docs(session):
         "-T",  # show full traceback on exception
         "-W",  # warnings as errors
         "-N",  # no colors
-        "-b",
-        "html",
-        "-d",
-        os.path.join("docs", "_build", "doctrees", ""),
-        os.path.join("docs", ""),
-        os.path.join("docs", "_build", "html", ""),
-    )
-
-
-@nox.session(python="3.10")
-def docfx(session):
-    """Build the docfx yaml files for this library."""
-
-    session.install("-e", ".")
-    session.install(
-        # We need to pin to specific versions of the `sphinxcontrib-*` packages
-        # which still support sphinx 4.x.
-        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
-        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
-        "sphinxcontrib-applehelp==1.0.4",
-        "sphinxcontrib-devhelp==1.0.2",
-        "sphinxcontrib-htmlhelp==2.0.1",
-        "sphinxcontrib-qthelp==1.0.3",
-        "sphinxcontrib-serializinghtml==1.1.5",
-        "gcp-sphinx-docfx-yaml",
-        "alabaster",
-        "recommonmark",
-    )
-
-    shutil.rmtree(os.path.join("docs", "_build"), ignore_errors=True)
-    session.run(
-        "sphinx-build",
-        "-T",  # show full traceback on exception
-        "-N",  # no colors
-        "-D",
-        (
-            "extensions=sphinx.ext.autodoc,"
-            "sphinx.ext.autosummary,"
-            "docfx_yaml.extension,"
-            "sphinx.ext.intersphinx,"
-            "sphinx.ext.coverage,"
-            "sphinx.ext.napoleon,"
-            "sphinx.ext.todo,"
-            "sphinx.ext.viewcode,"
-            "recommonmark"
-        ),
         "-b",
         "html",
         "-d",
