@@ -252,8 +252,10 @@ async def fetch_id_token(request, audience):
 
                 info = json.load(f)
                 if info.get("type") == "service_account":
-                    credentials = service_account.IDTokenCredentials.from_service_account_info(
-                        info, target_audience=audience
+                    credentials = (
+                        service_account.IDTokenCredentials.from_service_account_info(
+                            info, target_audience=audience
+                        )
                     )
                     await credentials.refresh(request)
                     return credentials.token

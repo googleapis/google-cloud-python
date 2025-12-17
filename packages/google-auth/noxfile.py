@@ -20,10 +20,8 @@ import nox
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
-# https://github.com/psf/black/issues/2964, pin click version to 8.0.4 to
-# avoid incompatiblity with black.
-CLICK_VERSION = "click==8.0.4"
-BLACK_VERSION = "black==19.3b0"
+CLICK_VERSION = "click"
+BLACK_VERSION = "black==23.7.0"
 BLACK_PATHS = [
     "google",
     "tests",
@@ -33,7 +31,7 @@ BLACK_PATHS = [
     "docs/conf.py",
 ]
 
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.14"
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1787):
 # Remove or restore testing for Python 3.7/3.8
 UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
@@ -120,6 +118,7 @@ def unit(session):
     session.run(
         "pytest",
         f"--junitxml=unit_{session.python}_sponge_log.xml",
+        "--cov-append",
         "--cov=google.auth",
         "--cov=google.oauth2",
         "--cov=tests",
@@ -131,22 +130,17 @@ def unit(session):
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def cover(session):
-    session.env["PIP_EXTRA_INDEX_URL"] = "https://pypi.org/simple"
-    session.install("-e", ".[testing]")
-    session.run(
-        "pytest",
-        "--cov=google.auth",
-        "--cov=google.oauth2",
-        "--cov=tests",
-        "--cov=tests_async",
-        "--cov-report=term-missing",
-        "tests",
-        "tests_async",
-    )
+    """Run the final coverage report.
+
+    This outputs the coverage report aggregating coverage from the unit
+    test runs (not system test runs), and then erases coverage data.
+    """
+    session.install("coverage", "pytest-cov")
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "erase")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
 

@@ -127,7 +127,11 @@ async def _token_endpoint_request(
             an error.
     """
 
-    response_status_ok, response_data, retryable_error = await _token_endpoint_request_no_throw(
+    (
+        response_status_ok,
+        response_data,
+        retryable_error,
+    ) = await _token_endpoint_request_no_throw(
         request,
         token_uri,
         body,

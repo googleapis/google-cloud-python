@@ -32,8 +32,10 @@ REVOKE_URL = "https://sts.googleapis.com/v1/revoke"
 QUOTA_PROJECT_ID = "654321"
 POOL_ID = "POOL_ID"
 PROVIDER_ID = "PROVIDER_ID"
-AUDIENCE = "//iam.googleapis.com/locations/global/workforcePools/{}/providers/{}".format(
-    POOL_ID, PROVIDER_ID
+AUDIENCE = (
+    "//iam.googleapis.com/locations/global/workforcePools/{}/providers/{}".format(
+        POOL_ID, PROVIDER_ID
+    )
 )
 REFRESH_TOKEN = "REFRESH_TOKEN"
 NEW_REFRESH_TOKEN = "NEW_REFRESH_TOKEN"

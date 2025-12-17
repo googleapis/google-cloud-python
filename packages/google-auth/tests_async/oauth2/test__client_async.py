@@ -42,7 +42,6 @@ def make_request(response_data, status=http_client.OK, text=False):
 
 @pytest.mark.asyncio
 async def test__token_endpoint_request():
-
     request = make_request({"test": "response"})
 
     result = await _client._token_endpoint_request(
@@ -63,7 +62,6 @@ async def test__token_endpoint_request():
 
 @pytest.mark.asyncio
 async def test__token_endpoint_request_text():
-
     request = make_request("response", text=True)
 
     result = await _client._token_endpoint_request(
@@ -84,7 +82,6 @@ async def test__token_endpoint_request_text():
 
 @pytest.mark.asyncio
 async def test__token_endpoint_request_json():
-
     request = make_request({"test": "response"})
     access_token = "access_token"
 

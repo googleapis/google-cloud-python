@@ -561,7 +561,12 @@ class AuthorizedSession(requests.Session):
             # Handle unauthorized permission error(401 status code)
             if response.status_code == http_client.UNAUTHORIZED:
                 if self.is_mtls:
-                    call_cert_bytes, call_key_bytes, cached_fingerprint, current_cert_fingerprint = _mtls_helper.check_parameters_for_unauthorized_response(
+                    (
+                        call_cert_bytes,
+                        call_key_bytes,
+                        cached_fingerprint,
+                        current_cert_fingerprint,
+                    ) = _mtls_helper.check_parameters_for_unauthorized_response(
                         self._cached_cert
                     )
                     if cached_fingerprint != current_cert_fingerprint:

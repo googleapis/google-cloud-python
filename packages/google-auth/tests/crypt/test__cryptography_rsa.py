@@ -70,7 +70,7 @@ class TestRSAVerifier(object):
         assert verifier.verify(to_sign, actual_signature)
 
     def test_verify_unicode_success(self):
-        to_sign = u"foo"
+        to_sign = "foo"
         signer = _cryptography_rsa.RSASigner.from_string(PRIVATE_KEY_BYTES)
         actual_signature = signer.sign(to_sign)
 

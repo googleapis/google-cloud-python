@@ -538,8 +538,10 @@ def _get_impersonated_service_account_credentials(filename, info, scopes):
     from google.auth import impersonated_credentials
 
     try:
-        credentials = impersonated_credentials.Credentials.from_impersonated_service_account_info(
-            info, scopes=scopes
+        credentials = (
+            impersonated_credentials.Credentials.from_impersonated_service_account_info(
+                info, scopes=scopes
+            )
         )
     except ValueError as caught_exc:
         msg = "Failed to load impersonated service account credentials from {}".format(
@@ -554,8 +556,8 @@ def _get_gdch_service_account_credentials(filename, info):
     from google.oauth2 import gdch_credentials
 
     try:
-        credentials = gdch_credentials.ServiceAccountCredentials.from_service_account_info(
-            info
+        credentials = (
+            gdch_credentials.ServiceAccountCredentials.from_service_account_info(info)
         )
     except ValueError as caught_exc:
         msg = "Failed to load GDCH service account credentials from {}".format(filename)

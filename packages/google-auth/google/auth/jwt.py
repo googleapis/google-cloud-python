@@ -586,7 +586,7 @@ class Credentials(
 
     @property  # type: ignore
     def additional_claims(self):
-        """ Additional claims the JWT object was created with."""
+        """Additional claims the JWT object was created with."""
         return self._additional_claims
 
 
@@ -760,7 +760,6 @@ class OnDemandCredentials(
 
     @_helpers.copy_docstring(google.auth.credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
-
         return self.__class__(
             self._signer,
             issuer=self._issuer,

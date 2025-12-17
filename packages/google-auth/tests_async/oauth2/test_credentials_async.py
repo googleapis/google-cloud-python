@@ -29,7 +29,6 @@ from tests.oauth2 import test_credentials
 
 
 class TestCredentials:
-
     TOKEN_URI = "https://example.com/oauth2/token"
     REFRESH_TOKEN = "refresh_token"
     CLIENT_ID = "client_id"

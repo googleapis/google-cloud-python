@@ -70,7 +70,8 @@ class Credentials(
     is used.
     When the credential configuration is accepted from an
     untrusted source, you should validate it before using.
-    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details."""
+    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
+    """
 
     def __init__(
         self,

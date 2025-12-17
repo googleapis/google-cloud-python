@@ -482,7 +482,6 @@ class Credentials(
                     self._jwt_credentials is None
                     or self._jwt_credentials._audience != audience
                 ):
-
                     self._jwt_credentials = jwt.Credentials.from_signing_credentials(
                         self, audience
                     )
