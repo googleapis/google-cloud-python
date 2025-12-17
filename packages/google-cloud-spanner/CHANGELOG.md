@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.61.0](https://github.com/googleapis/python-spanner/compare/v3.60.0...v3.61.0) (2025-12-16)
+
+
+### Features
+
+* support mTLS certificates when available (#1467) ([df87c3ed55db7cffa2eed4d7316ca5c375af1c5a](https://github.com/googleapis/python-spanner/commit/df87c3ed55db7cffa2eed4d7316ca5c375af1c5a))
+
 ## [3.60.0](https://github.com/googleapis/python-spanner/compare/v3.59.0...v3.60.0) (2025-12-10)
 
 
