@@ -33,7 +33,7 @@ BLACK_PATHS = [
     "docs/conf.py",
 ]
 
-DEFAULT_PYTHON_VERSION = "3.10"
+DEFAULT_PYTHON_VERSION = "3.14"
 # TODO(https://github.com/googleapis/google-auth-library-python/issues/1787):
 # Remove or restore testing for Python 3.7/3.8
 UNIT_TEST_PYTHON_VERSIONS = ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
@@ -146,7 +146,7 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
 
-@nox.session(python="3.9")
+@nox.session(python="3.10")
 def docs(session):
     """Build the docs for this library."""
 
