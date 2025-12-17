@@ -14,6 +14,7 @@
 
 import os
 import pathlib
+import re
 import shutil
 
 import nox
@@ -226,3 +227,73 @@ def pypy(session):
         "tests",
         "tests_async",
     )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+@nox.parametrize(
+    "protobuf_implementation",
+    ["python", "upb", "cpp"],
+)
+def prerelease_deps(session, protobuf_implementation):
+    """
+    Run all tests with pre-release versions of dependencies installed
+    rather than the standard non pre-release versions.
+    Pre-release versions can be installed using
+    `pip install --pre <package>`.
+    """
+
+    if protobuf_implementation == "cpp" and session.python in (
+        "3.11",
+        "3.12",
+        "3.13",
+        "3.14",
+    ):
+        session.skip("cpp implementation is not supported in python 3.11+")
+
+    # Install all dependencies
+    session.install("-e", ".[testing]")
+
+    # Because we test minimum dependency versions on the minimum Python
+    # version, the first version we test with in the unit tests sessions has a
+    # constraints file containing all dependencies and extras.
+    with open(
+        CURRENT_DIRECTORY
+        / "testing"
+        / f"constraints-{UNIT_TEST_PYTHON_VERSIONS[0]}.txt",
+        encoding="utf-8",
+    ) as constraints_file:
+        constraints_text = constraints_file.read()
+
+    # Ignore leading whitespace and comment lines.
+    constraints_deps = [
+        match.group(1)
+        for match in re.finditer(
+            r"^\s*(\S+)(?===\S+)", constraints_text, flags=re.MULTILINE
+        )
+    ]
+
+    # Install dependencies specified in `testing/constraints-X.txt`.
+    session.install(*constraints_deps)
+
+    # Note: If a dependency is added to the `prerel_deps` list,
+    # the `core_dependencies_from_source` list in the `core_deps_from_source`
+    # nox session should also be updated.
+    prerel_deps = [
+        "cachetools",
+        "pyasn1-modules",
+        "cryptography",
+        "requests",
+        "aiohttp",
+    ]
+
+    for dep in prerel_deps:
+        session.install("--pre", "--no-deps", "--ignore-installed", dep)
+
+    session.run(
+        "py.test",
+        "tests/unit",
+        env={
+            "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
+        },
+    )
+
