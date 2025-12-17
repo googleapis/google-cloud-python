@@ -467,6 +467,7 @@ class TestTransaction(OpenTelemetryBase):
                 session=session.name,
                 options=TransactionOptions(read_write=TransactionOptions.ReadWrite()),
                 mutation_key=expected_begin_mutation,
+                request_options=RequestOptions(transaction_tag=TRANSACTION_TAG),
             )
 
             expected_begin_metadata = base_metadata.copy()

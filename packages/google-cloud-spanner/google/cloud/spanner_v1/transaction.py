@@ -714,7 +714,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         if self.rolled_back:
             raise ValueError("Transaction is already rolled back")
 
-        return super(Transaction, self)._begin_transaction(mutation=mutation)
+        return super(Transaction, self)._begin_transaction(
+            mutation=mutation, transaction_tag=self.transaction_tag
+        )
 
     def _begin_mutations_only_transaction(self) -> None:
         """Begins a mutations-only transaction on the database."""

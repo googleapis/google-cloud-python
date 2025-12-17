@@ -2005,9 +2005,12 @@ class TestSession(OpenTelemetryBase):
         self.assertEqual(kw, {"some_arg": "def"})
 
         expected_options = TransactionOptions(read_write=TransactionOptions.ReadWrite())
+        expected_request_options = RequestOptions(transaction_tag=transaction_tag)
         gax_api.begin_transaction.assert_called_once_with(
             request=BeginTransactionRequest(
-                session=self.SESSION_NAME, options=expected_options
+                session=self.SESSION_NAME,
+                options=expected_options,
+                request_options=expected_request_options,
             ),
             metadata=[
                 ("google-cloud-resource-prefix", database.name),

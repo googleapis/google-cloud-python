@@ -901,12 +901,18 @@ class _SnapshotBase(_SessionWrapper):
 
         return [partition.partition_token for partition in response.partitions]
 
-    def _begin_transaction(self, mutation: Mutation = None) -> bytes:
+    def _begin_transaction(
+        self, mutation: Mutation = None, transaction_tag: str = None
+    ) -> bytes:
         """Begins a transaction on the database.
 
         :type mutation: :class:`~google.cloud.spanner_v1.mutation.Mutation`
         :param mutation: (Optional) Mutation to include in the begin transaction
             request. Required for mutation-only transactions with multiplexed sessions.
+
+        :type transaction_tag: str
+        :param transaction_tag: (Optional) Transaction tag to include in the begin transaction
+            request.
 
         :rtype: bytes
         :returns: identifier for the transaction.
@@ -931,6 +937,17 @@ class _SnapshotBase(_SessionWrapper):
                 (_metadata_with_leader_aware_routing(database._route_to_leader_enabled))
             )
 
+        begin_request_kwargs = {
+            "session": session.name,
+            "options": self._build_transaction_selector_pb().begin,
+            "mutation_key": mutation,
+        }
+
+        if transaction_tag:
+            begin_request_kwargs["request_options"] = RequestOptions(
+                transaction_tag=transaction_tag
+            )
+
         with trace_call(
             name=f"CloudSpanner.{type(self).__name__}.begin",
             session=session,
@@ -942,9 +959,7 @@ class _SnapshotBase(_SessionWrapper):
 
             def wrapped_method():
                 begin_transaction_request = BeginTransactionRequest(
-                    session=session.name,
-                    options=self._build_transaction_selector_pb().begin,
-                    mutation_key=mutation,
+                    **begin_request_kwargs
                 )
                 begin_transaction_method = functools.partial(
                     api.begin_transaction,
