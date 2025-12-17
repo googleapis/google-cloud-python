@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    REGEXP_CONTAINS(`string_col`, '^\\d+$') AS `bfcol_1`
+    REGEXP_CONTAINS(`string_col`, '^(\\p{Nd})+$') AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT
