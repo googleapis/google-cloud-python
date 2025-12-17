@@ -110,7 +110,7 @@ setup(
     author_email="googleapis-packages@google.com",
     description="Google Authentication Library",
     long_description=long_description,
-    url="https://github.com/googleapis/google-auth-library-python",
+    url="https://github.com/googleapis/google-cloud-python/tree/main/packages/google-auth",
     packages=find_namespace_packages(
         exclude=("tests*", "system_tests*", "docs*", "samples*")
     ),
