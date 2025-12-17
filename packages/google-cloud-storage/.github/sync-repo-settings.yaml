@@ -10,11 +10,5 @@ branchProtectionRules:
     - 'Kokoro'
     - 'cla/google'
     - 'Kokoro system-3.14'
+    - 'Kokoro system-3.9'
     - 'OwlBot Post Processor'
-- pattern: python2
-  requiresCodeOwnerReviews: true
-  requiresStrictStatusChecks: true
-  requiredStatusCheckContexts:
-    - 'Kokoro'
-    - 'cla/google'
-    - 'Kokoro system-2.7'
