@@ -82,11 +82,11 @@ Contributions to this library are always welcome and highly encouraged.
 
 See `CONTRIBUTING.rst`_ for more information on how to get started.
 
-.. _CONTRIBUTING.rst: https://github.com/googleapis/google-auth-library-python/blob/main/CONTRIBUTING.rst
+.. _CONTRIBUTING.rst: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-auth/CONTRIBUTING.rst
 
 License
 -------
 
 Apache 2.0 - See `the LICENSE`_ for more information.
 
-.. _the LICENSE: https://github.com/googleapis/google-auth-library-python/blob/main/LICENSE
+.. _the LICENSE: https://github.com/googleapis/google-cloud-python/blob/main/packages/google-auth/LICENSE

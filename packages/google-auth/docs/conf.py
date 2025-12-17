@@ -137,7 +137,7 @@ html_theme = "alabaster"
 html_theme_options = {
     "description": "Google Auth Library for Python",
     "github_user": "GoogleCloudPlatform",
-    "github_repo": "google-auth-library-python",
+    "github_repo": "google-cloud-python",
     "github_banner": True,
     "travis_button": True,
     "font_family": "'Roboto', Georgia, sans",

@@ -45,7 +45,7 @@ For more information on setting up your Python development environment, please r
 
 .. _`Python Development Environment Setup Guide`: https://cloud.google.com/python/setup
 .. _pip: https://pip.pypa.io
-.. _GitHub: https://github.com/GoogleCloudPlatform/google-auth-library-python
+.. _GitHub: https://github.com/googleapis/google-cloud-python/packages/google-auth
 
 Usage
 -----
@@ -62,7 +62,7 @@ google-auth is made available under the Apache License, Version 2.0. For more
 details, see `LICENSE`_
 
 .. _LICENSE:
-    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/main/LICENSE
+    https://github.com/googleapis/google-cloud-python/blob/main/packages/google-auth/LICENSE
 
 Contributing
 ------------
@@ -71,4 +71,4 @@ We happily welcome contributions, please see our `contributing`_ documentation
 for details.
 
 .. _contributing:
-    https://github.com/GoogleCloudPlatform/google-auth-library-python/blob/main/CONTRIBUTING.rst
+    https://github.com/googleapis/google-cloud-python/blob/main/packages/google-auth/CONTRIBUTING.rst

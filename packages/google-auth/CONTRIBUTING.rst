@@ -6,12 +6,12 @@ Contributing
 #. Make sure that your commit messages clearly describe the changes.
 #. Send a pull request.
 
-Here are some guidelines for hacking on ``google-auth-library-python``.
+Here are some guidelines for hacking on ``google-auth``.
 
 Making changes
 --------------
 
-A few notes on making changes to ``google-auth-library-python``.
+A few notes on making changes to ``google-auth``.
 
 - If you've added a new feature or modified an existing feature, be sure to
   add or update any applicable documentation in docstrings and in the
