@@ -183,13 +183,12 @@ replacements:
           "ReadRowsStream",
           "ReadSession",
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
     ]
     before: |
-      __version__ = package_version.__version__\n\n
       from .services.big_query_read import BigQueryReadAsyncClient, BigQueryReadClient
       from .services.big_query_write import BigQueryWriteAsyncClient, BigQueryWriteClient
       from .types.arrow import ArrowRecordBatch, ArrowSchema, ArrowSerializationOptions
@@ -224,6 +223,19 @@ replacements:
           WriteStreamView,
       \)
       from .types.table import TableFieldSchema, TableSchema\n
+    after: |
+      from google.cloud.bigquery_storage_v1 import client, types\n\n
+      class BigQueryReadClient(client.BigQueryReadClient):
+          __doc__ = client.BigQueryReadClient.__doc__\n\n
+      class BigQueryWriteClient(client.BigQueryWriteClient):
+          __doc__ = client.BigQueryWriteClient.__doc__\n\n
+    count: 1
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
+  - paths: [
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1/__init__.py,
+    ]
+    before: |
       __all__ = \(
           "BigQueryReadAsyncClient",
           "BigQueryWriteAsyncClient",
@@ -265,12 +277,6 @@ replacements:
           "WriteStreamView",
       \)
     after: |
-      __version__ = package_version.__version__\n
-      from google.cloud.bigquery_storage_v1 import client, types\n\n
-      class BigQueryReadClient(client.BigQueryReadClient):
-          __doc__ = client.BigQueryReadClient.__doc__\n\n
-      class BigQueryWriteClient(client.BigQueryWriteClient):
-          __doc__ = client.BigQueryWriteClient.__doc__\n\n
       __all__ = (
           # google.cloud.bigquery_storage_v1
           "__version__",
@@ -280,14 +286,13 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1alpha/__init__.py,
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
     ]
     before: |
-      __version__ = package_version.__version__\n\n
       from .services.metastore_partition_service import \(
           MetastorePartitionServiceAsyncClient,
           MetastorePartitionServiceClient,
@@ -316,6 +321,16 @@ replacements:
           StorageDescriptor,
           StreamList,
       \)\n
+    after: ""
+    count: 2
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
+  - paths: [
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1alpha/__init__.py,
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta/__init__.py,
+    ]
+    before: |
+      \)\n
       __all__ = \(
           "MetastorePartitionServiceAsyncClient",
           "BatchCreateMetastorePartitionsRequest",
@@ -341,15 +356,14 @@ replacements:
           "UpdateMetastorePartitionRequest",
       \)
     after: |
-      __version__ = package_version.__version__
+      )
     count: 2
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta2/__init__.py,
     ]
     before: |
-      __version__ = package_version.__version__\n\n
       from .services.big_query_read import BigQueryReadAsyncClient, BigQueryReadClient
       from .services.big_query_write import BigQueryWriteAsyncClient, BigQueryWriteClient
       from .types.arrow import ArrowRecordBatch, ArrowSchema, ArrowSerializationOptions
@@ -377,6 +391,19 @@ replacements:
       \)
       from .types.stream import DataFormat, ReadSession, ReadStream, WriteStream
       from .types.table import TableFieldSchema, TableSchema\n
+    after: |
+      from google.cloud.bigquery_storage_v1beta2 import client, types\n\n
+      class BigQueryReadClient(client.BigQueryReadClient):
+          __doc__ = client.BigQueryReadClient.__doc__\n\n
+      class BigQueryWriteClient(client.BigQueryWriteClient):
+          __doc__ = client.BigQueryWriteClient.__doc__\n\n
+    count: 1
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
+  - paths: [
+      packages/google-cloud-bigquery-storage/google/cloud/bigquery_storage_v1beta2/__init__.py,
+    ]
+    before: |
       __all__ = \(
           "BigQueryReadAsyncClient",
           "BigQueryWriteAsyncClient",
@@ -415,12 +442,6 @@ replacements:
           "WriteStream",
       \)
     after: |
-      __version__ = package_version.__version__\n
-      from google.cloud.bigquery_storage_v1beta2 import client, types\n\n
-      class BigQueryReadClient(client.BigQueryReadClient):
-          __doc__ = client.BigQueryReadClient.__doc__\n\n
-      class BigQueryWriteClient(client.BigQueryWriteClient):
-          __doc__ = client.BigQueryWriteClient.__doc__\n\n
       __all__ = (
           # google.cloud.bigquery_storage_v1beta2
           "__version__",
@@ -430,9 +451,6 @@ replacements:
           "BigQueryWriteClient",
       )
     count: 1
-    # Given that this file is mostly handwritten, we could omit the file completely when we migrate to librarian
-    # See `preserve_regex` in https://github.com/googleapis/librarian/blob/main/doc/language-onboarding.md#generate
-    # We could also consider updating the docs/index.rst template so that the majority of handwritten changes are not required
   - paths: [
       packages/google-cloud-bigquery-storage/testing/constraints-3.7.txt,
     ]
@@ -447,6 +465,8 @@ replacements:
       pyarrow==0.15.0
       google-auth==2.14.1
     count: 1
+    # Given that this file is mostly handwritten, we could omit the file during code generation
+    # This will require a change to gapic-generator-python to provide the ability to omit files
   - paths: [
       packages/google-cloud-bigquery-storage/docs/index.rst,
     ]
