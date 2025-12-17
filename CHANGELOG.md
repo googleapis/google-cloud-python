@@ -160,7 +160,7 @@ Changelogs
 - [google-cloud-run==0.13.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-run/CHANGELOG.md)
 - [google-cloud-saasplatform-saasservicemgmt==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md)
 - [google-cloud-scheduler==2.17.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-scheduler/CHANGELOG.md)
-- [google-cloud-secret-manager==2.24.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager/CHANGELOG.md)
+- [google-cloud-secret-manager==2.26.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-secret-manager/CHANGELOG.md)
 - [google-cloud-securesourcemanager==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securesourcemanager/CHANGELOG.md)
 - [google-cloud-securitycenter==1.41.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securitycenter/CHANGELOG.md)
 - [google-cloud-securitycentermanagement==0.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-cloud-securitycentermanagement/CHANGELOG.md)

@@ -3043,7 +3043,7 @@ libraries:
       - packages/google-cloud-scheduler/
     tag_format: '{id}-v{version}'
   - id: google-cloud-secret-manager
-    version: 2.25.0
+    version: 2.26.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/secretmanager/v1

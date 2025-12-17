@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-secret-manager/#history
 
+## [2.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.25.0...google-cloud-secret-manager-v2.26.0) (2025-12-17)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+* check Python and dependency versions in generated GAPICs ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+
 ## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-secret-manager-v2.24.0...google-cloud-secret-manager-v2.25.0) (2025-10-14)
 
 
