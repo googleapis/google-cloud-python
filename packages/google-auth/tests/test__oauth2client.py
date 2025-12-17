@@ -115,7 +115,6 @@ def mock_oauth2client_gae_imports(mock_non_existent_module):
 def test__convert_appengine_app_assertion_credentials(
     app_identity, mock_oauth2client_gae_imports
 ):
-
     # `oauth2client` requires `cgi` which was removed in Python 3.13
     # See https://github.com/googleapis/oauth2client/blob/50d20532a748f18e53f7d24ccbe6647132c979a9/oauth2client/contrib/appengine.py#L20
     # oauth2client is no longer being updated so this test must be skipped on newer Python Runtimes

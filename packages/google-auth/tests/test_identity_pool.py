@@ -38,8 +38,10 @@ SERVICE_ACCOUNT_EMAIL = "service-1234@service-name.iam.gserviceaccount.com"
 SERVICE_ACCOUNT_IMPERSONATION_URL_BASE = (
     "https://us-east1-iamcredentials.googleapis.com"
 )
-SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE = "/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
-    SERVICE_ACCOUNT_EMAIL
+SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE = (
+    "/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
+        SERVICE_ACCOUNT_EMAIL
+    )
 )
 SERVICE_ACCOUNT_IMPERSONATION_URL = (
     SERVICE_ACCOUNT_IMPERSONATION_URL_BASE + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE
@@ -1051,7 +1053,6 @@ class TestCredentials(object):
     def test_retrieve_subject_token_certificate_trust_chain_invalid_order(
         self, mock_get_workload_cert_and_key_paths
     ):
-
         credentials = self.make_credentials(
             credential_source=self.CREDENTIAL_SOURCE_CERTIFICATE_TRUST_CHAIN_WRONG_ORDER
         )
@@ -1070,7 +1071,6 @@ class TestCredentials(object):
     def test_retrieve_subject_token_certificate_trust_chain_file_does_not_exist(
         self, mock_get_workload_cert_and_key_paths
     ):
-
         credentials = self.make_credentials(
             credential_source={
                 "certificate": {
@@ -1092,7 +1092,6 @@ class TestCredentials(object):
     def test_retrieve_subject_token_certificate_invalid_trust_chain_file(
         self, mock_get_workload_cert_and_key_paths
     ):
-
         credentials = self.make_credentials(
             credential_source={
                 "certificate": {

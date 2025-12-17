@@ -97,7 +97,7 @@ class TestStsClient(object):
         assert request_kwargs["headers"] == headers
         assert request_kwargs["body"] is not None
         body_tuples = urllib.parse.parse_qsl(request_kwargs["body"])
-        for (k, v) in body_tuples:
+        for k, v in body_tuples:
             assert v.decode("utf-8") == request_data[k.decode("utf-8")]
         assert len(body_tuples) == len(request_data.keys())
 
@@ -172,8 +172,7 @@ class TestStsClient(object):
         assert response == self.SUCCESS_RESPONSE
 
     def test_exchange_token_non200_without_auth(self):
-        """Test token exchange without client auth responding with non-200 status.
-        """
+        """Test token exchange without client auth responding with non-200 status."""
         client = self.make_client()
         request = self.make_mock_request(
             status=http_client.BAD_REQUEST, data=self.ERROR_RESPONSE

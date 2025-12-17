@@ -290,9 +290,11 @@ async def refresh_grant(
     if rapt_token:
         body["rapt"] = rapt_token
 
-    response_status_ok, response_data, retryable_error = await _client_async._token_endpoint_request_no_throw(
-        request, token_uri, body
-    )
+    (
+        response_status_ok,
+        response_data,
+        retryable_error,
+    ) = await _client_async._token_endpoint_request_no_throw(request, token_uri, body)
     if (
         not response_status_ok
         and response_data.get("error") == reauth._REAUTH_NEEDED_ERROR

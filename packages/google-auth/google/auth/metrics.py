@@ -48,6 +48,7 @@ def python_and_auth_lib_version():
 
 # Token request metric header values
 
+
 # x-goog-api-client header value for access token request via metadata server.
 # Example: "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/mds"
 def token_request_access_token_mds():
@@ -107,6 +108,7 @@ def token_request_user():
 
 
 # Miscellenous metrics
+
 
 # x-goog-api-client header value for metadata server ping.
 # Example: "gl-python/3.7 auth/1.1 auth-request-type/mds"

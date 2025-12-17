@@ -402,7 +402,6 @@ class AuthorizedHttp(RequestMethods):  # type: ignore
             response.status in self._refresh_status_codes
             and _credential_refresh_attempt < self._max_refresh_attempts
         ):
-
             _LOGGER.info(
                 "Refreshing credentials due to a %s response. Attempt %s/%s.",
                 response.status,

@@ -276,7 +276,6 @@ class AuthorizedSession(aiohttp.ClientSession):
         auto_decompress=False,
         **kwargs,
     ):
-
         """Implementation of Authorized Session aiohttp request.
 
         Args:
@@ -358,7 +357,6 @@ class AuthorizedSession(aiohttp.ClientSession):
                 response.status in self._refresh_status_codes
                 and _credential_refresh_attempt < self._max_refresh_attempts
             ):
-
                 requests._LOGGER.info(
                     "Refreshing credentials due to a %s response. Attempt %s/%s.",
                     response.status,

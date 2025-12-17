@@ -35,7 +35,7 @@ def test_exponential_backoff(mock_time):
             assert (curr_wait - jitter) <= backoff_interval <= (curr_wait + jitter)
             assert attempt == iteration_count + 1
             assert eb.backoff_count == iteration_count + 1
-            assert eb._current_wait_in_seconds == eb._multiplier ** iteration_count
+            assert eb._current_wait_in_seconds == eb._multiplier**iteration_count
 
             curr_wait = eb._current_wait_in_seconds
         iteration_count += 1
@@ -75,7 +75,7 @@ async def test_exponential_backoff_async(mock_time_async):
             assert (curr_wait - jitter) <= backoff_interval <= (curr_wait + jitter)
             assert attempt == iteration_count + 1
             assert eb.backoff_count == iteration_count + 1
-            assert eb._current_wait_in_seconds == eb._multiplier ** iteration_count
+            assert eb._current_wait_in_seconds == eb._multiplier**iteration_count
 
             curr_wait = eb._current_wait_in_seconds
         iteration_count += 1

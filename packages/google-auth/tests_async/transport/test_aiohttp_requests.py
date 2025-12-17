@@ -39,7 +39,6 @@ class TestCombinedResponse:
 
     @pytest.mark.asyncio
     async def test_raw_content(self):
-
         mock_response = mock.AsyncMock()
         mock_response.content.read.return_value = mock.sentinel.read
         combined_response = aiohttp_requests._CombinedResponse(response=mock_response)

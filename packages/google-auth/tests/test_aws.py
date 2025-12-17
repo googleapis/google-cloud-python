@@ -42,8 +42,10 @@ SERVICE_ACCOUNT_EMAIL = "service-1234@service-name.iam.gserviceaccount.com"
 SERVICE_ACCOUNT_IMPERSONATION_URL_BASE = (
     "https://us-east1-iamcredentials.googleapis.com"
 )
-SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE = "/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
-    SERVICE_ACCOUNT_EMAIL
+SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE = (
+    "/v1/projects/-/serviceAccounts/{}:generateAccessToken".format(
+        SERVICE_ACCOUNT_EMAIL
+    )
 )
 SERVICE_ACCOUNT_IMPERSONATION_URL = (
     SERVICE_ACCOUNT_IMPERSONATION_URL_BASE + SERVICE_ACCOUNT_IMPERSONATION_URL_ROUTE

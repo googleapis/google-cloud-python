@@ -399,7 +399,6 @@ class IDTokenCredentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithQuotaProject)
     def with_quota_project(self, quota_project_id):
-
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:
@@ -423,7 +422,6 @@ class IDTokenCredentials(
 
     @_helpers.copy_docstring(credentials.CredentialsWithTokenUri)
     def with_token_uri(self, token_uri):
-
         # since the signer is already instantiated,
         # the request is not needed
         if self._use_metadata_identity_endpoint:

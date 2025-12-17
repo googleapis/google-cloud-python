@@ -83,9 +83,9 @@ class SubjectTokenSupplier(metaclass=abc.ABCMeta):
 
 class _TokenContent(NamedTuple):
     """Models the token content response from file and url internal suppliers.
-        Attributes:
-            content (str): The string content of the file or URL response.
-            location (str): The location the content was retrieved from. This will either be a file location or a URL.
+    Attributes:
+        content (str): The string content of the file or URL response.
+        location (str): The location the content was retrieved from. This will either be a file location or a URL.
     """
 
     content: str
@@ -93,7 +93,7 @@ class _TokenContent(NamedTuple):
 
 
 class _FileSupplier(SubjectTokenSupplier):
-    """ Internal implementation of subject token supplier which supports reading a subject token from a file."""
+    """Internal implementation of subject token supplier which supports reading a subject token from a file."""
 
     def __init__(self, path, format_type, subject_token_field_name):
         self._path = path
@@ -114,7 +114,7 @@ class _FileSupplier(SubjectTokenSupplier):
 
 
 class _UrlSupplier(SubjectTokenSupplier):
-    """ Internal implementation of subject token supplier which supports retrieving a subject token by calling a URL endpoint."""
+    """Internal implementation of subject token supplier which supports retrieving a subject token by calling a URL endpoint."""
 
     def __init__(self, url, format_type, subject_token_field_name, headers):
         self._url = url
@@ -261,7 +261,8 @@ class Credentials(external_account.Credentials):
     is used.
     When the credential configuration is accepted from an
     untrusted source, you should validate it before using.
-    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details."""
+    Refer https://cloud.google.com/docs/authentication/external/externally-sourced-credentials for more details.
+    """
 
     def __init__(
         self,

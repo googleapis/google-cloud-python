@@ -484,14 +484,13 @@ class TestCredentials(object):
     def assert_request_kwargs(
         request_kwargs, headers, request_data, token_endpoint=TOKEN_EXCHANGE_ENDPOINT
     ):
-        """Asserts the request was called with the expected parameters.
-        """
+        """Asserts the request was called with the expected parameters."""
         assert request_kwargs["url"] == token_endpoint
         assert request_kwargs["method"] == "POST"
         assert request_kwargs["headers"] == headers
         assert request_kwargs["body"] is not None
         body_tuples = urllib.parse.parse_qsl(request_kwargs["body"])
-        for (k, v) in body_tuples:
+        for k, v in body_tuples:
             assert v.decode("utf-8") == request_data[k.decode("utf-8")]
         assert len(body_tuples) == len(request_data.keys())
 
