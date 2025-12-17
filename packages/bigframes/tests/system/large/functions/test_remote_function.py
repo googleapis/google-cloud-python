@@ -1651,12 +1651,13 @@ def test_remote_function_gcf_timeout_max_supported_exceeded(session):
             return x * x
 
 
-# The default value of 100 is used if the maximum instances value is not set.
+# Note: Zero represents default, which is 100 instances actually, which is why the remote function still works
+# in the df.apply() call here
 @pytest.mark.parametrize(
     ("max_instances_args", "expected_max_instances"),
     [
-        pytest.param({}, 100, id="no-set"),
-        pytest.param({"cloud_function_max_instances": None}, 100, id="set-None"),
+        pytest.param({}, 0, id="no-set"),
+        pytest.param({"cloud_function_max_instances": None}, 0, id="set-None"),
         pytest.param({"cloud_function_max_instances": 1000}, 1000, id="set-explicit"),
     ],
 )
