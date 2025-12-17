@@ -15,6 +15,7 @@
 # limitations under the License.
 import datetime
 import decimal
+import time
 
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
@@ -178,6 +179,8 @@ def generate_write_requests(pyarrow_table):
 
     batches_in_request = []
     current_size = 0
+    total_time = 0
+    request_count = 0
 
     # Split table into batches with one row.
     for row_batch in pyarrow_table.to_batches(max_chunksize=1):
@@ -195,7 +198,13 @@ def generate_write_requests(pyarrow_table):
 
         if current_size + batch_size > max_request_bytes and batches_in_request:
             # Combine collected batches and yield request
+            request_count += 1
+            start_time = time.time()
             yield _create_request(batches_in_request)
+            end_time = time.time()
+            request_time = end_time - start_time
+            print(f"Time to generate request {request_count}: {request_time:.4f} seconds")
+            total_time += request_time
 
             # Reset for next request.
             batches_in_request = []
@@ -206,7 +215,15 @@ def generate_write_requests(pyarrow_table):
 
     # Yield any remaining batches
     if batches_in_request:
+        request_count += 1
+        start_time = time.time()
         yield _create_request(batches_in_request)
+        end_time = time.time()
+        request_time = end_time - start_time
+        print(f"Time to generate request {request_count}: {request_time:.4f} seconds")
+        total_time += request_time
+
+    print(f"\nTotal time to generate all {request_count} requests: {total_time:.4f} seconds")
 
 
 def verify_result(client, table, futures):
