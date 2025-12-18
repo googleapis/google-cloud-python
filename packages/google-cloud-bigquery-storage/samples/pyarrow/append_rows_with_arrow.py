@@ -166,7 +166,6 @@ def generate_write_requests(pyarrow_table):
     # Maximum size for a single AppendRowsRequest is 10 MB.
     # To be safe, we'll aim for a soft limit of 7 MB.
     max_request_bytes = 7 * 1024 * 1024  # 7 MB
-    requests = []
 
     def _create_request(batches):
         """Helper to create an AppendRowsRequest from a list of batches."""
@@ -214,8 +213,7 @@ def generate_write_requests(pyarrow_table):
                     )
                 # otherwise, generate the request, reset current_size and current_batches
                 else:
-                    request = _create_request(current_batches)
-                    requests.append(request)
+                    yield _create_request(current_batches)
 
                     current_batches = []
                     current_size = 0
@@ -228,10 +226,7 @@ def generate_write_requests(pyarrow_table):
 
     # Flush remaining batches
     if current_batches:
-        request = _create_request(current_batches)
-        requests.append(request)
-
-    return requests
+        yield _create_request(current_batches)
 
 
 def verify_result(client, table, futures):
@@ -272,8 +267,7 @@ def main(project_id, dataset):
     for request in requests:
         future = stream.send(request)
         futures.append(future)
-        # future.result()  # Optional, will block until writing is complete.
-    for future in futures:
-        future.result()
+        future.result()  # Optional, will block until writing is complete.
+
     # Verify results.
     verify_result(bq_client, bq_table, futures)
