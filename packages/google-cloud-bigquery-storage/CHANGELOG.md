@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.35.0...google-cloud-bigquery-storage-v2.36.0) (2025-12-17)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+* check Python and dependency versions in generated GAPICs ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+
 ## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-storage-v2.34.0...google-cloud-bigquery-storage-v2.35.0) (2025-12-04)
 
 
