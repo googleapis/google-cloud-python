@@ -14,6 +14,7 @@
 
 """Unit tests for read_gbq_colab helper functions."""
 
+import itertools
 import textwrap
 from unittest import mock
 
@@ -27,15 +28,21 @@ from bigframes.testing import mocks
 
 def test_read_gbq_colab_includes_label():
     """Make sure we can tell direct colab usage apart from regular read_gbq usage."""
-    session = mocks.create_bigquery_session()
+    bqclient = mock.create_autospec(bigquery.Client, instance=True)
+    bqclient.project = "proj"
+    session = mocks.create_bigquery_session(bqclient=bqclient)
     _ = session._read_gbq_colab("SELECT 'read-gbq-colab-test'")
-    configs = session._job_configs  # type: ignore
 
     label_values = []
-    for config in configs:
-        if config is None:
+    for kall in itertools.chain(
+        bqclient.query_and_wait.call_args_list,
+        bqclient._query_and_wait_bigframes.call_args_list,
+        bqclient.query.call_args_list,
+    ):
+        job_config = kall.kwargs.get("job_config")
+        if job_config is None:
             continue
-        label_values.extend(config.labels.values())
+        label_values.extend(job_config.labels.values())
 
     assert "session-read_gbq_colab" in label_values
 
