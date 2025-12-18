@@ -92,6 +92,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         self.metadata = (("x-goog-request-params", f"bucket={self._full_bucket_name}"),)
         self.socket_like_rpc: Optional[AsyncBidiRpc] = None
         self._is_stream_open: bool = False
+        self.persisted_size: Optional[int] = None
 
     async def open(self) -> None:
         """Opens the bidi-gRPC connection to read from the object.
@@ -106,8 +107,13 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         )
         await self.socket_like_rpc.open()  # this is actually 1 send
         response = await self.socket_like_rpc.recv()
-        if self.generation_number is None:
-            self.generation_number = response.metadata.generation
+        # populated only in the first response of bidi-stream and when opened
+        # without using `read_handle`
+        if response.metadata:
+            if self.generation_number is None:
+                self.generation_number = response.metadata.generation
+            # update persisted size
+            self.persisted_size = response.metadata.size
 
         self.read_handle = response.read_handle
 

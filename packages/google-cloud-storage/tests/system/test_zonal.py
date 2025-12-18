@@ -58,6 +58,30 @@ async def test_basic_wrd(storage_client, blobs_to_delete, attempt_direct_path):
     await mrd.download_ranges([(0, 0, buffer)])
     await mrd.close()
     assert buffer.getvalue() == _BYTES_TO_UPLOAD
+    assert mrd.persisted_size == len(_BYTES_TO_UPLOAD)
+
+    # Clean up; use json client (i.e. `storage_client` fixture) to delete.
+    blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+
+@pytest.mark.asyncio
+async def test_read_unfinalized_appendable_object(storage_client, blobs_to_delete):
+    object_name = f"read_unfinalized_appendable_object-{str(uuid.uuid4())[:4]}"
+    grpc_client = AsyncGrpcClient(attempt_direct_path=True).grpc_client
+
+    writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+    await writer.open()
+    await writer.append(_BYTES_TO_UPLOAD)
+    await writer.flush()
+
+    mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+    buffer = BytesIO()
+    await mrd.open()
+    assert mrd.persisted_size == len(_BYTES_TO_UPLOAD)
+    # (0, 0) means read the whole object
+    await mrd.download_ranges([(0, 0, buffer)])
+    await mrd.close()
+    assert buffer.getvalue() == _BYTES_TO_UPLOAD
 
     # Clean up; use json client (i.e. `storage_client` fixture) to delete.
     blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))

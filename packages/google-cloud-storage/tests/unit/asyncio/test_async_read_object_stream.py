@@ -25,6 +25,7 @@ from google.cloud.storage._experimental.asyncio.async_read_object_stream import 
 _TEST_BUCKET_NAME = "test-bucket"
 _TEST_OBJECT_NAME = "test-object"
 _TEST_GENERATION_NUMBER = 12345
+_TEST_OBJECT_SIZE = 1024 * 1024  # 1 MiB
 _TEST_READ_HANDLE = b"test-read-handle"
 
 
@@ -37,6 +38,7 @@ async def instantiate_read_obj_stream(mock_client, mock_cls_async_bidi_rpc, open
     recv_response = mock.MagicMock(spec=_storage_v2.BidiReadObjectResponse)
     recv_response.metadata = mock.MagicMock(spec=_storage_v2.Object)
     recv_response.metadata.generation = _TEST_GENERATION_NUMBER
+    recv_response.metadata.size = _TEST_OBJECT_SIZE
     recv_response.read_handle = _TEST_READ_HANDLE
     socket_like_rpc.recv = AsyncMock(return_value=recv_response)
 
@@ -112,6 +114,7 @@ async def test_open(mock_client, mock_cls_async_bidi_rpc):
 
     assert read_obj_stream.generation_number == _TEST_GENERATION_NUMBER
     assert read_obj_stream.read_handle == _TEST_READ_HANDLE
+    assert read_obj_stream.persisted_size == _TEST_OBJECT_SIZE
     assert read_obj_stream.is_stream_open
 
 
