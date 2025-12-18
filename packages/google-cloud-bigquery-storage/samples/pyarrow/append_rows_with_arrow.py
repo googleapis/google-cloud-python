@@ -15,15 +15,14 @@
 # limitations under the License.
 import datetime
 import decimal
-import time
 
-from google.cloud import bigquery
 from google.cloud.bigquery import enums
-from google.cloud.bigquery_storage_v1 import types as gapic_types
-from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
-
 import pandas as pd
 import pyarrow as pa
+
+from google.cloud import bigquery
+from google.cloud.bigquery_storage_v1 import types as gapic_types
+from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
 
 TABLE_LENGTH = 100_000
 
@@ -167,6 +166,7 @@ def generate_write_requests(pyarrow_table):
     # Maximum size for a single AppendRowsRequest is 10 MB.
     # To be safe, we'll aim for a soft limit of 7 MB.
     max_request_bytes = 7 * 1024 * 1024  # 7 MB
+    requests = []
 
     def _create_request(batches):
         """Helper to create an AppendRowsRequest from a list of batches."""
@@ -177,53 +177,61 @@ def generate_write_requests(pyarrow_table):
         )
         return request
 
-    batches_in_request = []
+    # 1. use pyarrow_table.to_batches() to get batches as a stack.
+    batches_as_stack = list(pyarrow_table.to_batches())
+    batches_as_stack.reverse()
+
+    # current_size is initially 0
+    # current_batches is initilly empty list
+    current_batches = []
     current_size = 0
-    total_time = 0
-    request_count = 0
 
-    # Split table into batches with one row.
-    for row_batch in pyarrow_table.to_batches(max_chunksize=1):
-        serialized_batch = row_batch.serialize().to_pybytes()
-        batch_size = len(serialized_batch)
+    # 2. repeat below until stack is empty:
+    while batches_as_stack:
+        batch = batches_as_stack.pop()
+        batch_size = batch.nbytes
 
-        if batch_size > max_request_bytes:
-            raise ValueError(
-                (
-                    "A single PyArrow batch of one row is larger than the "
-                    f"maximum request size (batch size: {batch_size} > "
-                    f"max request size: {max_request_bytes}). Cannot proceed."
-                )
-            )
+        if current_size + batch_size > max_request_bytes:
+            if batch.num_rows > 1:
+                # split the batch into 2 sub batches with identical chunksizes
+                mid = batch.num_rows // 2
+                batch_left = batch.slice(offset=0, length=mid)
+                batch_right = batch.slice(offset=mid)
 
-        if current_size + batch_size > max_request_bytes and batches_in_request:
-            # Combine collected batches and yield request
-            request_count += 1
-            start_time = time.time()
-            yield _create_request(batches_in_request)
-            end_time = time.time()
-            request_time = end_time - start_time
-            print(f"Time to generate request {request_count}: {request_time:.4f} seconds")
-            total_time += request_time
+                # append the new batches into the stack.
+                batches_as_stack.append(batch_right)
+                batches_as_stack.append(batch_left)
+                # Repeat the poping
+                continue
 
-            # Reset for next request.
-            batches_in_request = []
-            current_size = 0
+            # if the batch is single row and still larger than max_request_size
+            else:
+                # if current batches is empty, throw error
+                if len(current_batches) == 0:
+                    raise ValueError(
+                        f"A single PyArrow batch of one row is larger than the maximum request size "
+                        f"(batch size: {batch_size} > max request size: {max_request_bytes}). Cannot proceed."
+                    )
+                # otherwise, generate the request, reset current_size and current_batches
+                else:
+                    request = _create_request(current_batches)
+                    requests.append(request)
 
-        batches_in_request.append(row_batch)
-        current_size += batch_size
+                    current_batches = []
+                    current_size = 0
+                    batches_as_stack.append(batch)
 
-    # Yield any remaining batches
-    if batches_in_request:
-        request_count += 1
-        start_time = time.time()
-        yield _create_request(batches_in_request)
-        end_time = time.time()
-        request_time = end_time - start_time
-        print(f"Time to generate request {request_count}: {request_time:.4f} seconds")
-        total_time += request_time
+        # otherwise, add the batch into current_batches
+        else:
+            current_batches.append(batch)
+            current_size += batch_size
 
-    print(f"\nTotal time to generate all {request_count} requests: {total_time:.4f} seconds")
+    # Flush remaining batches
+    if current_batches:
+        request = _create_request(current_batches)
+        requests.append(request)
+
+    return requests
 
 
 def verify_result(client, table, futures):
@@ -239,7 +247,7 @@ def verify_result(client, table, futures):
     assert len(query_result) == TABLE_LENGTH
 
     # Verify that table was split into multiple requests.
-    assert len(futures) == 21
+    assert len(futures) == 3
 
 
 def main(project_id, dataset):
@@ -264,7 +272,8 @@ def main(project_id, dataset):
     for request in requests:
         future = stream.send(request)
         futures.append(future)
-        future.result()  # Optional, will block until writing is complete.
-
+        # future.result()  # Optional, will block until writing is complete.
+    for future in futures:
+        future.result()
     # Verify results.
     verify_result(bq_client, bq_table, futures)
