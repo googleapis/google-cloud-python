@@ -15,6 +15,7 @@ packages.
     bigframes.exceptions
     bigframes.geopandas
     bigframes.pandas
+    bigframes.pandas.api.typing
     bigframes.streaming
 
 ML APIs

@@ -28,14 +28,12 @@ import pandas
 
 import bigframes._config as config
 from bigframes.core import log_adapter
-import bigframes.core.blocks
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 from bigframes.core.reshape.api import concat, crosstab, cut, get_dummies, merge, qcut
-import bigframes.core.tools
 import bigframes.dataframe
-import bigframes.enums
 import bigframes.functions._utils as bff_utils
+from bigframes.pandas import api
 from bigframes.pandas.core.api import to_timedelta
 from bigframes.pandas.io.api import (
     _read_gbq_colab,
@@ -56,7 +54,6 @@ from bigframes.pandas.io.api import (
 import bigframes.series
 import bigframes.session
 import bigframes.session._io.bigquery
-import bigframes.session.clients
 import bigframes.version
 
 try:
@@ -410,8 +407,40 @@ _functions = [
     from_glob_path,
 ]
 
-_function_names = [_function.__name__ for _function in _functions]
-_other_names = [
+# Use __all__ to let type checkers know what is part of the public API.
+# Note that static analysis checkers like pylance depend on these being string
+# literals, not derived at runtime.
+__all__ = [
+    # Function names
+    "clean_up_by_session_id",
+    "concat",
+    "crosstab",
+    "cut",
+    "deploy_remote_function",
+    "deploy_udf",
+    "get_default_session_id",
+    "get_dummies",
+    "merge",
+    "qcut",
+    "read_csv",
+    "read_arrow",
+    "read_gbq",
+    "_read_gbq_colab",
+    "read_gbq_function",
+    "read_gbq_model",
+    "read_gbq_object_table",
+    "read_gbq_query",
+    "read_gbq_table",
+    "read_json",
+    "read_pandas",
+    "read_parquet",
+    "read_pickle",
+    "remote_function",
+    "to_datetime",
+    "to_timedelta",
+    "from_glob_path",
+    # Other names
+    "api",
     # pandas dtype attributes
     "NA",
     "BooleanDtype",
@@ -436,9 +465,6 @@ _other_names = [
     "reset_session",
     "udf",
 ]
-
-# Use __all__ to let type checkers know what is part of the public API.
-__all__ = _function_names + _other_names
 
 _module = sys.modules[__name__]
 
