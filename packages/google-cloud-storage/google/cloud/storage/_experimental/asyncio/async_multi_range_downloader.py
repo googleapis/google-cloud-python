@@ -193,15 +193,13 @@ class AsyncMultiRangeDownloader:
         """
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
-
-        if self.read_obj_str is None:
-            self.read_obj_str = _AsyncReadObjectStream(
-                client=self.client,
-                bucket_name=self.bucket_name,
-                object_name=self.object_name,
-                generation_number=self.generation_number,
-                read_handle=self.read_handle,
-            )
+        self.read_obj_str = _AsyncReadObjectStream(
+            client=self.client,
+            bucket_name=self.bucket_name,
+            object_name=self.object_name,
+            generation_number=self.generation_number,
+            read_handle=self.read_handle,
+        )
         await self.read_obj_str.open()
         self._is_stream_open = True
         if self.generation_number is None:
@@ -342,6 +340,7 @@ class AsyncMultiRangeDownloader:
         if not self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is not open")
         await self.read_obj_str.close()
+        self.read_obj_str = None
         self._is_stream_open = False
 
     @property

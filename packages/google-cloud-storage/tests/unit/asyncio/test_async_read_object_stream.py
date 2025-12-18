@@ -27,6 +27,7 @@ _TEST_OBJECT_NAME = "test-object"
 _TEST_GENERATION_NUMBER = 12345
 _TEST_OBJECT_SIZE = 1024 * 1024  # 1 MiB
 _TEST_READ_HANDLE = b"test-read-handle"
+_TEST_READ_HANDLE_NEW = b"test-read-handle-new"
 
 
 async def instantiate_read_obj_stream(mock_client, mock_cls_async_bidi_rpc, open=True):
@@ -54,6 +55,30 @@ async def instantiate_read_obj_stream(mock_client, mock_cls_async_bidi_rpc, open
     return read_obj_stream
 
 
+async def instantiate_read_obj_stream_with_read_handle(
+    mock_client, mock_cls_async_bidi_rpc, open=True
+):
+    """Helper to create an instance of _AsyncReadObjectStream and open it by default."""
+    socket_like_rpc = AsyncMock()
+    mock_cls_async_bidi_rpc.return_value = socket_like_rpc
+    socket_like_rpc.open = AsyncMock()
+
+    recv_response = mock.MagicMock(spec=_storage_v2.BidiReadObjectResponse)
+    recv_response.read_handle = _TEST_READ_HANDLE_NEW
+    socket_like_rpc.recv = AsyncMock(return_value=recv_response)
+
+    read_obj_stream = _AsyncReadObjectStream(
+        client=mock_client,
+        bucket_name=_TEST_BUCKET_NAME,
+        object_name=_TEST_OBJECT_NAME,
+    )
+
+    if open:
+        await read_obj_stream.open()
+
+    return read_obj_stream
+
+
 @mock.patch(
     "google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc"
 )
@@ -67,12 +92,6 @@ def test_init_with_bucket_object_generation(mock_client, mock_async_bidi_rpc):
     mock_client._client._transport._wrapped_methods = {
         "bidi_read_object_rpc": rpc_sentinel,
     }
-    full_bucket_name = f"projects/_/buckets/{_TEST_BUCKET_NAME}"
-    first_bidi_read_req = _storage_v2.BidiReadObjectRequest(
-        read_object_spec=_storage_v2.BidiReadObjectSpec(
-            bucket=full_bucket_name, object=_TEST_OBJECT_NAME
-        ),
-    )
 
     # Act
     read_obj_stream = _AsyncReadObjectStream(
@@ -88,7 +107,6 @@ def test_init_with_bucket_object_generation(mock_client, mock_async_bidi_rpc):
     assert read_obj_stream.object_name == _TEST_OBJECT_NAME
     assert read_obj_stream.generation_number == _TEST_GENERATION_NUMBER
     assert read_obj_stream.read_handle == _TEST_READ_HANDLE
-    assert read_obj_stream.first_bidi_read_req == first_bidi_read_req
     assert read_obj_stream.rpc == rpc_sentinel
 
 
@@ -115,6 +133,32 @@ async def test_open(mock_client, mock_cls_async_bidi_rpc):
     assert read_obj_stream.generation_number == _TEST_GENERATION_NUMBER
     assert read_obj_stream.read_handle == _TEST_READ_HANDLE
     assert read_obj_stream.persisted_size == _TEST_OBJECT_SIZE
+    assert read_obj_stream.is_stream_open
+
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc"
+)
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_open_with_read_handle(mock_client, mock_cls_async_bidi_rpc):
+    # arrange
+    read_obj_stream = await instantiate_read_obj_stream_with_read_handle(
+        mock_client, mock_cls_async_bidi_rpc, open=False
+    )
+
+    # act
+    await read_obj_stream.open()
+
+    # assert
+    read_obj_stream.socket_like_rpc.open.assert_called_once()
+    read_obj_stream.socket_like_rpc.recv.assert_called_once()
+
+    assert read_obj_stream.generation_number is None
+    assert read_obj_stream.persisted_size is None
+    assert read_obj_stream.read_handle == _TEST_READ_HANDLE_NEW
     assert read_obj_stream.is_stream_open
 
 
