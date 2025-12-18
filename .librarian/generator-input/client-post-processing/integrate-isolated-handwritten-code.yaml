@@ -48,7 +48,7 @@ replacements:
       \)\n
       __all__ = \(
     after: |
-      \)\n
+      )\n
       @add_single_feature_methods
       class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):
           __doc__ = IacImageAnnotatorClient.__doc__
