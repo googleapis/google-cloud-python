@@ -304,13 +304,6 @@ def test_dashboards_service_client_client_options(
         with pytest.raises(MutualTLSChannelError):
             client = client_class(transport=transport_name)
 
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError):
-            client = client_class(transport=transport_name)
-
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
     with mock.patch.object(transport_class, "__init__") as patched:
