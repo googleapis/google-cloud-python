@@ -891,7 +891,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.35.0
+    version: 2.36.0
     last_generated_commit: bd94e0b8c4975af0a66dc1f846c63c77dbc0064e
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
