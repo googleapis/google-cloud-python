@@ -2,8 +2,25 @@ substitutions:
   _REGION: "us-central1"
   _ZONE: "us-central1-a"
   _SHORT_BUILD_ID: ${BUILD_ID:0:8}
+  _VM_NAME: "py-sdk-sys-test-${_SHORT_BUILD_ID}"
+
+
 
 steps:
+  # Step 0: Generate a persistent SSH key for this build run.
+  # This prevents gcloud from adding a new key to the OS Login profile on every ssh/scp command.
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "generate-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        mkdir -p /workspace/.ssh
+        # Generate the SSH key
+        ssh-keygen -t rsa -f /workspace/.ssh/google_compute_engine -N '' -C gcb
+        # Save the public key content to a file for the cleanup step
+        cat /workspace/.ssh/google_compute_engine.pub > /workspace/gcb_ssh_key.pub
+    waitFor: ["-"]
 
   # Step 1 Create a GCE VM to run the tests.
   # The VM is created in the same zone as the buckets to test rapid storage features.
@@ -15,7 +32,7 @@ steps:
       - "compute"
       - "instances"
       - "create"
-      - "gcsfs-test-vm-${_SHORT_BUILD_ID}"
+      - "${_VM_NAME}"
       - "--project=${PROJECT_ID}"
       - "--zone=${_ZONE}"
       - "--machine-type=e2-medium"
@@ -38,29 +55,42 @@ steps:
         set -e
         # Wait for the VM to be fully initialized and SSH to be ready.
         for i in {1..10}; do
-          if gcloud compute ssh gcsfs-test-vm-${_SHORT_BUILD_ID} --zone=${_ZONE} --internal-ip --command="echo VM is ready"; then
+          if gcloud compute ssh ${_VM_NAME} --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="echo VM is ready"; then
             break
           fi
           echo "Waiting for VM to become available... (attempt $i/10)"
           sleep 15
         done
         # copy the script to the VM
-        gcloud compute scp cloudbuild/run_zonal_tests.sh gcsfs-test-vm-${_SHORT_BUILD_ID}:~ --zone=${_ZONE} --internal-ip
+        gcloud compute scp cloudbuild/run_zonal_tests.sh ${_VM_NAME}:~ --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine
 
         # Execute the script on the VM via SSH.
         # Capture the exit code to ensure cleanup happens before the build fails.
         set +e
-        gcloud compute ssh gcsfs-test-vm-${_SHORT_BUILD_ID} --zone=${_ZONE} --internal-ip --command="COMMIT_SHA=${COMMIT_SHA} _ZONAL_BUCKET=${_ZONAL_BUCKET} bash run_zonal_tests.sh"
+        gcloud compute ssh ${_VM_NAME} --zone=${_ZONE} --internal-ip --ssh-key-file=/workspace/.ssh/google_compute_engine --command="COMMIT_SHA=${COMMIT_SHA} _ZONAL_BUCKET=${_ZONAL_BUCKET} bash run_zonal_tests.sh"
         EXIT_CODE=$?
         set -e
 
         echo "--- Deleting GCE VM ---"
-        gcloud compute instances delete "gcsfs-test-vm-${_SHORT_BUILD_ID}" --zone=${_ZONE} --quiet
+        gcloud compute instances delete "${_VM_NAME}" --zone=${_ZONE} --quiet
 
         # Exit with the original exit code from the test script.
         exit $$EXIT_CODE
     waitFor:
       - "create-vm"
+      - "generate-ssh-key"
+
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    id: "cleanup-ssh-key"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        echo "--- Removing SSH key from OS Login profile to prevent accumulation ---"
+        gcloud compute os-login ssh-keys remove \
+          --key-file=/workspace/gcb_ssh_key.pub || true
+    waitFor:
+      - "run-tests-and-delete-vm"
 
 timeout: "3600s" # 60 minutes
 
