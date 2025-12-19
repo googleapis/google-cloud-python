@@ -21,6 +21,9 @@ from google.api_core import exceptions
 from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
+from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
+    _MAX_CHUNK_SIZE_BYTES,
+)
 from google.cloud import _storage_v2
 
 
@@ -29,6 +32,7 @@ OBJECT = "test-object"
 GENERATION = 123
 WRITE_HANDLE = b"test-write-handle"
 PERSISTED_SIZE = 456
+EIGHT_MIB = 8 * 1024 * 1024
 
 
 @pytest.fixture
@@ -52,6 +56,7 @@ def test_init(mock_write_object_stream, mock_client):
     assert not writer._is_stream_open
     assert writer.offset is None
     assert writer.persisted_size is None
+    assert writer.bytes_appended_since_last_flush == 0
 
     mock_write_object_stream.assert_called_once_with(
         client=mock_client,
@@ -78,6 +83,7 @@ def test_init_with_optional_args(mock_write_object_stream, mock_client):
 
     assert writer.generation == GENERATION
     assert writer.write_handle == WRITE_HANDLE
+    assert writer.bytes_appended_since_last_flush == 0
 
     mock_write_object_stream.assert_called_once_with(
         client=mock_client,
@@ -86,6 +92,60 @@ def test_init_with_optional_args(mock_write_object_stream, mock_client):
         generation_number=GENERATION,
         write_handle=WRITE_HANDLE,
     )
+
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+def test_init_with_writer_options(mock_write_object_stream, mock_client):
+    """Test the constructor with optional arguments."""
+    writer = AsyncAppendableObjectWriter(
+        mock_client,
+        BUCKET,
+        OBJECT,
+        writer_options={"FLUSH_INTERVAL_BYTES": EIGHT_MIB},
+    )
+
+    assert writer.flush_interval == EIGHT_MIB
+    assert writer.bytes_appended_since_last_flush == 0
+
+    mock_write_object_stream.assert_called_once_with(
+        client=mock_client,
+        bucket_name=BUCKET,
+        object_name=OBJECT,
+        generation_number=None,
+        write_handle=None,
+    )
+
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+def test_init_with_flush_interval_less_than_chunk_size_raises_error(mock_client):
+    """Test that an OutOfRange error is raised if flush_interval is less than the chunk size."""
+
+    with pytest.raises(exceptions.OutOfRange):
+        AsyncAppendableObjectWriter(
+            mock_client,
+            BUCKET,
+            OBJECT,
+            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES - 1},
+        )
+
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+)
+def test_init_with_flush_interval_not_multiple_of_chunk_size_raises_error(mock_client):
+    """Test that an OutOfRange error is raised if flush_interval is not a multiple of the chunk size."""
+
+    with pytest.raises(exceptions.OutOfRange):
+        AsyncAppendableObjectWriter(
+            mock_client,
+            BUCKET,
+            OBJECT,
+            writer_options={"FLUSH_INTERVAL_BYTES": _MAX_CHUNK_SIZE_BYTES + 1},
+        )
 
 
 @mock.patch("google.cloud.storage._experimental.asyncio._utils.google_crc32c")
@@ -477,7 +537,7 @@ async def test_append_flushes_when_buffer_is_full(
 ):
     """Test that append flushes the stream when the buffer size is reached."""
     from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
-        _MAX_BUFFER_SIZE_BYTES,
+        _DEFAULT_FLUSH_INTERVAL_BYTES,
     )
 
     writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
@@ -487,7 +547,7 @@ async def test_append_flushes_when_buffer_is_full(
     mock_stream.send = mock.AsyncMock()
     writer.simple_flush = mock.AsyncMock()
 
-    data = b"a" * _MAX_BUFFER_SIZE_BYTES
+    data = b"a" * _DEFAULT_FLUSH_INTERVAL_BYTES
     await writer.append(data)
 
     writer.simple_flush.assert_awaited_once()
@@ -500,7 +560,7 @@ async def test_append_flushes_when_buffer_is_full(
 async def test_append_handles_large_data(mock_write_object_stream, mock_client):
     """Test that append handles data larger than the buffer size."""
     from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
-        _MAX_BUFFER_SIZE_BYTES,
+        _DEFAULT_FLUSH_INTERVAL_BYTES,
     )
 
     writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
@@ -510,7 +570,7 @@ async def test_append_handles_large_data(mock_write_object_stream, mock_client):
     mock_stream.send = mock.AsyncMock()
     writer.simple_flush = mock.AsyncMock()
 
-    data = b"a" * (_MAX_BUFFER_SIZE_BYTES * 2 + 1)
+    data = b"a" * (_DEFAULT_FLUSH_INTERVAL_BYTES * 2 + 1)
     await writer.append(data)
 
     assert writer.simple_flush.await_count == 2

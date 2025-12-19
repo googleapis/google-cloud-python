@@ -24,6 +24,7 @@ if you want to use these Rapid Storage APIs.
 from typing import Optional, Union
 
 from google_crc32c import Checksum
+from google.api_core import exceptions
 
 from ._utils import raise_if_no_fast_crc32c
 from google.cloud import _storage_v2
@@ -36,7 +37,7 @@ from google.cloud.storage._experimental.asyncio.async_write_object_stream import
 
 
 _MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
-_MAX_BUFFER_SIZE_BYTES = 16 * 1024 * 1024  # 16 MiB
+_DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
 
 
 class AsyncAppendableObjectWriter:
@@ -49,6 +50,7 @@ class AsyncAppendableObjectWriter:
         object_name: str,
         generation=None,
         write_handle=None,
+        writer_options: Optional[dict] = None,
     ):
         """
         Class for appending data to a GCS Appendable Object.
@@ -125,6 +127,21 @@ class AsyncAppendableObjectWriter:
         # Please note: `offset` and `persisted_size` are same when the stream is
         # opened.
         self.persisted_size: Optional[int] = None
+        if writer_options is None:
+            writer_options = {}
+        self.flush_interval = writer_options.get(
+            "FLUSH_INTERVAL_BYTES", _DEFAULT_FLUSH_INTERVAL_BYTES
+        )
+        # TODO: add test case for this.
+        if self.flush_interval < _MAX_CHUNK_SIZE_BYTES:
+            raise exceptions.OutOfRange(
+                f"flush_interval must be >= {_MAX_CHUNK_SIZE_BYTES} , but provided {self.flush_interval}"
+            )
+        if self.flush_interval % _MAX_CHUNK_SIZE_BYTES != 0:
+            raise exceptions.OutOfRange(
+                f"flush_interval must be a multiple of {_MAX_CHUNK_SIZE_BYTES}, but provided {self.flush_interval}"
+            )
+        self.bytes_appended_since_last_flush = 0
 
     async def state_lookup(self) -> int:
         """Returns the persisted_size
@@ -193,7 +210,6 @@ class AsyncAppendableObjectWriter:
             self.offset = self.persisted_size
 
         start_idx = 0
-        bytes_to_flush = 0
         while start_idx < total_bytes:
             end_idx = min(start_idx + _MAX_CHUNK_SIZE_BYTES, total_bytes)
             data_chunk = data[start_idx:end_idx]
@@ -208,10 +224,10 @@ class AsyncAppendableObjectWriter:
             )
             chunk_size = end_idx - start_idx
             self.offset += chunk_size
-            bytes_to_flush += chunk_size
-            if bytes_to_flush >= _MAX_BUFFER_SIZE_BYTES:
+            self.bytes_appended_since_last_flush += chunk_size
+            if self.bytes_appended_since_last_flush >= self.flush_interval:
                 await self.simple_flush()
-                bytes_to_flush = 0
+                self.bytes_appended_since_last_flush = 0
             start_idx = end_idx
 
     async def simple_flush(self) -> None:
