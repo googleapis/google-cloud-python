@@ -480,3 +480,18 @@ class SourceColumnMatch(str, enum.Enum):
     NAME = "NAME"
     """Matches by name. This reads the header row as column names and reorders
     columns to match the field names in the schema."""
+
+
+class TimestampPrecision(enum.Enum):
+    """Precision (maximum number of total digits in base 10) for seconds of
+    TIMESTAMP type."""
+
+    MICROSECOND = None
+    """
+    Default, for TIMESTAMP type with microsecond precision.
+    """
+
+    PICOSECOND = 12
+    """
+    For TIMESTAMP type with picosecond precision.
+    """

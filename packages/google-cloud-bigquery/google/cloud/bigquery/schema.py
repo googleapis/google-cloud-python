@@ -196,6 +196,14 @@ class SchemaField(object):
 
             Only valid for top-level schema fields (not nested fields).
             If the type is FOREIGN, this field is required.
+
+        timestamp_precision: Optional[enums.TimestampPrecision]
+            Precision (maximum number of total digits in base 10) for seconds
+            of TIMESTAMP type.
+
+            Defaults to `enums.TimestampPrecision.MICROSECOND` (`None`) for
+            microsecond precision. Use `enums.TimestampPrecision.PICOSECOND`
+            (`12`) for picosecond precision.
     """
 
     def __init__(
@@ -213,6 +221,7 @@ class SchemaField(object):
         range_element_type: Union[FieldElementType, str, None] = None,
         rounding_mode: Union[enums.RoundingMode, str, None] = None,
         foreign_type_definition: Optional[str] = None,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
     ):
         self._properties: Dict[str, Any] = {
             "name": name,
@@ -237,6 +246,13 @@ class SchemaField(object):
                 if isinstance(policy_tags, PolicyTagList)
                 else None
             )
+        if isinstance(timestamp_precision, enums.TimestampPrecision):
+            self._properties["timestampPrecision"] = timestamp_precision.value
+        elif timestamp_precision is not None:
+            raise ValueError(
+                "timestamp_precision must be class enums.TimestampPrecision "
+                f"or None, got {type(timestamp_precision)} instead."
+            )
         if isinstance(range_element_type, str):
             self._properties["rangeElementType"] = {"type": range_element_type}
         if isinstance(range_element_type, FieldElementType):
@@ -254,14 +270,21 @@ class SchemaField(object):
         """Return a ``SchemaField`` object deserialized from a dictionary.
 
         Args:
-            api_repr (Mapping[str, str]): The serialized representation
-                of the SchemaField, such as what is output by
-                :meth:`to_api_repr`.
+            api_repr (dict): The serialized representation of the SchemaField,
+                such as what is output by :meth:`to_api_repr`.
 
         Returns:
             google.cloud.bigquery.schema.SchemaField: The ``SchemaField`` object.
         """
         placeholder = cls("this_will_be_replaced", "PLACEHOLDER")
+
+        # The API would return a string despite we send an integer. To ensure
+        # success of resending received schema, we convert string to integer
+        # to ensure consistency.
+        try:
+            api_repr["timestampPrecision"] = int(api_repr["timestampPrecision"])
+        except (TypeError, KeyError):
+            pass
 
         # Note: we don't make a copy of api_repr because this can cause
         # unnecessary slowdowns, especially on deeply nested STRUCT / RECORD
@@ -374,6 +397,16 @@ class SchemaField(object):
         resource = self._properties.get("policyTags")
         return PolicyTagList.from_api_repr(resource) if resource is not None else None
 
+    @property
+    def timestamp_precision(self) -> enums.TimestampPrecision:
+        """Precision (maximum number of total digits in base 10) for seconds of
+        TIMESTAMP type.
+
+        Returns:
+            enums.TimestampPrecision: value of TimestampPrecision.
+        """
+        return enums.TimestampPrecision(self._properties.get("timestampPrecision"))
+
     def to_api_repr(self) -> dict:
         """Return a dictionary representing this schema field.
 
@@ -408,6 +441,8 @@ class SchemaField(object):
             None if self.policy_tags is None else tuple(sorted(self.policy_tags.names))
         )
 
+        timestamp_precision = self._properties.get("timestampPrecision")
+
         return (
             self.name,
             field_type,
@@ -417,6 +452,7 @@ class SchemaField(object):
             self.description,
             self.fields,
             policy_tags,
+            timestamp_precision,
         )
 
     def to_standard_sql(self) -> standard_sql.StandardSqlField:
@@ -467,10 +503,9 @@ class SchemaField(object):
         return hash(self._key())
 
     def __repr__(self):
-        key = self._key()
-        policy_tags = key[-1]
+        *initial_tags, policy_tags, timestamp_precision_tag = self._key()
         policy_tags_inst = None if policy_tags is None else PolicyTagList(policy_tags)
-        adjusted_key = key[:-1] + (policy_tags_inst,)
+        adjusted_key = (*initial_tags, policy_tags_inst, timestamp_precision_tag)
         return f"{self.__class__.__name__}{adjusted_key}"
 
 
@@ -530,9 +565,11 @@ def _to_schema_fields(schema):
     if isinstance(schema, Sequence):
         # Input is a Sequence (e.g. a list): Process and return a list of SchemaFields
         return [
-            field
-            if isinstance(field, SchemaField)
-            else SchemaField.from_api_repr(field)
+            (
+                field
+                if isinstance(field, SchemaField)
+                else SchemaField.from_api_repr(field)
+            )
             for field in schema
         ]
 

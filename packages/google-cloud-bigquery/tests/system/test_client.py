@@ -74,6 +74,16 @@ SCHEMA = [
     bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
     bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
 ]
+SCHEMA_PICOSECOND = [
+    bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
+    bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
+    bigquery.SchemaField(
+        "time_pico",
+        "TIMESTAMP",
+        mode="REQUIRED",
+        timestamp_precision=enums.TimestampPrecision.PICOSECOND,
+    ),
+]
 CLUSTERING_SCHEMA = [
     bigquery.SchemaField("full_name", "STRING", mode="REQUIRED"),
     bigquery.SchemaField("age", "INTEGER", mode="REQUIRED"),
@@ -630,6 +640,19 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(time_partitioning.type_, TimePartitioningType.DAY)
         self.assertEqual(time_partitioning.field, "transaction_time")
         self.assertEqual(table.clustering_fields, ["user_email", "store_code"])
+
+    def test_create_table_w_picosecond_timestamp(self):
+        dataset = self.temp_dataset(_make_dataset_id("create_table"))
+        table_id = "test_table"
+        table_arg = Table(dataset.table(table_id), schema=SCHEMA_PICOSECOND)
+        self.assertFalse(_table_exists(table_arg))
+
+        table = helpers.retry_403(Config.CLIENT.create_table)(table_arg)
+        self.to_delete.insert(0, table)
+
+        self.assertTrue(_table_exists(table))
+        self.assertEqual(table.table_id, table_id)
+        self.assertEqual(table.schema, SCHEMA_PICOSECOND)
 
     def test_delete_dataset_with_string(self):
         dataset_id = _make_dataset_id("delete_table_true_with_string")
