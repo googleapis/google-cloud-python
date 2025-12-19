@@ -4,8 +4,4 @@
 # Default owner for all directories not owned by others
 *                                             @googleapis/python-core-client-libraries @googleapis/cloud-sdk-librarian-team
 
-# Packages onboarded to librarian require review from both groups
-/packages/google-cloud-dlp/                   @googleapis/python-core-client-libraries
-/packages/google-cloud-dlp/                   @googleapis/cloud-sdk-librarian-team
-
 /packages/google-cloud-bigquery-storage/      @googleapis/api-bigquery
