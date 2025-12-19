@@ -14,12 +14,11 @@
 
 from __future__ import annotations
 import asyncio
-import google_crc32c
-from google.api_core import exceptions
-from google_crc32c import Checksum
-
 from typing import List, Optional, Tuple
 
+from google_crc32c import Checksum
+
+from ._utils import raise_if_no_fast_crc32c
 from google.cloud.storage._experimental.asyncio.async_read_object_stream import (
     _AsyncReadObjectStream,
 )
@@ -160,14 +159,7 @@ class AsyncMultiRangeDownloader:
         :param read_handle: (Optional) An existing read handle.
         """
 
-        # Verify that the fast, C-accelerated version of crc32c is available.
-        # If not, raise an error to prevent silent performance degradation.
-        if google_crc32c.implementation != "c":
-            raise exceptions.NotFound(
-                "The google-crc32c package is not installed with C support. "
-                "Bidi reads require the C extension for data integrity checks."
-                "For more information, see https://github.com/googleapis/python-crc32c."
-            )
+        raise_if_no_fast_crc32c()
 
         self.client = client
         self.bucket_name = bucket_name

@@ -15,6 +15,9 @@
 import pytest
 from unittest import mock
 
+from google_crc32c import Checksum
+
+from google.api_core import exceptions
 from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
@@ -82,6 +85,23 @@ def test_init_with_optional_args(mock_write_object_stream, mock_client):
         object_name=OBJECT,
         generation_number=GENERATION,
         write_handle=WRITE_HANDLE,
+    )
+
+
+@mock.patch("google.cloud.storage._experimental.asyncio._utils.google_crc32c")
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+def test_init_raises_if_crc32c_c_extension_is_missing(
+    mock_grpc_client, mock_google_crc32c
+):
+    mock_google_crc32c.implementation = "python"
+
+    with pytest.raises(exceptions.FailedPrecondition) as exc_info:
+        AsyncAppendableObjectWriter(mock_grpc_client, "bucket", "object")
+
+    assert "The google-crc32c package is not installed with C support" in str(
+        exc_info.value
     )
 
 
@@ -434,10 +454,15 @@ async def test_append_sends_data_in_chunks(mock_write_object_stream, mock_client
     # First chunk
     assert first_call[0][0].write_offset == 100
     assert len(first_call[0][0].checksummed_data.content) == _MAX_CHUNK_SIZE_BYTES
-
+    assert first_call[0][0].checksummed_data.crc32c == int.from_bytes(
+        Checksum(data[:_MAX_CHUNK_SIZE_BYTES]).digest(), byteorder="big"
+    )
     # Second chunk
     assert second_call[0][0].write_offset == 100 + _MAX_CHUNK_SIZE_BYTES
     assert len(second_call[0][0].checksummed_data.content) == 1
+    assert second_call[0][0].checksummed_data.crc32c == int.from_bytes(
+        Checksum(data[_MAX_CHUNK_SIZE_BYTES:]).digest(), byteorder="big"
+    )
 
     assert writer.offset == 100 + len(data)
     writer.simple_flush.assert_not_awaited()
