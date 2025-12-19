@@ -486,7 +486,9 @@ def _append_offsets(
 ) -> Iterable[pa.RecordBatch]:
     offset = 0
     for batch in batches:
-        offsets = pa.array(range(offset, offset + batch.num_rows), type=pa.int64())
+        offsets = pa.array(
+            range(offset, offset + batch.num_rows), size=batch.num_rows, type=pa.int64()
+        )
         batch_w_offsets = pa.record_batch(
             [*batch.columns, offsets],
             schema=batch.schema.append(pa.field(offsets_col_name, pa.int64())),

@@ -64,6 +64,21 @@ class GbqTable:
             else tuple(table.clustering_fields),
         )
 
+    @staticmethod
+    def from_ref_and_schema(
+        table_ref: bq.TableReference,
+        schema: Sequence[bq.SchemaField],
+        cluster_cols: Optional[Sequence[str]] = None,
+    ) -> GbqTable:
+        return GbqTable(
+            project_id=table_ref.project,
+            dataset_id=table_ref.dataset_id,
+            table_id=table_ref.table_id,
+            physical_schema=tuple(schema),
+            is_physically_stored=True,
+            cluster_cols=tuple(cluster_cols) if cluster_cols else None,
+        )
+
     def get_table_ref(self) -> bq.TableReference:
         return bq.TableReference(
             bq.DatasetReference(self.project_id, self.dataset_id), self.table_id

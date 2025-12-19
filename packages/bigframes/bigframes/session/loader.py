@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 
+import concurrent
+import concurrent.futures
 import copy
 import dataclasses
 import datetime
@@ -21,20 +23,22 @@ import io
 import itertools
 import math
 import os
+import threading
 import typing
 from typing import (
     cast,
     Dict,
-    Generator,
     Hashable,
     IO,
     Iterable,
+    Iterator,
     List,
     Literal,
     Optional,
     overload,
     Sequence,
     Tuple,
+    TypeVar,
 )
 
 import bigframes_vendored.constants as constants
@@ -46,6 +50,7 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery.table
 from google.cloud.bigquery_storage_v1 import types as bq_storage_types
 import pandas
+import pyarrow as pa
 
 import bigframes._tools
 import bigframes._tools.strings
@@ -451,62 +456,97 @@ class GbqDataLoader:
         data: local_data.ManagedArrowTable,
         offsets_col: str,
     ) -> bq_data.BigqueryDataSource:
-        """Load managed data into bigquery"""
-        MAX_BYTES = 10000000  # streaming api has 10MB limit
-        SAFETY_MARGIN = (
-            4  # aim for 2.5mb to account for row variance, format differences, etc.
-        )
-        batch_count = math.ceil(
-            data.metadata.total_bytes / (MAX_BYTES // SAFETY_MARGIN)
-        )
-        rows_per_batch = math.ceil(data.metadata.row_count / batch_count)
-
+        """Load managed data into BigQuery using multiple concurrent streams."""
         schema_w_offsets = data.schema.append(
             schemata.SchemaItem(offsets_col, bigframes.dtypes.INT_DTYPE)
         )
         bq_schema = schema_w_offsets.to_bigquery(_STREAM_JOB_TYPE_OVERRIDES)
         bq_table_ref = self._storage_manager.create_temp_table(bq_schema, [offsets_col])
+        parent = bq_table_ref.to_bqstorage()
 
-        requested_stream = bq_storage_types.stream.WriteStream()
-        requested_stream.type_ = bq_storage_types.stream.WriteStream.Type.COMMITTED  # type: ignore
-
-        stream_request = bq_storage_types.CreateWriteStreamRequest(
-            parent=bq_table_ref.to_bqstorage(), write_stream=requested_stream
+        # Some light benchmarking went into the constants here, not definitive
+        TARGET_BATCH_BYTES = (
+            5_000_000  # Must stay under the hard 10MB limit per request
         )
-        stream = self._write_client.create_write_stream(request=stream_request)
+        rows_per_batch = math.ceil(
+            data.metadata.row_count * TARGET_BATCH_BYTES / data.metadata.total_bytes
+        )
+        min_batches = math.ceil(data.metadata.row_count / rows_per_batch)
+        num_streams = min((os.cpu_count() or 4) * 4, min_batches)
 
-        def request_gen() -> Generator[bq_storage_types.AppendRowsRequest, None, None]:
-            schema, batches = data.to_arrow(
-                offsets_col=offsets_col,
-                duration_type="int",
-                max_chunksize=rows_per_batch,
+        schema, all_batches = data.to_arrow(
+            offsets_col=offsets_col,
+            duration_type="int",
+            max_chunksize=rows_per_batch,
+        )
+        serialized_schema = schema.serialize().to_pybytes()
+
+        def stream_worker(work: Iterator[pa.RecordBatch]) -> str:
+            requested_stream = bq_storage_types.WriteStream(
+                type_=bq_storage_types.WriteStream.Type.PENDING
             )
-            offset = 0
-            for batch in batches:
-                request = bq_storage_types.AppendRowsRequest(
-                    write_stream=stream.name, offset=offset
-                )
-                request.arrow_rows.writer_schema.serialized_schema = (
-                    schema.serialize().to_pybytes()
-                )
-                request.arrow_rows.rows.serialized_record_batch = (
-                    batch.serialize().to_pybytes()
-                )
-                offset += batch.num_rows
-                yield request
+            stream = self._write_client.create_write_stream(
+                parent=parent, write_stream=requested_stream
+            )
+            stream_name = stream.name
 
-        for response in self._write_client.append_rows(requests=request_gen()):
-            if response.row_errors:
-                raise ValueError(
-                    f"Problem loading at least one row from DataFrame: {response.row_errors}. {constants.FEEDBACK_LINK}"
-                )
-        # This step isn't strictly necessary in COMMITTED mode, but avoids max active stream limits
-        response = self._write_client.finalize_write_stream(name=stream.name)
-        assert response.row_count == data.data.num_rows
+            def request_generator():
+                current_offset = 0
+                for batch in work:
+                    request = bq_storage_types.AppendRowsRequest(
+                        write_stream=stream.name, offset=current_offset
+                    )
 
-        destination_table = self._bqclient.get_table(bq_table_ref)
+                    request.arrow_rows.writer_schema.serialized_schema = (
+                        serialized_schema
+                    )
+                    request.arrow_rows.rows.serialized_record_batch = (
+                        batch.serialize().to_pybytes()
+                    )
+
+                    yield request
+                    current_offset += batch.num_rows
+
+            responses = self._write_client.append_rows(requests=request_generator())
+            for resp in responses:
+                if resp.row_errors:
+                    raise ValueError(
+                        f"Errors in stream {stream_name}: {resp.row_errors}"
+                    )
+            self._write_client.finalize_write_stream(name=stream_name)
+            return stream_name
+
+        shared_batches = ThreadSafeIterator(all_batches)
+
+        stream_names = []
+        with concurrent.futures.ThreadPoolExecutor(max_workers=num_streams) as executor:
+            futures = []
+            for _ in range(num_streams):
+                try:
+                    work = next(shared_batches)
+                except StopIteration:
+                    break  # existing workers have consume all work, don't create more workers
+                # Guarantee at least a single piece of work for each worker
+                future = executor.submit(
+                    stream_worker, itertools.chain((work,), shared_batches)
+                )
+                futures.append(future)
+
+            for future in concurrent.futures.as_completed(futures):
+                stream_name = future.result()
+                stream_names.append(stream_name)
+
+        # This makes all data from all streams visible in the table at once
+        commit_request = bq_storage_types.BatchCommitWriteStreamsRequest(
+            parent=parent, write_streams=stream_names
+        )
+        self._write_client.batch_commit_write_streams(commit_request)
+
+        result_table = bq_data.GbqTable.from_ref_and_schema(
+            bq_table_ref, schema=bq_schema, cluster_cols=[offsets_col]
+        )
         return bq_data.BigqueryDataSource(
-            bq_data.GbqTable.from_table(destination_table),
+            result_table,
             schema=schema_w_offsets,
             ordering=ordering.TotalOrdering.from_offset_col(offsets_col),
             n_rows=data.metadata.row_count,
@@ -1368,3 +1408,21 @@ def _batched(iterator: Iterable, n: int) -> Iterable:
     assert n > 0
     while batch := tuple(itertools.islice(iterator, n)):
         yield batch
+
+
+T = TypeVar("T")
+
+
+class ThreadSafeIterator(Iterator[T]):
+    """A wrapper to make an iterator thread-safe."""
+
+    def __init__(self, it: Iterable[T]):
+        self.it = iter(it)
+        self.lock = threading.Lock()
+
+    def __next__(self):
+        with self.lock:
+            return next(self.it)
+
+    def __iter__(self):
+        return self
