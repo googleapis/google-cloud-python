@@ -100,12 +100,56 @@ from google.cloud.bigtable_v2.services.bigtable.transports import (
 from google.cloud.bigtable_v2.services.bigtable.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
+<<<<<<< HEAD
 from google.cloud.bigtable_v2.types.bigtable import (
     CheckAndMutateRowRequest,
     MutateRowRequest,
     PingAndWarmRequest,
     ReadModifyWriteRowRequest,
     SampleRowKeysRequest,
+=======
+from google.cloud.bigtable_v2.types.bigtable import PingAndWarmRequest
+from google.cloud.bigtable_v2.types.bigtable import SampleRowKeysRequest
+from google.cloud.bigtable_v2.types.bigtable import MutateRowRequest
+from google.cloud.bigtable_v2.types.bigtable import CheckAndMutateRowRequest
+from google.cloud.bigtable_v2.types.bigtable import ReadModifyWriteRowRequest
+from google.cloud.client import ClientWithProject
+from google.cloud.environment_vars import BIGTABLE_EMULATOR
+from google.api_core import retry as retries
+from google.api_core.exceptions import DeadlineExceeded
+from google.api_core.exceptions import ServiceUnavailable
+from google.api_core.exceptions import Aborted
+from google.protobuf.message import Message
+from google.protobuf.internal.enum_type_wrapper import EnumTypeWrapper
+import google.auth.credentials
+import google.auth._default
+from google.api_core import client_options as client_options_lib
+from google.cloud.bigtable.data.row import Row
+from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
+from google.cloud.bigtable.data.exceptions import FailedQueryShardError
+from google.cloud.bigtable.data.exceptions import ShardedReadRowsExceptionGroup
+from google.cloud.bigtable.data._helpers import TABLE_DEFAULT, _align_timeouts
+from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+from google.cloud.bigtable.data._helpers import _CONCURRENCY_LIMIT
+from google.cloud.bigtable.data._helpers import _DEFAULT_BIGTABLE_EMULATOR_CLIENT
+from google.cloud.bigtable.data._helpers import _retry_exception_factory
+from google.cloud.bigtable.data._helpers import _validate_timeouts
+from google.cloud.bigtable.data._helpers import _get_error_type
+from google.cloud.bigtable.data._helpers import _get_retryable_errors
+from google.cloud.bigtable.data._helpers import _get_timeouts
+from google.cloud.bigtable.data._helpers import _attempt_timeout_generator
+from google.cloud.bigtable.data.mutations import Mutation, RowMutationEntry
+from google.cloud.bigtable.data.read_modify_write_rules import ReadModifyWriteRule
+from google.cloud.bigtable.data.row_filters import RowFilter
+from google.cloud.bigtable.data.row_filters import StripValueTransformerFilter
+from google.cloud.bigtable.data.row_filters import CellsRowLimitFilter
+from google.cloud.bigtable.data.row_filters import RowFilterChain
+from google.cloud.bigtable.data._cross_sync import CrossSync
+from typing import Iterable
+from grpc import insecure_channel
+from google.cloud.bigtable_v2.services.bigtable.transports import (
+    BigtableGrpcTransport as TransportType,
+>>>>>>> 914006db8dc (feat: initializing the new data client (#1238))
 )
 
 if TYPE_CHECKING:
@@ -150,8 +194,11 @@ class BigtableDataClient(ClientWithProject):
         """
         if "pool_size" in kwargs:
             warnings.warn("pool_size no longer supported")
-        self.client_info = DEFAULT_CLIENT_INFO
-        self.client_info.client_library_version = self._client_version()
+        if kwargs.get("_client_info"):
+            self.client_info = kwargs["_client_info"]
+        else:
+            self.client_info = DEFAULT_CLIENT_INFO
+            self.client_info.client_library_version = self._client_version()
         if type(client_options) is dict:
             client_options = client_options_lib.from_dict(client_options)
         client_options = cast(
@@ -193,6 +240,9 @@ class BigtableDataClient(ClientWithProject):
                 f"The configured universe domain ({self.universe_domain}) does not match the universe domain found in the credentials ({self._credentials.universe_domain}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
             )
         self._is_closed = CrossSync._Sync_Impl.Event()
+        self._disable_background_refresh = bool(
+            kwargs.get("_disable_background_refresh", False)
+        )
         self.transport = cast(TransportType, self._gapic_client.transport)
         self._active_instances: Set[_WarmedInstanceKey] = set()
         self._instance_owners: dict[_WarmedInstanceKey, Set[int]] = {}
@@ -272,6 +322,7 @@ class BigtableDataClient(ClientWithProject):
             not self._channel_refresh_task
             and (not self._emulator_host)
             and (not self._is_closed.is_set())
+            and (not self._disable_background_refresh)
         ):
             CrossSync._Sync_Impl.verify_async_event_loop()
             self._channel_refresh_task = CrossSync._Sync_Impl.create_task(
