@@ -378,7 +378,7 @@ def compile_window(node: nodes.WindowOpNode, child: ir.SQLGlotIR) -> ir.SQLGlotI
             window_op = sge.Case(ifs=when_expressions, default=window_op)
 
         # TODO: check if we can directly window the expression.
-        result = child.window(
+        result = result.window(
             window_op=window_op,
             output_column_id=cdef.id.sql,
         )

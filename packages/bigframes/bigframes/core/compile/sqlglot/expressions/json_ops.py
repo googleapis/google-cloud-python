@@ -69,6 +69,11 @@ def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("PARSE_JSON", expr.expr)
 
 
+@register_unary_op(ops.ToJSON)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("TO_JSON", expr.expr)
+
+
 @register_unary_op(ops.ToJSONString)
 def _(expr: TypedExpr) -> sge.Expression:
     return sge.func("TO_JSON_STRING", expr.expr)

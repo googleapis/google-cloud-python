@@ -93,6 +93,7 @@ def _construct_prompt(
     for elem in prompt_context:
         if elem is None:
             prompt.append(exprs[column_ref_idx].expr)
+            column_ref_idx += 1
         else:
             prompt.append(sge.Literal.string(elem))
 

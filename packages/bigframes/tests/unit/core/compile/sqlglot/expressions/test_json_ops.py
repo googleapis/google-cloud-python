@@ -105,6 +105,14 @@ def test_parse_json(scalar_types_df: bpd.DataFrame, snapshot):
     snapshot.assert_match(sql, "out.sql")
 
 
+def test_to_json(scalar_types_df: bpd.DataFrame, snapshot):
+    col_name = "string_col"
+    bf_df = scalar_types_df[[col_name]]
+    sql = utils._apply_ops_to_sql(bf_df, [ops.ToJSON().as_expr(col_name)], [col_name])
+
+    snapshot.assert_match(sql, "out.sql")
+
+
 def test_to_json_string(json_types_df: bpd.DataFrame, snapshot):
     col_name = "json_col"
     bf_df = json_types_df[[col_name]]
