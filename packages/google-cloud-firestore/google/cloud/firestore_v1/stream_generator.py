@@ -50,7 +50,7 @@ class StreamGenerator(Generator[T, Any, Optional[ExplainMetrics]]):
         self._explain_options = explain_options
         self._explain_metrics = None
 
-    def __iter__(self) -> StreamGenerator:
+    def __iter__(self) -> StreamGenerator[T]:
         return self
 
     def __next__(self) -> T:
