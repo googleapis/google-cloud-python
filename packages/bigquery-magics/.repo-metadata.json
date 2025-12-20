@@ -1,0 +1,16 @@
+{
+    "name": "bigquery-magics",
+    "name_pretty": "Google BigQuery connector for Jupyter and IPython",
+    "product_documentation": "https://cloud.google.com/bigquery",
+    "client_documentation": "https://googleapis.dev/python/bigquery-magics/latest/",
+    "issue_tracker": "https://github.com/googleapis/python-bigquery-magics/issues",
+    "release_level": "stable",
+    "language": "python",
+    "library_type": "INTEGRATION",
+    "repo": "googleapis/python-bigquery-magics",
+    "distribution_name": "bigquery-magics",
+    "api_id": "bigquery.googleapis.com",
+    "requires_billing": false,
+    "default_version": "",
+    "codeowner_team": "@googleapis/api-bigquery @googleapis/api-bigquery-dataframe"
+}
