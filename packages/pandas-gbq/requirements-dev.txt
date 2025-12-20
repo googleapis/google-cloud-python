@@ -1,0 +1,6 @@
+flake8
+google-cloud-bigquery
+nox-automation
+pandas
+pytest
+setuptools
