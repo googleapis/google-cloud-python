@@ -640,7 +640,14 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
                 "Error getting ID token: {}".format(response.json())
             )
 
-        id_token = response.json()["token"]
+        try:
+            id_token = response.json()["token"]
+        except (KeyError, ValueError) as caught_exc:
+            new_exc = exceptions.RefreshError(
+                "No ID token in response.", response.json()
+            )
+            raise new_exc from caught_exc
+
         self.token = id_token
         self.expiry = datetime.utcfromtimestamp(
             jwt.decode(id_token, verify=False)["exp"]

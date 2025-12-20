@@ -761,6 +761,28 @@ class TestImpersonatedCredentials(object):
 
         assert excinfo.match("Error getting ID token")
 
+    def test_refresh_failure_missing_token_in_200_response(self):
+        credentials = self.make_credentials(lifetime=None)
+        credentials.expiry = None
+        credentials.token = "token"
+        id_creds = impersonated_credentials.IDTokenCredentials(
+            credentials, target_audience="audience"
+        )
+
+        # Response has 200 OK status but is missing the "token" field
+        response = mock.create_autospec(transport.Response, instance=False)
+        response.status_code = http_client.OK
+        response.json = mock.Mock(return_value={"not_token": "something"})
+
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.post",
+            return_value=response,
+        ):
+            with pytest.raises(exceptions.RefreshError) as excinfo:
+                id_creds.refresh(None)
+
+        assert excinfo.match("No ID token in response")
+
     def test_refresh_failure_http_error(self, mock_donor_credentials):
         credentials = self.make_credentials(lifetime=None)
 
