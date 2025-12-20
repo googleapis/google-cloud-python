@@ -1,0 +1,19 @@
+{
+  "extends": [
+    "config:base",
+    "group:all",
+    ":preserveSemverRanges",
+    ":disableDependencyDashboard"
+  ],
+  "ignorePaths": [".pre-commit-config.yaml", ".kokoro/requirements.txt", "setup.py", ".github/workflows/unittest.yml", ".github/workflows/docs.yml"],
+  "pip_requirements": {
+    "fileMatch": ["requirements-test.txt", "samples/[\\S/]*constraints.txt", "samples/[\\S/]*constraints-test.txt"]
+  },
+  "packageRules": [
+    {
+      "matchFileNames": ["pyproject.toml"],
+      "matchStrings": ["matplotlib (.*); python_version == '3.9'"],
+      "allowedVersions": ">= 3.7.1, <= 3.9.2"
+    }
+  ]
+}
