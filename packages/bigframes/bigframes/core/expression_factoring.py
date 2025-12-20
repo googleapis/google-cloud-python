@@ -18,7 +18,10 @@ import dataclasses
 import functools
 import itertools
 from typing import (
+    Callable,
     cast,
+    Dict,
+    Generator,
     Hashable,
     Iterable,
     Iterator,
@@ -40,18 +43,72 @@ from bigframes.core import (
 
 _MAX_INLINE_COMPLEXITY = 10
 
+T = TypeVar("T")
+
+
+def unique_nodes(
+    roots: Sequence[expression.Expression],
+) -> Generator[expression.Expression, None, None]:
+    """Walks the tree for unique nodes"""
+    seen = set()
+    stack: list[expression.Expression] = list(roots)
+    while stack:
+        item = stack.pop()
+        if item not in seen:
+            yield item
+            seen.add(item)
+            stack.extend(item.children)
+
+
+def iter_nodes_topo(
+    roots: Sequence[expression.Expression],
+) -> Generator[expression.Expression, None, None]:
+    """Returns nodes in reverse topological order, using Kahn's algorithm."""
+    child_to_parents: Dict[
+        expression.Expression, list[expression.Expression]
+    ] = collections.defaultdict(list)
+    out_degree: Dict[expression.Expression, int] = collections.defaultdict(int)
+
+    queue: collections.deque[expression.Expression] = collections.deque()
+    for node in unique_nodes(roots):
+        num_children = len(node.children)
+        out_degree[node] = num_children
+        if num_children == 0:
+            queue.append(node)
+        for child in node.children:
+            child_to_parents[child].append(node)
+
+    while queue:
+        item = queue.popleft()
+        yield item
+        parents = child_to_parents.get(item, [])
+        for parent in parents:
+            out_degree[parent] -= 1
+            if out_degree[parent] == 0:
+                queue.append(parent)
+
+
+def reduce_up(
+    roots: Sequence[expression.Expression],
+    reduction: Callable[[expression.Expression, Tuple[T, ...]], T],
+) -> Tuple[T, ...]:
+    """Apply a bottom-up reduction to the forest."""
+    results: dict[expression.Expression, T] = {}
+    for node in list(iter_nodes_topo(roots)):
+        # child nodes have already been transformed
+        child_results = tuple(results[child] for child in node.children)
+        result = reduction(node, child_results)
+        results[node] = result
+
+    return tuple(results[root] for root in roots)
+
 
 def apply_col_exprs_to_plan(
     plan: nodes.BigFrameNode, col_exprs: Sequence[nodes.ColumnDef]
 ) -> nodes.BigFrameNode:
-    # TODO: Jointly fragmentize expressions to more efficiently reuse common sub-expressions
     target_ids = tuple(named_expr.id for named_expr in col_exprs)
 
-    fragments = tuple(
-        itertools.chain.from_iterable(
-            fragmentize_expression(expr) for expr in col_exprs
-        )
-    )
+    fragments = fragmentize_expression(col_exprs)
     return push_into_tree(plan, fragments, target_ids)
 
 
@@ -101,14 +158,26 @@ class FactoredExpression:
     sub_exprs: Tuple[nodes.ColumnDef, ...]
 
 
-def fragmentize_expression(root: nodes.ColumnDef) -> Sequence[nodes.ColumnDef]:
+def fragmentize_expression(
+    roots: Sequence[nodes.ColumnDef],
+) -> Sequence[nodes.ColumnDef]:
     """
     The goal of this functions is to factor out an expression into multiple sub-expressions.
     """
-
-    factored_expr = root.expression.reduce_up(gather_fragments)
-    root_expr = nodes.ColumnDef(factored_expr.root_expr, root.id)
-    return (root_expr, *factored_expr.sub_exprs)
+    # TODO: Fragmentize a bit less aggressively
+    factored_exprs = reduce_up([root.expression for root in roots], gather_fragments)
+    root_exprs = (
+        nodes.ColumnDef(factored.root_expr, root.id)
+        for factored, root in zip(factored_exprs, roots)
+    )
+    return (
+        *root_exprs,
+        *dedupe(
+            itertools.chain.from_iterable(
+                factored_expr.sub_exprs for factored_expr in factored_exprs
+            )
+        ),
+    )
 
 
 @dataclasses.dataclass(frozen=True, eq=False)

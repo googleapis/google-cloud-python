@@ -625,21 +625,7 @@ def skew(
     # counts, moment3 for each column
     aggregations = []
     for col in original_columns:
-        delta3_expr = _mean_delta_to_power(3, col)
-        count_agg = agg_expressions.UnaryAggregation(
-            agg_ops.count_op,
-            ex.deref(col),
-        )
-        moment3_agg = agg_expressions.UnaryAggregation(
-            agg_ops.mean_op,
-            delta3_expr,
-        )
-        variance_agg = agg_expressions.UnaryAggregation(
-            agg_ops.PopVarOp(),
-            ex.deref(col),
-        )
-        skew_expr = _skew_from_moments_and_count(count_agg, moment3_agg, variance_agg)
-        aggregations.append(skew_expr)
+        aggregations.append(skew_expr(ex.deref(col)))
 
     block = block.aggregate(
         aggregations, grouping_column_ids, column_labels=column_labels
@@ -663,16 +649,7 @@ def kurt(
     # counts, moment4 for each column
     kurt_exprs = []
     for col in original_columns:
-        delta_4_expr = _mean_delta_to_power(4, col)
-        count_agg = agg_expressions.UnaryAggregation(agg_ops.count_op, ex.deref(col))
-        moment4_agg = agg_expressions.UnaryAggregation(agg_ops.mean_op, delta_4_expr)
-        variance_agg = agg_expressions.UnaryAggregation(
-            agg_ops.PopVarOp(), ex.deref(col)
-        )
-
-        # Corresponds to order of aggregations in preceding loop
-        kurt_expr = _kurt_from_moments_and_count(count_agg, moment4_agg, variance_agg)
-        kurt_exprs.append(kurt_expr)
+        kurt_exprs.append(kurt_expr(ex.deref(col)))
 
     block = block.aggregate(
         kurt_exprs, grouping_column_ids, column_labels=column_labels
@@ -686,13 +663,38 @@ def kurt(
     return block
 
 
+def skew_expr(expr: ex.Expression) -> ex.Expression:
+    delta3_expr = _mean_delta_to_power(3, expr)
+    count_agg = agg_expressions.UnaryAggregation(
+        agg_ops.count_op,
+        expr,
+    )
+    moment3_agg = agg_expressions.UnaryAggregation(
+        agg_ops.mean_op,
+        delta3_expr,
+    )
+    variance_agg = agg_expressions.UnaryAggregation(
+        agg_ops.PopVarOp(),
+        expr,
+    )
+    return _skew_from_moments_and_count(count_agg, moment3_agg, variance_agg)
+
+
+def kurt_expr(expr: ex.Expression) -> ex.Expression:
+    delta_4_expr = _mean_delta_to_power(4, expr)
+    count_agg = agg_expressions.UnaryAggregation(agg_ops.count_op, expr)
+    moment4_agg = agg_expressions.UnaryAggregation(agg_ops.mean_op, delta_4_expr)
+    variance_agg = agg_expressions.UnaryAggregation(agg_ops.PopVarOp(), expr)
+    return _kurt_from_moments_and_count(count_agg, moment4_agg, variance_agg)
+
+
 def _mean_delta_to_power(
     n_power: int,
-    val_id: str,
+    col_expr: ex.Expression,
 ) -> ex.Expression:
     """Calculate (x-mean(x))^n. Useful for calculating moment statistics such as skew and kurtosis."""
-    mean_expr = agg_expressions.UnaryAggregation(agg_ops.mean_op, ex.deref(val_id))
-    delta = ops.sub_op.as_expr(val_id, mean_expr)
+    mean_expr = agg_expressions.UnaryAggregation(agg_ops.mean_op, col_expr)
+    delta = ops.sub_op.as_expr(col_expr, mean_expr)
     return ops.pow_op.as_expr(delta, ex.const(n_power))
 
 

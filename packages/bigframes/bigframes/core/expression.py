@@ -15,12 +15,11 @@
 from __future__ import annotations
 
 import abc
-import collections
 import dataclasses
 import functools
 import itertools
 import typing
-from typing import Callable, Dict, Generator, Mapping, Tuple, TypeVar, Union
+from typing import Callable, Generator, Mapping, TypeVar, Union
 
 import pandas as pd
 
@@ -161,57 +160,6 @@ class Expression(abc.ABC):
         yield self
         for child in self.children:
             yield from child.children
-
-    def unique_nodes(
-        self: Expression,
-    ) -> Generator[Expression, None, None]:
-        """Walks the tree for unique nodes"""
-        seen = set()
-        stack: list[Expression] = [self]
-        while stack:
-            item = stack.pop()
-            if item not in seen:
-                yield item
-                seen.add(item)
-                stack.extend(item.children)
-
-    def iter_nodes_topo(
-        self: Expression,
-    ) -> Generator[Expression, None, None]:
-        """Returns nodes in reverse topological order, using Kahn's algorithm."""
-        child_to_parents: Dict[Expression, list[Expression]] = collections.defaultdict(
-            list
-        )
-        out_degree: Dict[Expression, int] = collections.defaultdict(int)
-
-        queue: collections.deque["Expression"] = collections.deque()
-        for node in list(self.unique_nodes()):
-            num_children = len(node.children)
-            out_degree[node] = num_children
-            if num_children == 0:
-                queue.append(node)
-            for child in node.children:
-                child_to_parents[child].append(node)
-
-        while queue:
-            item = queue.popleft()
-            yield item
-            parents = child_to_parents.get(item, [])
-            for parent in parents:
-                out_degree[parent] -= 1
-                if out_degree[parent] == 0:
-                    queue.append(parent)
-
-    def reduce_up(self, reduction: Callable[[Expression, Tuple[T, ...]], T]) -> T:
-        """Apply a bottom-up reduction to the tree."""
-        results: dict[Expression, T] = {}
-        for node in list(self.iter_nodes_topo()):
-            # child nodes have already been transformed
-            child_results = tuple(results[child] for child in node.children)
-            result = reduction(node, child_results)
-            results[node] = result
-
-        return results[self]
 
 
 @dataclasses.dataclass(frozen=True)
