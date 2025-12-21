@@ -70,7 +70,7 @@ echo "Created working directory: ${WORKDIR}"
 pushd "${WORKDIR}"  # cd into workdir
 
 echo "Cloning source repository: ${SOURCE_REPO}"
-git clone "git@github.com:${SOURCE_REPO}.git" source-repo
+git clone --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo
 
 pushd source-repo
 
@@ -124,7 +124,7 @@ git filter-branch \
   --force \
   --prune-empty \
   --tree-filter \
-    "shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
+    "git submodule update --init --recursive; find . -mindepth 2 -name .git -exec rm -rf {} +; shopt -s dotglob; mkdir -p ${WORKDIR}/migrated-source; mv * ${WORKDIR}/migrated-source; mkdir -p ${TARGET_PATH}; { mv ${WORKDIR}/migrated-source/* ${TARGET_PATH} || echo 'No files to move' ; }"
 
 # back to workdir
 popd
@@ -142,8 +142,8 @@ echo "Success"
 popd # back to workdir
 
 # Do a diff between source code split repo and migrated code.
-git clone "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
-rm -rf source-repo-validation/.git  # That folder is not needed for validation.
+git clone --recurse-submodules "git@github.com:${SOURCE_REPO}.git" source-repo-validation  # Not ideal to clone again.
+find source-repo-validation -name .git -exec rm -rf {} +  # That folder is not needed for validation.
 
 DIFF_FILE="${WORKDIR}/diff.txt"
 if diff -r "${TARGET_REPO}/${TARGET_PATH}" source-repo-validation > "${DIFF_FILE}" ; then
