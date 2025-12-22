@@ -67,7 +67,7 @@ def test_get_formatted_bytes(test_input, expected):
 
 
 @pytest.mark.parametrize(
-    "test_input, expected", [(None, None), ("string", "string"), (100000, "a minute")]
+    "test_input, expected", [(None, None), ("string", "string"), (66000, "a minute")]
 )
 def test_get_formatted_time(test_input, expected):
     assert formatting_helpers.get_formatted_time(test_input) == expected
