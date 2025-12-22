@@ -1,5 +1,4 @@
 # py standard imports
-import asyncio
 import os
 import uuid
 from io import BytesIO
@@ -8,6 +7,7 @@ from io import BytesIO
 import google_crc32c
 
 import pytest
+import gc
 
 # current library imports
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
@@ -18,6 +18,7 @@ from google.cloud.storage._experimental.asyncio.async_appendable_object_writer i
 from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
+
 
 pytestmark = pytest.mark.skipif(
     os.getenv("RUN_ZONAL_SYSTEM_TESTS") != "True",
@@ -34,36 +35,6 @@ _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 def _get_equal_dist(a: int, b: int) -> tuple[int, int]:
     step = (b - a) // 3
     return a + step, a + 2 * step
-
-
-async def write_one_appendable_object(
-    bucket_name: str,
-    object_name: str,
-    data: bytes,
-) -> None:
-    """Helper to write an appendable object."""
-    grpc_client = AsyncGrpcClient(attempt_direct_path=True).grpc_client
-    writer = AsyncAppendableObjectWriter(grpc_client, bucket_name, object_name)
-    await writer.open()
-    await writer.append(data)
-    await writer.close()
-
-
-@pytest.fixture(scope="function")
-def appendable_object(storage_client, blobs_to_delete):
-    """Fixture to create and cleanup an appendable object."""
-    object_name = f"appendable_obj_for_mrd-{str(uuid.uuid4())[:4]}"
-    asyncio.run(
-        write_one_appendable_object(
-            _ZONAL_BUCKET,
-            object_name,
-            _BYTES_TO_UPLOAD,
-        )
-    )
-    yield object_name
-
-    # Clean up; use json client (i.e. `storage_client` fixture) to delete.
-    blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
 
 
 @pytest.mark.asyncio
@@ -114,6 +85,9 @@ async def test_basic_wrd(
 
     # Clean up; use json client (i.e. `storage_client` fixture) to delete.
     blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+    del writer
+    del mrd
+    gc.collect()
 
 
 @pytest.mark.asyncio
@@ -161,12 +135,20 @@ async def test_basic_wrd_in_slices(storage_client, blobs_to_delete, object_size)
 
     # Clean up; use json client (i.e. `storage_client` fixture) to delete.
     blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+    del writer
+    del mrd
+    gc.collect()
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize(
     "flush_interval",
-    [2 * 1024 * 1024, 4 * 1024 * 1024, 8 * 1024 * 1024, _DEFAULT_FLUSH_INTERVAL_BYTES],
+    [
+        2 * 1024 * 1024,
+        4 * 1024 * 1024,
+        8 * 1024 * 1024,
+        _DEFAULT_FLUSH_INTERVAL_BYTES,
+    ],
 )
 async def test_wrd_with_non_default_flush_interval(
     storage_client,
@@ -214,6 +196,9 @@ async def test_wrd_with_non_default_flush_interval(
 
     # Clean up; use json client (i.e. `storage_client` fixture) to delete.
     blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+    del writer
+    del mrd
+    gc.collect()
 
 
 @pytest.mark.asyncio
@@ -237,20 +222,28 @@ async def test_read_unfinalized_appendable_object(storage_client, blobs_to_delet
 
     # Clean up; use json client (i.e. `storage_client` fixture) to delete.
     blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+    del writer
+    del mrd
+    gc.collect()
 
 
 @pytest.mark.asyncio
-async def test_mrd_open_with_read_handle(appendable_object):
-    grpc_client = AsyncGrpcClient(attempt_direct_path=True).grpc_client
+async def test_mrd_open_with_read_handle():
+    grpc_client = AsyncGrpcClient().grpc_client
+    object_name = f"test_read_handl-{str(uuid.uuid4())[:4]}"
+    writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+    await writer.open()
+    await writer.append(_BYTES_TO_UPLOAD)
+    await writer.close()
 
-    mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, appendable_object)
+    mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
     await mrd.open()
     read_handle = mrd.read_handle
     await mrd.close()
 
     # Open a new MRD using the `read_handle` obtained above
     new_mrd = AsyncMultiRangeDownloader(
-        grpc_client, _ZONAL_BUCKET, appendable_object, read_handle=read_handle
+        grpc_client, _ZONAL_BUCKET, object_name, read_handle=read_handle
     )
     await new_mrd.open()
     # persisted_size not set when opened with read_handle
@@ -259,3 +252,6 @@ async def test_mrd_open_with_read_handle(appendable_object):
     await new_mrd.download_ranges([(0, 0, buffer)])
     await new_mrd.close()
     assert buffer.getvalue() == _BYTES_TO_UPLOAD
+    del mrd
+    del new_mrd
+    gc.collect()
