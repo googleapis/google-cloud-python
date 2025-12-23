@@ -180,6 +180,7 @@ def compile_readtable(node: nodes.ReadTableNode, child: ir.SQLGlotIR):
         col_names=[col.source_id for col in node.scan_list.items],
         alias_names=[col.id.sql for col in node.scan_list.items],
         uid_gen=child.uid_gen,
+        sql_predicate=node.source.sql_predicate,
         system_time=node.source.at_time,
     )
 

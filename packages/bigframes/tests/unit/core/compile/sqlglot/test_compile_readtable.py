@@ -67,3 +67,15 @@ def test_compile_readtable_w_system_time(
     )
     bf_df = compiler_session.read_gbq_table(str(table_ref))
     snapshot.assert_match(bf_df.sql, "out.sql")
+
+
+def test_compile_readtable_w_columns_filters(compiler_session, snapshot):
+    columns = ["rowindex", "int64_col", "string_col"]
+    filters = [("rowindex", ">", 0), ("string_col", "in", ["Hello, World!"])]
+    bf_df = compiler_session._loader.read_gbq_table(
+        "bigframes-dev.sqlglot_test.scalar_types",
+        enable_snapshot=False,
+        columns=columns,
+        filters=filters,
+    )
+    snapshot.assert_match(bf_df.sql, "out.sql")

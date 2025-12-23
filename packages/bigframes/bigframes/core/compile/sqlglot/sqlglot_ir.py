@@ -120,6 +120,7 @@ class SQLGlotIR:
         col_names: typing.Sequence[str],
         alias_names: typing.Sequence[str],
         uid_gen: guid.SequentialUIDGenerator,
+        sql_predicate: typing.Optional[str] = None,
         system_time: typing.Optional[datetime.datetime] = None,
     ) -> SQLGlotIR:
         """Builds a SQLGlotIR expression from a BigQuery table.
@@ -131,6 +132,7 @@ class SQLGlotIR:
             col_names (typing.Sequence[str]): The names of the columns to select.
             alias_names (typing.Sequence[str]): The aliases for the selected columns.
             uid_gen (guid.SequentialUIDGenerator): A generator for unique identifiers.
+            sql_predicate (typing.Optional[str]): An optional SQL predicate for filtering.
             system_time (typing.Optional[str]): An optional system time for time-travel queries.
         """
         selections = [
@@ -158,6 +160,10 @@ class SQLGlotIR:
             version=version,
         )
         select_expr = sge.Select().select(*selections).from_(table_expr)
+        if sql_predicate:
+            select_expr = select_expr.where(
+                sg.parse_one(sql_predicate, dialect="bigquery"), append=False
+            )
         return cls(expr=select_expr, uid_gen=uid_gen)
 
     @classmethod
