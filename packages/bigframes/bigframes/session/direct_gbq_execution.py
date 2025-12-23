@@ -60,6 +60,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
 
         iterator, query_job = self._run_execute_query(
             sql=compiled.sql,
+            session=plan.session,
         )
 
         # just immediately downlaod everything for simplicity
@@ -75,6 +76,7 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
         self,
         sql: str,
         job_config: Optional[bq_job.QueryJobConfig] = None,
+        session=None,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
@@ -89,4 +91,5 @@ class DirectGbqExecutor(semi_executor.SemiExecutor):
             metrics=None,
             query_with_job=False,
             publisher=self._publisher,
+            session=session,
         )

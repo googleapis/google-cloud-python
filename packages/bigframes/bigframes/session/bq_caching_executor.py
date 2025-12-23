@@ -323,6 +323,7 @@ class BigQueryCachingExecutor(executor.Executor):
         iterator, job = self._run_execute_query(
             sql=sql,
             job_config=job_config,
+            session=array_value.session,
         )
 
         has_timedelta_col = any(
@@ -389,6 +390,7 @@ class BigQueryCachingExecutor(executor.Executor):
         sql: str,
         job_config: Optional[bq_job.QueryJobConfig] = None,
         query_with_job: bool = True,
+        session=None,
     ) -> Tuple[bq_table.RowIterator, Optional[bigquery.QueryJob]]:
         """
         Starts BigQuery query job and waits for results.
@@ -415,6 +417,7 @@ class BigQueryCachingExecutor(executor.Executor):
                     timeout=None,
                     query_with_job=True,
                     publisher=self._publisher,
+                    session=session,
                 )
             else:
                 return bq_io.start_query_with_client(
@@ -427,6 +430,7 @@ class BigQueryCachingExecutor(executor.Executor):
                     timeout=None,
                     query_with_job=False,
                     publisher=self._publisher,
+                    session=session,
                 )
 
         except google.api_core.exceptions.BadRequest as e:
@@ -661,6 +665,7 @@ class BigQueryCachingExecutor(executor.Executor):
             sql=compiled.sql,
             job_config=job_config,
             query_with_job=(destination_table is not None),
+            session=plan.session,
         )
 
         # we could actually cache even when caching is not explicitly requested, but being conservative for now

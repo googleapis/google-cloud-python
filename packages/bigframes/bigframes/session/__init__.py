@@ -23,6 +23,7 @@ import inspect
 import logging
 import os
 import secrets
+import threading
 import typing
 from typing import (
     Any,
@@ -207,6 +208,9 @@ class Session(
         # at the same time in the same region
         self._session_id: str = "session" + secrets.token_hex(3)
         # store table ids and delete them when the session is closed
+
+        self._api_methods: list[str] = []
+        self._api_methods_lock = threading.Lock()
 
         self._objects: list[
             weakref.ReferenceType[
@@ -2160,6 +2164,7 @@ class Session(
             query_with_job=True,
             job_retry=third_party_gcb_retry.DEFAULT_ML_JOB_RETRY,
             publisher=self._publisher,
+            session=self,
         )
         return iterator, query_job
 
@@ -2188,6 +2193,7 @@ class Session(
             timeout=None,
             query_with_job=True,
             publisher=self._publisher,
+            session=self,
         )
 
         return table

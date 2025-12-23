@@ -126,6 +126,7 @@ def create_temp_table(
     schema: Optional[Iterable[bigquery.SchemaField]] = None,
     cluster_columns: Optional[list[str]] = None,
     kms_key: Optional[str] = None,
+    session=None,
 ) -> str:
     """Create an empty table with an expiration in the desired session.
 
@@ -153,6 +154,7 @@ def create_temp_view(
     *,
     expiration: datetime.datetime,
     sql: str,
+    session=None,
 ) -> str:
     """Create an empty table with an expiration in the desired session.
 
@@ -228,12 +230,14 @@ def format_option(key: str, value: Union[bool, str]) -> str:
     return f"{key}={repr(value)}"
 
 
-def add_and_trim_labels(job_config):
+def add_and_trim_labels(job_config, session=None):
     """
     Add additional labels to the job configuration and trim the total number of labels
     to ensure they do not exceed MAX_LABELS_COUNT labels per job.
     """
-    api_methods = log_adapter.get_and_reset_api_methods(dry_run=job_config.dry_run)
+    api_methods = log_adapter.get_and_reset_api_methods(
+        dry_run=job_config.dry_run, session=session
+    )
     job_config.labels = create_job_configs_labels(
         job_configs_labels=job_config.labels,
         api_methods=api_methods,
@@ -270,6 +274,7 @@ def start_query_with_client(
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
     query_with_job: Literal[True],
     publisher: bigframes.core.events.Publisher,
+    session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
     ...
 
@@ -286,6 +291,7 @@ def start_query_with_client(
     metrics: Optional[bigframes.session.metrics.ExecutionMetrics],
     query_with_job: Literal[False],
     publisher: bigframes.core.events.Publisher,
+    session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     ...
 
@@ -303,6 +309,7 @@ def start_query_with_client(
     query_with_job: Literal[True],
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
+    session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, bigquery.QueryJob]:
     ...
 
@@ -320,6 +327,7 @@ def start_query_with_client(
     query_with_job: Literal[False],
     job_retry: google.api_core.retry.Retry,
     publisher: bigframes.core.events.Publisher,
+    session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     ...
 
@@ -340,6 +348,7 @@ def start_query_with_client(
     # version 3.36.0 or later.
     job_retry: google.api_core.retry.Retry = third_party_gcb_retry.DEFAULT_JOB_RETRY,
     publisher: bigframes.core.events.Publisher,
+    session=None,
 ) -> Tuple[google.cloud.bigquery.table.RowIterator, Optional[bigquery.QueryJob]]:
     """
     Starts query job and waits for results.
@@ -347,7 +356,7 @@ def start_query_with_client(
     # Note: Ensure no additional labels are added to job_config after this
     # point, as `add_and_trim_labels` ensures the label count does not
     # exceed MAX_LABELS_COUNT.
-    add_and_trim_labels(job_config)
+    add_and_trim_labels(job_config, session=session)
 
     try:
         if not query_with_job:

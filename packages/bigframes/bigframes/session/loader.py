@@ -1324,6 +1324,7 @@ class GbqDataLoader:
             metrics=None,
             query_with_job=False,
             publisher=self._publisher,
+            session=self._session,
         )
         return rows
 
@@ -1350,6 +1351,7 @@ class GbqDataLoader:
             metrics=None,
             query_with_job=True,
             publisher=self._publisher,
+            session=self._session,
         )
         return query_job
 

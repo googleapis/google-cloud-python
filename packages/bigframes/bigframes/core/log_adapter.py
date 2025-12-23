@@ -174,7 +174,8 @@ def method_logger(method=None, /, *, custom_base_name: Optional[str] = None):
             full_method_name = f"{base_name.lower()}-{api_method_name}"
             # Track directly called methods
             if len(_call_stack) == 0:
-                add_api_method(full_method_name)
+                session = _find_session(*args, **kwargs)
+                add_api_method(full_method_name, session=session)
 
             _call_stack.append(full_method_name)
 
@@ -220,7 +221,8 @@ def property_logger(prop):
             full_property_name = f"{class_name.lower()}-{property_name.lower()}"
 
             if len(_call_stack) == 0:
-                add_api_method(full_property_name)
+                session = _find_session(*args, **kwargs)
+                add_api_method(full_property_name, session=session)
 
             _call_stack.append(full_property_name)
             try:
@@ -250,25 +252,41 @@ def log_name_override(name: str):
     return wrapper
 
 
-def add_api_method(api_method_name):
+def add_api_method(api_method_name, session=None):
     global _lock
     global _api_methods
-    with _lock:
-        # Push the method to the front of the _api_methods list
-        _api_methods.insert(0, api_method_name.replace("<", "").replace(">", ""))
-        # Keep the list length within the maximum limit (adjust MAX_LABELS_COUNT as needed)
-        _api_methods = _api_methods[:MAX_LABELS_COUNT]
+
+    clean_method_name = api_method_name.replace("<", "").replace(">", "")
+
+    if session is not None and _is_session_initialized(session):
+        with session._api_methods_lock:
+            session._api_methods.insert(0, clean_method_name)
+            session._api_methods = session._api_methods[:MAX_LABELS_COUNT]
+    else:
+        with _lock:
+            # Push the method to the front of the _api_methods list
+            _api_methods.insert(0, clean_method_name)
+            # Keep the list length within the maximum limit (adjust MAX_LABELS_COUNT as needed)
+            _api_methods = _api_methods[:MAX_LABELS_COUNT]
 
 
-def get_and_reset_api_methods(dry_run: bool = False):
+def get_and_reset_api_methods(dry_run: bool = False, session=None):
     global _lock
+    methods = []
+
+    if session is not None and _is_session_initialized(session):
+        with session._api_methods_lock:
+            methods.extend(session._api_methods)
+            if not dry_run:
+                session._api_methods.clear()
+
     with _lock:
-        previous_api_methods = list(_api_methods)
+        methods.extend(_api_methods)
 
         # dry_run might not make a job resource, so only reset the log on real queries.
         if not dry_run:
             _api_methods.clear()
-    return previous_api_methods
+    return methods
 
 
 def _get_bq_client(*args, **kwargs):
@@ -281,5 +299,38 @@ def _get_bq_client(*args, **kwargs):
     for kwargv in kwargs.values():
         if hasattr(kwargv, "_block"):
             return kwargv._block.session.bqclient
+
+    return None
+
+
+def _is_session_initialized(session):
+    """Return True if fully initialized.
+
+    Because the method logger could get called before Session.__init__ has a
+    chance to run, we use the globals in that case.
+    """
+    return hasattr(session, "_api_methods_lock") and hasattr(session, "_api_methods")
+
+
+def _find_session(*args, **kwargs):
+    # This function cannot import Session at the top level because Session
+    # imports log_adapter.
+    from bigframes.session import Session
+
+    session = args[0] if args else None
+    if (
+        session is not None
+        and isinstance(session, Session)
+        and _is_session_initialized(session)
+    ):
+        return session
+
+    session = kwargs.get("session")
+    if (
+        session is not None
+        and isinstance(session, Session)
+        and _is_session_initialized(session)
+    ):
+        return session
 
     return None
