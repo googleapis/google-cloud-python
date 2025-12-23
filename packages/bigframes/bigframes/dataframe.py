@@ -1969,7 +1969,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         max_results: Optional[int] = None,
         *,
         allow_large_results: Optional[bool] = None,
-    ) -> Iterable[pandas.DataFrame]:
+    ) -> blocks.PandasBatches:
         """Stream DataFrame results to an iterable of pandas DataFrame.
 
         page_size and max_results determine the size and number of batches,
