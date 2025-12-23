@@ -79,7 +79,7 @@ class _CombinedResponse(transport.Response):
 
     async def raw_content(self):
         if self._raw_content is None:
-            self._raw_content = await self._response.read()
+            self._raw_content = await self._response.content.read()
         return self._raw_content
 
     async def content(self):

@@ -141,7 +141,10 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self.expiry = expiry
         self._refresh_token = refresh_token
         self._id_token = id_token
-        self._scopes = scopes
+        if scopes is not None and isinstance(scopes, set):
+            self._scopes = list(scopes)
+        else:
+            self._scopes = scopes
         self._default_scopes = default_scopes
         self._granted_scopes = granted_scopes
         self._token_uri = token_uri
@@ -207,7 +210,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     @property
     def scopes(self):
-        """Optional[str]: The OAuth 2.0 permission scopes."""
+        """Optional[Sequence[str]]: The OAuth 2.0 permission scopes."""
         return self._scopes
 
     @property

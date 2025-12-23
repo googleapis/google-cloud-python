@@ -55,6 +55,31 @@ class TestCredentials(object):
             enable_reauth_refresh=True,
         )
 
+    def test_init_with_set_scopes(self):
+        # Regression test for https://github.com/googleapis/google-auth-library-python/issues/1145
+        scopes_set = {"a", "b"}
+        creds = credentials.Credentials(token="token", scopes=scopes_set)
+
+        # Verify scopes are converted to a list
+        assert isinstance(creds.scopes, list)
+        assert set(creds.scopes) == scopes_set
+
+        # Verify internal storage is a list (ensure consistent mutability)
+        assert isinstance(creds._scopes, list)
+
+        # Verify consistency (property returns the same object)
+        assert creds.scopes is creds.scopes
+
+        # Verify modifications persist
+        creds.scopes.append("c")
+        assert "c" in creds.scopes
+        assert len(creds.scopes) == 3
+
+        # Verify to_json works
+        json_output = creds.to_json()
+        data = json.loads(json_output)
+        assert set(data["scopes"]) == {"a", "b", "c"}
+
     def test_default_state(self):
         credentials = self.make_credentials()
         assert not credentials.valid

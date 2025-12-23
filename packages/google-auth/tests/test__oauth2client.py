@@ -56,7 +56,7 @@ def test__convert_oauth2_credentials():
     assert new_credentials._client_id == old_credentials.client_id
     assert new_credentials._client_secret == old_credentials.client_secret
     assert new_credentials._token_uri == old_credentials.token_uri
-    assert new_credentials.scopes == old_credentials.scopes
+    assert set(new_credentials.scopes) == set(old_credentials.scopes)
 
 
 def test__convert_service_account_credentials():
