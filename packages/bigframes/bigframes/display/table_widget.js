@@ -15,26 +15,25 @@
  */
 
 const ModelProperty = {
+	ERROR_MESSAGE: "error_message",
+	ORDERABLE_COLUMNS: "orderable_columns",
 	PAGE: "page",
 	PAGE_SIZE: "page_size",
 	ROW_COUNT: "row_count",
-	TABLE_HTML: "table_html",
-	SORT_COLUMN: "sort_column",
 	SORT_ASCENDING: "sort_ascending",
-	ERROR_MESSAGE: "error_message",
-	ORDERABLE_COLUMNS: "orderable_columns",
+	SORT_COLUMN: "sort_column",
+	TABLE_HTML: "table_html",
 };
 
 const Event = {
-	CLICK: "click",
 	CHANGE: "change",
 	CHANGE_TABLE_HTML: "change:table_html",
+	CLICK: "click",
 };
 
 /**
  * Renders the interactive table widget.
- * @param {{ model: any, el: HTMLElement }} props - The widget properties.
- * @param {Document} doc - The document object to use for creating elements.
+ * @param {{ model: any, el: !HTMLElement }} props - The widget properties.
  */
 function render({ model, el }) {
 	// Main container with a unique class for CSS scoping
@@ -90,14 +89,24 @@ function render({ model, el }) {
 		if (rowCount === null) {
 			// Unknown total rows
 			rowCountLabel.textContent = "Total rows unknown";
-			pageIndicator.textContent = `Page ${(currentPage + 1).toLocaleString()} of many`;
+			pageIndicator.textContent = `Page ${(
+				currentPage + 1
+			).toLocaleString()} of many`;
 			prevPage.disabled = currentPage === 0;
 			nextPage.disabled = false; // Allow navigation until we hit the end
+		} else if (rowCount === 0) {
+			// Empty dataset
+			rowCountLabel.textContent = "0 total rows";
+			pageIndicator.textContent = "Page 1 of 1";
+			prevPage.disabled = true;
+			nextPage.disabled = true;
 		} else {
 			// Known total rows
 			const totalPages = Math.ceil(rowCount / pageSize);
 			rowCountLabel.textContent = `${rowCount.toLocaleString()} total rows`;
-			pageIndicator.textContent = `Page ${(currentPage + 1).toLocaleString()} of ${totalPages.toLocaleString()}`;
+			pageIndicator.textContent = `Page ${(
+				currentPage + 1
+			).toLocaleString()} of ${totalPages.toLocaleString()}`;
 			prevPage.disabled = currentPage === 0;
 			nextPage.disabled = currentPage >= totalPages - 1;
 		}
@@ -199,6 +208,41 @@ function render({ model, el }) {
 				});
 			}
 		});
+
+		const table = tableContainer.querySelector("table");
+		if (table) {
+			const tableBody = table.querySelector("tbody");
+
+			/**
+			 * Handles row hover events.
+			 * @param {!Event} event - The mouse event.
+			 * @param {boolean} isHovering - True to add hover class, false to remove.
+			 */
+			function handleRowHover(event, isHovering) {
+				const cell = event.target.closest("td");
+				if (cell) {
+					const row = cell.closest("tr");
+					const origRowId = row.dataset.origRow;
+					if (origRowId) {
+						const allCellsInGroup = tableBody.querySelectorAll(
+							`tr[data-orig-row="${origRowId}"] td`,
+						);
+						allCellsInGroup.forEach((c) => {
+							c.classList.toggle("row-hover", isHovering);
+						});
+					}
+				}
+			}
+
+			if (tableBody) {
+				tableBody.addEventListener("mouseover", (event) =>
+					handleRowHover(event, true),
+				);
+				tableBody.addEventListener("mouseout", (event) =>
+					handleRowHover(event, false),
+				);
+			}
+		}
 
 		updateButtonStates();
 	}
