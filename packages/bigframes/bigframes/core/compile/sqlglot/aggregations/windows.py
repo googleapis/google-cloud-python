@@ -19,7 +19,9 @@ import sqlglot.expressions as sge
 
 from bigframes.core import utils, window_spec
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
+import bigframes.core.expression as ex
 import bigframes.core.ordering as ordering_spec
+import bigframes.dtypes as dtypes
 
 
 def apply_window_if_present(
@@ -52,10 +54,7 @@ def apply_window_if_present(
         order = sge.Order(expressions=order_by)
 
     group_by = (
-        [
-            scalar_compiler.scalar_op_compiler.compile_expression(key)
-            for key in window.grouping_keys
-        ]
+        [_compile_group_by_key(key) for key in window.grouping_keys]
         if window.grouping_keys
         else None
     )
@@ -164,3 +163,18 @@ def _get_window_bounds(
 
     side = "PRECEDING" if value < 0 else "FOLLOWING"
     return sge.convert(abs(value)), side
+
+
+def _compile_group_by_key(key: ex.Expression) -> sge.Expression:
+    expr = scalar_compiler.scalar_op_compiler.compile_expression(key)
+    # The group_by keys has been rewritten by bind_schema_to_node
+    assert isinstance(key, ex.ResolvedDerefOp)
+
+    # Some types need to be converted to another type to enable groupby
+    if key.dtype == dtypes.FLOAT_DTYPE:
+        expr = sge.Cast(this=expr, to="STRING")
+    elif key.dtype == dtypes.GEO_DTYPE:
+        expr = sge.Cast(this=expr, to="BYTES")
+    elif key.dtype == dtypes.JSON_DTYPE:
+        expr = sge.func("TO_JSON_STRING", expr)
+    return expr

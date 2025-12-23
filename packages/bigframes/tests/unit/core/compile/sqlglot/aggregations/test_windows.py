@@ -18,12 +18,14 @@ import pandas as pd
 import pytest
 import sqlglot.expressions as sge
 
+from bigframes import dtypes
 from bigframes.core import window_spec
 from bigframes.core.compile.sqlglot.aggregations.windows import (
     apply_window_if_present,
     get_window_order_by,
 )
 import bigframes.core.expression as ex
+import bigframes.core.identifiers as ids
 import bigframes.core.ordering as ordering
 
 
@@ -82,16 +84,37 @@ class WindowsTest(unittest.TestCase):
                 ),
             )
 
-    def test_apply_window_if_present_unbounded_grouping_no_ordering(self):
+    def test_apply_window_if_present_grouping_no_ordering(self):
         result = apply_window_if_present(
             sge.Var(this="value"),
             window_spec.WindowSpec(
-                grouping_keys=(ex.deref("col1"),),
+                grouping_keys=(
+                    ex.ResolvedDerefOp(
+                        ids.ColumnId("col1"),
+                        dtype=dtypes.STRING_DTYPE,
+                        is_nullable=True,
+                    ),
+                    ex.ResolvedDerefOp(
+                        ids.ColumnId("col2"),
+                        dtype=dtypes.FLOAT_DTYPE,
+                        is_nullable=True,
+                    ),
+                    ex.ResolvedDerefOp(
+                        ids.ColumnId("col3"),
+                        dtype=dtypes.JSON_DTYPE,
+                        is_nullable=True,
+                    ),
+                    ex.ResolvedDerefOp(
+                        ids.ColumnId("col4"),
+                        dtype=dtypes.GEO_DTYPE,
+                        is_nullable=True,
+                    ),
+                ),
             ),
         )
         self.assertEqual(
             result.sql(dialect="bigquery"),
-            "value OVER (PARTITION BY `col1`)",
+            "value OVER (PARTITION BY `col1`, CAST(`col2` AS STRING), TO_JSON_STRING(`col3`), CAST(`col4` AS BYTES))",
         )
 
     def test_apply_window_if_present_range_bounded(self):
@@ -126,8 +149,22 @@ class WindowsTest(unittest.TestCase):
         result = apply_window_if_present(
             sge.Var(this="value"),
             window_spec.WindowSpec(
-                grouping_keys=(ex.deref("col1"),),
-                ordering=(ordering.OrderingExpression(ex.deref("col2")),),
+                grouping_keys=(
+                    ex.ResolvedDerefOp(
+                        ids.ColumnId("col1"),
+                        dtype=dtypes.STRING_DTYPE,
+                        is_nullable=True,
+                    ),
+                ),
+                ordering=(
+                    ordering.OrderingExpression(
+                        ex.ResolvedDerefOp(
+                            ids.ColumnId("col2"),
+                            dtype=dtypes.STRING_DTYPE,
+                            is_nullable=True,
+                        )
+                    ),
+                ),
                 bounds=window_spec.RowsWindowBounds(start=-1, end=0),
             ),
         )
