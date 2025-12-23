@@ -58,6 +58,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
+    "sphinx_sitemap",
     "myst_parser",
 ]
 
@@ -263,6 +264,9 @@ html_static_path = ["_static"]
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "bigframes-doc"
+
+# https://sphinx-sitemap.readthedocs.io/en/latest/getting-started.html#usage
+html_baseurl = "https://dataframes.bigquery.dev/"
 
 # -- Options for warnings ------------------------------------------------------
 
