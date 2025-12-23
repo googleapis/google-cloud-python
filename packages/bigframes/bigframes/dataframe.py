@@ -19,11 +19,9 @@ from __future__ import annotations
 import datetime
 import inspect
 import itertools
-import json
 import re
 import sys
 import textwrap
-import traceback
 import typing
 from typing import (
     Any,
@@ -55,7 +53,6 @@ import pandas.io.formats.format
 import pyarrow
 import tabulate
 
-import bigframes._config.display_options as display_options
 import bigframes.constants
 import bigframes.core
 from bigframes.core import agg_expressions, log_adapter
@@ -800,32 +797,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         )
 
         self._set_internal_query_job(query_job)
+        from bigframes.display import plaintext
 
-        column_count = len(pandas_df.columns)
-
-        with display_options.pandas_repr(opts):
-            import pandas.io.formats
-
-            # safe to mutate this, this dict is owned by this code, and does not affect global config
-            to_string_kwargs = (
-                pandas.io.formats.format.get_dataframe_repr_params()  # type: ignore
-            )
-            if not self._has_index:
-                to_string_kwargs.update({"index": False})
-            repr_string = pandas_df.to_string(**to_string_kwargs)
-
-        # Modify the end of the string to reflect count.
-        lines = repr_string.split("\n")
-        pattern = re.compile("\\[[0-9]+ rows x [0-9]+ columns\\]")
-        if pattern.match(lines[-1]):
-            lines = lines[:-2]
-
-        if row_count > len(lines) - 1:
-            lines.append("...")
-
-        lines.append("")
-        lines.append(f"[{row_count} rows x {column_count} columns]")
-        return "\n".join(lines)
+        return plaintext.create_text_representation(
+            pandas_df,
+            row_count,
+            is_series=False,
+            has_index=self._has_index,
+            column_count=len(self.columns),
+        )
 
     def _get_display_df_and_blob_cols(self) -> tuple[DataFrame, list[str]]:
         """Process blob columns for display."""
@@ -844,75 +824,6 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     df[col] = df[col].blob._get_runtime(mode="R", with_metadata=True)
         return df, blob_cols
 
-    def _get_anywidget_bundle(
-        self, include=None, exclude=None
-    ) -> tuple[dict[str, Any], dict[str, Any]]:
-        """
-        Helper method to create and return the anywidget mimebundle.
-        This function encapsulates the logic for anywidget display.
-        """
-        from bigframes import display
-
-        df, blob_cols = self._get_display_df_and_blob_cols()
-
-        # Create and display the widget
-        widget = display.TableWidget(df)
-        widget_repr_result = widget._repr_mimebundle_(include=include, exclude=exclude)
-
-        # Handle both tuple (data, metadata) and dict returns
-        if isinstance(widget_repr_result, tuple):
-            widget_repr, widget_metadata = widget_repr_result
-        else:
-            widget_repr = widget_repr_result
-            widget_metadata = {}
-
-        widget_repr = dict(widget_repr)
-
-        # At this point, we have already executed the query as part of the
-        # widget construction. Let's use the information available to render
-        # the HTML and plain text versions.
-        widget_repr["text/html"] = self._create_html_representation(
-            widget._cached_data,
-            widget.row_count,
-            len(self.columns),
-            blob_cols,
-        )
-
-        widget_repr["text/plain"] = self._create_text_representation(
-            widget._cached_data, widget.row_count
-        )
-
-        return widget_repr, widget_metadata
-
-    def _create_text_representation(
-        self, pandas_df: pandas.DataFrame, total_rows: typing.Optional[int]
-    ) -> str:
-        """Create a text representation of the DataFrame."""
-        opts = bigframes.options.display
-        with display_options.pandas_repr(opts):
-            import pandas.io.formats
-
-            # safe to mutate this, this dict is owned by this code, and does not affect global config
-            to_string_kwargs = (
-                pandas.io.formats.format.get_dataframe_repr_params()  # type: ignore
-            )
-            if not self._has_index:
-                to_string_kwargs.update({"index": False})
-
-            # We add our own dimensions string, so don't want pandas to.
-            to_string_kwargs.update({"show_dimensions": False})
-            repr_string = pandas_df.to_string(**to_string_kwargs)
-
-        lines = repr_string.split("\n")
-
-        if total_rows is not None and total_rows > len(pandas_df):
-            lines.append("...")
-
-        lines.append("")
-        column_count = len(self.columns)
-        lines.append(f"[{total_rows or '?'} rows x {column_count} columns]")
-        return "\n".join(lines)
-
     def _repr_mimebundle_(self, include=None, exclude=None):
         """
         Custom display method for IPython/Jupyter environments.
@@ -920,98 +831,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         """
         # TODO(b/467647693): Anywidget integration has been tested in Jupyter, VS Code, and
         # BQ Studio, but there is a known compatibility issue with Marimo that needs to be addressed.
-        opts = bigframes.options.display
-        # Only handle widget display in anywidget mode
-        if opts.repr_mode == "anywidget":
-            try:
-                return self._get_anywidget_bundle(include=include, exclude=exclude)
+        from bigframes.display import html
 
-            except ImportError:
-                # Anywidget is an optional dependency, so warn rather than fail.
-                # TODO(shuowei): When Anywidget becomes the default for all repr modes,
-                # remove this warning.
-                warnings.warn(
-                    "Anywidget mode is not available. "
-                    "Please `pip install anywidget traitlets` or `pip install 'bigframes[anywidget]'` to use interactive tables. "
-                    f"Falling back to static HTML. Error: {traceback.format_exc()}"
-                )
-
-        # In non-anywidget mode, fetch data once and use it for both HTML
-        # and plain text representations to avoid multiple queries.
-        opts = bigframes.options.display
-        max_results = opts.max_rows
-
-        df, blob_cols = self._get_display_df_and_blob_cols()
-
-        pandas_df, row_count, query_job = df._block.retrieve_repr_request_results(
-            max_results
-        )
-        self._set_internal_query_job(query_job)
-        column_count = len(pandas_df.columns)
-
-        html_string = self._create_html_representation(
-            pandas_df, row_count, column_count, blob_cols
-        )
-
-        text_representation = self._create_text_representation(pandas_df, row_count)
-
-        return {"text/html": html_string, "text/plain": text_representation}
-
-    def _create_html_representation(
-        self,
-        pandas_df: pandas.DataFrame,
-        row_count: int,
-        column_count: int,
-        blob_cols: list[str],
-    ) -> str:
-        """Create an HTML representation of the DataFrame."""
-        opts = bigframes.options.display
-        with display_options.pandas_repr(opts):
-            # TODO(shuowei, b/464053870): Escaping HTML would be useful, but
-            # `escape=False` is needed to show images. We may need to implement
-            # a full-fledged repr module to better support types not in pandas.
-            if bigframes.options.display.blob_display and blob_cols:
-
-                def obj_ref_rt_to_html(obj_ref_rt) -> str:
-                    obj_ref_rt_json = json.loads(obj_ref_rt)
-                    obj_ref_details = obj_ref_rt_json["objectref"]["details"]
-                    if "gcs_metadata" in obj_ref_details:
-                        gcs_metadata = obj_ref_details["gcs_metadata"]
-                        content_type = typing.cast(
-                            str, gcs_metadata.get("content_type", "")
-                        )
-                        if content_type.startswith("image"):
-                            size_str = ""
-                            if bigframes.options.display.blob_display_width:
-                                size_str = f' width="{bigframes.options.display.blob_display_width}"'
-                            if bigframes.options.display.blob_display_height:
-                                size_str = (
-                                    size_str
-                                    + f' height="{bigframes.options.display.blob_display_height}"'
-                                )
-                            url = obj_ref_rt_json["access_urls"]["read_url"]
-                            return f'<img src="{url}"{size_str}>'
-
-                    return f'uri: {obj_ref_rt_json["objectref"]["uri"]}, authorizer: {obj_ref_rt_json["objectref"]["authorizer"]}'
-
-                formatters = {blob_col: obj_ref_rt_to_html for blob_col in blob_cols}
-
-                # set max_colwidth so not to truncate the image url
-                with pandas.option_context("display.max_colwidth", None):
-                    html_string = pandas_df.to_html(
-                        escape=False,
-                        notebook=True,
-                        max_rows=pandas.get_option("display.max_rows"),
-                        max_cols=pandas.get_option("display.max_columns"),
-                        show_dimensions=pandas.get_option("display.show_dimensions"),
-                        formatters=formatters,  # type: ignore
-                    )
-            else:
-                # _repr_html_ stub is missing so mypy thinks it's a Series. Ignore mypy.
-                html_string = pandas_df._repr_html_()  # type:ignore
-
-        html_string += f"[{row_count} rows x {column_count} columns in total]"
-        return html_string
+        return html.repr_mimebundle(self, include=include, exclude=exclude)
 
     def __delitem__(self, key: str):
         df = self.drop(columns=[key])

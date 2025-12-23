@@ -568,6 +568,17 @@ class Series(vendored_pandas_series.Series):
                 block = block.assign_label(self._value_column, name)
             return bigframes.dataframe.DataFrame(block)
 
+    def _repr_mimebundle_(self, include=None, exclude=None):
+        """
+        Custom display method for IPython/Jupyter environments.
+        This is called by IPython's display system when the object is displayed.
+        """
+        # TODO(b/467647693): Anywidget integration has been tested in Jupyter, VS Code, and
+        # BQ Studio, but there is a known compatibility issue with Marimo that needs to be addressed.
+        from bigframes.display import html
+
+        return html.repr_mimebundle(self, include=include, exclude=exclude)
+
     def __repr__(self) -> str:
         # Protect against errors with uninitialized Series. See:
         # https://github.com/googleapis/python-bigquery-dataframes/issues/728
@@ -579,27 +590,22 @@ class Series(vendored_pandas_series.Series):
         # TODO(swast): Avoid downloading the whole series by using job
         # metadata, like we do with DataFrame.
         opts = bigframes.options.display
-        max_results = opts.max_rows
-        # anywdiget mode uses the same display logic as the "deferred" mode
-        # for faster execution
-        if opts.repr_mode in ("deferred", "anywidget"):
+        if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self._compute_dry_run())
 
         self._cached()
-        pandas_df, _, query_job = self._block.retrieve_repr_request_results(max_results)
+        pandas_df, row_count, query_job = self._block.retrieve_repr_request_results(
+            opts.max_rows
+        )
         self._set_internal_query_job(query_job)
+        from bigframes.display import plaintext
 
-        pd_series = pandas_df.iloc[:, 0]
-
-        import pandas.io.formats
-
-        # safe to mutate this, this dict is owned by this code, and does not affect global config
-        to_string_kwargs = pandas.io.formats.format.get_series_repr_params()  # type: ignore
-        if len(self._block.index_columns) == 0:
-            to_string_kwargs.update({"index": False})
-        repr_string = pd_series.to_string(**to_string_kwargs)
-
-        return repr_string
+        return plaintext.create_text_representation(
+            pandas_df,
+            row_count,
+            is_series=True,
+            has_index=len(self._block.index_columns) > 0,
+        )
 
     def astype(
         self,

@@ -206,4 +206,57 @@ describe("TableWidget", () => {
 			expect(indicator2.textContent).toBe("●");
 		});
 	});
+
+	it("should render the series as a table with an index and one value column", () => {
+		// Mock the initial state
+		model.get.mockImplementation((property) => {
+			if (property === "table_html") {
+				return `
+		  <div class="paginated-table-container">
+			<div id="table-c" class="table-container">
+			  <table class="bigframes-styles">
+				<thead>
+				  <tr>
+					<th class="col-header-name"><div></div></th>
+					<th class="col-header-name"><div>value</div></th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <tr>
+					<td class="cell-align-right">0</td>
+					<td class="cell-align-left">a</td>
+				  </tr>
+				  <tr>
+					<td class="cell-align-right">1</td>
+					<td class="cell-align-left">b</td>
+				  </tr>
+				</tbody>
+			  </table>
+			</div>
+		  </div>`;
+			}
+			if (property === "orderable_columns") {
+				return [];
+			}
+			return null;
+		});
+
+		render({ model, el });
+
+		// Manually trigger the table_html change handler
+		const tableHtmlChangeHandler = model.on.mock.calls.find(
+			(call) => call[0] === "change:table_html",
+		)[1];
+		tableHtmlChangeHandler();
+
+		// Check that the table has two columns
+		const headers = el.querySelectorAll(
+			".paginated-table-container .col-header-name",
+		);
+		expect(headers).toHaveLength(2);
+
+		// Check that the headers are an empty string (for the index) and "value"
+		expect(headers[0].textContent).toBe("");
+		expect(headers[1].textContent).toBe("value");
+	});
 });

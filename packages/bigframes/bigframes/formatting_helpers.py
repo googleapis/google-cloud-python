@@ -68,7 +68,7 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
         query_job:
             The job representing the execution of the query on the server.
     Returns:
-        Pywidget html table.
+        Formatted string.
     """
     if query_job is None:
         return "No job information available"
@@ -91,6 +91,46 @@ def repr_query_job(query_job: Optional[bigquery.QueryJob]):
                 res += f"""{key}: {get_formatted_bytes(job_val)}"""
             else:
                 res += f"""{key}: {job_val}"""
+    return res
+
+
+def repr_query_job_html(query_job: Optional[bigquery.QueryJob]):
+    """Return query job as a formatted html string.
+    Args:
+        query_job:
+            The job representing the execution of the query on the server.
+    Returns:
+        Html string.
+    """
+    if query_job is None:
+        return "No job information available"
+    if query_job.dry_run:
+        return f"Computation deferred. Computation will process {get_formatted_bytes(query_job.total_bytes_processed)}"
+
+    # We can reuse the plaintext repr for now or make a nicer table.
+    # For deferred mode consistency, let's just wrap the text in a pre block or similar,
+    # but the request implies we want a distinct HTML representation if possible.
+    # However, existing repr_query_job returns a simple string.
+    # Let's format it as a simple table or list.
+
+    res = "<h3>Query Job Info</h3><ul>"
+    for key, value in query_job_prop_pairs.items():
+        job_val = getattr(query_job, value)
+        if job_val is not None:
+            if key == "Job Id":  # add link to job
+                url = get_job_url(
+                    project_id=query_job.project,
+                    location=query_job.location,
+                    job_id=query_job.job_id,
+                )
+                res += f'<li>Job: <a target="_blank" href="{url}">{query_job.job_id}</a></li>'
+            elif key == "Slot Time":
+                res += f"<li>{key}: {get_formatted_time(job_val)}</li>"
+            elif key == "Bytes Processed":
+                res += f"<li>{key}: {get_formatted_bytes(job_val)}</li>"
+            else:
+                res += f"<li>{key}: {job_val}</li>"
+    res += "</ul>"
     return res
 
 
@@ -296,7 +336,7 @@ def get_job_url(
     """
     if project_id is None or location is None or job_id is None:
         return None
-    return f"""https://console.cloud.google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
+    return f"""https://console.cloud. google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
 
 
 def render_bqquery_sent_event_html(
@@ -508,7 +548,7 @@ def get_base_job_loading_html(job: GenericJob):
     Returns:
         Html string.
     """
-    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. <a target="_blank" href="{get_job_url(
+    return f"""{job.job_type.capitalize()} job {job.job_id} is {job.state}. <a target=\"_blank\" href="{get_job_url(
         project_id=job.job_id,
         location=job.location,
         job_id=job.job_id,

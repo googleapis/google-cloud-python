@@ -201,6 +201,7 @@ def _assert_html_matches_pandas_slice(
 def test_widget_initialization_should_calculate_total_row_count(
     paginated_bf_df: bf.dataframe.DataFrame,
 ):
+    """Test that a TableWidget calculates the total row count on creation."""
     """A TableWidget should correctly calculate the total row count on creation."""
     from bigframes.display import TableWidget
 
@@ -313,9 +314,7 @@ def test_widget_pagination_should_work_with_custom_page_size(
     start_row: int,
     end_row: int,
 ):
-    """
-    A widget should paginate correctly with a custom page size of 3.
-    """
+    """Test that a widget paginates correctly with a custom page size."""
     with bigframes.option_context(
         "display.repr_mode", "anywidget", "display.max_rows", 3
     ):
@@ -956,10 +955,11 @@ def test_repr_in_anywidget_mode_should_not_be_deferred(
         assert "page_1_row_1" in representation
 
 
-def test_dataframe_repr_mimebundle_anywidget_with_metadata(
+def test_dataframe_repr_mimebundle_should_return_widget_with_metadata_in_anywidget_mode(
     monkeypatch: pytest.MonkeyPatch,
     session: bigframes.Session,  # Add session as a fixture
 ):
+    """Test that _repr_mimebundle_ returns a widget view with metadata when anywidget is available."""
     with bigframes.option_context("display.repr_mode", "anywidget"):
         # Create a real DataFrame object (or a mock that behaves like one minimally)
         # for _repr_mimebundle_ to operate on.
@@ -984,7 +984,7 @@ def test_dataframe_repr_mimebundle_anywidget_with_metadata(
 
         # Patch the class method directly
         with mock.patch(
-            "bigframes.dataframe.DataFrame._get_anywidget_bundle",
+            "bigframes.display.html.get_anywidget_bundle",
             return_value=mock_get_anywidget_bundle_return_value,
         ):
             result = test_df._repr_mimebundle_()
@@ -1135,3 +1135,41 @@ def test_widget_with_custom_index_matches_pandas_output(
 # TODO(b/438181139): Add tests for custom multiindex
 # This may not be necessary for the SQL Cell use case but should be
 # considered for completeness.
+
+
+def test_series_anywidget_integration_with_notebook_display(
+    paginated_bf_df: bf.dataframe.DataFrame,
+):
+    """Test Series display integration in Jupyter-like environment."""
+    pytest.importorskip("anywidget")
+
+    with bf.option_context("display.repr_mode", "anywidget"):
+        series = paginated_bf_df["value"]
+
+        # Test the full display pipeline
+        from IPython.display import display as ipython_display
+
+        # This should work without errors
+        ipython_display(series)
+
+
+def test_series_different_data_types_anywidget(session: bf.Session):
+    """Test Series with different data types in anywidget mode."""
+    pytest.importorskip("anywidget")
+
+    # Create Series with different types
+    test_data = pd.DataFrame(
+        {
+            "string_col": ["a", "b", "c"],
+            "int_col": [1, 2, 3],
+            "float_col": [1.1, 2.2, 3.3],
+            "bool_col": [True, False, True],
+        }
+    )
+    bf_df = session.read_pandas(test_data)
+
+    with bf.option_context("display.repr_mode", "anywidget"):
+        for col_name in test_data.columns:
+            series = bf_df[col_name]
+            widget = bigframes.display.TableWidget(series.to_frame())
+            assert widget.row_count == 3
