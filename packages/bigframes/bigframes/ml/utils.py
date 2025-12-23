@@ -201,10 +201,28 @@ def combine_training_and_evaluation_data(
     split_col = guid.generate_guid()
     assert split_col not in X_train.columns
 
+    # To prevent side effects on the input dataframes, we operate on copies
+    X_train = X_train.copy()
+    X_eval = X_eval.copy()
+
     X_train[split_col] = False
     X_eval[split_col] = True
-    X = bpd.concat([X_train, X_eval])
-    y = bpd.concat([y_train, y_eval])
+
+    # Rename y columns to avoid collision with X columns during join
+    y_mapping = {col: guid.generate_guid() + str(col) for col in y_train.columns}
+    y_train_renamed = y_train.rename(columns=y_mapping)
+    y_eval_renamed = y_eval.rename(columns=y_mapping)
+
+    # Join X and y first to preserve row alignment
+    train_combined = X_train.join(y_train_renamed, how="outer")
+    eval_combined = X_eval.join(y_eval_renamed, how="outer")
+
+    combined = bpd.concat([train_combined, eval_combined])
+
+    X = combined[X_train.columns]
+    y = combined[list(y_mapping.values())].rename(
+        columns={v: k for k, v in y_mapping.items()}
+    )
 
     # create options copy to not mutate the incoming one
     bqml_options = bqml_options.copy()

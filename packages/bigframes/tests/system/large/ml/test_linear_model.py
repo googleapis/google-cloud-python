@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import pandas as pd
+import pytest
 
 from bigframes.ml import model_selection
 import bigframes.ml.linear_model
@@ -61,12 +62,20 @@ def test_linear_regression_configure_fit_score(penguins_df_default_index, datase
     assert reloaded_model.tol == 0.01
 
 
+@pytest.mark.parametrize(
+    "df_fixture",
+    [
+        "penguins_df_default_index",
+        "penguins_df_null_index",
+    ],
+)
 def test_linear_regression_configure_fit_with_eval_score(
-    penguins_df_default_index, dataset_id
+    df_fixture, dataset_id, request
 ):
+    df = request.getfixturevalue(df_fixture)
     model = bigframes.ml.linear_model.LinearRegression()
 
-    df = penguins_df_default_index.dropna()
+    df = df.dropna()
     X = df[
         [
             "species",
@@ -109,7 +118,7 @@ def test_linear_regression_configure_fit_with_eval_score(
     assert reloaded_model.tol == 0.01
 
     # make sure the bqml model was internally created with custom split
-    bq_model = penguins_df_default_index._session.bqclient.get_model(bq_model_name)
+    bq_model = df._session.bqclient.get_model(bq_model_name)
     last_fitting = bq_model.training_runs[-1]["trainingOptions"]
     assert last_fitting["dataSplitMethod"] == "CUSTOM"
     assert "dataSplitColumn" in last_fitting
