@@ -82,8 +82,12 @@ from google.cloud.geminidataanalytics_v1beta.types import (
     data_analytics_agent,
     datasource,
 )
+from google.cloud.geminidataanalytics_v1beta.types import (
+    agent_context,
+    context,
+    credentials,
+)
 from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
-from google.cloud.geminidataanalytics_v1beta.types import context, credentials
 from google.cloud.geminidataanalytics_v1beta.types import data_agent
 
 CRED_INFO_JSON = {
@@ -7319,6 +7323,41 @@ def test_create_data_agent_rest_call_success(request_type):
                             }
                         },
                     },
+                    "alloydb": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "cluster_id": "cluster_id_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
+                    },
+                    "spanner_reference": {
+                        "database_reference": {
+                            "engine": 1,
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "cloud_sql_reference": {
+                        "database_reference": {
+                            "engine": 1,
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {},
+                    },
                 },
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
@@ -7329,6 +7368,24 @@ def test_create_data_agent_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                    }
+                ],
+                "looker_golden_queries": [
+                    {
+                        "natural_language_questions": [
+                            "natural_language_questions_value1",
+                            "natural_language_questions_value2",
+                        ],
+                        "looker_query": {
+                            "model": "model_value",
+                            "explore": "explore_value",
+                            "fields": ["fields_value1", "fields_value2"],
+                            "filters": [
+                                {"field": "field_value", "value": "value_value"}
+                            ],
+                            "sorts": ["sorts_value1", "sorts_value2"],
+                            "limit": "limit_value",
+                        },
                     }
                 ],
                 "glossary_terms": [
@@ -7627,6 +7684,41 @@ def test_update_data_agent_rest_call_success(request_type):
                             }
                         },
                     },
+                    "alloydb": {
+                        "database_reference": {
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "cluster_id": "cluster_id_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {
+                            "context_set_id": "context_set_id_value"
+                        },
+                    },
+                    "spanner_reference": {
+                        "database_reference": {
+                            "engine": 1,
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {},
+                    },
+                    "cloud_sql_reference": {
+                        "database_reference": {
+                            "engine": 1,
+                            "project_id": "project_id_value",
+                            "region": "region_value",
+                            "instance_id": "instance_id_value",
+                            "database_id": "database_id_value",
+                            "table_ids": ["table_ids_value1", "table_ids_value2"],
+                        },
+                        "agent_context_reference": {},
+                    },
                 },
                 "options": {
                     "chart": {"image": {"no_image": {}, "svg": {}}},
@@ -7637,6 +7729,24 @@ def test_update_data_agent_rest_call_success(request_type):
                     {
                         "sql_query": "sql_query_value",
                         "natural_language_question": "natural_language_question_value",
+                    }
+                ],
+                "looker_golden_queries": [
+                    {
+                        "natural_language_questions": [
+                            "natural_language_questions_value1",
+                            "natural_language_questions_value2",
+                        ],
+                        "looker_query": {
+                            "model": "model_value",
+                            "explore": "explore_value",
+                            "fields": ["fields_value1", "fields_value2"],
+                            "filters": [
+                                {"field": "field_value", "value": "value_value"}
+                            ],
+                            "sorts": ["sorts_value1", "sorts_value2"],
+                            "limit": "limit_value",
+                        },
                     }
                 ],
                 "glossary_terms": [

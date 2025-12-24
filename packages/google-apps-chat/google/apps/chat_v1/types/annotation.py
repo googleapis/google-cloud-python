@@ -311,6 +311,12 @@ class RichLinkMetadata(proto.Message):
             CHAT_SPACE (2):
                 A Chat space rich link type. For example, a
                 space smart chip.
+            GMAIL_MESSAGE (3):
+                A Gmail message rich link type. Specifically, a Gmail chip
+                from `Share to
+                Chat <https://support.google.com/chat?p=chat_gmail>`__. The
+                API only supports reading messages with GMAIL_MESSAGE rich
+                links.
             MEET_SPACE (4):
                 A Meet message rich link type. For example, a
                 Meet chip.
@@ -321,6 +327,7 @@ class RichLinkMetadata(proto.Message):
         RICH_LINK_TYPE_UNSPECIFIED = 0
         DRIVE_FILE = 1
         CHAT_SPACE = 2
+        GMAIL_MESSAGE = 3
         MEET_SPACE = 4
         CALENDAR_EVENT = 5
 

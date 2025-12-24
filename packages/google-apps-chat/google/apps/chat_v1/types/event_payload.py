@@ -193,9 +193,8 @@ class MessageDeletedEventData(proto.Message):
 
     Attributes:
         message (google.apps.chat_v1.types.Message):
-            The deleted message. Only the ``name``, ``createTime``,
-            ``deleteTime``, and ``deletionMetadata`` fields are
-            populated.
+            The deleted message. Only the ``name``, ``createTime``, and
+            ``deletionMetadata`` fields are populated.
     """
 
     message: gc_message.Message = proto.Field(

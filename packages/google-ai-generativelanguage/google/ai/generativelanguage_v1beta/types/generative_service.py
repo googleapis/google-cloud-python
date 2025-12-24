@@ -128,8 +128,6 @@ class TaskType(proto.Enum):
 
 class GenerateContentRequest(proto.Message):
     r"""Request to generate a completion from the model.
-    NEXT ID: 18
-
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -428,7 +426,6 @@ class ImageConfig(proto.Message):
 class GenerationConfig(proto.Message):
     r"""Configuration options for model generation and outputs. Not
     all parameters are configurable for every model.
-    Next ID: 29
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1552,6 +1549,14 @@ class GroundingMetadata(proto.Message):
         web_search_queries (MutableSequence[str]):
             Web search queries for the following-up web
             search.
+        google_maps_widget_context_token (str):
+            Optional. Resource name of the Google Maps
+            widget context token that can be used with the
+            PlacesContextElement widget in order to render
+            contextual data. Only populated in the case that
+            grounding with Google Maps is enabled.
+
+            This field is a member of `oneof`_ ``_google_maps_widget_context_token``.
     """
 
     search_entry_point: "SearchEntryPoint" = proto.Field(
@@ -1580,6 +1585,11 @@ class GroundingMetadata(proto.Message):
         proto.STRING,
         number=5,
     )
+    google_maps_widget_context_token: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
+    )
 
 
 class SearchEntryPoint(proto.Message):
@@ -1607,11 +1617,25 @@ class SearchEntryPoint(proto.Message):
 class GroundingChunk(proto.Message):
     r"""Grounding chunk.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         web (google.ai.generativelanguage_v1beta.types.GroundingChunk.Web):
             Grounding chunk from the web.
+
+            This field is a member of `oneof`_ ``chunk_type``.
+        retrieved_context (google.ai.generativelanguage_v1beta.types.GroundingChunk.RetrievedContext):
+            Optional. Grounding chunk from context
+            retrieved by the file search tool.
+
+            This field is a member of `oneof`_ ``chunk_type``.
+        maps (google.ai.generativelanguage_v1beta.types.GroundingChunk.Maps):
+            Optional. Grounding chunk from Google Maps.
 
             This field is a member of `oneof`_ ``chunk_type``.
     """
@@ -1643,11 +1667,182 @@ class GroundingChunk(proto.Message):
             optional=True,
         )
 
+    class RetrievedContext(proto.Message):
+        r"""Chunk from context retrieved by the file search tool.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            uri (str):
+                Optional. URI reference of the semantic
+                retrieval document.
+
+                This field is a member of `oneof`_ ``_uri``.
+            title (str):
+                Optional. Title of the document.
+
+                This field is a member of `oneof`_ ``_title``.
+            text (str):
+                Optional. Text of the chunk.
+
+                This field is a member of `oneof`_ ``_text``.
+        """
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        title: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
+        text: str = proto.Field(
+            proto.STRING,
+            number=3,
+            optional=True,
+        )
+
+    class Maps(proto.Message):
+        r"""A grounding chunk from Google Maps. A Maps chunk corresponds
+        to a single place.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            uri (str):
+                URI reference of the place.
+
+                This field is a member of `oneof`_ ``_uri``.
+            title (str):
+                Title of the place.
+
+                This field is a member of `oneof`_ ``_title``.
+            text (str):
+                Text description of the place answer.
+
+                This field is a member of `oneof`_ ``_text``.
+            place_id (str):
+                This ID of the place, in ``places/{place_id}`` format. A
+                user can use this ID to look up that place.
+
+                This field is a member of `oneof`_ ``_place_id``.
+            place_answer_sources (google.ai.generativelanguage_v1beta.types.GroundingChunk.Maps.PlaceAnswerSources):
+                Sources that provide answers about the
+                features of a given place in Google Maps.
+
+                This field is a member of `oneof`_ ``_place_answer_sources``.
+        """
+
+        class PlaceAnswerSources(proto.Message):
+            r"""Collection of sources that provide answers about the features
+            of a given place in Google Maps. Each PlaceAnswerSources message
+            corresponds to a specific place in Google Maps. The Google Maps
+            tool used these sources in order to answer questions about
+            features of the place (e.g: "does Bar Foo have Wifi" or "is Foo
+            Bar wheelchair accessible?"). Currently we only support review
+            snippets as sources.
+
+            Attributes:
+                review_snippets (MutableSequence[google.ai.generativelanguage_v1beta.types.GroundingChunk.Maps.PlaceAnswerSources.ReviewSnippet]):
+                    Snippets of reviews that are used to generate
+                    answers about the features of a given place in
+                    Google Maps.
+            """
+
+            class ReviewSnippet(proto.Message):
+                r"""Encapsulates a snippet of a user review that answers a
+                question about the features of a specific place in Google Maps.
+
+
+                .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+                Attributes:
+                    review_id (str):
+                        The ID of the review snippet.
+
+                        This field is a member of `oneof`_ ``_review_id``.
+                    google_maps_uri (str):
+                        A link that corresponds to the user review on
+                        Google Maps.
+
+                        This field is a member of `oneof`_ ``_google_maps_uri``.
+                    title (str):
+                        Title of the review.
+
+                        This field is a member of `oneof`_ ``_title``.
+                """
+
+                review_id: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                    optional=True,
+                )
+                google_maps_uri: str = proto.Field(
+                    proto.STRING,
+                    number=2,
+                    optional=True,
+                )
+                title: str = proto.Field(
+                    proto.STRING,
+                    number=3,
+                    optional=True,
+                )
+
+            review_snippets: MutableSequence[
+                "GroundingChunk.Maps.PlaceAnswerSources.ReviewSnippet"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="GroundingChunk.Maps.PlaceAnswerSources.ReviewSnippet",
+            )
+
+        uri: str = proto.Field(
+            proto.STRING,
+            number=1,
+            optional=True,
+        )
+        title: str = proto.Field(
+            proto.STRING,
+            number=2,
+            optional=True,
+        )
+        text: str = proto.Field(
+            proto.STRING,
+            number=3,
+            optional=True,
+        )
+        place_id: str = proto.Field(
+            proto.STRING,
+            number=4,
+            optional=True,
+        )
+        place_answer_sources: "GroundingChunk.Maps.PlaceAnswerSources" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            optional=True,
+            message="GroundingChunk.Maps.PlaceAnswerSources",
+        )
+
     web: Web = proto.Field(
         proto.MESSAGE,
         number=1,
         oneof="chunk_type",
         message=Web,
+    )
+    retrieved_context: RetrievedContext = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="chunk_type",
+        message=RetrievedContext,
+    )
+    maps: Maps = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="chunk_type",
+        message=Maps,
     )
 
 

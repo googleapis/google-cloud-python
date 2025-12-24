@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .agent_context import AgentContextReference
 from .context import (
     AnalysisOptions,
     ChartOptions,
@@ -21,6 +22,8 @@ from .context import (
     DatasourceOptions,
     ExampleQuery,
     GlossaryTerm,
+    LookerGoldenQuery,
+    LookerQuery,
 )
 from .conversation import (
     Conversation,
@@ -62,10 +65,14 @@ from .data_chat_service import (
     DataResult,
     ErrorMessage,
     ExampleQueries,
+    ExecutedQueryResult,
+    GenerationOptions,
     ListMessagesRequest,
     ListMessagesResponse,
-    LookerQuery,
     Message,
+    QueryDataContext,
+    QueryDataRequest,
+    QueryDataResponse,
     SchemaMessage,
     SchemaQuery,
     SchemaResult,
@@ -75,8 +82,12 @@ from .data_chat_service import (
     UserMessage,
 )
 from .datasource import (
+    AlloyDbDatabaseReference,
+    AlloyDbReference,
     BigQueryTableReference,
     BigQueryTableReferences,
+    CloudSqlDatabaseReference,
+    CloudSqlReference,
     DataFilter,
     DataFilterType,
     Datasource,
@@ -86,11 +97,14 @@ from .datasource import (
     LookerExploreReferences,
     PrivateLookerInstanceInfo,
     Schema,
+    SpannerDatabaseReference,
+    SpannerReference,
     StudioDatasourceReference,
     StudioDatasourceReferences,
 )
 
 __all__ = (
+    "AgentContextReference",
     "AnalysisOptions",
     "ChartOptions",
     "Context",
@@ -98,6 +112,8 @@ __all__ = (
     "DatasourceOptions",
     "ExampleQuery",
     "GlossaryTerm",
+    "LookerGoldenQuery",
+    "LookerQuery",
     "Conversation",
     "CreateConversationRequest",
     "DeleteConversationRequest",
@@ -134,10 +150,14 @@ __all__ = (
     "DataResult",
     "ErrorMessage",
     "ExampleQueries",
+    "ExecutedQueryResult",
+    "GenerationOptions",
     "ListMessagesRequest",
     "ListMessagesResponse",
-    "LookerQuery",
     "Message",
+    "QueryDataContext",
+    "QueryDataRequest",
+    "QueryDataResponse",
     "SchemaMessage",
     "SchemaQuery",
     "SchemaResult",
@@ -145,8 +165,12 @@ __all__ = (
     "SystemMessage",
     "TextMessage",
     "UserMessage",
+    "AlloyDbDatabaseReference",
+    "AlloyDbReference",
     "BigQueryTableReference",
     "BigQueryTableReferences",
+    "CloudSqlDatabaseReference",
+    "CloudSqlReference",
     "DataFilter",
     "Datasource",
     "DatasourceReferences",
@@ -155,6 +179,8 @@ __all__ = (
     "LookerExploreReferences",
     "PrivateLookerInstanceInfo",
     "Schema",
+    "SpannerDatabaseReference",
+    "SpannerReference",
     "StudioDatasourceReference",
     "StudioDatasourceReferences",
     "DataFilterType",

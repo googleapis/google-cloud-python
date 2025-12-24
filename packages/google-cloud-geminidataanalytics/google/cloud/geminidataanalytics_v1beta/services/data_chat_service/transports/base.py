@@ -170,6 +170,11 @@ class DataChatServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_data: gapic_v1.method.wrap_method(
+                self.query_data,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -267,6 +272,18 @@ class DataChatServiceTransport(abc.ABC):
         Union[
             data_chat_service.ListMessagesResponse,
             Awaitable[data_chat_service.ListMessagesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_data(
+        self,
+    ) -> Callable[
+        [data_chat_service.QueryDataRequest],
+        Union[
+            data_chat_service.QueryDataResponse,
+            Awaitable[data_chat_service.QueryDataResponse],
         ],
     ]:
         raise NotImplementedError()

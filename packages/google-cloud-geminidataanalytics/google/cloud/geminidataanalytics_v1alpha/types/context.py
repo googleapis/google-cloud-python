@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "Context",
         "ExampleQuery",
+        "LookerGoldenQuery",
         "LookerQuery",
         "GlossaryTerm",
         "ConversationOptions",
@@ -62,6 +63,11 @@ class Context(proto.Message):
             SQL queries and their corresponding natural
             language queries optionally present. Currently
             only used for BigQuery data sources.
+        looker_golden_queries (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.LookerGoldenQuery]):
+            Optional. A list of golden queries, providing
+            examples of relevant and commonly used Looker
+            queries and their corresponding natural language
+            queries optionally present.
         glossary_terms (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.GlossaryTerm]):
             Optional. Term definitions (currently, only
             user authored)
@@ -181,6 +187,11 @@ class Context(proto.Message):
         number=5,
         message="ExampleQuery",
     )
+    looker_golden_queries: MutableSequence["LookerGoldenQuery"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="LookerGoldenQuery",
+    )
     glossary_terms: MutableSequence["GlossaryTerm"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
@@ -223,6 +234,32 @@ class ExampleQuery(proto.Message):
     natural_language_question: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class LookerGoldenQuery(proto.Message):
+    r"""A golden query for Looker, including natural language
+    questions and a corresponding Looker Query. Analogous to
+    ExampleQuery.
+
+    Attributes:
+        natural_language_questions (MutableSequence[str]):
+            Optional. Natural language questions that a
+            user might ask. For example: "How many orders
+            were placed last month?".
+        looker_query (google.cloud.geminidataanalytics_v1alpha.types.LookerQuery):
+            Optional. The Looker Query corresponding to
+            the natural language questions.
+    """
+
+    natural_language_questions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    looker_query: "LookerQuery" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="LookerQuery",
     )
 
 

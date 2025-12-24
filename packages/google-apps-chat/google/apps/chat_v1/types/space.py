@@ -166,7 +166,8 @@ class Space(proto.Message):
             alias to create the space in the same Google Workspace
             organization as the app.
 
-            For DMs, this field isn't populated.
+            This field isn't populated for direct messages (DMs) or when
+            the space is created by non-Google Workspace users.
 
             This field is a member of `oneof`_ ``_customer``.
         space_uri (str):
@@ -875,8 +876,12 @@ class UpdateSpaceRequest(proto.Message):
 
             You can update the following fields for a space:
 
-            ``space_details``: Updates the space's description. Supports
-            up to 150 characters.
+            ``space_details``: Updates the space's description and
+            guidelines. You must pass both description and guidelines in
+            the update request as
+            [``SpaceDetails``][google.chat.v1.Space.SpaceDetails]. If
+            you only want to update one of the fields, pass the existing
+            value for the other field.
 
             ``display_name``: Only supports updating the display name
             for spaces where ``spaceType`` field is ``SPACE``. If you
@@ -925,9 +930,8 @@ class UpdateSpaceRequest(proto.Message):
             settings <https://support.google.com/chat/answer/13340792>`__
             of a space. When updating permission settings, you can only
             specify ``permissionSettings`` field masks; you cannot
-            update other field masks at the same time.
-            ``permissionSettings`` is not supported with
-            ``useAdminAccess``. The supported field masks include:
+            update other field masks at the same time. The supported
+            field masks include:
 
             - ``permission_settings.manageMembersAndGroups``
             - ``permission_settings.modifySpaceDetails``

@@ -55,6 +55,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2.services.participants import (
@@ -1321,6 +1322,7 @@ def test_create_participant(request_type, transport: str = "grpc"):
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.create_participant(request)
 
@@ -1336,6 +1338,10 @@ def test_create_participant(request_type, transport: str = "grpc"):
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_create_participant_non_empty_request_with_auto_populated_field():
@@ -1474,6 +1480,7 @@ async def test_create_participant_async(
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.create_participant(request)
@@ -1490,6 +1497,10 @@ async def test_create_participant_async(
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -1683,6 +1694,7 @@ def test_get_participant(request_type, transport: str = "grpc"):
             role=participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.get_participant(request)
 
@@ -1698,6 +1710,10 @@ def test_get_participant(request_type, transport: str = "grpc"):
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_get_participant_non_empty_request_with_auto_populated_field():
@@ -1827,6 +1843,7 @@ async def test_get_participant_async(
                 role=participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.get_participant(request)
@@ -1843,6 +1860,10 @@ async def test_get_participant_async(
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -2563,6 +2584,7 @@ def test_update_participant(request_type, transport: str = "grpc"):
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
         response = client.update_participant(request)
 
@@ -2578,6 +2600,10 @@ def test_update_participant(request_type, transport: str = "grpc"):
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 def test_update_participant_non_empty_request_with_auto_populated_field():
@@ -2712,6 +2738,7 @@ async def test_update_participant_async(
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         response = await client.update_participant(request)
@@ -2728,6 +2755,10 @@ async def test_update_participant_async(
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.asyncio
@@ -6767,6 +6798,7 @@ async def test_create_participant_empty_call_grpc_asyncio():
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.create_participant(request=None)
@@ -6797,6 +6829,7 @@ async def test_get_participant_empty_call_grpc_asyncio():
                 role=participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.get_participant(request=None)
@@ -6858,6 +6891,7 @@ async def test_update_participant_empty_call_grpc_asyncio():
                 role=gcd_participant.Participant.Role.HUMAN_AGENT,
                 sip_recording_media_label="sip_recording_media_label_value",
                 obfuscated_external_user_id="obfuscated_external_user_id_value",
+                agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
             )
         )
         await client.update_participant(request=None)
@@ -7067,6 +7101,7 @@ def test_create_participant_rest_call_success(request_type):
         "sip_recording_media_label": "sip_recording_media_label_value",
         "obfuscated_external_user_id": "obfuscated_external_user_id_value",
         "documents_metadata_filters": {},
+        "agent_desktop_source": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7145,6 +7180,7 @@ def test_create_participant_rest_call_success(request_type):
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -7165,6 +7201,10 @@ def test_create_participant_rest_call_success(request_type):
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7284,6 +7324,7 @@ def test_get_participant_rest_call_success(request_type):
             role=participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -7304,6 +7345,10 @@ def test_get_participant_rest_call_success(request_type):
     assert response.role == participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7553,6 +7598,7 @@ def test_update_participant_rest_call_success(request_type):
         "sip_recording_media_label": "sip_recording_media_label_value",
         "obfuscated_external_user_id": "obfuscated_external_user_id_value",
         "documents_metadata_filters": {},
+        "agent_desktop_source": 1,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7631,6 +7677,7 @@ def test_update_participant_rest_call_success(request_type):
             role=gcd_participant.Participant.Role.HUMAN_AGENT,
             sip_recording_media_label="sip_recording_media_label_value",
             obfuscated_external_user_id="obfuscated_external_user_id_value",
+            agent_desktop_source=gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON,
         )
 
         # Wrap the value into a proper Response obj
@@ -7651,6 +7698,10 @@ def test_update_participant_rest_call_success(request_type):
     assert response.role == gcd_participant.Participant.Role.HUMAN_AGENT
     assert response.sip_recording_media_label == "sip_recording_media_label_value"
     assert response.obfuscated_external_user_id == "obfuscated_external_user_id_value"
+    assert (
+        response.agent_desktop_source
+        == gcd_participant.Participant.AgentDesktopSource.LIVE_PERSON
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9568,8 +9619,34 @@ def test_parse_session_entity_type_path():
     assert expected == actual
 
 
+def test_tool_path():
+    project = "whelk"
+    location = "octopus"
+    tool = "oyster"
+    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
+        project=project,
+        location=location,
+        tool=tool,
+    )
+    actual = ParticipantsClient.tool_path(project, location, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = ParticipantsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ParticipantsClient.parse_tool_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9579,7 +9656,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ParticipantsClient.common_billing_account_path(**expected)
 
@@ -9589,7 +9666,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9599,7 +9676,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ParticipantsClient.common_folder_path(**expected)
 
@@ -9609,7 +9686,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9619,7 +9696,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ParticipantsClient.common_organization_path(**expected)
 
@@ -9629,7 +9706,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9639,7 +9716,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ParticipantsClient.common_project_path(**expected)
 
@@ -9649,8 +9726,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9661,8 +9738,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ParticipantsClient.common_location_path(**expected)
 

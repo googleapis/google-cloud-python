@@ -23,6 +23,7 @@ import proto  # type: ignore
 from google.cloud.geminidataanalytics_v1alpha.types import (
     credentials as gcg_credentials,
 )
+from google.cloud.geminidataanalytics_v1alpha.types import agent_context
 
 __protobuf__ = proto.module(
     package="google.cloud.geminidataanalytics.v1alpha",
@@ -33,6 +34,12 @@ __protobuf__ = proto.module(
         "BigQueryTableReference",
         "StudioDatasourceReferences",
         "StudioDatasourceReference",
+        "AlloyDbReference",
+        "AlloyDbDatabaseReference",
+        "SpannerReference",
+        "SpannerDatabaseReference",
+        "CloudSqlReference",
+        "CloudSqlDatabaseReference",
         "LookerExploreReferences",
         "LookerExploreReference",
         "PrivateLookerInstanceInfo",
@@ -83,6 +90,21 @@ class DatasourceReferences(proto.Message):
             References to Looker Explores.
 
             This field is a member of `oneof`_ ``references``.
+        alloydb (google.cloud.geminidataanalytics_v1alpha.types.AlloyDbReference):
+            Reference to an AlloyDB database. Only supported for the
+            ``QueryData`` method.
+
+            This field is a member of `oneof`_ ``references``.
+        spanner_reference (google.cloud.geminidataanalytics_v1alpha.types.SpannerReference):
+            Reference to a Spanner database. Only supported for the
+            ``QueryData`` method.
+
+            This field is a member of `oneof`_ ``references``.
+        cloud_sql_reference (google.cloud.geminidataanalytics_v1alpha.types.CloudSqlReference):
+            Reference to a CloudSql database. Only supported for the
+            ``QueryData`` method.
+
+            This field is a member of `oneof`_ ``references``.
     """
 
     bq: "BigQueryTableReferences" = proto.Field(
@@ -103,14 +125,34 @@ class DatasourceReferences(proto.Message):
         oneof="references",
         message="LookerExploreReferences",
     )
+    alloydb: "AlloyDbReference" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="references",
+        message="AlloyDbReference",
+    )
+    spanner_reference: "SpannerReference" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="references",
+        message="SpannerReference",
+    )
+    cloud_sql_reference: "CloudSqlReference" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="references",
+        message="CloudSqlReference",
+    )
 
 
 class BigQueryTableReferences(proto.Message):
-    r"""Message representing references to BigQuery tables.
+    r"""Message representing references to BigQuery tables and property
+    graphs. At least one of ``table_references`` or
+    ``property_graph_references`` must be populated.
 
     Attributes:
         table_references (MutableSequence[google.cloud.geminidataanalytics_v1alpha.types.BigQueryTableReference]):
-            Required. References to BigQuery tables.
+            Optional. References to BigQuery tables.
     """
 
     table_references: MutableSequence["BigQueryTableReference"] = proto.RepeatedField(
@@ -184,6 +226,255 @@ class StudioDatasourceReference(proto.Message):
     datasource_id: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class AlloyDbReference(proto.Message):
+    r"""Message representing reference to an AlloyDB database and agent
+    context. Only supported for the ``QueryData`` method.
+
+    Attributes:
+        database_reference (google.cloud.geminidataanalytics_v1alpha.types.AlloyDbDatabaseReference):
+            Required. Singular proto that supports
+            specifying which database and tables to include.
+        agent_context_reference (google.cloud.geminidataanalytics_v1alpha.types.AgentContextReference):
+            Optional. Parameters for retrieving data from
+            Agent Context.
+    """
+
+    database_reference: "AlloyDbDatabaseReference" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AlloyDbDatabaseReference",
+    )
+    agent_context_reference: agent_context.AgentContextReference = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=agent_context.AgentContextReference,
+    )
+
+
+class AlloyDbDatabaseReference(proto.Message):
+    r"""Message representing a reference to a single AlloyDB
+    database.
+
+    Attributes:
+        project_id (str):
+            Required. The project the instance belongs
+            to.
+        region (str):
+            Required. The region of the instance.
+        cluster_id (str):
+            Required. The cluster id.
+        instance_id (str):
+            Required. The instance id.
+        database_id (str):
+            Required. The database id.
+        table_ids (MutableSequence[str]):
+            Optional. The table ids. Denotes all tables
+            if unset.
+    """
+
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cluster_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    table_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+
+
+class SpannerReference(proto.Message):
+    r"""Message representing reference to a Spanner database and agent
+    context. Only supported for the ``QueryData`` method.
+
+    Attributes:
+        database_reference (google.cloud.geminidataanalytics_v1alpha.types.SpannerDatabaseReference):
+            Required. Singular proto that supports
+            specifying which database and tables to include.
+        agent_context_reference (google.cloud.geminidataanalytics_v1alpha.types.AgentContextReference):
+            Optional. Parameters for retrieving data from
+            Agent Context.
+    """
+
+    database_reference: "SpannerDatabaseReference" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SpannerDatabaseReference",
+    )
+    agent_context_reference: agent_context.AgentContextReference = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=agent_context.AgentContextReference,
+    )
+
+
+class SpannerDatabaseReference(proto.Message):
+    r"""Message representing a reference to a single Spanner
+    database.
+
+    Attributes:
+        engine (google.cloud.geminidataanalytics_v1alpha.types.SpannerDatabaseReference.Engine):
+            Required. The engine of the Spanner instance.
+        project_id (str):
+            Required. The project the instance belongs
+            to.
+        region (str):
+            Required. The region of the instance.
+        instance_id (str):
+            Required. The instance id.
+        database_id (str):
+            Required. The database id.
+        table_ids (MutableSequence[str]):
+            Optional. The table ids. Denotes all tables
+            if unset.
+    """
+
+    class Engine(proto.Enum):
+        r"""The database engine.
+
+        Values:
+            ENGINE_UNSPECIFIED (0):
+                Engine is not specified.
+            GOOGLE_SQL (1):
+                Google SQL
+            POSTGRESQL (2):
+                PostgreSQL
+        """
+        ENGINE_UNSPECIFIED = 0
+        GOOGLE_SQL = 1
+        POSTGRESQL = 2
+
+    engine: Engine = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Engine,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    table_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
+class CloudSqlReference(proto.Message):
+    r"""Message representing reference to a CloudSQL database and agent
+    context. Only supported for the ``QueryData`` method.
+
+    Attributes:
+        database_reference (google.cloud.geminidataanalytics_v1alpha.types.CloudSqlDatabaseReference):
+            Required. Singular proto that supports
+            specifying which database and tables to include.
+        agent_context_reference (google.cloud.geminidataanalytics_v1alpha.types.AgentContextReference):
+            Optional. Parameters for retrieving data from
+            Agent Context.
+    """
+
+    database_reference: "CloudSqlDatabaseReference" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="CloudSqlDatabaseReference",
+    )
+    agent_context_reference: agent_context.AgentContextReference = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=agent_context.AgentContextReference,
+    )
+
+
+class CloudSqlDatabaseReference(proto.Message):
+    r"""Message representing a reference to a single CloudSQL
+    database.
+
+    Attributes:
+        engine (google.cloud.geminidataanalytics_v1alpha.types.CloudSqlDatabaseReference.Engine):
+            Required. The engine of the Cloud SQL
+            instance.
+        project_id (str):
+            Required. The project the instance belongs
+            to.
+        region (str):
+            Required. The region of the instance.
+        instance_id (str):
+            Required. The instance id.
+        database_id (str):
+            Required. The database id.
+        table_ids (MutableSequence[str]):
+            Optional. The table ids. Denotes all tables
+            if unset.
+    """
+
+    class Engine(proto.Enum):
+        r"""The database engine.
+
+        Values:
+            ENGINE_UNSPECIFIED (0):
+                Engine is not specified.
+            POSTGRESQL (1):
+                PostgreSQL
+            MYSQL (2):
+                MySQL
+        """
+        ENGINE_UNSPECIFIED = 0
+        POSTGRESQL = 1
+        MYSQL = 2
+
+    engine: Engine = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Engine,
+    )
+    project_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    instance_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database_id: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    table_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=7,
     )
 
 
@@ -317,6 +608,18 @@ class Datasource(proto.Message):
             A reference to a Looker explore.
 
             This field is a member of `oneof`_ ``reference``.
+        alloy_db_reference (google.cloud.geminidataanalytics_v1alpha.types.AlloyDbReference):
+            A reference to an AlloyDB database.
+
+            This field is a member of `oneof`_ ``reference``.
+        spanner_reference (google.cloud.geminidataanalytics_v1alpha.types.SpannerReference):
+            A reference to a Spanner database.
+
+            This field is a member of `oneof`_ ``reference``.
+        cloud_sql_reference (google.cloud.geminidataanalytics_v1alpha.types.CloudSqlReference):
+            A reference to a CloudSQL database.
+
+            This field is a member of `oneof`_ ``reference``.
         schema (google.cloud.geminidataanalytics_v1alpha.types.Schema):
             Optional. The schema of the datasource.
         struct_schema (google.protobuf.struct_pb2.Struct):
@@ -345,6 +648,24 @@ class Datasource(proto.Message):
         number=4,
         oneof="reference",
         message="LookerExploreReference",
+    )
+    alloy_db_reference: "AlloyDbReference" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="reference",
+        message="AlloyDbReference",
+    )
+    spanner_reference: "SpannerReference" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="reference",
+        message="SpannerReference",
+    )
+    cloud_sql_reference: "CloudSqlReference" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="reference",
+        message="CloudSqlReference",
     )
     schema: "Schema" = proto.Field(
         proto.MESSAGE,

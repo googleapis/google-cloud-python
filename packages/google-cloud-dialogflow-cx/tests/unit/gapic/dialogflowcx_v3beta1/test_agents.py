@@ -9280,6 +9280,8 @@ def test_update_generative_settings_rest_call_success(request_type):
             "banned_phrases": [
                 {"text": "text_value", "language_code": "language_code_value"}
             ],
+            "rai_settings": {"category_filters": [{"category": 1, "filter_level": 1}]},
+            "default_rai_settings": {},
             "prompt_security_settings": {"enable_prompt_security": True},
         },
         "knowledge_connector_settings": {

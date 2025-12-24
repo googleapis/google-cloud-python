@@ -135,6 +135,9 @@ class Message(proto.Message):
               example, ``:smile:``. This doesn't apply to Unicode emoji,
               such as ``U+1F600`` for a grinning face emoji.
 
+            - Bullet list items using asterisks (``*``)—for example,
+              ``* item``.
+
             For more information, see `View text formatting sent in a
             message <https://developers.google.com/workspace/chat/format-messages#view_text_formatting_sent_in_a_message>`__
         cards (MutableSequence[google.apps.chat_v1.types.ContextualAddOnMarkup.Card]):
@@ -223,8 +226,6 @@ class Message(proto.Message):
             and omit the following:
 
             - `Attachments <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages.attachments>`__
-            - `Accessory
-              widgets <https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages#Message.AccessoryWidget>`__
 
             For details, see `Send a message
             privately <https://developers.google.com/workspace/chat/create-messages#private>`__.

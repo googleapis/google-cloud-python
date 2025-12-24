@@ -63,7 +63,15 @@ from google.cloud.dialogflow_v2.services.answer_records import (
     pagers,
     transports,
 )
-from google.cloud.dialogflow_v2.types import context, intent, participant, session
+from google.cloud.dialogflow_v2.types import (
+    context,
+    generator,
+    intent,
+    participant,
+    session,
+    tool_call,
+)
+from google.cloud.dialogflow_v2.types import agent_coaching_instruction
 from google.cloud.dialogflow_v2.types import answer_record
 from google.cloud.dialogflow_v2.types import answer_record as gcd_answer_record
 
@@ -3318,6 +3326,81 @@ def test_update_answer_record_rest_call_success(request_type):
                 },
                 "answer_record": "answer_record_value",
             },
+            "generator_suggestion": {
+                "free_form_suggestion": {"response": "response_value"},
+                "summary_suggestion": {
+                    "summary_sections": [
+                        {"section": "section_value", "summary": "summary_value"}
+                    ]
+                },
+                "agent_coaching_suggestion": {
+                    "applicable_instructions": [
+                        {
+                            "display_name": "display_name_value",
+                            "display_details": "display_details_value",
+                            "condition": "condition_value",
+                            "agent_action": "agent_action_value",
+                            "system_action": "system_action_value",
+                            "duplicate_check_result": {
+                                "duplicate_suggestions": [
+                                    {
+                                        "answer_record": "answer_record_value",
+                                        "suggestion_index": 1727,
+                                        "similarity_score": 0.17300000000000001,
+                                    }
+                                ]
+                            },
+                            "triggering_event": 1,
+                        }
+                    ],
+                    "agent_action_suggestions": [
+                        {
+                            "agent_action": "agent_action_value",
+                            "sources": {"instruction_indexes": [2066, 2067]},
+                            "duplicate_check_result": {
+                                "duplicate_suggestions": [
+                                    {
+                                        "answer_record": "answer_record_value",
+                                        "sources": {},
+                                        "suggestion_index": 1727,
+                                        "similarity_score": 0.17300000000000001,
+                                    }
+                                ]
+                            },
+                        }
+                    ],
+                    "sample_responses": [
+                        {
+                            "response_text": "response_text_value",
+                            "sources": {},
+                            "duplicate_check_result": {},
+                        }
+                    ],
+                },
+                "tool_call_info": [
+                    {
+                        "tool_call": {
+                            "tool": "tool_value",
+                            "tool_display_name": "tool_display_name_value",
+                            "tool_display_details": "tool_display_details_value",
+                            "action": "action_value",
+                            "input_parameters": {},
+                            "create_time": {},
+                            "answer_record": "answer_record_value",
+                            "state": 1,
+                        },
+                        "tool_call_result": {
+                            "tool": "tool_value",
+                            "action": "action_value",
+                            "error": {"message": "message_value"},
+                            "raw_content": b"raw_content_blob",
+                            "content": "content_value",
+                            "create_time": {},
+                            "answer_record": "answer_record_value",
+                        },
+                    }
+                ],
+            },
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -4350,8 +4433,34 @@ def test_parse_intent_path():
     assert expected == actual
 
 
+def test_tool_path():
+    project = "whelk"
+    location = "octopus"
+    tool = "oyster"
+    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
+        project=project,
+        location=location,
+        tool=tool,
+    )
+    actual = AnswerRecordsClient.tool_path(project, location, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = AnswerRecordsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AnswerRecordsClient.parse_tool_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4361,7 +4470,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = AnswerRecordsClient.common_billing_account_path(**expected)
 
@@ -4371,7 +4480,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4381,7 +4490,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = AnswerRecordsClient.common_folder_path(**expected)
 
@@ -4391,7 +4500,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4401,7 +4510,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = AnswerRecordsClient.common_organization_path(**expected)
 
@@ -4411,7 +4520,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4421,7 +4530,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = AnswerRecordsClient.common_project_path(**expected)
 
@@ -4431,8 +4540,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4443,8 +4552,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AnswerRecordsClient.common_location_path(**expected)
 

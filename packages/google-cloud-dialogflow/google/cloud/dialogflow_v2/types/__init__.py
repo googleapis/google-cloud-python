@@ -27,6 +27,7 @@ from .agent import (
     SetAgentRequest,
     TrainAgentRequest,
 )
+from .agent_coaching_instruction import AgentCoachingInstruction
 from .answer_record import (
     AgentAssistantFeedback,
     AgentAssistantRecord,
@@ -38,6 +39,7 @@ from .answer_record import (
 )
 from .audio_config import (
     AudioEncoding,
+    CustomPronunciationParams,
     InputAudioConfig,
     OutputAudioConfig,
     OutputAudioEncoding,
@@ -198,6 +200,8 @@ from .environment import (
 from .fulfillment import Fulfillment, GetFulfillmentRequest, UpdateFulfillmentRequest
 from .gcs import GcsDestination, GcsSources
 from .generator import (
+    AgentCoachingContext,
+    AgentCoachingSuggestion,
     ConversationContext,
     CreateGeneratorRequest,
     DeleteGeneratorRequest,
@@ -211,12 +215,25 @@ from .generator import (
     ListGeneratorsRequest,
     ListGeneratorsResponse,
     MessageEntry,
+    RaiSettings,
+    SuggestionDedupingConfig,
     SummarizationContext,
     SummarizationSection,
     SummarizationSectionList,
     SummarySuggestion,
     TriggerEvent,
     UpdateGeneratorRequest,
+)
+from .generator_evaluation import (
+    CreateGeneratorEvaluationRequest,
+    DeleteGeneratorEvaluationRequest,
+    EvaluationStatus,
+    GeneratorEvaluation,
+    GeneratorEvaluationConfig,
+    GetGeneratorEvaluationRequest,
+    ListGeneratorEvaluationsRequest,
+    ListGeneratorEvaluationsResponse,
+    SummarizationEvaluationMetrics,
 )
 from .human_agent_assistant_event import HumanAgentAssistantEvent
 from .intent import (
@@ -242,6 +259,7 @@ from .knowledge_base import (
     ListKnowledgeBasesResponse,
     UpdateKnowledgeBaseRequest,
 )
+from .operations import GeneratorEvaluationOperationMetadata
 from .participant import (
     AnalyzeContentRequest,
     AnalyzeContentResponse,
@@ -305,6 +323,26 @@ from .session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
+from .sip_trunk import (
+    Connection,
+    CreateSipTrunkRequest,
+    DeleteSipTrunkRequest,
+    GetSipTrunkRequest,
+    ListSipTrunksRequest,
+    ListSipTrunksResponse,
+    SipTrunk,
+    UpdateSipTrunkRequest,
+)
+from .tool import (
+    CreateToolRequest,
+    DeleteToolRequest,
+    GetToolRequest,
+    ListToolsRequest,
+    ListToolsResponse,
+    Tool,
+    UpdateToolRequest,
+)
+from .tool_call import ToolCall, ToolCallResult
 from .validation_result import ValidationError, ValidationResult
 from .version import (
     CreateVersionRequest,
@@ -330,6 +368,7 @@ __all__ = (
     "SearchAgentsResponse",
     "SetAgentRequest",
     "TrainAgentRequest",
+    "AgentCoachingInstruction",
     "AgentAssistantFeedback",
     "AgentAssistantRecord",
     "AnswerFeedback",
@@ -337,6 +376,7 @@ __all__ = (
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
     "UpdateAnswerRecordRequest",
+    "CustomPronunciationParams",
     "InputAudioConfig",
     "OutputAudioConfig",
     "SpeechContext",
@@ -481,6 +521,8 @@ __all__ = (
     "UpdateFulfillmentRequest",
     "GcsDestination",
     "GcsSources",
+    "AgentCoachingContext",
+    "AgentCoachingSuggestion",
     "ConversationContext",
     "CreateGeneratorRequest",
     "DeleteGeneratorRequest",
@@ -494,12 +536,23 @@ __all__ = (
     "ListGeneratorsRequest",
     "ListGeneratorsResponse",
     "MessageEntry",
+    "RaiSettings",
+    "SuggestionDedupingConfig",
     "SummarizationContext",
     "SummarizationSection",
     "SummarizationSectionList",
     "SummarySuggestion",
     "UpdateGeneratorRequest",
     "TriggerEvent",
+    "CreateGeneratorEvaluationRequest",
+    "DeleteGeneratorEvaluationRequest",
+    "EvaluationStatus",
+    "GeneratorEvaluation",
+    "GeneratorEvaluationConfig",
+    "GetGeneratorEvaluationRequest",
+    "ListGeneratorEvaluationsRequest",
+    "ListGeneratorEvaluationsResponse",
+    "SummarizationEvaluationMetrics",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -520,6 +573,7 @@ __all__ = (
     "ListKnowledgeBasesRequest",
     "ListKnowledgeBasesResponse",
     "UpdateKnowledgeBaseRequest",
+    "GeneratorEvaluationOperationMetadata",
     "AnalyzeContentRequest",
     "AnalyzeContentResponse",
     "AnnotatedMessagePart",
@@ -577,6 +631,23 @@ __all__ = (
     "ListSessionEntityTypesResponse",
     "SessionEntityType",
     "UpdateSessionEntityTypeRequest",
+    "Connection",
+    "CreateSipTrunkRequest",
+    "DeleteSipTrunkRequest",
+    "GetSipTrunkRequest",
+    "ListSipTrunksRequest",
+    "ListSipTrunksResponse",
+    "SipTrunk",
+    "UpdateSipTrunkRequest",
+    "CreateToolRequest",
+    "DeleteToolRequest",
+    "GetToolRequest",
+    "ListToolsRequest",
+    "ListToolsResponse",
+    "Tool",
+    "UpdateToolRequest",
+    "ToolCall",
+    "ToolCallResult",
     "ValidationError",
     "ValidationResult",
     "CreateVersionRequest",

@@ -56,6 +56,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 from google.ai.generativelanguage_v1beta.services.generative_service import (
     GenerativeServiceAsyncClient,

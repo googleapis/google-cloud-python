@@ -41,7 +41,7 @@ def sample_upgrade_cluster():
     # Initialize request argument(s)
     request = alloydb_v1beta.UpgradeClusterRequest(
         name="name_value",
-        version="POSTGRES_17",
+        version="POSTGRES_18",
     )
 
     # Make the request

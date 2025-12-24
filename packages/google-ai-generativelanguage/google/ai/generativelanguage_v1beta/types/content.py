@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -37,11 +38,14 @@ __protobuf__ = proto.module(
         "ExecutableCode",
         "CodeExecutionResult",
         "Tool",
+        "GoogleMaps",
         "UrlContext",
+        "FileSearch",
         "GoogleSearchRetrieval",
         "DynamicRetrievalConfig",
         "CodeExecution",
         "ToolConfig",
+        "RetrievalConfig",
         "FunctionCallingConfig",
         "FunctionDeclaration",
         "FunctionCall",
@@ -549,6 +553,14 @@ class Tool(proto.Message):
         url_context (google.ai.generativelanguage_v1beta.types.UrlContext):
             Optional. Tool to support URL context
             retrieval.
+        file_search (google.ai.generativelanguage_v1beta.types.FileSearch):
+            Optional. FileSearch tool type.
+            Tool to retrieve knowledge from Semantic
+            Retrieval corpora.
+        google_maps (google.ai.generativelanguage_v1beta.types.GoogleMaps):
+            Optional. Tool that allows grounding the
+            model's response with geospatial context related
+            to the user's query.
     """
 
     class GoogleSearch(proto.Message):
@@ -640,10 +652,108 @@ class Tool(proto.Message):
         number=8,
         message="UrlContext",
     )
+    file_search: "FileSearch" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="FileSearch",
+    )
+    google_maps: "GoogleMaps" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="GoogleMaps",
+    )
+
+
+class GoogleMaps(proto.Message):
+    r"""The GoogleMaps Tool that provides geospatial context for the
+    user's query.
+
+    Attributes:
+        enable_widget (bool):
+            Optional. Whether to return a widget context
+            token in the GroundingMetadata of the response.
+            Developers can use the widget context token to
+            render a Google Maps widget with geospatial
+            context related to the places that the model
+            references in the response.
+    """
+
+    enable_widget: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class UrlContext(proto.Message):
     r"""Tool to support URL context retrieval."""
+
+
+class FileSearch(proto.Message):
+    r"""The FileSearch tool that retrieves knowledge from Semantic
+    Retrieval corpora. Files are imported to Semantic Retrieval
+    corpora using the ImportFile API.
+
+    Attributes:
+        retrieval_resources (MutableSequence[google.ai.generativelanguage_v1beta.types.FileSearch.RetrievalResource]):
+            Required. Semantic retrieval resources to
+            retrieve from. Currently only supports one
+            corpus. In the future we may open up multiple
+            corpora support.
+        retrieval_config (google.ai.generativelanguage_v1beta.types.FileSearch.RetrievalConfig):
+            Optional. The configuration for the
+            retrieval.
+    """
+
+    class RetrievalResource(proto.Message):
+        r"""The semantic retrieval resource to retrieve from.
+
+        Attributes:
+            rag_store_name (str):
+                Required. The name of the semantic retrieval resource to
+                retrieve from. Example: ``ragStores/my-rag-store-123``
+        """
+
+        rag_store_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    class RetrievalConfig(proto.Message):
+        r"""Semantic retrieval configuration.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            top_k (int):
+                Optional. The number of semantic retrieval
+                chunks to retrieve.
+
+                This field is a member of `oneof`_ ``_top_k``.
+            metadata_filter (str):
+                Optional. Metadata filter to apply to the
+                semantic retrieval documents and chunks.
+        """
+
+        top_k: int = proto.Field(
+            proto.INT32,
+            number=1,
+            optional=True,
+        )
+        metadata_filter: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    retrieval_resources: MutableSequence[RetrievalResource] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=RetrievalResource,
+    )
+    retrieval_config: RetrievalConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RetrievalConfig,
+    )
 
 
 class GoogleSearchRetrieval(proto.Message):
@@ -722,12 +832,42 @@ class ToolConfig(proto.Message):
     Attributes:
         function_calling_config (google.ai.generativelanguage_v1beta.types.FunctionCallingConfig):
             Optional. Function calling config.
+        retrieval_config (google.ai.generativelanguage_v1beta.types.RetrievalConfig):
+            Optional. Retrieval config.
     """
 
     function_calling_config: "FunctionCallingConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="FunctionCallingConfig",
+    )
+    retrieval_config: "RetrievalConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RetrievalConfig",
+    )
+
+
+class RetrievalConfig(proto.Message):
+    r"""Retrieval config.
+
+    Attributes:
+        lat_lng (google.type.latlng_pb2.LatLng):
+            Optional. The location of the user.
+        language_code (str):
+            Optional. The language code of the user. Language code for
+            content. Use language tags defined by
+            `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
+    """
+
+    lat_lng: latlng_pb2.LatLng = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=latlng_pb2.LatLng,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

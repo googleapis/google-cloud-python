@@ -39,20 +39,10 @@ def sample_chat():
     client = geminidataanalytics_v1beta.DataChatServiceClient()
 
     # Initialize request argument(s)
-    inline_context = geminidataanalytics_v1beta.Context()
-    inline_context.datasource_references.bq.table_references.project_id = (
-        "project_id_value"
-    )
-    inline_context.datasource_references.bq.table_references.dataset_id = (
-        "dataset_id_value"
-    )
-    inline_context.datasource_references.bq.table_references.table_id = "table_id_value"
-
     messages = geminidataanalytics_v1beta.Message()
     messages.user_message.text = "text_value"
 
     request = geminidataanalytics_v1beta.ChatRequest(
-        inline_context=inline_context,
         parent="parent_value",
         messages=messages,
     )

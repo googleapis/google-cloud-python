@@ -27,6 +27,8 @@ __protobuf__ = proto.module(
     manifest={
         "Context",
         "ExampleQuery",
+        "LookerGoldenQuery",
+        "LookerQuery",
         "GlossaryTerm",
         "ConversationOptions",
         "DatasourceOptions",
@@ -61,6 +63,11 @@ class Context(proto.Message):
             SQL queries and their corresponding natural
             language queries optionally present. Currently
             only used for BigQuery data sources.
+        looker_golden_queries (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.LookerGoldenQuery]):
+            Optional. A list of golden queries, providing
+            examples of relevant and commonly used Looker
+            queries and their corresponding natural language
+            queries optionally present.
         glossary_terms (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.GlossaryTerm]):
             Optional. Term definitions (currently, only
             user authored)
@@ -180,6 +187,11 @@ class Context(proto.Message):
         number=5,
         message="ExampleQuery",
     )
+    looker_golden_queries: MutableSequence["LookerGoldenQuery"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="LookerGoldenQuery",
+    )
     glossary_terms: MutableSequence["GlossaryTerm"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
@@ -222,6 +234,108 @@ class ExampleQuery(proto.Message):
     natural_language_question: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+
+
+class LookerGoldenQuery(proto.Message):
+    r"""A golden query for Looker, including natural language
+    questions and a corresponding Looker Query. Analogous to
+    ExampleQuery.
+
+    Attributes:
+        natural_language_questions (MutableSequence[str]):
+            Optional. Natural language questions that a
+            user might ask. For example: "How many orders
+            were placed last month?".
+        looker_query (google.cloud.geminidataanalytics_v1beta.types.LookerQuery):
+            Optional. The Looker Query corresponding to
+            the natural language questions.
+    """
+
+    natural_language_questions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    looker_query: "LookerQuery" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="LookerQuery",
+    )
+
+
+class LookerQuery(proto.Message):
+    r"""Looker Query Object `Looker API
+    documentation <https://cloud.google.com/looker/docs/reference/looker-api/latest/methods/Query/run_inline_query>`__.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        model (str):
+            Required. The LookML model used to generate
+            the query.
+        explore (str):
+            Required. The LookML explore used to generate
+            the query.
+        fields (MutableSequence[str]):
+            Optional. The fields to retrieve from the
+            explore.
+        filters (MutableSequence[google.cloud.geminidataanalytics_v1beta.types.LookerQuery.Filter]):
+            Optional. The filters to apply to the
+            explore.
+        sorts (MutableSequence[str]):
+            Optional. The sorts to apply to the explore.
+        limit (str):
+            Optional. Limit in the query.
+
+            This field is a member of `oneof`_ ``_limit``.
+    """
+
+    class Filter(proto.Message):
+        r"""A Looker query filter.
+
+        Attributes:
+            field (str):
+                Required. The field to filter on.
+            value (str):
+                Required. The value for the field to filter
+                on.
+        """
+
+        field: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    explore: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    fields: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    filters: MutableSequence[Filter] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=Filter,
+    )
+    sorts: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    limit: str = proto.Field(
+        proto.STRING,
+        number=6,
+        optional=True,
     )
 
 

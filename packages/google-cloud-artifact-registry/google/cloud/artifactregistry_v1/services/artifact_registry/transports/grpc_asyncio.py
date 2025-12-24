@@ -1734,7 +1734,7 @@ class ArtifactRegistryGrpcAsyncIOTransport(ArtifactRegistryTransport):
     ) -> Callable[[export.ExportArtifactRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export artifact method over gRPC.
 
-        Exports an artifact.
+        Exports an artifact to a Cloud Storage bucket.
 
         Returns:
             Callable[[~.ExportArtifactRequest],

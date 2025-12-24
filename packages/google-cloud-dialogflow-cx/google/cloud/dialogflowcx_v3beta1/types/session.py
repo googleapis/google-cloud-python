@@ -45,6 +45,7 @@ from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
+        "DetectIntentResponseView",
         "AnswerFeedback",
         "SubmitAnswerFeedbackRequest",
         "DetectIntentRequest",
@@ -74,6 +75,30 @@ __protobuf__ = proto.module(
         "SentimentAnalysisResult",
     },
 )
+
+
+class DetectIntentResponseView(proto.Enum):
+    r"""The response view specifies which fields in the
+    [QueryResult][google.cloud.dialogflow.cx.v3beta1.QueryResult] to
+    return.
+
+    Values:
+        DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED (0):
+            Not specified. ``FULL`` will be used.
+        DETECT_INTENT_RESPONSE_VIEW_FULL (1):
+            Full response view includes all fields.
+        DETECT_INTENT_RESPONSE_VIEW_BASIC (2):
+            Basic response view omits the following fields:
+            -----------------------------------------------
+
+            [QueryResult.diagnostic_info][google.cloud.dialogflow.cx.v3beta1.QueryResult.diagnostic_info]
+            ---------------------------------------------------------------------------------------------
+
+            [QueryResult.generative_info][google.cloud.dialogflow.cx.v3beta1.QueryResult.generative_info]
+    """
+    DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED = 0
+    DETECT_INTENT_RESPONSE_VIEW_FULL = 1
+    DETECT_INTENT_RESPONSE_VIEW_BASIC = 2
 
 
 class AnswerFeedback(proto.Message):
@@ -218,6 +243,11 @@ class DetectIntentRequest(proto.Message):
         output_audio_config (google.cloud.dialogflowcx_v3beta1.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio.
+        response_view (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponseView):
+            Optional. Specifies which fields in the
+            [QueryResult][google.cloud.dialogflow.cx.v3beta1.QueryResult]
+            to return. If not set, the default is
+            DETECT_INTENT_RESPONSE_VIEW_FULL.
     """
 
     session: str = proto.Field(
@@ -238,6 +268,11 @@ class DetectIntentRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=audio_config.OutputAudioConfig,
+    )
+    response_view: "DetectIntentResponseView" = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="DetectIntentResponseView",
     )
 
 
@@ -395,6 +430,11 @@ class StreamingDetectIntentRequest(proto.Message):
         enable_debugging_info (bool):
             If true, ``StreamingDetectIntentResponse.debugging_info``
             will get populated.
+        response_view (google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponseView):
+            Optional. Specifies which fields in the
+            [QueryResult][google.cloud.dialogflow.cx.v3beta1.QueryResult]
+            to return. If not set, the default is
+            DETECT_INTENT_RESPONSE_VIEW_FULL.
     """
 
     session: str = proto.Field(
@@ -423,6 +463,11 @@ class StreamingDetectIntentRequest(proto.Message):
     enable_debugging_info: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    response_view: "DetectIntentResponseView" = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum="DetectIntentResponseView",
     )
 
 

@@ -119,6 +119,8 @@ class ConversationsAsyncClient:
     parse_message_path = staticmethod(ConversationsClient.parse_message_path)
     phrase_set_path = staticmethod(ConversationsClient.phrase_set_path)
     parse_phrase_set_path = staticmethod(ConversationsClient.parse_phrase_set_path)
+    tool_path = staticmethod(ConversationsClient.tool_path)
+    parse_tool_path = staticmethod(ConversationsClient.parse_tool_path)
     common_billing_account_path = staticmethod(
         ConversationsClient.common_billing_account_path
     )

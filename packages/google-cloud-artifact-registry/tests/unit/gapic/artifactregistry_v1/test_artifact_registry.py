@@ -34328,6 +34328,7 @@ def test_update_version_rest_call_success(request_type):
         "related_tags": [{"name": "name_value", "version": "version_value"}],
         "metadata": {"fields": {}},
         "annotations": {},
+        "fingerprints": [{"type_": 1, "value": b"value_blob"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

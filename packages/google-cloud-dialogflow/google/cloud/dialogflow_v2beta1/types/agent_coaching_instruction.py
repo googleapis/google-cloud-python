@@ -55,7 +55,37 @@ class AgentCoachingInstruction(proto.Message):
         duplicate_check_result (google.cloud.dialogflow_v2beta1.types.AgentCoachingInstruction.DuplicateCheckResult):
             Output only. Duplication check for the
             AgentCoachingInstruction.
+        triggering_event (google.cloud.dialogflow_v2beta1.types.AgentCoachingInstruction.TriggerEvent):
+            Optional. The event that should trigger this instruction. If
+            UNSPECIFIED, the instruction triggering will be same as the
+            generator's trigger_event.
     """
+
+    class TriggerEvent(proto.Enum):
+        r"""The event that should trigger this instruction.
+
+        Values:
+            TRIGGER_EVENT_UNSPECIFIED (0):
+                Default value for TriggerEvent.
+            END_OF_UTTERANCE (1):
+                Triggers when each chat message or voice
+                utterance ends.
+            MANUAL_CALL (2):
+                Triggers on the conversation manually by API
+                calls.
+            CUSTOMER_MESSAGE (3):
+                Triggers after each customer message.
+            AGENT_MESSAGE (4):
+                Triggers after each agent message.
+            TOOL_CALL_COMPLETION (5):
+                Triggers on tool call completion.
+        """
+        TRIGGER_EVENT_UNSPECIFIED = 0
+        END_OF_UTTERANCE = 1
+        MANUAL_CALL = 2
+        CUSTOMER_MESSAGE = 3
+        AGENT_MESSAGE = 4
+        TOOL_CALL_COMPLETION = 5
 
     class DuplicateCheckResult(proto.Message):
         r"""Duplication check for the suggestion.
@@ -125,6 +155,11 @@ class AgentCoachingInstruction(proto.Message):
         proto.MESSAGE,
         number=8,
         message=DuplicateCheckResult,
+    )
+    triggering_event: TriggerEvent = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=TriggerEvent,
     )
 
 

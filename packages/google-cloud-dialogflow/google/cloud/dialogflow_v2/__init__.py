@@ -52,6 +52,10 @@ from .services.encryption_spec_service import (
 from .services.entity_types import EntityTypesAsyncClient, EntityTypesClient
 from .services.environments import EnvironmentsAsyncClient, EnvironmentsClient
 from .services.fulfillments import FulfillmentsAsyncClient, FulfillmentsClient
+from .services.generator_evaluations import (
+    GeneratorEvaluationsAsyncClient,
+    GeneratorEvaluationsClient,
+)
 from .services.generators import GeneratorsAsyncClient, GeneratorsClient
 from .services.intents import IntentsAsyncClient, IntentsClient
 from .services.knowledge_bases import KnowledgeBasesAsyncClient, KnowledgeBasesClient
@@ -61,6 +65,8 @@ from .services.session_entity_types import (
     SessionEntityTypesClient,
 )
 from .services.sessions import SessionsAsyncClient, SessionsClient
+from .services.sip_trunks import SipTrunksAsyncClient, SipTrunksClient
+from .services.tools import ToolsAsyncClient, ToolsClient
 from .services.versions import VersionsAsyncClient, VersionsClient
 from .types.agent import (
     Agent,
@@ -76,6 +82,7 @@ from .types.agent import (
     SetAgentRequest,
     TrainAgentRequest,
 )
+from .types.agent_coaching_instruction import AgentCoachingInstruction
 from .types.answer_record import (
     AgentAssistantFeedback,
     AgentAssistantRecord,
@@ -87,6 +94,7 @@ from .types.answer_record import (
 )
 from .types.audio_config import (
     AudioEncoding,
+    CustomPronunciationParams,
     InputAudioConfig,
     OutputAudioConfig,
     OutputAudioEncoding,
@@ -251,6 +259,8 @@ from .types.fulfillment import (
 )
 from .types.gcs import GcsDestination, GcsSources
 from .types.generator import (
+    AgentCoachingContext,
+    AgentCoachingSuggestion,
     ConversationContext,
     CreateGeneratorRequest,
     DeleteGeneratorRequest,
@@ -264,12 +274,25 @@ from .types.generator import (
     ListGeneratorsRequest,
     ListGeneratorsResponse,
     MessageEntry,
+    RaiSettings,
+    SuggestionDedupingConfig,
     SummarizationContext,
     SummarizationSection,
     SummarizationSectionList,
     SummarySuggestion,
     TriggerEvent,
     UpdateGeneratorRequest,
+)
+from .types.generator_evaluation import (
+    CreateGeneratorEvaluationRequest,
+    DeleteGeneratorEvaluationRequest,
+    EvaluationStatus,
+    GeneratorEvaluation,
+    GeneratorEvaluationConfig,
+    GetGeneratorEvaluationRequest,
+    ListGeneratorEvaluationsRequest,
+    ListGeneratorEvaluationsResponse,
+    SummarizationEvaluationMetrics,
 )
 from .types.human_agent_assistant_event import HumanAgentAssistantEvent
 from .types.intent import (
@@ -295,6 +318,7 @@ from .types.knowledge_base import (
     ListKnowledgeBasesResponse,
     UpdateKnowledgeBaseRequest,
 )
+from .types.operations import GeneratorEvaluationOperationMetadata
 from .types.participant import (
     AnalyzeContentRequest,
     AnalyzeContentResponse,
@@ -358,6 +382,26 @@ from .types.session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
+from .types.sip_trunk import (
+    Connection,
+    CreateSipTrunkRequest,
+    DeleteSipTrunkRequest,
+    GetSipTrunkRequest,
+    ListSipTrunksRequest,
+    ListSipTrunksResponse,
+    SipTrunk,
+    UpdateSipTrunkRequest,
+)
+from .types.tool import (
+    CreateToolRequest,
+    DeleteToolRequest,
+    GetToolRequest,
+    ListToolsRequest,
+    ListToolsResponse,
+    Tool,
+    UpdateToolRequest,
+)
+from .types.tool_call import ToolCall, ToolCallResult
 from .types.validation_result import ValidationError, ValidationResult
 from .types.version import (
     CreateVersionRequest,
@@ -477,16 +521,22 @@ __all__ = (
     "EntityTypesAsyncClient",
     "EnvironmentsAsyncClient",
     "FulfillmentsAsyncClient",
+    "GeneratorEvaluationsAsyncClient",
     "GeneratorsAsyncClient",
     "IntentsAsyncClient",
     "KnowledgeBasesAsyncClient",
     "ParticipantsAsyncClient",
     "SessionEntityTypesAsyncClient",
     "SessionsAsyncClient",
+    "SipTrunksAsyncClient",
+    "ToolsAsyncClient",
     "VersionsAsyncClient",
     "Agent",
     "AgentAssistantFeedback",
     "AgentAssistantRecord",
+    "AgentCoachingContext",
+    "AgentCoachingInstruction",
+    "AgentCoachingSuggestion",
     "AgentsClient",
     "AnalyzeContentRequest",
     "AnalyzeContentResponse",
@@ -514,6 +564,7 @@ __all__ = (
     "ClearSuggestionFeatureConfigRequest",
     "CloudConversationDebuggingInfo",
     "CompleteConversationRequest",
+    "Connection",
     "Context",
     "ContextsClient",
     "Conversation",
@@ -541,12 +592,16 @@ __all__ = (
     "CreateDocumentRequest",
     "CreateEntityTypeRequest",
     "CreateEnvironmentRequest",
+    "CreateGeneratorEvaluationRequest",
     "CreateGeneratorRequest",
     "CreateIntentRequest",
     "CreateKnowledgeBaseRequest",
     "CreateParticipantRequest",
     "CreateSessionEntityTypeRequest",
+    "CreateSipTrunkRequest",
+    "CreateToolRequest",
     "CreateVersionRequest",
+    "CustomPronunciationParams",
     "DeleteAgentRequest",
     "DeleteAllContextsRequest",
     "DeleteContextRequest",
@@ -558,10 +613,13 @@ __all__ = (
     "DeleteDocumentRequest",
     "DeleteEntityTypeRequest",
     "DeleteEnvironmentRequest",
+    "DeleteGeneratorEvaluationRequest",
     "DeleteGeneratorRequest",
     "DeleteIntentRequest",
     "DeleteKnowledgeBaseRequest",
     "DeleteSessionEntityTypeRequest",
+    "DeleteSipTrunkRequest",
+    "DeleteToolRequest",
     "DeleteVersionRequest",
     "DeployConversationModelOperationMetadata",
     "DeployConversationModelRequest",
@@ -580,6 +638,7 @@ __all__ = (
     "EnvironmentHistory",
     "EnvironmentsClient",
     "EvaluationConfig",
+    "EvaluationStatus",
     "EventInput",
     "ExportAgentRequest",
     "ExportAgentResponse",
@@ -600,6 +659,10 @@ __all__ = (
     "GenerateSuggestionsRequest",
     "GenerateSuggestionsResponse",
     "Generator",
+    "GeneratorEvaluation",
+    "GeneratorEvaluationConfig",
+    "GeneratorEvaluationOperationMetadata",
+    "GeneratorEvaluationsClient",
     "GeneratorSuggestion",
     "GeneratorsClient",
     "GetAgentRequest",
@@ -615,11 +678,14 @@ __all__ = (
     "GetEnvironmentHistoryRequest",
     "GetEnvironmentRequest",
     "GetFulfillmentRequest",
+    "GetGeneratorEvaluationRequest",
     "GetGeneratorRequest",
     "GetIntentRequest",
     "GetKnowledgeBaseRequest",
     "GetParticipantRequest",
     "GetSessionEntityTypeRequest",
+    "GetSipTrunkRequest",
+    "GetToolRequest",
     "GetValidationResultRequest",
     "GetVersionRequest",
     "HumanAgentAssistantConfig",
@@ -671,6 +737,8 @@ __all__ = (
     "ListEntityTypesResponse",
     "ListEnvironmentsRequest",
     "ListEnvironmentsResponse",
+    "ListGeneratorEvaluationsRequest",
+    "ListGeneratorEvaluationsResponse",
     "ListGeneratorsRequest",
     "ListGeneratorsResponse",
     "ListIntentsRequest",
@@ -683,6 +751,10 @@ __all__ = (
     "ListParticipantsResponse",
     "ListSessionEntityTypesRequest",
     "ListSessionEntityTypesResponse",
+    "ListSipTrunksRequest",
+    "ListSipTrunksResponse",
+    "ListToolsRequest",
+    "ListToolsResponse",
     "ListVersionsRequest",
     "ListVersionsResponse",
     "LoggingConfig",
@@ -699,6 +771,7 @@ __all__ = (
     "QueryInput",
     "QueryParameters",
     "QueryResult",
+    "RaiSettings",
     "ReloadDocumentRequest",
     "RestoreAgentRequest",
     "SearchAgentsRequest",
@@ -715,6 +788,8 @@ __all__ = (
     "SetAgentRequest",
     "SetSuggestionFeatureConfigOperationMetadata",
     "SetSuggestionFeatureConfigRequest",
+    "SipTrunk",
+    "SipTrunksClient",
     "SmartReplyAnswer",
     "SmartReplyMetrics",
     "SmartReplyModelMetadata",
@@ -738,10 +813,12 @@ __all__ = (
     "SuggestKnowledgeAssistResponse",
     "SuggestSmartRepliesRequest",
     "SuggestSmartRepliesResponse",
+    "SuggestionDedupingConfig",
     "SuggestionFeature",
     "SuggestionInput",
     "SuggestionResult",
     "SummarizationContext",
+    "SummarizationEvaluationMetrics",
     "SummarizationSection",
     "SummarizationSectionList",
     "SummarySuggestion",
@@ -750,6 +827,10 @@ __all__ = (
     "TelephonyDtmfEvents",
     "TextInput",
     "TextToSpeechSettings",
+    "Tool",
+    "ToolCall",
+    "ToolCallResult",
+    "ToolsClient",
     "TrainAgentRequest",
     "TriggerEvent",
     "UndeployConversationModelOperationMetadata",
@@ -766,6 +847,8 @@ __all__ = (
     "UpdateKnowledgeBaseRequest",
     "UpdateParticipantRequest",
     "UpdateSessionEntityTypeRequest",
+    "UpdateSipTrunkRequest",
+    "UpdateToolRequest",
     "UpdateVersionRequest",
     "ValidationError",
     "ValidationResult",

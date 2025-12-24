@@ -74,6 +74,12 @@ from google.cloud.dialogflow_v2.services.fulfillments.async_client import (
     FulfillmentsAsyncClient,
 )
 from google.cloud.dialogflow_v2.services.fulfillments.client import FulfillmentsClient
+from google.cloud.dialogflow_v2.services.generator_evaluations.async_client import (
+    GeneratorEvaluationsAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.generator_evaluations.client import (
+    GeneratorEvaluationsClient,
+)
 from google.cloud.dialogflow_v2.services.generators.async_client import (
     GeneratorsAsyncClient,
 )
@@ -100,6 +106,12 @@ from google.cloud.dialogflow_v2.services.sessions.async_client import (
     SessionsAsyncClient,
 )
 from google.cloud.dialogflow_v2.services.sessions.client import SessionsClient
+from google.cloud.dialogflow_v2.services.sip_trunks.async_client import (
+    SipTrunksAsyncClient,
+)
+from google.cloud.dialogflow_v2.services.sip_trunks.client import SipTrunksClient
+from google.cloud.dialogflow_v2.services.tools.async_client import ToolsAsyncClient
+from google.cloud.dialogflow_v2.services.tools.client import ToolsClient
 from google.cloud.dialogflow_v2.services.versions.async_client import (
     VersionsAsyncClient,
 )
@@ -118,6 +130,9 @@ from google.cloud.dialogflow_v2.types.agent import (
     SetAgentRequest,
     TrainAgentRequest,
 )
+from google.cloud.dialogflow_v2.types.agent_coaching_instruction import (
+    AgentCoachingInstruction,
+)
 from google.cloud.dialogflow_v2.types.answer_record import (
     AgentAssistantFeedback,
     AgentAssistantRecord,
@@ -129,6 +144,7 @@ from google.cloud.dialogflow_v2.types.answer_record import (
 )
 from google.cloud.dialogflow_v2.types.audio_config import (
     AudioEncoding,
+    CustomPronunciationParams,
     InputAudioConfig,
     OutputAudioConfig,
     OutputAudioEncoding,
@@ -293,6 +309,8 @@ from google.cloud.dialogflow_v2.types.fulfillment import (
 )
 from google.cloud.dialogflow_v2.types.gcs import GcsDestination, GcsSources
 from google.cloud.dialogflow_v2.types.generator import (
+    AgentCoachingContext,
+    AgentCoachingSuggestion,
     ConversationContext,
     CreateGeneratorRequest,
     DeleteGeneratorRequest,
@@ -306,12 +324,25 @@ from google.cloud.dialogflow_v2.types.generator import (
     ListGeneratorsRequest,
     ListGeneratorsResponse,
     MessageEntry,
+    RaiSettings,
+    SuggestionDedupingConfig,
     SummarizationContext,
     SummarizationSection,
     SummarizationSectionList,
     SummarySuggestion,
     TriggerEvent,
     UpdateGeneratorRequest,
+)
+from google.cloud.dialogflow_v2.types.generator_evaluation import (
+    CreateGeneratorEvaluationRequest,
+    DeleteGeneratorEvaluationRequest,
+    EvaluationStatus,
+    GeneratorEvaluation,
+    GeneratorEvaluationConfig,
+    GetGeneratorEvaluationRequest,
+    ListGeneratorEvaluationsRequest,
+    ListGeneratorEvaluationsResponse,
+    SummarizationEvaluationMetrics,
 )
 from google.cloud.dialogflow_v2.types.human_agent_assistant_event import (
     HumanAgentAssistantEvent,
@@ -338,6 +369,9 @@ from google.cloud.dialogflow_v2.types.knowledge_base import (
     ListKnowledgeBasesRequest,
     ListKnowledgeBasesResponse,
     UpdateKnowledgeBaseRequest,
+)
+from google.cloud.dialogflow_v2.types.operations import (
+    GeneratorEvaluationOperationMetadata,
 )
 from google.cloud.dialogflow_v2.types.participant import (
     AnalyzeContentRequest,
@@ -402,6 +436,26 @@ from google.cloud.dialogflow_v2.types.session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
+from google.cloud.dialogflow_v2.types.sip_trunk import (
+    Connection,
+    CreateSipTrunkRequest,
+    DeleteSipTrunkRequest,
+    GetSipTrunkRequest,
+    ListSipTrunksRequest,
+    ListSipTrunksResponse,
+    SipTrunk,
+    UpdateSipTrunkRequest,
+)
+from google.cloud.dialogflow_v2.types.tool import (
+    CreateToolRequest,
+    DeleteToolRequest,
+    GetToolRequest,
+    ListToolsRequest,
+    ListToolsResponse,
+    Tool,
+    UpdateToolRequest,
+)
+from google.cloud.dialogflow_v2.types.tool_call import ToolCall, ToolCallResult
 from google.cloud.dialogflow_v2.types.validation_result import (
     ValidationError,
     ValidationResult,
@@ -446,6 +500,8 @@ __all__ = (
     "EnvironmentsAsyncClient",
     "FulfillmentsClient",
     "FulfillmentsAsyncClient",
+    "GeneratorEvaluationsClient",
+    "GeneratorEvaluationsAsyncClient",
     "GeneratorsClient",
     "GeneratorsAsyncClient",
     "IntentsClient",
@@ -458,6 +514,10 @@ __all__ = (
     "SessionEntityTypesAsyncClient",
     "SessionsClient",
     "SessionsAsyncClient",
+    "SipTrunksClient",
+    "SipTrunksAsyncClient",
+    "ToolsClient",
+    "ToolsAsyncClient",
     "VersionsClient",
     "VersionsAsyncClient",
     "Agent",
@@ -472,6 +532,7 @@ __all__ = (
     "SearchAgentsResponse",
     "SetAgentRequest",
     "TrainAgentRequest",
+    "AgentCoachingInstruction",
     "AgentAssistantFeedback",
     "AgentAssistantRecord",
     "AnswerFeedback",
@@ -479,6 +540,7 @@ __all__ = (
     "ListAnswerRecordsRequest",
     "ListAnswerRecordsResponse",
     "UpdateAnswerRecordRequest",
+    "CustomPronunciationParams",
     "InputAudioConfig",
     "OutputAudioConfig",
     "SpeechContext",
@@ -623,6 +685,8 @@ __all__ = (
     "UpdateFulfillmentRequest",
     "GcsDestination",
     "GcsSources",
+    "AgentCoachingContext",
+    "AgentCoachingSuggestion",
     "ConversationContext",
     "CreateGeneratorRequest",
     "DeleteGeneratorRequest",
@@ -636,12 +700,23 @@ __all__ = (
     "ListGeneratorsRequest",
     "ListGeneratorsResponse",
     "MessageEntry",
+    "RaiSettings",
+    "SuggestionDedupingConfig",
     "SummarizationContext",
     "SummarizationSection",
     "SummarizationSectionList",
     "SummarySuggestion",
     "UpdateGeneratorRequest",
     "TriggerEvent",
+    "CreateGeneratorEvaluationRequest",
+    "DeleteGeneratorEvaluationRequest",
+    "EvaluationStatus",
+    "GeneratorEvaluation",
+    "GeneratorEvaluationConfig",
+    "GetGeneratorEvaluationRequest",
+    "ListGeneratorEvaluationsRequest",
+    "ListGeneratorEvaluationsResponse",
+    "SummarizationEvaluationMetrics",
     "HumanAgentAssistantEvent",
     "BatchDeleteIntentsRequest",
     "BatchUpdateIntentsRequest",
@@ -662,6 +737,7 @@ __all__ = (
     "ListKnowledgeBasesRequest",
     "ListKnowledgeBasesResponse",
     "UpdateKnowledgeBaseRequest",
+    "GeneratorEvaluationOperationMetadata",
     "AnalyzeContentRequest",
     "AnalyzeContentResponse",
     "AnnotatedMessagePart",
@@ -719,6 +795,23 @@ __all__ = (
     "ListSessionEntityTypesResponse",
     "SessionEntityType",
     "UpdateSessionEntityTypeRequest",
+    "Connection",
+    "CreateSipTrunkRequest",
+    "DeleteSipTrunkRequest",
+    "GetSipTrunkRequest",
+    "ListSipTrunksRequest",
+    "ListSipTrunksResponse",
+    "SipTrunk",
+    "UpdateSipTrunkRequest",
+    "CreateToolRequest",
+    "DeleteToolRequest",
+    "GetToolRequest",
+    "ListToolsRequest",
+    "ListToolsResponse",
+    "Tool",
+    "UpdateToolRequest",
+    "ToolCall",
+    "ToolCallResult",
     "ValidationError",
     "ValidationResult",
     "CreateVersionRequest",

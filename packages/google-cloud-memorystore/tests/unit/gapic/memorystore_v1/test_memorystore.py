@@ -4176,9 +4176,17 @@ def test_get_instance_rest_call_success(request_type):
             engine_version="engine_version_value",
             deletion_protection_enabled=True,
             mode=memorystore.Instance.Mode.STANDALONE,
+            simulate_maintenance_event=True,
             ondemand_maintenance=True,
+            satisfies_pzs=True,
+            satisfies_pzi=True,
             async_instance_endpoints_deletion_enabled=True,
+            kms_key="kms_key_value",
             backup_collection="backup_collection_value",
+            maintenance_version="maintenance_version_value",
+            effective_maintenance_version="effective_maintenance_version_value",
+            available_maintenance_versions=["available_maintenance_versions_value"],
+            allow_fewer_zones_deployment=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4212,9 +4220,21 @@ def test_get_instance_rest_call_success(request_type):
     assert response.engine_version == "engine_version_value"
     assert response.deletion_protection_enabled is True
     assert response.mode == memorystore.Instance.Mode.STANDALONE
+    assert response.simulate_maintenance_event is True
     assert response.ondemand_maintenance is True
+    assert response.satisfies_pzs is True
+    assert response.satisfies_pzi is True
     assert response.async_instance_endpoints_deletion_enabled is True
+    assert response.kms_key == "kms_key_value"
     assert response.backup_collection == "backup_collection_value"
+    assert response.maintenance_version == "maintenance_version_value"
+    assert (
+        response.effective_maintenance_version == "effective_maintenance_version_value"
+    )
+    assert response.available_maintenance_versions == [
+        "available_maintenance_versions_value"
+    ]
+    assert response.allow_fewer_zones_deployment is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4388,7 +4408,10 @@ def test_create_instance_rest_call_success(request_type):
             }
         ],
         "mode": 1,
+        "simulate_maintenance_event": True,
         "ondemand_maintenance": True,
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "maintenance_policy": {
             "create_time": {},
             "update_time": {},
@@ -4413,12 +4436,26 @@ def test_create_instance_rest_call_success(request_type):
             "membership": {"primary_instance": {}, "secondary_instances": {}},
         },
         "async_instance_endpoints_deletion_enabled": True,
+        "kms_key": "kms_key_value",
+        "encryption_info": {
+            "encryption_type": 1,
+            "kms_key_versions": ["kms_key_versions_value1", "kms_key_versions_value2"],
+            "kms_key_primary_state": 1,
+            "last_update_time": {},
+        },
         "backup_collection": "backup_collection_value",
         "automated_backup_config": {
             "fixed_frequency_schedule": {"start_time": {}},
             "automated_backup_mode": 1,
             "retention": {"seconds": 751, "nanos": 543},
         },
+        "maintenance_version": "maintenance_version_value",
+        "effective_maintenance_version": "effective_maintenance_version_value",
+        "available_maintenance_versions": [
+            "available_maintenance_versions_value1",
+            "available_maintenance_versions_value2",
+        ],
+        "allow_fewer_zones_deployment": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4686,7 +4723,10 @@ def test_update_instance_rest_call_success(request_type):
             }
         ],
         "mode": 1,
+        "simulate_maintenance_event": True,
         "ondemand_maintenance": True,
+        "satisfies_pzs": True,
+        "satisfies_pzi": True,
         "maintenance_policy": {
             "create_time": {},
             "update_time": {},
@@ -4711,12 +4751,26 @@ def test_update_instance_rest_call_success(request_type):
             "membership": {"primary_instance": {}, "secondary_instances": {}},
         },
         "async_instance_endpoints_deletion_enabled": True,
+        "kms_key": "kms_key_value",
+        "encryption_info": {
+            "encryption_type": 1,
+            "kms_key_versions": ["kms_key_versions_value1", "kms_key_versions_value2"],
+            "kms_key_primary_state": 1,
+            "last_update_time": {},
+        },
         "backup_collection": "backup_collection_value",
         "automated_backup_config": {
             "fixed_frequency_schedule": {"start_time": {}},
             "automated_backup_mode": 1,
             "retention": {"seconds": 751, "nanos": 543},
         },
+        "maintenance_version": "maintenance_version_value",
+        "effective_maintenance_version": "effective_maintenance_version_value",
+        "available_maintenance_versions": [
+            "available_maintenance_versions_value1",
+            "available_maintenance_versions_value2",
+        ],
+        "allow_fewer_zones_deployment": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5435,6 +5489,8 @@ def test_get_backup_collection_rest_call_success(request_type):
             instance="instance_value",
             kms_key="kms_key_value",
             uid="uid_value",
+            total_backup_size_bytes=2457,
+            total_backup_count=1921,
         )
 
         # Wrap the value into a proper Response obj
@@ -5456,6 +5512,8 @@ def test_get_backup_collection_rest_call_success(request_type):
     assert response.instance == "instance_value"
     assert response.kms_key == "kms_key_value"
     assert response.uid == "uid_value"
+    assert response.total_backup_size_bytes == 2457
+    assert response.total_backup_count == 1921
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -7188,10 +7246,44 @@ def test_parse_crypto_key_path():
     assert expected == actual
 
 
-def test_forwarding_rule_path():
+def test_crypto_key_version_path():
     project = "oyster"
-    region = "nudibranch"
-    forwarding_rule = "cuttlefish"
+    location = "nudibranch"
+    key_ring = "cuttlefish"
+    crypto_key = "mussel"
+    crypto_key_version = "winkle"
+    expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}".format(
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
+        crypto_key_version=crypto_key_version,
+    )
+    actual = MemorystoreClient.crypto_key_version_path(
+        project, location, key_ring, crypto_key, crypto_key_version
+    )
+    assert expected == actual
+
+
+def test_parse_crypto_key_version_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "key_ring": "abalone",
+        "crypto_key": "squid",
+        "crypto_key_version": "clam",
+    }
+    path = MemorystoreClient.crypto_key_version_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = MemorystoreClient.parse_crypto_key_version_path(path)
+    assert expected == actual
+
+
+def test_forwarding_rule_path():
+    project = "whelk"
+    region = "octopus"
+    forwarding_rule = "oyster"
     expected = (
         "projects/{project}/regions/{region}/forwardingRules/{forwarding_rule}".format(
             project=project,
@@ -7205,9 +7297,9 @@ def test_forwarding_rule_path():
 
 def test_parse_forwarding_rule_path():
     expected = {
-        "project": "mussel",
-        "region": "winkle",
-        "forwarding_rule": "nautilus",
+        "project": "nudibranch",
+        "region": "cuttlefish",
+        "forwarding_rule": "mussel",
     }
     path = MemorystoreClient.forwarding_rule_path(**expected)
 
@@ -7217,9 +7309,9 @@ def test_parse_forwarding_rule_path():
 
 
 def test_instance_path():
-    project = "scallop"
-    location = "abalone"
-    instance = "squid"
+    project = "winkle"
+    location = "nautilus"
+    instance = "scallop"
     expected = "projects/{project}/locations/{location}/instances/{instance}".format(
         project=project,
         location=location,
@@ -7231,9 +7323,9 @@ def test_instance_path():
 
 def test_parse_instance_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "instance": "octopus",
+        "project": "abalone",
+        "location": "squid",
+        "instance": "clam",
     }
     path = MemorystoreClient.instance_path(**expected)
 
@@ -7243,8 +7335,8 @@ def test_parse_instance_path():
 
 
 def test_network_path():
-    project = "oyster"
-    network = "nudibranch"
+    project = "whelk"
+    network = "octopus"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -7255,8 +7347,8 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "cuttlefish",
-        "network": "mussel",
+        "project": "oyster",
+        "network": "nudibranch",
     }
     path = MemorystoreClient.network_path(**expected)
 
@@ -7266,9 +7358,9 @@ def test_parse_network_path():
 
 
 def test_service_attachment_path():
-    project = "winkle"
-    region = "nautilus"
-    service_attachment = "scallop"
+    project = "cuttlefish"
+    region = "mussel"
+    service_attachment = "winkle"
     expected = "projects/{project}/regions/{region}/serviceAttachments/{service_attachment}".format(
         project=project,
         region=region,
@@ -7282,9 +7374,9 @@ def test_service_attachment_path():
 
 def test_parse_service_attachment_path():
     expected = {
-        "project": "abalone",
-        "region": "squid",
-        "service_attachment": "clam",
+        "project": "nautilus",
+        "region": "scallop",
+        "service_attachment": "abalone",
     }
     path = MemorystoreClient.service_attachment_path(**expected)
 
@@ -7294,7 +7386,7 @@ def test_parse_service_attachment_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7304,7 +7396,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "clam",
     }
     path = MemorystoreClient.common_billing_account_path(**expected)
 
@@ -7314,7 +7406,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7324,7 +7416,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "octopus",
     }
     path = MemorystoreClient.common_folder_path(**expected)
 
@@ -7334,7 +7426,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7344,7 +7436,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nudibranch",
     }
     path = MemorystoreClient.common_organization_path(**expected)
 
@@ -7354,7 +7446,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7364,7 +7456,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "mussel",
     }
     path = MemorystoreClient.common_project_path(**expected)
 
@@ -7374,8 +7466,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7386,8 +7478,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = MemorystoreClient.common_location_path(**expected)
 

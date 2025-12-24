@@ -64,6 +64,7 @@ class ChatServiceTransport(abc.ABC):
         "https://www.googleapis.com/auth/chat.admin.spaces.readonly",
         "https://www.googleapis.com/auth/chat.app.delete",
         "https://www.googleapis.com/auth/chat.app.memberships",
+        "https://www.googleapis.com/auth/chat.app.messages.readonly",
         "https://www.googleapis.com/auth/chat.app.spaces",
         "https://www.googleapis.com/auth/chat.app.spaces.create",
         "https://www.googleapis.com/auth/chat.bot",

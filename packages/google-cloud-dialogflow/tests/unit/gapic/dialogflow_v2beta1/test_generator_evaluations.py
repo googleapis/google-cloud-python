@@ -4247,6 +4247,7 @@ def test_create_generator_evaluation_rest_call_success(request_type):
                                 }
                             ]
                         },
+                        "triggering_event": 1,
                     }
                 ],
                 "version": "version_value",

@@ -63,6 +63,7 @@ from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service import 
     pagers,
     transports,
 )
+from google.cloud.geminidataanalytics_v1alpha.types import agent_context, context
 from google.cloud.geminidataanalytics_v1alpha.types import (
     credentials,
     data_chat_service,
@@ -71,7 +72,6 @@ from google.cloud.geminidataanalytics_v1alpha.types import (
 from google.cloud.geminidataanalytics_v1alpha.types import (
     conversation as gcg_conversation,
 )
-from google.cloud.geminidataanalytics_v1alpha.types import context
 from google.cloud.geminidataanalytics_v1alpha.types import conversation
 
 CRED_INFO_JSON = {
