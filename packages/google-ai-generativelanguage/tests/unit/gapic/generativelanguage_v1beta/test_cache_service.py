@@ -57,6 +57,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
+from google.type import latlng_pb2  # type: ignore
 
 from google.ai.generativelanguage_v1beta.services.cache_service import (
     CacheServiceAsyncClient,
@@ -4528,6 +4529,14 @@ def test_create_cached_content_rest_call_success(request_type):
                     ],
                 },
                 "url_context": {},
+                "file_search": {
+                    "retrieval_resources": [{"rag_store_name": "rag_store_name_value"}],
+                    "retrieval_config": {
+                        "top_k": 541,
+                        "metadata_filter": "metadata_filter_value",
+                    },
+                },
+                "google_maps": {"enable_widget": True},
             }
         ],
         "tool_config": {
@@ -4537,7 +4546,11 @@ def test_create_cached_content_rest_call_success(request_type):
                     "allowed_function_names_value1",
                     "allowed_function_names_value2",
                 ],
-            }
+            },
+            "retrieval_config": {
+                "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                "language_code": "language_code_value",
+            },
         },
         "create_time": {},
         "update_time": {},
@@ -4991,6 +5004,14 @@ def test_update_cached_content_rest_call_success(request_type):
                     ],
                 },
                 "url_context": {},
+                "file_search": {
+                    "retrieval_resources": [{"rag_store_name": "rag_store_name_value"}],
+                    "retrieval_config": {
+                        "top_k": 541,
+                        "metadata_filter": "metadata_filter_value",
+                    },
+                },
+                "google_maps": {"enable_widget": True},
             }
         ],
         "tool_config": {
@@ -5000,7 +5021,11 @@ def test_update_cached_content_rest_call_success(request_type):
                     "allowed_function_names_value1",
                     "allowed_function_names_value2",
                 ],
-            }
+            },
+            "retrieval_config": {
+                "lat_lng": {"latitude": 0.86, "longitude": 0.971},
+                "language_code": "language_code_value",
+            },
         },
         "create_time": {},
         "update_time": {},

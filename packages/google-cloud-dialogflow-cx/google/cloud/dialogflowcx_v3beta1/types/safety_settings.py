@@ -36,6 +36,14 @@ class SafetySettings(proto.Message):
             banned phrases.
         banned_phrases (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SafetySettings.Phrase]):
             Banned phrases for generated text.
+        rai_settings (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.RaiSettings):
+            Optional. Settings for Responsible AI checks.
+        default_rai_settings (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.RaiSettings):
+            Optional. Immutable. Default RAI settings to
+            be annotated on the agent, so that users will be
+            able to restore their RAI configurations to the
+            default settings. Read-only field for the API
+            proto only.
         prompt_security_settings (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.PromptSecuritySettings):
             Optional. Settings for prompt security
             checks.
@@ -80,6 +88,89 @@ class SafetySettings(proto.Message):
             number=2,
         )
 
+    class RaiSettings(proto.Message):
+        r"""Settings for Responsible AI.
+
+        Attributes:
+            category_filters (MutableSequence[google.cloud.dialogflowcx_v3beta1.types.SafetySettings.RaiSettings.CategoryFilter]):
+                Optional. RAI blocking configurations.
+        """
+
+        class SafetyFilterLevel(proto.Enum):
+            r"""Sensitivity level for RAI categories.
+
+            Values:
+                SAFETY_FILTER_LEVEL_UNSPECIFIED (0):
+                    Unspecified -- uses default sensitivity
+                    levels.
+                BLOCK_NONE (1):
+                    Block no text -- effectively disables the
+                    category.
+                BLOCK_FEW (2):
+                    Block a few suspicious texts.
+                BLOCK_SOME (3):
+                    Block some suspicious texts.
+                BLOCK_MOST (4):
+                    Block most suspicious texts.
+            """
+            SAFETY_FILTER_LEVEL_UNSPECIFIED = 0
+            BLOCK_NONE = 1
+            BLOCK_FEW = 2
+            BLOCK_SOME = 3
+            BLOCK_MOST = 4
+
+        class SafetyCategory(proto.Enum):
+            r"""RAI categories to configure.
+
+            Values:
+                SAFETY_CATEGORY_UNSPECIFIED (0):
+                    Unspecified.
+                DANGEROUS_CONTENT (1):
+                    Dangerous content.
+                HATE_SPEECH (2):
+                    Hate speech.
+                HARASSMENT (3):
+                    Harassment.
+                SEXUALLY_EXPLICIT_CONTENT (4):
+                    Sexually explicit content.
+            """
+            SAFETY_CATEGORY_UNSPECIFIED = 0
+            DANGEROUS_CONTENT = 1
+            HATE_SPEECH = 2
+            HARASSMENT = 3
+            SEXUALLY_EXPLICIT_CONTENT = 4
+
+        class CategoryFilter(proto.Message):
+            r"""Configuration of the sensitivity level for blocking an RAI
+            category.
+
+            Attributes:
+                category (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.RaiSettings.SafetyCategory):
+                    RAI category to configure.
+                filter_level (google.cloud.dialogflowcx_v3beta1.types.SafetySettings.RaiSettings.SafetyFilterLevel):
+                    Blocking sensitivity level to configure for
+                    the RAI category.
+            """
+
+            category: "SafetySettings.RaiSettings.SafetyCategory" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="SafetySettings.RaiSettings.SafetyCategory",
+            )
+            filter_level: "SafetySettings.RaiSettings.SafetyFilterLevel" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="SafetySettings.RaiSettings.SafetyFilterLevel",
+            )
+
+        category_filters: MutableSequence[
+            "SafetySettings.RaiSettings.CategoryFilter"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=3,
+            message="SafetySettings.RaiSettings.CategoryFilter",
+        )
+
     class PromptSecuritySettings(proto.Message):
         r"""Settings for prompt security checks.
 
@@ -102,6 +193,16 @@ class SafetySettings(proto.Message):
         proto.MESSAGE,
         number=1,
         message=Phrase,
+    )
+    rai_settings: RaiSettings = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=RaiSettings,
+    )
+    default_rai_settings: RaiSettings = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=RaiSettings,
     )
     prompt_security_settings: PromptSecuritySettings = proto.Field(
         proto.MESSAGE,

@@ -63,13 +63,14 @@ from google.cloud.dialogflow_v2.services.conversations import (
     pagers,
     transports,
 )
+from google.cloud.dialogflow_v2.types import agent_coaching_instruction, audio_config
 from google.cloud.dialogflow_v2.types import (
     conversation_profile,
     generator,
     participant,
     session,
+    tool_call,
 )
-from google.cloud.dialogflow_v2.types import audio_config
 from google.cloud.dialogflow_v2.types import conversation
 from google.cloud.dialogflow_v2.types import conversation as gcd_conversation
 
@@ -4530,6 +4531,7 @@ def test_generate_stateless_suggestion_non_empty_request_with_auto_populated_fie
     request = conversation.GenerateStatelessSuggestionRequest(
         parent="parent_value",
         generator_name="generator_name_value",
+        security_settings="security_settings_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4545,6 +4547,7 @@ def test_generate_stateless_suggestion_non_empty_request_with_auto_populated_fie
         assert args[0] == conversation.GenerateStatelessSuggestionRequest(
             parent="parent_value",
             generator_name="generator_name_value",
+            security_settings="security_settings_value",
         )
 
 
@@ -10977,8 +10980,34 @@ def test_parse_phrase_set_path():
     assert expected == actual
 
 
+def test_tool_path():
+    project = "whelk"
+    location = "octopus"
+    tool = "oyster"
+    expected = "projects/{project}/locations/{location}/tools/{tool}".format(
+        project=project,
+        location=location,
+        tool=tool,
+    )
+    actual = ConversationsClient.tool_path(project, location, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "tool": "mussel",
+    }
+    path = ConversationsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationsClient.parse_tool_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10988,7 +11017,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ConversationsClient.common_billing_account_path(**expected)
 
@@ -10998,7 +11027,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11008,7 +11037,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ConversationsClient.common_folder_path(**expected)
 
@@ -11018,7 +11047,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11028,7 +11057,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ConversationsClient.common_organization_path(**expected)
 
@@ -11038,7 +11067,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11048,7 +11077,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ConversationsClient.common_project_path(**expected)
 
@@ -11058,8 +11087,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11070,8 +11099,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ConversationsClient.common_location_path(**expected)
 

@@ -30,6 +30,9 @@ from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.async_c
 from google.cloud.geminidataanalytics_v1alpha.services.data_chat_service.client import (
     DataChatServiceClient,
 )
+from google.cloud.geminidataanalytics_v1alpha.types.agent_context import (
+    AgentContextReference,
+)
 from google.cloud.geminidataanalytics_v1alpha.types.context import (
     AnalysisOptions,
     ChartOptions,
@@ -38,6 +41,7 @@ from google.cloud.geminidataanalytics_v1alpha.types.context import (
     DatasourceOptions,
     ExampleQuery,
     GlossaryTerm,
+    LookerGoldenQuery,
     LookerQuery,
 )
 from google.cloud.geminidataanalytics_v1alpha.types.conversation import (
@@ -102,8 +106,12 @@ from google.cloud.geminidataanalytics_v1alpha.types.data_chat_service import (
     UserMessage,
 )
 from google.cloud.geminidataanalytics_v1alpha.types.datasource import (
+    AlloyDbDatabaseReference,
+    AlloyDbReference,
     BigQueryTableReference,
     BigQueryTableReferences,
+    CloudSqlDatabaseReference,
+    CloudSqlReference,
     DataFilter,
     DataFilterType,
     Datasource,
@@ -113,6 +121,8 @@ from google.cloud.geminidataanalytics_v1alpha.types.datasource import (
     LookerExploreReferences,
     PrivateLookerInstanceInfo,
     Schema,
+    SpannerDatabaseReference,
+    SpannerReference,
     StudioDatasourceReference,
     StudioDatasourceReferences,
 )
@@ -122,6 +132,7 @@ __all__ = (
     "DataAgentServiceAsyncClient",
     "DataChatServiceClient",
     "DataChatServiceAsyncClient",
+    "AgentContextReference",
     "AnalysisOptions",
     "ChartOptions",
     "Context",
@@ -129,6 +140,7 @@ __all__ = (
     "DatasourceOptions",
     "ExampleQuery",
     "GlossaryTerm",
+    "LookerGoldenQuery",
     "LookerQuery",
     "Conversation",
     "CreateConversationRequest",
@@ -181,8 +193,12 @@ __all__ = (
     "SystemMessage",
     "TextMessage",
     "UserMessage",
+    "AlloyDbDatabaseReference",
+    "AlloyDbReference",
     "BigQueryTableReference",
     "BigQueryTableReferences",
+    "CloudSqlDatabaseReference",
+    "CloudSqlReference",
     "DataFilter",
     "Datasource",
     "DatasourceReferences",
@@ -191,6 +207,8 @@ __all__ = (
     "LookerExploreReferences",
     "PrivateLookerInstanceInfo",
     "Schema",
+    "SpannerDatabaseReference",
+    "SpannerReference",
     "StudioDatasourceReference",
     "StudioDatasourceReferences",
     "DataFilterType",

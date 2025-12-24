@@ -40,7 +40,7 @@ def sample_create_key():
 
     # Initialize request argument(s)
     key = recaptchaenterprise_v1.Key()
-    key.web_settings.integration_type = "INVISIBLE"
+    key.web_settings.integration_type = "POLICY_BASED_CHALLENGE"
     key.display_name = "display_name_value"
 
     request = recaptchaenterprise_v1.CreateKeyRequest(

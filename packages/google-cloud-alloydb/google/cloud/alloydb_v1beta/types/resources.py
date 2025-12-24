@@ -121,6 +121,8 @@ class DatabaseVersion(proto.Enum):
             The database version is Postgres 16.
         POSTGRES_17 (5):
             The database version is Postgres 17.
+        POSTGRES_18 (6):
+            The database version is Postgres 18.
     """
     DATABASE_VERSION_UNSPECIFIED = 0
     POSTGRES_13 = 1
@@ -128,6 +130,7 @@ class DatabaseVersion(proto.Enum):
     POSTGRES_15 = 3
     POSTGRES_16 = 4
     POSTGRES_17 = 5
+    POSTGRES_18 = 6
 
 
 class SubscriptionType(proto.Enum):

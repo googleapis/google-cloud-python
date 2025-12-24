@@ -36,6 +36,7 @@ from .services.data_chat_service import (
     DataChatServiceAsyncClient,
     DataChatServiceClient,
 )
+from .types.agent_context import AgentContextReference
 from .types.context import (
     AnalysisOptions,
     ChartOptions,
@@ -44,6 +45,7 @@ from .types.context import (
     DatasourceOptions,
     ExampleQuery,
     GlossaryTerm,
+    LookerGoldenQuery,
     LookerQuery,
 )
 from .types.conversation import (
@@ -103,8 +105,12 @@ from .types.data_chat_service import (
     UserMessage,
 )
 from .types.datasource import (
+    AlloyDbDatabaseReference,
+    AlloyDbReference,
     BigQueryTableReference,
     BigQueryTableReferences,
+    CloudSqlDatabaseReference,
+    CloudSqlReference,
     DataFilter,
     DataFilterType,
     Datasource,
@@ -114,6 +120,8 @@ from .types.datasource import (
     LookerExploreReferences,
     PrivateLookerInstanceInfo,
     Schema,
+    SpannerDatabaseReference,
+    SpannerReference,
     StudioDatasourceReference,
     StudioDatasourceReferences,
 )
@@ -215,6 +223,9 @@ else:  # pragma: NO COVER
 __all__ = (
     "DataAgentServiceAsyncClient",
     "DataChatServiceAsyncClient",
+    "AgentContextReference",
+    "AlloyDbDatabaseReference",
+    "AlloyDbReference",
     "AnalysisEvent",
     "AnalysisMessage",
     "AnalysisOptions",
@@ -229,6 +240,8 @@ __all__ = (
     "ChartResult",
     "ChatRequest",
     "ClientManagedResourceContext",
+    "CloudSqlDatabaseReference",
+    "CloudSqlReference",
     "Context",
     "Conversation",
     "ConversationOptions",
@@ -270,6 +283,7 @@ __all__ = (
     "ListMessagesResponse",
     "LookerExploreReference",
     "LookerExploreReferences",
+    "LookerGoldenQuery",
     "LookerQuery",
     "Message",
     "OAuthCredentials",
@@ -282,6 +296,8 @@ __all__ = (
     "SchemaMessage",
     "SchemaQuery",
     "SchemaResult",
+    "SpannerDatabaseReference",
+    "SpannerReference",
     "StorageMessage",
     "StudioDatasourceReference",
     "StudioDatasourceReferences",

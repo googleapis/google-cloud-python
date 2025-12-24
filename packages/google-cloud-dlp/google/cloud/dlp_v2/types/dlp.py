@@ -584,7 +584,7 @@ class RelationalOperator(proto.Enum):
 class MatchingType(proto.Enum):
     r"""Type of the match which can be applied to different ways of
     matching, like Dictionary, regular expression and intersecting
-    with findings of another info type.
+    with findings of another infoType.
 
     Values:
         MATCHING_TYPE_UNSPECIFIED (0):
@@ -593,27 +593,27 @@ class MatchingType(proto.Enum):
             Full match.
 
             - Dictionary: join of Dictionary results matched
-              complete finding quote
+              the complete finding quote
             - Regex: all regex matches fill a finding quote
-              start to end
-            - Exclude info type: completely inside affecting
-              info types findings
+              from start to end
+            - Exclude infoType: completely inside affecting
+              infoTypes findings
         MATCHING_TYPE_PARTIAL_MATCH (2):
             Partial match.
 
             - Dictionary: at least one of the tokens in the
               finding matches
             - Regex: substring of the finding matches
-            - Exclude info type: intersects with affecting
-              info types findings
+            - Exclude infoType: intersects with affecting
+              infoTypes findings
         MATCHING_TYPE_INVERSE_MATCH (3):
             Inverse match.
 
             - Dictionary: no tokens in the finding match the
               dictionary
             - Regex: finding doesn't match the regex
-            - Exclude info type: no intersection with
-              affecting info types findings
+            - Exclude infoType: no intersection with
+              affecting infoTypes findings
     """
     MATCHING_TYPE_UNSPECIFIED = 0
     MATCHING_TYPE_FULL_MATCH = 1
@@ -6872,7 +6872,9 @@ class Action(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         publish_findings_to_cloud_data_catalog (google.cloud.dlp_v2.types.Action.PublishFindingsToCloudDataCatalog):
-            Publish findings to Cloud Datahub.
+            Deprecated because Data Catalog is being turned down. Use
+            publish_findings_to_dataplex_catalog to publish findings to
+            Dataplex Universal Catalog.
 
             This field is a member of `oneof`_ ``action``.
         publish_findings_to_dataplex_catalog (google.cloud.dlp_v2.types.Action.PublishFindingsToDataplexCatalog):
@@ -10839,13 +10841,16 @@ class VertexDatasetRegex(proto.Message):
 
 
 class VertexDatasetResourceReference(proto.Message):
-    r"""Identifies a single Vertex AI dataset.
+    r"""Identifies a single Vertex AI resource. Only datasets are
+    supported.
 
     Attributes:
         dataset_resource_name (str):
-            Required. The name of the dataset resource.
-            If set within a project-level configuration, the
-            specified resource must be within the project.
+            Required. The name of the Vertex AI resource. If set within
+            a project-level configuration, the specified resource must
+            be within the project. Examples:
+
+            - ``projects/{project}/locations/{location}/datasets/{dataset}``
     """
 
     dataset_resource_name: str = proto.Field(
@@ -14508,8 +14513,8 @@ class DataSourceType(proto.Message):
 
     Attributes:
         data_source (str):
-            Output only. An identifying string to the type of resource
-            being profiled. Current values:
+            A string that identifies the type of resource being
+            profiled. Current values:
 
             - google/bigquery/table
             - google/project

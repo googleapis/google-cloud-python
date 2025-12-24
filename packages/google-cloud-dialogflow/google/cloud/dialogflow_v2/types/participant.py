@@ -144,6 +144,18 @@ class Participant(proto.Message):
                  key: "user"
                  value: "agent"
                }
+        agent_desktop_source (google.cloud.dialogflow_v2.types.Participant.AgentDesktopSource):
+            Optional. For tracking the utilization of prebuilt Agent
+            Assist integration modules. This field is only inscope for
+            Integration type that include UI Modules, Backend Modules,
+            and Agent Desktop connector, it is out of scope for CCaaS
+            and Direct Integration. For each human agent, prebuilt UI
+            Modules needs to trigger the UpdateParticipant API to update
+            this field. Both
+            [CreateParticipantRequest][google.cloud.dialogflow.v2.CreateParticipantRequest.participant]
+            and
+            [UpdateParticipantRequest][google.cloud.dialogflow.v2.UpdateParticipantRequest.participant]
+            will be supported.
     """
 
     class Role(proto.Enum):
@@ -167,6 +179,33 @@ class Participant(proto.Message):
         AUTOMATED_AGENT = 2
         END_USER = 3
 
+    class AgentDesktopSource(proto.Enum):
+        r"""Enumeration of the Agent Desktop Source when using prebuilt
+        Agent Assist integration modules.
+
+        Values:
+            AGENT_DESKTOP_SOURCE_UNSPECIFIED (0):
+                Agent Desktop Source is not specified.
+            LIVE_PERSON (1):
+                Agent Desktop Source is Live Person.
+            GENESYS_CLOUD (2):
+                Agent Desktop Source is Genesys Cloud.
+            TWILIO (3):
+                Agent Desktop Source is Twilio.
+            SALESFORCE (4):
+                Agent Desktop Source is Salesforce.
+            OTHER (8):
+                UI Modules are in use but the desktop is
+                either not currently released or setting this
+                field to the applicable desktop.
+        """
+        AGENT_DESKTOP_SOURCE_UNSPECIFIED = 0
+        LIVE_PERSON = 1
+        GENESYS_CLOUD = 2
+        TWILIO = 3
+        SALESFORCE = 4
+        OTHER = 8
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -188,6 +227,11 @@ class Participant(proto.Message):
         proto.STRING,
         proto.STRING,
         number=8,
+    )
+    agent_desktop_source: AgentDesktopSource = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=AgentDesktopSource,
     )
 
 
@@ -1759,20 +1803,71 @@ class MessageAnnotation(proto.Message):
 
 
 class SuggestionInput(proto.Message):
-    r"""Represents the selection of a suggestion.
+    r"""Represents the action to take for a tool call that requires
+    confirmation.
 
     Attributes:
         answer_record (str):
-            Required. The ID of a suggestion selected by the human
-            agent. The suggestion(s) were generated in a previous call
-            to request Dialogflow assist. The format is:
+            Required. Format:
             ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record ID>``
-            where is an alphanumeric string.
+            The answer record associated with the tool call.
+        parameters (google.protobuf.struct_pb2.Struct):
+            Optional. Parameters to be used for the tool
+            call.  If not provided, the tool will be called
+            without any parameters.
+        action (google.cloud.dialogflow_v2.types.SuggestionInput.Action):
+            Optional. The type of action to take with the
+            tool.
+        send_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. Time when the current suggest input
+            is sent. For tool calls, this timestamp (along
+            with the answer record) will be included in the
+            corresponding tool call result so that it can be
+            identified.
     """
+
+    class Action(proto.Enum):
+        r"""Indicate what type of action to take with the tool call.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Action not specified.
+            CANCEL (1):
+                Indicates the user chooses to not make the
+                tool call. It is only applicable to tool calls
+                that are waiting for user confirmation.
+            REVISE (2):
+                Makes the tool call with provided parameters.
+                This action is intended for tool calls that only
+                read but not write data.
+            CONFIRM (3):
+                Makes the tool call with provided parameters.
+                This action is intended for tool calls that may
+                write data.
+        """
+        ACTION_UNSPECIFIED = 0
+        CANCEL = 1
+        REVISE = 2
+        CONFIRM = 3
 
     answer_record: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    parameters: struct_pb2.Struct = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Struct,
+    )
+    action: Action = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Action,
+    )
+    send_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 

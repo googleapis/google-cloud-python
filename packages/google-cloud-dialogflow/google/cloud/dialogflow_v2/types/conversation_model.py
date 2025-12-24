@@ -736,6 +736,8 @@ class CreateConversationModelOperationMetadata(proto.Message):
             Timestamp when the request to create
             conversation model is submitted. The time is
             measured on server side.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation finished.
     """
 
     class State(proto.Enum):
@@ -782,6 +784,11 @@ class CreateConversationModelOperationMetadata(proto.Message):
         number=3,
         message=timestamp_pb2.Timestamp,
     )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DeployConversationModelOperationMetadata(proto.Message):
@@ -797,6 +804,8 @@ class DeployConversationModelOperationMetadata(proto.Message):
             Timestamp when request to deploy conversation
             model was submitted. The time is measured on
             server side.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation finished.
     """
 
     conversation_model: str = proto.Field(
@@ -806,6 +815,11 @@ class DeployConversationModelOperationMetadata(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -823,6 +837,8 @@ class UndeployConversationModelOperationMetadata(proto.Message):
             Timestamp when the request to undeploy
             conversation model was submitted. The time is
             measured on server side.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation finished.
     """
 
     conversation_model: str = proto.Field(
@@ -832,6 +848,11 @@ class UndeployConversationModelOperationMetadata(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -849,6 +870,8 @@ class DeleteConversationModelOperationMetadata(proto.Message):
             Timestamp when delete conversation model
             request was created. The time is measured on
             server side.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation finished.
     """
 
     conversation_model: str = proto.Field(
@@ -858,6 +881,11 @@ class DeleteConversationModelOperationMetadata(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
         message=timestamp_pb2.Timestamp,
     )
 

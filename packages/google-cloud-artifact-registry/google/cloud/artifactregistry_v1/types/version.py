@@ -22,7 +22,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.artifactregistry_v1.types import tag
+from google.cloud.artifactregistry_v1.types import file, tag
 
 __protobuf__ = proto.module(
     package="google.devtools.artifactregistry.v1",
@@ -90,6 +90,11 @@ class Version(proto.Message):
             [MavenArtifact][google.devtools.artifactregistry.v1.MavenArtifact]
         annotations (MutableMapping[str, str]):
             Optional. Client specified annotations.
+        fingerprints (MutableSequence[google.cloud.artifactregistry_v1.types.Hash]):
+            Output only. Immutable reference for the version, calculated
+            based on the version's content. Currently we only support
+            dirsum_sha256 hash algorithm. Additional hash algorithms may
+            be added in the future.
     """
 
     name: str = proto.Field(
@@ -124,6 +129,11 @@ class Version(proto.Message):
         proto.STRING,
         proto.STRING,
         number=9,
+    )
+    fingerprints: MutableSequence[file.Hash] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message=file.Hash,
     )
 
 
