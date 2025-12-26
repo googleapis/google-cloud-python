@@ -20,7 +20,7 @@ class WebAuthnHandler(abc.ABC):
 
 
 class PluginHandler(WebAuthnHandler):
-    """Offloads WebAuthn get reqeust to a pluggable command-line tool.
+    """Offloads WebAuthn get request to a pluggable command-line tool.
 
     Offloads WebAuthn get to a plugin which takes the form of a
     command-line tool. The command-line tool is configurable via the

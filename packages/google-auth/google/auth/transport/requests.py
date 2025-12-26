@@ -503,7 +503,7 @@ class AuthorizedSession(requests.Session):
                 at ``max_allowed_time``. It might take longer, for example, if
                 an underlying request takes a lot of time, but the request
                 itself does not timeout, e.g. if a large file is being
-                transmitted. The timout error will be raised after such
+                transmitted. The timeout error will be raised after such
                 request completes.
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If mutual TLS

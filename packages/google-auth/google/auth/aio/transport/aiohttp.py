@@ -104,7 +104,7 @@ class Request(transport.Request):
         # Custom aiohttp Session Example:
         session = session=aiohttp.ClientSession(auto_decompress=False)
         request = google.auth.aio.transport.aiohttp.Request(session=session)
-        auth_sesion = google.auth.aio.transport.sessions.AsyncAuthorizedSession(auth_request=request)
+        auth_session = google.auth.aio.transport.sessions.AsyncAuthorizedSession(auth_request=request)
 
     Args:
         session (aiohttp.ClientSession): An instance :class:`aiohttp.ClientSession` used
