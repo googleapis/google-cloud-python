@@ -22,7 +22,7 @@ if you want to use these APIs.
 
 """
 
-from typing import Optional
+from typing import List, Optional, Tuple
 from google.cloud import _storage_v2
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
@@ -89,23 +89,48 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         self._is_stream_open: bool = False
         self.persisted_size: Optional[int] = None
 
-    async def open(self) -> None:
+    async def open(self, metadata: Optional[List[Tuple[str, str]]] = None) -> None:
         """Opens the bidi-gRPC connection to read from the object.
 
         This method sends an initial request to start the stream and receives
         the first response containing metadata and a read handle.
+
+        Args:
+            metadata (Optional[List[Tuple[str, str]]]): Additional metadata
+                to send with the initial stream request, e.g., for routing tokens.
         """
         if self._is_stream_open:
             raise ValueError("Stream is already open")
-        self.first_bidi_read_req = _storage_v2.BidiReadObjectRequest(
-            read_object_spec=_storage_v2.BidiReadObjectSpec(
-                bucket=self._full_bucket_name,
-                object=self.object_name,
-                read_handle=self.read_handle,
-            ),
+
+        read_handle = self.read_handle if self.read_handle else None
+
+        read_object_spec = _storage_v2.BidiReadObjectSpec(
+            bucket=self._full_bucket_name,
+            object=self.object_name,
+            generation=self.generation_number if self.generation_number else None,
+            read_handle=read_handle,
         )
+        self.first_bidi_read_req = _storage_v2.BidiReadObjectRequest(
+            read_object_spec=read_object_spec
+        )
+
+        # Build the x-goog-request-params header
+        request_params = [f"bucket={self._full_bucket_name}"]
+        other_metadata = []
+        if metadata:
+            for key, value in metadata:
+                if key == "x-goog-request-params":
+                    request_params.append(value)
+                else:
+                    other_metadata.append((key, value))
+
+        current_metadata = other_metadata
+        current_metadata.append(("x-goog-request-params", ",".join(request_params)))
+
         self.socket_like_rpc = AsyncBidiRpc(
-            self.rpc, initial_request=self.first_bidi_read_req, metadata=self.metadata
+            self.rpc,
+            initial_request=self.first_bidi_read_req,
+            metadata=current_metadata,
         )
         await self.socket_like_rpc.open()  # this is actually 1 send
         response = await self.socket_like_rpc.recv()
@@ -117,7 +142,8 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             # update persisted size
             self.persisted_size = response.metadata.size
 
-        self.read_handle = response.read_handle
+        if response and response.read_handle:
+            self.read_handle = response.read_handle
 
         self._is_stream_open = True
 

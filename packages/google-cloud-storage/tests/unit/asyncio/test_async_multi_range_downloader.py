@@ -39,9 +39,7 @@ class TestAsyncMultiRangeDownloader:
     def create_read_ranges(self, num_ranges):
         ranges = []
         for i in range(num_ranges):
-            ranges.append(
-                _storage_v2.ReadRange(read_offset=i, read_length=1, read_id=i)
-            )
+            ranges.append((i, 1, BytesIO()))
         return ranges
 
     # helper method
@@ -92,16 +90,6 @@ class TestAsyncMultiRangeDownloader:
         )
 
         mrd.read_obj_str.open.assert_called_once()
-        # Assert
-        mock_cls_async_read_object_stream.assert_called_once_with(
-            client=mock_grpc_client,
-            bucket_name=_TEST_BUCKET_NAME,
-            object_name=_TEST_OBJECT_NAME,
-            generation_number=_TEST_GENERATION_NUMBER,
-            read_handle=_TEST_READ_HANDLE,
-        )
-
-        mrd.read_obj_str.open.assert_called_once()
 
         assert mrd.client == mock_grpc_client
         assert mrd.bucket_name == _TEST_BUCKET_NAME
@@ -135,7 +123,9 @@ class TestAsyncMultiRangeDownloader:
         mock_mrd = await self._make_mock_mrd(
             mock_grpc_client, mock_cls_async_read_object_stream
         )
-        mock_random_int.side_effect = [123, 456, 789, 91011]  # for _func_id and read_id
+
+        mock_random_int.side_effect = [456, 91011]
+
         mock_mrd.read_obj_str.send = AsyncMock()
         mock_mrd.read_obj_str.recv = AsyncMock()
 
@@ -167,12 +157,14 @@ class TestAsyncMultiRangeDownloader:
                     )
                 ],
             ),
+            None,
         ]
 
         # Act
         buffer = BytesIO()
         second_buffer = BytesIO()
         lock = asyncio.Lock()
+
         task1 = asyncio.create_task(mock_mrd.download_ranges([(0, 18, buffer)], lock))
         task2 = asyncio.create_task(
             mock_mrd.download_ranges([(10, 6, second_buffer)], lock)
@@ -180,18 +172,6 @@ class TestAsyncMultiRangeDownloader:
         await asyncio.gather(task1, task2)
 
         # Assert
-        mock_mrd.read_obj_str.send.side_effect = [
-            _storage_v2.BidiReadObjectRequest(
-                read_ranges=[
-                    _storage_v2.ReadRange(read_offset=0, read_length=18, read_id=456)
-                ]
-            ),
-            _storage_v2.BidiReadObjectRequest(
-                read_ranges=[
-                    _storage_v2.ReadRange(read_offset=10, read_length=6, read_id=91011)
-                ]
-            ),
-        ]
         assert buffer.getvalue() == data
         assert second_buffer.getvalue() == data[10:16]
 
@@ -216,22 +196,27 @@ class TestAsyncMultiRangeDownloader:
         mock_mrd = await self._make_mock_mrd(
             mock_grpc_client, mock_cls_async_read_object_stream
         )
-        mock_random_int.side_effect = [123, 456]  # for _func_id and read_id
+
+        mock_random_int.side_effect = [456]
+
         mock_mrd.read_obj_str.send = AsyncMock()
         mock_mrd.read_obj_str.recv = AsyncMock()
-        mock_mrd.read_obj_str.recv.return_value = _storage_v2.BidiReadObjectResponse(
-            object_data_ranges=[
-                _storage_v2.ObjectRangeData(
-                    checksummed_data=_storage_v2.ChecksummedData(
-                        content=data, crc32c=crc32c_int
-                    ),
-                    range_end=True,
-                    read_range=_storage_v2.ReadRange(
-                        read_offset=0, read_length=18, read_id=456
-                    ),
-                )
-            ],
-        )
+        mock_mrd.read_obj_str.recv.side_effect = [
+            _storage_v2.BidiReadObjectResponse(
+                object_data_ranges=[
+                    _storage_v2.ObjectRangeData(
+                        checksummed_data=_storage_v2.ChecksummedData(
+                            content=data, crc32c=crc32c_int
+                        ),
+                        range_end=True,
+                        read_range=_storage_v2.ReadRange(
+                            read_offset=0, read_length=18, read_id=456
+                        ),
+                    )
+                ],
+            ),
+            None,
+        ]
 
         # Act
         buffer = BytesIO()
@@ -320,7 +305,6 @@ class TestAsyncMultiRangeDownloader:
         mrd = AsyncMultiRangeDownloader(
             mock_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
         )
-
         # Act + Assert
         with pytest.raises(ValueError) as exc:
             await mrd.close()
@@ -367,7 +351,7 @@ class TestAsyncMultiRangeDownloader:
 
     @pytest.mark.asyncio
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.Checksum"
+        "google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy.Checksum"
     )
     @mock.patch(
         "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
@@ -375,6 +359,10 @@ class TestAsyncMultiRangeDownloader:
     async def test_download_ranges_raises_on_checksum_mismatch(
         self, mock_client, mock_checksum_class
     ):
+        from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
+            AsyncMultiRangeDownloader,
+        )
+
         mock_stream = mock.AsyncMock(
             spec=async_read_object_stream._AsyncReadObjectStream
         )
@@ -390,7 +378,9 @@ class TestAsyncMultiRangeDownloader:
                     checksummed_data=_storage_v2.ChecksummedData(
                         content=test_data, crc32c=server_checksum
                     ),
-                    read_range=_storage_v2.ReadRange(read_id=0),
+                    read_range=_storage_v2.ReadRange(
+                        read_id=0, read_offset=0, read_length=len(test_data)
+                    ),
                     range_end=True,
                 )
             ]
@@ -403,7 +393,11 @@ class TestAsyncMultiRangeDownloader:
         mrd._is_stream_open = True
 
         with pytest.raises(DataCorruption) as exc_info:
-            await mrd.download_ranges([(0, len(test_data), BytesIO())])
+            with mock.patch(
+                "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.generate_random_56_bit_integer",
+                return_value=0,
+            ):
+                await mrd.download_ranges([(0, len(test_data), BytesIO())])
 
         assert "Checksum mismatch" in str(exc_info.value)
         mock_checksum_class.assert_called_once_with(test_data)

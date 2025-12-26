@@ -16,6 +16,7 @@ import google_crc32c
 
 from google.api_core import exceptions
 
+
 def raise_if_no_fast_crc32c():
     """Check if the C-accelerated version of google-crc32c is available.
 
@@ -24,7 +25,7 @@ def raise_if_no_fast_crc32c():
     raises google.api_core.exceptions.FailedPrecondition: If the C extension is not available.
     returns: True if the C extension is available.
     rtype: bool
-    
+
     """
     if google_crc32c.implementation != "c":
         raise exceptions.FailedPrecondition(

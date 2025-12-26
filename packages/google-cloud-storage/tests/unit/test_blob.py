@@ -3064,7 +3064,13 @@ class Test_Blob(unittest.TestCase):
         fake_response2 = self._mock_requests_response(
             http.client.PERMANENT_REDIRECT, headers2
         )
-        json_body = json.dumps({"size": str(total_bytes), "md5Hash": md5_checksum_value, "crc32c": crc32c_checksum_value})
+        json_body = json.dumps(
+            {
+                "size": str(total_bytes),
+                "md5Hash": md5_checksum_value,
+                "crc32c": crc32c_checksum_value,
+            }
+        )
         if data_corruption:
             fake_response3 = DataCorruption(None)
         else:
