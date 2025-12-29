@@ -81,7 +81,7 @@ _GOOGLE_ISSUERS = ["accounts.google.com", "https://accounts.google.com"]
 def _fetch_certs(request, certs_url):
     """Fetches certificates.
 
-    Google-style cerificate endpoints return JSON in the format of
+    Google-style certificate endpoints return JSON in the format of
     ``{'key id': 'x509 certificate'}`` or a certificate array according
     to the JWK spec (see https://tools.ietf.org/html/rfc7517).
 
