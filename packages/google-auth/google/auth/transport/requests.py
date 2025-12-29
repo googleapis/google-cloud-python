@@ -21,6 +21,7 @@ import http.client as http_client
 import logging
 import numbers
 import time
+from typing import Optional
 
 try:
     import requests
@@ -137,7 +138,7 @@ class Request(transport.Request):
     .. automethod:: __call__
     """
 
-    def __init__(self, session=None):
+    def __init__(self, session: Optional[requests.Session] = None) -> None:
         if not session:
             session = requests.Session()
 
