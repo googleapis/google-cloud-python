@@ -146,7 +146,7 @@ def secure_authorized_channel(
         regular_ssl_credentials = grpc.ssl_channel_credentials()
 
         channel = google.auth.transport.grpc.secure_authorized_channel(
-            credentials, regular_endpoint, request,
+            credentials, request, regular_endpoint,
             ssl_credentials=regular_ssl_credentials)
 
     Option 2: create a mutual TLS channel by calling a callback which returns
@@ -162,7 +162,7 @@ def secure_authorized_channel(
 
         try:
             channel = google.auth.transport.grpc.secure_authorized_channel(
-                credentials, mtls_endpoint, request,
+                credentials, request, mtls_endpoint,
                 client_cert_callback=my_client_cert_callback)
         except MyClientCertFailureException:
             # handle the exception
@@ -186,7 +186,7 @@ def secure_authorized_channel(
         else:
             endpoint_to_use = regular_endpoint
         channel = google.auth.transport.grpc.secure_authorized_channel(
-            credentials, endpoint_to_use, request,
+            credentials, request, endpoint_to_use,
             ssl_credentials=default_ssl_credentials)
 
     Option 4: not setting ssl_credentials and client_cert_callback. For devices
@@ -200,14 +200,14 @@ def secure_authorized_channel(
     certificate and key::
 
         channel = google.auth.transport.grpc.secure_authorized_channel(
-            credentials, regular_endpoint, request)
+            credentials, request, regular_endpoint)
 
     The following code uses mtls_endpoint, if the created channle is regular,
     and API mtls_endpoint is confgured to require client SSL credentials, API
     calls using this channel will be rejected::
 
         channel = google.auth.transport.grpc.secure_authorized_channel(
-            credentials, mtls_endpoint, request)
+            credentials, request, mtls_endpoint)
 
     Args:
         credentials (google.auth.credentials.Credentials): The credentials to
