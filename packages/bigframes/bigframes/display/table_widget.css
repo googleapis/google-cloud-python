@@ -15,133 +15,138 @@
  */
 
 .bigframes-widget {
-	display: flex;
-	flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .bigframes-widget .table-container {
-	max-height: 620px;
-	overflow: auto;
+  max-height: 620px;
+  overflow: auto;
 }
 
 .bigframes-widget .footer {
-	align-items: center;
-	/* TODO(b/460861328): We will support dark mode in a media selector once we
-	 * determine how to override the background colors as well. */
-	color: black;
-	display: flex;
-	font-family:
-		"-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
-	font-size: 0.8rem;
-	justify-content: space-between;
-	padding: 8px;
+  align-items: center;
+  /* TODO(b/460861328): We will support dark mode in a media selector once we
+   * determine how to override the background colors as well. */
+  color: black;
+  display: flex;
+  font-family:
+    "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
+  font-size: 0.8rem;
+  justify-content: space-between;
+  padding: 8px;
 }
 
 .bigframes-widget .footer > * {
-	flex: 1;
+  flex: 1;
 }
 
 .bigframes-widget .pagination {
-	align-items: center;
-	display: flex;
-	flex-direction: row;
-	gap: 4px;
-	justify-content: center;
-	padding: 4px;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: center;
+  padding: 4px;
 }
 
 .bigframes-widget .page-indicator {
-	margin: 0 8px;
+  margin: 0 8px;
 }
 
 .bigframes-widget .row-count {
-	margin: 0 8px;
+  margin: 0 8px;
 }
 
 .bigframes-widget .page-size {
-	align-items: center;
-	display: flex;
-	flex-direction: row;
-	gap: 4px;
-	justify-content: end;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  justify-content: end;
 }
 
 .bigframes-widget .page-size label {
-	margin-right: 8px;
+  margin-right: 8px;
 }
 
 .bigframes-widget table {
-	border-collapse: collapse;
-	/* TODO(b/460861328): We will support dark mode in a media selector once we
-	 * determine how to override the background colors as well. */
-	color: black;
-	text-align: left;
+  border-collapse: collapse;
+  /* TODO(b/460861328): We will support dark mode in a media selector once we
+   * determine how to override the background colors as well. */
+  color: black;
+  text-align: left;
 }
 
 .bigframes-widget th {
-	background-color: var(--colab-primary-surface-color, var(--jp-layout-color0));
-	padding: 0;
-	position: sticky;
-	top: 0;
-	z-index: 1;
+  background-color: var(--colab-primary-surface-color, var(--jp-layout-color0));
+  padding: 0;
+  position: sticky;
+  text-align: left;
+  top: 0;
+  z-index: 1;
 }
 
 .bigframes-widget .bf-header-content {
-	box-sizing: border-box;
-	height: 100%;
-	overflow: auto;
-	padding: 0.5em;
-	resize: horizontal;
-	width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  padding: 0.5em;
+  resize: horizontal;
+  width: 100%;
 }
 
 .bigframes-widget th .sort-indicator {
-	padding-left: 4px;
-	visibility: hidden;
+  padding-left: 4px;
+  visibility: hidden;
 }
 
 .bigframes-widget th:hover .sort-indicator {
-	visibility: visible;
+  visibility: visible;
 }
 
 .bigframes-widget button {
-	cursor: pointer;
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	user-select: none;
-	vertical-align: middle;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  vertical-align: middle;
 }
 
 .bigframes-widget button:disabled {
-	opacity: 0.65;
-	pointer-events: none;
+  opacity: 0.65;
+  pointer-events: none;
 }
 
 .bigframes-widget .bigframes-error-message {
-	background-color: #fbe;
-	border: 1px solid red;
-	border-radius: 4px;
-	font-family:
-		"-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
-	font-size: 14px;
-	margin-bottom: 8px;
-	padding: 8px;
+  background-color: #fbe;
+  border: 1px solid red;
+  border-radius: 4px;
+  font-family:
+    "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
+  font-size: 14px;
+  margin-bottom: 8px;
+  padding: 8px;
 }
 
 .bigframes-widget .cell-align-right {
-	text-align: right;
+  text-align: right;
 }
 
 .bigframes-widget .cell-align-left {
-	text-align: left;
+  text-align: left;
+}
+
+.bigframes-widget .null-value {
+  color: gray;
 }
 
 .bigframes-widget td {
-	padding: 0.5em;
+  padding: 0.5em;
 }
 
 .bigframes-widget tr:hover td,
 .bigframes-widget td.row-hover {
-	background-color: var(--colab-hover-surface-color, var(--jp-layout-color2));
+  background-color: var(--colab-hover-surface-color, var(--jp-layout-color2));
 }
