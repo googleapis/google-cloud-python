@@ -294,7 +294,7 @@ def get(
     url = _helpers.update_query(base_url, query_params)
 
     backoff = ExponentialBackoff(total_attempts=retry_count)
-    failure_reason = None
+    last_exception = None
     for attempt in backoff:
         try:
             response = request(
@@ -308,13 +308,10 @@ def get(
                     retry_count,
                     response.status,
                 )
-                failure_reason = (
-                    response.data.decode("utf-8")
-                    if hasattr(response.data, "decode")
-                    else response.data
-                )
+                last_exception = None
                 continue
             else:
+                last_exception = None
                 break
 
         except exceptions.TransportError as e:
@@ -325,14 +322,27 @@ def get(
                 retry_count,
                 e,
             )
-            failure_reason = e
+            last_exception = e
     else:
-        raise exceptions.TransportError(
-            "Failed to retrieve {} from the Google Compute Engine "
-            "metadata service. Compute Engine Metadata server unavailable due to {}".format(
-                url, failure_reason
+        if last_exception:
+            raise exceptions.TransportError(
+                "Failed to retrieve {} from the Google Compute Engine "
+                "metadata service. Compute Engine Metadata server unavailable. "
+                "Last exception: {}".format(url, last_exception)
+            ) from last_exception
+        else:
+            error_details = (
+                response.data.decode("utf-8")
+                if hasattr(response.data, "decode")
+                else response.data
             )
-        )
+            raise exceptions.TransportError(
+                "Failed to retrieve {} from the Google Compute Engine "
+                "metadata service. Compute Engine Metadata server unavailable. "
+                "Response status: {}\nResponse details:\n{}".format(
+                    url, response.status, error_details
+                )
+            )
 
     content = _helpers.from_bytes(response.data)
 
