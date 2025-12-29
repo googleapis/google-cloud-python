@@ -14,9 +14,9 @@
 
 import asyncio
 from typing import AsyncGenerator
+from unittest.mock import Mock, patch
 
 from aioresponses import aioresponses  # type: ignore
-from mock import Mock, patch
 import pytest  # type: ignore
 
 from google.auth.aio.credentials import AnonymousCredentials

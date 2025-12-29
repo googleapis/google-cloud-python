@@ -17,8 +17,8 @@ import json
 import os
 import subprocess
 import sys
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import _cloud_sdk

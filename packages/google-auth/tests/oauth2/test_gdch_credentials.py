@@ -16,8 +16,8 @@ import copy
 import datetime
 import json
 import os
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 import requests
 

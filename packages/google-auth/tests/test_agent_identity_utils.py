@@ -15,10 +15,10 @@
 import base64
 import hashlib
 import json
+from unittest import mock
 import urllib.parse
 
 from cryptography import x509
-import mock
 import pytest
 
 from google.auth import _agent_identity_utils

@@ -14,8 +14,8 @@
 import base64
 import ctypes
 import os
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 from requests.packages.urllib3.util.ssl_ import create_urllib3_context  # type: ignore
 import urllib3.contrib.pyopenssl  # type: ignore

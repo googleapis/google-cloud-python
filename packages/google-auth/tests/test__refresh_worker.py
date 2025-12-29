@@ -16,8 +16,8 @@ import pickle
 import random
 import threading
 import time
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import _refresh_worker, credentials, exceptions

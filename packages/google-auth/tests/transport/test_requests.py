@@ -17,9 +17,9 @@ import functools
 import http.client as http_client
 import os
 import sys
+from unittest import mock
 
 import freezegun
-import mock
 import OpenSSL
 import pytest  # type: ignore
 import requests

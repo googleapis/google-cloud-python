@@ -48,7 +48,7 @@ from http.server import BaseHTTPRequestHandler
 from http.server import HTTPServer
 from google.oauth2 import service_account
 import pytest
-from mock import patch
+from unittest.mock import patch
 
 # Populate values from the output of scripts/setup_external_accounts.sh.
 _AUDIENCE_OIDC = "//iam.googleapis.com/projects/79992041559/locations/global/workloadIdentityPools/pool-73wslmxn/providers/oidc-73wslmxn"

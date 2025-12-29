@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
 import aiohttp  # type: ignore
 from aioresponses import aioresponses, core  # type: ignore
-import mock
 import pytest  # type: ignore
 from tests_async.transport import async_compliance
 

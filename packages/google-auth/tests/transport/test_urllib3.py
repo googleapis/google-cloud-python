@@ -15,8 +15,8 @@
 import http.client as http_client
 import os
 import sys
+from unittest import mock
 
-import mock
 import OpenSSL
 import pytest  # type: ignore
 import urllib3  # type: ignore

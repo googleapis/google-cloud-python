@@ -13,9 +13,9 @@
 # limitations under the License.
 
 import asyncio
+from unittest.mock import AsyncMock, Mock, patch
 
 from aioresponses import aioresponses  # type: ignore
-from mock import AsyncMock, Mock, patch
 import pytest  # type: ignore
 import pytest_asyncio  # type: ignore
 

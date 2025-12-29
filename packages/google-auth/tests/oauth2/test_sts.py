@@ -14,9 +14,9 @@
 
 import http.client as http_client
 import json
+from unittest import mock
 import urllib
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions

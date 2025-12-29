@@ -17,8 +17,8 @@ import http.client as http_client
 import importlib
 import json
 import os
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 import requests
 

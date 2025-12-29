@@ -1,7 +1,7 @@
 import json
 import struct
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import exceptions

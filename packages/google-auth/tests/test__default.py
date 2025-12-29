@@ -14,9 +14,9 @@
 
 import json
 import os
+from unittest import mock
 import warnings
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import _default

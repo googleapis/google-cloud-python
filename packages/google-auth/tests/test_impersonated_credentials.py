@@ -17,8 +17,8 @@ import datetime
 import http.client as http_client
 import json
 import os
+from unittest import mock
 
-import mock
 import pytest  # type: ignore
 
 from google.auth import _helpers

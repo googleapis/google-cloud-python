@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import json
-import mock
 import os
 import time
 from os import path
+from unittest import mock
 
 
 import google.auth

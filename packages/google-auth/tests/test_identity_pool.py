@@ -17,9 +17,9 @@ import datetime
 import http.client as http_client
 import json
 import os
+from unittest import mock
 import urllib
 
-import mock
 from OpenSSL import crypto
 import pytest  # type: ignore
 
