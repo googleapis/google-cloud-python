@@ -48,60 +48,62 @@ def render_html(
     orderable_columns: list[str] | None = None,
 ) -> str:
     """Render a pandas DataFrame to HTML with specific styling."""
-    classes = "dataframe table table-striped table-hover"
-    table_html = [f'<table border="1" class="{classes}" id="{table_id}">']
-    precision = options.display.precision
     orderable_columns = orderable_columns or []
+    classes = "dataframe table table-striped table-hover"
+    table_html_parts = [f'<table border="1" class="{classes}" id="{table_id}">']
+    table_html_parts.append(_render_table_header(dataframe, orderable_columns))
+    table_html_parts.append(_render_table_body(dataframe))
+    table_html_parts.append("</table>")
+    return "".join(table_html_parts)
 
-    # Render table head
-    table_html.append("  <thead>")
-    table_html.append('    <tr style="text-align: left;">')
+
+def _render_table_header(dataframe: pd.DataFrame, orderable_columns: list[str]) -> str:
+    """Render the header of the HTML table."""
+    header_parts = ["  <thead>", "    <tr>"]
     for col in dataframe.columns:
         th_classes = []
         if col in orderable_columns:
             th_classes.append("sortable")
         class_str = f'class="{" ".join(th_classes)}"' if th_classes else ""
-        header_div = (
-            '<div style="resize: horizontal; overflow: auto; '
-            "box-sizing: border-box; width: 100%; height: 100%; "
-            'padding: 0.5em;">'
-            f"{html.escape(str(col))}"
-            "</div>"
+        header_parts.append(
+            f'      <th {class_str}><div class="bf-header-content">'
+            f"{html.escape(str(col))}</div></th>"
         )
-        table_html.append(
-            f'      <th style="text-align: left;" {class_str}>{header_div}</th>'
-        )
-    table_html.append("    </tr>")
-    table_html.append("  </thead>")
+    header_parts.extend(["    </tr>", "  </thead>"])
+    return "\n".join(header_parts)
 
-    # Render table body
-    table_html.append("  <tbody>")
+
+def _render_table_body(dataframe: pd.DataFrame) -> str:
+    """Render the body of the HTML table."""
+    body_parts = ["  <tbody>"]
+    precision = options.display.precision
+
     for i in range(len(dataframe)):
-        table_html.append("    <tr>")
+        body_parts.append("    <tr>")
         row = dataframe.iloc[i]
         for col_name, value in row.items():
             dtype = dataframe.dtypes.loc[col_name]  # type: ignore
             align = "right" if _is_dtype_numeric(dtype) else "left"
-            table_html.append(
-                '      <td style="text-align: {}; padding: 0.5em;">'.format(align)
-            )
 
             # TODO(b/438181139): Consider semi-exploding ARRAY/STRUCT columns
             # into multiple rows/columns like the BQ UI does.
             if pandas.api.types.is_scalar(value) and pd.isna(value):
-                table_html.append('        <em style="color: gray;">&lt;NA&gt;</em>')
+                body_parts.append(
+                    f'      <td class="cell-align-{align}">'
+                    '<em class="null-value">&lt;NA&gt;</em></td>'
+                )
             else:
                 if isinstance(value, float):
-                    formatted_value = f"{value:.{precision}f}"
-                    table_html.append(f"        {html.escape(formatted_value)}")
+                    cell_content = f"{value:.{precision}f}"
                 else:
-                    table_html.append(f"        {html.escape(str(value))}")
-            table_html.append("      </td>")
-        table_html.append("    </tr>")
-    table_html.append("  </tbody>")
-    table_html.append("</table>")
-
-    return "\n".join(table_html)
+                    cell_content = str(value)
+                body_parts.append(
+                    f'      <td class="cell-align-{align}">'
+                    f"{html.escape(cell_content)}</td>"
+                )
+        body_parts.append("    </tr>")
+    body_parts.append("  </tbody>")
+    return "\n".join(body_parts)
 
 
 def _obj_ref_rt_to_html(obj_ref_rt: str) -> str:

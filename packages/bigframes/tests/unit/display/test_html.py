@@ -130,9 +130,8 @@ def test_render_html_alignment_and_precision(
     df = pd.DataFrame(data)
     html = bf_html.render_html(dataframe=df, table_id="test-table")
 
-    for _, align in expected_alignments.items():
-        assert 'th style="text-align: left;"' in html
-        assert f'<td style="text-align: {align};' in html
+    for align in expected_alignments.values():
+        assert f'class="cell-align-{align}"' in html
 
     for expected_string in expected_strings:
         assert expected_string in html
