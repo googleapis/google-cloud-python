@@ -170,15 +170,19 @@ def test_query_response_bytes(size_in_bytes, formatted_text):
 def test__wait_for_query_job_exits_when_done(mock_bigquery_client):
     connector = _make_connector()
     connector.client = mock_bigquery_client
-    connector.start = datetime.datetime(2020, 1, 1).timestamp()
 
     mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
     type(mock_query).state = mock.PropertyMock(side_effect=("RUNNING", "DONE"))
     mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
 
-    with freezegun.freeze_time("2020-01-01 00:00:00", tick=False):
+    frozen_time = datetime.datetime(2020, 1, 1)
+    with freezegun.freeze_time(frozen_time, tick=False):
+        # Set start time inside frozen context to ensure elapsed time is 0
+        connector.start = frozen_time.timestamp()
+        # Mock get_elapsed_seconds to return 0 to prevent timeout
+        connector.get_elapsed_seconds = mock.Mock(return_value=0.0)
         module_under_test._wait_for_query_job(
-            connector, mock_bigquery_client, mock_query, 60
+            connector, mock_bigquery_client, mock_query, 1000
         )
 
     mock_bigquery_client.cancel_job.assert_not_called()

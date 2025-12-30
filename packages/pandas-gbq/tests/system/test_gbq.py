@@ -654,6 +654,18 @@ class TestReadGBQIntegration(object):
                 dialect="standard",
             )
 
+    def test_read_gbq_with_dry_run(self, project_id):
+        query = "SELECT 1"
+        result = gbq.read_gbq(
+            query,
+            project_id=project_id,
+            credentials=self.credentials,
+            dialect="standard",
+            dry_run=True,
+        )
+        assert isinstance(result, pandas.Series)
+        assert result["totalBytesProcessed"] >= 0
+
 
 class TestToGBQIntegration(object):
     @pytest.fixture(autouse=True, scope="function")

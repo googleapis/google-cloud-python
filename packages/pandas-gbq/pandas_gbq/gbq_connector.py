@@ -16,6 +16,7 @@ import warnings
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
+from pandas_gbq import dry_runs
 import pandas_gbq.constants
 from pandas_gbq.contexts import context
 import pandas_gbq.core.read
@@ -176,7 +177,14 @@ class GbqConnector:
             user_dtypes=dtypes,
         )
 
-    def run_query(self, query, max_results=None, progress_bar_type=None, **kwargs):
+    def run_query(
+        self,
+        query,
+        max_results=None,
+        progress_bar_type=None,
+        dry_run: bool = False,
+        **kwargs,
+    ):
         from google.cloud import bigquery
 
         job_config_dict = {
@@ -212,6 +220,7 @@ class GbqConnector:
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
+        job_config.dry_run = dry_run
 
         if FEATURES.bigquery_has_query_and_wait:
             rows_iter = pandas_gbq.query.query_and_wait_via_client_library(
@@ -236,12 +245,14 @@ class GbqConnector:
                 timeout_ms=timeout_ms,
             )
 
-        dtypes = kwargs.get("dtypes")
+        if dry_run:
+            return dry_runs.get_query_stats(rows_iter.job)
+
         return self._download_results(
             rows_iter,
             max_results=max_results,
             progress_bar_type=progress_bar_type,
-            user_dtypes=dtypes,
+            user_dtypes=kwargs.get("dtypes"),
         )
 
     def _download_results(

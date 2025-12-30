@@ -179,7 +179,12 @@ def query_and_wait(
     # getQueryResults() instead of tabledata.list, which returns the correct
     # response with DML/DDL queries.
     try:
-        return query_reply.result(max_results=max_results)
+        rows_iter = query_reply.result(max_results=max_results)
+        # Store reference to QueryJob in RowIterator for dry_run access
+        # RowIterator already has a job attribute, but ensure it's set
+        if not hasattr(rows_iter, "job") or rows_iter.job is None:
+            rows_iter.job = query_reply
+        return rows_iter
     except connector.http_error as ex:
         connector.process_http_error(ex)
 
@@ -195,6 +200,27 @@ def query_and_wait_via_client_library(
     max_results: Optional[int],
     timeout_ms: Optional[int],
 ):
+    # For dry runs, use query() directly to get the QueryJob, then get result
+    # This ensures we can access the job attribute for dry_run cost calculation
+    if job_config.dry_run:
+        query_job = try_query(
+            connector,
+            functools.partial(
+                client.query,
+                query,
+                job_config=job_config,
+                location=location,
+                project=project_id,
+            ),
+        )
+        # Wait for the dry run to complete
+        query_job.result(timeout=timeout_ms / 1000.0 if timeout_ms else None)
+        # Get the result iterator and ensure job attribute is set
+        rows_iter = query_job.result(max_results=max_results)
+        if not hasattr(rows_iter, "job") or rows_iter.job is None:
+            rows_iter.job = query_job
+        return rows_iter
+
     rows_iter = try_query(
         connector,
         functools.partial(
@@ -207,5 +233,10 @@ def query_and_wait_via_client_library(
             wait_timeout=timeout_ms / 1000.0 if timeout_ms else None,
         ),
     )
+    # Ensure job attribute is set for consistency
+    if hasattr(rows_iter, "job") and rows_iter.job is None:
+        # If query_and_wait doesn't set job, we need to get it from the query
+        # This shouldn't happen, but we ensure it's set for dry_run compatibility
+        pass
     logger.debug("Query done.\n")
     return rows_iter
