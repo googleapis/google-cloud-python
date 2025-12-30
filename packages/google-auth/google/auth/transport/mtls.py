@@ -14,6 +14,8 @@
 
 """Utilites for mutual TLS."""
 
+from os import getenv
+
 from google.auth import exceptions
 from google.auth.transport import _mtls_helper
 
@@ -34,6 +36,12 @@ def has_default_client_cert_source():
             _mtls_helper.CERTIFICATE_CONFIGURATION_DEFAULT_PATH
         )
         is not None
+    ):
+        return True
+    cert_config_path = getenv("GOOGLE_API_CERTIFICATE_CONFIG")
+    if (
+        cert_config_path
+        and _mtls_helper._check_config_path(cert_config_path) is not None
     ):
         return True
     return False
