@@ -359,11 +359,48 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             )
         return self._stubs["query_products"]
 
+    @property
+    def query_database_resource_groups(
+        self,
+    ) -> Callable[
+        [service.QueryDatabaseResourceGroupsRequest],
+        Awaitable[service.QueryDatabaseResourceGroupsResponse],
+    ]:
+        r"""Return a callable for the query database resource groups method over gRPC.
+
+        QueryDatabaseResourceGroups returns paginated results
+        of database groups.
+
+        Returns:
+            Callable[[~.QueryDatabaseResourceGroupsRequest],
+                    Awaitable[~.QueryDatabaseResourceGroupsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_database_resource_groups" not in self._stubs:
+            self._stubs[
+                "query_database_resource_groups"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryDatabaseResourceGroups",
+                request_serializer=service.QueryDatabaseResourceGroupsRequest.serialize,
+                response_deserializer=service.QueryDatabaseResourceGroupsResponse.deserialize,
+            )
+        return self._stubs["query_database_resource_groups"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
             self.query_products: self._wrap_method(
                 self.query_products,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.query_database_resource_groups: self._wrap_method(
+                self.query_database_resource_groups,
                 default_timeout=None,
                 client_info=client_info,
             ),

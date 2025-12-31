@@ -799,7 +799,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         Args:
             request (Union[google.ai.generativelanguage_v1beta.types.GenerateContentRequest, dict]):
                 The request object. Request to generate a completion from
-                the model. NEXT ID: 18
+                the model.
             model (str):
                 Required. The name of the ``Model`` to use for
                 generating the completion.
@@ -1113,7 +1113,7 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
         Args:
             request (Union[google.ai.generativelanguage_v1beta.types.GenerateContentRequest, dict]):
                 The request object. Request to generate a completion from
-                the model. NEXT ID: 18
+                the model.
             model (str):
                 Required. The name of the ``Model`` to use for
                 generating the completion.

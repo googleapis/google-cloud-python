@@ -21,7 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import participant
+from google.cloud.dialogflow_v2.types import generator, participant
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
@@ -530,6 +530,10 @@ class AgentAssistantRecord(proto.Message):
             Output only. Dialogflow assist answer.
 
             This field is a member of `oneof`_ ``answer``.
+        generator_suggestion (google.cloud.dialogflow_v2.types.GeneratorSuggestion):
+            Output only. The generator suggestion.
+
+            This field is a member of `oneof`_ ``answer``.
     """
 
     article_suggestion_answer: participant.ArticleAnswer = proto.Field(
@@ -549,6 +553,12 @@ class AgentAssistantRecord(proto.Message):
         number=7,
         oneof="answer",
         message=participant.DialogflowAssistAnswer,
+    )
+    generator_suggestion: generator.GeneratorSuggestion = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="answer",
+        message=generator.GeneratorSuggestion,
     )
 
 

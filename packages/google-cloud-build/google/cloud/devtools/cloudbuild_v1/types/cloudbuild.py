@@ -125,7 +125,7 @@ class DefaultServiceAccount(proto.Message):
     Attributes:
         name (str):
             Identifier. Format:
-            \`projects/{project}/locations/{location}/defaultServiceAccount
+            ``projects/{project}/locations/{location}/defaultServiceAccount``
         service_account_email (str):
             Output only. The email address of the service account
             identity that will be used for a build by default.
