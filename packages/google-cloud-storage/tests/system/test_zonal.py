@@ -255,3 +255,55 @@ async def test_mrd_open_with_read_handle():
     del mrd
     del new_mrd
     gc.collect()
+
+
+@pytest.mark.asyncio
+async def test_read_unfinalized_appendable_object_with_generation(
+    storage_client, blobs_to_delete
+):
+    object_name = f"read_unfinalized_appendable_object-{str(uuid.uuid4())[:4]}"
+    grpc_client = AsyncGrpcClient(attempt_direct_path=True).grpc_client
+
+    async def _read_and_verify(expected_content, generation=None):
+        """Helper to read object content and verify against expected."""
+        mrd = AsyncMultiRangeDownloader(
+            grpc_client, _ZONAL_BUCKET, object_name, generation
+        )
+        buffer = BytesIO()
+        await mrd.open()
+        try:
+            assert mrd.persisted_size == len(expected_content)
+            await mrd.download_ranges([(0, 0, buffer)])
+            assert buffer.getvalue() == expected_content
+        finally:
+            await mrd.close()
+        return mrd
+
+    # First write
+    writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+    await writer.open()
+    await writer.append(_BYTES_TO_UPLOAD)
+    await writer.flush()
+    generation = writer.generation
+
+    # First read
+    mrd = await _read_and_verify(_BYTES_TO_UPLOAD)
+
+    # Second write, using generation from the first write.
+    writer_2 = AsyncAppendableObjectWriter(
+        grpc_client, _ZONAL_BUCKET, object_name, generation=generation
+    )
+    await writer_2.open()
+    await writer_2.append(_BYTES_TO_UPLOAD)
+    await writer_2.flush()
+
+    # Second read
+    mrd_2 = await _read_and_verify(_BYTES_TO_UPLOAD + _BYTES_TO_UPLOAD, generation)
+
+    # Clean up
+    blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+    del writer
+    del writer_2
+    del mrd
+    del mrd_2
+    gc.collect()
