@@ -17,10 +17,10 @@ from __future__ import annotations
 import typing
 
 import bigframes_vendored.constants as constants
+import bigframes_vendored.sqlglot as sg
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-import sqlglot as sg
 
 import bigframes.dtypes
 

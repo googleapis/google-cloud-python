@@ -14,8 +14,8 @@
 
 import unittest.mock as mock
 
+import bigframes_vendored.sqlglot.expressions as sge
 import pytest
-import sqlglot.expressions as sge
 
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler

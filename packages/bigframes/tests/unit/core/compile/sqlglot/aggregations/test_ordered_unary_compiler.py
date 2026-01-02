@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
 import typing
 
 import pytest
@@ -47,12 +46,6 @@ def _apply_ordered_unary_agg_ops(
 
 
 def test_array_agg(scalar_types_df: bpd.DataFrame, snapshot):
-    # TODO: Verify "NULL LAST" syntax issue on Python < 3.12
-    if sys.version_info < (3, 12):
-        pytest.skip(
-            "Skipping test due to inconsistent SQL formatting on Python < 3.12.",
-        )
-
     col_name = "int64_col"
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_ops.ArrayAggOp().as_expr(col_name)
@@ -64,12 +57,6 @@ def test_array_agg(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_string_agg(scalar_types_df: bpd.DataFrame, snapshot):
-    # TODO: Verify "NULL LAST" syntax issue on Python < 3.12
-    if sys.version_info < (3, 12):
-        pytest.skip(
-            "Skipping test due to inconsistent SQL formatting on Python < 3.12.",
-        )
-
     col_name = "string_col"
     bf_df = scalar_types_df[[col_name]]
     agg_expr = agg_ops.StringAggOp(sep=",").as_expr(col_name)

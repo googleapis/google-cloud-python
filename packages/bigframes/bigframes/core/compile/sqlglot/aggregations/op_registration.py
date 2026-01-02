@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import typing
 
-from sqlglot import expressions as sge
+from bigframes_vendored.sqlglot import expressions as sge
 
 from bigframes.operations import aggregations as agg_ops
 

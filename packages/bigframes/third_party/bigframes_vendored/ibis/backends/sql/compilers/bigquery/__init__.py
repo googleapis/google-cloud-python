@@ -32,10 +32,10 @@ from bigframes_vendored.ibis.common.temporal import (
 )
 import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
+import bigframes_vendored.sqlglot as sg
+from bigframes_vendored.sqlglot.dialects import BigQuery
+import bigframes_vendored.sqlglot.expressions as sge
 import numpy as np
-import sqlglot as sg
-from sqlglot.dialects import BigQuery
-import sqlglot.expressions as sge
 
 if TYPE_CHECKING:
     from collections.abc import Mapping

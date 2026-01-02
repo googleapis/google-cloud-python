@@ -14,8 +14,8 @@ import bigframes_vendored.ibis.common.exceptions as exc
 import bigframes_vendored.ibis.expr.operations as ops
 import bigframes_vendored.ibis.expr.schema as sch
 import bigframes_vendored.ibis.expr.types as ir
-import sqlglot as sg
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping

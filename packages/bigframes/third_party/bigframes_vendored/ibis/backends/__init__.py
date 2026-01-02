@@ -24,10 +24,10 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Mapping, MutableMapping
     from urllib.parse import ParseResult
 
+    import bigframes_vendored.sqlglot as sg
     import pandas as pd
     import polars as pl
     import pyarrow as pa
-    import sqlglot as sg
     import torch
 
 __all__ = ("BaseBackend", "connect")
@@ -1257,7 +1257,7 @@ class BaseBackend(abc.ABC, _FileIOHandler):
         if dialect is None:
             return query
 
-        import sqlglot as sg
+        import bigframes_vendored.sqlglot as sg
 
         # only transpile if the backend dialect doesn't match the input dialect
         name = self.name

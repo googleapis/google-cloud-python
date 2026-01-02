@@ -19,13 +19,12 @@ import datetime
 import functools
 import typing
 
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
 from google.cloud import bigquery
 import numpy as np
 import pandas as pd
 import pyarrow as pa
-import sqlglot as sg
-import sqlglot.dialects.bigquery
-import sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes.core import guid, local_data, schema, utils
@@ -48,7 +47,7 @@ class SQLGlotIR:
     expr: sge.Select = sg.select()
     """The SQLGlot expression representing the query."""
 
-    dialect = sqlglot.dialects.bigquery.BigQuery
+    dialect = sg.dialects.bigquery.BigQuery
     """The SQL dialect used for generation."""
 
     quoted: bool = True

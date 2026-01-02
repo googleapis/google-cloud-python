@@ -30,14 +30,14 @@ import bigframes_vendored.ibis.expr.datatypes as dt
 import bigframes_vendored.ibis.expr.operations as ops
 from bigframes_vendored.ibis.expr.operations.udf import InputType
 from bigframes_vendored.ibis.expr.rewrites import lower_stringslice
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
 from public import public
-import sqlglot as sg
-import sqlglot.expressions as sge
 
 try:
-    from sqlglot.expressions import Alter
+    from bigframes_vendored.sqlglot.expressions import Alter
 except ImportError:
-    from sqlglot.expressions import AlterTable
+    from bigframes_vendored.sqlglot.expressions import AlterTable
 else:
 
     def AlterTable(*args, kind="TABLE", **kwargs):

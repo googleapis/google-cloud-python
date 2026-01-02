@@ -14,7 +14,7 @@
 
 import dataclasses
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 

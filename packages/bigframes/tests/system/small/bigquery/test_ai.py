@@ -14,11 +14,9 @@
 
 from unittest import mock
 
-from packaging import version
 import pandas as pd
 import pyarrow as pa
 import pytest
-import sqlglot
 
 from bigframes import dataframe, dtypes, series
 import bigframes.bigquery as bbq
@@ -67,11 +65,6 @@ def test_ai_function_string_input(session):
 
 
 def test_ai_function_compile_model_params(session):
-    if version.Version(sqlglot.__version__) < version.Version("25.18.0"):
-        pytest.skip(
-            "Skip test because SQLGLot cannot compile model params to JSON at this version."
-        )
-
     s1 = bpd.Series(["apple", "bear"], session=session)
     s2 = bpd.Series(["fruit", "tree"], session=session)
     prompt = (s1, " is a ", s2)

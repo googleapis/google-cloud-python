@@ -13,11 +13,11 @@ import bigframes_vendored.ibis.expr.schema as sch
 import bigframes_vendored.ibis.expr.types as ibis_types
 import bigframes_vendored.ibis.expr.types as ir
 from bigframes_vendored.ibis.util import experimental
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.optimizer as sgo
+import bigframes_vendored.sqlglot.planner as sgp
 from public import public
-import sqlglot as sg
-import sqlglot.expressions as sge
-import sqlglot.optimizer as sgo
-import sqlglot.planner as sgp
 
 
 class Catalog(dict[str, sch.Schema]):

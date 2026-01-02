@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from dataclasses import asdict
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot import scalar_compiler

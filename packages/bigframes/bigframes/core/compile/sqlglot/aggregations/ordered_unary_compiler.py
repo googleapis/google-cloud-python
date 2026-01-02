@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
 import bigframes.core.compile.sqlglot.expressions.typed_expr as typed_expr

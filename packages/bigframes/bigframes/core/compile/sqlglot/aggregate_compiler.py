@@ -13,7 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes.core import agg_expressions, window_spec
 from bigframes.core.compile.sqlglot.aggregations import (

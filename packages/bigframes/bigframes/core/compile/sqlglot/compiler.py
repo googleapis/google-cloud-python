@@ -17,7 +17,7 @@ import dataclasses
 import functools
 import typing
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes.core import (
     agg_expressions,

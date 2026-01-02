@@ -14,7 +14,7 @@
 
 import math
 
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 _ZERO = sge.Cast(this=sge.convert(0), to="INT64")
 _NAN = sge.Cast(this=sge.convert("NaN"), to="FLOAT64")

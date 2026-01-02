@@ -14,9 +14,9 @@
 
 import unittest
 
+import bigframes_vendored.sqlglot.expressions as sge
 import pandas as pd
 import pytest
-import sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes.core import window_spec

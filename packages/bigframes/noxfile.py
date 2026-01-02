@@ -437,6 +437,8 @@ def doctest(session: nox.sessions.Session):
             "--ignore",
             "third_party/bigframes_vendored/ibis",
             "--ignore",
+            "third_party/bigframes_vendored/sqlglot",
+            "--ignore",
             "bigframes/core/compile/polars",
             "--ignore",
             "bigframes/testing",

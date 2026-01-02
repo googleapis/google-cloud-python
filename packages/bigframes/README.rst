@@ -82,6 +82,7 @@ It also contains code derived from the following third-party packages:
 * `Python <https://www.python.org/>`_
 * `scikit-learn <https://scikit-learn.org/>`_
 * `XGBoost <https://xgboost.readthedocs.io/en/stable/>`_
+* `SQLGlot <https://sqlglot.com/sqlglot.html>`_
 
 For details, see the `third_party
 <https://github.com/googleapis/python-bigquery-dataframes/tree/main/third_party/bigframes_vendored>`_

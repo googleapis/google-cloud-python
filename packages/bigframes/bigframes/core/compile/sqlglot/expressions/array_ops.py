@@ -16,8 +16,8 @@ from __future__ import annotations
 
 import typing
 
-import sqlglot as sg
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot as sg
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import operations as ops
 from bigframes.core.compile.sqlglot.expressions.string_ops import (

@@ -29,14 +29,12 @@ import bigframes
 import google.cloud.bigquery
 import pandas
 import pyarrow
-import sqlglot
 
 print(f"Python: {sys.version}")
 print(f"bigframes=={bigframes.__version__}")
 print(f"google-cloud-bigquery=={google.cloud.bigquery.__version__}")
 print(f"pandas=={pandas.__version__}")
 print(f"pyarrow=={pyarrow.__version__}")
-print(f"sqlglot=={sqlglot.__version__}")
 ```
 
 #### Steps to reproduce

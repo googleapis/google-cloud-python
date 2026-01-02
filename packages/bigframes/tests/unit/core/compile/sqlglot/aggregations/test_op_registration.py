@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from bigframes_vendored.sqlglot import expressions as sge
 import pytest
-from sqlglot import expressions as sge
 
 from bigframes.core.compile.sqlglot.aggregations import op_registration
 from bigframes.operations import aggregations as agg_ops

@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import bigframes_vendored.constants as bf_constants
-import sqlglot.expressions as sge
+import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
