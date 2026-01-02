@@ -45,10 +45,10 @@ replacements:
       packages/google-cloud-vision/google/cloud/vision_v1p4beta1/__init__.py,
     ]    
     before: |
-      from .types.web_detection import WebDetection\n
+      \)\n
       __all__ = \(
     after: |
-      from .types.web_detection import WebDetection\n\n
+      )\n\n
       @add_single_feature_methods
       class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):
           __doc__ = IacImageAnnotatorClient.__doc__

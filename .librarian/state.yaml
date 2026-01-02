@@ -1,7 +1,7 @@
-image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:72e9b62c0f8f3799651ee62d777a2905f5b72ff19ea46f2e7b7d682d7d1e9414
+image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:b8058df4c45e9a6e07f6b4d65b458d0d059241dd34c814f151c8bf6b89211209
 libraries:
   - id: google-ads-admanager
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/ads/admanager/v1
@@ -891,7 +891,7 @@ libraries:
       - packages/google-cloud-bigquery-reservation/
     tag_format: '{id}-v{version}'
   - id: google-cloud-bigquery-storage
-    version: 2.35.0
+    version: 2.36.0
     last_generated_commit: bd94e0b8c4975af0a66dc1f846c63c77dbc0064e
     apis:
       - path: google/cloud/bigquery/storage/v1beta2
@@ -1613,7 +1613,7 @@ libraries:
       - packages/google-cloud-dialogflow-cx
     tag_format: '{id}-v{version}'
   - id: google-cloud-discoveryengine
-    version: 0.15.0
+    version: 0.16.0
     last_generated_commit: c288189b43c016dd3cf1ec73ce3cadee8b732f07
     apis:
       - path: google/cloud/discoveryengine/v1
@@ -1878,7 +1878,7 @@ libraries:
       - packages/google-cloud-gdchardwaremanagement/
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
@@ -2990,7 +2990,7 @@ libraries:
       - packages/google-cloud-retail/
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
-    version: 0.12.0
+    version: 0.13.0
     last_generated_commit: effe5c4fa816021e724ca856d5640f2e55b14a8b
     apis:
       - path: google/cloud/run/v2
@@ -3043,7 +3043,7 @@ libraries:
       - packages/google-cloud-scheduler/
     tag_format: '{id}-v{version}'
   - id: google-cloud-secret-manager
-    version: 2.25.0
+    version: 2.26.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/secretmanager/v1
@@ -3264,7 +3264,7 @@ libraries:
       - packages/google-cloud-source-context/
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
-    version: 2.34.0
+    version: 2.35.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/speech/v1
@@ -3980,7 +3980,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-accounts
     version: 1.2.0
-    last_generated_commit: 535d161c24965e9ed1a0b27032cc1c8b4beab818
+    last_generated_commit: 55ab9c6263bafb0ef1aa2d8722d190c1697bcbcb
     apis:
       - path: google/shopping/merchant/accounts/v1
         service_config: merchantapi_v1.yaml

@@ -290,9 +290,12 @@ def handle_configure(
         )
         prepared_config = _prepare_new_library_config(new_library_config)
 
-        # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
+        is_mono_repo = _is_mono_repo(input)
         library_id = _get_library_id(prepared_config)
-        _create_new_changelog_for_library(library_id, output)
+        path_to_library = f"packages/{library_id}" if is_mono_repo else "."
+        if not Path(f"{repo}/{path_to_library}").exists():
+            # Create a `CHANGELOG.md` and `docs/CHANGELOG.md` file for the new library
+            _create_new_changelog_for_library(library_id, output)
 
         # Write the new library configuration to configure-response.json.
         _write_json_file(f"{librarian}/configure-response.json", prepared_config)
@@ -410,13 +413,19 @@ def _copy_files_needed_for_post_processing(
     destination_dir = f"{output}/{path_to_library}"
 
     if Path(source_dir).exists():
-        shutil.copytree(
-            source_dir,
-            destination_dir,
-            dirs_exist_ok=True,
-        )
-        # Apply headers only to the generator-input files copied above.
-        _add_header_to_files(destination_dir)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            shutil.copytree(
+                source_dir,
+                tmp_dir,
+                dirs_exist_ok=True,
+            )
+            # Apply headers only to the generator-input files copied above.
+            _add_header_to_files(tmp_dir)
+            shutil.copytree(
+                tmp_dir,
+                destination_dir,
+                dirs_exist_ok=True,
+            )
 
     # We need to create these directories so that we can copy files necessary for post-processing.
     os.makedirs(

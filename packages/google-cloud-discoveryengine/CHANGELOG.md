@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-discoveryengine/#history
 
+## [0.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.15.0...google-cloud-discoveryengine-v0.16.0) (2025-12-17)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+* check Python and dependency versions in generated GAPICs ([d2b35b25342bfa389b472f9ce49922e630019fe6](https://github.com/googleapis/google-cloud-python/commit/d2b35b25342bfa389b472f9ce49922e630019fe6))
+
 ## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.14.0...google-cloud-discoveryengine-v0.15.0) (2025-10-23)
 
 
