@@ -53,8 +53,8 @@ else:
 
 @dataclasses.dataclass(frozen=True)
 class _SortState:
-    column: str
-    ascending: bool
+    columns: tuple[str, ...]
+    ascending: tuple[bool, ...]
 
 
 class TableWidget(_WIDGET_BASE):
@@ -68,8 +68,7 @@ class TableWidget(_WIDGET_BASE):
     page_size = traitlets.Int(0).tag(sync=True)
     row_count = traitlets.Int(allow_none=True, default_value=None).tag(sync=True)
     table_html = traitlets.Unicode("").tag(sync=True)
-    sort_column = traitlets.Unicode("").tag(sync=True)
-    sort_ascending = traitlets.Bool(True).tag(sync=True)
+    sort_context = traitlets.List(traitlets.Dict(), default_value=[]).tag(sync=True)
     orderable_columns = traitlets.List(traitlets.Unicode(), []).tag(sync=True)
     _initial_load_complete = traitlets.Bool(False).tag(sync=True)
     _batches: Optional[blocks.PandasBatches] = None
@@ -280,23 +279,23 @@ class TableWidget(_WIDGET_BASE):
 
             # Apply sorting if a column is selected
             df_to_display = self._dataframe
-            if self.sort_column:
+            sort_columns = [item["column"] for item in self.sort_context]
+            sort_ascending = [item["ascending"] for item in self.sort_context]
+
+            if sort_columns:
                 # TODO(b/463715504): Support sorting by index columns.
                 df_to_display = df_to_display.sort_values(
-                    by=self.sort_column, ascending=self.sort_ascending
+                    by=sort_columns, ascending=sort_ascending
                 )
 
             # Reset batches when sorting changes
-            if self._last_sort_state != _SortState(
-                self.sort_column, self.sort_ascending
-            ):
+            current_sort_state = _SortState(tuple(sort_columns), tuple(sort_ascending))
+            if self._last_sort_state != current_sort_state:
                 self._batches = df_to_display.to_pandas_batches(
                     page_size=self.page_size
                 )
                 self._reset_batch_cache()
-                self._last_sort_state = _SortState(
-                    self.sort_column, self.sort_ascending
-                )
+                self._last_sort_state = current_sort_state
                 if self.page != 0:
                     new_page = 0  # Reset to first page
 
@@ -348,6 +347,7 @@ class TableWidget(_WIDGET_BASE):
                 self.table_html = bigframes.display.html.render_html(
                     dataframe=page_data,
                     table_id=f"table-{self._table_id}",
+                    orderable_columns=self.orderable_columns,
                 )
 
         if new_page is not None:
@@ -355,7 +355,7 @@ class TableWidget(_WIDGET_BASE):
             # re-enter _set_table_html. Since we've released the lock, this is safe.
             self.page = new_page
 
-    @traitlets.observe("sort_column", "sort_ascending")
+    @traitlets.observe("sort_context")
     def _sort_changed(self, _change: dict[str, Any]):
         """Handler for when sorting parameters change from the frontend."""
         self._set_table_html()
@@ -375,8 +375,7 @@ class TableWidget(_WIDGET_BASE):
         # Reset the page to 0 when page size changes to avoid invalid page states
         self.page = 0
         # Reset the sort state to default (no sort)
-        self.sort_column = ""
-        self.sort_ascending = True
+        self.sort_context = []
 
         # Reset batches to use new page size for future data fetching
         self._reset_batches_for_new_page_size()

@@ -78,3 +78,78 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
     finally:
         if has_sigalrm:
             signal.alarm(0)
+
+
+@pytest.fixture
+def mock_df():
+    df = mock.create_autospec(bigframes.dataframe.DataFrame, instance=True)
+    df.columns = ["col1", "col2"]
+    df.dtypes = {"col1": "int64", "col2": "int64"}
+
+    mock_block = mock.Mock()
+    mock_block.has_index = False
+    df._block = mock_block
+
+    # Mock to_pandas_batches to return empty iterator or simple data
+    batch_df = pd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+    batches = mock.MagicMock()
+    batches.__iter__.return_value = iter([batch_df])
+    batches.total_rows = 2
+    df.to_pandas_batches.return_value = batches
+
+    # Mock sort_values to return self (for chaining)
+    df.sort_values.return_value = df
+
+    return df
+
+
+def test_sorting_single_column(mock_df):
+    from bigframes.display.anywidget import TableWidget
+
+    with bigframes.option_context("display.repr_mode", "anywidget"):
+        widget = TableWidget(mock_df)
+
+    # Verify initial state
+    assert widget.sort_context == []
+
+    # Apply sort
+    widget.sort_context = [{"column": "col1", "ascending": True}]
+
+    # This should trigger _sort_changed -> _set_table_html
+    # which calls df.sort_values
+
+    mock_df.sort_values.assert_called_with(by=["col1"], ascending=[True])
+
+
+def test_sorting_multi_column(mock_df):
+    from bigframes.display.anywidget import TableWidget
+
+    with bigframes.option_context("display.repr_mode", "anywidget"):
+        widget = TableWidget(mock_df)
+
+    # Apply multi-column sort
+    widget.sort_context = [
+        {"column": "col1", "ascending": True},
+        {"column": "col2", "ascending": False},
+    ]
+
+    mock_df.sort_values.assert_called_with(by=["col1", "col2"], ascending=[True, False])
+
+
+def test_page_size_change_resets_sort(mock_df):
+    from bigframes.display.anywidget import TableWidget
+
+    with bigframes.option_context("display.repr_mode", "anywidget"):
+        widget = TableWidget(mock_df)
+
+    # Set sort state
+    widget.sort_context = [{"column": "col1", "ascending": True}]
+
+    # Change page size
+    widget.page_size = 50
+
+    # Sort should be reset
+    assert widget.sort_context == []
+
+    # to_pandas_batches called again (reset)
+    assert mock_df.to_pandas_batches.call_count >= 2
