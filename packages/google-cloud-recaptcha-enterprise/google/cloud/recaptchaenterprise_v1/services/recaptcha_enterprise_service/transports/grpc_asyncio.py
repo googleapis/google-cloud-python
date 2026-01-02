@@ -611,7 +611,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
 
         Adds an IP override to a key. The following restrictions hold:
 
-        - The maximum number of IP overrides per key is 100.
+        - The maximum number of IP overrides per key is 1000.
         - For any conflict (such as IP already exists or IP part of an
           existing IP range), an error is returned.
 

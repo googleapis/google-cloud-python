@@ -12481,6 +12481,652 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient",
+          "shortName": "GeneratorEvaluationsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient.create_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.CreateGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "CreateGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateGeneratorEvaluationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "generator_evaluation",
+            "type": "google.cloud.dialogflow_v2.types.GeneratorEvaluation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_generator_evaluation"
+      },
+      "description": "Sample for CreateGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_create_generator_evaluation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_CreateGeneratorEvaluation_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_create_generator_evaluation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient",
+          "shortName": "GeneratorEvaluationsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient.create_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.CreateGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "CreateGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateGeneratorEvaluationRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "generator_evaluation",
+            "type": "google.cloud.dialogflow_v2.types.GeneratorEvaluation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_generator_evaluation"
+      },
+      "description": "Sample for CreateGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_create_generator_evaluation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_CreateGeneratorEvaluation_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_create_generator_evaluation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient",
+          "shortName": "GeneratorEvaluationsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient.delete_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.DeleteGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "DeleteGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteGeneratorEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_generator_evaluation"
+      },
+      "description": "Sample for DeleteGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_delete_generator_evaluation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_DeleteGeneratorEvaluation_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_delete_generator_evaluation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient",
+          "shortName": "GeneratorEvaluationsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient.delete_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.DeleteGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "DeleteGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteGeneratorEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_generator_evaluation"
+      },
+      "description": "Sample for DeleteGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_delete_generator_evaluation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_DeleteGeneratorEvaluation_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_delete_generator_evaluation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient",
+          "shortName": "GeneratorEvaluationsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient.get_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.GetGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "GetGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetGeneratorEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.GeneratorEvaluation",
+        "shortName": "get_generator_evaluation"
+      },
+      "description": "Sample for GetGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_get_generator_evaluation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_GetGeneratorEvaluation_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_get_generator_evaluation_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient",
+          "shortName": "GeneratorEvaluationsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient.get_generator_evaluation",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.GetGeneratorEvaluation",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "GetGeneratorEvaluation"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetGeneratorEvaluationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.GeneratorEvaluation",
+        "shortName": "get_generator_evaluation"
+      },
+      "description": "Sample for GetGeneratorEvaluation",
+      "file": "dialogflow_v2_generated_generator_evaluations_get_generator_evaluation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_GetGeneratorEvaluation_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_get_generator_evaluation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient",
+          "shortName": "GeneratorEvaluationsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsAsyncClient.list_generator_evaluations",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.ListGeneratorEvaluations",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "ListGeneratorEvaluations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListGeneratorEvaluationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.generator_evaluations.pagers.ListGeneratorEvaluationsAsyncPager",
+        "shortName": "list_generator_evaluations"
+      },
+      "description": "Sample for ListGeneratorEvaluations",
+      "file": "dialogflow_v2_generated_generator_evaluations_list_generator_evaluations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_ListGeneratorEvaluations_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_list_generator_evaluations_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient",
+          "shortName": "GeneratorEvaluationsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.GeneratorEvaluationsClient.list_generator_evaluations",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations.ListGeneratorEvaluations",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.GeneratorEvaluations",
+            "shortName": "GeneratorEvaluations"
+          },
+          "shortName": "ListGeneratorEvaluations"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListGeneratorEvaluationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.generator_evaluations.pagers.ListGeneratorEvaluationsPager",
+        "shortName": "list_generator_evaluations"
+      },
+      "description": "Sample for ListGeneratorEvaluations",
+      "file": "dialogflow_v2_generated_generator_evaluations_list_generator_evaluations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_GeneratorEvaluations_ListGeneratorEvaluations_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_generator_evaluations_list_generator_evaluations_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.dialogflow_v2.GeneratorsAsyncClient",
           "shortName": "GeneratorsAsyncClient"
         },
@@ -18077,6 +18723,1644 @@
         }
       ],
       "title": "dialogflow_v2_generated_sessions_streaming_detect_intent_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient",
+          "shortName": "SipTrunksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient.create_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.CreateSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "CreateSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateSipTrunkRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sip_trunk",
+            "type": "google.cloud.dialogflow_v2.types.SipTrunk"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "create_sip_trunk"
+      },
+      "description": "Sample for CreateSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_create_sip_trunk_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_CreateSipTrunk_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_create_sip_trunk_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksClient",
+          "shortName": "SipTrunksClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksClient.create_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.CreateSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "CreateSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateSipTrunkRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "sip_trunk",
+            "type": "google.cloud.dialogflow_v2.types.SipTrunk"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "create_sip_trunk"
+      },
+      "description": "Sample for CreateSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_create_sip_trunk_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_CreateSipTrunk_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_create_sip_trunk_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient",
+          "shortName": "SipTrunksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient.delete_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.DeleteSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "DeleteSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteSipTrunkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_sip_trunk"
+      },
+      "description": "Sample for DeleteSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_delete_sip_trunk_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_DeleteSipTrunk_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_delete_sip_trunk_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksClient",
+          "shortName": "SipTrunksClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksClient.delete_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.DeleteSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "DeleteSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteSipTrunkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_sip_trunk"
+      },
+      "description": "Sample for DeleteSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_delete_sip_trunk_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_DeleteSipTrunk_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_delete_sip_trunk_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient",
+          "shortName": "SipTrunksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient.get_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.GetSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "GetSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetSipTrunkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "get_sip_trunk"
+      },
+      "description": "Sample for GetSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_get_sip_trunk_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_GetSipTrunk_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_get_sip_trunk_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksClient",
+          "shortName": "SipTrunksClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksClient.get_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.GetSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "GetSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetSipTrunkRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "get_sip_trunk"
+      },
+      "description": "Sample for GetSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_get_sip_trunk_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_GetSipTrunk_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_get_sip_trunk_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient",
+          "shortName": "SipTrunksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient.list_sip_trunks",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.ListSipTrunks",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "ListSipTrunks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListSipTrunksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.sip_trunks.pagers.ListSipTrunksAsyncPager",
+        "shortName": "list_sip_trunks"
+      },
+      "description": "Sample for ListSipTrunks",
+      "file": "dialogflow_v2_generated_sip_trunks_list_sip_trunks_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_ListSipTrunks_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_list_sip_trunks_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksClient",
+          "shortName": "SipTrunksClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksClient.list_sip_trunks",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.ListSipTrunks",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "ListSipTrunks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListSipTrunksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.sip_trunks.pagers.ListSipTrunksPager",
+        "shortName": "list_sip_trunks"
+      },
+      "description": "Sample for ListSipTrunks",
+      "file": "dialogflow_v2_generated_sip_trunks_list_sip_trunks_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_ListSipTrunks_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_list_sip_trunks_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient",
+          "shortName": "SipTrunksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksAsyncClient.update_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.UpdateSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "UpdateSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.UpdateSipTrunkRequest"
+          },
+          {
+            "name": "sip_trunk",
+            "type": "google.cloud.dialogflow_v2.types.SipTrunk"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "update_sip_trunk"
+      },
+      "description": "Sample for UpdateSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_update_sip_trunk_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_UpdateSipTrunk_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_update_sip_trunk_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.SipTrunksClient",
+          "shortName": "SipTrunksClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.SipTrunksClient.update_sip_trunk",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.SipTrunks.UpdateSipTrunk",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.SipTrunks",
+            "shortName": "SipTrunks"
+          },
+          "shortName": "UpdateSipTrunk"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.UpdateSipTrunkRequest"
+          },
+          {
+            "name": "sip_trunk",
+            "type": "google.cloud.dialogflow_v2.types.SipTrunk"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.SipTrunk",
+        "shortName": "update_sip_trunk"
+      },
+      "description": "Sample for UpdateSipTrunk",
+      "file": "dialogflow_v2_generated_sip_trunks_update_sip_trunk_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_SipTrunks_UpdateSipTrunk_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_sip_trunks_update_sip_trunk_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient.create_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.CreateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "CreateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateToolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflow_v2.types.Tool"
+          },
+          {
+            "name": "tool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "create_tool"
+      },
+      "description": "Sample for CreateTool",
+      "file": "dialogflow_v2_generated_tools_create_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_CreateTool_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_create_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsClient.create_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.CreateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "CreateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.CreateToolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflow_v2.types.Tool"
+          },
+          {
+            "name": "tool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "create_tool"
+      },
+      "description": "Sample for CreateTool",
+      "file": "dialogflow_v2_generated_tools_create_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_CreateTool_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_create_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient.delete_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.DeleteTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "DeleteTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_tool"
+      },
+      "description": "Sample for DeleteTool",
+      "file": "dialogflow_v2_generated_tools_delete_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_DeleteTool_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_delete_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsClient.delete_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.DeleteTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "DeleteTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.DeleteToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "shortName": "delete_tool"
+      },
+      "description": "Sample for DeleteTool",
+      "file": "dialogflow_v2_generated_tools_delete_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_DeleteTool_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_delete_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient.get_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.GetTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "GetTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "get_tool"
+      },
+      "description": "Sample for GetTool",
+      "file": "dialogflow_v2_generated_tools_get_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_GetTool_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_get_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsClient.get_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.GetTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "GetTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.GetToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "get_tool"
+      },
+      "description": "Sample for GetTool",
+      "file": "dialogflow_v2_generated_tools_get_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_GetTool_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_get_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient.list_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.ListTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ListTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListToolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.tools.pagers.ListToolsAsyncPager",
+        "shortName": "list_tools"
+      },
+      "description": "Sample for ListTools",
+      "file": "dialogflow_v2_generated_tools_list_tools_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_ListTools_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_list_tools_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsClient.list_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.ListTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ListTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.ListToolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.services.tools.pagers.ListToolsPager",
+        "shortName": "list_tools"
+      },
+      "description": "Sample for ListTools",
+      "file": "dialogflow_v2_generated_tools_list_tools_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_ListTools_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_list_tools_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsAsyncClient.update_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.UpdateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "UpdateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.UpdateToolRequest"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflow_v2.types.Tool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "update_tool"
+      },
+      "description": "Sample for UpdateTool",
+      "file": "dialogflow_v2_generated_tools_update_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_UpdateTool_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_update_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflow_v2.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflow_v2.ToolsClient.update_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.v2.Tools.UpdateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.v2.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "UpdateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflow_v2.types.UpdateToolRequest"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflow_v2.types.Tool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflow_v2.types.Tool",
+        "shortName": "update_tool"
+      },
+      "description": "Sample for UpdateTool",
+      "file": "dialogflow_v2_generated_tools_update_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v2_generated_Tools_UpdateTool_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v2_generated_tools_update_tool_sync.py"
     },
     {
       "canonical": true,

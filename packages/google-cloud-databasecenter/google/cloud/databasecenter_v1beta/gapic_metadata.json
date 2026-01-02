@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "DatabaseCenterClient",
           "rpcs": {
+            "QueryDatabaseResourceGroups": {
+              "methods": [
+                "query_database_resource_groups"
+              ]
+            },
             "QueryProducts": {
               "methods": [
                 "query_products"
@@ -20,6 +25,11 @@
         "grpc-async": {
           "libraryClient": "DatabaseCenterAsyncClient",
           "rpcs": {
+            "QueryDatabaseResourceGroups": {
+              "methods": [
+                "query_database_resource_groups"
+              ]
+            },
             "QueryProducts": {
               "methods": [
                 "query_products"
@@ -30,6 +40,11 @@
         "rest": {
           "libraryClient": "DatabaseCenterClient",
           "rpcs": {
+            "QueryDatabaseResourceGroups": {
+              "methods": [
+                "query_database_resource_groups"
+              ]
+            },
             "QueryProducts": {
               "methods": [
                 "query_products"

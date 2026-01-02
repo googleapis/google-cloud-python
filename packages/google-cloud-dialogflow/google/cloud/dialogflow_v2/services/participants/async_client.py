@@ -100,6 +100,8 @@ class ParticipantsAsyncClient:
     parse_session_entity_type_path = staticmethod(
         ParticipantsClient.parse_session_entity_type_path
     )
+    tool_path = staticmethod(ParticipantsClient.tool_path)
+    parse_tool_path = staticmethod(ParticipantsClient.parse_tool_path)
     common_billing_account_path = staticmethod(
         ParticipantsClient.common_billing_account_path
     )

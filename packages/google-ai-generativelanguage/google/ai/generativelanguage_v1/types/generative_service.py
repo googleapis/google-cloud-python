@@ -97,8 +97,6 @@ class TaskType(proto.Enum):
 
 class GenerateContentRequest(proto.Message):
     r"""Request to generate a completion from the model.
-    NEXT ID: 18
-
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -173,7 +171,6 @@ class GenerateContentRequest(proto.Message):
 class GenerationConfig(proto.Message):
     r"""Configuration options for model generation and outputs. Not
     all parameters are configurable for every model.
-    Next ID: 29
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -672,6 +669,8 @@ class Candidate(proto.Message):
             NO_IMAGE (16):
                 The model was expected to generate an image,
                 but none was generated.
+            IMAGE_RECITATION (17):
+                Image generation stopped due to recitation.
             UNEXPECTED_TOOL_CALL (12):
                 Model generated a tool call but no tools were
                 enabled in the request.
@@ -694,6 +693,7 @@ class Candidate(proto.Message):
         IMAGE_PROHIBITED_CONTENT = 14
         IMAGE_OTHER = 15
         NO_IMAGE = 16
+        IMAGE_RECITATION = 17
         UNEXPECTED_TOOL_CALL = 12
         TOO_MANY_TOOL_CALLS = 13
 
@@ -940,6 +940,14 @@ class GroundingMetadata(proto.Message):
         web_search_queries (MutableSequence[str]):
             Web search queries for the following-up web
             search.
+        google_maps_widget_context_token (str):
+            Optional. Resource name of the Google Maps
+            widget context token that can be used with the
+            PlacesContextElement widget in order to render
+            contextual data. Only populated in the case that
+            grounding with Google Maps is enabled.
+
+            This field is a member of `oneof`_ ``_google_maps_widget_context_token``.
     """
 
     search_entry_point: "SearchEntryPoint" = proto.Field(
@@ -967,6 +975,11 @@ class GroundingMetadata(proto.Message):
     web_search_queries: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    google_maps_widget_context_token: str = proto.Field(
+        proto.STRING,
+        number=7,
+        optional=True,
     )
 
 

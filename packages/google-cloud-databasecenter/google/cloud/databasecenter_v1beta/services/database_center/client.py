@@ -802,6 +802,107 @@ class DatabaseCenterClient(metaclass=DatabaseCenterClientMeta):
         # Done; return the response.
         return response
 
+    def query_database_resource_groups(
+        self,
+        request: Optional[
+            Union[service.QueryDatabaseResourceGroupsRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> pagers.QueryDatabaseResourceGroupsPager:
+        r"""QueryDatabaseResourceGroups returns paginated results
+        of database groups.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import databasecenter_v1beta
+
+            def sample_query_database_resource_groups():
+                # Create a client
+                client = databasecenter_v1beta.DatabaseCenterClient()
+
+                # Initialize request argument(s)
+                request = databasecenter_v1beta.QueryDatabaseResourceGroupsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.query_database_resource_groups(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.databasecenter_v1beta.types.QueryDatabaseResourceGroupsRequest, dict]):
+                The request object. QueryDatabaseResourceGroupsRequest is
+                the request to get a list of database
+                groups.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.databasecenter_v1beta.services.database_center.pagers.QueryDatabaseResourceGroupsPager:
+                QueryDatabaseResourceGroupsResponse
+                represents the response message
+                containing a list of resource groups.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, service.QueryDatabaseResourceGroupsRequest):
+            request = service.QueryDatabaseResourceGroupsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.query_database_resource_groups
+        ]
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.QueryDatabaseResourceGroupsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def __enter__(self) -> "DatabaseCenterClient":
         return self
 

@@ -3769,6 +3769,7 @@ def test_update_answer_record_rest_call_success(request_type):
                                     }
                                 ]
                             },
+                            "triggering_event": 1,
                         }
                     ],
                     "agent_action_suggestions": [

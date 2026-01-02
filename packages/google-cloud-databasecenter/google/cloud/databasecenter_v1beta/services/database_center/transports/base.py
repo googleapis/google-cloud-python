@@ -138,6 +138,11 @@ class DatabaseCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.query_database_resource_groups: gapic_v1.method.wrap_method(
+                self.query_database_resource_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -155,6 +160,18 @@ class DatabaseCenterTransport(abc.ABC):
     ) -> Callable[
         [service.QueryProductsRequest],
         Union[service.QueryProductsResponse, Awaitable[service.QueryProductsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def query_database_resource_groups(
+        self,
+    ) -> Callable[
+        [service.QueryDatabaseResourceGroupsRequest],
+        Union[
+            service.QueryDatabaseResourceGroupsResponse,
+            Awaitable[service.QueryDatabaseResourceGroupsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

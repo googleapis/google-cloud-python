@@ -64,6 +64,7 @@ __protobuf__ = proto.module(
         "GetCertificateAuthorityRequest",
         "CertificateAuthority",
         "OperationMetadata",
+        "EncryptionInfo",
     },
 )
 
@@ -165,9 +166,13 @@ class Instance(proto.Message):
         shard_count (int):
             Optional. Number of shards for the instance.
         discovery_endpoints (MutableSequence[google.cloud.memorystore_v1.types.DiscoveryEndpoint]):
-            Output only. Deprecated: Use the
-            endpoints.connections.psc_auto_connection or
-            endpoints.connections.psc_connection values instead.
+            Output only. Deprecated: The discovery_endpoints parameter
+            is deprecated. As a result, it will not be populated if the
+            connections are created using endpoints parameter. Instead
+            of this parameter, for discovery, use
+            endpoints.connections.pscConnection and
+            endpoints.connections.pscAutoConnection with connectionType
+            CONNECTION_TYPE_DISCOVERY.
         node_type (google.cloud.memorystore_v1.types.Instance.NodeType):
             Optional. Machine type for individual nodes
             of the instance.
@@ -201,11 +206,26 @@ class Instance(proto.Message):
             Optional. Endpoints for the instance.
         mode (google.cloud.memorystore_v1.types.Instance.Mode):
             Optional. The mode config for the instance.
+        simulate_maintenance_event (bool):
+            Optional. Input only. Simulate a maintenance
+            event.
+
+            This field is a member of `oneof`_ ``_simulate_maintenance_event``.
         ondemand_maintenance (bool):
             Optional. Input only. Ondemand maintenance
             for the instance.
 
             This field is a member of `oneof`_ ``_ondemand_maintenance``.
+        satisfies_pzs (bool):
+            Optional. Output only. Reserved for future
+            use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        satisfies_pzi (bool):
+            Optional. Output only. Reserved for future
+            use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         maintenance_policy (google.cloud.memorystore_v1.types.MaintenancePolicy):
             Optional. The maintenance policy for the
             instance. If not provided, the maintenance event
@@ -225,6 +245,14 @@ class Instance(proto.Message):
             are deleted.
 
             This field is a member of `oneof`_ ``_async_instance_endpoints_deletion_enabled``.
+        kms_key (str):
+            Optional. The KMS key used to encrypt the
+            at-rest data of the cluster.
+
+            This field is a member of `oneof`_ ``_kms_key``.
+        encryption_info (google.cloud.memorystore_v1.types.EncryptionInfo):
+            Output only. Encryption information of the
+            data at rest of the cluster.
         backup_collection (str):
             Output only. The backup collection full
             resource name. Example:
@@ -234,6 +262,24 @@ class Instance(proto.Message):
         automated_backup_config (google.cloud.memorystore_v1.types.AutomatedBackupConfig):
             Optional. The automated backup config for the
             instance.
+        maintenance_version (str):
+            Optional. This field can be used to trigger self service
+            update to indicate the desired maintenance version. The
+            input to this field can be determined by the
+            available_maintenance_versions field.
+
+            This field is a member of `oneof`_ ``_maintenance_version``.
+        effective_maintenance_version (str):
+            Output only. This field represents the actual
+            maintenance version of the instance.
+
+            This field is a member of `oneof`_ ``_effective_maintenance_version``.
+        available_maintenance_versions (MutableSequence[str]):
+            Output only. This field is used to determine
+            the available maintenance versions for the self
+            service update.
+        allow_fewer_zones_deployment (bool):
+            Optional. Immutable. Deprecated, do not use.
     """
 
     class State(proto.Enum):
@@ -616,9 +662,24 @@ class Instance(proto.Message):
         number=26,
         enum=Mode,
     )
+    simulate_maintenance_event: bool = proto.Field(
+        proto.BOOL,
+        number=27,
+        optional=True,
+    )
     ondemand_maintenance: bool = proto.Field(
         proto.BOOL,
         number=28,
+        optional=True,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=29,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=30,
         optional=True,
     )
     maintenance_policy: "MaintenancePolicy" = proto.Field(
@@ -641,6 +702,16 @@ class Instance(proto.Message):
         number=44,
         optional=True,
     )
+    kms_key: str = proto.Field(
+        proto.STRING,
+        number=45,
+        optional=True,
+    )
+    encryption_info: "EncryptionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=46,
+        message="EncryptionInfo",
+    )
     backup_collection: str = proto.Field(
         proto.STRING,
         number=47,
@@ -650,6 +721,24 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=48,
         message="AutomatedBackupConfig",
+    )
+    maintenance_version: str = proto.Field(
+        proto.STRING,
+        number=49,
+        optional=True,
+    )
+    effective_maintenance_version: str = proto.Field(
+        proto.STRING,
+        number=50,
+        optional=True,
+    )
+    available_maintenance_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=51,
+    )
+    allow_fewer_zones_deployment: bool = proto.Field(
+        proto.BOOL,
+        number=54,
     )
 
 
@@ -751,6 +840,15 @@ class BackupCollection(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the backup
             collection was created.
+        total_backup_size_bytes (int):
+            Output only. Total size of all backups in the
+            backup collection.
+        total_backup_count (int):
+            Output only. Total number of backups in the
+            backup collection.
+        last_backup_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time a backup was
+            created in the backup collection.
     """
 
     name: str = proto.Field(
@@ -776,6 +874,19 @@ class BackupCollection(proto.Message):
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
         number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    total_backup_size_bytes: int = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    total_backup_count: int = proto.Field(
+        proto.INT64,
+        number=10,
+    )
+    last_backup_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
         message=timestamp_pb2.Timestamp,
     )
 
@@ -821,6 +932,9 @@ class Backup(proto.Message):
             Output only. Type of the backup.
         state (google.cloud.memorystore_v1.types.Backup.State):
             Output only. State of the backup.
+        encryption_info (google.cloud.memorystore_v1.types.EncryptionInfo):
+            Output only. Encryption information of the
+            backup.
         uid (str):
             Output only. System assigned unique
             identifier of the backup.
@@ -921,6 +1035,11 @@ class Backup(proto.Message):
         proto.ENUM,
         number=13,
         enum=State,
+    )
+    encryption_info: "EncryptionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="EncryptionInfo",
     )
     uid: str = proto.Field(
         proto.STRING,
@@ -2294,6 +2413,101 @@ class OperationMetadata(proto.Message):
     api_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class EncryptionInfo(proto.Message):
+    r"""EncryptionInfo describes the encryption information of a
+    cluster.
+
+    Attributes:
+        encryption_type (google.cloud.memorystore_v1.types.EncryptionInfo.Type):
+            Output only. Type of encryption.
+        kms_key_versions (MutableSequence[str]):
+            Output only. KMS key versions that are being
+            used to protect the data at-rest.
+        kms_key_primary_state (google.cloud.memorystore_v1.types.EncryptionInfo.KmsKeyState):
+            Output only. The state of the primary version
+            of the KMS key perceived by the system. This
+            field is not populated in backups.
+        last_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The most recent time when the
+            encryption info was updated.
+    """
+
+    class Type(proto.Enum):
+        r"""Possible encryption types.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Encryption type not specified. Defaults to
+                GOOGLE_DEFAULT_ENCRYPTION.
+            GOOGLE_DEFAULT_ENCRYPTION (1):
+                The data is encrypted at rest with a key that
+                is fully managed by Google. No key version will
+                be populated. This is the default state.
+            CUSTOMER_MANAGED_ENCRYPTION (2):
+                The data is encrypted at rest with a key that
+                is managed by the customer. KMS key versions
+                will be populated.
+        """
+        TYPE_UNSPECIFIED = 0
+        GOOGLE_DEFAULT_ENCRYPTION = 1
+        CUSTOMER_MANAGED_ENCRYPTION = 2
+
+    class KmsKeyState(proto.Enum):
+        r"""The state of the KMS key perceived by the system. Refer to
+        the public documentation for the impact of each state.
+
+        Values:
+            KMS_KEY_STATE_UNSPECIFIED (0):
+                The default value. This value is unused.
+            ENABLED (1):
+                The KMS key is enabled and correctly
+                configured.
+            PERMISSION_DENIED (2):
+                Permission denied on the KMS key.
+            DISABLED (3):
+                The KMS key is disabled.
+            DESTROYED (4):
+                The KMS key is destroyed.
+            DESTROY_SCHEDULED (5):
+                The KMS key is scheduled to be destroyed.
+            EKM_KEY_UNREACHABLE_DETECTED (6):
+                The EKM key is unreachable.
+            BILLING_DISABLED (7):
+                Billing is disabled for the project.
+            UNKNOWN_FAILURE (8):
+                All other unknown failures.
+        """
+        KMS_KEY_STATE_UNSPECIFIED = 0
+        ENABLED = 1
+        PERMISSION_DENIED = 2
+        DISABLED = 3
+        DESTROYED = 4
+        DESTROY_SCHEDULED = 5
+        EKM_KEY_UNREACHABLE_DETECTED = 6
+        BILLING_DISABLED = 7
+        UNKNOWN_FAILURE = 8
+
+    encryption_type: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    kms_key_versions: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    kms_key_primary_state: KmsKeyState = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=KmsKeyState,
+    )
+    last_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
