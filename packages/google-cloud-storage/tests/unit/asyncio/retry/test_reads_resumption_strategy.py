@@ -27,7 +27,9 @@ from google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy 
 from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 
 _READ_ID = 1
-LOGGER_NAME = "google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy"
+LOGGER_NAME = (
+    "google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy"
+)
 
 
 class TestDownloadState(unittest.TestCase):
@@ -309,7 +311,9 @@ class TestReadResumptionStrategy(unittest.TestCase):
         with self.assertLogs(LOGGER_NAME, level="WARNING") as cm:
             self.strategy.update_state_from_response(response, self.state)
 
-        self.assertTrue(any("missing read_range field" in output for output in cm.output))
+        self.assertTrue(
+            any("missing read_range field" in output for output in cm.output)
+        )
 
     def test_update_state_unknown_id_logs_warning(self):
         """Verify we log a warning and continue when read_id is unknown."""
@@ -320,8 +324,12 @@ class TestReadResumptionStrategy(unittest.TestCase):
         with self.assertLogs(LOGGER_NAME, level="WARNING") as cm:
             self.strategy.update_state_from_response(response, self.state)
 
-        self.assertTrue(any(f"unknown or stale read_id {unknown_id}" in output for output in cm.output))
-
+        self.assertTrue(
+            any(
+                f"unknown or stale read_id {unknown_id}" in output
+                for output in cm.output
+            )
+        )
 
     # --- Recovery Tests ---
 
