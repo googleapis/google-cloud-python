@@ -114,7 +114,7 @@ class WindowsTest(unittest.TestCase):
         )
         self.assertEqual(
             result.sql(dialect="bigquery"),
-            "value OVER (PARTITION BY `col1`, CAST(`col2` AS STRING), TO_JSON_STRING(`col3`), CAST(`col4` AS BYTES))",
+            "value OVER (PARTITION BY `col1`, CAST(`col2` AS STRING), TO_JSON_STRING(`col3`), ST_ASBINARY(`col4`))",
         )
 
     def test_apply_window_if_present_range_bounded(self):

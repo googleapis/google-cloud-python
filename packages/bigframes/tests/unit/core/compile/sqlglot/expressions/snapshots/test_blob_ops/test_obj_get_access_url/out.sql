@@ -11,7 +11,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_2` AS (
   SELECT
     *,
-    OBJ.GET_ACCESS_URL(`bfcol_4`) AS `bfcol_7`
+    OBJ.GET_ACCESS_URL(`bfcol_4`, 'R') AS `bfcol_7`
   FROM `bfcte_1`
 ), `bfcte_3` AS (
   SELECT

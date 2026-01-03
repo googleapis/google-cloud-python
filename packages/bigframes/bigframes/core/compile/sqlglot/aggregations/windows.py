@@ -174,7 +174,7 @@ def _compile_group_by_key(key: ex.Expression) -> sge.Expression:
     if key.dtype == dtypes.FLOAT_DTYPE:
         expr = sge.Cast(this=expr, to="STRING")
     elif key.dtype == dtypes.GEO_DTYPE:
-        expr = sge.Cast(this=expr, to="BYTES")
+        expr = sge.func("ST_ASBINARY", expr)
     elif key.dtype == dtypes.JSON_DTYPE:
         expr = sge.func("TO_JSON_STRING", expr)
     return expr
