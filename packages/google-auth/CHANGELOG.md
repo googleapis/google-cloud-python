@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.46.0](https://github.com/googleapis/google-auth-library-python/compare/v2.45.0...v2.46.0) (2026-01-05)
+
+
+### Documentation
+
+* update urllib3 docstrings for v2 compatibility (#1903) ([3f1aeea2d1014ea1d244a4c3470e52d74d55404b](https://github.com/googleapis/google-auth-library-python/commit/3f1aeea2d1014ea1d244a4c3470e52d74d55404b))
+
+
+### Features
+
+* Recognize workload certificate config in has_default_client_cert_source for mTLS for Agentic Identities (#1907) ([0b9107d573123e358c347ffa067637f992af61b4](https://github.com/googleapis/google-auth-library-python/commit/0b9107d573123e358c347ffa067637f992af61b4))
+
+
+### Bug Fixes
+
+* add types to default and verify_token and Request __init__ based on comments in the source code. (#1588) ([59a5f588f7793b59d923a4185c8c07738da618f7](https://github.com/googleapis/google-auth-library-python/commit/59a5f588f7793b59d923a4185c8c07738da618f7))
+* fix the document of secure_authorized_session (#1536) ([5d0014707fc359782df5ccfcaa75fd372fe9dce3](https://github.com/googleapis/google-auth-library-python/commit/5d0014707fc359782df5ccfcaa75fd372fe9dce3))
+* remove setup.cfg configuration for creating universal wheels (#1693) ([c767531ce05a89002d109f595187aff1fcaacfb7](https://github.com/googleapis/google-auth-library-python/commit/c767531ce05a89002d109f595187aff1fcaacfb7))
+* use .read() instead of .content.read() in aiohttp transport (#1899) ([12f4470f808809e8abf1141f98d88ab720c3899b](https://github.com/googleapis/google-auth-library-python/commit/12f4470f808809e8abf1141f98d88ab720c3899b))
+* raise RefreshError for missing token in impersonated credentials (#1897) ([94d04e090fdfc61926dd32bc1d65f8820b9cede5](https://github.com/googleapis/google-auth-library-python/commit/94d04e090fdfc61926dd32bc1d65f8820b9cede5))
+* Fix test coverage for mtls_helper (#1886) ([02e71631fe275d93825c2e957e830773e75133f7](https://github.com/googleapis/google-auth-library-python/commit/02e71631fe275d93825c2e957e830773e75133f7))
+
 ## [2.45.0](https://github.com/googleapis/google-auth-library-python/compare/v2.44.0...v2.45.0) (2025-12-15)
 
 

@@ -1,7 +1,7 @@
 image: us-central1-docker.pkg.dev/cloud-sdk-librarian-prod/images-prod/python-librarian-generator@sha256:b8058df4c45e9a6e07f6b4d65b458d0d059241dd34c814f151c8bf6b89211209
 libraries:
   - id: google-auth
-    version: 2.45.0
+    version: 2.46.0
     last_generated_commit: 102d9f92ac6ed649a61efd9b208e4d1de278e9bb
     apis: []
     source_roots:
