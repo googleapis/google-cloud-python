@@ -27,7 +27,7 @@ from google.oauth2 import _client
 
 
 class CredentialsImpl(credentials.CredentialsWithTrustBoundary):
-    def _refresh_token(self, request):
+    def _perform_refresh_token(self, request):
         self.token = "refreshed-token"
         self.expiry = (
             datetime.datetime.utcnow()

@@ -1784,7 +1784,7 @@ class TestCredentials(object):
     @mock.patch.object(
         identity_pool.Credentials, "_get_cert_bytes", return_value=b"cert"
     )
-    @mock.patch.object(external_account.Credentials, "_refresh_token")
+    @mock.patch.object(external_account.Credentials, "_perform_refresh_token")
     def test_refresh_with_agent_identity(
         self,
         mock_refresh_token,
@@ -1811,7 +1811,7 @@ class TestCredentials(object):
     @mock.patch.object(
         identity_pool.Credentials, "_get_cert_bytes", return_value=b"cert"
     )
-    @mock.patch.object(external_account.Credentials, "_refresh_token")
+    @mock.patch.object(external_account.Credentials, "_perform_refresh_token")
     def test_refresh_with_agent_identity_opt_out_or_not_agent(
         self,
         mock_refresh_token,

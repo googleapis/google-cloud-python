@@ -123,7 +123,7 @@ class Credentials(
     def _metric_header_for_usage(self):
         return metrics.CRED_TYPE_SA_MDS
 
-    def _refresh_token(self, request):
+    def _perform_refresh_token(self, request):
         """Refresh the access token and scopes.
 
         Args:

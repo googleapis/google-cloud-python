@@ -194,7 +194,7 @@ class TestCredentials(object):
         assert creds.valid
         assert not creds.requires_scopes
         assert creds.is_user
-        assert creds._refresh_token_val == REFRESH_TOKEN
+        assert creds._refresh_token == REFRESH_TOKEN
 
         request.assert_called_once_with(
             url=TOKEN_URL,
@@ -228,7 +228,7 @@ class TestCredentials(object):
         assert creds.valid
         assert not creds.requires_scopes
         assert creds.is_user
-        assert creds._refresh_token_val == NEW_REFRESH_TOKEN
+        assert creds._refresh_token == NEW_REFRESH_TOKEN
 
         request.assert_called_once_with(
             url=TOKEN_URL,
@@ -510,7 +510,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_quota_project(QUOTA_PROJECT_ID)
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token_val == creds.refresh_token
+        assert new_creds._refresh_token == creds.refresh_token
         assert new_creds._token_url == creds._token_url
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -529,7 +529,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_token_uri("https://google.com")
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token_val == creds.refresh_token
+        assert new_creds._refresh_token == creds.refresh_token
         assert new_creds._token_url == "https://google.com"
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -548,7 +548,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_universe_domain(FAKE_UNIVERSE_DOMAIN)
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token_val == creds.refresh_token
+        assert new_creds._refresh_token == creds.refresh_token
         assert new_creds._token_url == creds._token_url
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id
@@ -568,7 +568,7 @@ class TestCredentials(object):
         )
         new_creds = creds.with_trust_boundary({"encodedLocations": "new_boundary"})
         assert new_creds._audience == creds._audience
-        assert new_creds._refresh_token_val == creds.refresh_token
+        assert new_creds._refresh_token == creds.refresh_token
         assert new_creds._token_url == creds._token_url
         assert new_creds._token_info_url == creds._token_info_url
         assert new_creds._client_id == creds._client_id

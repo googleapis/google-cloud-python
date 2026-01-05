@@ -420,7 +420,7 @@ class Credentials(
         source credentials and the impersonated credentials. For non-impersonated
         credentials, it will refresh the access token and the trust boundary.
         """
-        self._refresh_token(request)
+        self._perform_refresh_token(request)
         self._handle_trust_boundary(request)
 
     def _handle_trust_boundary(self, request):
@@ -432,7 +432,7 @@ class Credentials(
             # Otherwise, refresh the trust boundary for the external account.
             self._refresh_trust_boundary(request)
 
-    def _refresh_token(self, request, cert_fingerprint=None):
+    def _perform_refresh_token(self, request, cert_fingerprint=None):
         scopes = self._scopes if self._scopes is not None else self._default_scopes
 
         # Inject client certificate into request.

@@ -678,7 +678,8 @@ class TestImpersonatedCredentials(object):
         credentials._source_credentials.token = "Token"
 
         with mock.patch(
-            "google.oauth2.service_account.Credentials._refresh_token", autospec=True
+            "google.oauth2.service_account.Credentials._perform_refresh_token",
+            autospec=True,
         ) as source_cred_refresh_token:
             expire_time = (
                 _helpers.utcnow().replace(microsecond=0)

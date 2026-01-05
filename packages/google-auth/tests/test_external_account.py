@@ -737,7 +737,7 @@ class TestCredentials(object):
         credentials.apply(headers_applied)
         assert "x-allowed-locations" not in headers_applied
 
-    def test_refresh_token_with_cert_fingerprint(self):
+    def test_perform_refresh_token_with_cert_fingerprint(self):
         credentials = self.make_credentials()
         credentials._sts_client = mock.MagicMock()
         credentials._sts_client.exchange_token.return_value = {
@@ -748,7 +748,7 @@ class TestCredentials(object):
             return_value="subject_token"
         )
 
-        credentials._refresh_token(
+        credentials._perform_refresh_token(
             request=mock.sentinel.request, cert_fingerprint="my-fingerprint"
         )
 

@@ -292,7 +292,7 @@ class CredentialsWithTrustBoundary(Credentials):
     """Abstract base for credentials supporting ``with_trust_boundary`` factory"""
 
     @abc.abstractmethod
-    def _refresh_token(self, request):
+    def _perform_refresh_token(self, request):
         """Refreshes the access token.
 
         Args:
@@ -303,7 +303,7 @@ class CredentialsWithTrustBoundary(Credentials):
             google.auth.exceptions.RefreshError: If the credentials could
                 not be refreshed.
         """
-        raise NotImplementedError("_refresh_token must be implemented")
+        raise NotImplementedError("_perform_refresh_token must be implemented")
 
     def with_trust_boundary(self, trust_boundary):
         """Returns a copy of these credentials with a modified trust boundary.
@@ -362,7 +362,7 @@ class CredentialsWithTrustBoundary(Credentials):
         This method calls the subclass's token refresh logic and then
         refreshes the trust boundary if applicable.
         """
-        self._refresh_token(request)
+        self._perform_refresh_token(request)
         self._refresh_trust_boundary(request)
 
     def _refresh_trust_boundary(self, request):
