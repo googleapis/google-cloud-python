@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/pandas-gbq/#history
 
+## [0.33.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.32.0...v0.33.0) (2026-01-05)
+
+
+### Features
+
+* add dry run to the read_gbq function (#979) ([516f986f6935c9a6426e6a9b1702cb2002916362](https://github.com/googleapis/python-bigquery-pandas/commit/516f986f6935c9a6426e6a9b1702cb2002916362))
+
 ## [0.32.0](https://github.com/googleapis/google-cloud-python/compare/pandas-gbq-v0.31.1...pandas-gbq-v0.32.0) (2025-12-16)
 
 
