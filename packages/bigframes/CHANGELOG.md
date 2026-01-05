@@ -4,6 +4,34 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.31.0...bigframes-v2.32.0) (2026-01-05)
+
+
+### Documentation
+
+* generate sitemap.xml for better search indexing (#2351) ([7d2990f1c48c6d74e2af6bee3af87f90189a3d9b](https://github.com/googleapis/google-cloud-python/commit/7d2990f1c48c6d74e2af6bee3af87f90189a3d9b))
+* update supported pandas APIs documentation links (#2330) ([ea71936ce240b2becf21b552d4e41e8ef4418e2d](https://github.com/googleapis/google-cloud-python/commit/ea71936ce240b2becf21b552d4e41e8ef4418e2d))
+* Add time series analysis notebook (#2328) ([369f1c0aff29d197b577ec79e401b107985fe969](https://github.com/googleapis/google-cloud-python/commit/369f1c0aff29d197b577ec79e401b107985fe969))
+
+
+### Features
+
+* Enable multi-column sorting in anywidget mode (#2360) ([1feb956e4762e30276e5b380c0633e6ed7881357](https://github.com/googleapis/google-cloud-python/commit/1feb956e4762e30276e5b380c0633e6ed7881357))
+* display series in anywidget mode (#2346) ([7395d418550058c516ad878e13567256f4300a37](https://github.com/googleapis/google-cloud-python/commit/7395d418550058c516ad878e13567256f4300a37))
+* Refactor TableWidget and to_pandas_batches (#2250) ([b8f09015a7c8e6987dc124e6df925d4f6951b1da](https://github.com/googleapis/google-cloud-python/commit/b8f09015a7c8e6987dc124e6df925d4f6951b1da))
+* Auto-plan complex reduction expressions (#2298) ([4d5de14ccdd05b1ac8f50c3fe71c35ab9e5150c1](https://github.com/googleapis/google-cloud-python/commit/4d5de14ccdd05b1ac8f50c3fe71c35ab9e5150c1))
+* Display custom single index column in anywidget mode (#2311) ([f27196260743883ed8131d5fd33a335e311177e4](https://github.com/googleapis/google-cloud-python/commit/f27196260743883ed8131d5fd33a335e311177e4))
+* add fit_predict method to ml unsupervised models (#2320) ([59df7f70a12ef702224ad61e597bd775208dac45](https://github.com/googleapis/google-cloud-python/commit/59df7f70a12ef702224ad61e597bd775208dac45))
+
+
+### Bug Fixes
+
+* vendor sqlglot bigquery dialect and remove package dependency (#2354) ([b321d72d5eb005b6e9295541a002540f05f72209](https://github.com/googleapis/google-cloud-python/commit/b321d72d5eb005b6e9295541a002540f05f72209))
+* bigframes.ml fit with eval data in partial mode avoids join on null index (#2355) ([7171d21b8c8d5a2d61081f41fa1109b5c9c4bc5f](https://github.com/googleapis/google-cloud-python/commit/7171d21b8c8d5a2d61081f41fa1109b5c9c4bc5f))
+* Improve strictness of nan vs None usage (#2326) ([481d938fb0b840e17047bc4b57e61af15b976e54](https://github.com/googleapis/google-cloud-python/commit/481d938fb0b840e17047bc4b57e61af15b976e54))
+* Correct DataFrame widget rendering in Colab (#2319) ([7f1d3df3839ec58f52e48df088057fc0df967da9](https://github.com/googleapis/google-cloud-python/commit/7f1d3df3839ec58f52e48df088057fc0df967da9))
+* Fix pd.timedelta handling in polars comipler with polars 1.36 (#2325) ([252644826289d9db7a8548884de880b3a4fccafd](https://github.com/googleapis/google-cloud-python/commit/252644826289d9db7a8548884de880b3a4fccafd))
+
 ## [2.31.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.30.0...bigframes-v2.31.0) (2025-12-10)
 
 
