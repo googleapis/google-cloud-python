@@ -97,7 +97,6 @@ def mypy(session):
     session.install("-e", ".")
     session.install(
         "mypy",
-        "types-cachetools",
         "types-certifi",
         "types-freezegun",
         "types-pyOpenSSL",

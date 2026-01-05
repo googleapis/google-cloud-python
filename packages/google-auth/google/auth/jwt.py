@@ -50,8 +50,7 @@ import datetime
 import json
 import urllib
 
-import cachetools
-
+from google.auth import _cache
 from google.auth import _helpers
 from google.auth import _service_account_info
 from google.auth import crypt
@@ -630,7 +629,7 @@ class OnDemandCredentials(
             token_lifetime (int): The amount of time in seconds for
                 which the token is valid. Defaults to 1 hour.
             max_cache_size (int): The maximum number of JWT tokens to keep in
-                cache. Tokens are cached using :class:`cachetools.LRUCache`.
+                cache. Tokens are cached using :class:`google.auth._cache.LRUCache`.
             quota_project_id (Optional[str]): The project ID used for quota
                 and billing.
 
@@ -646,7 +645,7 @@ class OnDemandCredentials(
             additional_claims = {}
 
         self._additional_claims = additional_claims
-        self._cache = cachetools.LRUCache(maxsize=max_cache_size)
+        self._cache = _cache.LRUCache(maxsize=max_cache_size)
 
     @classmethod
     def _from_signer_and_info(cls, signer, info, **kwargs):
