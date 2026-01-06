@@ -394,6 +394,7 @@ _MERGE_BY_TYPE = {
     TypeCode.PROTO: _merge_string,
     TypeCode.INTERVAL: _merge_string,
     TypeCode.ENUM: _merge_string,
+    TypeCode.UUID: _merge_string,
 }
 
 

@@ -20,6 +20,7 @@ import math
 import struct
 import threading
 import time
+import uuid
 import pytest
 
 import grpc
@@ -3054,6 +3055,18 @@ def test_execute_sql_returning_transfinite_floats(sessions_database, not_postgre
 
         # NaNs cannot be searched for by equality.
         assert math.isnan(float_array[2])
+
+
+def test_execute_sql_w_uuid_bindings(sessions_database, database_dialect):
+    if database_dialect == DatabaseDialect.POSTGRESQL:
+        pytest.skip("UUID parameter type is not yet supported in PostgreSQL dialect.")
+    _bind_test_helper(
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.UUID,
+        uuid.uuid4(),
+        [uuid.uuid4(), uuid.uuid4()],
+    )
 
 
 def test_partition_query(sessions_database, not_emulator, not_experimental_host):

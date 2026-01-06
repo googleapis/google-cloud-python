@@ -21,6 +21,7 @@ import time
 import base64
 import threading
 import logging
+import uuid
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -298,6 +299,8 @@ def _make_value_pb(value):
             return Value(string_value=base64.b64encode(value))
     if isinstance(value, Interval):
         return Value(string_value=str(value))
+    if isinstance(value, uuid.UUID):
+        return Value(string_value=str(value))
 
     raise ValueError("Unknown type: %s" % (value,))
 
@@ -399,6 +402,8 @@ def _get_type_decoder(field_type, field_name, column_info=None):
         return _parse_numeric
     elif type_code == TypeCode.JSON:
         return _parse_json
+    elif type_code == TypeCode.UUID:
+        return _parse_uuid
     elif type_code == TypeCode.PROTO:
         return lambda value_pb: _parse_proto(value_pb, column_info, field_name)
     elif type_code == TypeCode.ENUM:
@@ -479,6 +484,10 @@ def _parse_numeric(value_pb):
 
 def _parse_json(value_pb):
     return JsonObject.from_str(value_pb.string_value)
+
+
+def _parse_uuid(value_pb):
+    return uuid.UUID(value_pb.string_value)
 
 
 def _parse_proto(value_pb, column_info, field_name):

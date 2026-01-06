@@ -14,6 +14,7 @@
 
 
 import unittest
+import uuid
 import mock
 
 from opentelemetry.sdk.resources import Resource
@@ -785,6 +786,18 @@ class Test_parse_value_pb(unittest.TestCase):
         self.assertEqual(
             self._callFUT(value_pb, field_type, field_name, column_info), VALUE
         )
+
+    def test_w_uuid(self):
+        from google.protobuf.struct_pb2 import Value
+        from google.cloud.spanner_v1 import Type
+        from google.cloud.spanner_v1 import TypeCode
+
+        VALUE = uuid.uuid4()
+        field_type = Type(code=TypeCode.UUID)
+        field_name = "uuid_column"
+        value_pb = Value(string_value=str(VALUE))
+
+        self.assertEqual(self._callFUT(value_pb, field_type, field_name), VALUE)
 
 
 class Test_parse_list_value_pbs(unittest.TestCase):
