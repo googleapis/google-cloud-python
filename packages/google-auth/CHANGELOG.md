@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.47.0](https://github.com/googleapis/google-auth-library-python/compare/v2.46.0...v2.47.0) (2026-01-06)
+
+
+### Features
+
+* drop `cachetools` dependency in favor of simple local implementation (#1590) ([5c07e1c4f52bc77a1b16fa3b7b3c5269c242f6f4](https://github.com/googleapis/google-auth-library-python/commit/5c07e1c4f52bc77a1b16fa3b7b3c5269c242f6f4))
+
+
+### Bug Fixes
+
+* Python 3.8 support (#1918) ([60dc20014a35ec4ba71e8065b9a33ecbdbeca97a](https://github.com/googleapis/google-auth-library-python/commit/60dc20014a35ec4ba71e8065b9a33ecbdbeca97a))
+
 ## [2.46.0](https://github.com/googleapis/google-auth-library-python/compare/v2.45.0...v2.46.0) (2026-01-05)
 
 
