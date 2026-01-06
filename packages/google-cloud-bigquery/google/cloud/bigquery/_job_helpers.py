@@ -49,6 +49,7 @@ import warnings
 import google.api_core.exceptions as core_exceptions
 from google.api_core import retry as retries
 
+from google.cloud.bigquery import enums
 from google.cloud.bigquery import job
 import google.cloud.bigquery.job.query
 import google.cloud.bigquery.query
@@ -265,6 +266,7 @@ def _to_query_request(
     query: str,
     location: Optional[str] = None,
     timeout: Optional[float] = None,
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
 ) -> Dict[str, Any]:
     """Transform from Job resource to QueryRequest resource.
 
@@ -285,10 +287,15 @@ def _to_query_request(
     # Default to standard SQL.
     request_body.setdefault("useLegacySql", False)
 
-    # Since jobs.query can return results, ensure we use the lossless timestamp
-    # format. See: https://github.com/googleapis/python-bigquery/issues/395
     request_body.setdefault("formatOptions", {})
-    request_body["formatOptions"]["useInt64Timestamp"] = True  # type: ignore
+
+    # Cannot specify both use_int64_timestamp and timestamp_output_format.
+    if timestamp_precision == enums.TimestampPrecision.PICOSECOND:
+        request_body["formatOptions"]["timestampOutputFormat"] = "ISO8601_STRING"  # type: ignore
+    else:
+        # Since jobs.query can return results, ensure we use the lossless
+        # timestamp format. See: https://github.com/googleapis/python-bigquery/issues/395
+        request_body["formatOptions"]["useInt64Timestamp"] = True  # type: ignore
 
     if timeout is not None:
         # Subtract a buffer for context switching, network latency, etc.
@@ -370,6 +377,7 @@ def query_jobs_query(
     retry: retries.Retry,
     timeout: Optional[float],
     job_retry: Optional[retries.Retry],
+    timestamp_precision: Optional[enums.TimestampPrecision] = None,
 ) -> job.QueryJob:
     """Initiate a query using jobs.query with jobCreationMode=JOB_CREATION_REQUIRED.
 
@@ -377,7 +385,11 @@ def query_jobs_query(
     """
     path = _to_query_path(project)
     request_body = _to_query_request(
-        query=query, job_config=job_config, location=location, timeout=timeout
+        query=query,
+        job_config=job_config,
+        location=location,
+        timeout=timeout,
+        timestamp_precision=timestamp_precision,
     )
 
     def do_query():

@@ -21,6 +21,7 @@ from google.api_core import exceptions
 import pytest
 
 from google.cloud import bigquery
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.query import ArrayQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameterType
@@ -546,3 +547,15 @@ def test_session(bigquery_client: bigquery.Client, query_api_method: str):
 
     assert len(rows) == 1
     assert rows[0][0] == 5
+
+
+def test_query_picosecond(bigquery_client: bigquery.Client):
+    job = bigquery_client.query(
+        "SELECT CAST('2025-10-20' AS TIMESTAMP(12));",
+        api_method="QUERY",
+        timestamp_precision=enums.TimestampPrecision.PICOSECOND,
+    )
+
+    result = job.result()
+    rows = list(result)
+    assert rows[0][0] == "2025-10-20T00:00:00.000000000000Z"

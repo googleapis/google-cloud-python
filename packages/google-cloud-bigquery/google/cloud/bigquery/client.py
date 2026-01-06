@@ -3469,6 +3469,8 @@ class Client(ClientWithProject):
         timeout: TimeoutType = DEFAULT_TIMEOUT,
         job_retry: Optional[retries.Retry] = DEFAULT_JOB_RETRY,
         api_method: Union[str, enums.QueryApiMethod] = enums.QueryApiMethod.INSERT,
+        *,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
     ) -> job.QueryJob:
         """Run a SQL query.
 
@@ -3524,6 +3526,11 @@ class Client(ClientWithProject):
 
                 See :class:`google.cloud.bigquery.enums.QueryApiMethod` for
                 details on the difference between the query start methods.
+            timestamp_precision (Optional[enums.TimestampPrecision]):
+                [Private Preview] If set to `enums.TimestampPrecision.PICOSECOND`,
+                timestamp columns of picosecond precision will be returned with
+                full precision. Otherwise, will truncate to microsecond
+                precision. Only applies when api_method == `enums.QueryApiMethod.QUERY`.
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
@@ -3541,6 +3548,15 @@ class Client(ClientWithProject):
         if job_id_given and api_method == enums.QueryApiMethod.QUERY:
             raise TypeError(
                 "`job_id` was provided, but the 'QUERY' `api_method` was requested."
+            )
+
+        if (
+            timestamp_precision == enums.TimestampPrecision.PICOSECOND
+            and api_method != enums.QueryApiMethod.QUERY
+        ):
+            raise ValueError(
+                "Picosecond Timestamp is only supported when `api_method "
+                "== enums.QueryApiMethod.QUERY`."
             )
 
         if project is None:
@@ -3568,6 +3584,7 @@ class Client(ClientWithProject):
                 retry,
                 timeout,
                 job_retry,
+                timestamp_precision=timestamp_precision,
             )
         elif api_method == enums.QueryApiMethod.INSERT:
             return _job_helpers.query_jobs_insert(
@@ -4062,6 +4079,8 @@ class Client(ClientWithProject):
         page_size: Optional[int] = None,
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
+        *,
+        timestamp_precision: Optional[enums.TimestampPrecision] = None,
     ) -> RowIterator:
         """List the rows of the table.
 
@@ -4110,6 +4129,11 @@ class Client(ClientWithProject):
                 before using ``retry``.
                 If multiple requests are made under the hood, ``timeout``
                 applies to each individual request.
+            timestamp_precision (Optional[enums.TimestampPrecision]):
+                [Private Preview] If set to `enums.TimestampPrecision.PICOSECOND`,
+                timestamp columns of picosecond precision will be returned with
+                full precision. Otherwise, will truncate to microsecond
+                precision.
 
         Returns:
             google.cloud.bigquery.table.RowIterator:
@@ -4143,7 +4167,12 @@ class Client(ClientWithProject):
         if start_index is not None:
             params["startIndex"] = start_index
 
-        params["formatOptions.useInt64Timestamp"] = True
+        # Cannot specify both use_int64_timestamp and timestamp_output_format.
+        if timestamp_precision == enums.TimestampPrecision.PICOSECOND:
+            params["formatOptions.timestampOutputFormat"] = "ISO8601_STRING"
+        else:
+            params["formatOptions.useInt64Timestamp"] = True
+
         row_iterator = RowIterator(
             client=self,
             api_request=functools.partial(self._call_api, retry, timeout=timeout),

@@ -335,6 +335,7 @@ def test_query_jobs_query_defaults():
     assert request["location"] == "asia-northeast1"
     assert request["formatOptions"]["useInt64Timestamp"] is True
     assert "timeoutMs" not in request
+    assert "timestampOutputFormat" not in request["formatOptions"]
 
 
 def test_query_jobs_query_sets_format_options():
@@ -398,6 +399,35 @@ def test_query_jobs_query_sets_timeout(timeout, expected_timeout):
     # See: https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#QueryRequest
     request = call_kwargs["data"]
     assert request["timeoutMs"] == expected_timeout
+
+
+def test_query_jobs_query_picosecond():
+    mock_client = mock.create_autospec(Client)
+    mock_retry = mock.create_autospec(retries.Retry)
+    mock_job_retry = mock.create_autospec(retries.Retry)
+    mock_client._call_api.return_value = {
+        "jobReference": {
+            "projectId": "test-project",
+            "jobId": "abc",
+            "location": "asia-northeast1",
+        }
+    }
+    _job_helpers.query_jobs_query(
+        mock_client,
+        "SELECT * FROM test",
+        None,
+        "asia-northeast1",
+        "test-project",
+        mock_retry,
+        None,
+        mock_job_retry,
+        enums.TimestampPrecision.PICOSECOND,
+    )
+
+    _, call_kwargs = mock_client._call_api.call_args
+    request = call_kwargs["data"]
+    assert "useInt64Timestamp" not in request["formatOptions"]
+    assert request["formatOptions"]["timestampOutputFormat"] == "ISO8601_STRING"
 
 
 def test_query_and_wait_uses_jobs_insert():

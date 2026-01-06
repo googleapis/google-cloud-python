@@ -1061,8 +1061,39 @@ class TestLoadJobConfig(_Base):
             "parquetOptions": {"enableListInference": True},
             "columnNameCharacterMap": "V2",
             "someNewField": "some-value",
+            "timestampTargetPrecision": [6, 12],
         }
     }
+
+    def test_timestamp_target_precision_missing(self):
+        config = self._get_target_class()()
+        self.assertIsNone(config.timestamp_target_precision)
+
+    def test_timestamp_target_precision_hit(self):
+        timestamp_target_precision = [6, 12]
+        config = self._get_target_class()()
+        config._properties["load"][
+            "timestampTargetPrecision"
+        ] = timestamp_target_precision
+        self.assertEqual(config.timestamp_target_precision, timestamp_target_precision)
+
+    def test_timestamp_target_precision_setter(self):
+        timestamp_target_precision = [6, 12]
+        config = self._get_target_class()()
+        config.timestamp_target_precision = timestamp_target_precision
+        self.assertEqual(
+            config._properties["load"]["timestampTargetPrecision"],
+            timestamp_target_precision,
+        )
+
+    def test_timestamp_target_precision_setter_w_none(self):
+        timestamp_target_precision = [6, 12]
+        config = self._get_target_class()()
+        config._properties["load"][
+            "timestampTargetPrecision"
+        ] = timestamp_target_precision
+        config.timestamp_target_precision = None
+        self.assertFalse("timestampTargetPrecision" in config._properties["load"])
 
     def test_from_api_repr(self):
         from google.cloud.bigquery.job import (
@@ -1103,6 +1134,7 @@ class TestLoadJobConfig(_Base):
         self.assertTrue(config.parquet_options.enable_list_inference)
         self.assertEqual(config.column_name_character_map, ColumnNameCharacterMap.V2)
         self.assertEqual(config._properties["load"]["someNewField"], "some-value")
+        self.assertEqual(config.timestamp_target_precision, [6, 12])
 
     def test_to_api_repr(self):
         from google.cloud.bigquery.job import (
@@ -1140,6 +1172,7 @@ class TestLoadJobConfig(_Base):
         config.parquet_options = parquet_options
         config.column_name_character_map = ColumnNameCharacterMap.V2
         config._properties["load"]["someNewField"] = "some-value"
+        config.timestamp_target_precision = [6, 12]
 
         api_repr = config.to_api_repr()
 

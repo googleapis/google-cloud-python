@@ -32,6 +32,8 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _RFC3339_MICROS
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
+from google.cloud.bigquery import enums
+
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.api_core import client_options as client_options_lib
 
@@ -252,11 +254,15 @@ class CellDataParser:
         if _not_null(value, field):
             return base64.standard_b64decode(_to_bytes(value))
 
-    def timestamp_to_py(self, value, field):
-        """Coerce 'value' to a datetime, if set or not nullable."""
+    def timestamp_to_py(self, value, field) -> Union[datetime.datetime, str, None]:
+        """Coerce 'value' to a datetime, if set or not nullable. If timestamp
+        is of picosecond precision, preserve the string format."""
+        if field.timestamp_precision == enums.TimestampPrecision.PICOSECOND:
+            return value
         if _not_null(value, field):
             # value will be a integer in seconds, to microsecond precision, in UTC.
             return _datetime_from_microseconds(int(value))
+        return None
 
     def datetime_to_py(self, value, field):
         """Coerce 'value' to a datetime, if set or not nullable.

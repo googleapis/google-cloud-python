@@ -132,3 +132,23 @@ def test_list_rows_range(bigquery_client: bigquery.Client, scalars_table_csv: st
 
     row_null = rows[1]
     assert row_null["range_date"] is None
+
+
+def test_list_rows_pico(bigquery_client: bigquery.Client, scalars_table_pico: str):
+    rows = bigquery_client.list_rows(
+        scalars_table_pico, timestamp_precision=enums.TimestampPrecision.PICOSECOND
+    )
+    rows = list(rows)
+    row = rows[0]
+    assert row["pico_col"] == "2025-01-01T00:00:00.123456789012Z"
+
+
+def test_list_rows_pico_truncate(
+    bigquery_client: bigquery.Client, scalars_table_pico: str
+):
+    # For a picosecond timestamp column, if the user does not explicitly set
+    # timestamp_precision, will return truncated microsecond precision.
+    rows = bigquery_client.list_rows(scalars_table_pico)
+    rows = list(rows)
+    row = rows[0]
+    assert row["pico_col"] == "1735689600123456"

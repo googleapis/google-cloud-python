@@ -1295,6 +1295,29 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 2)
 
+    def test_load_table_from_csv_w_picosecond_timestamp(self):
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_json_basic_use".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        table_schema = Config.CLIENT.schema_from_json(DATA_PATH / "pico_schema.json")
+        # create the table before loading so that the column order is predictable
+        table = helpers.retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        # do not pass an explicit job config to trigger automatic schema detection
+        with open(DATA_PATH / "pico.csv", "rb") as f:
+            load_job = Config.CLIENT.load_table_from_file(f, table_id)
+            load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(list(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 3)
+
     def test_load_avro_from_uri_then_dump_table(self):
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import SourceFormat

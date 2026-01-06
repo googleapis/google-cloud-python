@@ -290,15 +290,24 @@ def test_bytes_to_py_w_base64_encoded_text(object_under_test):
 def test_timestamp_to_py_w_string_int_value(object_under_test):
     from google.cloud._helpers import _EPOCH
 
-    coerced = object_under_test.timestamp_to_py("1234567", object())
+    coerced = object_under_test.timestamp_to_py("1234567", create_field())
     assert coerced == _EPOCH + datetime.timedelta(seconds=1, microseconds=234567)
 
 
 def test_timestamp_to_py_w_int_value(object_under_test):
     from google.cloud._helpers import _EPOCH
 
-    coerced = object_under_test.timestamp_to_py(1234567, object())
+    coerced = object_under_test.timestamp_to_py(1234567, create_field())
     assert coerced == _EPOCH + datetime.timedelta(seconds=1, microseconds=234567)
+
+
+def test_timestamp_to_py_w_picosecond_precision(object_under_test):
+    from google.cloud.bigquery import enums
+
+    pico_schema = create_field(timestamp_precision=enums.TimestampPrecision.PICOSECOND)
+    pico_timestamp = "2025-01-01T00:00:00.123456789012Z"
+    coerced = object_under_test.timestamp_to_py(pico_timestamp, pico_schema)
+    assert coerced == pico_timestamp
 
 
 def test_datetime_to_py_w_string_value(object_under_test):
