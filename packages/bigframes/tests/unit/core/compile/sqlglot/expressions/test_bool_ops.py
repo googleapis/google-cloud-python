@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
 
 import bigframes.pandas as bpd
@@ -24,6 +25,7 @@ def test_and_op(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_and_int"] = bf_df["int64_col"] & bf_df["int64_col"]
     bf_df["bool_and_bool"] = bf_df["bool_col"] & bf_df["bool_col"]
+    bf_df["bool_and_null"] = bf_df["bool_col"] & pd.NA  # type: ignore
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
@@ -32,6 +34,7 @@ def test_or_op(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_and_int"] = bf_df["int64_col"] | bf_df["int64_col"]
     bf_df["bool_and_bool"] = bf_df["bool_col"] | bf_df["bool_col"]
+    bf_df["bool_and_null"] = bf_df["bool_col"] | pd.NA  # type: ignore
     snapshot.assert_match(bf_df.sql, "out.sql")
 
 
@@ -40,4 +43,5 @@ def test_xor_op(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_and_int"] = bf_df["int64_col"] ^ bf_df["int64_col"]
     bf_df["bool_and_bool"] = bf_df["bool_col"] ^ bf_df["bool_col"]
+    bf_df["bool_and_null"] = bf_df["bool_col"] ^ pd.NA  # type: ignore
     snapshot.assert_match(bf_df.sql, "out.sql")
