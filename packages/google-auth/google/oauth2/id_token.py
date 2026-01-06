@@ -54,6 +54,7 @@ library like `CacheControl`_ to create a cache-aware
     http://openid.net/specs/openid-connect-core-1_0.html#IDToken
 .. _CacheControl: https://cachecontrol.readthedocs.io
 """
+from __future__ import annotations
 
 import http.client as http_client
 import json
