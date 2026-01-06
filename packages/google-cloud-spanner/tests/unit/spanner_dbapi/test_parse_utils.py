@@ -200,6 +200,29 @@ class TestParseUtils(unittest.TestCase):
             ),
         )
 
+    def test_run_partition_classify_stmt_long_id(self):
+        # Regression test for "Maximum grouping depth exceeded" with sqlparse
+        long_id = "a" * 5000
+        query = f"RUN PARTITION {long_id}"
+        parsed_statement = classify_statement(query)
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement(query),
+                ClientSideStatementType.RUN_PARTITION,
+                [long_id],
+            ),
+        )
+
+    def test_run_partition_classify_stmt_incomplete(self):
+        # "RUN PARTITION" without ID should be classified as UNKNOWN (not None)
+        # because it falls through the specific check and sqlparse handles it.
+        query = "RUN PARTITION"
+        parsed_statement = classify_statement(query)
+        self.assertEqual(parsed_statement.statement_type, StatementType.UNKNOWN)
+        self.assertEqual(parsed_statement.statement.sql, query)
+
     def test_run_partitioned_query_classify_stmt(self):
         parsed_statement = classify_statement(
             " RUN PARTITIONED  QUERY  SELECT s.SongName FROM Songs AS s  "

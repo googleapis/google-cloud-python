@@ -233,6 +233,11 @@ def classify_statement(query, args=None):
     :rtype: ParsedStatement
     :returns: parsed statement attributes.
     """
+    # Check for RUN PARTITION command to avoid sqlparse processing it.
+    # sqlparse fails with "Maximum grouping depth exceeded" on long partition IDs.
+    if re.match(r"^\s*RUN\s+PARTITION\s+.+", query, re.IGNORECASE):
+        return client_side_statement_parser.parse_stmt(query.strip())
+
     # sqlparse will strip Cloud Spanner comments,
     # still, special commenting styles, like
     # PostgreSQL dollar quoted comments are not

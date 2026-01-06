@@ -555,6 +555,9 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         "google-cloud-testutils",
         # dependencies of google-cloud-testutils"
         "click",
+        # dependency of google-auth
+        "cffi",
+        "cryptography",
     ]
 
     for dep in prerel_deps:
