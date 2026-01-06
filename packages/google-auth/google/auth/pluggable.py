@@ -201,11 +201,6 @@ class Credentials(external_account.Credentials):
                 else:
                     return subject_token
 
-        if not _helpers.is_python_3():
-            raise exceptions.RefreshError(
-                "Pluggable auth is only supported for python 3.7+"
-            )
-
         # Inject env vars.
         env = os.environ.copy()
         self._inject_env_variables(env)
@@ -262,11 +257,6 @@ class Credentials(external_account.Credentials):
                 "Revoke is only enabled under interactive mode."
             )
         self._validate_running_mode()
-
-        if not _helpers.is_python_3():
-            raise exceptions.RefreshError(
-                "Pluggable auth is only supported for python 3.7+"
-            )
 
         # Inject variables
         env = os.environ.copy()

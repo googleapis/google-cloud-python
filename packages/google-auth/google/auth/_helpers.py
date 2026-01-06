@@ -334,7 +334,8 @@ def is_python_3():
     Returns:
         bool: True if the Python interpreter is Python 3 and False otherwise.
     """
-    return sys.version_info > (3, 0)
+
+    return sys.version_info > (3, 0)  # pragma: NO COVER
 
 
 def _hash_sensitive_info(data: Union[dict, list]) -> Union[dict, list, str]:
