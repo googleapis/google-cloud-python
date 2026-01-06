@@ -197,7 +197,7 @@ def generate_write_requests(pyarrow_table):
                 batches.append(batch_left)
                 continue
 
-            # If the batch is single row and still larger than max_request_size
+            # If the batch is single row and still larger than max_request_bytes
             else:
                 # If current batches is empty, throw error
                 if len(current_batches) == 0:
