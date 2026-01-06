@@ -60,6 +60,7 @@ UNIT_TEST_STANDARD_DEPENDENCIES = [
     "pytest",
     "pytest-cov",
     "pytest-asyncio",
+    "pytest-xdist",
 ]
 UNIT_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
 UNIT_TEST_LOCAL_DEPENDENCIES: List[str] = []
@@ -253,6 +254,9 @@ def unit(session, protobuf_implementation):
     if protobuf_implementation == "cpp":
         session.install("protobuf<4")
 
+    # Limit to 4 CPUs for now
+    concurrent_args = ["-n", "4"]
+
     # Run py.test against the unit tests.
     session.run(
         "py.test",
@@ -266,6 +270,7 @@ def unit(session, protobuf_implementation):
         "--cov-fail-under=0",
         os.path.join("tests", "unit"),
         *session.posargs,
+        *concurrent_args,
         env={
             "PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION": protobuf_implementation,
         },
