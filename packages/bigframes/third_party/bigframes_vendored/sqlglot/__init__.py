@@ -74,17 +74,6 @@ if t.TYPE_CHECKING:
 logger = logging.getLogger("sqlglot")
 
 
-try:
-    from bigframes_vendored.sqlglot._version import (  # noqa: F401
-        __version__,
-        __version_tuple__,
-    )
-except ImportError:
-    logger.error(
-        "Unable to set __version__, run `pip install -e .` or `python setup.py develop` first."
-    )
-
-
 pretty = False
 """Whether to format generated SQL by default."""
 
