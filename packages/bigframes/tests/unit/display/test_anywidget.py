@@ -80,8 +80,31 @@ def test_navigation_to_invalid_page_resets_to_valid_page_without_deadlock():
             signal.alarm(0)
 
 
+def test_css_contains_dark_mode_selectors():
+    """Test that the CSS for dark mode is loaded with all required selectors."""
+    from bigframes.display.anywidget import TableWidget
+
+    mock_df = mock.create_autospec(bigframes.dataframe.DataFrame, instance=True)
+    # mock_df.columns and mock_df.dtypes are needed for __init__
+    mock_df.columns = ["col1"]
+    mock_df.dtypes = {"col1": "object"}
+
+    # Mock _block to avoid AttributeError during _set_table_html
+    mock_block = mock.Mock()
+    mock_block.has_index = False
+    mock_df._block = mock_block
+
+    with mock.patch.object(TableWidget, "_initial_load"):
+        widget = TableWidget(mock_df)
+        css = widget._css
+        assert "@media (prefers-color-scheme: dark)" in css
+        assert 'html[theme="dark"]' in css
+        assert 'body[data-theme="dark"]' in css
+
+
 @pytest.fixture
 def mock_df():
+    """A mock DataFrame that can be used in multiple tests."""
     df = mock.create_autospec(bigframes.dataframe.DataFrame, instance=True)
     df.columns = ["col1", "col2"]
     df.dtypes = {"col1": "int64", "col2": "int64"}
@@ -104,6 +127,7 @@ def mock_df():
 
 
 def test_sorting_single_column(mock_df):
+    """Test that the widget can be sorted by a single column."""
     from bigframes.display.anywidget import TableWidget
 
     with bigframes.option_context("display.repr_mode", "anywidget"):
@@ -122,6 +146,7 @@ def test_sorting_single_column(mock_df):
 
 
 def test_sorting_multi_column(mock_df):
+    """Test that the widget can be sorted by multiple columns."""
     from bigframes.display.anywidget import TableWidget
 
     with bigframes.option_context("display.repr_mode", "anywidget"):
@@ -137,6 +162,7 @@ def test_sorting_multi_column(mock_df):
 
 
 def test_page_size_change_resets_sort(mock_df):
+    """Test that changing the page size resets the sorting."""
     from bigframes.display.anywidget import TableWidget
 
     with bigframes.option_context("display.repr_mode", "anywidget"):

@@ -14,24 +14,83 @@
  * limitations under the License.
  */
 
-.bigframes-widget {
+/* Increase specificity to override framework styles without !important */
+.bigframes-widget.bigframes-widget {
+  /* Default Light Mode Variables */
+  --bf-bg: white;
+  --bf-border-color: #ccc;
+  --bf-error-bg: #fbe;
+  --bf-error-border: red;
+  --bf-error-fg: black;
+  --bf-fg: black;
+  --bf-header-bg: #f5f5f5;
+  --bf-null-fg: gray;
+  --bf-row-even-bg: #f5f5f5;
+  --bf-row-odd-bg: white;
+
+  background-color: var(--bf-bg);
+  box-sizing: border-box;
+  color: var(--bf-fg);
   display: flex;
   flex-direction: column;
+  font-family:
+    '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.bigframes-widget * {
+  box-sizing: border-box;
+}
+
+/* Dark Mode Overrides:
+ * 1. @media (prefers-color-scheme: dark) - System-wide dark mode
+ * 2. .bigframes-dark-mode - Explicit class for VSCode theme detection
+ * 3. html[theme="dark"], body[data-theme="dark"] - Colab/Pantheon manual override
+ */
+@media (prefers-color-scheme: dark) {
+  .bigframes-widget.bigframes-widget {
+    --bf-bg: var(--vscode-editor-background, #202124);
+    --bf-border-color: #444;
+    --bf-error-bg: #511;
+    --bf-error-border: #f88;
+    --bf-error-fg: #fcc;
+    --bf-fg: white;
+    --bf-header-bg: var(--vscode-editor-background, black);
+    --bf-null-fg: #aaa;
+    --bf-row-even-bg: #202124;
+    --bf-row-odd-bg: #383838;
+  }
+}
+
+.bigframes-widget.bigframes-dark-mode.bigframes-dark-mode,
+html[theme='dark'] .bigframes-widget.bigframes-widget,
+body[data-theme='dark'] .bigframes-widget.bigframes-widget {
+  --bf-bg: var(--vscode-editor-background, #202124);
+  --bf-border-color: #444;
+  --bf-error-bg: #511;
+  --bf-error-border: #f88;
+  --bf-error-fg: #fcc;
+  --bf-fg: white;
+  --bf-header-bg: var(--vscode-editor-background, black);
+  --bf-null-fg: #aaa;
+  --bf-row-even-bg: #202124;
+  --bf-row-odd-bg: #383838;
 }
 
 .bigframes-widget .table-container {
+  background-color: var(--bf-bg);
+  margin: 0;
   max-height: 620px;
   overflow: auto;
+  padding: 0;
 }
 
 .bigframes-widget .footer {
   align-items: center;
-  /* TODO(b/460861328): We will support dark mode in a media selector once we
-   * determine how to override the background colors as well. */
-  color: black;
+  background-color: var(--bf-bg);
+  color: var(--bf-fg);
   display: flex;
-  font-family:
-    "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
   font-size: 0.8rem;
   justify-content: space-between;
   padding: 8px;
@@ -70,21 +129,49 @@
   margin-right: 8px;
 }
 
-.bigframes-widget table {
+.bigframes-widget table.bigframes-widget-table,
+.bigframes-widget table.dataframe {
+  background-color: var(--bf-bg);
+  border: 1px solid var(--bf-border-color);
   border-collapse: collapse;
-  /* TODO(b/460861328): We will support dark mode in a media selector once we
-   * determine how to override the background colors as well. */
-  color: black;
+  border-spacing: 0;
+  box-shadow: none;
+  color: var(--bf-fg);
+  margin: 0;
+  outline: none;
   text-align: left;
+  width: auto; /* Fix stretching */
+}
+
+.bigframes-widget tr {
+  border: none;
 }
 
 .bigframes-widget th {
-  background-color: var(--colab-primary-surface-color, var(--jp-layout-color0));
+  background-color: var(--bf-header-bg);
+  border: 1px solid var(--bf-border-color);
+  color: var(--bf-fg);
   padding: 0;
   position: sticky;
   text-align: left;
   top: 0;
   z-index: 1;
+}
+
+.bigframes-widget td {
+  border: 1px solid var(--bf-border-color);
+  color: var(--bf-fg);
+  padding: 0.5em;
+}
+
+.bigframes-widget table tbody tr:nth-child(odd),
+.bigframes-widget table tbody tr:nth-child(odd) td {
+  background-color: var(--bf-row-odd-bg);
+}
+
+.bigframes-widget table tbody tr:nth-child(even),
+.bigframes-widget table tbody tr:nth-child(even) td {
+  background-color: var(--bf-row-even-bg);
 }
 
 .bigframes-widget .bf-header-content {
@@ -106,8 +193,13 @@
 }
 
 .bigframes-widget button {
+  background-color: transparent;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  color: inherit;
   cursor: pointer;
   display: inline-block;
+  padding: 2px 8px;
   text-align: center;
   text-decoration: none;
   user-select: none;
@@ -120,11 +212,10 @@
 }
 
 .bigframes-widget .bigframes-error-message {
-  background-color: #fbe;
-  border: 1px solid red;
+  background-color: var(--bf-error-bg);
+  border: 1px solid var(--bf-error-border);
   border-radius: 4px;
-  font-family:
-    "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", sans-serif;
+  color: var(--bf-error-fg);
   font-size: 14px;
   margin-bottom: 8px;
   padding: 8px;
@@ -139,14 +230,9 @@
 }
 
 .bigframes-widget .null-value {
-  color: gray;
+  color: var(--bf-null-fg);
 }
 
-.bigframes-widget td {
-  padding: 0.5em;
-}
-
-.bigframes-widget tr:hover td,
-.bigframes-widget td.row-hover {
-  background-color: var(--colab-hover-surface-color, var(--jp-layout-color2));
+.bigframes-widget .debug-info {
+  border-top: 1px solid var(--bf-border-color);
 }
