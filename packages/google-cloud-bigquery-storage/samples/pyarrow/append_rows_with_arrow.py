@@ -235,7 +235,7 @@ def verify_result(client, table, futures):
     assert len(query_result) == TABLE_LENGTH
 
     # Verify that table was split into multiple requests.
-    assert len(futures) == 3
+    assert len(futures) == 4
 
 
 def main(project_id, dataset):
