@@ -375,6 +375,20 @@ class FunctionClient:
         )
         return entry_point
 
+    @google.api_core.retry.Retry(
+        predicate=google.api_core.retry.if_exception_type(ValueError),
+        initial=1.0,
+        maximum=10.0,
+        multiplier=2.0,
+        deadline=300.0,  # Wait up to 5 minutes for propagation
+    )
+    def _get_cloud_function_endpoint_with_retry(self, name):
+        endpoint = self.get_cloud_function_endpoint(name)
+        if not endpoint:
+            # Raising ValueError triggers the retry predicate
+            raise ValueError(f"Endpoint for {name} not yet available.")
+        return endpoint
+
     def create_cloud_function(
         self,
         def_,
@@ -516,11 +530,14 @@ class FunctionClient:
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
+            endpoint = None
             try:
                 operation = self._cloud_functions_client.create_function(
                     request=create_function_request
                 )
-                operation.result()
+                # operation.result() returns the Function object upon completion
+                function_obj = operation.result()
+                endpoint = function_obj.service_config.uri
 
                 # Cleanup
                 os.remove(archive_path)
@@ -535,12 +552,14 @@ class FunctionClient:
                 # we created it. This error is safe to ignore.
                 pass
 
-        # Fetch the endpoint of the just created function
-        endpoint = self.get_cloud_function_endpoint(random_name)
+        # Fetch the endpoint with retries if it wasn't returned by the operation
         if not endpoint:
-            raise bf_formatting.create_exception_with_feedback_link(
-                ValueError, "Couldn't fetch the http endpoint."
-            )
+            try:
+                endpoint = self._get_cloud_function_endpoint_with_retry(random_name)
+            except Exception as e:
+                raise bf_formatting.create_exception_with_feedback_link(
+                    ValueError, f"Couldn't fetch the http endpoint: {e}"
+                )
 
         logger.info(
             f"Successfully created cloud function {random_name} with uri ({endpoint})"
