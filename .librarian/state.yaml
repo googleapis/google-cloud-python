@@ -293,7 +293,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-alloydb
     version: 0.6.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
     apis:
       - path: google/cloud/alloydb/v1beta
         service_config: alloydb_v1beta.yaml
@@ -3265,7 +3265,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-speech
     version: 2.35.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
     apis:
       - path: google/cloud/speech/v1
         service_config: speech_v1.yaml
@@ -3322,7 +3322,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-storagebatchoperations
     version: 0.2.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
     apis:
       - path: google/cloud/storagebatchoperations/v1
         service_config: storagebatchoperations_v1.yaml
@@ -4262,7 +4262,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
