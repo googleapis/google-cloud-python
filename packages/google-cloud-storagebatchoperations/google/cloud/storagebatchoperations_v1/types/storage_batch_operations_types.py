@@ -31,6 +31,7 @@ __protobuf__ = proto.module(
         "PutObjectHold",
         "DeleteObject",
         "RewriteObject",
+        "ObjectRetention",
         "PutMetadata",
         "ErrorSummary",
         "ErrorLogEntry",
@@ -106,6 +107,12 @@ class Job(proto.Message):
             with sample error log entries.
         state (google.cloud.storagebatchoperations_v1.types.Job.State):
             Output only. State of the job.
+        dry_run (bool):
+            Optional. If true, the job will run in dry
+            run mode, returning the total object count and,
+            if the object configuration is a prefix list,
+            the bytes found from source. No transformations
+            will be performed.
     """
 
     class State(proto.Enum):
@@ -202,6 +209,10 @@ class Job(proto.Message):
         number=15,
         enum=State,
     )
+    dry_run: bool = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
 
 
 class BucketList(proto.Message):
@@ -275,15 +286,13 @@ class Manifest(proto.Message):
             bucket. Each row in the file must include the object details
             i.e. BucketId and Name. Generation may optionally be
             specified. When it is not specified the live object is acted
-            upon. ``manifest_location`` should either be
-
-            1) An absolute path to the object in the format of
-               ``gs://bucket_name/path/file_name.csv``.
-            2) An absolute path with a single wildcard character in the
-               file name, for example
-               ``gs://bucket_name/path/file_name*.csv``. If manifest
-               location is specified with a wildcard, objects in all
-               manifest files matching the pattern will be acted upon.
+            upon. ``manifest_location`` should either be 1) An absolute
+            path to the object in the format of
+            ``gs://bucket_name/path/file_name.csv``. 2) An absolute path
+            with a single wildcard character in the file name, for
+            example ``gs://bucket_name/path/file_name*.csv``. If
+            manifest location is specified with a wildcard, objects in
+            all manifest files matching the pattern will be acted upon.
     """
 
     manifest_location: str = proto.Field(
@@ -414,6 +423,54 @@ class RewriteObject(proto.Message):
     )
 
 
+class ObjectRetention(proto.Message):
+    r"""Describes options for object retention update.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        retain_until_time (str):
+            Required. The time when the object will be
+            retained until. UNSET will clear the retention.
+            Must be specified in RFC 3339 format e.g.
+            YYYY-MM-DD'T'HH:MM:SS.SS'Z' or
+            YYYY-MM-DD'T'HH:MM:SS'Z'.
+
+            This field is a member of `oneof`_ ``_retain_until_time``.
+        retention_mode (google.cloud.storagebatchoperations_v1.types.ObjectRetention.RetentionMode):
+            Required. The retention mode of the object.
+
+            This field is a member of `oneof`_ ``_retention_mode``.
+    """
+
+    class RetentionMode(proto.Enum):
+        r"""Describes the retention mode.
+
+        Values:
+            RETENTION_MODE_UNSPECIFIED (0):
+                If set and retain_until_time is empty, clears the retention.
+            LOCKED (1):
+                Sets the retention mode to locked.
+            UNLOCKED (2):
+                Sets the retention mode to unlocked.
+        """
+        RETENTION_MODE_UNSPECIFIED = 0
+        LOCKED = 1
+        UNLOCKED = 2
+
+    retain_until_time: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    retention_mode: RetentionMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=RetentionMode,
+    )
+
+
 class PutMetadata(proto.Message):
     r"""Describes options for object metadata update.
 
@@ -448,9 +505,9 @@ class PutMetadata(proto.Message):
             This field is a member of `oneof`_ ``_content_language``.
         content_type (str):
             Optional. Updates objects Content-Type fixed
-            metadata. Unset values will be ignored.
-            Set empty values to clear the metadata. Refer
-            to documentation in
+            metadata. Unset values will be ignored. Set
+            empty values to clear the metadata. Refer to
+            documentation in
             https://cloud.google.com/storage/docs/metadata#content-type
 
             This field is a member of `oneof`_ ``_content_type``.
@@ -479,6 +536,16 @@ class PutMetadata(proto.Message):
             with this flag is not changed. Refer to
             documentation in
             https://cloud.google.com/storage/docs/metadata#custom-metadata
+        object_retention (google.cloud.storagebatchoperations_v1.types.ObjectRetention):
+            Optional. Updates objects retention lock configuration.
+            Unset values will be ignored. Set empty values to clear the
+            retention for the object with existing ``Unlocked``
+            retention mode. Object with existing ``Locked`` retention
+            mode cannot be cleared or reduce retain_until_time. Refer to
+            documentation in
+            https://cloud.google.com/storage/docs/object-lock
+
+            This field is a member of `oneof`_ ``_object_retention``.
     """
 
     content_disposition: str = proto.Field(
@@ -515,6 +582,12 @@ class PutMetadata(proto.Message):
         proto.STRING,
         proto.STRING,
         number=7,
+    )
+    object_retention: "ObjectRetention" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        optional=True,
+        message="ObjectRetention",
     )
 
 
@@ -573,6 +646,8 @@ class ErrorLogEntry(proto.Message):
 class Counters(proto.Message):
     r"""Describes details about the progress of the job.
 
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
         total_object_count (int):
             Output only. Number of objects listed.
@@ -580,6 +655,12 @@ class Counters(proto.Message):
             Output only. Number of objects completed.
         failed_object_count (int):
             Output only. Number of objects failed.
+        total_bytes_found (int):
+            Output only. Number of bytes found from
+            source. This field is only populated for jobs
+            with a prefix list object configuration.
+
+            This field is a member of `oneof`_ ``_total_bytes_found``.
     """
 
     total_object_count: int = proto.Field(
@@ -593,6 +674,11 @@ class Counters(proto.Message):
     failed_object_count: int = proto.Field(
         proto.INT64,
         number=3,
+    )
+    total_bytes_found: int = proto.Field(
+        proto.INT64,
+        number=4,
+        optional=True,
     )
 
 

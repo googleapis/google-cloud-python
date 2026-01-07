@@ -15366,6 +15366,7 @@ def test_create_recognizer_rest_call_success(request_type):
                     "max_speaker_count": 1816,
                 },
                 "max_alternatives": 1719,
+                "custom_prompt_config": {"custom_prompt": "custom_prompt_value"},
             },
             "adaptation": {
                 "phrase_sets": [
@@ -15928,6 +15929,7 @@ def test_update_recognizer_rest_call_success(request_type):
                     "max_speaker_count": 1816,
                 },
                 "max_alternatives": 1719,
+                "custom_prompt_config": {"custom_prompt": "custom_prompt_value"},
             },
             "adaptation": {
                 "phrase_sets": [
