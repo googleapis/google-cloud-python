@@ -31,17 +31,23 @@ register_binary_op = scalar_compiler.scalar_op_compiler.register_binary_op
 @register_unary_op(ops.IsInOp, pass_op=True)
 def _(expr: TypedExpr, op: ops.IsInOp) -> sge.Expression:
     values = []
-    is_numeric_expr = dtypes.is_numeric(expr.dtype)
+    is_numeric_expr = dtypes.is_numeric(expr.dtype, include_bool=False)
     for value in op.values:
-        if value is None:
+        if _is_null(value):
             continue
         dtype = dtypes.bigframes_type(type(value))
-        if expr.dtype == dtype or is_numeric_expr and dtypes.is_numeric(dtype):
+        if (
+            expr.dtype == dtype
+            or is_numeric_expr
+            and dtypes.is_numeric(dtype, include_bool=False)
+        ):
             values.append(sge.convert(value))
 
     if op.match_nulls:
         contains_nulls = any(_is_null(value) for value in op.values)
         if contains_nulls:
+            if len(values) == 0:
+                return sge.Is(this=expr.expr, expression=sge.Null())
             return sge.Is(this=expr.expr, expression=sge.Null()) | sge.In(
                 this=expr.expr, expressions=values
             )

@@ -5,7 +5,7 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    SAFE.ST_X(`geography_col`) AS `bfcol_1`
+    ST_X(`geography_col`) AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

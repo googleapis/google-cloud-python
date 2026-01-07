@@ -558,16 +558,15 @@ class SQLGlotIR:
         )
         selection = sge.Star(replace=[unnested_column_alias.as_(column)])
 
-        # TODO: "CROSS" if not keep_empty else "LEFT"
-        # TODO: overlaps_with_parent to replace existing column.
         new_expr = _select_to_cte(
             self.expr,
             sge.to_identifier(
                 next(self.uid_gen.get_uid_stream("bfcte_")), quoted=self.quoted
             ),
         )
+        # Use LEFT JOIN to preserve rows when unnesting empty arrays.
         new_expr = new_expr.select(selection, append=False).join(
-            unnest_expr, join_type="CROSS"
+            unnest_expr, join_type="LEFT"
         )
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 
@@ -621,8 +620,9 @@ class SQLGlotIR:
                 next(self.uid_gen.get_uid_stream("bfcte_")), quoted=self.quoted
             ),
         )
+        # Use LEFT JOIN to preserve rows when unnesting empty arrays.
         new_expr = new_expr.select(selection, append=False).join(
-            unnest_expr, join_type="CROSS"
+            unnest_expr, join_type="LEFT"
         )
         return SQLGlotIR(expr=new_expr, uid_gen=self.uid_gen)
 

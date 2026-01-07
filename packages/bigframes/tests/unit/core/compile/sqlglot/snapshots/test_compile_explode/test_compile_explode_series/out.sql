@@ -8,7 +8,7 @@ WITH `bfcte_0` AS (
     *
     REPLACE (`bfcol_8` AS `int_list_col`)
   FROM `bfcte_0`
-  CROSS JOIN UNNEST(`int_list_col`) AS `bfcol_8` WITH OFFSET AS `bfcol_4`
+  LEFT JOIN UNNEST(`int_list_col`) AS `bfcol_8` WITH OFFSET AS `bfcol_4`
 )
 SELECT
   `rowindex`,
