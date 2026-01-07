@@ -13,18 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.cloud.maintenance_api import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.cloud.maintenance_api_v1.services.maintenance.async_client import (
-    MaintenanceAsyncClient,
-)
-from google.cloud.maintenance_api_v1.services.maintenance.client import (
-    MaintenanceClient,
-)
-from google.cloud.maintenance_api_v1.types.maintenance_service import (
+from .maintenance_service import (
     GetResourceMaintenanceRequest,
     ListResourceMaintenancesRequest,
     ListResourceMaintenancesResponse,
@@ -37,8 +26,6 @@ from google.cloud.maintenance_api_v1.types.maintenance_service import (
 )
 
 __all__ = (
-    "MaintenanceClient",
-    "MaintenanceAsyncClient",
     "GetResourceMaintenanceRequest",
     "ListResourceMaintenancesRequest",
     "ListResourceMaintenancesResponse",
