@@ -185,7 +185,8 @@ def generate_write_requests(pyarrow_table):
         batch = batches.pop()
         batch_size = batch.nbytes
 
-        if current_size + batch_size > max_request_bytes:
+        # If the batch is larger than max_request_bytes, split it into 2 sub batches.
+        if batch_size > max_request_bytes:
             if batch.num_rows > 1:
                 # Split the batch into 2 sub batches with identical chunksizes
                 mid = batch.num_rows // 2
@@ -193,25 +194,23 @@ def generate_write_requests(pyarrow_table):
                 batch_right = batch.slice(offset=mid)
 
                 # Append the new batches into the stack and continue poping.
-                batches.append(batch_right)
                 batches.append(batch_left)
+                batches.append(batch_right)
                 continue
-
             # If the batch is single row and still larger than max_request_bytes
             else:
-                # If current batches is empty, throw error
-                if len(current_batches) == 0:
-                    raise ValueError(
-                        f"A single PyArrow batch of one row is larger than the maximum request size "
-                        f"(batch size: {batch_size} > max request size: {max_request_bytes}). Cannot proceed."
-                    )
-                # Otherwise, generate the request, reset current_size and current_batches
-                else:
-                    yield _create_request(current_batches)
+                raise ValueError(
+                    f"A single PyArrow batch of one row is larger than the maximum request size "
+                    f"(batch size: {batch_size} > max request size: {max_request_bytes}). Cannot proceed."
+                )
+        # The current batches are ok to form a request when next batch will exceed the max_request_bytes.
+        if current_size + batch_size > max_request_bytes:
+            # Current batches can't be empty otherwise it will suffice batch_size > max_request_bytes above.
+            yield _create_request(current_batches)
 
-                    current_batches = []
-                    current_size = 0
-                    batches.append(batch)
+            current_batches = []
+            current_size = 0
+            batches.append(batch)
 
         # Otherwise, add the batch into current_batches
         else:

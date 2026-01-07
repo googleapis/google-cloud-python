@@ -36,18 +36,20 @@ def create_table_with_batches(num_batches, rows_per_batch):
 # Test generate_write_requests with different numbers of batches in the input table.
 # The total rows in the generated table is constantly 1000000.
 @pytest.mark.parametrize(
-    "num_batches, rows_per_batch",
+    "num_batches, rows_per_batch, expected_requests",
     [
-        (1, 1000000),
-        (10, 100000),
-        (100, 10000),
-        (1000, 1000),
-        (10000, 100),
-        (100000, 10),
-        (1000000, 1),
+        (1, 1000000, 32),
+        (10, 100000, 40),
+        (100, 10000, 34),
+        (1000, 1000, 26),
+        (10000, 100, 26),
+        (100000, 10, 26),
+        (1000000, 1, 26),
     ],
 )
-def test_generate_write_requests_varying_batches(num_batches, rows_per_batch):
+def test_generate_write_requests_varying_batches(
+    num_batches, rows_per_batch, expected_requests
+):
     """Test generate_write_requests with different numbers of batches in the input table."""
     # Create a table that returns `num_batches` when to_batches() is called.
     table = create_table_with_batches(num_batches, rows_per_batch)
@@ -63,15 +65,17 @@ def test_generate_write_requests_varying_batches(num_batches, rows_per_batch):
         f"\nTime used to generate requests for {num_batches} batches: {end_time - start_time:.4f} seconds"
     )
 
-    # We expect the requests to be aggregated until 7MB.
-    # Since the row number is constant, the number of requests should be deterministic.
-    assert len(requests) == 26
+    assert len(requests) == expected_requests
 
     # Verify total rows in requests matches total rows in table
     total_rows_processed = 0
     for request in requests:
         # Deserialize the batch from the request to count rows
         serialized_batch = request.arrow_rows.rows.serialized_record_batch
+
+        # Verify the batch size is less than 7MB
+        assert len(serialized_batch) <= 7 * 1024 * 1024
+
         # We need a schema to read the batch. The schema is PYARROW_SCHEMA.
         batch = pa.ipc.read_record_batch(
             serialized_batch, append_rows_with_arrow.PYARROW_SCHEMA
