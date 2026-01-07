@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Maintenance API.
+By default, you will get version ``maintenance_api_v1``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    maintenance_api_v1/services_
+    maintenance_api_v1/types_
 
 API Reference
 -------------
