@@ -18,18 +18,10 @@ replacements:
       packages/google-cloud-compute/noxfile.py,
     ]
     before: |
-      "mock",
-          "asyncmock",
-          "pytest",
-          "pytest-cov",
-          "pytest-asyncio",
+      "pytest-asyncio",
       \]
     after: |
-      "mock",
-          "asyncmock",
-          "pytest<9",
-          "pytest-cov",
-          "pytest-asyncio",
+      "pytest-asyncio",
           "pytest-xdist",
       ]
     count: 1
@@ -42,8 +34,7 @@ replacements:
       \    # Run py.test against the unit tests.
     after: |
       session.install("protobuf<4")\n
-          import faulthandler; faulthandler.enable()
-          concurrent_args = ["-n", "4", "--max-worker-restart", "0"]\n
+          concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
           # Run py.test against the unit tests.
     count: 1
   - paths: [
