@@ -55,6 +55,7 @@ LOWER_BOUND_CONSTRAINTS_FILE = CURRENT_DIRECTORY / "constraints.txt"
 PACKAGE_NAME = "google-cloud-bigquery-storage"
 
 UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "cachetools",
     "mock",
     "asyncmock",
     "pytest",
@@ -84,6 +85,7 @@ SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = [
+    "cryptography",
     "fastavro",
     "pandas",
     "pyarrow",
