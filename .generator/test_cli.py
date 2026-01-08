@@ -776,7 +776,7 @@ def test_run_individual_session_failure(mocker):
 
 
 @pytest.mark.parametrize(
-    "is_mono_repo,py314_constraints_file_exists, nox_session_python_runtime",
+    "is_mono_repo, nox_session_python_runtime",
     [
         (False, "3.14"),
         (True, "3.14"),
