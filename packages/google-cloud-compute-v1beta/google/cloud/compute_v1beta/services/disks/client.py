@@ -1041,8 +1041,9 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of persistent disks. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of persistent disks.
+
+        To prevent failure, it is recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1463,7 +1464,7 @@ class DisksClient(metaclass=DisksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on many disks at once. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -1599,7 +1600,7 @@ class DisksClient(metaclass=DisksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on many disks at once. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -2079,8 +2080,8 @@ class DisksClient(metaclass=DisksClientMeta):
         r"""Deletes the specified persistent disk. Deleting a
         disk removes its data permanently and is irreversible.
         However, deleting a disk does not delete any snapshots
-        previously made from the disk. You must separately
-        delete snapshots.
+        previously made from the disk. You must separatelydelete
+        snapshots.
 
         .. code-block:: python
 
@@ -2217,8 +2218,8 @@ class DisksClient(metaclass=DisksClientMeta):
         r"""Deletes the specified persistent disk. Deleting a
         disk removes its data permanently and is irreversible.
         However, deleting a disk does not delete any snapshots
-        previously made from the disk. You must separately
-        delete snapshots.
+        previously made from the disk. You must separatelydelete
+        snapshots.
 
         .. code-block:: python
 
@@ -2440,18 +2441,26 @@ class DisksClient(metaclass=DisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Disk:
-                Represents a Persistent Disk resource. Google Compute
-                Engine has two Disk resources: \*
-                [Zonal](/compute/docs/reference/rest/beta/disks) \*
-                [Regional](/compute/docs/reference/rest/beta/regionDisks)
-                Persistent disks are required for running your VM
-                instances. Create both boot and non-boot (data)
-                persistent disks. For more information, read Persistent
-                Disks. For more storage options, read Storage options.
-                The disks resource represents a zonal persistent disk.
-                For more information, read Zonal persistent disks. The
-                regionDisks resource represents a regional persistent
-                disk. For more information, read Regional resources.
+                Represents a Persistent Disk resource.
+
+                   Google Compute Engine has two Disk resources:
+
+                   - [Zonal](/compute/docs/reference/rest/beta/disks)
+                   - [Regional](/compute/docs/reference/rest/beta/regionDisks)
+
+                   Persistent disks are required for running your VM
+                   instances. Create both boot and non-boot (data)
+                   persistent disks. For more information, read
+                   Persistent Disks. For more storage options, read
+                   Storage options.
+
+                   The disks resource represents a zonal persistent
+                   disk. For more information, readZonal persistent
+                   disks.
+
+                   The regionDisks resource represents a regional
+                   persistent disk. For more information, read Regional
+                   resources.
 
         """
         # Create or coerce a protobuf request object.
@@ -2586,28 +2595,36 @@ class DisksClient(metaclass=DisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2679,8 +2696,8 @@ class DisksClient(metaclass=DisksClientMeta):
     ) -> compute.Operation:
         r"""Creates a persistent disk in the specified project
         using the data in the request. You can create a disk
-        from a source (sourceImage, sourceSnapshot, or
-        sourceDisk) or create an empty 500 GB data disk by
+        from a source (sourceImage, sourceSnapshot,
+        orsourceDisk) or create an empty 500 GB data disk by
         omitting all properties. You can also create a disk that
         is larger than the default size by specifying the sizeGb
         property.
@@ -2815,8 +2832,8 @@ class DisksClient(metaclass=DisksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Creates a persistent disk in the specified project
         using the data in the request. You can create a disk
-        from a source (sourceImage, sourceSnapshot, or
-        sourceDisk) or create an empty 500 GB data disk by
+        from a source (sourceImage, sourceSnapshot,
+        orsourceDisk) or create an empty 500 GB data disk by
         omitting all properties. You can also create a disk that
         is larger than the default size by specifying the sizeGb
         property.
@@ -3442,8 +3459,8 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Resizes the specified persistent disk. You can only
-        increase the size of the disk.
+        r"""Resizes the specified persistent disk.
+        You can only increase the size of the disk.
 
         .. code-block:: python
 
@@ -3583,8 +3600,8 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Resizes the specified persistent disk. You can only
-        increase the size of the disk.
+        r"""Resizes the specified persistent disk.
+        You can only increase the size of the disk.
 
         .. code-block:: python
 
@@ -3819,28 +3836,36 @@ class DisksClient(metaclass=DisksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -3916,7 +3941,7 @@ class DisksClient(metaclass=DisksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a disk. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -4062,7 +4087,7 @@ class DisksClient(metaclass=DisksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a disk. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -4234,8 +4259,8 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Starts asynchronous replication. Must be invoked on
-        the primary disk.
+        r"""Starts asynchronous replication.
+        Must be invoked on the primary disk.
 
         .. code-block:: python
 
@@ -4385,8 +4410,8 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Starts asynchronous replication. Must be invoked on
-        the primary disk.
+        r"""Starts asynchronous replication.
+        Must be invoked on the primary disk.
 
         .. code-block:: python
 
@@ -4558,8 +4583,9 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Stops asynchronous replication. Can be invoked either
-        on the primary or on the secondary disk.
+        r"""Stops asynchronous replication.
+        Can be invoked either on the primary or on the secondary
+        disk.
 
         .. code-block:: python
 
@@ -4692,8 +4718,9 @@ class DisksClient(metaclass=DisksClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Stops asynchronous replication. Can be invoked either
-        on the primary or on the secondary disk.
+        r"""Stops asynchronous replication.
+        Can be invoked either on the primary or on the secondary
+        disk.
 
         .. code-block:: python
 

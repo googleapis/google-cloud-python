@@ -6420,9 +6420,10 @@ def test_add_rule_rest_call_success(request_type):
         "preconfigured_waf_config": {
             "exclusions": [
                 {
-                    "request_cookies_to_exclude": [
+                    "request_bodies_to_exclude": [
                         {"op": "op_value", "val": "val_value"}
                     ],
+                    "request_cookies_to_exclude": {},
                     "request_headers_to_exclude": {},
                     "request_query_params_to_exclude": {},
                     "request_uris_to_exclude": {},
@@ -7556,7 +7557,11 @@ def test_insert_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "display_name": "display_name_value",
         "fingerprint": "fingerprint_value",
@@ -7645,9 +7650,10 @@ def test_insert_rest_call_success(request_type):
                 "preconfigured_waf_config": {
                     "exclusions": [
                         {
-                            "request_cookies_to_exclude": [
+                            "request_bodies_to_exclude": [
                                 {"op": "op_value", "val": "val_value"}
                             ],
+                            "request_cookies_to_exclude": {},
                             "request_headers_to_exclude": {},
                             "request_query_params_to_exclude": {},
                             "request_uris_to_exclude": {},
@@ -8597,7 +8603,11 @@ def test_patch_rest_call_success(request_type):
             }
         ],
         "creation_timestamp": "creation_timestamp_value",
-        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
+        "ddos_protection_config": {
+            "ddos_adaptive_protection": "ddos_adaptive_protection_value",
+            "ddos_impacted_baseline_threshold": 0.33580000000000004,
+            "ddos_protection": "ddos_protection_value",
+        },
         "description": "description_value",
         "display_name": "display_name_value",
         "fingerprint": "fingerprint_value",
@@ -8686,9 +8696,10 @@ def test_patch_rest_call_success(request_type):
                 "preconfigured_waf_config": {
                     "exclusions": [
                         {
-                            "request_cookies_to_exclude": [
+                            "request_bodies_to_exclude": [
                                 {"op": "op_value", "val": "val_value"}
                             ],
+                            "request_cookies_to_exclude": {},
                             "request_headers_to_exclude": {},
                             "request_query_params_to_exclude": {},
                             "request_uris_to_exclude": {},
@@ -9049,9 +9060,10 @@ def test_patch_rule_rest_call_success(request_type):
         "preconfigured_waf_config": {
             "exclusions": [
                 {
-                    "request_cookies_to_exclude": [
+                    "request_bodies_to_exclude": [
                         {"op": "op_value", "val": "val_value"}
                     ],
+                    "request_cookies_to_exclude": {},
                     "request_headers_to_exclude": {},
                     "request_query_params_to_exclude": {},
                     "request_uris_to_exclude": {},

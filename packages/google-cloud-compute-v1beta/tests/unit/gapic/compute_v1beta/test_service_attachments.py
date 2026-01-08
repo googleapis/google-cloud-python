@@ -4592,6 +4592,7 @@ def test_insert_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "endpoint_with_id": "endpoint_with_id_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
@@ -4602,6 +4603,7 @@ def test_insert_rest_call_success(request_type):
         "consumer_accept_lists": [
             {
                 "connection_limit": 1710,
+                "endpoint_url": "endpoint_url_value",
                 "network_url": "network_url_value",
                 "project_id_or_num": "project_id_or_num_value",
             }
@@ -5018,6 +5020,7 @@ def test_patch_rest_call_success(request_type):
             {
                 "consumer_network": "consumer_network_value",
                 "endpoint": "endpoint_value",
+                "endpoint_with_id": "endpoint_with_id_value",
                 "nat_ips": ["nat_ips_value1", "nat_ips_value2"],
                 "propagated_connection_count": 2878,
                 "psc_connection_id": 1793,
@@ -5028,6 +5031,7 @@ def test_patch_rest_call_success(request_type):
         "consumer_accept_lists": [
             {
                 "connection_limit": 1710,
+                "endpoint_url": "endpoint_url_value",
                 "network_url": "network_url_value",
                 "project_id_or_num": "project_id_or_num_value",
             }

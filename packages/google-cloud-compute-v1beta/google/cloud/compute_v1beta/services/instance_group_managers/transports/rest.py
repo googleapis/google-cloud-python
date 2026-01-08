@@ -136,6 +136,14 @@ class InstanceGroupManagersRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_available_accelerator_topologies(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_available_accelerator_topologies(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_insert(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -685,6 +693,59 @@ class InstanceGroupManagersRestInterceptor:
         `post_get` interceptor. The (possibly modified) response returned by
         `post_get` will be passed to
         `post_get_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_get_available_accelerator_topologies(
+        self,
+        request: compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for get_available_accelerator_topologies
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the InstanceGroupManagers server.
+        """
+        return request, metadata
+
+    def post_get_available_accelerator_topologies(
+        self,
+        response: compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse,
+    ) -> compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse:
+        """Post-rpc interceptor for get_available_accelerator_topologies
+
+        DEPRECATED. Please use the `post_get_available_accelerator_topologies_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the InstanceGroupManagers server but before
+        it is returned to user code. This `post_get_available_accelerator_topologies` interceptor runs
+        before the `post_get_available_accelerator_topologies_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_available_accelerator_topologies_with_metadata(
+        self,
+        response: compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Post-rpc interceptor for get_available_accelerator_topologies
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the InstanceGroupManagers server but before it is returned to user code.
+
+        We recommend only using this `post_get_available_accelerator_topologies_with_metadata`
+        interceptor in new development instead of the `post_get_available_accelerator_topologies` interceptor.
+        When both interceptors are used, this `post_get_available_accelerator_topologies_with_metadata` interceptor runs after the
+        `post_get_available_accelerator_topologies` interceptor. The (possibly modified) response returned by
+        `post_get_available_accelerator_topologies` will be passed to
+        `post_get_available_accelerator_topologies_with_metadata`.
         """
         return response, metadata
 
@@ -1806,21 +1867,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -2130,21 +2202,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
                 Returns:
                     ~.compute.Operation:
-                        Represents an Operation resource. Google Compute Engine
-                    has three Operation resources: \*
-                    `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                    \*
-                    `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                    \*
-                    `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                        Represents an Operation resource.
+
+                    Google Compute Engine has three Operation resources:
+
+                    - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                    - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                    - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                     You can use an operation resource to manage asynchronous
-                    API requests. For more information, read Handling API
-                    responses. Operations can be global, regional or zonal.
-                    - For global operations, use the ``globalOperations``
-                    resource. - For regional operations, use the
-                    ``regionOperations`` resource. - For zonal operations,
-                    use the ``zoneOperations`` resource. For more
-                    information, read Global, Regional, and Zonal Resources.
+                    API requests. For more information, readHandling API
+                    responses.
+
+                    Operations can be global, regional or zonal.
+
+                    ::
+
+                       - For global operations, use the `globalOperations`
+                       resource.
+                       - For regional operations, use the
+                       `regionOperations` resource.
+                       - For zonal operations, use
+                       the `zoneOperations` resource.
+
+                    For more information, read Global, Regional, and Zonal
+                    Resources.
+
                     Note that completed Operation resources have a limited
                     retention period.
 
@@ -2302,21 +2385,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -2475,21 +2569,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -2640,21 +2745,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -2815,21 +2931,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
                 Returns:
                     ~.compute.Operation:
-                        Represents an Operation resource. Google Compute Engine
-                    has three Operation resources: \*
-                    `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                    \*
-                    `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                    \*
-                    `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                        Represents an Operation resource.
+
+                    Google Compute Engine has three Operation resources:
+
+                    - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                    - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                    - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                     You can use an operation resource to manage asynchronous
-                    API requests. For more information, read Handling API
-                    responses. Operations can be global, regional or zonal.
-                    - For global operations, use the ``globalOperations``
-                    resource. - For regional operations, use the
-                    ``regionOperations`` resource. - For zonal operations,
-                    use the ``zoneOperations`` resource. For more
-                    information, read Global, Regional, and Zonal Resources.
+                    API requests. For more information, readHandling API
+                    responses.
+
+                    Operations can be global, regional or zonal.
+
+                    ::
+
+                       - For global operations, use the `globalOperations`
+                       resource.
+                       - For regional operations, use the
+                       `regionOperations` resource.
+                       - For zonal operations, use
+                       the `zoneOperations` resource.
+
+                    For more information, read Global, Regional, and Zonal
+                    Resources.
+
                     Note that completed Operation resources have a limited
                     retention period.
 
@@ -2986,14 +3113,17 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
             Returns:
                 ~.compute.InstanceGroupManager:
                     Represents a Managed Instance Group
-                resource. An instance group is a
-                collection of VM instances that you can
-                manage as a single entity. For more
-                information, read Instance groups. For
-                zonal Managed Instance Group, use the
-                instanceGroupManagers resource. For
-                regional Managed Instance Group, use the
-                regionInstanceGroupManagers resource.
+                resource.
+                An instance group is a collection of VM
+                instances that you can manage as a
+                single entity. For more information,
+                readInstance groups.
+
+                For zonal Managed Instance Group, use
+                the instanceGroupManagers resource.
+
+                For regional Managed Instance Group, use
+                theregionInstanceGroupManagers resource.
 
             """
 
@@ -3087,6 +3217,170 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
                 )
             return resp
 
+    class _GetAvailableAcceleratorTopologies(
+        _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies,
+        InstanceGroupManagersRestStub,
+    ):
+        def __hash__(self):
+            return hash(
+                "InstanceGroupManagersRestTransport.GetAvailableAcceleratorTopologies"
+            )
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse:
+            r"""Call the get available accelerator
+            topologies method over HTTP.
+
+                Args:
+                    request (~.compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest):
+                        The request object. A request message for
+                    InstanceGroupManagers.GetAvailableAcceleratorTopologies.
+                    See the method description for details.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                        sent along with the request as metadata. Normally, each value must be of type `str`,
+                        but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                        be of type `bytes`.
+
+                Returns:
+                    ~.compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse:
+
+            """
+
+            http_options = (
+                _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_http_options()
+            )
+
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_get_available_accelerator_topologies(
+                request, metadata
+            )
+            transcoded_request = _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseInstanceGroupManagersRestTransport._BaseGetAvailableAcceleratorTopologies._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.compute_v1beta.InstanceGroupManagersClient.GetAvailableAcceleratorTopologies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.InstanceGroupManagers",
+                        "rpcName": "GetAvailableAcceleratorTopologies",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = InstanceGroupManagersRestTransport._GetAvailableAcceleratorTopologies._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = (
+                compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse()
+            )
+            pb_resp = compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse.pb(
+                resp
+            )
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_available_accelerator_topologies(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            (
+                resp,
+                _,
+            ) = self._interceptor.post_get_available_accelerator_topologies_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.compute_v1beta.InstanceGroupManagersClient.get_available_accelerator_topologies",
+                    extra={
+                        "serviceName": "google.cloud.compute.v1beta.InstanceGroupManagers",
+                        "rpcName": "GetAvailableAcceleratorTopologies",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _Insert(
         _BaseInstanceGroupManagersRestTransport._BaseInsert,
         InstanceGroupManagersRestStub,
@@ -3142,21 +3436,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -3915,21 +4220,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -4086,21 +4402,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
                 Returns:
                     ~.compute.Operation:
-                        Represents an Operation resource. Google Compute Engine
-                    has three Operation resources: \*
-                    `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                    \*
-                    `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                    \*
-                    `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                        Represents an Operation resource.
+
+                    Google Compute Engine has three Operation resources:
+
+                    - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                    - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                    - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                     You can use an operation resource to manage asynchronous
-                    API requests. For more information, read Handling API
-                    responses. Operations can be global, regional or zonal.
-                    - For global operations, use the ``globalOperations``
-                    resource. - For regional operations, use the
-                    ``regionOperations`` resource. - For zonal operations,
-                    use the ``zoneOperations`` resource. For more
-                    information, read Global, Regional, and Zonal Resources.
+                    API requests. For more information, readHandling API
+                    responses.
+
+                    Operations can be global, regional or zonal.
+
+                    ::
+
+                       - For global operations, use the `globalOperations`
+                       resource.
+                       - For regional operations, use the
+                       `regionOperations` resource.
+                       - For zonal operations, use
+                       the `zoneOperations` resource.
+
+                    For more information, read Global, Regional, and Zonal
+                    Resources.
+
                     Note that completed Operation resources have a limited
                     retention period.
 
@@ -4258,21 +4585,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -4431,21 +4769,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -4596,21 +4945,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -4766,21 +5126,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -4940,21 +5311,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -5112,21 +5494,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -5286,21 +5679,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -5458,21 +5862,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -5628,21 +6043,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -5798,21 +6224,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -6129,21 +6566,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -6300,21 +6748,32 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
 
                 Returns:
                     ~.compute.Operation:
-                        Represents an Operation resource. Google Compute Engine
-                    has three Operation resources: \*
-                    `Global </compute/docs/reference/rest/beta/globalOperations>`__
-                    \*
-                    `Regional </compute/docs/reference/rest/beta/regionOperations>`__
-                    \*
-                    `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+                        Represents an Operation resource.
+
+                    Google Compute Engine has three Operation resources:
+
+                    - `Global </compute/docs/reference/rest/beta/globalOperations>`__
+                    - `Regional </compute/docs/reference/rest/beta/regionOperations>`__
+                    - `Zonal </compute/docs/reference/rest/beta/zoneOperations>`__
+
                     You can use an operation resource to manage asynchronous
-                    API requests. For more information, read Handling API
-                    responses. Operations can be global, regional or zonal.
-                    - For global operations, use the ``globalOperations``
-                    resource. - For regional operations, use the
-                    ``regionOperations`` resource. - For zonal operations,
-                    use the ``zoneOperations`` resource. For more
-                    information, read Global, Regional, and Zonal Resources.
+                    API requests. For more information, readHandling API
+                    responses.
+
+                    Operations can be global, regional or zonal.
+
+                    ::
+
+                       - For global operations, use the `globalOperations`
+                       resource.
+                       - For regional operations, use the
+                       `regionOperations` resource.
+                       - For zonal operations, use
+                       the `zoneOperations` resource.
+
+                    For more information, read Global, Regional, and Zonal
+                    Resources.
+
                     Note that completed Operation resources have a limited
                     retention period.
 
@@ -6495,6 +6954,17 @@ class InstanceGroupManagersRestTransport(_BaseInstanceGroupManagersRestTransport
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_available_accelerator_topologies(
+        self,
+    ) -> Callable[
+        [compute.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest],
+        compute.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetAvailableAcceleratorTopologies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def insert(

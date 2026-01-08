@@ -733,9 +733,10 @@ class NetworkEdgeSecurityServicesClient(
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all NetworkEdgeSecurityService resources
-        available to the specified project. To prevent failure, Google
-        recommends that you set the ``returnPartialSuccess`` parameter
-        to ``true``.
+        available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

@@ -712,9 +712,10 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of autoscalers. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        r"""Retrieves an aggregated list of autoscalers.
+
+        To prevent failure, it is recommended that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1183,18 +1184,23 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Autoscaler:
-                Represents an Autoscaler resource. Google Compute Engine
-                has two Autoscaler resources: \*
-                [Zonal](/compute/docs/reference/rest/beta/autoscalers)
-                \*
-                [Regional](/compute/docs/reference/rest/beta/regionAutoscalers)
-                Use autoscalers to automatically add or delete instances
-                from a managed instance group according to your defined
-                autoscaling policy. For more information, read
-                Autoscaling Groups of Instances. For zonal managed
-                instance groups resource, use the autoscaler resource.
-                For regional managed instance groups, use the
-                regionAutoscalers resource.
+                Represents an Autoscaler resource.
+
+                   Google Compute Engine has two Autoscaler resources:
+
+                   - [Zonal](/compute/docs/reference/rest/beta/autoscalers)
+                   - [Regional](/compute/docs/reference/rest/beta/regionAutoscalers)
+
+                   Use autoscalers to automatically add or delete
+                   instances from a managed instance group according to
+                   your defined autoscaling policy. For more
+                   information, read Autoscaling Groups of Instances.
+
+                   For zonal managed instance groups resource, use the
+                   autoscaler resource.
+
+                   For regional managed instance groups, use
+                   theregionAutoscalers resource.
 
         """
         # Create or coerce a protobuf request object.
@@ -1548,8 +1554,8 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves a list of autoscalers contained within the
-        specified zone.
+        r"""Retrieves a list of autoscalers contained within
+        the specified zone.
 
         .. code-block:: python
 
@@ -1687,9 +1693,9 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates an autoscaler in the specified project using
-        the data included in the request. This method supports
-        PATCH semantics and uses the JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1819,9 +1825,9 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates an autoscaler in the specified project using
-        the data included in the request. This method supports
-        PATCH semantics and uses the JSON merge patch format and
-        processing rules.
+        the data included in the request. This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

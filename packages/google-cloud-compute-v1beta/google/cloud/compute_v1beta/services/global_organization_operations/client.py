@@ -902,23 +902,30 @@ class GlobalOrganizationOperationsClient(
 
         Returns:
             google.cloud.compute_v1beta.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/beta/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/beta/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zoneOperations resource. For more information, read
-                Global, Regional, and Zonal Resources. Note that
-                completed Operation resources have a limited retention
-                period.
+                Represents an Operation resource.
+
+                   Google Compute Engine has three Operation resources:
+
+                   - [Global](/compute/docs/reference/rest/beta/globalOperations)
+                   - [Regional](/compute/docs/reference/rest/beta/regionOperations)
+                   - [Zonal](/compute/docs/reference/rest/beta/zoneOperations)
+
+                   You can use an operation resource to manage
+                   asynchronous API requests. For more information,
+                   readHandling API responses.
+
+                   Operations can be global, regional or zonal.
+
+                      - For global operations, use the globalOperations
+                      resource. - For regional operations, use the
+                      regionOperations resource. - For zonal operations,
+                      use the zoneOperations resource.
+
+                   For more information, read Global, Regional, and
+                   Zonal Resources.
+
+                   Note that completed Operation resources have a
+                   limited retention period.
 
         """
         # Create or coerce a protobuf request object.

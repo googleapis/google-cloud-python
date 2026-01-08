@@ -978,9 +978,10 @@ class ImagesClient(metaclass=ImagesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Sets the deprecation status of an image. If an empty
-        request body is given, clears the deprecation status
-        instead.
+        r"""Sets the deprecation status of an image.
+
+        If an empty request body is given, clears the
+        deprecation status instead.
 
         .. code-block:: python
 
@@ -1109,9 +1110,10 @@ class ImagesClient(metaclass=ImagesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Sets the deprecation status of an image. If an empty
-        request body is given, clears the deprecation status
-        instead.
+        r"""Sets the deprecation status of an image.
+
+        If an empty request body is given, clears the
+        deprecation status instead.
 
         .. code-block:: python
 
@@ -1316,10 +1318,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Image:
-                Represents an Image resource. You can
-                use images to create boot disks for your
-                VM instances. For more information, read
-                Images.
+                Represents an Image resource.
+
+                You can use images to create boot disks
+                for your VM instances. For more
+                information, read Images.
 
         """
         # Create or coerce a protobuf request object.
@@ -1387,7 +1390,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
     ) -> compute.Image:
         r"""Returns the latest image that is part of an image
         family and is not deprecated. For more information on
-        image families, see Public image families documentation.
+        image families, seePublic image families documentation.
 
         .. code-block:: python
 
@@ -1447,10 +1450,11 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Image:
-                Represents an Image resource. You can
-                use images to create boot disks for your
-                VM instances. For more information, read
-                Images.
+                Represents an Image resource.
+
+                You can use images to create boot disks
+                for your VM instances. For more
+                information, read Images.
 
         """
         # Create or coerce a protobuf request object.
@@ -1573,28 +1577,36 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1913,14 +1925,15 @@ class ImagesClient(metaclass=ImagesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
-        r"""Retrieves the list of custom images available to the
-        specified project. Custom images are images you create
-        that belong to your project. This method does not get
-        any images that belong to other projects, including
-        publicly-available images, like Debian 8. If you want to
-        get a list of publicly-available images, use this method
-        to make a request to the respective image project, such
-        as debian-cloud or windows-cloud.
+        r"""Retrieves the list of custom images
+        available to the specified project. Custom images are
+        images you create that belong to your project. This
+        method does not get any images that belong to other
+        projects, including publicly-available images, like
+        Debian 8. If you want to get a list of
+        publicly-available images, use this method to make a
+        request to the respective image project, such as
+        debian-cloud or windows-cloud.
 
         .. code-block:: python
 
@@ -2391,28 +2404,36 @@ class ImagesClient(metaclass=ImagesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2486,7 +2507,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an image. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -2622,7 +2643,7 @@ class ImagesClient(metaclass=ImagesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an image. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 

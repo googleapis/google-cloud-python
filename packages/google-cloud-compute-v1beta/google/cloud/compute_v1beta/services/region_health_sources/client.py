@@ -725,9 +725,10 @@ class RegionHealthSourcesClient(metaclass=RegionHealthSourcesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all HealthSource resources (all regional)
-        available to the specified project. To prevent failure, Google
-        recommends that you set the ``returnPartialSuccess`` parameter
-        to ``true``.
+        available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1215,12 +1216,13 @@ class RegionHealthSourcesClient(metaclass=RegionHealthSourcesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.HealthSource:
-                Represents a health source. A health
-                source resource specifies the source
-                resources and the health aggregation
-                policy applied to the source resources
-                to determine the aggregated health
-                status.
+                Represents a health source.
+
+                A health source resource specifies the
+                source resources and the health
+                aggregation policy applied to the source
+                resources to determine the aggregated
+                health status.
 
         """
         # Create or coerce a protobuf request object.
@@ -1720,9 +1722,9 @@ class RegionHealthSourcesClient(metaclass=RegionHealthSourcesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified regional HealthSource resource
-        with the data included in the request. This method
-        supports PATCH semantics and uses the JSON merge patch
-        format and processing rules.
+        with the data included in the request.  This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1867,9 +1869,9 @@ class RegionHealthSourcesClient(metaclass=RegionHealthSourcesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified regional HealthSource resource
-        with the data included in the request. This method
-        supports PATCH semantics and uses the JSON merge patch
-        format and processing rules.
+        with the data included in the request.  This method
+        supportsPATCH semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

@@ -1398,8 +1398,9 @@ class RegionNetworkPoliciesClient(metaclass=RegionNetworkPoliciesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of network policies. To prevent
-        failure, it's recommended that you set the
+        r"""Retrieves an aggregated list of network policies.
+
+        To prevent failure, it's recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
