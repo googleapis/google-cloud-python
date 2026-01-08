@@ -38,7 +38,10 @@ replacements:
     after: |
       session.install("protobuf<4")\n
           import os
+          import faulthandler
+          import sys
           os.environ['export PYTHONFAULTHANDLER'] = "1"
+          faulthandler.enable(sys.stderr)
           concurrent_args = ["-n", "4", "--max-worker-restart", "16"]\n
           # Run py.test against the unit tests.
           session.run(
