@@ -1546,7 +1546,7 @@ class GlobalPublicDelegatedPrefixesClient(
     ) -> compute.Operation:
         r"""Patches the specified global PublicDelegatedPrefix
         resource with the data included in the request. This
-        method supports PATCH semantics and uses JSON merge
+        method supportsPATCH semantics and usesJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -1690,7 +1690,7 @@ class GlobalPublicDelegatedPrefixesClient(
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified global PublicDelegatedPrefix
         resource with the data included in the request. This
-        method supports PATCH semantics and uses JSON merge
+        method supportsPATCH semantics and usesJSON merge
         patch format and processing rules.
 
         .. code-block:: python

@@ -722,8 +722,9 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of accelerator types. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of accelerator types.
+
+        To prevent failure, it is recommended that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -911,13 +912,13 @@ class AcceleratorTypesClient(metaclass=AcceleratorTypesClientMeta):
         Returns:
             google.cloud.compute_v1.types.AcceleratorType:
                 Represents an Accelerator Type
-                resource. Google Cloud Platform provides
-                graphics processing units (accelerators)
-                that you can add to VM instances to
-                improve or accelerate performance when
-                working with intensive workloads. For
-                more information, read GPUs on Compute
-                Engine.
+                resource.
+                Google Cloud Platform provides graphics
+                processing units (accelerators) that you
+                can add to VM instances to improve or
+                accelerate performance when working with
+                intensive workloads. For more
+                information, readGPUs on Compute Engine.
 
         """
         # Create or coerce a protobuf request object.

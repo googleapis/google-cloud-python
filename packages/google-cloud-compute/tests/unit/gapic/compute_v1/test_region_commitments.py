@@ -3251,6 +3251,7 @@ def test_insert_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "protection_tier": "protection_tier_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
                 },
@@ -3759,6 +3760,7 @@ def test_update_rest_call_success(request_type):
                     "linked_commitments_value2",
                 ],
                 "name": "name_value",
+                "protection_tier": "protection_tier_value",
                 "reservation_sharing_policy": {
                     "service_share_type": "service_share_type_value"
                 },

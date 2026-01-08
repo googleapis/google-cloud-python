@@ -4680,9 +4680,11 @@ def test_get_rest_call_success(request_type):
             byoip_api_version="byoip_api_version_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            enable_enhanced_ipv4_allocation=True,
             fingerprint="fingerprint_value",
             id=205,
             ip_cidr_range="ip_cidr_range_value",
+            ipv6_access_type="ipv6_access_type_value",
             is_live_migration=True,
             kind="kind_value",
             mode="mode_value",
@@ -4711,9 +4713,11 @@ def test_get_rest_call_success(request_type):
     assert response.byoip_api_version == "byoip_api_version_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert response.enable_enhanced_ipv4_allocation is True
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.ip_cidr_range == "ip_cidr_range_value"
+    assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.is_live_migration is True
     assert response.kind == "kind_value"
     assert response.mode == "mode_value"
@@ -4832,9 +4836,11 @@ def test_insert_rest_call_success(request_type):
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_enhanced_ipv4_allocation": True,
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_cidr_range": "ip_cidr_range_value",
+        "ipv6_access_type": "ipv6_access_type_value",
         "is_live_migration": True,
         "kind": "kind_value",
         "mode": "mode_value",
@@ -4845,7 +4851,9 @@ def test_insert_rest_call_success(request_type):
                 "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
+                "enable_enhanced_ipv4_allocation": True,
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ipv6_access_type": "ipv6_access_type_value",
                 "is_address": True,
                 "mode": "mode_value",
                 "name": "name_value",
@@ -5247,9 +5255,11 @@ def test_patch_rest_call_success(request_type):
         "byoip_api_version": "byoip_api_version_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_enhanced_ipv4_allocation": True,
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_cidr_range": "ip_cidr_range_value",
+        "ipv6_access_type": "ipv6_access_type_value",
         "is_live_migration": True,
         "kind": "kind_value",
         "mode": "mode_value",
@@ -5260,7 +5270,9 @@ def test_patch_rest_call_success(request_type):
                 "allocatable_prefix_length": 2626,
                 "delegatee_project": "delegatee_project_value",
                 "description": "description_value",
+                "enable_enhanced_ipv4_allocation": True,
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ipv6_access_type": "ipv6_access_type_value",
                 "is_address": True,
                 "mode": "mode_value",
                 "name": "name_value",

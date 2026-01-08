@@ -2633,6 +2633,7 @@ def test_get_rest_call_success(request_type):
             next_hop_ilb="next_hop_ilb_value",
             next_hop_instance="next_hop_instance_value",
             next_hop_inter_region_cost=2785,
+            next_hop_interconnect_attachment="next_hop_interconnect_attachment_value",
             next_hop_ip="next_hop_ip_value",
             next_hop_med=1274,
             next_hop_network="next_hop_network_value",
@@ -2672,6 +2673,10 @@ def test_get_rest_call_success(request_type):
     assert response.next_hop_ilb == "next_hop_ilb_value"
     assert response.next_hop_instance == "next_hop_instance_value"
     assert response.next_hop_inter_region_cost == 2785
+    assert (
+        response.next_hop_interconnect_attachment
+        == "next_hop_interconnect_attachment_value"
+    )
     assert response.next_hop_ip == "next_hop_ip_value"
     assert response.next_hop_med == 1274
     assert response.next_hop_network == "next_hop_network_value"
@@ -2796,6 +2801,7 @@ def test_insert_rest_call_success(request_type):
         "next_hop_ilb": "next_hop_ilb_value",
         "next_hop_instance": "next_hop_instance_value",
         "next_hop_inter_region_cost": 2785,
+        "next_hop_interconnect_attachment": "next_hop_interconnect_attachment_value",
         "next_hop_ip": "next_hop_ip_value",
         "next_hop_med": 1274,
         "next_hop_network": "next_hop_network_value",

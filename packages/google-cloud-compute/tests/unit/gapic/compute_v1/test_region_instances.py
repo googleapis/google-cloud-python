@@ -1810,6 +1810,7 @@ def test_bulk_insert_rest_call_success(request_type):
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "igmp_query": "igmp_query_value",
                     "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",

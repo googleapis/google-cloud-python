@@ -789,19 +789,28 @@ class RegionInstanceGroupsClient(metaclass=RegionInstanceGroupsClientMeta):
         Returns:
             google.cloud.compute_v1.types.InstanceGroup:
                 Represents an Instance Group
-                resource. Instance Groups can be used to
-                configure a target for load balancing.
+                resource.
+                Instance Groups can be used to configure
+                a target forload balancing.
+
                 Instance groups can either be managed or
-                unmanaged. To create managed instance
-                groups, use the instanceGroupManager or
-                regionInstanceGroupManager resource
-                instead. Use zonal unmanaged instance
-                groups if you need to apply load
-                balancing to groups of heterogeneous
-                instances or if you need to manage the
-                instances yourself. You cannot create
-                regional unmanaged instance groups. For
-                more information, read Instance groups.
+                unmanaged.
+
+                To create
+                managed instance groups, use the
+                instanceGroupManager
+                orregionInstanceGroupManager resource
+                instead.
+
+                Use zonal unmanaged instance groups if
+                you need to applyload balancing to
+                groups of heterogeneous instances or if
+                you need to manage the instances
+                yourself. You cannot create regional
+                unmanaged instance groups.
+
+                For more information, readInstance
+                groups.
 
         """
         # Create or coerce a protobuf request object.

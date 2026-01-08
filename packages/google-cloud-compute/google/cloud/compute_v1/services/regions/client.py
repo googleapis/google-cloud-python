@@ -710,17 +710,19 @@ class RegionsClient(metaclass=RegionsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Region:
-        r"""Returns the specified Region resource. To decrease latency for
-        this method, you can optionally omit any unneeded information
-        from the response by using a field mask. This practice is
-        especially recommended for unused quota information (the
-        ``quotas`` field). To exclude one or more fields, set your
-        request's ``fields`` query parameter to only include the fields
-        you need. For example, to only include the ``id`` and
-        ``selfLink`` fields, add the query parameter
-        ``?fields=id,selfLink`` to your request. This method fails if
-        the quota information is unavailable for the region and if the
-        organization policy constraint
+        r"""Returns the specified Region resource.
+
+        To decrease latency for this method, you can optionally omit any
+        unneeded information from the response by using a field mask.
+        This practice is especially recommended for unused quota
+        information (the ``quotas`` field). To exclude one or more
+        fields, set your request's ``fields`` query parameter to only
+        include the fields you need. For example, to only include the
+        ``id`` and ``selfLink`` fields, add the query parameter
+        ``?fields=id,selfLink`` to your request.
+
+        This method fails if the quota information is unavailable for
+        the region and if the organization policy constraint
         compute.requireBasicQuotaInResponse is enforced. This
         constraint, when enforced, disables the fail-open behaviour when
         quota information (the ``items.quotas`` field) is unavailable
@@ -781,10 +783,12 @@ class RegionsClient(metaclass=RegionsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Region:
-                Represents a Region resource. A
-                region is a geographical area where a
+                Represents a Region resource.
+
+                A region is a geographical area where a
                 resource is located. For more
-                information, read Regions and Zones.
+                information, readRegions
+                and Zones.
 
         """
         # Create or coerce a protobuf request object.
@@ -850,16 +854,19 @@ class RegionsClient(metaclass=RegionsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListPager:
         r"""Retrieves the list of region resources available to the
-        specified project. To decrease latency for this method, you can
-        optionally omit any unneeded information from the response by
-        using a field mask. This practice is especially recommended for
-        unused quota information (the ``items.quotas`` field). To
-        exclude one or more fields, set your request's ``fields`` query
-        parameter to only include the fields you need. For example, to
-        only include the ``id`` and ``selfLink`` fields, add the query
-        parameter ``?fields=id,selfLink`` to your request. This method
-        fails if the quota information is unavailable for the region and
-        if the organization policy constraint
+        specified project.
+
+        To decrease latency for this method, you can optionally omit any
+        unneeded information from the response by using a field mask.
+        This practice is especially recommended for unused quota
+        information (the ``items.quotas`` field). To exclude one or more
+        fields, set your request's ``fields`` query parameter to only
+        include the fields you need. For example, to only include the
+        ``id`` and ``selfLink`` fields, add the query parameter
+        ``?fields=id,selfLink`` to your request.
+
+        This method fails if the quota information is unavailable for
+        the region and if the organization policy constraint
         compute.requireBasicQuotaInResponse is enforced. This
         constraint, when enforced, disables the fail-open behaviour when
         quota information (the ``items.quotas`` field) is unavailable

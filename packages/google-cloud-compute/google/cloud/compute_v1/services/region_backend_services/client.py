@@ -1092,21 +1092,25 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.BackendService:
-                Represents a Backend Service resource. A backend service
-                defines how Google Cloud load balancers distribute
-                traffic. The backend service configuration contains a
-                set of values, such as the protocol used to connect to
-                backends, various distribution and session settings,
-                health checks, and timeouts. These settings provide
-                fine-grained control over how your load balancer
-                behaves. Most of the settings have default values that
-                allow for easy configuration if you need to get started
-                quickly. Backend services in Google Compute Engine can
-                be either regionally or globally scoped. \*
-                [Global](https://cloud.google.com/compute/docs/reference/rest/v1/backendServices)
-                \*
-                [Regional](https://cloud.google.com/compute/docs/reference/rest/v1/regionBackendServices)
-                For more information, see Backend Services.
+                Represents a Backend Service resource.
+
+                   A backend service defines how Google Cloud load
+                   balancers distribute traffic. The backend service
+                   configuration contains a set of values, such as the
+                   protocol used to connect to backends, various
+                   distribution and session settings, health checks, and
+                   timeouts. These settings provide fine-grained control
+                   over how your load balancer behaves. Most of the
+                   settings have default values that allow for easy
+                   configuration if you need to get started quickly.
+
+                   Backend services in Google Compute Engine can be
+                   either regionally or globally scoped.
+
+                   - [Global](https://cloud.google.com/compute/docs/reference/rest/v1/backendServices)
+                   - [Regional](https://cloud.google.com/compute/docs/reference/rest/v1/regionBackendServices)
+
+                   For more information, seeBackend Services.
 
         """
         # Create or coerce a protobuf request object.
@@ -1396,28 +1400,36 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2070,8 +2082,9 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         r"""Updates the specified regional BackendService
         resource with the data included in the request. For more
         information, see Understanding backend services This
-        method supports PATCH semantics and uses the JSON merge
-        patch format and processing rules.
+        method
+        supports PATCH semantics and uses the JSON merge patch
+        format and processing rules.
 
         .. code-block:: python
 
@@ -2217,8 +2230,9 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         r"""Updates the specified regional BackendService
         resource with the data included in the request. For more
         information, see Understanding backend services This
-        method supports PATCH semantics and uses the JSON merge
-        patch format and processing rules.
+        method
+        supports PATCH semantics and uses the JSON merge patch
+        format and processing rules.
 
         .. code-block:: python
 
@@ -2460,28 +2474,36 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Policy:
-                An Identity and Access Management (IAM) policy, which
-                specifies access controls for Google Cloud resources. A
-                Policy is a collection of bindings. A binding binds one
-                or more members, or principals, to a single role.
-                Principals can be user accounts, service accounts,
-                Google groups, and domains (such as G Suite). A role is
-                a named list of permissions; each role can be an IAM
-                predefined role or a user-created custom role. For some
-                types of Google Cloud resources, a binding can also
-                specify a condition, which is a logical expression that
-                allows access to a resource only if the expression
-                evaluates to true. A condition can add constraints based
-                on attributes of the request, the resource, or both. To
-                learn which resources support conditions in their IAM
-                policies, see the [IAM
-                documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
-                **JSON example:**
-                :literal:`` { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 }`\
-                \**YAML example:\*\*
-                \ ``bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3``\ \`
-                For a description of IAM and its features, see the [IAM
-                documentation](https://cloud.google.com/iam/docs/).
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
+
+                   A Policy is a collection of bindings. A binding binds
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
+
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
+
+                   :literal:``     {       "bindings": [         {           "role": "roles/resourcemanager.organizationAdmin",           "members": [             "user:mike@example.com",             "group:admins@example.com",             "domain:google.com",             "serviceAccount:my-project-id@appspot.gserviceaccount.com"           ]         },         {           "role": "roles/resourcemanager.organizationViewer",           "members": [             "user:eve@example.com"           ],           "condition": {             "title": "expirable access",             "description": "Does not grant access after Sep 2020",             "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')",           }         }       ],       "etag": "BwWWja0YfJA=",       "version": 3     }`\ \`
+
+                   **YAML example:**
+
+                   :literal:``     bindings:     - members:       - user:mike@example.com       - group:admins@example.com       - domain:google.com       - serviceAccount:my-project-id@appspot.gserviceaccount.com       role: roles/resourcemanager.organizationAdmin     - members:       - user:eve@example.com       role: roles/resourcemanager.organizationViewer       condition:         title: expirable access         description: Does not grant access after Sep 2020         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')     etag: BwWWja0YfJA=     version: 3`\ \`
+
+                   For a description of IAM and its features, see the
+                   [IAM
+                   documentation](https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -2566,8 +2588,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified backend service. For more information, see
-        Google Cloud Armor Overview
+        specified backend service. For more information,
+        seeGoogle Cloud Armor Overview
 
         .. code-block:: python
 
@@ -2725,8 +2747,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified backend service. For more information, see
-        Google Cloud Armor Overview
+        specified backend service. For more information,
+        seeGoogle Cloud Armor Overview
 
         .. code-block:: python
 
@@ -3063,7 +3085,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
     ) -> compute.Operation:
         r"""Updates the specified regional BackendService
         resource with the data included in the request. For more
-        information, see Backend services overview .
+        information, see
+        Backend services overview.
 
         .. code-block:: python
 
@@ -3210,7 +3233,8 @@ class RegionBackendServicesClient(metaclass=RegionBackendServicesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified regional BackendService
         resource with the data included in the request. For more
-        information, see Backend services overview .
+        information, see
+        Backend services overview.
 
         .. code-block:: python
 

@@ -324,10 +324,12 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
 
             Returns:
                 ~.compute.Region:
-                    Represents a Region resource. A
-                region is a geographical area where a
+                    Represents a Region resource.
+
+                A region is a geographical area where a
                 resource is located. For more
-                information, read Regions and Zones.
+                information, readRegions
+                and Zones.
 
             """
 

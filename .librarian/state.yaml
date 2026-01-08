@@ -1150,7 +1150,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
     version: 1.40.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 9fb55c416c90ff9e14f7101d68394eb9fca5918b
     apis:
       - path: google/cloud/compute/v1
         service_config: compute_v1.yaml

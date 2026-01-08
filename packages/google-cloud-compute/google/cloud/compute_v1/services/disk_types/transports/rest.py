@@ -530,17 +530,23 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
 
             Returns:
                 ~.compute.DiskType:
-                    Represents a Disk Type resource. Google Compute Engine
-                has two Disk Type resources: \*
-                `Regional </compute/docs/reference/rest/v1/regionDiskTypes>`__
-                \* `Zonal </compute/docs/reference/rest/v1/diskTypes>`__
+                    Represents a Disk Type resource.
+
+                Google Compute Engine has two Disk Type resources:
+
+                - `Regional </compute/docs/reference/rest/v1/regionDiskTypes>`__
+                - `Zonal </compute/docs/reference/rest/v1/diskTypes>`__
+
                 You can choose from a variety of disk types based on
-                your needs. For more information, read Storage options.
+                your needs. For more information, readStorage options.
+
                 The diskTypes resource represents disk types for a zonal
-                persistent disk. For more information, read Zonal
-                persistent disks. The regionDiskTypes resource
-                represents disk types for a regional persistent disk.
-                For more information, read Regional persistent disks.
+                persistent disk. For more information, readZonal
+                persistent disks.
+
+                The regionDiskTypes resource represents disk types for a
+                regional persistent disk. For more information, read
+                Regional persistent disks.
 
             """
 

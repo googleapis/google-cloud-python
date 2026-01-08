@@ -541,13 +541,13 @@ class AcceleratorTypesRestTransport(_BaseAcceleratorTypesRestTransport):
             Returns:
                 ~.compute.AcceleratorType:
                     Represents an Accelerator Type
-                resource. Google Cloud Platform provides
-                graphics processing units (accelerators)
-                that you can add to VM instances to
-                improve or accelerate performance when
-                working with intensive workloads. For
-                more information, read GPUs on Compute
-                Engine.
+                resource.
+                Google Cloud Platform provides graphics
+                processing units (accelerators) that you
+                can add to VM instances to improve or
+                accelerate performance when working with
+                intensive workloads. For more
+                information, readGPUs on Compute Engine.
 
             """
 
