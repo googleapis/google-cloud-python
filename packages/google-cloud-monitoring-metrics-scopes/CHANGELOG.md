@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring-metrics-scopes/#history
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.10.0...google-cloud-monitoring-metrics-scopes-v1.11.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.9.2...google-cloud-monitoring-metrics-scopes-v1.10.0) (2025-10-20)
 
 

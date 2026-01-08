@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-maps-fleetengine-delivery/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.3.0...google-maps-fleetengine-delivery-v0.4.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.2.13...google-maps-fleetengine-delivery-v0.3.0) (2025-10-20)
 
 

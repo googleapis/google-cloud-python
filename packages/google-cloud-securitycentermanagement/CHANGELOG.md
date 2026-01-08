@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycentermanagement/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.2.0...google-cloud-securitycentermanagement-v0.3.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.22...google-cloud-securitycentermanagement-v0.2.0) (2025-10-20)
 
 

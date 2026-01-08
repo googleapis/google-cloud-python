@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-maintenance-api/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-maintenance-api-v0.2.0...google-cloud-maintenance-api-v0.3.0) (2026-01-08)
+
+
+### Features
+
+* onboard a new library ([10289465a87988b9bf35a85893f26ea372ad717b](https://github.com/googleapis/google-cloud-python/commit/10289465a87988b9bf35a85893f26ea372ad717b))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-maintenance-api-v0.1.1...google-cloud-maintenance-api-v0.2.0) (2025-10-20)
 
 

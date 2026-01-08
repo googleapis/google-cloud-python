@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.33.0...google-cloud-dlp-v3.34.0) (2026-01-08)
+
+
+### Documentation
+
+* add example resource name to VertexDatasetResourceReference ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add messages stating that Data Catalog actions are deprecated ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [3.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.32.0...google-cloud-dlp-v3.33.0) (2025-10-16)
 
 

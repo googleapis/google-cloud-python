@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-migration/#history
 
+## [0.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.12.0...google-cloud-bigquery-migration-v0.13.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.15...google-cloud-bigquery-migration-v0.12.0) (2025-10-16)
 
 

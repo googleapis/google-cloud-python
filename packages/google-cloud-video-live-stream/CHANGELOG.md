@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-video-live-stream/#history
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.14.0...google-cloud-video-live-stream-v1.15.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.13.0...google-cloud-video-live-stream-v1.14.0) (2025-10-20)
 
 
