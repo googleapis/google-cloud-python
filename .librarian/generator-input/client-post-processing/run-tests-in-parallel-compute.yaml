@@ -42,7 +42,7 @@ replacements:
           import sys
           os.environ['export PYTHONFAULTHANDLER'] = "1"
           faulthandler.enable(sys.stderr)
-          concurrent_args = ["-n", "4", "--max-worker-restart", "16"]\n
+          concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
           # Run py.test against the unit tests.
           session.run(
               "py.test",
