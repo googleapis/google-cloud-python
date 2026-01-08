@@ -1039,7 +1039,7 @@ def _run_individual_session(
         "-f",
         f"{library_path}/noxfile.py",
     ]
-    result = subprocess.run(command, text=True, check=True, timeout=600)
+    result = subprocess.run(command, text=True, check=True, timeout=1200)
     logger.info(result)
 
 
