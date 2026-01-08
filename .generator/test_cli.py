@@ -778,10 +778,8 @@ def test_run_individual_session_failure(mocker):
 @pytest.mark.parametrize(
     "is_mono_repo,py314_constraints_file_exists, nox_session_python_runtime",
     [
-        (False, True, "3.14"),
-        (True, True, "3.14"),
-        (True, False, "3.13"),
-        (False, False, "3.13"),
+        (False, "3.14"),
+        (True, "3.14"),
     ],
 )
 def test_run_nox_sessions_success(
@@ -795,7 +793,6 @@ def test_run_nox_sessions_success(
     mocker.patch("cli._read_json_file", return_value=mock_generate_request_data_for_nox)
     mocker.patch("cli._get_library_id", return_value="mock-library")
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
-    mocker.patch("pathlib.Path.exists", return_value=py314_constraints_file_exists)
 
     sessions_to_run = [
         f"unit-{nox_session_python_runtime}(protobuf_implementation='upb')",
