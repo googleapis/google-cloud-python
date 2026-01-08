@@ -461,7 +461,7 @@ def prerelease_deps(session, protobuf_implementation):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies
-    session.install("-e", ".")
+    session.install("-e", ".", "--no-deps")
 
     # Install dependencies for the unit test environment
     unit_deps_all = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_EXTERNAL_DEPENDENCIES
