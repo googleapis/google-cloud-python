@@ -32,10 +32,18 @@ replacements:
       session.install\("protobuf<4"\)
       \
       \    # Run py.test against the unit tests.
+      \    session.run\(
+      \        "py.test",
+      \        "--quiet",
     after: |
       session.install("protobuf<4")\n
-          concurrent_args = ["-n", "auto", "--max-worker-restart", "0"]\n
+          import os
+          os.environ['export PYTHONFAULTHANDLER'] = "1"
+          concurrent_args = ["-n", "4", "--max-worker-restart", "16"]\n
           # Run py.test against the unit tests.
+          session.run(
+              "py.test",
+              "-vvv",
     count: 1
   - paths: [
       packages/google-cloud-compute/noxfile.py,
