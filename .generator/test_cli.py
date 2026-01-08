@@ -758,7 +758,7 @@ def test_run_individual_session_success(mocker, caplog, is_mono_repo):
         ),
     ]
     mock_subprocess_run.assert_called_once_with(
-        expected_command, text=True, check=True, timeout=600
+        expected_command, text=True, check=True, timeout=1200
     )
 
 
