@@ -1039,6 +1039,7 @@ def _run_individual_session(
         "-f",
         f"{library_path}/noxfile.py",
     ]
+    # TODO(#14992): Revert to 600 seconds (10 minutes) after debugging is complete.
     result = subprocess.run(command, text=True, check=True, timeout=1200)
     logger.info(result)
 
