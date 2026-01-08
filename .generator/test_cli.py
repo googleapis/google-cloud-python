@@ -794,7 +794,7 @@ def test_run_nox_sessions_success(
     mock_run_individual_session = mocker.patch("cli._run_individual_session")
 
     sessions_to_run = [
-        f"unit-{nox_session_python_runtime}(protobuf_implementation='upb')",
+        f"unit-{nox_session_python_runtime}(protobuf_implementation='python')",
     ]
     _run_nox_sessions("mock-library", "repo", is_mono_repo)
 
@@ -802,7 +802,7 @@ def test_run_nox_sessions_success(
     mock_run_individual_session.assert_has_calls(
         [
             mocker.call(
-                f"unit-{nox_session_python_runtime}(protobuf_implementation='upb')",
+                f"unit-{nox_session_python_runtime}(protobuf_implementation='python')",
                 "mock-library",
                 "repo",
                 is_mono_repo,

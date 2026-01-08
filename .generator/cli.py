@@ -996,8 +996,11 @@ def _run_nox_sessions(library_id: str, repo: str, is_mono_repo: bool):
         is_mono_repo(bool): True if the current repository is a mono-repo.
     """
     session_runtime = "3.14"
+    # TODO(https://github.com/googleapis/google-cloud-python/issues/14992): Switch the protobuf
+    # implementation back to upb once we identify the root cause of the crash that occurs during testing.
+    # It's not trivial to debug this since it only happens in cloud build.
     sessions = [
-        f"unit-{session_runtime}(protobuf_implementation='upb')",
+        f"unit-{session_runtime}(protobuf_implementation='python')",
     ]
     current_session = None
     try:
