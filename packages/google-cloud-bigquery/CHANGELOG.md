@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
+## [3.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.39.0...google-cloud-bigquery-v3.40.0) (2026-01-08)
+
+
+### Features
+
+* support load_table and list_rows with picosecond timestamp (#2351) ([46764a59ca7a21ed14ad2c91eb7f98c302736c22](https://github.com/googleapis/google-cloud-python/commit/46764a59ca7a21ed14ad2c91eb7f98c302736c22))
+* support timestamp_precision in table schema (#2333) ([8d5785aea50b9f9e5b13bd4c91e8a08d6dac7778](https://github.com/googleapis/google-cloud-python/commit/8d5785aea50b9f9e5b13bd4c91e8a08d6dac7778))
+
 ## [3.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-v3.38.0...google-cloud-bigquery-v3.39.0) (2025-12-12)
 
 
