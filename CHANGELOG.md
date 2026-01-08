@@ -221,7 +221,7 @@ Changelogs
 - [google-shopping-merchant-promotions==1.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-promotions/CHANGELOG.md)
 - [google-shopping-merchant-quota==1.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-quota/CHANGELOG.md)
 - [google-shopping-merchant-reports==1.1.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-reports/CHANGELOG.md)
-- [google-shopping-merchant-reviews==0.3.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-reviews/CHANGELOG.md)
+- [google-shopping-merchant-reviews==0.4.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-merchant-reviews/CHANGELOG.md)
 - [google-shopping-type==1.2.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/google-shopping-type/CHANGELOG.md)
 - [googleapis-common-protos==1.72.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/googleapis-common-protos/CHANGELOG.md)
 - [grafeas==1.15.0](https://github.com/googleapis/google-cloud-python/tree/main/packages/grafeas/CHANGELOG.md)

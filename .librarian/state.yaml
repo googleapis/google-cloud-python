@@ -4228,7 +4228,7 @@ libraries:
       - packages/google-shopping-merchant-reports/
     tag_format: '{id}-v{version}'
   - id: google-shopping-merchant-reviews
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/shopping/merchant/reviews/v1beta
