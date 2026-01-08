@@ -40,27 +40,25 @@ RUN apt-get update && \
     && apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# `make altinstall` is used to prevent replacing the system's default python binary.
+ENV PYTHON_VERSION=3.14
+
 # The full Python version, including the minor version, is needed for download/install
-# TODO(https://github.com/googleapis/librarian/issues/2945): Remove `3.13` when the linked issue is resolved.
-RUN for PYTHON_VERSION_WITH_MINOR in 3.13.9 3.14.0; do \
-    wget https://www.python.org/ftp/python/${PYTHON_VERSION_WITH_MINOR}/Python-${PYTHON_VERSION_WITH_MINOR}.tgz && \
+ENV PYTHON_VERSION_WITH_MINOR=3.14.2
+
+# `make altinstall` is used to prevent replacing the system's default python binary.
+RUN wget https://www.python.org/ftp/python/${PYTHON_VERSION_WITH_MINOR}/Python-${PYTHON_VERSION_WITH_MINOR}.tgz && \
     tar -xvf Python-${PYTHON_VERSION_WITH_MINOR}.tgz && \
     cd Python-${PYTHON_VERSION_WITH_MINOR} && \
     ./configure --enable-optimizations --prefix=/usr/local && \
     make -j$(nproc) && \
     make altinstall && \
     cd / && \
-    rm -rf Python-${PYTHON_VERSION_WITH_MINOR}* \
-    ; done
+    rm -rf Python-${PYTHON_VERSION_WITH_MINOR}*
 
-# Install pip for each python version
-# TODO(https://github.com/googleapis/librarian/issues/2945): Remove `3.13` when the linked issue is resolved.
-RUN for PYTHON_VERSION in 3.13 3.14; do \
-    wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' && \
+
+RUN wget --no-check-certificate -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' && \
     python${PYTHON_VERSION} /tmp/get-pip.py && \
-    rm /tmp/get-pip.py \
-    ; done
+    rm /tmp/get-pip.py
 
 # Download/extract protoc
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v25.3/protoc-25.3-linux-x86_64.zip
@@ -111,10 +109,6 @@ COPY --from=builder synthtool /synthtool
 
 COPY --from=builder /usr/local/bin/python${PYTHON_VERSION_DEFAULT}  /usr/local/bin/
 COPY --from=builder /usr/local/lib/python${PYTHON_VERSION_DEFAULT}  /usr/local/lib/python${PYTHON_VERSION_DEFAULT}
-
-# TODO(https://github.com/googleapis/librarian/issues/2945): Remove `3.13` when the linked issue is resolved.
-COPY --from=builder /usr/local/bin/python3.13  /usr/local/bin
-COPY --from=builder /usr/local/lib/python3.13  /usr/local/lib/python3.13
 
 # Set the working directory in the container.
 WORKDIR /app
