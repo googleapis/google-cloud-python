@@ -4245,7 +4245,7 @@ libraries:
       - packages/google-shopping-merchant-reviews/
     tag_format: '{id}-v{version}'
   - id: google-shopping-type
-    version: 1.1.0
+    version: 1.2.0
     last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
     apis:
       - path: google/shopping/type
