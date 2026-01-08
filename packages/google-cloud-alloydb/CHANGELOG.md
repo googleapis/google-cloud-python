@@ -4,6 +4,16 @@
 
 [1]: https://pypi.org/project/google-cloud-alloydb/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.6.0...google-cloud-alloydb-v0.7.0) (2026-01-08)
+
+
+### Features
+
+* add POSTGRES_18 to DatabaseVersion ([b3cb4de3ce50c3ec55af2b132d756252a32641f3](https://github.com/googleapis/google-cloud-python/commit/b3cb4de3ce50c3ec55af2b132d756252a32641f3))
+* add POSTGRES_18 to DatabaseVersion ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.5.0...google-cloud-alloydb-v0.6.0) (2025-10-16)
 
 

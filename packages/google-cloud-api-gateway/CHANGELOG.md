@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-api-gateway/#history
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.13.0...google-cloud-api-gateway-v1.14.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-api-gateway-v1.12.2...google-cloud-api-gateway-v1.13.0) (2025-10-16)
 
 
