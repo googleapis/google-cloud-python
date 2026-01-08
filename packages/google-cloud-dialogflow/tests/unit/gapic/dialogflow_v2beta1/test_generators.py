@@ -4565,6 +4565,7 @@ def test_create_generator_rest_call_success(request_type):
                             }
                         ]
                     },
+                    "triggering_event": 1,
                 }
             ],
             "version": "version_value",
@@ -5259,6 +5260,7 @@ def test_update_generator_rest_call_success(request_type):
                             }
                         ]
                     },
+                    "triggering_event": 1,
                 }
             ],
             "version": "version_value",

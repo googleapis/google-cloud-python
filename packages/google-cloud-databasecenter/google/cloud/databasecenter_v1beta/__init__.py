@@ -29,8 +29,55 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 from .services.database_center import DatabaseCenterAsyncClient, DatabaseCenterClient
+from .types.machine_config import MachineConfig
+from .types.maintenance import (
+    MaintenanceInfo,
+    Phase,
+    ResourceMaintenanceDenySchedule,
+    ResourceMaintenanceSchedule,
+)
+from .types.metric_data import MetricData, Metrics, TypedValue
+from .types.operation_error_type import OperationErrorType
 from .types.product import Engine, Product, ProductType
-from .types.service import QueryProductsRequest, QueryProductsResponse
+from .types.service import (
+    BackupDRConfig,
+    DatabaseResource,
+    DatabaseResourceGroup,
+    Edition,
+    Label,
+    QueryDatabaseResourceGroupsRequest,
+    QueryDatabaseResourceGroupsResponse,
+    QueryProductsRequest,
+    QueryProductsResponse,
+    ResourceCategory,
+    SubResourceType,
+    Tag,
+)
+from .types.signals import (
+    AdditionalDetail,
+    AutomatedBackupPolicyInfo,
+    BackupRunInfo,
+    DeletionProtectionInfo,
+    InefficientQueryInfo,
+    IssueCount,
+    IssueSeverity,
+    MaintenanceRecommendationInfo,
+    OutdatedMinorVersionInfo,
+    RecommendationInfo,
+    RegulatoryStandard,
+    ResourceSuspensionInfo,
+    RetentionSettingsInfo,
+    SCCInfo,
+    Signal,
+    SignalFilter,
+    SignalGroup,
+    SignalSource,
+    SignalStatus,
+    SignalType,
+    SignalTypeGroup,
+    SubResource,
+)
+from .types.suspension_reason import SuspensionReason
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -128,10 +175,52 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "DatabaseCenterAsyncClient",
+    "AdditionalDetail",
+    "AutomatedBackupPolicyInfo",
+    "BackupDRConfig",
+    "BackupRunInfo",
     "DatabaseCenterClient",
+    "DatabaseResource",
+    "DatabaseResourceGroup",
+    "DeletionProtectionInfo",
+    "Edition",
     "Engine",
+    "InefficientQueryInfo",
+    "IssueCount",
+    "IssueSeverity",
+    "Label",
+    "MachineConfig",
+    "MaintenanceInfo",
+    "MaintenanceRecommendationInfo",
+    "MetricData",
+    "Metrics",
+    "OperationErrorType",
+    "OutdatedMinorVersionInfo",
+    "Phase",
     "Product",
     "ProductType",
+    "QueryDatabaseResourceGroupsRequest",
+    "QueryDatabaseResourceGroupsResponse",
     "QueryProductsRequest",
     "QueryProductsResponse",
+    "RecommendationInfo",
+    "RegulatoryStandard",
+    "ResourceCategory",
+    "ResourceMaintenanceDenySchedule",
+    "ResourceMaintenanceSchedule",
+    "ResourceSuspensionInfo",
+    "RetentionSettingsInfo",
+    "SCCInfo",
+    "Signal",
+    "SignalFilter",
+    "SignalGroup",
+    "SignalSource",
+    "SignalStatus",
+    "SignalType",
+    "SignalTypeGroup",
+    "SubResource",
+    "SubResourceType",
+    "SuspensionReason",
+    "Tag",
+    "TypedValue",
 )

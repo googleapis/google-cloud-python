@@ -18,13 +18,13 @@ from google.cloud.maintenance_api import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.maintenance_api_v1beta.services.maintenance.async_client import (
+from google.cloud.maintenance_api_v1.services.maintenance.async_client import (
     MaintenanceAsyncClient,
 )
-from google.cloud.maintenance_api_v1beta.services.maintenance.client import (
+from google.cloud.maintenance_api_v1.services.maintenance.client import (
     MaintenanceClient,
 )
-from google.cloud.maintenance_api_v1beta.types.maintenance_service import (
+from google.cloud.maintenance_api_v1.types.maintenance_service import (
     GetResourceMaintenanceRequest,
     ListResourceMaintenancesRequest,
     ListResourceMaintenancesResponse,

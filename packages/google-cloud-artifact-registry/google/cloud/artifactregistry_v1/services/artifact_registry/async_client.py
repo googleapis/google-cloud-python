@@ -6287,7 +6287,7 @@ class ArtifactRegistryAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Exports an artifact.
+        r"""Exports an artifact to a Cloud Storage bucket.
 
         .. code-block:: python
 

@@ -1255,7 +1255,7 @@ class AlloyDBAdminAsyncClient:
                 # Initialize request argument(s)
                 request = alloydb_v1alpha.UpgradeClusterRequest(
                     name="name_value",
-                    version="POSTGRES_17",
+                    version="POSTGRES_18",
                 )
 
                 # Make the request

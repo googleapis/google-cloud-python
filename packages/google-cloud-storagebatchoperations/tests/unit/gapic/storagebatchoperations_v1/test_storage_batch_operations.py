@@ -1938,6 +1938,7 @@ def test_get_job(request_type, transport: str = "grpc"):
             name="name_value",
             description="description_value",
             state=storage_batch_operations_types.Job.State.RUNNING,
+            dry_run=True,
         )
         response = client.get_job(request)
 
@@ -1952,6 +1953,7 @@ def test_get_job(request_type, transport: str = "grpc"):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == storage_batch_operations_types.Job.State.RUNNING
+    assert response.dry_run is True
 
 
 def test_get_job_non_empty_request_with_auto_populated_field():
@@ -2078,6 +2080,7 @@ async def test_get_job_async(
                 name="name_value",
                 description="description_value",
                 state=storage_batch_operations_types.Job.State.RUNNING,
+                dry_run=True,
             )
         )
         response = await client.get_job(request)
@@ -2093,6 +2096,7 @@ async def test_get_job_async(
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == storage_batch_operations_types.Job.State.RUNNING
+    assert response.dry_run is True
 
 
 @pytest.mark.asyncio
@@ -2290,7 +2294,6 @@ def test_create_job_non_empty_request_with_auto_populated_field():
     request = storage_batch_operations.CreateJobRequest(
         parent="parent_value",
         job_id="job_id_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2304,7 +2307,6 @@ def test_create_job_non_empty_request_with_auto_populated_field():
         assert args[0] == storage_batch_operations.CreateJobRequest(
             parent="parent_value",
             job_id="job_id_value",
-            request_id="request_id_value",
         )
 
 
@@ -2639,7 +2641,6 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = storage_batch_operations.DeleteJobRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2652,7 +2653,6 @@ def test_delete_job_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_batch_operations.DeleteJobRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -2951,7 +2951,6 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
     # if they meet the requirements of AIP 4235.
     request = storage_batch_operations.CancelJobRequest(
         name="name_value",
-        request_id="request_id_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2964,7 +2963,6 @@ def test_cancel_job_non_empty_request_with_auto_populated_field():
         _, args, _ = call.mock_calls[0]
         assert args[0] == storage_batch_operations.CancelJobRequest(
             name="name_value",
-            request_id="request_id_value",
         )
 
 
@@ -4497,6 +4495,7 @@ async def test_get_job_empty_call_grpc_asyncio():
                 name="name_value",
                 description="description_value",
                 state=storage_batch_operations_types.Job.State.RUNNING,
+                dry_run=True,
             )
         )
         await client.get_job(request=None)
@@ -4769,6 +4768,7 @@ def test_get_job_rest_call_success(request_type):
             name="name_value",
             description="description_value",
             state=storage_batch_operations_types.Job.State.RUNNING,
+            dry_run=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -4788,6 +4788,7 @@ def test_get_job_rest_call_success(request_type):
     assert response.name == "name_value"
     assert response.description == "description_value"
     assert response.state == storage_batch_operations_types.Job.State.RUNNING
+    assert response.dry_run is True
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4920,6 +4921,10 @@ def test_create_job_rest_call_success(request_type):
             "cache_control": "cache_control_value",
             "custom_time": "custom_time_value",
             "custom_metadata": {},
+            "object_retention": {
+                "retain_until_time": "retain_until_time_value",
+                "retention_mode": 1,
+            },
         },
         "rewrite_object": {"kms_key": "kms_key_value"},
         "logging_config": {"log_actions": [6], "log_action_states": [1]},
@@ -4930,6 +4935,7 @@ def test_create_job_rest_call_success(request_type):
             "total_object_count": 1922,
             "succeeded_object_count": 2307,
             "failed_object_count": 1987,
+            "total_bytes_found": 1829,
         },
         "error_summaries": [
             {
@@ -4947,6 +4953,7 @@ def test_create_job_rest_call_success(request_type):
             }
         ],
         "state": 1,
+        "dry_run": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

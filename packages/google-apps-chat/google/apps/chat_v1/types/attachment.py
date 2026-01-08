@@ -44,7 +44,9 @@ class Attachment(proto.Message):
 
     Attributes:
         name (str):
-            Optional. Resource name of the attachment, in the form
+            Identifier. Resource name of the attachment.
+
+            Format:
             ``spaces/{space}/messages/{message}/attachments/{attachment}``.
         content_name (str):
             Output only. The original file name for the

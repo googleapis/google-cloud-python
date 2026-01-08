@@ -334,16 +334,10 @@ class DataChatServiceAsyncClient:
                 client = geminidataanalytics_v1alpha.DataChatServiceAsyncClient()
 
                 # Initialize request argument(s)
-                inline_context = geminidataanalytics_v1alpha.Context()
-                inline_context.datasource_references.bq.table_references.project_id = "project_id_value"
-                inline_context.datasource_references.bq.table_references.dataset_id = "dataset_id_value"
-                inline_context.datasource_references.bq.table_references.table_id = "table_id_value"
-
                 messages = geminidataanalytics_v1alpha.Message()
                 messages.user_message.text = "text_value"
 
                 request = geminidataanalytics_v1alpha.ChatRequest(
-                    inline_context=inline_context,
                     parent="parent_value",
                     messages=messages,
                 )
@@ -1027,15 +1021,9 @@ class DataChatServiceAsyncClient:
                 client = geminidataanalytics_v1alpha.DataChatServiceAsyncClient()
 
                 # Initialize request argument(s)
-                context = geminidataanalytics_v1alpha.QueryDataContext()
-                context.datasource_references.bq.table_references.project_id = "project_id_value"
-                context.datasource_references.bq.table_references.dataset_id = "dataset_id_value"
-                context.datasource_references.bq.table_references.table_id = "table_id_value"
-
                 request = geminidataanalytics_v1alpha.QueryDataRequest(
                     parent="parent_value",
                     prompt="prompt_value",
-                    context=context,
                 )
 
                 # Make the request

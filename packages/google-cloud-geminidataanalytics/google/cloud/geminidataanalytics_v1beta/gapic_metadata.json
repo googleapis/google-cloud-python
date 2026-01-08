@@ -178,6 +178,11 @@
               "methods": [
                 "list_messages"
               ]
+            },
+            "QueryData": {
+              "methods": [
+                "query_data"
+              ]
             }
           }
         },
@@ -213,6 +218,11 @@
               "methods": [
                 "list_messages"
               ]
+            },
+            "QueryData": {
+              "methods": [
+                "query_data"
+              ]
             }
           }
         },
@@ -247,6 +257,11 @@
             "ListMessages": {
               "methods": [
                 "list_messages"
+              ]
+            },
+            "QueryData": {
+              "methods": [
+                "query_data"
               ]
             }
           }

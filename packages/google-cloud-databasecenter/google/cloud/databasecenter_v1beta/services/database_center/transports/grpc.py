@@ -349,6 +349,38 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
             )
         return self._stubs["query_products"]
 
+    @property
+    def query_database_resource_groups(
+        self,
+    ) -> Callable[
+        [service.QueryDatabaseResourceGroupsRequest],
+        service.QueryDatabaseResourceGroupsResponse,
+    ]:
+        r"""Return a callable for the query database resource groups method over gRPC.
+
+        QueryDatabaseResourceGroups returns paginated results
+        of database groups.
+
+        Returns:
+            Callable[[~.QueryDatabaseResourceGroupsRequest],
+                    ~.QueryDatabaseResourceGroupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "query_database_resource_groups" not in self._stubs:
+            self._stubs[
+                "query_database_resource_groups"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryDatabaseResourceGroups",
+                request_serializer=service.QueryDatabaseResourceGroupsRequest.serialize,
+                response_deserializer=service.QueryDatabaseResourceGroupsResponse.deserialize,
+            )
+        return self._stubs["query_database_resource_groups"]
+
     def close(self):
         self._logged_channel.close()
 
