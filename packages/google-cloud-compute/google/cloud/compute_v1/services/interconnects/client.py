@@ -1038,6 +1038,7 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         Returns:
             google.cloud.compute_v1.types.Interconnect:
                 Represents an Interconnect resource.
+
                 An Interconnect resource is a dedicated
                 connection between the Google Cloud
                 network and your on-premises network.
@@ -1111,12 +1112,15 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.InterconnectsGetDiagnosticsResponse:
         r"""Returns the interconnectDiagnostics for the specified
-        Interconnect. In the event of a global outage, do not
-        use this API to make decisions about where to redirect
-        your network traffic. Unlike a VLAN attachment, which is
-        regional, a Cloud Interconnect connection is a global
-        resource. A global outage can prevent this API from
-        functioning properly.
+        Interconnect.
+
+        In the event of a
+        global outage, do not use this API to make decisions
+        about where to redirect your network traffic.
+
+        Unlike a VLAN attachment, which is regional, a Cloud
+        Interconnect connection is a global resource. A global
+        outage can prevent this API from functioning properly.
 
         .. code-block:: python
 
@@ -1746,9 +1750,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified Interconnect with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1878,9 +1882,9 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified Interconnect with the data
-        included in the request. This method supports PATCH
-        semantics and uses the JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and uses theJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2036,7 +2040,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an Interconnect. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 
@@ -2172,7 +2177,8 @@ class InterconnectsClient(metaclass=InterconnectsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an Interconnect. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 

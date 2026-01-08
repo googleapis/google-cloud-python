@@ -3891,6 +3891,7 @@ def test_get_rest_call_success(request_type):
             self_link="self_link_value",
             state="state_value",
             subzone="subzone_value",
+            wire_groups=["wire_groups_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -3936,6 +3937,7 @@ def test_get_rest_call_success(request_type):
     assert response.self_link == "self_link_value"
     assert response.state == "state_value"
     assert response.subzone == "subzone_value"
+    assert response.wire_groups == ["wire_groups_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -4365,6 +4367,7 @@ def test_insert_rest_call_success(request_type):
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
+        "params": {"resource_manager_tags": {}},
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
@@ -4377,6 +4380,7 @@ def test_insert_rest_call_success(request_type):
         "self_link": "self_link_value",
         "state": "state_value",
         "subzone": "subzone_value",
+        "wire_groups": ["wire_groups_value1", "wire_groups_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4814,6 +4818,7 @@ def test_patch_rest_call_success(request_type):
         "name": "name_value",
         "noc_contact_email": "noc_contact_email_value",
         "operational_status": "operational_status_value",
+        "params": {"resource_manager_tags": {}},
         "peer_ip_address": "peer_ip_address_value",
         "provisioned_link_count": 2375,
         "remote_location": "remote_location_value",
@@ -4826,6 +4831,7 @@ def test_patch_rest_call_success(request_type):
         "self_link": "self_link_value",
         "state": "state_value",
         "subzone": "subzone_value",
+        "wire_groups": ["wire_groups_value1", "wire_groups_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

@@ -1718,14 +1718,15 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Project:
-        r"""Returns the specified Project resource. To decrease latency for
-        this method, you can optionally omit any unneeded information
-        from the response by using a field mask. This practice is
-        especially recommended for unused quota information (the
-        ``quotas`` field). To exclude one or more fields, set your
-        request's ``fields`` query parameter to only include the fields
-        you need. For example, to only include the ``id`` and
-        ``selfLink`` fields, add the query parameter
+        r"""Returns the specified Project resource.
+
+        To decrease latency for this method, you can optionally omit any
+        unneeded information from the response by using a field mask.
+        This practice is especially recommended for unused quota
+        information (the ``quotas`` field). To exclude one or more
+        fields, set your request's ``fields`` query parameter to only
+        include the fields you need. For example, to only include the
+        ``id`` and ``selfLink`` fields, add the query parameter
         ``?fields=id,selfLink`` to your request.
 
         .. code-block:: python
@@ -1773,10 +1774,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Project:
-                Represents a Project resource. A
-                project is used to organize resources in
-                a Google Cloud Platform environment. For
-                more information, read about the
+                Represents a Project resource.
+
+                A project is used to organize resources
+                in a Google Cloud Platform environment.
+                For more information, read about the
                 Resource Hierarchy.
 
         """
@@ -1884,10 +1886,11 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.Project:
-                Represents a Project resource. A
-                project is used to organize resources in
-                a Google Cloud Platform environment. For
-                more information, read about the
+                Represents a Project resource.
+
+                A project is used to organize resources
+                in a Google Cloud Platform environment.
+                For more information, read about the
                 Resource Hierarchy.
 
         """
@@ -2201,15 +2204,21 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Starting September 29, 2025, you can't use the moveDisk API on
+        r"""Moves a persistent disk from one zone to another. *Note*: The
+        moveDisk API will be deprecated on September 29, 2026.
+
+        Starting September 29, 2025, you can't use the moveDisk API on
         new projects. To move a disk to a different region or zone,
         follow the steps in `Change the location of a
-        disk <https://{$universe.dns_names.final_documentation_domain}/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+        disk <https://cloud.google.com/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+
         Projects that already use the moveDisk API can continue usage
-        until September 29, 2026. Starting November 1, 2025, API
-        responses will include a warning message in the response body
-        about the upcoming deprecation. You can skip the message to
-        continue using the service without interruption.
+        until September 29, 2026.
+
+        Starting November 1, 2025, API responses will include a warning
+        message in the response body about the upcoming deprecation. You
+        can skip the message to continue using the service without
+        interruption.
 
         .. code-block:: python
 
@@ -2324,15 +2333,21 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Starting September 29, 2025, you can't use the moveDisk API on
+        r"""Moves a persistent disk from one zone to another. *Note*: The
+        moveDisk API will be deprecated on September 29, 2026.
+
+        Starting September 29, 2025, you can't use the moveDisk API on
         new projects. To move a disk to a different region or zone,
         follow the steps in `Change the location of a
-        disk <https://{$universe.dns_names.final_documentation_domain}/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+        disk <https://cloud.google.com/compute/docs/disks/migrate-to-hyperdisk#migrate-to-hd>`__.
+
         Projects that already use the moveDisk API can continue usage
-        until September 29, 2026. Starting November 1, 2025, API
-        responses will include a warning message in the response body
-        about the upcoming deprecation. You can skip the message to
-        continue using the service without interruption.
+        until September 29, 2026.
+
+        Starting November 1, 2025, API responses will include a warning
+        message in the response body about the upcoming deprecation. You
+        can skip the message to continue using the service without
+        interruption.
 
         .. code-block:: python
 
@@ -2746,8 +2761,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         r"""Sets the Cloud Armor tier of the project. To set
         ENTERPRISE or above the billing account of the project
         must be subscribed to Cloud Armor Enterprise. See
-        Subscribing to Cloud Armor Enterprise for more
-        information.
+        Subscribing
+        to Cloud Armor Enterprise for more information.
 
         .. code-block:: python
 
@@ -2869,8 +2884,8 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         r"""Sets the Cloud Armor tier of the project. To set
         ENTERPRISE or above the billing account of the project
         must be subscribed to Cloud Armor Enterprise. See
-        Subscribing to Cloud Armor Enterprise for more
-        information.
+        Subscribing
+        to Cloud Armor Enterprise for more information.
 
         .. code-block:: python
 
@@ -3551,7 +3566,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
-        r"""Enables the usage export feature and sets the usage
+        r"""Enables the usage export feature and sets theusage
         export bucket where reports are stored. If you provide
         an empty request body using this method, the usage
         export feature will be disabled.
@@ -3671,7 +3686,7 @@ class ProjectsClient(metaclass=ProjectsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
-        r"""Enables the usage export feature and sets the usage
+        r"""Enables the usage export feature and sets theusage
         export bucket where reports are stored. If you provide
         an empty request body using this method, the usage
         export feature will be disabled.

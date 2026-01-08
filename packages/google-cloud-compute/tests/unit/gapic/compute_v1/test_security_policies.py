@@ -5999,6 +5999,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
             name="name_value",
+            parent="parent_value",
             region="region_value",
             self_link="self_link_value",
             short_name="short_name_value",
@@ -6026,6 +6027,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
     assert response.name == "name_value"
+    assert response.parent == "parent_value"
     assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.short_name == "short_name_value"
@@ -6296,6 +6298,7 @@ def test_insert_rest_call_success(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "request_body_inspection_size": "request_body_inspection_size_value",
             "user_ip_request_headers": [
                 "user_ip_request_headers_value1",
                 "user_ip_request_headers_value2",
@@ -6327,6 +6330,7 @@ def test_insert_rest_call_success(request_type):
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "name": "name_value",
+        "parent": "parent_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
         "rules": [
@@ -6985,6 +6989,7 @@ def test_patch_rest_call_success(request_type):
             },
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
+            "request_body_inspection_size": "request_body_inspection_size_value",
             "user_ip_request_headers": [
                 "user_ip_request_headers_value1",
                 "user_ip_request_headers_value2",
@@ -7016,6 +7021,7 @@ def test_patch_rest_call_success(request_type):
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "name": "name_value",
+        "parent": "parent_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
         "region": "region_value",
         "rules": [

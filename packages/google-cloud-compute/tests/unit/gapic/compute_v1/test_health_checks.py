@@ -4021,6 +4021,11 @@ def test_insert_rest_call_success(request_type):
             "port_name": "port_name_value",
             "port_specification": "port_specification_value",
         },
+        "grpc_tls_health_check": {
+            "grpc_service_name": "grpc_service_name_value",
+            "port": 453,
+            "port_specification": "port_specification_value",
+        },
         "healthy_threshold": 1819,
         "http2_health_check": {
             "host": "host_value",
@@ -4453,6 +4458,11 @@ def test_patch_rest_call_success(request_type):
             "port_name": "port_name_value",
             "port_specification": "port_specification_value",
         },
+        "grpc_tls_health_check": {
+            "grpc_service_name": "grpc_service_name_value",
+            "port": 453,
+            "port_specification": "port_specification_value",
+        },
         "healthy_threshold": 1819,
         "http2_health_check": {
             "host": "host_value",
@@ -4752,6 +4762,11 @@ def test_update_rest_call_success(request_type):
             "grpc_service_name": "grpc_service_name_value",
             "port": 453,
             "port_name": "port_name_value",
+            "port_specification": "port_specification_value",
+        },
+        "grpc_tls_health_check": {
+            "grpc_service_name": "grpc_service_name_value",
+            "port": 453,
             "port_specification": "port_specification_value",
         },
         "healthy_threshold": 1819,

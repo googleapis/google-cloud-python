@@ -725,8 +725,9 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all TargetHttpProxy resources, regional
-        and global, available to the specified project. To prevent
-        failure, Google recommends that you set the
+        and global, available to the specified project.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1176,22 +1177,29 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.TargetHttpProxy:
-                Represents a Target HTTP Proxy resource. Google Compute
-                Engine has two Target HTTP Proxy resources: \*
-                [Global](/compute/docs/reference/rest/v1/targetHttpProxies)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionTargetHttpProxies)
-                A target HTTP proxy is a component of Google Cloud HTTP
-                load balancers. \* targetHttpProxies are used by global
-                external Application Load Balancers, classic Application
-                Load Balancers, cross-region internal Application Load
-                Balancers, and Traffic Director. \*
-                regionTargetHttpProxies are used by regional internal
-                Application Load Balancers and regional external
-                Application Load Balancers. Forwarding rules reference a
-                target HTTP proxy, and the target proxy then references
-                a URL map. For more information, read Using Target
-                Proxies and Forwarding rule concepts.
+                Represents a Target HTTP Proxy resource.
+
+                   Google Compute Engine has two Target HTTP Proxy
+                   resources:
+
+                   - [Global](/compute/docs/reference/rest/v1/targetHttpProxies)
+                   - [Regional](/compute/docs/reference/rest/v1/regionTargetHttpProxies)
+
+                   A target HTTP proxy is a component of Google Cloud
+                   HTTP load balancers.
+
+                   - targetHttpProxies are used by global external
+                     Application Load Balancers, classic Application
+                     Load Balancers, cross-region internal Application
+                     Load Balancers, and Traffic Director.
+                   - regionTargetHttpProxies are used by regional
+                     internal Application Load Balancers and regional
+                     external Application Load Balancers.
+
+                   Forwarding rules reference a target HTTP proxy, and
+                   the target proxy then references a URL map. For more
+                   information, readUsing Target Proxies and Forwarding
+                   rule concepts.
 
         """
         # Create or coerce a protobuf request object.
@@ -1639,8 +1647,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
     ) -> compute.Operation:
         r"""Patches the specified TargetHttpProxy resource with
         the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        PATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1773,8 +1781,8 @@ class TargetHttpProxiesClient(metaclass=TargetHttpProxiesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified TargetHttpProxy resource with
         the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        PATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

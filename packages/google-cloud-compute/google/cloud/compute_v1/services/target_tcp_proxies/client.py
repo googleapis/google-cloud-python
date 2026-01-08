@@ -723,9 +723,10 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all TargetTcpProxy resources, regional and
-        global, available to the specified project. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        global, available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1175,13 +1176,14 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
         Returns:
             google.cloud.compute_v1.types.TargetTcpProxy:
                 Represents a Target TCP Proxy
-                resource. A target TCP proxy is a
-                component of a Proxy Network Load
-                Balancer. The forwarding rule references
-                the target TCP proxy, and the target
-                proxy then references a backend service.
-                For more information, read Proxy Network
-                Load Balancer overview.
+                resource.
+                A target TCP proxy is a component of a
+                Proxy Network Load Balancer. The
+                forwarding rule references the target
+                TCP proxy, and the target proxy then
+                references a backend service. For more
+                information, readProxy Network Load
+                Balancer overview.
 
         """
         # Create or coerce a protobuf request object.

@@ -712,8 +712,9 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of VPN gateways. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of VPN gateways.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1183,13 +1184,14 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.VpnGateway:
-                Represents a HA VPN gateway. HA VPN
-                is a high-availability (HA) Cloud VPN
-                solution that lets you securely connect
-                your on-premises network to your Google
-                Cloud Virtual Private Cloud network
-                through an IPsec VPN connection in a
-                single region. For more information
+                Represents a HA VPN gateway.
+
+                HA VPN is a high-availability (HA) Cloud
+                VPN solution that lets you securely
+                connect your on-premises network to your
+                Google Cloud Virtual Private Cloud
+                network through an IPsec VPN connection
+                in a single region. For more information
                 about Cloud HA VPN solutions, see Cloud
                 VPN topologies .
 
@@ -1816,7 +1818,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a VpnGateway. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 
@@ -1967,7 +1969,7 @@ class VpnGatewaysClient(metaclass=VpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a VpnGateway. To learn more about
-        labels, read the Labeling Resources documentation.
+        labels, read theLabeling Resources documentation.
 
         .. code-block:: python
 

@@ -1327,9 +1327,10 @@ class NetworksClient(metaclass=NetworksClientMeta):
         Returns:
             google.cloud.compute_v1.types.Network:
                 Represents a VPC Network resource.
+
                 Networks connect resources to each other
                 and to the internet. For more
-                information, read Virtual Private Cloud
+                information, readVirtual Private Cloud
                 (VPC) Network.
 
         """

@@ -798,9 +798,9 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located. The
-                name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located. The name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -955,9 +955,9 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located. The
-                name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located. The name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1137,9 +1137,9 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located. The
-                name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located. The name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1294,9 +1294,9 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located. The
-                name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located. The name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1491,8 +1491,8 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             resize_request (str):
-                The name of the resize request. Name
-                should conform to RFC1035 or be a
+                The name of the resize request.
+                Name should conform to RFC1035 or be a
                 resource ID.
 
                 This corresponds to the ``resize_request`` field
@@ -1635,10 +1635,10 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located and
-                where the resize request will be
-                created. Name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located and where the
+                resize request will be created. Name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1796,10 +1796,10 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located and
-                where the resize request will be
-                created. Name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located and where the
+                resize request will be created. Name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1980,9 +1980,9 @@ class InstanceGroupManagerResizeRequestsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             zone (str):
-                The name of the zone where the
-                managed instance group is located. The
-                name should conform to RFC1035.
+                The name of thezone where the managed
+                instance group is located. The name
+                should conform to RFC1035.
 
                 This corresponds to the ``zone`` field
                 on the ``request`` instance; if ``request`` is provided, this

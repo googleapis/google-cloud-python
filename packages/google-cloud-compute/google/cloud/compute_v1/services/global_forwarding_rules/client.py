@@ -1057,18 +1057,22 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.ForwardingRule:
-                Represents a Forwarding Rule resource. Forwarding rule
-                resources in Google Cloud can be either regional or
-                global in scope: \*
-                [Global](https://cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules)
-                \*
-                [Regional](https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules)
-                A forwarding rule and its corresponding IP address
-                represent the frontend configuration of a Google Cloud
-                load balancer. Forwarding rules can also reference
-                target instances and Cloud VPN Classic gateways
-                (targetVpnGateway). For more information, read
-                Forwarding rule concepts and Using protocol forwarding.
+                Represents a Forwarding Rule resource.
+
+                   Forwarding rule resources in Google Cloud can be
+                   either regional or global in scope:
+
+                   - [Global](https://cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules)
+                   - [Regional](https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules)
+
+                   A forwarding rule and its corresponding IP address
+                   represent the frontend configuration of a Google
+                   Cloud load balancer. Forwarding rules can also
+                   reference target instances and Cloud VPN Classic
+                   gateways (targetVpnGateway).
+
+                   For more information, read Forwarding rule concepts
+                   and Using protocol forwarding.
 
         """
         # Create or coerce a protobuf request object.
@@ -1521,9 +1525,9 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified forwarding rule with the data included in
-        the request. This method supports PATCH semantics and uses the
-        JSON merge patch format and processing rules. Currently, you can
-        only patch the network_tier field.
+        the request. This method supportsPATCH semantics and uses
+        theJSON merge patch format and processing rules. Currently, you
+        can only patch the network_tier field.
 
         .. code-block:: python
 
@@ -1655,9 +1659,9 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified forwarding rule with the data included in
-        the request. This method supports PATCH semantics and uses the
-        JSON merge patch format and processing rules. Currently, you can
-        only patch the network_tier field.
+        the request. This method supportsPATCH semantics and uses
+        theJSON merge patch format and processing rules. Currently, you
+        can only patch the network_tier field.
 
         .. code-block:: python
 
@@ -1817,8 +1821,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on the specified resource. To learn
-        more about labels, read the Labeling resources
-        documentation.
+        more about labels, read the
+        Labeling resources documentation.
 
         .. code-block:: python
 
@@ -1956,8 +1960,8 @@ class GlobalForwardingRulesClient(metaclass=GlobalForwardingRulesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on the specified resource. To learn
-        more about labels, read the Labeling resources
-        documentation.
+        more about labels, read the
+        Labeling resources documentation.
 
         .. code-block:: python
 

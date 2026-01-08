@@ -446,21 +446,32 @@ class RegionInstanceTemplatesRestTransport(_BaseRegionInstanceTemplatesRestTrans
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -610,19 +621,25 @@ class RegionInstanceTemplatesRestTransport(_BaseRegionInstanceTemplatesRestTrans
 
             Returns:
                 ~.compute.InstanceTemplate:
-                    Represents an Instance Template resource. Google Compute
-                Engine has two Instance Template resources: \*
-                `Global </compute/docs/reference/rest/v1/instanceTemplates>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionInstanceTemplates>`__
+                    Represents an Instance Template resource.
+
+                Google Compute Engine has two Instance Template
+                resources:
+
+                - `Global </compute/docs/reference/rest/v1/instanceTemplates>`__
+                - `Regional </compute/docs/reference/rest/v1/regionInstanceTemplates>`__
+
                 You can reuse a global instance template in different
                 regions whereas you can use a regional instance template
                 in a specified region only. If you want to reduce
                 cross-region dependency or achieve data residency, use a
-                regional instance template. To create VMs, managed
-                instance groups, and reservations, you can use either
-                global or regional instance templates. For more
-                information, read Instance Templates.
+                regional instance template.
+
+                To create VMs, managed instance groups, and
+                reservations, you can use either global or regional
+                instance templates.
+
+                For more information, readInstance Templates.
 
             """
 
@@ -769,21 +786,32 @@ class RegionInstanceTemplatesRestTransport(_BaseRegionInstanceTemplatesRestTrans
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 

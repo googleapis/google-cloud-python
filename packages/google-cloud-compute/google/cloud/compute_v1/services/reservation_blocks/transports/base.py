@@ -143,6 +143,11 @@ class ReservationBlocksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
                 default_timeout=None,
@@ -150,6 +155,16 @@ class ReservationBlocksTransport(abc.ABC):
             ),
             self.perform_maintenance: gapic_v1.method.wrap_method(
                 self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -177,6 +192,15 @@ class ReservationBlocksTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyReservationBlockRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list(
         self,
     ) -> Callable[
@@ -194,6 +218,26 @@ class ReservationBlocksTransport(abc.ABC):
     ) -> Callable[
         [compute.PerformMaintenanceReservationBlockRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyReservationBlockRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsReservationBlockRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 

@@ -779,9 +779,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the region where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -944,9 +944,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the region where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1132,9 +1132,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the region where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1273,9 +1273,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the region where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1441,9 +1441,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the region where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1606,9 +1606,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the region where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1792,9 +1792,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of the region where
+                the network endpoint group is located.
+                It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1817,13 +1817,14 @@ class RegionNetworkEndpointGroupsClient(
         Returns:
             google.cloud.compute_v1.types.NetworkEndpointGroup:
                 Represents a collection of network
-                endpoints. A network endpoint group
-                (NEG) defines how a set of endpoints
-                should be reached, whether they are
-                reachable, and where they are located.
-                For more information about using NEGs
-                for different use cases, see Network
-                endpoint groups overview.
+                endpoints.
+                A network endpoint group (NEG) defines
+                how a set of endpoints should be
+                reached, whether they are reachable, and
+                where they are located. For more
+                information about using NEGs for
+                different use cases, seeNetwork endpoint
+                groups overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -1937,9 +1938,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the region where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2075,9 +2076,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where you want
-                to create the network endpoint group. It
-                should comply with RFC1035.
+                The name of the region where
+                you want to create the network endpoint
+                group. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2238,9 +2239,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of theregion
+                where the network endpoint group is
+                located. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2380,9 +2381,9 @@ class RegionNetworkEndpointGroupsClient(
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             region (str):
-                The name of the region where the
-                network endpoint group is located. It
-                should comply with RFC1035.
+                The name of theregion
+                where the network endpoint group is
+                located. It should comply with RFC1035.
 
                 This corresponds to the ``region`` field
                 on the ``request`` instance; if ``request`` is provided, this

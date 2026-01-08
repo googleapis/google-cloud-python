@@ -5119,6 +5119,7 @@ def test_get_rest_call_success(request_type):
             kind="kind_value",
             linked_commitments=["linked_commitments_value"],
             name="name_value",
+            protection_tier="protection_tier_value",
             satisfies_pzs=True,
             scheduling_type="scheduling_type_value",
             self_link="self_link_value",
@@ -5151,6 +5152,7 @@ def test_get_rest_call_success(request_type):
     assert response.kind == "kind_value"
     assert response.linked_commitments == ["linked_commitments_value"]
     assert response.name == "name_value"
+    assert response.protection_tier == "protection_tier_value"
     assert response.satisfies_pzs is True
     assert response.scheduling_type == "scheduling_type_value"
     assert response.self_link == "self_link_value"
@@ -5418,6 +5420,7 @@ def test_insert_rest_call_success(request_type):
             "linked_commitments_value2",
         ],
         "name": "name_value",
+        "protection_tier": "protection_tier_value",
         "reservation_sharing_policy": {
             "service_share_type": "service_share_type_value"
         },
@@ -6834,6 +6837,7 @@ def test_update_rest_call_success(request_type):
             "linked_commitments_value2",
         ],
         "name": "name_value",
+        "protection_tier": "protection_tier_value",
         "reservation_sharing_policy": {
             "service_share_type": "service_share_type_value"
         },
