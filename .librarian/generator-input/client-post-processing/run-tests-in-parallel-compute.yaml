@@ -43,7 +43,8 @@ replacements:
           # Run py.test against the unit tests.
           session.run(
               "py.test",
-              "-vvv",
+              "-W",
+              "ignore::DeprecationWarning",
     count: 1
   - paths: [
       packages/google-cloud-compute/noxfile.py,
