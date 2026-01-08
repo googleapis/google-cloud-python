@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.23.0...google-cloud-dataproc-v5.24.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [5.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.22.0...google-cloud-dataproc-v5.23.0) (2025-10-16)
 
 

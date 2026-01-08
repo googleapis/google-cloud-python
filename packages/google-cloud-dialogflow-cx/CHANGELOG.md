@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-dialogflow-cx/#history
 
+## [2.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.1.0...google-cloud-dialogflow-cx-v2.2.0) (2026-01-08)
+
+
+### Features
+
+* updated v3beta1 dialogflow client libraries ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [2.1.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v2.0.0...google-cloud-dialogflow-cx-v2.1.0) (2025-12-04)
 
 
