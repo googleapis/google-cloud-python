@@ -84,6 +84,8 @@ def test_create_read_session(mock_transport, client_under_test):
     # validate test assumptions
     assert client_under_test._transport is mock_transport
 
+    assert True
+
     rpc_callable = mock.Mock()
     mock_transport._wrapped_methods[mock_transport.create_read_session] = rpc_callable
     table = "projects/{}/datasets/{}/tables/{}".format(
