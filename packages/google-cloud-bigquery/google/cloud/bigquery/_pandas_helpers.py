@@ -26,6 +26,7 @@ from itertools import islice
 import logging
 import queue
 import threading
+import time
 import warnings
 from typing import Any, Union, Optional, Callable, Generator, List
 
@@ -869,6 +870,7 @@ def _download_table_bqstorage(
     max_queue_size: Any = _MAX_QUEUE_SIZE_DEFAULT,
     max_stream_count: Optional[int] = None,
     download_state: Optional[_DownloadState] = None,
+    timeout: Optional[float] = None,
 ) -> Generator[Any, None, None]:
     """Downloads a BigQuery table using the BigQuery Storage API.
 
@@ -899,6 +901,9 @@ def _download_table_bqstorage(
         download_state (Optional[_DownloadState]):
             A threadsafe state object which can be used to observe the
             behavior of the worker threads created by this method.
+        timeout (Optional[float]):
+            The number of seconds to wait for the download to complete.
+            If None, wait indefinitely.
 
     Yields:
         pandas.DataFrame: Pandas DataFrames, one for each chunk of data
@@ -906,6 +911,8 @@ def _download_table_bqstorage(
 
     Raises:
         ValueError: If attempting to read from a specific partition or snapshot.
+        concurrent.futures.TimeoutError:
+            If the download does not complete within the specified timeout.
 
     Note:
         This method requires the `google-cloud-bigquery-storage` library
@@ -973,60 +980,73 @@ def _download_table_bqstorage(
 
     worker_queue: queue.Queue[int] = queue.Queue(maxsize=max_queue_size)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=total_streams) as pool:
-        try:
-            # Manually submit jobs and wait for download to complete rather
-            # than using pool.map because pool.map continues running in the
-            # background even if there is an exception on the main thread.
-            # See: https://github.com/googleapis/google-cloud-python/pull/7698
-            not_done = [
-                pool.submit(
-                    _download_table_bqstorage_stream,
-                    download_state,
-                    bqstorage_client,
-                    session,
-                    stream,
-                    worker_queue,
-                    page_to_item,
-                )
-                for stream in session.streams
-            ]
+    # Manually manage the pool to control shutdown behavior on timeout.
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=max(1, total_streams))
+    wait_on_shutdown = True
+    start_time = time.time()
 
-            while not_done:
-                # Don't block on the worker threads. For performance reasons,
-                # we want to block on the queue's get method, instead. This
-                # prevents the queue from filling up, because the main thread
-                # has smaller gaps in time between calls to the queue's get
-                # method. For a detailed explanation, see:
-                # https://friendliness.dev/2019/06/18/python-nowait/
-                done, not_done = _nowait(not_done)
-                for future in done:
-                    # Call result() on any finished threads to raise any
-                    # exceptions encountered.
-                    future.result()
+    try:
+        # Manually submit jobs and wait for download to complete rather
+        # than using pool.map because pool.map continues running in the
+        # background even if there is an exception on the main thread.
+        # See: https://github.com/googleapis/google-cloud-python/pull/7698
+        not_done = [
+            pool.submit(
+                _download_table_bqstorage_stream,
+                download_state,
+                bqstorage_client,
+                session,
+                stream,
+                worker_queue,
+                page_to_item,
+            )
+            for stream in session.streams
+        ]
 
-                try:
-                    frame = worker_queue.get(timeout=_PROGRESS_INTERVAL)
-                    yield frame
-                except queue.Empty:  # pragma: NO COVER
-                    continue
+        while not_done:
+            # Check for timeout
+            if timeout is not None:
+                elapsed = time.time() - start_time
+                if elapsed > timeout:
+                    wait_on_shutdown = False
+                    raise concurrent.futures.TimeoutError(
+                        f"Download timed out after {timeout} seconds."
+                    )
 
-            # Return any remaining values after the workers finished.
-            while True:  # pragma: NO COVER
-                try:
-                    frame = worker_queue.get_nowait()
-                    yield frame
-                except queue.Empty:  # pragma: NO COVER
-                    break
-        finally:
-            # No need for a lock because reading/replacing a variable is
-            # defined to be an atomic operation in the Python language
-            # definition (enforced by the global interpreter lock).
-            download_state.done = True
+            # Don't block on the worker threads. For performance reasons,
+            # we want to block on the queue's get method, instead. This
+            # prevents the queue from filling up, because the main thread
+            # has smaller gaps in time between calls to the queue's get
+            # method. For a detailed explanation, see:
+            # https://friendliness.dev/2019/06/18/python-nowait/
+            done, not_done = _nowait(not_done)
+            for future in done:
+                # Call result() on any finished threads to raise any
+                # exceptions encountered.
+                future.result()
 
-            # Shutdown all background threads, now that they should know to
-            # exit early.
-            pool.shutdown(wait=True)
+            try:
+                frame = worker_queue.get(timeout=_PROGRESS_INTERVAL)
+                yield frame
+            except queue.Empty:  # pragma: NO COVER
+                continue
+
+        # Return any remaining values after the workers finished.
+        while True:  # pragma: NO COVER
+            try:
+                frame = worker_queue.get_nowait()
+                yield frame
+            except queue.Empty:  # pragma: NO COVER
+                break
+    finally:
+        # No need for a lock because reading/replacing a variable is
+        # defined to be an atomic operation in the Python language
+        # definition (enforced by the global interpreter lock).
+        download_state.done = True
+
+        # Shutdown all background threads, now that they should know to
+        # exit early.
+        pool.shutdown(wait=wait_on_shutdown)
 
 
 def download_arrow_bqstorage(
@@ -1037,6 +1057,7 @@ def download_arrow_bqstorage(
     selected_fields=None,
     max_queue_size=_MAX_QUEUE_SIZE_DEFAULT,
     max_stream_count=None,
+    timeout=None,
 ):
     return _download_table_bqstorage(
         project_id,
@@ -1047,6 +1068,7 @@ def download_arrow_bqstorage(
         page_to_item=_bqstorage_page_to_arrow,
         max_queue_size=max_queue_size,
         max_stream_count=max_stream_count,
+        timeout=timeout,
     )
 
 
@@ -1060,6 +1082,7 @@ def download_dataframe_bqstorage(
     selected_fields=None,
     max_queue_size=_MAX_QUEUE_SIZE_DEFAULT,
     max_stream_count=None,
+    timeout=None,
 ):
     page_to_item = functools.partial(_bqstorage_page_to_dataframe, column_names, dtypes)
     return _download_table_bqstorage(
@@ -1071,6 +1094,7 @@ def download_dataframe_bqstorage(
         page_to_item=page_to_item,
         max_queue_size=max_queue_size,
         max_stream_count=max_stream_count,
+        timeout=timeout,
     )
 
 

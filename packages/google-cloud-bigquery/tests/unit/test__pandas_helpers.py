@@ -13,12 +13,14 @@
 # limitations under the License.
 
 import collections
+import concurrent.futures
 import datetime
 import decimal
 import functools
 import gc
 import operator
 import queue
+import time
 from typing import Union
 from unittest import mock
 import warnings
@@ -2177,3 +2179,76 @@ def test_determine_requested_streams_invalid_max_stream_count():
     """Tests that a ValueError is raised if max_stream_count is negative."""
     with pytest.raises(ValueError):
         determine_requested_streams(preserve_order=False, max_stream_count=-1)
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires google-cloud-bigquery-storage"
+)
+def test__download_table_bqstorage_w_timeout_error(module_under_test):
+    from google.cloud.bigquery import dataset
+    from google.cloud.bigquery import table
+    from unittest import mock
+
+    mock_bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    fake_session = mock.Mock(streams=[mock.Mock()])
+    mock_bqstorage_client.create_read_session.return_value = fake_session
+
+    table_ref = table.TableReference(
+        dataset.DatasetReference("project-x", "dataset-y"),
+        "table-z",
+    )
+
+    def slow_download_stream(
+        download_state, bqstorage_client, session, stream, worker_queue, page_to_item
+    ):
+        # Block until the main thread sets done=True (which it will on timeout)
+        while not download_state.done:
+            time.sleep(0.01)
+
+    with mock.patch.object(
+        module_under_test, "_download_table_bqstorage_stream", new=slow_download_stream
+    ):
+        # Use a very small timeout
+        result_gen = module_under_test._download_table_bqstorage(
+            "some-project", table_ref, mock_bqstorage_client, timeout=0.01
+        )
+        with pytest.raises(concurrent.futures.TimeoutError, match="timed out"):
+            list(result_gen)
+
+
+@pytest.mark.skipif(
+    bigquery_storage is None, reason="Requires google-cloud-bigquery-storage"
+)
+def test__download_table_bqstorage_w_timeout_success(module_under_test):
+    from google.cloud.bigquery import dataset
+    from google.cloud.bigquery import table
+    from unittest import mock
+
+    mock_bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
+    )
+    fake_session = mock.Mock(streams=["stream/s0"])
+    mock_bqstorage_client.create_read_session.return_value = fake_session
+
+    table_ref = table.TableReference(
+        dataset.DatasetReference("project-x", "dataset-y"),
+        "table-z",
+    )
+
+    def fast_download_stream(
+        download_state, bqstorage_client, session, stream, worker_queue, page_to_item
+    ):
+        worker_queue.put("result_page")
+
+    with mock.patch.object(
+        module_under_test, "_download_table_bqstorage_stream", new=fast_download_stream
+    ):
+        # Use a generous timeout
+        result_gen = module_under_test._download_table_bqstorage(
+            "some-project", table_ref, mock_bqstorage_client, timeout=10.0
+        )
+        results = list(result_gen)
+
+    assert results == ["result_page"]

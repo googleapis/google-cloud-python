@@ -301,6 +301,7 @@ def test_rowiterator_to_geodataframe_with_default_dtypes(
         int_dtype=bigquery.enums.DefaultPandasDTypes.INT_DTYPE,
         float_dtype=None,
         string_dtype=None,
+        timeout=None,
     )
     mock_geopandas.GeoDataFrame.assert_called_once_with(
         mock_df, crs="EPSG:4326", geometry="geo_col"
@@ -358,6 +359,7 @@ def test_rowiterator_to_geodataframe_with_custom_dtypes(
         int_dtype=custom_int_dtype,
         float_dtype=custom_float_dtype,
         string_dtype=custom_string_dtype,
+        timeout=None,
     )
     mock_geopandas.GeoDataFrame.assert_called_once_with(
         mock_df, crs="EPSG:4326", geometry="geo_col"

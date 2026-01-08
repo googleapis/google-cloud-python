@@ -1857,6 +1857,7 @@ class QueryJob(_AsyncJob):
         bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         create_bqstorage_client: bool = True,
         max_results: Optional[int] = None,
+        timeout: Optional[float] = None,
     ) -> "pyarrow.Table":
         """[Beta] Create a class:`pyarrow.Table` by loading all pages of a
         table or query.
@@ -1904,6 +1905,10 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 2.21.0
 
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying download to complete.
+                If ``None``, wait indefinitely.
+
         Returns:
             pyarrow.Table
                 A :class:`pyarrow.Table` populated with row data and column
@@ -1921,6 +1926,7 @@ class QueryJob(_AsyncJob):
             progress_bar_type=progress_bar_type,
             bqstorage_client=bqstorage_client,
             create_bqstorage_client=create_bqstorage_client,
+            timeout=timeout,
         )
 
     # If changing the signature of this method, make sure to apply the same
@@ -1949,6 +1955,7 @@ class QueryJob(_AsyncJob):
         range_timestamp_dtype: Union[
             Any, None
         ] = DefaultPandasDTypes.RANGE_TIMESTAMP_DTYPE,
+        timeout: Optional[float] = None,
     ) -> "pandas.DataFrame":
         """Return a pandas DataFrame from a QueryJob
 
@@ -2141,6 +2148,10 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 3.21.0
 
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying download to complete.
+                If ``None``, wait indefinitely.
+
         Returns:
             pandas.DataFrame:
                 A :class:`~pandas.DataFrame` populated with row data
@@ -2174,6 +2185,7 @@ class QueryJob(_AsyncJob):
             range_date_dtype=range_date_dtype,
             range_datetime_dtype=range_datetime_dtype,
             range_timestamp_dtype=range_timestamp_dtype,
+            timeout=timeout,
         )
 
     # If changing the signature of this method, make sure to apply the same
@@ -2191,6 +2203,7 @@ class QueryJob(_AsyncJob):
         int_dtype: Union[Any, None] = DefaultPandasDTypes.INT_DTYPE,
         float_dtype: Union[Any, None] = None,
         string_dtype: Union[Any, None] = None,
+        timeout: Optional[float] = None,
     ) -> "geopandas.GeoDataFrame":
         """Return a GeoPandas GeoDataFrame from a QueryJob
 
@@ -2269,6 +2282,9 @@ class QueryJob(_AsyncJob):
                 then the data type will be ``numpy.dtype("object")``. BigQuery String
                 type can be found at:
                 https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#string_type
+            timeout (Optional[float]):
+                The number of seconds to wait for the underlying download to complete.
+                If ``None``, wait indefinitely.
 
         Returns:
             geopandas.GeoDataFrame:
@@ -2296,6 +2312,7 @@ class QueryJob(_AsyncJob):
             int_dtype=int_dtype,
             float_dtype=float_dtype,
             string_dtype=string_dtype,
+            timeout=timeout,
         )
 
     def __iter__(self):
