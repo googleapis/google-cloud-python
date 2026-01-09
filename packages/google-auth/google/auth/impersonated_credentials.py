@@ -649,7 +649,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
             raise new_exc from caught_exc
 
         self.token = id_token
-        self.expiry = datetime.utcfromtimestamp(
+        self.expiry = _helpers.utcfromtimestamp(
             jwt.decode(id_token, verify=False)["exp"]
         )
 

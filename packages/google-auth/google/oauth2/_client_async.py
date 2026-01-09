@@ -23,12 +23,12 @@ For more information about the token endpoint, see
 .. _Section 3.1 of rfc6749: https://tools.ietf.org/html/rfc6749#section-3.2
 """
 
-import datetime
 import http.client as http_client
 import json
 import urllib
 
 from google.auth import _exponential_backoff
+from google.auth import _helpers
 from google.auth import exceptions
 from google.auth import jwt
 from google.oauth2 import _client as client
@@ -227,7 +227,7 @@ async def id_token_jwt_grant(request, token_uri, assertion, can_retry=True):
         raise new_exc from caught_exc
 
     payload = jwt.decode(id_token, verify=False)
-    expiry = datetime.datetime.utcfromtimestamp(payload["exp"])
+    expiry = _helpers.utcfromtimestamp(payload["exp"])
 
     return id_token, expiry, response_data
 

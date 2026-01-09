@@ -498,7 +498,7 @@ class IDTokenCredentials(
             raise new_exc from caught_exc
 
         _, payload, _, _ = jwt._unverified_decode(id_token)
-        return id_token, datetime.datetime.utcfromtimestamp(payload["exp"])
+        return id_token, _helpers.utcfromtimestamp(payload["exp"])
 
     def refresh(self, request):
         """Refreshes the ID token.

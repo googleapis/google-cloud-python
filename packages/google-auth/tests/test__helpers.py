@@ -677,3 +677,50 @@ def test_parse_response_no_json_method():
 
 def test_parse_response_none():
     assert _helpers._parse_response(None) is None
+
+
+class TestUtcFromTimestamp:
+    """Tests for the utcfromtimestamp utility function."""
+
+    @pytest.mark.parametrize(
+        "ts, expected",
+        [
+            (1704067200.0, datetime.datetime(2024, 1, 1, 0, 0, 0)),
+            (0.0, datetime.datetime(1970, 1, 1, 0, 0, 0)),
+            (1704067200.500123, datetime.datetime(2024, 1, 1, 0, 0, 0, 500123)),
+            (-31536000.0, datetime.datetime(1969, 1, 1, 0, 0, 0)),
+            (1000000000.0, datetime.datetime(2001, 9, 9, 1, 46, 40)),
+        ],
+        ids=[
+            "standard_timestamp",
+            "unix_epoch",
+            "subsecond_precision",
+            "negative_timestamp",
+            "timezone_independence",
+        ],
+    )
+    def test_success_cases(self, ts, expected):
+        """Verify correct UTC conversion and that the result is offset-naive."""
+        result = _helpers.utcfromtimestamp(ts)
+
+        # 1. Check the datetime value is correct
+        assert result == expected
+
+        # 2. Check it is naive (tzinfo is None) for backward compatibility
+        assert result.tzinfo is None
+
+    @pytest.mark.parametrize(
+        "invalid_input",
+        ["string", None, [123]],
+        ids=["type_string", "type_none", "type_list"],
+    )
+    def test_invalid_types(self, invalid_input):
+        """Verify that passing invalid types raises a TypeError."""
+        with pytest.raises(TypeError):
+            _helpers.utcfromtimestamp(invalid_input)
+
+    def test_out_of_range(self):
+        """Test very large timestamps that exceed platform limits."""
+        with pytest.raises((OverflowError, OSError, ValueError)):
+            # Large enough to fail on most systems (Year 300,000+)
+            _helpers.utcfromtimestamp(9999999999999)
