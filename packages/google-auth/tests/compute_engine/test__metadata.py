@@ -108,6 +108,20 @@ def test_is_on_gce_ping_success():
     assert _metadata.is_on_gce(request)
 
 
+def test_is_on_gce_no_gce_check():
+    request = make_request("", headers=_metadata._METADATA_HEADERS)
+
+    os.environ[environment_vars.NO_GCE_CHECK] = "true"
+    importlib.reload(_metadata)
+
+    try:
+        assert not _metadata.is_on_gce(request)
+        assert request.call_count == 0
+    finally:
+        del os.environ[environment_vars.NO_GCE_CHECK]
+        importlib.reload(_metadata)
+
+
 @mock.patch("os.name", new="nt")
 def test_is_on_gce_windows_success():
     request = make_request("", headers={_metadata._METADATA_FLAVOR_HEADER: "meep"})

@@ -60,6 +60,12 @@ GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
 GCE metadata requests."""
 
+NO_GCE_CHECK = "NO_GCE_CHECK"
+"""Environment variable controlling whether to check if running on GCE or not.
+
+The default value is false. Users have to explicitly set this value to true
+in order to disable the GCE check."""
+
 GCE_METADATA_MTLS_MODE = "GCE_METADATA_MTLS_MODE"
 """Environment variable controlling the mTLS behavior for GCE metadata requests.
 

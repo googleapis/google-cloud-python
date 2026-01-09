@@ -101,6 +101,10 @@ try:
 except ValueError:  # pragma: NO COVER
     _METADATA_DEFAULT_TIMEOUT = 3
 
+# This is used to disable checking for the GCE metadata server and directly
+# assuming it's not available.
+_NO_GCE_CHECK = os.getenv(environment_vars.NO_GCE_CHECK) == "true"
+
 # Detect GCE Residency
 _GOOGLE = "Google"
 _GCE_PRODUCT_NAME_FILE = "/sys/class/dmi/id/product_name"
@@ -116,6 +120,9 @@ def is_on_gce(request):
     Returns:
         bool: True if the code runs on Google Compute Engine, False otherwise.
     """
+    if _NO_GCE_CHECK:
+        return False
+
     if ping(request):
         return True
 
