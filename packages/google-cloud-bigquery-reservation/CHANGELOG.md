@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-reservation/#history
 
+## [1.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.21.0...google-cloud-bigquery-reservation-v1.22.0) (2026-01-08)
+
+
+### Documentation
+
+* change comment indicating `enable_gemini_in_bigquery` field for BigQuery Reservation Assignments is deprecated ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-reservation-v1.20.0...google-cloud-bigquery-reservation-v1.21.0) (2025-10-16)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.61.0...google-cloud-container-v2.62.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [2.61.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.60.0...google-cloud-container-v2.61.0) (2025-10-23)
 
 

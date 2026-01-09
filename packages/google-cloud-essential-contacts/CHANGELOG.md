@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-essential-contacts/#history
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.11.0...google-cloud-essential-contacts-v1.12.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-essential-contacts-v1.10.2...google-cloud-essential-contacts-v1.11.0) (2025-10-16)
 
 

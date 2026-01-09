@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-apps-chat/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.4.0...google-apps-chat-v0.5.0) (2026-01-08)
+
+
+### Documentation
+
+* Improve documentation of attachment.proto, event_payload.proto and space.proto ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+
+
+### Features
+
+* Add accessory widget support for private messages ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* Add app authorization support to space APIs ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* Addition of GMAIL_MESSAGE value for RichLinkType enum in the RichLinkMetadata proto ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-apps-chat-v0.3.0...google-apps-chat-v0.4.0) (2025-10-28)
 
 

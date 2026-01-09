@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-analytics-admin/#history
 
+## [0.27.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.26.0...google-analytics-admin-v0.27.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.26.0](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.25.0...google-analytics-admin-v0.26.0) (2025-10-16)
 
 
