@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-eventarc/#history
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.18.0...google-cloud-eventarc-v1.19.0) (2026-01-08)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-v1.17.0...google-cloud-eventarc-v1.18.0) (2025-12-04)
 
 

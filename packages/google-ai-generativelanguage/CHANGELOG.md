@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-ai-generativelanguage/#history
 
+## [0.10.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.9.0...google-ai-generativelanguage-v0.10.0) (2026-01-08)
+
+
+### Features
+
+* add support for GoogleMaps and FileSearch tools ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add support for RetrievalConfig ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add IMAGE_RECITATION reason when generation is stopped due to recitation ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add json_name for GenerationConfig.response_json_schema_ordered field ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add support for GroundingMetadata.google_maps_widget_context_token ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.8.0...google-ai-generativelanguage-v0.9.0) (2025-10-20)
 
 
