@@ -1052,13 +1052,15 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.TargetGrpcProxy:
-                Represents a Target gRPC Proxy resource. A target gRPC
-                proxy is a component of load balancers intended for load
-                balancing gRPC traffic. Only global forwarding rules
-                with load balancing scheme INTERNAL_SELF_MANAGED can
-                reference a target gRPC proxy. The target gRPC Proxy
-                references a URL map that specifies how traffic is
-                routed to gRPC backend services.
+                Represents a Target gRPC Proxy resource.
+
+                   A target gRPC proxy is a component of load balancers
+                   intended for load balancing gRPC traffic. Only global
+                   forwarding rules with load balancing scheme
+                   INTERNAL_SELF_MANAGED can reference a target gRPC
+                   proxy. The target gRPC Proxy references a URL map
+                   that specifies how traffic is routed to gRPC backend
+                   services.
 
         """
         # Create or coerce a protobuf request object.
@@ -1506,8 +1508,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
     ) -> compute.Operation:
         r"""Patches the specified TargetGrpcProxy resource with
         the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        PATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1640,8 +1642,8 @@ class TargetGrpcProxiesClient(metaclass=TargetGrpcProxiesClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified TargetGrpcProxy resource with
         the data included in the request. This method supports
-        PATCH semantics and uses JSON merge patch format and
-        processing rules.
+        PATCH semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

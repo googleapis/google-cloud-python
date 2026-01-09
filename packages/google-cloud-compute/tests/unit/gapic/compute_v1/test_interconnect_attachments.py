@@ -4132,6 +4132,10 @@ def test_get_rest_call_success(request_type):
             admin_enabled=True,
             attachment_group="attachment_group_value",
             bandwidth="bandwidth_value",
+            candidate_cloud_router_ip_address="candidate_cloud_router_ip_address_value",
+            candidate_cloud_router_ipv6_address="candidate_cloud_router_ipv6_address_value",
+            candidate_customer_router_ip_address="candidate_customer_router_ip_address_value",
+            candidate_customer_router_ipv6_address="candidate_customer_router_ipv6_address_value",
             candidate_ipv6_subnets=["candidate_ipv6_subnets_value"],
             candidate_subnets=["candidate_subnets_value"],
             cloud_router_ip_address="cloud_router_ip_address_value",
@@ -4185,6 +4189,22 @@ def test_get_rest_call_success(request_type):
     assert response.admin_enabled is True
     assert response.attachment_group == "attachment_group_value"
     assert response.bandwidth == "bandwidth_value"
+    assert (
+        response.candidate_cloud_router_ip_address
+        == "candidate_cloud_router_ip_address_value"
+    )
+    assert (
+        response.candidate_cloud_router_ipv6_address
+        == "candidate_cloud_router_ipv6_address_value"
+    )
+    assert (
+        response.candidate_customer_router_ip_address
+        == "candidate_customer_router_ip_address_value"
+    )
+    assert (
+        response.candidate_customer_router_ipv6_address
+        == "candidate_customer_router_ipv6_address_value"
+    )
     assert response.candidate_ipv6_subnets == ["candidate_ipv6_subnets_value"]
     assert response.candidate_subnets == ["candidate_subnets_value"]
     assert response.cloud_router_ip_address == "cloud_router_ip_address_value"
@@ -4334,6 +4354,10 @@ def test_insert_rest_call_success(request_type):
         "admin_enabled": True,
         "attachment_group": "attachment_group_value",
         "bandwidth": "bandwidth_value",
+        "candidate_cloud_router_ip_address": "candidate_cloud_router_ip_address_value",
+        "candidate_cloud_router_ipv6_address": "candidate_cloud_router_ipv6_address_value",
+        "candidate_customer_router_ip_address": "candidate_customer_router_ip_address_value",
+        "candidate_customer_router_ipv6_address": "candidate_customer_router_ipv6_address_value",
         "candidate_ipv6_subnets": [
             "candidate_ipv6_subnets_value1",
             "candidate_ipv6_subnets_value2",
@@ -4362,12 +4386,20 @@ def test_insert_rest_call_success(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "l2_forwarding": {
+            "appliance_mappings": {},
+            "default_appliance_ip_address": "default_appliance_ip_address_value",
+            "geneve_header": {"vni": 333},
+            "network": "network_value",
+            "tunnel_endpoint_ip_address": "tunnel_endpoint_ip_address_value",
+        },
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
         "pairing_key": "pairing_key_value",
+        "params": {"resource_manager_tags": {}},
         "partner_asn": 1181,
         "partner_metadata": {
             "interconnect_name": "interconnect_name_value",
@@ -4775,6 +4807,10 @@ def test_patch_rest_call_success(request_type):
         "admin_enabled": True,
         "attachment_group": "attachment_group_value",
         "bandwidth": "bandwidth_value",
+        "candidate_cloud_router_ip_address": "candidate_cloud_router_ip_address_value",
+        "candidate_cloud_router_ipv6_address": "candidate_cloud_router_ipv6_address_value",
+        "candidate_customer_router_ip_address": "candidate_customer_router_ip_address_value",
+        "candidate_customer_router_ipv6_address": "candidate_customer_router_ipv6_address_value",
         "candidate_ipv6_subnets": [
             "candidate_ipv6_subnets_value1",
             "candidate_ipv6_subnets_value2",
@@ -4803,12 +4839,20 @@ def test_patch_rest_call_success(request_type):
             "ipsec_internal_addresses_value2",
         ],
         "kind": "kind_value",
+        "l2_forwarding": {
+            "appliance_mappings": {},
+            "default_appliance_ip_address": "default_appliance_ip_address_value",
+            "geneve_header": {"vni": 333},
+            "network": "network_value",
+            "tunnel_endpoint_ip_address": "tunnel_endpoint_ip_address_value",
+        },
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
         "mtu": 342,
         "name": "name_value",
         "operational_status": "operational_status_value",
         "pairing_key": "pairing_key_value",
+        "params": {"resource_manager_tags": {}},
         "partner_asn": 1181,
         "partner_metadata": {
             "interconnect_name": "interconnect_name_value",

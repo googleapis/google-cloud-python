@@ -971,6 +971,94 @@
       "canonical": true,
       "clientMethod": {
         "client": {
+          "fullName": "google.cloud.compute_v1.AdviceClient",
+          "shortName": "AdviceClient"
+        },
+        "fullName": "google.cloud.compute_v1.AdviceClient.calendar_mode",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Advice.CalendarMode",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Advice",
+            "shortName": "Advice"
+          },
+          "shortName": "CalendarMode"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.CalendarModeAdviceRpcRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "calendar_mode_advice_request_resource",
+            "type": "google.cloud.compute_v1.types.CalendarModeAdviceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.CalendarModeAdviceResponse",
+        "shortName": "calendar_mode"
+      },
+      "description": "Sample for CalendarMode",
+      "file": "compute_v1_generated_advice_calendar_mode_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Advice_CalendarMode_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_advice_calendar_mode_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
           "fullName": "google.cloud.compute_v1.AutoscalersClient",
           "shortName": "AutoscalersClient"
         },
@@ -4054,6 +4142,426 @@
         }
       ],
       "title": "compute_v1_generated_backend_services_update_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient",
+          "shortName": "CrossSiteNetworksClient"
+        },
+        "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1.CrossSiteNetworks.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1.CrossSiteNetworks",
+            "shortName": "CrossSiteNetworks"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.DeleteCrossSiteNetworkRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1_generated_cross_site_networks_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_CrossSiteNetworks_Delete_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_cross_site_networks_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient",
+          "shortName": "CrossSiteNetworksClient"
+        },
+        "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1.CrossSiteNetworks.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1.CrossSiteNetworks",
+            "shortName": "CrossSiteNetworks"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetCrossSiteNetworkRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.CrossSiteNetwork",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1_generated_cross_site_networks_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_CrossSiteNetworks_Get_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_cross_site_networks_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient",
+          "shortName": "CrossSiteNetworksClient"
+        },
+        "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1.CrossSiteNetworks.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1.CrossSiteNetworks",
+            "shortName": "CrossSiteNetworks"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.InsertCrossSiteNetworkRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network_resource",
+            "type": "google.cloud.compute_v1.types.CrossSiteNetwork"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1_generated_cross_site_networks_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_CrossSiteNetworks_Insert_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_cross_site_networks_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient",
+          "shortName": "CrossSiteNetworksClient"
+        },
+        "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1.CrossSiteNetworks.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1.CrossSiteNetworks",
+            "shortName": "CrossSiteNetworks"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.ListCrossSiteNetworksRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.cross_site_networks.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1_generated_cross_site_networks_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_CrossSiteNetworks_List_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_cross_site_networks_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient",
+          "shortName": "CrossSiteNetworksClient"
+        },
+        "fullName": "google.cloud.compute_v1.CrossSiteNetworksClient.patch",
+        "method": {
+          "fullName": "google.cloud.compute.v1.CrossSiteNetworks.Patch",
+          "service": {
+            "fullName": "google.cloud.compute.v1.CrossSiteNetworks",
+            "shortName": "CrossSiteNetworks"
+          },
+          "shortName": "Patch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.PatchCrossSiteNetworkRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network_resource",
+            "type": "google.cloud.compute_v1.types.CrossSiteNetwork"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch"
+      },
+      "description": "Sample for Patch",
+      "file": "compute_v1_generated_cross_site_networks_patch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_CrossSiteNetworks_Patch_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_cross_site_networks_patch_sync.py"
     },
     {
       "canonical": true,
@@ -8402,6 +8910,94 @@
           "fullName": "google.cloud.compute_v1.FirewallsClient",
           "shortName": "FirewallsClient"
         },
+        "fullName": "google.cloud.compute_v1.FirewallsClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Firewalls.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Firewalls",
+            "shortName": "Firewalls"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsFirewallRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_firewalls_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Firewalls_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_firewalls_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FirewallsClient",
+          "shortName": "FirewallsClient"
+        },
         "fullName": "google.cloud.compute_v1.FirewallsClient.update",
         "method": {
           "fullName": "google.cloud.compute.v1.Firewalls.Update",
@@ -9186,6 +9782,614 @@
         }
       ],
       "title": "compute_v1_generated_forwarding_rules_set_target_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.aggregated_list",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.AggregatedList",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "AggregatedList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.AggregatedListFutureReservationsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.future_reservations.pagers.AggregatedListPager",
+        "shortName": "aggregated_list"
+      },
+      "description": "Sample for AggregatedList",
+      "file": "compute_v1_generated_future_reservations_aggregated_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_AggregatedList_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_aggregated_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.cancel",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.Cancel",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "Cancel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.CancelFutureReservationRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "cancel"
+      },
+      "description": "Sample for Cancel",
+      "file": "compute_v1_generated_future_reservations_cancel_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_Cancel_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_cancel_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.DeleteFutureReservationRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1_generated_future_reservations_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetFutureReservationRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.FutureReservation",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1_generated_future_reservations_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.InsertFutureReservationRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation_resource",
+            "type": "google.cloud.compute_v1.types.FutureReservation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1_generated_future_reservations_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.ListFutureReservationsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.future_reservations.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1_generated_future_reservations_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.FutureReservationsClient",
+          "shortName": "FutureReservationsClient"
+        },
+        "fullName": "google.cloud.compute_v1.FutureReservationsClient.update",
+        "method": {
+          "fullName": "google.cloud.compute.v1.FutureReservations.Update",
+          "service": {
+            "fullName": "google.cloud.compute.v1.FutureReservations",
+            "shortName": "FutureReservations"
+          },
+          "shortName": "Update"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.UpdateFutureReservationRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation",
+            "type": "str"
+          },
+          {
+            "name": "future_reservation_resource",
+            "type": "google.cloud.compute_v1.types.FutureReservation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "update"
+      },
+      "description": "Sample for Update",
+      "file": "compute_v1_generated_future_reservations_update_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_FutureReservations_Update_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_future_reservations_update_sync.py"
     },
     {
       "canonical": true,
@@ -55582,6 +56786,98 @@
           "fullName": "google.cloud.compute_v1.ReservationBlocksClient",
           "shortName": "ReservationBlocksClient"
         },
+        "fullName": "google.cloud.compute_v1.ReservationBlocksClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationBlocks.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetIamPolicyReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1_generated_reservation_blocks_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationBlocks_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_blocks_get_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
         "fullName": "google.cloud.compute_v1.ReservationBlocksClient.get",
         "method": {
           "fullName": "google.cloud.compute.v1.ReservationBlocks.Get",
@@ -55850,6 +57146,290 @@
         }
       ],
       "title": "compute_v1_generated_reservation_blocks_perform_maintenance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1.ReservationBlocksClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationBlocks.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.SetIamPolicyReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "zone_set_nested_policy_request_resource",
+            "type": "google.cloud.compute_v1.types.ZoneSetNestedPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1_generated_reservation_blocks_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationBlocks_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_blocks_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1.ReservationBlocksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationBlocks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_reservation_blocks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationBlocks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_blocks_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationSubBlocks.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetIamPolicyReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1_generated_reservation_sub_blocks_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationSubBlocks_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_sub_blocks_get_iam_policy_sync.py"
     },
     {
       "canonical": true,
@@ -56218,6 +57798,198 @@
         }
       ],
       "title": "compute_v1_generated_reservation_sub_blocks_report_faulty_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationSubBlocks.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.SetIamPolicyReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "zone_set_nested_policy_request_resource",
+            "type": "google.cloud.compute_v1.types.ZoneSetNestedPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1_generated_reservation_sub_blocks_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationSubBlocks_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_sub_blocks_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1.ReservationSubBlocksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.ReservationSubBlocks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_reservation_sub_blocks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_ReservationSubBlocks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_reservation_sub_blocks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -73238,6 +75010,446 @@
         }
       ],
       "title": "compute_v1_generated_vpn_tunnels_set_labels_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.WireGroupsClient",
+          "shortName": "WireGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1.WireGroupsClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1.WireGroups.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1.WireGroups",
+            "shortName": "WireGroups"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.DeleteWireGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "wire_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1_generated_wire_groups_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_WireGroups_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_wire_groups_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.WireGroupsClient",
+          "shortName": "WireGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1.WireGroupsClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1.WireGroups.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1.WireGroups",
+            "shortName": "WireGroups"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.GetWireGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "wire_group",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.WireGroup",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1_generated_wire_groups_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_WireGroups_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_wire_groups_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.WireGroupsClient",
+          "shortName": "WireGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1.WireGroupsClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1.WireGroups.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1.WireGroups",
+            "shortName": "WireGroups"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.InsertWireGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "wire_group_resource",
+            "type": "google.cloud.compute_v1.types.WireGroup"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1_generated_wire_groups_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_WireGroups_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_wire_groups_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.WireGroupsClient",
+          "shortName": "WireGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1.WireGroupsClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1.WireGroups.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1.WireGroups",
+            "shortName": "WireGroups"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.ListWireGroupsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.services.wire_groups.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1_generated_wire_groups_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_WireGroups_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_wire_groups_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.WireGroupsClient",
+          "shortName": "WireGroupsClient"
+        },
+        "fullName": "google.cloud.compute_v1.WireGroupsClient.patch",
+        "method": {
+          "fullName": "google.cloud.compute.v1.WireGroups.Patch",
+          "service": {
+            "fullName": "google.cloud.compute.v1.WireGroups",
+            "shortName": "WireGroups"
+          },
+          "shortName": "Patch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.PatchWireGroupRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "cross_site_network",
+            "type": "str"
+          },
+          {
+            "name": "wire_group",
+            "type": "str"
+          },
+          {
+            "name": "wire_group_resource",
+            "type": "google.cloud.compute_v1.types.WireGroup"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch"
+      },
+      "description": "Sample for Patch",
+      "file": "compute_v1_generated_wire_groups_patch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_WireGroups_Patch_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_wire_groups_patch_sync.py"
     },
     {
       "canonical": true,

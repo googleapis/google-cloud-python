@@ -848,21 +848,32 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1008,30 +1019,40 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.UrlMap:
-                    Represents a URL Map resource. Compute Engine has two
-                URL Map resources: \*
-                `Global </compute/docs/reference/rest/v1/urlMaps>`__ \*
-                `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__
+                    Represents a URL Map resource.
+
+                Compute Engine has two URL Map resources:
+
+                - `Global </compute/docs/reference/rest/v1/urlMaps>`__
+                - `Regional </compute/docs/reference/rest/v1/regionUrlMaps>`__
+
                 A URL map resource is a component of certain types of
-                cloud load balancers and Traffic Director: \* urlMaps
-                are used by global external Application Load Balancers,
-                classic Application Load Balancers, and cross-region
-                internal Application Load Balancers. \* regionUrlMaps
-                are used by internal Application Load Balancers,
-                regional external Application Load Balancers and
-                regional internal Application Load Balancers. For a list
-                of supported URL map features by the load balancer type,
-                see the Load balancing features: Routing and traffic
-                management table. For a list of supported URL map
-                features for Traffic Director, see the Traffic Director
-                features: Routing and traffic management table. This
-                resource defines mappings from hostnames and URL paths
-                to either a backend service or a backend bucket. To use
-                the global urlMaps resource, the backend service must
-                have a loadBalancingScheme of either EXTERNAL,
-                EXTERNAL_MANAGED, or INTERNAL_SELF_MANAGED. To use the
-                regionUrlMaps resource, the backend service must have a
-                loadBalancingScheme of INTERNAL_MANAGED. For more
+                cloud load balancers and Traffic Director:
+
+                - urlMaps are used by global external Application Load
+                  Balancers, classic Application Load Balancers, and
+                  cross-region internal Application Load Balancers.
+                - regionUrlMaps are used by internal Application Load
+                  Balancers, regional external Application Load
+                  Balancers and regional internal Application Load
+                  Balancers.
+
+                For a list of supported URL map features by the load
+                balancer type, see the Load balancing features: Routing
+                and traffic management table.
+
+                For a list of supported URL map features for Traffic
+                Director, see the Traffic Director features: Routing and
+                traffic management table.
+
+                This resource defines mappings from hostnames and URL
+                paths to either a backend service or a backend bucket.
+
+                To use the global urlMaps resource, the backend service
+                must have a loadBalancingScheme of either
+                EXTERNAL,EXTERNAL_MANAGED, or INTERNAL_SELF_MANAGED. To
+                use the regionUrlMaps resource, the backend service must
+                have aloadBalancingScheme of INTERNAL_MANAGED. For more
                 information, read URL Map Concepts.
 
             """
@@ -1175,21 +1196,32 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1344,21 +1376,32 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1659,21 +1702,32 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 
@@ -1825,21 +1879,32 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             Returns:
                 ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    Represents an Operation resource.
+
+                Google Compute Engine has three Operation resources:
+
+                - `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                - `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                - `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+
                 You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zoneOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                API requests. For more information, readHandling API
+                responses.
+
+                Operations can be global, regional or zonal.
+
+                ::
+
+                   - For global operations, use the `globalOperations`
+                   resource.
+                   - For regional operations, use the
+                   `regionOperations` resource.
+                   - For zonal operations, use
+                   the `zoneOperations` resource.
+
+                For more information, read Global, Regional, and Zonal
+                Resources.
+
                 Note that completed Operation resources have a limited
                 retention period.
 

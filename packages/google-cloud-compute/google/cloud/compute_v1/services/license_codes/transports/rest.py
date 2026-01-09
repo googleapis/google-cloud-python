@@ -332,11 +332,12 @@ class LicenseCodesRestTransport(_BaseLicenseCodesRestTransport):
 
             Returns:
                 ~.compute.LicenseCode:
-                    Represents a License Code resource. A License Code is a
-                unique identifier used to represent a license resource.
-                *Caution* This resource is intended for use only by
-                third-party partners who are creating Cloud Marketplace
-                images.
+                    Represents a License Code resource.
+
+                A License Code is a unique identifier used to represent
+                alicense resource. *Caution* This resource is intended
+                for use only by third-party partners who are
+                creatingCloud Marketplace images.
 
             """
 

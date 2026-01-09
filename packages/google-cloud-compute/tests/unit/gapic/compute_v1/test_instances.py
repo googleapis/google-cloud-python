@@ -21473,6 +21473,7 @@ def test_add_network_interface_rest_call_success(request_type):
             }
         ],
         "fingerprint": "fingerprint_value",
+        "igmp_query": "igmp_query_value",
         "internal_ipv6_prefix_length": 2831,
         "ipv6_access_configs": {},
         "ipv6_access_type": "ipv6_access_type_value",
@@ -22518,6 +22519,7 @@ def test_bulk_insert_rest_call_success(request_type):
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "igmp_query": "igmp_query_value",
                     "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
@@ -24570,6 +24572,7 @@ def test_insert_rest_call_success(request_type):
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "igmp_query": "igmp_query_value",
                 "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
@@ -24618,6 +24621,9 @@ def test_insert_rest_call_success(request_type):
                 "cluster": "cluster_value",
                 "host": "host_value",
                 "subblock": "subblock_value",
+            },
+            "reservation_consumption_info": {
+                "consumed_reservation": "consumed_reservation_value"
             },
             "scheduling": {"availability_domain": 2002},
             "upcoming_maintenance": {
@@ -30865,6 +30871,7 @@ def test_update_rest_call_success(request_type):
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "igmp_query": "igmp_query_value",
                 "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
@@ -30913,6 +30920,9 @@ def test_update_rest_call_success(request_type):
                 "cluster": "cluster_value",
                 "host": "host_value",
                 "subblock": "subblock_value",
+            },
+            "reservation_consumption_info": {
+                "consumed_reservation": "consumed_reservation_value"
             },
             "scheduling": {"availability_domain": 2002},
             "upcoming_maintenance": {
@@ -31718,6 +31728,7 @@ def test_update_network_interface_rest_call_success(request_type):
             }
         ],
         "fingerprint": "fingerprint_value",
+        "igmp_query": "igmp_query_value",
         "internal_ipv6_prefix_length": 2831,
         "ipv6_access_configs": {},
         "ipv6_access_type": "ipv6_access_type_value",

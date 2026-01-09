@@ -1200,6 +1200,7 @@ def test_aggregated_list_rest_required_fields(
             "page_token",
             "return_partial_success",
             "service_project_number",
+            "views",
         )
     )
     jsonified_request.update(unset_fields)
@@ -1266,6 +1267,7 @@ def test_aggregated_list_rest_unset_required_fields():
                 "pageToken",
                 "returnPartialSuccess",
                 "serviceProjectNumber",
+                "views",
             )
         )
         & set(("project",))
@@ -2826,7 +2828,7 @@ def test_insert_rest_flattened():
             project="project_value",
             region="region_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
         mock_args.update(sample_request)
@@ -2868,7 +2870,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
 
@@ -3032,7 +3034,7 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
         mock_args.update(sample_request)
@@ -3074,7 +3076,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
 
@@ -3791,7 +3793,7 @@ def test_patch_rest_flattened():
             region="region_value",
             subnetwork="subnetwork_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
         mock_args.update(sample_request)
@@ -3834,7 +3836,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             subnetwork="subnetwork_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
 
@@ -4016,7 +4018,7 @@ def test_patch_unary_rest_flattened():
             region="region_value",
             subnetwork="subnetwork_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
         mock_args.update(sample_request)
@@ -4059,7 +4061,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             subnetwork="subnetwork_value",
             subnetwork_resource=compute.Subnetwork(
-                creation_timestamp="creation_timestamp_value"
+                allow_subnet_cidr_routes_overlap=True
             ),
         )
 
@@ -5619,6 +5621,7 @@ def test_get_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.Subnetwork(
+            allow_subnet_cidr_routes_overlap=True,
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             enable_flow_logs=True,
@@ -5666,6 +5669,7 @@ def test_get_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Subnetwork)
+    assert response.allow_subnet_cidr_routes_overlap is True
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.enable_flow_logs is True
@@ -5928,6 +5932,7 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["subnetwork_resource"] = {
+        "allow_subnet_cidr_routes_overlap": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_flow_logs": True,
@@ -6497,6 +6502,7 @@ def test_patch_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2", "subnetwork": "sample3"}
     request_init["subnetwork_resource"] = {
+        "allow_subnet_cidr_routes_overlap": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "enable_flow_logs": True,

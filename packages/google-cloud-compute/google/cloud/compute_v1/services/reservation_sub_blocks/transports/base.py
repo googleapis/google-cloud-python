@@ -143,6 +143,11 @@ class ReservationSubBlocksTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list: gapic_v1.method.wrap_method(
                 self.list,
                 default_timeout=None,
@@ -155,6 +160,16 @@ class ReservationSubBlocksTransport(abc.ABC):
             ),
             self.report_faulty: gapic_v1.method.wrap_method(
                 self.report_faulty,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -178,6 +193,15 @@ class ReservationSubBlocksTransport(abc.ABC):
             compute.ReservationSubBlocksGetResponse,
             Awaitable[compute.ReservationSubBlocksGetResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.GetIamPolicyReservationSubBlockRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
     ]:
         raise NotImplementedError()
 
@@ -208,6 +232,26 @@ class ReservationSubBlocksTransport(abc.ABC):
     ) -> Callable[
         [compute.ReportFaultyReservationSubBlockRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [compute.SetIamPolicyReservationSubBlockRequest],
+        Union[compute.Policy, Awaitable[compute.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsReservationSubBlockRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
+        ],
     ]:
         raise NotImplementedError()
 

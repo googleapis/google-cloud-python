@@ -1048,13 +1048,14 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         Returns:
             google.cloud.compute_v1.types.TargetSslProxy:
                 Represents a Target SSL Proxy
-                resource. A target SSL proxy is a
-                component of a Proxy Network Load
-                Balancer. The forwarding rule references
-                the target SSL proxy, and the target
-                proxy then references a backend service.
-                For more information, read Proxy Network
-                Load Balancer overview.
+                resource.
+                A target SSL proxy is a component of a
+                Proxy Network Load Balancer. The
+                forwarding rule references the target
+                SSL proxy, and the target proxy then
+                references a backend service. For more
+                information, readProxy Network Load
+                Balancer overview.
 
         """
         # Create or coerce a protobuf request object.

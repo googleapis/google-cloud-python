@@ -345,10 +345,10 @@ class InterconnectRemoteLocationsRestTransport(
             Returns:
                 ~.compute.InterconnectRemoteLocation:
                     Represents a Cross-Cloud Interconnect
-                Remote Location resource. You can use
-                this resource to find remote location
-                details about an Interconnect attachment
-                (VLAN).
+                Remote Location resource.
+                You can use this resource to find remote
+                location details about an Interconnect
+                attachment (VLAN).
 
             """
 

@@ -1414,11 +1414,11 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         Returns:
             google.cloud.compute_v1.types.SecurityPolicy:
                 Represents a Google Cloud Armor
-                security policy resource. Only external
-                backend services that use load balancers
-                can reference a security policy. For
-                more information, see Google Cloud Armor
-                security policy overview.
+                security policy resource.
+                Only external backend services that use
+                load balancers can reference a security
+                policy. For more information, see Google
+                Cloud Armor security policy overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -3014,7 +3014,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on a security policy. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read the Labeling Resources
+        documentation.
 
         .. code-block:: python
 
@@ -3167,7 +3168,8 @@ class RegionSecurityPoliciesClient(metaclass=RegionSecurityPoliciesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on a security policy. To learn more
-        about labels, read the Labeling Resources documentation.
+        about labels, read the Labeling Resources
+        documentation.
 
         .. code-block:: python
 

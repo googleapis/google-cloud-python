@@ -1607,8 +1607,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified regional HealthCheckService
-        resource with the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        resource with the data included in the request.  This
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -1761,8 +1761,8 @@ class RegionHealthCheckServicesClient(metaclass=RegionHealthCheckServicesClientM
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified regional HealthCheckService
-        resource with the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        resource with the data included in the request.  This
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python

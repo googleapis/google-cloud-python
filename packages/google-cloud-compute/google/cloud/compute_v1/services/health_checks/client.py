@@ -715,9 +715,10 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all HealthCheck resources, regional and
-        global, available to the specified project. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        global, available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1166,23 +1167,33 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
 
         Returns:
             google.cloud.compute_v1.types.HealthCheck:
-                Represents a health check resource. Google Compute
-                Engine has two health check resources: \*
-                [Regional](/compute/docs/reference/rest/v1/regionHealthChecks)
-                \*
-                [Global](/compute/docs/reference/rest/v1/healthChecks)
-                These health check resources can be used for load
-                balancing and for autohealing VMs in a managed instance
-                group (MIG). **Load balancing** Health check
-                requirements vary depending on the type of load
-                balancer. For details about the type of health check
-                supported for each load balancer and corresponding
-                backend type, see Health checks overview: Load balancer
-                guide. **Autohealing in MIGs** The health checks that
-                you use for autohealing VMs in a MIG can be either
-                regional or global. For more information, see Set up an
-                application health check and autohealing. For more
-                information, see Health checks overview.
+                Represents a health check resource.
+
+                   Google Compute Engine has two health check resources:
+
+                   - [Regional](/compute/docs/reference/rest/v1/regionHealthChecks)
+                   - [Global](/compute/docs/reference/rest/v1/healthChecks)
+
+                   These health check resources can be used for load
+                   balancing and for autohealing VMs in a managed
+                   instance group (MIG).
+
+                   **Load balancing**
+
+                   Health check requirements vary depending on the type
+                   of load balancer. For details about the type of
+                   health check supported for each load balancer and
+                   corresponding backend type, see Health checks
+                   overview: Load balancer guide.
+
+                   **Autohealing in MIGs**
+
+                   The health checks that you use for autohealing VMs in
+                   a MIG can be either regional or global. For more
+                   information, see Set up an application health check
+                   and autohealing.
+
+                   For more information, seeHealth checks overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -1630,7 +1641,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
     ) -> compute.Operation:
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -1764,7 +1775,7 @@ class HealthChecksClient(metaclass=HealthChecksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python

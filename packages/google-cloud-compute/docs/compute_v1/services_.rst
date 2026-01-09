@@ -5,15 +5,18 @@ Services for Google Cloud Compute v1 API
 
     accelerator_types
     addresses
+    advice
     autoscalers
     backend_buckets
     backend_services
+    cross_site_networks
     disks
     disk_types
     external_vpn_gateways
     firewall_policies
     firewalls
     forwarding_rules
+    future_reservations
     global_addresses
     global_forwarding_rules
     global_network_endpoint_groups
@@ -106,5 +109,6 @@ Services for Google Cloud Compute v1 API
     url_maps
     vpn_gateways
     vpn_tunnels
+    wire_groups
     zone_operations
     zones
