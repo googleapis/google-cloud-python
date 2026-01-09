@@ -578,6 +578,40 @@
           }
         }
       }
+    },
+    "BackupDrProtectionSummary": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "BackupDrProtectionSummaryClient",
+          "rpcs": {
+            "ListResourceBackupConfigs": {
+              "methods": [
+                "list_resource_backup_configs"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "BackupDrProtectionSummaryAsyncClient",
+          "rpcs": {
+            "ListResourceBackupConfigs": {
+              "methods": [
+                "list_resource_backup_configs"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "BackupDrProtectionSummaryClient",
+          "rpcs": {
+            "ListResourceBackupConfigs": {
+              "methods": [
+                "list_resource_backup_configs"
+              ]
+            }
+          }
+        }
+      }
     }
   }
 }

@@ -29,6 +29,10 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 from .services.backup_dr import BackupDRAsyncClient, BackupDRClient
+from .services.backup_dr_protection_summary import (
+    BackupDrProtectionSummaryAsyncClient,
+    BackupDrProtectionSummaryClient,
+)
 from .types.backupdr import (
     CreateManagementServerRequest,
     DeleteManagementServerRequest,
@@ -165,6 +169,17 @@ from .types.datasourcereference import (
     ListDataSourceReferencesRequest,
     ListDataSourceReferencesResponse,
 )
+from .types.protection_summary import (
+    BackupConfigDetails,
+    BackupDrPlanConfig,
+    BackupDrPlanRule,
+    BackupDrTemplateConfig,
+    BackupLocation,
+    ListResourceBackupConfigsRequest,
+    ListResourceBackupConfigsResponse,
+    PitrSettings,
+    ResourceBackupConfig,
+)
 
 if hasattr(api_core, "check_python_version") and hasattr(
     api_core, "check_dependency_versions"
@@ -262,6 +277,7 @@ else:  # pragma: NO COVER
 
 __all__ = (
     "BackupDRAsyncClient",
+    "BackupDrProtectionSummaryAsyncClient",
     "AcceleratorConfig",
     "AccessConfig",
     "AdvancedMachineFeatures",
@@ -272,10 +288,16 @@ __all__ = (
     "BackupApplianceBackupConfig",
     "BackupApplianceBackupProperties",
     "BackupApplianceLockInfo",
+    "BackupConfigDetails",
     "BackupConfigInfo",
     "BackupConfigState",
     "BackupDRClient",
+    "BackupDrPlanConfig",
+    "BackupDrPlanRule",
+    "BackupDrProtectionSummaryClient",
+    "BackupDrTemplateConfig",
     "BackupGcpResource",
+    "BackupLocation",
     "BackupLock",
     "BackupPlan",
     "BackupPlanAssociation",
@@ -356,6 +378,8 @@ __all__ = (
     "ListDataSourcesResponse",
     "ListManagementServersRequest",
     "ListManagementServersResponse",
+    "ListResourceBackupConfigsRequest",
+    "ListResourceBackupConfigsResponse",
     "ManagementServer",
     "ManagementURI",
     "Metadata",
@@ -363,7 +387,9 @@ __all__ = (
     "NetworkInterface",
     "NetworkPerformanceConfig",
     "OperationMetadata",
+    "PitrSettings",
     "RegionDiskTargetEnvironment",
+    "ResourceBackupConfig",
     "RestoreBackupRequest",
     "RestoreBackupResponse",
     "RuleConfigInfo",

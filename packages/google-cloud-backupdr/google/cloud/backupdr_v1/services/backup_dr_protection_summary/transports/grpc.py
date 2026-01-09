@@ -23,14 +23,18 @@ from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.databasecenter_v1beta.types import service
+from google.cloud.backupdr_v1.types import protection_summary
 
-from .base import DEFAULT_CLIENT_INFO, DatabaseCenterTransport
+from .base import DEFAULT_CLIENT_INFO, BackupDrProtectionSummaryTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -68,7 +72,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
                 extra={
-                    "serviceName": "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                    "serviceName": "google.cloud.backupdr.v1.BackupDrProtectionSummary",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
                     "metadata": grpc_request["metadata"],
@@ -98,7 +102,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
                 extra={
-                    "serviceName": "google.cloud.databasecenter.v1beta.DatabaseCenter",
+                    "serviceName": "google.cloud.backupdr.v1.BackupDrProtectionSummary",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
                     "metadata": grpc_response["metadata"],
@@ -107,11 +111,10 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
-    """gRPC backend transport for DatabaseCenter.
+class BackupDrProtectionSummaryGrpcTransport(BackupDrProtectionSummaryTransport):
+    """gRPC backend transport for BackupDrProtectionSummary.
 
-    DatabaseCenter contains methods to query fleet view for
-    database resources.
+    The Protection Summary service.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -126,7 +129,7 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
     def __init__(
         self,
         *,
-        host: str = "databasecenter.googleapis.com",
+        host: str = "backupdr.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -144,7 +147,7 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'databasecenter.googleapis.com').
+                 The hostname to connect to (default: 'backupdr.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -272,7 +275,7 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
     @classmethod
     def create_channel(
         cls,
-        host: str = "databasecenter.googleapis.com",
+        host: str = "backupdr.googleapis.com",
         credentials: Optional[ga_credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
@@ -323,74 +326,19 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
         return self._grpc_channel
 
     @property
-    def query_products(
-        self,
-    ) -> Callable[[service.QueryProductsRequest], service.QueryProductsResponse]:
-        r"""Return a callable for the query products method over gRPC.
-
-        QueryProducts provides a list of all possible
-        products which can be used to filter database resources.
-
-        Returns:
-            Callable[[~.QueryProductsRequest],
-                    ~.QueryProductsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "query_products" not in self._stubs:
-            self._stubs["query_products"] = self._logged_channel.unary_unary(
-                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryProducts",
-                request_serializer=service.QueryProductsRequest.serialize,
-                response_deserializer=service.QueryProductsResponse.deserialize,
-            )
-        return self._stubs["query_products"]
-
-    @property
-    def aggregate_fleet(
-        self,
-    ) -> Callable[[service.AggregateFleetRequest], service.AggregateFleetResponse]:
-        r"""Return a callable for the aggregate fleet method over gRPC.
-
-        AggregateFleet provides statistics about the fleet
-        grouped by various fields.
-
-        Returns:
-            Callable[[~.AggregateFleetRequest],
-                    ~.AggregateFleetResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "aggregate_fleet" not in self._stubs:
-            self._stubs["aggregate_fleet"] = self._logged_channel.unary_unary(
-                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateFleet",
-                request_serializer=service.AggregateFleetRequest.serialize,
-                response_deserializer=service.AggregateFleetResponse.deserialize,
-            )
-        return self._stubs["aggregate_fleet"]
-
-    @property
-    def query_database_resource_groups(
+    def list_resource_backup_configs(
         self,
     ) -> Callable[
-        [service.QueryDatabaseResourceGroupsRequest],
-        service.QueryDatabaseResourceGroupsResponse,
+        [protection_summary.ListResourceBackupConfigsRequest],
+        protection_summary.ListResourceBackupConfigsResponse,
     ]:
-        r"""Return a callable for the query database resource groups method over gRPC.
+        r"""Return a callable for the list resource backup configs method over gRPC.
 
-        QueryDatabaseResourceGroups returns paginated results
-        of database groups.
+        Lists ResourceBackupConfigs.
 
         Returns:
-            Callable[[~.QueryDatabaseResourceGroupsRequest],
-                    ~.QueryDatabaseResourceGroupsResponse]:
+            Callable[[~.ListResourceBackupConfigsRequest],
+                    ~.ListResourceBackupConfigsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -398,22 +346,208 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "query_database_resource_groups" not in self._stubs:
+        if "list_resource_backup_configs" not in self._stubs:
             self._stubs[
-                "query_database_resource_groups"
+                "list_resource_backup_configs"
             ] = self._logged_channel.unary_unary(
-                "/google.cloud.databasecenter.v1beta.DatabaseCenter/QueryDatabaseResourceGroups",
-                request_serializer=service.QueryDatabaseResourceGroupsRequest.serialize,
-                response_deserializer=service.QueryDatabaseResourceGroupsResponse.deserialize,
+                "/google.cloud.backupdr.v1.BackupDrProtectionSummary/ListResourceBackupConfigs",
+                request_serializer=protection_summary.ListResourceBackupConfigsRequest.serialize,
+                response_deserializer=protection_summary.ListResourceBackupConfigsResponse.deserialize,
             )
-        return self._stubs["query_database_resource_groups"]
+        return self._stubs["list_resource_backup_configs"]
 
     def close(self):
         self._logged_channel.close()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None]:
+        r"""Return a callable for the delete_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_operation" not in self._stubs:
+            self._stubs["delete_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/DeleteOperation",
+                request_serializer=operations_pb2.DeleteOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["delete_operation"]
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None]:
+        r"""Return a callable for the cancel_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "cancel_operation" not in self._stubs:
+            self._stubs["cancel_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/CancelOperation",
+                request_serializer=operations_pb2.CancelOperationRequest.SerializeToString,
+                response_deserializer=None,
+            )
+        return self._stubs["cancel_operation"]
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
+        r"""Return a callable for the get_operation method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_operation" not in self._stubs:
+            self._stubs["get_operation"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/GetOperation",
+                request_serializer=operations_pb2.GetOperationRequest.SerializeToString,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["get_operation"]
+
+    @property
+    def list_operations(
+        self,
+    ) -> Callable[
+        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
+    ]:
+        r"""Return a callable for the list_operations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_operations" not in self._stubs:
+            self._stubs["list_operations"] = self._logged_channel.unary_unary(
+                "/google.longrunning.Operations/ListOperations",
+                request_serializer=operations_pb2.ListOperationsRequest.SerializeToString,
+                response_deserializer=operations_pb2.ListOperationsResponse.FromString,
+            )
+        return self._stubs["list_operations"]
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
+    ]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_locations" not in self._stubs:
+            self._stubs["list_locations"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/ListLocations",
+                request_serializer=locations_pb2.ListLocationsRequest.SerializeToString,
+                response_deserializer=locations_pb2.ListLocationsResponse.FromString,
+            )
+        return self._stubs["list_locations"]
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[[locations_pb2.GetLocationRequest], locations_pb2.Location]:
+        r"""Return a callable for the list locations method over gRPC."""
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_location" not in self._stubs:
+            self._stubs["get_location"] = self._logged_channel.unary_unary(
+                "/google.cloud.location.Locations/GetLocation",
+                request_serializer=locations_pb2.GetLocationRequest.SerializeToString,
+                response_deserializer=locations_pb2.Location.FromString,
+            )
+        return self._stubs["get_location"]
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the set iam policy method over gRPC.
+        Sets the IAM access control policy on the specified
+        function. Replaces any existing policy.
+        Returns:
+            Callable[[~.SetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "set_iam_policy" not in self._stubs:
+            self._stubs["set_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/SetIamPolicy",
+                request_serializer=iam_policy_pb2.SetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["set_iam_policy"]
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+        r"""Return a callable for the get iam policy method over gRPC.
+        Gets the IAM access control policy for a function.
+        Returns an empty policy if the function exists and does
+        not have a policy set.
+        Returns:
+            Callable[[~.GetIamPolicyRequest],
+                    ~.Policy]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_iam_policy" not in self._stubs:
+            self._stubs["get_iam_policy"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/GetIamPolicy",
+                request_serializer=iam_policy_pb2.GetIamPolicyRequest.SerializeToString,
+                response_deserializer=policy_pb2.Policy.FromString,
+            )
+        return self._stubs["get_iam_policy"]
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        iam_policy_pb2.TestIamPermissionsResponse,
+    ]:
+        r"""Return a callable for the test iam permissions method over gRPC.
+        Tests the specified permissions against the IAM access control
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
+        Returns:
+            Callable[[~.TestIamPermissionsRequest],
+                    ~.TestIamPermissionsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "test_iam_permissions" not in self._stubs:
+            self._stubs["test_iam_permissions"] = self._logged_channel.unary_unary(
+                "/google.iam.v1.IAMPolicy/TestIamPermissions",
+                request_serializer=iam_policy_pb2.TestIamPermissionsRequest.SerializeToString,
+                response_deserializer=iam_policy_pb2.TestIamPermissionsResponse.FromString,
+            )
+        return self._stubs["test_iam_permissions"]
 
     @property
     def kind(self) -> str:
         return "grpc"
 
 
-__all__ = ("DatabaseCenterGrpcTransport",)
+__all__ = ("BackupDrProtectionSummaryGrpcTransport",)

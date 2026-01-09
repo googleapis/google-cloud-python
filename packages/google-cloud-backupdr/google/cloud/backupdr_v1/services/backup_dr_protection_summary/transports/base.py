@@ -22,11 +22,15 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
-from google.cloud.databasecenter_v1beta import gapic_version as package_version
-from google.cloud.databasecenter_v1beta.types import service
+from google.cloud.backupdr_v1 import gapic_version as package_version
+from google.cloud.backupdr_v1.types import protection_summary
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -36,12 +40,12 @@ if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-class DatabaseCenterTransport(abc.ABC):
-    """Abstract transport class for DatabaseCenter."""
+class BackupDrProtectionSummaryTransport(abc.ABC):
+    """Abstract transport class for BackupDrProtectionSummary."""
 
     AUTH_SCOPES = ("https://www.googleapis.com/auth/cloud-platform",)
 
-    DEFAULT_HOST: str = "databasecenter.googleapis.com"
+    DEFAULT_HOST: str = "backupdr.googleapis.com"
 
     def __init__(
         self,
@@ -60,7 +64,7 @@ class DatabaseCenterTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to (default: 'databasecenter.googleapis.com').
+                 The hostname to connect to (default: 'backupdr.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -133,18 +137,62 @@ class DatabaseCenterTransport(abc.ABC):
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
-            self.query_products: gapic_v1.method.wrap_method(
-                self.query_products,
+            self.list_resource_backup_configs: gapic_v1.method.wrap_method(
+                self.list_resource_backup_configs,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.get_location: gapic_v1.method.wrap_method(
+                self.get_location,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.aggregate_fleet: gapic_v1.method.wrap_method(
-                self.aggregate_fleet,
+            self.list_locations: gapic_v1.method.wrap_method(
+                self.list_locations,
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.query_database_resource_groups: gapic_v1.method.wrap_method(
-                self.query_database_resource_groups,
+            self.get_iam_policy: gapic_v1.method.wrap_method(
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.set_iam_policy: gapic_v1.method.wrap_method(
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.cancel_operation: gapic_v1.method.wrap_method(
+                self.cancel_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_operation: gapic_v1.method.wrap_method(
+                self.delete_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_operation: gapic_v1.method.wrap_method(
+                self.get_operation,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_operations: gapic_v1.method.wrap_method(
+                self.list_operations,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -160,33 +208,97 @@ class DatabaseCenterTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def query_products(
+    def list_resource_backup_configs(
         self,
     ) -> Callable[
-        [service.QueryProductsRequest],
-        Union[service.QueryProductsResponse, Awaitable[service.QueryProductsResponse]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def aggregate_fleet(
-        self,
-    ) -> Callable[
-        [service.AggregateFleetRequest],
+        [protection_summary.ListResourceBackupConfigsRequest],
         Union[
-            service.AggregateFleetResponse, Awaitable[service.AggregateFleetResponse]
+            protection_summary.ListResourceBackupConfigsResponse,
+            Awaitable[protection_summary.ListResourceBackupConfigsResponse],
         ],
     ]:
         raise NotImplementedError()
 
     @property
-    def query_database_resource_groups(
+    def list_operations(
         self,
     ) -> Callable[
-        [service.QueryDatabaseResourceGroupsRequest],
+        [operations_pb2.ListOperationsRequest],
         Union[
-            service.QueryDatabaseResourceGroupsResponse,
-            Awaitable[service.QueryDatabaseResourceGroupsResponse],
+            operations_pb2.ListOperationsResponse,
+            Awaitable[operations_pb2.ListOperationsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_operation(
+        self,
+    ) -> Callable[
+        [operations_pb2.GetOperationRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def cancel_operation(
+        self,
+    ) -> Callable[[operations_pb2.CancelOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def delete_operation(
+        self,
+    ) -> Callable[[operations_pb2.DeleteOperationRequest], None,]:
+        raise NotImplementedError()
+
+    @property
+    def set_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.SetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_iam_policy(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.GetIamPolicyRequest],
+        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [iam_policy_pb2.TestIamPermissionsRequest],
+        Union[
+            iam_policy_pb2.TestIamPermissionsResponse,
+            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_location(
+        self,
+    ) -> Callable[
+        [locations_pb2.GetLocationRequest],
+        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_locations(
+        self,
+    ) -> Callable[
+        [locations_pb2.ListLocationsRequest],
+        Union[
+            locations_pb2.ListLocationsResponse,
+            Awaitable[locations_pb2.ListLocationsResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -196,4 +308,4 @@ class DatabaseCenterTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("DatabaseCenterTransport",)
+__all__ = ("BackupDrProtectionSummaryTransport",)

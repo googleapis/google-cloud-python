@@ -149,6 +149,17 @@ from .datasourcereference import (
     ListDataSourceReferencesRequest,
     ListDataSourceReferencesResponse,
 )
+from .protection_summary import (
+    BackupConfigDetails,
+    BackupDrPlanConfig,
+    BackupDrPlanRule,
+    BackupDrTemplateConfig,
+    BackupLocation,
+    ListResourceBackupConfigsRequest,
+    ListResourceBackupConfigsResponse,
+    PitrSettings,
+    ResourceBackupConfig,
+)
 
 __all__ = (
     "CreateManagementServerRequest",
@@ -271,4 +282,13 @@ __all__ = (
     "GetDataSourceReferenceRequest",
     "ListDataSourceReferencesRequest",
     "ListDataSourceReferencesResponse",
+    "BackupConfigDetails",
+    "BackupDrPlanConfig",
+    "BackupDrPlanRule",
+    "BackupDrTemplateConfig",
+    "BackupLocation",
+    "ListResourceBackupConfigsRequest",
+    "ListResourceBackupConfigsResponse",
+    "PitrSettings",
+    "ResourceBackupConfig",
 )

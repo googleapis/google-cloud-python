@@ -573,7 +573,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
     version: 0.6.0
-    last_generated_commit: a17b84add8318f780fcc8a027815d5fee644b9f7
+    last_generated_commit: 524b2de63ab28fd96abd5a1b077f00a5503d79c4
     apis:
       - path: google/cloud/backupdr/v1
         service_config: backupdr_v1.yaml
@@ -1344,7 +1344,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
     version: 0.2.0
-    last_generated_commit: 9a477cd3c26a704130e2a2fb44a40281d9312e4c
+    last_generated_commit: 524b2de63ab28fd96abd5a1b077f00a5503d79c4
     apis:
       - path: google/cloud/databasecenter/v1beta
         service_config: databasecenter_v1beta.yaml
@@ -2104,7 +2104,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
     version: 3.8.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: 524b2de63ab28fd96abd5a1b077f00a5503d79c4
     apis:
       - path: google/cloud/kms/v1
         service_config: cloudkms_v1.yaml
@@ -4264,7 +4264,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: d4a34bf03d617723146fe3ae15192c4d93981a27
+    last_generated_commit: 524b2de63ab28fd96abd5a1b077f00a5503d79c4
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
