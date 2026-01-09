@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-parallelstore/#history
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.4.0...google-cloud-parallelstore-v0.5.0) (2026-01-09)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parallelstore-v0.3.0...google-cloud-parallelstore-v0.4.0) (2025-12-04)
 
 

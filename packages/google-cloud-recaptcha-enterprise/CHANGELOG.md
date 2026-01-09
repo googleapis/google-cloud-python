@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-recaptcha-enterprise/#history
 
+## [1.30.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.29.0...google-cloud-recaptcha-enterprise-v1.30.0) (2026-01-09)
+
+
+### Documentation
+
+* clarify that WafFeature.EXPRESS is deprecated ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* document domain, package name and bundle id limits and validation ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+
+
+### Features
+
+* add verifiedBots field to RiskAnalysis and definitions for a Bot object to store metadata for a detected bot ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add risk reasons to FraudPreventionAssessment ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* add a POLICY_BASED_CHALLENGE IntegrationType and associated settings ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* Add `phone_authentication_event` to `AnnotateAssessmentRequest`. This new field allows you to indicate the phone number associated with a multi-factor authentication event, i.e. `INITIATED_TWO_FACTOR`, `PASSED_TWO_FACTOR`, `FAILED_TWO_FACTOR` reasons, and the time of such an event ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.28.2...google-cloud-recaptcha-enterprise-v1.29.0) (2025-10-20)
 
 

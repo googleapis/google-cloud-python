@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-parametermanager/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.2.0...google-cloud-parametermanager-v0.3.0) (2026-01-09)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-parametermanager-v0.1.5...google-cloud-parametermanager-v0.2.0) (2025-10-20)
 
 

@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.20.0...google-cloud-tasks-v2.21.0) (2026-01-09)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.19.3...google-cloud-tasks-v2.20.0) (2025-10-20)
 
 
