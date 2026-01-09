@@ -1803,9 +1803,9 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Patches the specified Router resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1947,9 +1947,9 @@ class PublicAdvertisedPrefixesClient(metaclass=PublicAdvertisedPrefixesClientMet
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified Router resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

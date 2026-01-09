@@ -3209,6 +3209,7 @@ def test_get_rest_call_success(request_type):
             fingerprint="fingerprint_value",
             id=205,
             ip_cidr_range="ip_cidr_range_value",
+            ipv6_access_type="ipv6_access_type_value",
             is_live_migration=True,
             kind="kind_value",
             mode="mode_value",
@@ -3241,6 +3242,7 @@ def test_get_rest_call_success(request_type):
     assert response.fingerprint == "fingerprint_value"
     assert response.id == 205
     assert response.ip_cidr_range == "ip_cidr_range_value"
+    assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.is_live_migration is True
     assert response.kind == "kind_value"
     assert response.mode == "mode_value"
@@ -3364,6 +3366,7 @@ def test_insert_rest_call_success(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_cidr_range": "ip_cidr_range_value",
+        "ipv6_access_type": "ipv6_access_type_value",
         "is_live_migration": True,
         "kind": "kind_value",
         "mode": "mode_value",
@@ -3376,6 +3379,7 @@ def test_insert_rest_call_success(request_type):
                 "description": "description_value",
                 "enable_enhanced_ipv4_allocation": True,
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ipv6_access_type": "ipv6_access_type_value",
                 "is_address": True,
                 "mode": "mode_value",
                 "name": "name_value",
@@ -3777,6 +3781,7 @@ def test_patch_rest_call_success(request_type):
         "fingerprint": "fingerprint_value",
         "id": 205,
         "ip_cidr_range": "ip_cidr_range_value",
+        "ipv6_access_type": "ipv6_access_type_value",
         "is_live_migration": True,
         "kind": "kind_value",
         "mode": "mode_value",
@@ -3789,6 +3794,7 @@ def test_patch_rest_call_success(request_type):
                 "description": "description_value",
                 "enable_enhanced_ipv4_allocation": True,
                 "ip_cidr_range": "ip_cidr_range_value",
+                "ipv6_access_type": "ipv6_access_type_value",
                 "is_address": True,
                 "mode": "mode_value",
                 "name": "name_value",

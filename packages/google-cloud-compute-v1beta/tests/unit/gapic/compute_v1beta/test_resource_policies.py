@@ -4544,6 +4544,7 @@ def test_insert_rest_call_success(request_type):
         "description": "description_value",
         "disk_consistency_group_policy": {},
         "group_placement_policy": {
+            "accelerator_topology_mode": "accelerator_topology_mode_value",
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
             "gpu_topology": "gpu_topology_value",
@@ -4610,6 +4611,7 @@ def test_insert_rest_call_success(request_type):
         "status": "status_value",
         "workload_policy": {
             "accelerator_topology": "accelerator_topology_value",
+            "accelerator_topology_mode": "accelerator_topology_mode_value",
             "max_topology_distance": "max_topology_distance_value",
             "type_": "type__value",
         },
@@ -4998,6 +5000,7 @@ def test_patch_rest_call_success(request_type):
         "description": "description_value",
         "disk_consistency_group_policy": {},
         "group_placement_policy": {
+            "accelerator_topology_mode": "accelerator_topology_mode_value",
             "availability_domain_count": 2650,
             "collocation": "collocation_value",
             "gpu_topology": "gpu_topology_value",
@@ -5064,6 +5067,7 @@ def test_patch_rest_call_success(request_type):
         "status": "status_value",
         "workload_policy": {
             "accelerator_topology": "accelerator_topology_value",
+            "accelerator_topology_mode": "accelerator_topology_mode_value",
             "max_topology_distance": "max_topology_distance_value",
             "type_": "type__value",
         },

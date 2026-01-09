@@ -1370,8 +1370,9 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of target pools. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of target pools.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
@@ -1854,13 +1855,14 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.TargetPool:
                 Represents a Target Pool resource.
+
                 Target pools are used with external
                 passthrough Network Load Balancers. A
                 target pool references member instances,
                 an associated legacy HttpHealthCheck
                 resource, and, optionally, a backup
-                target pool. For more information, read
-                Using target pools.
+                target pool. For more information,
+                readUsing target pools.
 
         """
         # Create or coerce a protobuf request object.
@@ -3476,7 +3478,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified target pool. For more information, see Google
+        specified target pool. For more information, seeGoogle
         Cloud Armor Overview
 
         .. code-block:: python
@@ -3633,7 +3635,7 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the Google Cloud Armor security policy for the
-        specified target pool. For more information, see Google
+        specified target pool. For more information, seeGoogle
         Cloud Armor Overview
 
         .. code-block:: python

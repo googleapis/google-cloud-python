@@ -1083,23 +1083,33 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.HealthCheck:
-                Represents a health check resource. Google Compute
-                Engine has two health check resources: \*
-                [Regional](/compute/docs/reference/rest/beta/regionHealthChecks)
-                \*
-                [Global](/compute/docs/reference/rest/beta/healthChecks)
-                These health check resources can be used for load
-                balancing and for autohealing VMs in a managed instance
-                group (MIG). **Load balancing** Health check
-                requirements vary depending on the type of load
-                balancer. For details about the type of health check
-                supported for each load balancer and corresponding
-                backend type, see Health checks overview: Load balancer
-                guide. **Autohealing in MIGs** The health checks that
-                you use for autohealing VMs in a MIG can be either
-                regional or global. For more information, see Set up an
-                application health check and autohealing. For more
-                information, see Health checks overview.
+                Represents a health check resource.
+
+                   Google Compute Engine has two health check resources:
+
+                   - [Regional](/compute/docs/reference/rest/beta/regionHealthChecks)
+                   - [Global](/compute/docs/reference/rest/beta/healthChecks)
+
+                   These health check resources can be used for load
+                   balancing and for autohealing VMs in a managed
+                   instance group (MIG).
+
+                   **Load balancing**
+
+                   Health check requirements vary depending on the type
+                   of load balancer. For details about the type of
+                   health check supported for each load balancer and
+                   corresponding backend type, see Health checks
+                   overview: Load balancer guide.
+
+                   **Autohealing in MIGs**
+
+                   The health checks that you use for autohealing VMs in
+                   a MIG can be either regional or global. For more
+                   information, see Set up an application health check
+                   and autohealing.
+
+                   For more information, seeHealth checks overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -1600,7 +1610,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
     ) -> compute.Operation:
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python
@@ -1746,7 +1756,7 @@ class RegionHealthChecksClient(metaclass=RegionHealthChecksClientMeta):
     ) -> extended_operation.ExtendedOperation:
         r"""Updates a HealthCheck resource in the specified
         project using the data included in the request. This
-        method supports PATCH semantics and uses the JSON merge
+        method supportsPATCH semantics and uses theJSON merge
         patch format and processing rules.
 
         .. code-block:: python

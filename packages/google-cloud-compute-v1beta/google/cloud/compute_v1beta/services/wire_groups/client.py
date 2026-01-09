@@ -1562,9 +1562,9 @@ class WireGroupsClient(metaclass=WireGroupsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified wire group resource with the
-        data included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        data included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -1711,9 +1711,9 @@ class WireGroupsClient(metaclass=WireGroupsClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified wire group resource with the
-        data included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        data included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 

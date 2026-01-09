@@ -1052,19 +1052,23 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.ExternalVpnGateway:
                 Represents an external VPN gateway.
+
                 External VPN gateway is the on-premises
                 VPN gateway(s) or another cloud
                 provider's VPN gateway that connects to
-                your Google Cloud VPN gateway. To create
-                a highly available VPN from Google Cloud
-                Platform to your VPN gateway or another
-                cloud provider's VPN gateway, you must
-                create a external VPN gateway resource
-                with information about the other
-                gateway. For more information about
-                using external VPN gateways, see
-                Creating an HA VPN gateway and tunnel
-                pair to a peer VPN.
+                your Google Cloud VPN gateway.
+
+                To create a highly available VPN from
+                Google Cloud Platform to your VPN
+                gateway or another cloud provider's VPN
+                gateway, you must create a external VPN
+                gateway resource with information about
+                the other gateway.
+
+                For more information about using
+                external VPN gateways, see Creating an
+                HA VPN gateway and tunnel pair to a peer
+                VPN.
 
         """
         # Create or coerce a protobuf request object.
@@ -1515,8 +1519,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Sets the labels on an ExternalVpnGateway. To learn
-        more about labels, read the Labeling Resources
-        documentation.
+        more about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 
@@ -1654,8 +1658,8 @@ class ExternalVpnGatewaysClient(metaclass=ExternalVpnGatewaysClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Sets the labels on an ExternalVpnGateway. To learn
-        more about labels, read the Labeling Resources
-        documentation.
+        more about labels, read the Labeling
+        Resources documentation.
 
         .. code-block:: python
 

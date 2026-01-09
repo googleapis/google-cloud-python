@@ -719,8 +719,9 @@ class StoragePoolTypesClient(metaclass=StoragePoolTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of storage pool types. To prevent
-        failure, Google recommends that you set the
+        r"""Retrieves an aggregated list of storage pool types.
+
+        To prevent failure, Google recommends that you set the
         ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python

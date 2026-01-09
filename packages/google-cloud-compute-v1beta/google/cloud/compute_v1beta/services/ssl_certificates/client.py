@@ -722,9 +722,10 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
         r"""Retrieves the list of all SslCertificate resources, regional and
-        global, available to the specified project. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        global, available to the specified project.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1173,26 +1174,36 @@ class SslCertificatesClient(metaclass=SslCertificatesClientMeta):
 
         Returns:
             google.cloud.compute_v1beta.types.SslCertificate:
-                Represents an SSL certificate resource. Google Compute
-                Engine has two SSL certificate resources: \*
-                [Global](/compute/docs/reference/rest/beta/sslCertificates)
-                \*
-                [Regional](/compute/docs/reference/rest/beta/regionSslCertificates)
-                The global SSL certificates (sslCertificates) are used
-                by: - Global external Application Load Balancers -
-                Classic Application Load Balancers - Proxy Network Load
-                Balancers (with target SSL proxies) The regional SSL
-                certificates (regionSslCertificates) are used by: -
-                Regional external Application Load Balancers - Regional
-                internal Application Load Balancers Optionally,
-                certificate file contents that you upload can contain a
-                set of up to five PEM-encoded certificates. The API call
-                creates an object (sslCertificate) that holds this data.
-                You can use SSL keys and certificates to secure
-                connections to a load balancer. For more information,
-                read Creating and using SSL certificates, SSL
-                certificates quotas and limits, and Troubleshooting SSL
-                certificates.
+                Represents an SSL certificate resource.
+
+                   Google Compute Engine has two SSL certificate
+                   resources:
+
+                   - [Global](/compute/docs/reference/rest/beta/sslCertificates)
+                   - [Regional](/compute/docs/reference/rest/beta/regionSslCertificates)
+
+                   The global SSL certificates (sslCertificates) are
+                   used by:
+
+                      - Global external Application Load Balancers
+                      - Classic Application Load Balancers
+                      - Proxy Network Load Balancers (with target SSL
+                        proxies)
+
+                   The regional SSL certificates (regionSslCertificates)
+                   are used by:
+
+                      - Regional external Application Load Balancers
+                      - Regional internal Application Load Balancers
+
+                   Optionally, certificate file contents that you upload
+                   can contain a set of up to five PEM-encoded
+                   certificates. The API call creates an object
+                   (sslCertificate) that holds this data. You can use
+                   SSL keys and certificates to secure connections to a
+                   load balancer. For more information, read Creating
+                   and using SSL certificates,SSL certificates quotas
+                   and limits, and Troubleshooting SSL certificates.
 
         """
         # Create or coerce a protobuf request object.

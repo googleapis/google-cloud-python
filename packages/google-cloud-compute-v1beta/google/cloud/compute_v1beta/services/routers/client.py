@@ -712,9 +712,10 @@ class RoutersClient(metaclass=RoutersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of routers. To prevent failure,
-        Google recommends that you set the ``returnPartialSuccess``
-        parameter to ``true``.
+        r"""Retrieves an aggregated list of routers.
+
+        To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 
@@ -1480,8 +1481,9 @@ class RoutersClient(metaclass=RoutersClientMeta):
         Returns:
             google.cloud.compute_v1beta.types.Router:
                 Represents a Cloud Router resource.
+
                 For more information about Cloud Router,
-                read the Cloud Router overview.
+                read theCloud Router overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -2810,9 +2812,9 @@ class RoutersClient(metaclass=RoutersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Patches the specified Router resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -2951,9 +2953,9 @@ class RoutersClient(metaclass=RoutersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Patches the specified Router resource with the data
-        included in the request. This method supports PATCH
-        semantics and uses JSON merge patch format and
-        processing rules.
+        included in the request. This method supportsPATCH
+        semantics and usesJSON merge
+        patch format and processing rules.
 
         .. code-block:: python
 
@@ -3424,7 +3426,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.RoutersPreviewResponse:
         r"""Preview fields auto-generated during router create
-        and update operations. Calling this method does NOT
+        andupdate operations. Calling this method does NOT
         create or update the router.
 
         .. code-block:: python
@@ -3714,7 +3716,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> compute.Operation:
         r"""Updates the specified Router resource with the data
-        included in the request. This method conforms to PUT
+        included in the request.  This method conforms toPUT
         semantics, which requests that the state of the target
         resource be created or replaced with the state defined
         by the representation enclosed in the request message
@@ -3859,7 +3861,7 @@ class RoutersClient(metaclass=RoutersClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> extended_operation.ExtendedOperation:
         r"""Updates the specified Router resource with the data
-        included in the request. This method conforms to PUT
+        included in the request.  This method conforms toPUT
         semantics, which requests that the state of the target
         resource be created or replaced with the state defined
         by the representation enclosed in the request message

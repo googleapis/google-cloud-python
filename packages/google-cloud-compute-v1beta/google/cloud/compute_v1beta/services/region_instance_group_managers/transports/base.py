@@ -143,6 +143,11 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.adopt_instances: gapic_v1.method.wrap_method(
+                self.adopt_instances,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.apply_updates_to_instances: gapic_v1.method.wrap_method(
                 self.apply_updates_to_instances,
                 default_timeout=None,
@@ -289,6 +294,15 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.AbandonInstancesRegionInstanceGroupManagerRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def adopt_instances(
+        self,
+    ) -> Callable[
+        [compute.AdoptInstancesRegionInstanceGroupManagerRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

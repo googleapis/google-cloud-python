@@ -26700,6 +26700,9 @@ def test_insert_rest_call_success(request_type):
                 "host": "host_value",
                 "subblock": "subblock_value",
             },
+            "reservation_consumption_info": {
+                "consumed_reservation": "consumed_reservation_value"
+            },
             "scheduling": {
                 "availability_domain": 2002,
                 "termination_timestamp": "termination_timestamp_value",
@@ -33609,6 +33612,9 @@ def test_update_rest_call_success(request_type):
                 "cluster": "cluster_value",
                 "host": "host_value",
                 "subblock": "subblock_value",
+            },
+            "reservation_consumption_info": {
+                "consumed_reservation": "consumed_reservation_value"
             },
             "scheduling": {
                 "availability_domain": 2002,

@@ -1846,6 +1846,86 @@
           "fullName": "google.cloud.compute_v1beta.BackendBucketsClient",
           "shortName": "BackendBucketsClient"
         },
+        "fullName": "google.cloud.compute_v1beta.BackendBucketsClient.aggregated_list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.BackendBuckets.AggregatedList",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.BackendBuckets",
+            "shortName": "BackendBuckets"
+          },
+          "shortName": "AggregatedList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.AggregatedListBackendBucketsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.backend_buckets.pagers.AggregatedListPager",
+        "shortName": "aggregated_list"
+      },
+      "description": "Sample for AggregatedList",
+      "file": "compute_v1beta_generated_backend_buckets_aggregated_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_BackendBuckets_AggregatedList_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_backend_buckets_aggregated_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.BackendBucketsClient",
+          "shortName": "BackendBucketsClient"
+        },
         "fullName": "google.cloud.compute_v1beta.BackendBucketsClient.delete_signed_url_key",
         "method": {
           "fullName": "google.cloud.compute.v1beta.BackendBuckets.DeleteSignedUrlKey",
@@ -14099,6 +14179,510 @@
       "canonical": true,
       "clientMethod": {
         "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.aggregated_list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.AggregatedList",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "AggregatedList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.AggregatedListGlobalVmExtensionPoliciesRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.global_vm_extension_policies.pagers.AggregatedListPager",
+        "shortName": "aggregated_list"
+      },
+      "description": "Sample for AggregatedList",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_aggregated_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_AggregatedList_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_aggregated_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteGlobalVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy_rollout_operation_rollout_input_resource",
+            "type": "google.cloud.compute_v1beta.types.GlobalVmExtensionPolicyRolloutOperationRolloutInput"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_Delete_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetGlobalVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.GlobalVmExtensionPolicy",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_Get_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertGlobalVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.GlobalVmExtensionPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_Insert_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListGlobalVmExtensionPoliciesRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.global_vm_extension_policies.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_List_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient",
+          "shortName": "GlobalVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.GlobalVmExtensionPoliciesClient.update",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies.Update",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.GlobalVmExtensionPolicies",
+            "shortName": "GlobalVmExtensionPolicies"
+          },
+          "shortName": "Update"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.UpdateGlobalVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "global_vm_extension_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.GlobalVmExtensionPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "update"
+      },
+      "description": "Sample for Update",
+      "file": "compute_v1beta_generated_global_vm_extension_policies_update_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_GlobalVmExtensionPolicies_Update_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_global_vm_extension_policies_update_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
           "fullName": "google.cloud.compute_v1beta.HealthChecksClient",
           "shortName": "HealthChecksClient"
         },
@@ -16882,6 +17466,94 @@
         }
       ],
       "title": "compute_v1beta_generated_instance_group_managers_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient",
+          "shortName": "InstanceGroupManagersClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.InstanceGroupManagersClient.get_available_accelerator_topologies",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.InstanceGroupManagers.GetAvailableAcceleratorTopologies",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.InstanceGroupManagers",
+            "shortName": "InstanceGroupManagers"
+          },
+          "shortName": "GetAvailableAcceleratorTopologies"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetAvailableAcceleratorTopologiesInstanceGroupManagerRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "resource_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.InstanceGroupManagersGetAvailableAcceleratorTopologiesResponse",
+        "shortName": "get_available_accelerator_topologies"
+      },
+      "description": "Sample for GetAvailableAcceleratorTopologies",
+      "file": "compute_v1beta_generated_instance_group_managers_get_available_accelerator_topologies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_InstanceGroupManagers_GetAvailableAcceleratorTopologies_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_instance_group_managers_get_available_accelerator_topologies_sync.py"
     },
     {
       "canonical": true,
@@ -35646,6 +36318,94 @@
           "fullName": "google.cloud.compute_v1beta.NetworksClient",
           "shortName": "NetworksClient"
         },
+        "fullName": "google.cloud.compute_v1beta.NetworksClient.cancel_request_remove_peering",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Networks.CancelRequestRemovePeering",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Networks",
+            "shortName": "Networks"
+          },
+          "shortName": "CancelRequestRemovePeering"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.CancelRequestRemovePeeringNetworkRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "network",
+            "type": "str"
+          },
+          {
+            "name": "networks_cancel_request_remove_peering_request_resource",
+            "type": "google.cloud.compute_v1beta.types.NetworksCancelRequestRemovePeeringRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "cancel_request_remove_peering"
+      },
+      "description": "Sample for CancelRequestRemovePeering",
+      "file": "compute_v1beta_generated_networks_cancel_request_remove_peering_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Networks_CancelRequestRemovePeering_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_networks_cancel_request_remove_peering_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.NetworksClient",
+          "shortName": "NetworksClient"
+        },
         "fullName": "google.cloud.compute_v1beta.NetworksClient.delete",
         "method": {
           "fullName": "google.cloud.compute.v1beta.Networks.Delete",
@@ -44251,6 +45011,802 @@
       "canonical": true,
       "clientMethod": {
         "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "backend_bucket",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_region_backend_buckets_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetIamPolicyRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1beta_generated_region_backend_buckets_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_get_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "backend_bucket",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.BackendBucket",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_region_backend_buckets_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "backend_bucket_resource",
+            "type": "google.cloud.compute_v1beta.types.BackendBucket"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_region_backend_buckets_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.list_usable",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.ListUsable",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "ListUsable"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListUsableRegionBackendBucketsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_backend_buckets.pagers.ListUsablePager",
+        "shortName": "list_usable"
+      },
+      "description": "Sample for ListUsable",
+      "file": "compute_v1beta_generated_region_backend_buckets_list_usable_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_ListUsable_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_list_usable_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListRegionBackendBucketsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_backend_buckets.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_region_backend_buckets_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.patch",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.Patch",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "Patch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.PatchRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "backend_bucket",
+            "type": "str"
+          },
+          {
+            "name": "backend_bucket_resource",
+            "type": "google.cloud.compute_v1beta.types.BackendBucket"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch"
+      },
+      "description": "Sample for Patch",
+      "file": "compute_v1beta_generated_region_backend_buckets_patch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_Patch_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.SetIamPolicyRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "region_set_policy_request_resource",
+            "type": "google.cloud.compute_v1beta.types.RegionSetPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1beta_generated_region_backend_buckets_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient",
+          "shortName": "RegionBackendBucketsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionBackendBucketsClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionBackendBuckets",
+            "shortName": "RegionBackendBuckets"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsRegionBackendBucketRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_region_backend_buckets_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionBackendBuckets_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_backend_buckets_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
           "fullName": "google.cloud.compute_v1beta.RegionBackendServicesClient",
           "shortName": "RegionBackendServicesClient"
         },
@@ -45934,6 +47490,618 @@
         }
       ],
       "title": "compute_v1beta_generated_region_commitments_update_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.aggregated_list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.AggregatedList",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "AggregatedList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.AggregatedListRegionCompositeHealthChecksRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_composite_health_checks.pagers.AggregatedListPager",
+        "shortName": "aggregated_list"
+      },
+      "description": "Sample for AggregatedList",
+      "file": "compute_v1beta_generated_region_composite_health_checks_aggregated_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_AggregatedList_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_aggregated_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteRegionCompositeHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "composite_health_check",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_region_composite_health_checks_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetRegionCompositeHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "composite_health_check",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.CompositeHealthCheck",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_region_composite_health_checks_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertRegionCompositeHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "composite_health_check_resource",
+            "type": "google.cloud.compute_v1beta.types.CompositeHealthCheck"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_region_composite_health_checks_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListRegionCompositeHealthChecksRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_composite_health_checks.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_region_composite_health_checks_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.patch",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.Patch",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "Patch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.PatchRegionCompositeHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "composite_health_check",
+            "type": "str"
+          },
+          {
+            "name": "composite_health_check_resource",
+            "type": "google.cloud.compute_v1beta.types.CompositeHealthCheck"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch"
+      },
+      "description": "Sample for Patch",
+      "file": "compute_v1beta_generated_region_composite_health_checks_patch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_Patch_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient",
+          "shortName": "RegionCompositeHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionCompositeHealthChecksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionCompositeHealthChecks",
+            "shortName": "RegionCompositeHealthChecks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsRegionCompositeHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_region_composite_health_checks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionCompositeHealthChecks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_composite_health_checks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -47806,6 +49974,618 @@
         }
       ],
       "title": "compute_v1beta_generated_region_disks_update_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.aggregated_list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.AggregatedList",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "AggregatedList"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.AggregatedListRegionHealthAggregationPoliciesRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_health_aggregation_policies.pagers.AggregatedListPager",
+        "shortName": "aggregated_list"
+      },
+      "description": "Sample for AggregatedList",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_aggregated_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_AggregatedList_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_aggregated_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteRegionHealthAggregationPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "health_aggregation_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetRegionHealthAggregationPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "health_aggregation_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.HealthAggregationPolicy",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertRegionHealthAggregationPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "health_aggregation_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.HealthAggregationPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListRegionHealthAggregationPoliciesRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.region_health_aggregation_policies.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.patch",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.Patch",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "Patch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.PatchRegionHealthAggregationPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "health_aggregation_policy",
+            "type": "str"
+          },
+          {
+            "name": "health_aggregation_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.HealthAggregationPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "patch"
+      },
+      "description": "Sample for Patch",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_patch_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_Patch_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient",
+          "shortName": "RegionHealthAggregationPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionHealthAggregationPoliciesClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionHealthAggregationPolicies",
+            "shortName": "RegionHealthAggregationPolicies"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsRegionHealthAggregationPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_region_health_aggregation_policies_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionHealthAggregationPolicies_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_health_aggregation_policies_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -50122,6 +52902,98 @@
         }
       ],
       "title": "compute_v1beta_generated_region_instance_group_managers_abandon_instances_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RegionInstanceGroupManagersClient",
+          "shortName": "RegionInstanceGroupManagersClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RegionInstanceGroupManagersClient.adopt_instances",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RegionInstanceGroupManagers.AdoptInstances",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RegionInstanceGroupManagers",
+            "shortName": "RegionInstanceGroupManagers"
+          },
+          "shortName": "AdoptInstances"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.AdoptInstancesRegionInstanceGroupManagerRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "instance_group_manager",
+            "type": "str"
+          },
+          {
+            "name": "region_instance_group_managers_adopt_instances_request_resource",
+            "type": "google.cloud.compute_v1beta.types.RegionInstanceGroupManagersAdoptInstancesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "adopt_instances"
+      },
+      "description": "Sample for AdoptInstances",
+      "file": "compute_v1beta_generated_region_instance_group_managers_adopt_instances_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RegionInstanceGroupManagers_AdoptInstances_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_region_instance_group_managers_adopt_instances_sync.py"
     },
     {
       "canonical": true,
@@ -64174,6 +67046,98 @@
           "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient",
           "shortName": "ReservationBlocksClient"
         },
+        "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationBlocks.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetIamPolicyReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1beta_generated_reservation_blocks_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationBlocks_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_blocks_get_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
         "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient.get",
         "method": {
           "fullName": "google.cloud.compute.v1beta.ReservationBlocks.Get",
@@ -64442,6 +67406,290 @@
         }
       ],
       "title": "compute_v1beta_generated_reservation_blocks_perform_maintenance_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationBlocks.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.SetIamPolicyReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "zone_set_nested_policy_request_resource",
+            "type": "google.cloud.compute_v1beta.types.ZoneSetNestedPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1beta_generated_reservation_blocks_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationBlocks_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_blocks_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient",
+          "shortName": "ReservationBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ReservationBlocksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationBlocks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationBlocks",
+            "shortName": "ReservationBlocks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsReservationBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_reservation_blocks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationBlocks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_blocks_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient.get_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks.GetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "GetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetIamPolicyReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "get_iam_policy"
+      },
+      "description": "Sample for GetIamPolicy",
+      "file": "compute_v1beta_generated_reservation_sub_blocks_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationSubBlocks_GetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_sub_blocks_get_iam_policy_sync.py"
     },
     {
       "canonical": true,
@@ -64810,6 +68058,198 @@
         }
       ],
       "title": "compute_v1beta_generated_reservation_sub_blocks_report_faulty_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient.set_iam_policy",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks.SetIamPolicy",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "SetIamPolicy"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.SetIamPolicyReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "zone_set_nested_policy_request_resource",
+            "type": "google.cloud.compute_v1beta.types.ZoneSetNestedPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Policy",
+        "shortName": "set_iam_policy"
+      },
+      "description": "Sample for SetIamPolicy",
+      "file": "compute_v1beta_generated_reservation_sub_blocks_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationSubBlocks_SetIamPolicy_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_sub_blocks_set_iam_policy_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient",
+          "shortName": "ReservationSubBlocksClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ReservationSubBlocksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ReservationSubBlocks",
+            "shortName": "ReservationSubBlocks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.TestIamPermissionsReservationSubBlockRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "parent_resource",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1beta.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1beta_generated_reservation_sub_blocks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ReservationSubBlocks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_reservation_sub_blocks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -66578,6 +70018,670 @@
         }
       ],
       "title": "compute_v1beta_generated_resource_policies_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutPlansClient",
+          "shortName": "RolloutPlansClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutPlansClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RolloutPlans.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RolloutPlans",
+            "shortName": "RolloutPlans"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteRolloutPlanRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout_plan",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_rollout_plans_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RolloutPlans_Delete_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollout_plans_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutPlansClient",
+          "shortName": "RolloutPlansClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutPlansClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RolloutPlans.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RolloutPlans",
+            "shortName": "RolloutPlans"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetRolloutPlanRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout_plan",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.RolloutPlan",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_rollout_plans_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RolloutPlans_Get_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollout_plans_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutPlansClient",
+          "shortName": "RolloutPlansClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutPlansClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RolloutPlans.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RolloutPlans",
+            "shortName": "RolloutPlans"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertRolloutPlanRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout_plan_resource",
+            "type": "google.cloud.compute_v1beta.types.RolloutPlan"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_rollout_plans_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RolloutPlans_Insert_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollout_plans_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutPlansClient",
+          "shortName": "RolloutPlansClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutPlansClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.RolloutPlans.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.RolloutPlans",
+            "shortName": "RolloutPlans"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListRolloutPlansRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.rollout_plans.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_rollout_plans_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_RolloutPlans_List_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollout_plans_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutsClient",
+          "shortName": "RolloutsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutsClient.cancel",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Rollouts.Cancel",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Rollouts",
+            "shortName": "Rollouts"
+          },
+          "shortName": "Cancel"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.CancelRolloutRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "cancel"
+      },
+      "description": "Sample for Cancel",
+      "file": "compute_v1beta_generated_rollouts_cancel_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Rollouts_Cancel_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollouts_cancel_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutsClient",
+          "shortName": "RolloutsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutsClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Rollouts.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Rollouts",
+            "shortName": "Rollouts"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteRolloutRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_rollouts_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Rollouts_Delete_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollouts_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutsClient",
+          "shortName": "RolloutsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutsClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Rollouts.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Rollouts",
+            "shortName": "Rollouts"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetRolloutRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.Rollout",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_rollouts_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Rollouts_Get_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollouts_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.RolloutsClient",
+          "shortName": "RolloutsClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.RolloutsClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.Rollouts.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.Rollouts",
+            "shortName": "Rollouts"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListRolloutsRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.rollouts.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_rollouts_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_Rollouts_List_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_rollouts_list_sync.py"
     },
     {
       "canonical": true,
@@ -83854,6 +87958,446 @@
         }
       ],
       "title": "compute_v1beta_generated_zone_operations_wait_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient",
+          "shortName": "ZoneVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient.delete",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies.Delete",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies",
+            "shortName": "ZoneVmExtensionPolicies"
+          },
+          "shortName": "Delete"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.DeleteZoneVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "delete"
+      },
+      "description": "Sample for Delete",
+      "file": "compute_v1beta_generated_zone_vm_extension_policies_delete_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ZoneVmExtensionPolicies_Delete_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_zone_vm_extension_policies_delete_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient",
+          "shortName": "ZoneVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient.get",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies.Get",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies",
+            "shortName": "ZoneVmExtensionPolicies"
+          },
+          "shortName": "Get"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.GetZoneVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.types.VmExtensionPolicy",
+        "shortName": "get"
+      },
+      "description": "Sample for Get",
+      "file": "compute_v1beta_generated_zone_vm_extension_policies_get_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ZoneVmExtensionPolicies_Get_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_zone_vm_extension_policies_get_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient",
+          "shortName": "ZoneVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient.insert",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies.Insert",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies",
+            "shortName": "ZoneVmExtensionPolicies"
+          },
+          "shortName": "Insert"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.InsertZoneVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "vm_extension_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.VmExtensionPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "insert"
+      },
+      "description": "Sample for Insert",
+      "file": "compute_v1beta_generated_zone_vm_extension_policies_insert_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ZoneVmExtensionPolicies_Insert_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_zone_vm_extension_policies_insert_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient",
+          "shortName": "ZoneVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient.list",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies.List",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies",
+            "shortName": "ZoneVmExtensionPolicies"
+          },
+          "shortName": "List"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.ListZoneVmExtensionPoliciesRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1beta.services.zone_vm_extension_policies.pagers.ListPager",
+        "shortName": "list"
+      },
+      "description": "Sample for List",
+      "file": "compute_v1beta_generated_zone_vm_extension_policies_list_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ZoneVmExtensionPolicies_List_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_zone_vm_extension_policies_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient",
+          "shortName": "ZoneVmExtensionPoliciesClient"
+        },
+        "fullName": "google.cloud.compute_v1beta.ZoneVmExtensionPoliciesClient.update",
+        "method": {
+          "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies.Update",
+          "service": {
+            "fullName": "google.cloud.compute.v1beta.ZoneVmExtensionPolicies",
+            "shortName": "ZoneVmExtensionPolicies"
+          },
+          "shortName": "Update"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1beta.types.UpdateZoneVmExtensionPolicyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "vm_extension_policy",
+            "type": "str"
+          },
+          {
+            "name": "vm_extension_policy_resource",
+            "type": "google.cloud.compute_v1beta.types.VmExtensionPolicy"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.api_core.extended_operation.ExtendedOperation",
+        "shortName": "update"
+      },
+      "description": "Sample for Update",
+      "file": "compute_v1beta_generated_zone_vm_extension_policies_update_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1beta_generated_ZoneVmExtensionPolicies_Update_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1beta_generated_zone_vm_extension_policies_update_sync.py"
     },
     {
       "canonical": true,
