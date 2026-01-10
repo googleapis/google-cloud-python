@@ -44,6 +44,7 @@ def apply_window_if_present(
         order_by = None
     elif window.is_range_bounded:
         order_by = get_window_order_by((window.ordering[0],))
+        order_by = remove_null_ordering_for_range_windows(order_by)
     else:
         order_by = get_window_order_by(window.ordering)
 
@@ -148,6 +149,30 @@ def get_window_order_by(
             )
         )
     return tuple(order_by)
+
+
+def remove_null_ordering_for_range_windows(
+    order_by: typing.Optional[tuple[sge.Ordered, ...]],
+) -> typing.Optional[tuple[sge.Ordered, ...]]:
+    """Removes NULL FIRST/LAST from ORDER BY expressions in RANGE windows.
+    Here's the support matrix:
+    ✅ sum(x) over (order by y desc nulls last)
+    🚫 sum(x) over (order by y asc nulls last)
+    ✅ sum(x) over (order by y asc nulls first)
+    🚫 sum(x) over (order by y desc nulls first)
+    """
+    if order_by is None:
+        return None
+
+    new_order_by = []
+    for key in order_by:
+        kargs = key.args
+        if kargs.get("desc") is True and kargs.get("nulls_first", False):
+            kargs["nulls_first"] = False
+        elif kargs.get("desc") is False and not kargs.setdefault("nulls_first", True):
+            kargs["nulls_first"] = True
+        new_order_by.append(sge.Ordered(**kargs))
+    return tuple(new_order_by)
 
 
 def _get_window_bounds(

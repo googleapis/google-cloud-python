@@ -6,14 +6,17 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN SUM(CAST(NOT `bfcol_1` IS NULL AS INT64)) OVER (
-        ORDER BY UNIX_MICROS(`bfcol_0`) ASC NULLS LAST
-        RANGE BETWEEN 2999999 PRECEDING AND CURRENT ROW
+      WHEN COALESCE(
+        SUM(CAST(NOT `bfcol_1` IS NULL AS INT64)) OVER (
+          ORDER BY UNIX_MICROS(`bfcol_0`) ASC
+          RANGE BETWEEN 2999999 PRECEDING AND CURRENT ROW
+        ),
+        0
       ) < 1
       THEN NULL
       ELSE COALESCE(
         SUM(`bfcol_1`) OVER (
-          ORDER BY UNIX_MICROS(`bfcol_0`) ASC NULLS LAST
+          ORDER BY UNIX_MICROS(`bfcol_0`) ASC
           RANGE BETWEEN 2999999 PRECEDING AND CURRENT ROW
         ),
         0

@@ -22,10 +22,13 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN SUM(CAST(NOT `bfcol_7` IS NULL AS INT64)) OVER (
-        PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
-        ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+      WHEN COALESCE(
+        SUM(CAST(NOT `bfcol_7` IS NULL AS INT64)) OVER (
+          PARTITION BY `bfcol_9`
+          ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
+          ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+        ),
+        0
       ) < 3
       THEN NULL
       ELSE COALESCE(
@@ -42,10 +45,13 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN SUM(CAST(NOT `bfcol_8` IS NULL AS INT64)) OVER (
-        PARTITION BY `bfcol_9`
-        ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
-        ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+      WHEN COALESCE(
+        SUM(CAST(NOT `bfcol_8` IS NULL AS INT64)) OVER (
+          PARTITION BY `bfcol_9`
+          ORDER BY `bfcol_9` ASC NULLS LAST, `rowindex` ASC NULLS LAST
+          ROWS BETWEEN 3 PRECEDING AND CURRENT ROW
+        ),
+        0
       ) < 3
       THEN NULL
       ELSE COALESCE(

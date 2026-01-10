@@ -89,6 +89,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.ge_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.GTE(this=left_expr, expression=right_expr)
@@ -96,6 +99,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.gt_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.GT(this=left_expr, expression=right_expr)
@@ -103,6 +109,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.lt_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.LT(this=left_expr, expression=right_expr)
@@ -110,6 +119,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.le_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.LTE(this=left_expr, expression=right_expr)

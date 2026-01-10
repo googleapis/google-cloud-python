@@ -388,6 +388,9 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.add_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     if left.dtype == dtypes.STRING_DTYPE and right.dtype == dtypes.STRING_DTYPE:
         # String addition
         return sge.Concat(expressions=[left.expr, right.expr])
@@ -442,6 +445,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.floordiv_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -525,6 +531,9 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.mul_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
 
@@ -548,6 +557,9 @@ def _(expr: TypedExpr, n_digits: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.sub_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if left.expr == sge.null() or right.expr == sge.null():
+        return sge.null()
+
     if dtypes.is_numeric(left.dtype) and dtypes.is_numeric(right.dtype):
         left_expr = _coerce_bool_to_int(left)
         right_expr = _coerce_bool_to_int(right)

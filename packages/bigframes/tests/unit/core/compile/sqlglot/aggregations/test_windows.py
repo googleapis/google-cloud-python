@@ -127,7 +127,7 @@ class WindowsTest(unittest.TestCase):
         )
         self.assertEqual(
             result.sql(dialect="bigquery"),
-            "value OVER (ORDER BY `col1` ASC NULLS LAST RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)",
+            "value OVER (ORDER BY `col1` ASC RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW)",
         )
 
     def test_apply_window_if_present_range_bounded_timedelta(self):
@@ -142,7 +142,7 @@ class WindowsTest(unittest.TestCase):
         )
         self.assertEqual(
             result.sql(dialect="bigquery"),
-            "value OVER (ORDER BY `col1` ASC NULLS LAST RANGE BETWEEN 86400000000 PRECEDING AND 43200000000 FOLLOWING)",
+            "value OVER (ORDER BY `col1` ASC RANGE BETWEEN 86400000000 PRECEDING AND 43200000000 FOLLOWING)",
         )
 
     def test_apply_window_if_present_all_params(self):

@@ -356,6 +356,9 @@ def compile_window(node: nodes.WindowOpNode, child: ir.SQLGlotIR) -> ir.SQLGlotI
                 observation_count = windows.apply_window_if_present(
                     sge.func("SUM", is_observation), window_spec
                 )
+                observation_count = sge.func(
+                    "COALESCE", observation_count, sge.convert(0)
+                )
             else:
                 # Operations like count treat even NULLs as valid observations
                 # for the sake of min_periods notnull is just used to convert
