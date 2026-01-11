@@ -307,3 +307,56 @@ async def test_read_unfinalized_appendable_object_with_generation(
     del mrd
     del mrd_2
     gc.collect()
+
+
+@pytest.mark.asyncio
+async def test_append_flushes_and_state_lookup(storage_client, blobs_to_delete):
+    """
+    System test for AsyncAppendableObjectWriter, verifying flushing behavior
+    for both small and large appends.
+    """
+    object_name = f"test-append-flush-varied-size-{uuid.uuid4()}"
+    grpc_client = AsyncGrpcClient().grpc_client
+    writer = AsyncAppendableObjectWriter(grpc_client, _ZONAL_BUCKET, object_name)
+
+    # Schedule for cleanup
+    blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    # --- Part 1: Test with small data ---
+    small_data = b"small data"
+
+    await writer.open()
+    assert writer._is_stream_open
+
+    await writer.append(small_data)
+    persisted_size = await writer.state_lookup()
+    assert persisted_size == len(small_data)
+
+    # --- Part 2: Test with large data ---
+    large_data = os.urandom(38 * 1024 * 1024)
+
+    # Append data larger than the default flush interval (16 MiB).
+    # This should trigger the interval-based flushing logic.
+    await writer.append(large_data)
+
+    # Verify the total data has been persisted.
+    total_size = len(small_data) + len(large_data)
+    persisted_size = await writer.state_lookup()
+    assert persisted_size == total_size
+
+    # --- Part 3: Finalize and verify ---
+    final_object = await writer.close(finalize_on_close=True)
+
+    assert not writer._is_stream_open
+    assert final_object.size == total_size
+
+    # Verify the full content of the object.
+    full_data = small_data + large_data
+    mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
+    buffer = BytesIO()
+    await mrd.open()
+    # (0, 0) means read the whole object
+    await mrd.download_ranges([(0, 0, buffer)])
+    await mrd.close()
+    content = buffer.getvalue()
+    assert content == full_data

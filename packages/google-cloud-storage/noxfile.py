@@ -192,7 +192,14 @@ def system(session):
     # 2021-05-06: defer installing 'google-cloud-*' to after this package,
     #             in order to work around Python 2.7 googolapis-common-protos
     #             issue.
-    session.install("mock", "pytest", "pytest-rerunfailures", "-c", constraints_path)
+    session.install(
+        "mock",
+        "pytest",
+        "pytest-rerunfailures",
+        "pytest-asyncio",
+        "-c",
+        constraints_path,
+    )
     session.install("-e", ".", "-c", constraints_path)
     session.install(
         "google-cloud-testutils",

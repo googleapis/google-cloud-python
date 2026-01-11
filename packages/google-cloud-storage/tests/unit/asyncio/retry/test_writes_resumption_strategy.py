@@ -206,7 +206,9 @@ class TestWriteResumptionStrategy(unittest.TestCase):
         strategy.update_state_from_response(response2, state)
         self.assertEqual(write_state.persisted_size, 1024)
 
-        final_resource = storage_type.Object(name="test-object", bucket="b", size=2048, finalize_time=datetime.now())
+        final_resource = storage_type.Object(
+            name="test-object", bucket="b", size=2048, finalize_time=datetime.now()
+        )
         response3 = storage_type.BidiWriteObjectResponse(resource=final_resource)
         strategy.update_state_from_response(response3, state)
         self.assertEqual(write_state.persisted_size, 2048)

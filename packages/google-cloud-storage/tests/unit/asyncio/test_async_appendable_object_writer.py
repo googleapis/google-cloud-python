@@ -364,6 +364,7 @@ async def test_close(mock_write_object_stream, mock_client):
     writer = AsyncAppendableObjectWriter(mock_client, BUCKET, OBJECT)
     writer._is_stream_open = True
     writer.offset = 1024
+    writer.persisted_size = 1024
     mock_stream = mock_write_object_stream.return_value
     mock_stream.send = mock.AsyncMock()
     mock_stream.recv = mock.AsyncMock(
@@ -435,6 +436,7 @@ async def test_finalize(mock_write_object_stream, mock_client):
     mock_stream.recv = mock.AsyncMock(
         return_value=_storage_v2.BidiWriteObjectResponse(resource=mock_resource)
     )
+    mock_stream.close = mock.AsyncMock()
 
     gcs_object = await writer.finalize()
 
@@ -442,9 +444,12 @@ async def test_finalize(mock_write_object_stream, mock_client):
         _storage_v2.BidiWriteObjectRequest(finish_write=True)
     )
     mock_stream.recv.assert_awaited_once()
+    mock_stream.close.assert_awaited_once()
     assert writer.object_resource == mock_resource
     assert writer.persisted_size == 123
     assert gcs_object == mock_resource
+    assert writer._is_stream_open is False
+    assert writer.offset is None
 
 
 @pytest.mark.asyncio
@@ -501,30 +506,39 @@ async def test_append_sends_data_in_chunks(mock_write_object_stream, mock_client
     writer.persisted_size = 100
     mock_stream = mock_write_object_stream.return_value
     mock_stream.send = mock.AsyncMock()
-    writer.simple_flush = mock.AsyncMock()
 
     data = b"a" * (_MAX_CHUNK_SIZE_BYTES + 1)
+    mock_stream.recv = mock.AsyncMock(
+        return_value=_storage_v2.BidiWriteObjectResponse(
+            persisted_size=100 + len(data)
+        )
+    )
+
     await writer.append(data)
 
     assert mock_stream.send.await_count == 2
-    first_call = mock_stream.send.await_args_list[0]
-    second_call = mock_stream.send.await_args_list[1]
+    first_request = mock_stream.send.await_args_list[0].args[0]
+    second_request = mock_stream.send.await_args_list[1].args[0]
 
     # First chunk
-    assert first_call[0][0].write_offset == 100
-    assert len(first_call[0][0].checksummed_data.content) == _MAX_CHUNK_SIZE_BYTES
-    assert first_call[0][0].checksummed_data.crc32c == int.from_bytes(
+    assert first_request.write_offset == 100
+    assert len(first_request.checksummed_data.content) == _MAX_CHUNK_SIZE_BYTES
+    assert first_request.checksummed_data.crc32c == int.from_bytes(
         Checksum(data[:_MAX_CHUNK_SIZE_BYTES]).digest(), byteorder="big"
     )
-    # Second chunk
-    assert second_call[0][0].write_offset == 100 + _MAX_CHUNK_SIZE_BYTES
-    assert len(second_call[0][0].checksummed_data.content) == 1
-    assert second_call[0][0].checksummed_data.crc32c == int.from_bytes(
+    assert not first_request.flush
+    assert not first_request.state_lookup
+
+    # Second chunk (last chunk)
+    assert second_request.write_offset == 100 + _MAX_CHUNK_SIZE_BYTES
+    assert len(second_request.checksummed_data.content) == 1
+    assert second_request.checksummed_data.crc32c == int.from_bytes(
         Checksum(data[_MAX_CHUNK_SIZE_BYTES:]).digest(), byteorder="big"
     )
+    assert second_request.flush
+    assert second_request.state_lookup
 
     assert writer.offset == 100 + len(data)
-    writer.simple_flush.assert_not_awaited()
 
 
 @pytest.mark.asyncio
@@ -541,12 +555,25 @@ async def test_append_flushes_when_buffer_is_full(
     writer.persisted_size = 0
     mock_stream = mock_write_object_stream.return_value
     mock_stream.send = mock.AsyncMock()
-    writer.simple_flush = mock.AsyncMock()
+    mock_stream.recv = mock.AsyncMock()
 
     data = b"a" * _DEFAULT_FLUSH_INTERVAL_BYTES
     await writer.append(data)
 
-    writer.simple_flush.assert_awaited_once()
+    num_chunks = _DEFAULT_FLUSH_INTERVAL_BYTES // _MAX_CHUNK_SIZE_BYTES
+    assert mock_stream.send.await_count == num_chunks
+
+    # All but the last request should not have flush or state_lookup set.
+    for i in range(num_chunks - 1):
+        request = mock_stream.send.await_args_list[i].args[0]
+        assert not request.flush
+        assert not request.state_lookup
+
+    # The last request should have flush and state_lookup set.
+    last_request = mock_stream.send.await_args_list[-1].args[0]
+    assert last_request.flush
+    assert last_request.state_lookup
+    assert writer.bytes_appended_since_last_flush == 0
 
 
 @pytest.mark.asyncio
@@ -561,12 +588,18 @@ async def test_append_handles_large_data(mock_write_object_stream, mock_client):
     writer.persisted_size = 0
     mock_stream = mock_write_object_stream.return_value
     mock_stream.send = mock.AsyncMock()
-    writer.simple_flush = mock.AsyncMock()
+    mock_stream.recv = mock.AsyncMock()
 
     data = b"a" * (_DEFAULT_FLUSH_INTERVAL_BYTES * 2 + 1)
     await writer.append(data)
 
-    assert writer.simple_flush.await_count == 2
+    flushed_requests = [
+        call.args[0] for call in mock_stream.send.await_args_list if call.args[0].flush
+    ]
+    assert len(flushed_requests) == 3
+
+    last_request = mock_stream.send.await_args_list[-1].args[0]
+    assert last_request.state_lookup
 
 
 @pytest.mark.asyncio
@@ -584,17 +617,35 @@ async def test_append_data_two_times(mock_write_object_stream, mock_client):
     writer.persisted_size = 0
     mock_stream = mock_write_object_stream.return_value
     mock_stream.send = mock.AsyncMock()
-    writer.simple_flush = mock.AsyncMock()
 
     data1 = b"a" * (_MAX_CHUNK_SIZE_BYTES + 10)
+    mock_stream.recv = mock.AsyncMock(
+        return_value=_storage_v2.BidiWriteObjectResponse(
+            persisted_size= len(data1)
+        )
+    )
     await writer.append(data1)
 
+    assert mock_stream.send.await_count == 2
+    last_request_data1 = mock_stream.send.await_args_list[-1].args[0]
+    assert last_request_data1.flush
+    assert last_request_data1.state_lookup
+
     data2 = b"b" * (_MAX_CHUNK_SIZE_BYTES + 20)
+    mock_stream.recv = mock.AsyncMock(
+        return_value=_storage_v2.BidiWriteObjectResponse(
+            persisted_size= len(data2) + len(data1)
+        )
+    )
     await writer.append(data2)
+
+    assert mock_stream.send.await_count == 4
+    last_request_data2 = mock_stream.send.await_args_list[-1].args[0]
+    assert last_request_data2.flush
+    assert last_request_data2.state_lookup
 
     total_data_length = len(data1) + len(data2)
     assert writer.offset == total_data_length
-    assert writer.simple_flush.await_count == 0
 
 
 @pytest.mark.asyncio
