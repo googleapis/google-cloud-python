@@ -15,13 +15,12 @@
 from __future__ import absolute_import
 import os
 import pathlib
-import pytest
 import re
 import shutil
 import unittest
 
 # https://github.com/google/importlab/issues/25
-import nox  # pytype: disable=import-error
+import nox
 
 
 BLACK_VERSION = "black==23.7.0"
@@ -33,25 +32,6 @@ PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
-UNIT_TEST_STANDARD_DEPENDENCIES = [
-    "mock",
-    "asyncmock",
-    "pytest",
-    "pytest-cov",
-    "pytest-asyncio",
-    "pytest-mock",
-]
-
-# 'docfx' is excluded since it only needs to run in 'docs-presubmit'
-nox.options.sessions = [
-    "unit",
-    "prerelease_deps",
-    "cover",
-    "lint",
-    "lint_setup_py",
-    "blacken",
-    "docs",
-]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
@@ -73,20 +53,6 @@ def lint(session):
         *BLACK_PATHS,
     )
     session.run("flake8", "google", "tests")
-
-    """Run type-checking."""
-    session.install(".[grpc]", "pytype")
-    session.run("pytype")
-
-    session.install(".[grpc,async_rest]", "mypy")
-    session.install(
-        "types-setuptools",
-        "types-requests",
-        "types-protobuf",
-        "types-dataclasses",
-        "types-mock; python_version=='3.7'",
-    )
-    session.run("mypy", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -232,8 +198,9 @@ def default(session, install_grpc=True, prerelease=False, install_async_rest=Fal
     session.run(*pytest_args)
 
 
-@pytest.mark.parametrize(
-    "install_grpc_gcp,install_grpc,install_async_rest",
+@nox.session(python=PYTHON_VERSIONS)
+@nox.parametrize(
+    ["install_grpc_gcp", "install_grpc", "install_async_rest"],
     [
         (False, True, False),  # Run unit tests with grpcio installed
         (True, True, False),  # Run unit tests with grpcio/grpcio-gcp installed
@@ -241,7 +208,6 @@ def default(session, install_grpc=True, prerelease=False, install_async_rest=Fal
         (False, True, True),  # Run unit tests with grpcio and async rest installed
     ],
 )
-@nox.session(python=PYTHON_VERSIONS)
 def unit(session, install_grpc_gcp, install_grpc, install_async_rest):
     """Run the unit test suite."""
 
@@ -264,7 +230,7 @@ def unit(session, install_grpc_gcp, install_grpc, install_async_rest):
     )
 
 
-@nox.session(python=PYTHON_VERSIONS)
+@nox.session(python=DEFAULT_PYTHON_VERSION)
 def prerelease_deps(session):
     """Run the unit test suite."""
     default(session, prerelease=True)
@@ -276,6 +242,19 @@ def lint_setup_py(session):
 
     session.install("docutils", "Pygments", "setuptools")
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def mypy(session):
+    """Run type-checking."""
+    session.install(".[grpc,async_rest]", "mypy")
+    session.install(
+        "types-setuptools",
+        "types-requests",
+        "types-protobuf",
+        "types-dataclasses",
+    )
+    session.run("mypy", "google", "tests")
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
