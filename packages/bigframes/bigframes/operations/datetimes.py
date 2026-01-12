@@ -22,7 +22,7 @@ import bigframes_vendored.pandas.core.indexes.accessor as vendordt
 import pandas
 
 from bigframes import dataframe, dtypes, series
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.operations as ops
 
 _ONE_DAY = pandas.Timedelta("1D")

@@ -27,9 +27,9 @@ import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetim
 import pandas
 
 import bigframes._config as config
-from bigframes.core import log_adapter
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
+from bigframes.core.logging import log_adapter
 from bigframes.core.reshape.api import concat, crosstab, cut, get_dummies, merge, qcut
 import bigframes.dataframe
 import bigframes.functions._utils as bff_utils

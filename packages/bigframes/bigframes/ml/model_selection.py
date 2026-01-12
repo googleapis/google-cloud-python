@@ -26,7 +26,7 @@ import bigframes_vendored.sklearn.model_selection._split as vendored_model_selec
 import bigframes_vendored.sklearn.model_selection._validation as vendored_model_selection_validation
 import pandas as pd
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 from bigframes.ml import utils
 import bigframes.pandas as bpd
 

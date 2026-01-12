@@ -17,7 +17,7 @@ from unittest import mock
 from google.cloud import bigquery
 import pytest
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 
 # The limit is 64 (https://cloud.google.com/bigquery/docs/labels-intro#requirements),
 # but leave a few spare for internal labels to be added.

@@ -23,7 +23,7 @@ import pandas as pd
 import requests
 
 from bigframes import clients, dtypes
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 import bigframes.exceptions as bfe
 import bigframes.operations as ops

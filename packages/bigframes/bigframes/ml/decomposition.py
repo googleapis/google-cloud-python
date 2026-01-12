@@ -23,7 +23,7 @@ import bigframes_vendored.sklearn.decomposition._mf
 import bigframes_vendored.sklearn.decomposition._pca
 from google.cloud import bigquery
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import bigframes.session

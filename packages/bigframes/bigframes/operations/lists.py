@@ -19,7 +19,7 @@ from typing import Union
 
 import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice
 import bigframes.series as series

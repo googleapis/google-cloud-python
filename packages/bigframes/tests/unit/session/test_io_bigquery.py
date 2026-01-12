@@ -23,8 +23,8 @@ import google.cloud.bigquery.table
 import pytest
 
 import bigframes
-from bigframes.core import log_adapter
 import bigframes.core.events
+from bigframes.core.logging import log_adapter
 import bigframes.pandas as bpd
 import bigframes.session._io.bigquery
 import bigframes.session._io.bigquery as io_bq

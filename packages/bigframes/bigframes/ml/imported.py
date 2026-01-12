@@ -20,7 +20,7 @@ from typing import cast, Mapping, Optional
 
 from google.cloud import bigquery
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 import bigframes.session

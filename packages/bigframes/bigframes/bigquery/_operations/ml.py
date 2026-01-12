@@ -20,7 +20,7 @@ import bigframes_vendored.constants
 import google.cloud.bigquery
 import pandas as pd
 
-import bigframes.core.log_adapter as log_adapter
+import bigframes.core.logging.log_adapter as log_adapter
 import bigframes.core.sql.ml
 import bigframes.dataframe as dataframe
 import bigframes.ml.base

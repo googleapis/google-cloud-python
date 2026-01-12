@@ -22,7 +22,7 @@ from typing import Iterable, List, Literal, Optional
 
 import bigframes_vendored.sklearn.impute._base
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd

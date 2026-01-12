@@ -24,7 +24,7 @@ import bigframes_vendored.constants as constants
 import bigframes_vendored.sklearn.pipeline
 from google.cloud import bigquery
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 from bigframes.ml import (
     base,

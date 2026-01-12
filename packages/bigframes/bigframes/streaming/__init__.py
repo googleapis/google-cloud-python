@@ -17,8 +17,8 @@ from __future__ import annotations
 import inspect
 import sys
 
-from bigframes.core import log_adapter
 import bigframes.core.global_session as global_session
+from bigframes.core.logging import log_adapter
 from bigframes.pandas.io.api import _set_default_session_location_if_possible
 import bigframes.session
 import bigframes.streaming.dataframe as streaming_dataframe

@@ -24,7 +24,7 @@ from google.cloud import bigquery
 import pandas as pd
 
 import bigframes
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
 

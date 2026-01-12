@@ -19,7 +19,8 @@ from __future__ import annotations
 from typing import Mapping, Optional
 import warnings
 
-from bigframes.core import global_session, log_adapter
+from bigframes.core import global_session
+from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 import bigframes.exceptions as bfe
 from bigframes.ml import base, core, globals, utils

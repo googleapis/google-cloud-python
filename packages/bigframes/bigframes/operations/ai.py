@@ -20,7 +20,8 @@ from typing import Dict, Iterable, List, Optional, Sequence, Union
 import warnings
 
 from bigframes import dtypes, exceptions, options
-from bigframes.core import guid, log_adapter
+from bigframes.core import guid
+from bigframes.core.logging import log_adapter
 
 
 @log_adapter.class_logger

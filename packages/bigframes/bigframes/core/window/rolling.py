@@ -24,8 +24,9 @@ import pandas
 from bigframes import dtypes
 from bigframes.core import agg_expressions
 from bigframes.core import expression as ex
-from bigframes.core import log_adapter, ordering, utils, window_spec
+from bigframes.core import ordering, utils, window_spec
 import bigframes.core.blocks as blocks
+from bigframes.core.logging import log_adapter
 from bigframes.core.window import ordering as window_ordering
 import bigframes.operations.aggregations as agg_ops
 

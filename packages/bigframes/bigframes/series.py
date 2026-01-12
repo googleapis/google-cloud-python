@@ -49,13 +49,14 @@ import pyarrow as pa
 import typing_extensions
 
 import bigframes.core
-from bigframes.core import agg_expressions, groupby, log_adapter
+from bigframes.core import agg_expressions, groupby
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
 import bigframes.core.identifiers as ids
 import bigframes.core.indexers
 import bigframes.core.indexes as indexes
+from bigframes.core.logging import log_adapter
 import bigframes.core.ordering as order
 import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils

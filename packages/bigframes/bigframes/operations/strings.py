@@ -20,8 +20,8 @@ from typing import Generic, Hashable, Literal, Optional, TypeVar, Union
 import bigframes_vendored.constants as constants
 import bigframes_vendored.pandas.core.strings.accessor as vendorstr
 
-from bigframes.core import log_adapter
 import bigframes.core.indexes.base as indices
+from bigframes.core.logging import log_adapter
 import bigframes.dataframe as df
 import bigframes.operations as ops
 from bigframes.operations._op_converters import convert_index, convert_slice

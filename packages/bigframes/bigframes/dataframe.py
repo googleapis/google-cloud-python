@@ -55,7 +55,7 @@ import tabulate
 
 import bigframes.constants
 import bigframes.core
-from bigframes.core import agg_expressions, log_adapter
+from bigframes.core import agg_expressions
 import bigframes.core.block_transforms as block_ops
 import bigframes.core.blocks as blocks
 import bigframes.core.convert
@@ -66,6 +66,7 @@ import bigframes.core.guid
 import bigframes.core.indexers as indexers
 import bigframes.core.indexes as indexes
 import bigframes.core.interchange
+from bigframes.core.logging import log_adapter
 import bigframes.core.ordering as order
 import bigframes.core.utils as utils
 import bigframes.core.validations as validations

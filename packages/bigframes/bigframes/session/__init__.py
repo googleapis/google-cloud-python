@@ -67,10 +67,11 @@ import bigframes._config.bigquery_options as bigquery_options
 import bigframes.clients
 import bigframes.constants
 import bigframes.core
-from bigframes.core import blocks, log_adapter, utils
+from bigframes.core import blocks, utils
 import bigframes.core.events
 import bigframes.core.indexes
 import bigframes.core.indexes.multi
+from bigframes.core.logging import log_adapter
 import bigframes.core.pyformat
 import bigframes.formatting_helpers
 import bigframes.functions._function_session as bff_session

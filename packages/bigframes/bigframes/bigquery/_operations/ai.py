@@ -26,7 +26,8 @@ import pandas as pd
 from bigframes import clients, dataframe, dtypes
 from bigframes import pandas as bpd
 from bigframes import series, session
-from bigframes.core import convert, log_adapter
+from bigframes.core import convert
+from bigframes.core.logging import log_adapter
 from bigframes.ml import core as ml_core
 from bigframes.operations import ai_ops, output_schemas
 

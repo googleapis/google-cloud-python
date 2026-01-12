@@ -26,7 +26,7 @@ import bigframes_vendored.sklearn.preprocessing._encoder
 import bigframes_vendored.sklearn.preprocessing._label
 import bigframes_vendored.sklearn.preprocessing._polynomial
 
-from bigframes.core import log_adapter
+from bigframes.core.logging import log_adapter
 import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd

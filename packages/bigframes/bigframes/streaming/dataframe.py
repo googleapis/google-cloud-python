@@ -27,7 +27,8 @@ from google.cloud import bigquery
 import pandas as pd
 
 from bigframes import dataframe
-from bigframes.core import log_adapter, nodes
+from bigframes.core import nodes
+from bigframes.core.logging import log_adapter
 import bigframes.exceptions as bfe
 import bigframes.session
 

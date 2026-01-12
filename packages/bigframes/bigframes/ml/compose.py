@@ -27,8 +27,8 @@ from bigframes_vendored import constants
 import bigframes_vendored.sklearn.compose._column_transformer
 from google.cloud import bigquery
 
-from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as sql_utils
+from bigframes.core.logging import log_adapter
 import bigframes.core.utils as core_utils
 from bigframes.ml import base, core, globals, impute, preprocessing, utils
 import bigframes.pandas as bpd

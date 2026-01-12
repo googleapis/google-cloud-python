@@ -21,7 +21,8 @@ import warnings
 import numpy as np
 
 from bigframes import dtypes, exceptions
-from bigframes.core import guid, log_adapter
+from bigframes.core import guid
+from bigframes.core.logging import log_adapter
 
 
 @log_adapter.class_logger

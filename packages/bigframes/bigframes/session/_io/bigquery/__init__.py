@@ -32,9 +32,9 @@ import google.cloud.bigquery as bigquery
 import google.cloud.bigquery._job_helpers
 import google.cloud.bigquery.table
 
-from bigframes.core import log_adapter
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.events
+from bigframes.core.logging import log_adapter
 import bigframes.core.sql
 import bigframes.session.metrics
 

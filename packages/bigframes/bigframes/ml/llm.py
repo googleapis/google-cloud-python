@@ -24,7 +24,8 @@ from google.cloud import bigquery
 
 from bigframes import dtypes, exceptions
 import bigframes.bigquery as bbq
-from bigframes.core import blocks, global_session, log_adapter
+from bigframes.core import blocks, global_session
+from bigframes.core.logging import log_adapter
 import bigframes.dataframe
 from bigframes.ml import base, core, globals, utils
 import bigframes.series
