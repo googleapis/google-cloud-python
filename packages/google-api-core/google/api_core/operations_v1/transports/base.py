@@ -119,8 +119,6 @@ class OperationsTransport(abc.ABC):
             host += ":443"  # pragma: NO COVER
         self._host = host
 
-        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
-
         # Save the scopes.
         self._scopes = scopes
 
