@@ -117,15 +117,24 @@ body[data-theme='dark'] .bigframes-widget.bigframes-widget {
   margin: 0 8px;
 }
 
-.bigframes-widget .page-size {
+.bigframes-widget .settings {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: end;
+}
+
+.bigframes-widget .page-size,
+.bigframes-widget .max-columns {
   align-items: center;
   display: flex;
   flex-direction: row;
   gap: 4px;
-  justify-content: end;
 }
 
-.bigframes-widget .page-size label {
+.bigframes-widget .page-size label,
+.bigframes-widget .max-columns label {
   margin-right: 8px;
 }
 

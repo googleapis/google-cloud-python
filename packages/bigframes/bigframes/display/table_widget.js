@@ -22,6 +22,7 @@ const ModelProperty = {
   ROW_COUNT: 'row_count',
   SORT_CONTEXT: 'sort_context',
   TABLE_HTML: 'table_html',
+  MAX_COLUMNS: 'max_columns',
 };
 
 const Event = {
@@ -71,6 +72,10 @@ function render({ model, el }) {
     attributeFilter: ['class', 'data-theme', 'data-vscode-theme-kind'],
   });
 
+  // Settings controls container
+  const settingsContainer = document.createElement('div');
+  settingsContainer.classList.add('settings');
+
   // Pagination controls
   const paginationContainer = document.createElement('div');
   paginationContainer.classList.add('pagination');
@@ -100,6 +105,32 @@ function render({ model, el }) {
       option.selected = true;
     }
     pageSizeInput.appendChild(option);
+  }
+
+  // Max columns controls
+  const maxColumnsContainer = document.createElement('div');
+  maxColumnsContainer.classList.add('max-columns');
+  const maxColumnsLabel = document.createElement('label');
+  const maxColumnsInput = document.createElement('select');
+
+  maxColumnsLabel.textContent = 'Max columns:';
+
+  // 0 represents "All" (all columns)
+  const maxColumnOptions = [5, 10, 15, 20, 0];
+  for (const cols of maxColumnOptions) {
+    const option = document.createElement('option');
+    option.value = cols;
+    option.textContent = cols === 0 ? 'All' : cols;
+
+    const currentMax = model.get(ModelProperty.MAX_COLUMNS);
+    // Handle None/null from python as 0/All
+    const currentMaxVal =
+      currentMax === null || currentMax === undefined ? 0 : currentMax;
+
+    if (cols === currentMaxVal) {
+      option.selected = true;
+    }
+    maxColumnsInput.appendChild(option);
   }
 
   function updateButtonStates() {
@@ -259,6 +290,12 @@ function render({ model, el }) {
     }
   });
 
+  maxColumnsInput.addEventListener(Event.CHANGE, (e) => {
+    const newVal = Number(e.target.value);
+    model.set(ModelProperty.MAX_COLUMNS, newVal);
+    model.save_changes();
+  });
+
   model.on(Event.CHANGE_TABLE_HTML, handleTableHTMLChange);
   model.on(`change:${ModelProperty.ROW_COUNT}`, updateButtonStates);
   model.on(`change:${ModelProperty.ERROR_MESSAGE}`, handleErrorMessageChange);
@@ -270,11 +307,19 @@ function render({ model, el }) {
   paginationContainer.appendChild(prevPage);
   paginationContainer.appendChild(pageIndicator);
   paginationContainer.appendChild(nextPage);
+
   pageSizeContainer.appendChild(pageSizeLabel);
   pageSizeContainer.appendChild(pageSizeInput);
+
+  maxColumnsContainer.appendChild(maxColumnsLabel);
+  maxColumnsContainer.appendChild(maxColumnsInput);
+
+  settingsContainer.appendChild(maxColumnsContainer);
+  settingsContainer.appendChild(pageSizeContainer);
+
   footer.appendChild(rowCountLabel);
   footer.appendChild(paginationContainer);
-  footer.appendChild(pageSizeContainer);
+  footer.appendChild(settingsContainer);
 
   el.appendChild(errorContainer);
   el.appendChild(tableContainer);

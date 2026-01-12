@@ -335,4 +335,149 @@ describe('TableWidget', () => {
     expect(headers[0].textContent).toBe('');
     expect(headers[1].textContent).toBe('value');
   });
+
+  /*
+   * Tests that the widget correctly renders HTML with truncated columns (ellipsis)
+   * and ensures that the ellipsis column is not treated as a sortable column.
+   */
+  it('should render truncated columns with ellipsis and not make ellipsis sortable', () => {
+    // Mock HTML with truncated columns
+    // Use the structure produced by the python backend
+    const mockHtml = `
+      <table>
+        <thead>
+          <tr>
+            <th><div class="bf-header-content">col1</div></th>
+            <th><div class="bf-header-content" style="cursor: default;">...</div></th>
+            <th><div class="bf-header-content">col10</div></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-align-right">1</td>
+            <td class="cell-align-left">...</td>
+            <td class="cell-align-right">10</td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+
+    model.get.mockImplementation((property) => {
+      if (property === 'table_html') {
+        return mockHtml;
+      }
+      if (property === 'orderable_columns') {
+        // Only actual columns are orderable
+        return ['col1', 'col10'];
+      }
+      if (property === 'sort_context') {
+        return [];
+      }
+      return null;
+    });
+
+    render({ model, el });
+
+    // Manually trigger the table_html change handler
+    const tableHtmlChangeHandler = model.on.mock.calls.find(
+      (call) => call[0] === 'change:table_html',
+    )[1];
+    tableHtmlChangeHandler();
+
+    const headers = el.querySelectorAll('th');
+    expect(headers).toHaveLength(3);
+
+    // Check col1 (sortable)
+    const col1Header = headers[0];
+    const col1Indicator = col1Header.querySelector('.sort-indicator');
+    expect(col1Indicator).not.toBeNull(); // Should exist (hidden by default)
+
+    // Check ellipsis (not sortable)
+    const ellipsisHeader = headers[1];
+    const ellipsisIndicator = ellipsisHeader.querySelector('.sort-indicator');
+    // The render function adds sort indicators only if the column name matches an entry in orderable_columns.
+    // The ellipsis header content is "..." which is not in ['col1', 'col10'].
+    expect(ellipsisIndicator).toBeNull();
+
+    // Check col10 (sortable)
+    const col10Header = headers[2];
+    const col10Indicator = col10Header.querySelector('.sort-indicator');
+    expect(col10Indicator).not.toBeNull();
+  });
+
+  describe('Max columns', () => {
+    /*
+     * Tests for the max columns dropdown functionality.
+     */
+
+    it('should render the max columns dropdown', () => {
+      // Mock basic state
+      model.get.mockImplementation((property) => {
+        if (property === 'max_columns') {
+          return 20;
+        }
+        return null;
+      });
+
+      render({ model, el });
+
+      const maxColumnsContainer = el.querySelector('.max-columns');
+      expect(maxColumnsContainer).not.toBeNull();
+      const label = maxColumnsContainer.querySelector('label');
+      expect(label.textContent).toBe('Max columns:');
+      const select = maxColumnsContainer.querySelector('select');
+      expect(select).not.toBeNull();
+    });
+
+    it('should select the correct initial value', () => {
+      const initialMaxColumns = 20;
+      model.get.mockImplementation((property) => {
+        if (property === 'max_columns') {
+          return initialMaxColumns;
+        }
+        return null;
+      });
+
+      render({ model, el });
+
+      const select = el.querySelector('.max-columns select');
+      expect(Number(select.value)).toBe(initialMaxColumns);
+    });
+
+    it('should handle None/null initial value as 0 (All)', () => {
+      model.get.mockImplementation((property) => {
+        if (property === 'max_columns') {
+          return null; // Python None is null in JS
+        }
+        return null;
+      });
+
+      render({ model, el });
+
+      const select = el.querySelector('.max-columns select');
+      expect(Number(select.value)).toBe(0);
+      expect(select.options[select.selectedIndex].textContent).toBe('All');
+    });
+
+    it('should update model when value changes', () => {
+      model.get.mockImplementation((property) => {
+        if (property === 'max_columns') {
+          return 20;
+        }
+        return null;
+      });
+
+      render({ model, el });
+
+      const select = el.querySelector('.max-columns select');
+
+      // Change to 10
+      select.value = '10';
+      const event = new Event('change');
+      select.dispatchEvent(event);
+
+      expect(model.set).toHaveBeenCalledWith('max_columns', 10);
+      expect(model.save_changes).toHaveBeenCalled();
+    });
+  });
 });

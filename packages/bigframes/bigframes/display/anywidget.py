@@ -66,6 +66,7 @@ class TableWidget(_WIDGET_BASE):
 
     page = traitlets.Int(0).tag(sync=True)
     page_size = traitlets.Int(0).tag(sync=True)
+    max_columns = traitlets.Int(allow_none=True, default_value=None).tag(sync=True)
     row_count = traitlets.Int(allow_none=True, default_value=None).tag(sync=True)
     table_html = traitlets.Unicode("").tag(sync=True)
     sort_context = traitlets.List(traitlets.Dict(), default_value=[]).tag(sync=True)
@@ -103,10 +104,13 @@ class TableWidget(_WIDGET_BASE):
 
         # respect display options for initial page size
         initial_page_size = bigframes.options.display.max_rows
+        initial_max_columns = bigframes.options.display.max_columns
 
         # set traitlets properties that trigger observers
         # TODO(b/462525985): Investigate and improve TableWidget UX for DataFrames with a large number of columns.
         self.page_size = initial_page_size
+        self.max_columns = initial_max_columns
+
         # TODO(b/469861913): Nested columns from structs (e.g., 'struct_col.name') are not currently sortable.
         # TODO(b/463754889): Support non-string column labels for sorting.
         if all(isinstance(col, str) for col in dataframe.columns):
@@ -217,6 +221,14 @@ class TableWidget(_WIDGET_BASE):
         # Cap at reasonable maximum to prevent performance issues
         max_page_size = 1000
         return min(value, max_page_size)
+
+    @traitlets.validate("max_columns")
+    def _validate_max_columns(self, proposal: dict[str, Any]) -> int:
+        """Validate max columns to ensure it's positive or 0 (for all)."""
+        value = proposal["value"]
+        if value is None:
+            return 0  # Normalize None to 0 for traitlet
+        return max(0, value)
 
     def _get_next_batch(self) -> bool:
         """
@@ -348,6 +360,7 @@ class TableWidget(_WIDGET_BASE):
                     dataframe=page_data,
                     table_id=f"table-{self._table_id}",
                     orderable_columns=self.orderable_columns,
+                    max_columns=self.max_columns,
                 )
 
         if new_page is not None:
@@ -381,4 +394,11 @@ class TableWidget(_WIDGET_BASE):
         self._reset_batches_for_new_page_size()
 
         # Update the table display
+        self._set_table_html()
+
+    @traitlets.observe("max_columns")
+    def _max_columns_changed(self, _change: dict[str, Any]) -> None:
+        """Handler for when max columns is changed from the frontend."""
+        if not self._initial_load_complete:
+            return
         self._set_table_html()

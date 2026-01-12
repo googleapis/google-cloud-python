@@ -46,21 +46,51 @@ def render_html(
     dataframe: pd.DataFrame,
     table_id: str,
     orderable_columns: list[str] | None = None,
+    max_columns: int | None = None,
 ) -> str:
     """Render a pandas DataFrame to HTML with specific styling."""
     orderable_columns = orderable_columns or []
     classes = "dataframe table table-striped table-hover"
     table_html_parts = [f'<table border="1" class="{classes}" id="{table_id}">']
-    table_html_parts.append(_render_table_header(dataframe, orderable_columns))
-    table_html_parts.append(_render_table_body(dataframe))
+
+    # Handle column truncation
+    columns = list(dataframe.columns)
+    if max_columns is not None and max_columns > 0 and len(columns) > max_columns:
+        half = max_columns // 2
+        left_columns = columns[:half]
+        # Ensure we don't take more than available if half is 0 or calculation is weird,
+        # but typical case is safe.
+        right_count = max_columns - half
+        right_columns = columns[-right_count:] if right_count > 0 else []
+        show_ellipsis = True
+    else:
+        left_columns = columns
+        right_columns = []
+        show_ellipsis = False
+
+    table_html_parts.append(
+        _render_table_header(
+            dataframe, orderable_columns, left_columns, right_columns, show_ellipsis
+        )
+    )
+    table_html_parts.append(
+        _render_table_body(dataframe, left_columns, right_columns, show_ellipsis)
+    )
     table_html_parts.append("</table>")
     return "".join(table_html_parts)
 
 
-def _render_table_header(dataframe: pd.DataFrame, orderable_columns: list[str]) -> str:
+def _render_table_header(
+    dataframe: pd.DataFrame,
+    orderable_columns: list[str],
+    left_columns: list[Any],
+    right_columns: list[Any],
+    show_ellipsis: bool,
+) -> str:
     """Render the header of the HTML table."""
     header_parts = ["  <thead>", "    <tr>"]
-    for col in dataframe.columns:
+
+    def render_col_header(col):
         th_classes = []
         if col in orderable_columns:
             th_classes.append("sortable")
@@ -69,11 +99,28 @@ def _render_table_header(dataframe: pd.DataFrame, orderable_columns: list[str]) 
             f'      <th {class_str}><div class="bf-header-content">'
             f"{html.escape(str(col))}</div></th>"
         )
+
+    for col in left_columns:
+        render_col_header(col)
+
+    if show_ellipsis:
+        header_parts.append(
+            '      <th><div class="bf-header-content" style="cursor: default;">...</div></th>'
+        )
+
+    for col in right_columns:
+        render_col_header(col)
+
     header_parts.extend(["    </tr>", "  </thead>"])
     return "\n".join(header_parts)
 
 
-def _render_table_body(dataframe: pd.DataFrame) -> str:
+def _render_table_body(
+    dataframe: pd.DataFrame,
+    left_columns: list[Any],
+    right_columns: list[Any],
+    show_ellipsis: bool,
+) -> str:
     """Render the body of the HTML table."""
     body_parts = ["  <tbody>"]
     precision = options.display.precision
@@ -81,7 +128,9 @@ def _render_table_body(dataframe: pd.DataFrame) -> str:
     for i in range(len(dataframe)):
         body_parts.append("    <tr>")
         row = dataframe.iloc[i]
-        for col_name, value in row.items():
+
+        def render_col_cell(col_name):
+            value = row[col_name]
             dtype = dataframe.dtypes.loc[col_name]  # type: ignore
             align = "right" if _is_dtype_numeric(dtype) else "left"
 
@@ -101,6 +150,17 @@ def _render_table_body(dataframe: pd.DataFrame) -> str:
                     f'      <td class="cell-align-{align}">'
                     f"{html.escape(cell_content)}</td>"
                 )
+
+        for col in left_columns:
+            render_col_cell(col)
+
+        if show_ellipsis:
+            # Ellipsis cell
+            body_parts.append('      <td class="cell-align-left">...</td>')
+
+        for col in right_columns:
+            render_col_cell(col)
+
         body_parts.append("    </tr>")
     body_parts.append("  </tbody>")
     return "\n".join(body_parts)
