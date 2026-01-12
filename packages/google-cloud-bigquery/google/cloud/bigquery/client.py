@@ -3655,6 +3655,11 @@ class Client(ClientWithProject):
             page_size (Optional[int]):
                 The maximum number of rows in each page of results from the
                 initial jobs.query request. Non-positive values are ignored.
+
+                This parameter only affects the jobs.query and
+                jobs.getQueryResults API calls. Large results downloaded with
+                the BigQuery Storage Read API are intentionally unaffected
+                by this parameter.
             max_results (Optional[int]):
                 The maximum total number of rows from this request.
 
