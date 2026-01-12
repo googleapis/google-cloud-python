@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-memorystore/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.2.0...google-cloud-memorystore-v0.3.0) (2026-01-09)
+
+
+### Documentation
+
+* A comment for field `discovery_endpoints` in message `.google.cloud.memorystore.v1.Instance` is changed ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+
+
+### Features
+
+* A new field `total_backup_count` is added to message `.google.cloud.memorystore.v1.BackupCollection` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `encryption_info` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new message `EncryptionInfo` is added ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `available_maintenance_versions` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `allow_fewer_zones_deployment` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `total_backup_size_bytes` is added to message `.google.cloud.memorystore.v1.BackupCollection` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `satisfies_pzs` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `effective_maintenance_version` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `satisfies_pzi` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `Instance.simulate_maintenance_event` is added to message `.google.cloud.memorystore.v1.` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `maintenance_version` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `last_backup_time` is added to message `.google.cloud.memorystore.v1.BackupCollection` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `kms_key` is added to message `.google.cloud.memorystore.v1.Instance` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* A new field `encryption_info` is added to message `.google.cloud.memorystore.v1.Backup` ([17cc12897e6afdf3f3131531c50a8226a3f57c0f](https://github.com/googleapis/google-cloud-python/commit/17cc12897e6afdf3f3131531c50a8226a3f57c0f))
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-memorystore-v0.1.3...google-cloud-memorystore-v0.2.0) (2025-10-20)
 
 

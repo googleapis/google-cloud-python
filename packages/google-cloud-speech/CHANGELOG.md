@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.36.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.35.0...google-cloud-speech-v2.36.0) (2026-01-09)
+
+
+### Documentation
+
+* Clarify that min_speaker_count and max_speaker_count in SpeakerDiarizationConfig are not currently used ([b3cb4de3ce50c3ec55af2b132d756252a32641f3](https://github.com/googleapis/google-cloud-python/commit/b3cb4de3ce50c3ec55af2b132d756252a32641f3))
+* Update guidance on how to enable speaker diarization; to enable, set the diarization_config field to an empty SpeakerDiarizationConfig message ([b3cb4de3ce50c3ec55af2b132d756252a32641f3](https://github.com/googleapis/google-cloud-python/commit/b3cb4de3ce50c3ec55af2b132d756252a32641f3))
+
+
+### Features
+
+* add custom prompt config in the request and return prompt in the response ([b3cb4de3ce50c3ec55af2b132d756252a32641f3](https://github.com/googleapis/google-cloud-python/commit/b3cb4de3ce50c3ec55af2b132d756252a32641f3))
+* update min_speaker_count and max_speaker_count to be optional ([b3cb4de3ce50c3ec55af2b132d756252a32641f3](https://github.com/googleapis/google-cloud-python/commit/b3cb4de3ce50c3ec55af2b132d756252a32641f3))
+
 ## [2.35.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.34.0...google-cloud-speech-v2.35.0) (2025-12-17)
 
 

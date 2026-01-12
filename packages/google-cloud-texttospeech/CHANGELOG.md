@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-texttospeech/#history
 
+## [2.34.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.33.0...google-cloud-texttospeech-v2.34.0) (2026-01-09)
+
+
+### Features
+
+* auto-enable mTLS when supported certificates are detected ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+* check Python and dependency versions in generated GAPICs ([c353aa5bcc937ef9399c8efc90492dadbcf01aa2](https://github.com/googleapis/google-cloud-python/commit/c353aa5bcc937ef9399c8efc90492dadbcf01aa2))
+
 ## [2.33.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-texttospeech-v2.32.0...google-cloud-texttospeech-v2.33.0) (2025-10-23)
 
 
