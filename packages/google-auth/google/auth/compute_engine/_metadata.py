@@ -97,9 +97,18 @@ _METADATA_HEADERS = {_METADATA_FLAVOR_HEADER: _METADATA_FLAVOR_VALUE}
 # Timeout in seconds to wait for the GCE metadata server when detecting the
 # GCE environment.
 try:
-    _METADATA_DEFAULT_TIMEOUT = int(os.getenv("GCE_METADATA_TIMEOUT", 3))
+    _METADATA_DEFAULT_TIMEOUT = int(os.getenv(environment_vars.GCE_METADATA_TIMEOUT, 3))
 except ValueError:  # pragma: NO COVER
     _METADATA_DEFAULT_TIMEOUT = 3
+
+# The number of tries to perform when waiting for the GCE metadata server
+# when detecting the GCE environment.
+try:
+    _METADATA_DETECT_RETRIES = int(
+        os.getenv(environment_vars.GCE_METADATA_DETECT_RETRIES, 3)
+    )
+except ValueError:  # pragma: NO COVER
+    _METADATA_DETECT_RETRIES = 3
 
 # This is used to disable checking for the GCE metadata server and directly
 # assuming it's not available.
@@ -177,7 +186,9 @@ def _prepare_request_for_mds(request, use_mtls=False) -> None:
             request.session.mount(f"https://{host}/", adapter)
 
 
-def ping(request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=3):
+def ping(
+    request, timeout=_METADATA_DEFAULT_TIMEOUT, retry_count=_METADATA_DETECT_RETRIES
+):
     """Checks to see if the metadata server is available.
 
     Args:

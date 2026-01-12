@@ -60,6 +60,16 @@ GCE_METADATA_IP = "GCE_METADATA_IP"
 """Environment variable providing an alternate ip:port to be used for ip-only
 GCE metadata requests."""
 
+GCE_METADATA_TIMEOUT = "GCE_METADATA_TIMEOUT"
+"""Environment variable defining the timeout in seconds to wait for the
+GCE metadata server when detecting the GCE environment.
+"""
+
+GCE_METADATA_DETECT_RETRIES = "GCE_METADATA_DETECT_RETRIES"
+"""Environment variable representing the number of retries that should be
+attempted on metadata lookup.
+"""
+
 NO_GCE_CHECK = "NO_GCE_CHECK"
 """Environment variable controlling whether to check if running on GCE or not.
 

@@ -201,6 +201,23 @@ def test_ping_success_custom_root(mock_metrics_header_value):
     )
 
 
+@mock.patch("google.auth.metrics.mds_ping", return_value=MDS_PING_METRICS_HEADER_VALUE)
+def test_ping_failure_custom_retry(mock_metrics_header_value):
+    request = make_request("")
+    request.side_effect = exceptions.TransportError()
+
+    os.environ[environment_vars.GCE_METADATA_DETECT_RETRIES] = "10"
+    importlib.reload(_metadata)
+
+    try:
+        _metadata.ping(request)
+    finally:
+        del os.environ[environment_vars.GCE_METADATA_DETECT_RETRIES]
+        importlib.reload(_metadata)
+
+    assert request.call_count == 10
+
+
 def test_get_success_json():
     key, value = "foo", "bar"
 
