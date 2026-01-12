@@ -83,7 +83,7 @@ version = { attr = "google.api_core.version.__version__" }
 include = ["google*"]
 
 [tool.mypy]
-python_version = "3.7"
+python_version = "3.14"
 namespace_packages = true
 ignore_missing_imports = true
 
