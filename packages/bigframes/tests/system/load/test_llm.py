@@ -100,13 +100,13 @@ def test_llm_gemini_w_ground_with_google_search(llm_remote_text_df):
 # (b/366290533): Claude models are of extremely low capacity. The tests should reside in small tests. Moving these here just to protect BQML's shared capacity(as load test only runs once per day.) and make sure we still have minimum coverage.
 @pytest.mark.parametrize(
     "model_name",
-    ("claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
+    ("claude-3-haiku", "claude-3-5-sonnet"),
 )
 @pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_create_load(
     dataset_id, model_name, session, session_us_east5, bq_connection
 ):
-    if model_name in ("claude-3-5-sonnet", "claude-3-opus"):
+    if model_name in ("claude-3-5-sonnet",):
         session = session_us_east5
     claude3_text_generator_model = llm.Claude3TextGenerator(
         model_name=model_name, connection_name=bq_connection, session=session
@@ -125,13 +125,13 @@ def test_claude3_text_generator_create_load(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
+    ("claude-3-haiku", "claude-3-5-sonnet"),
 )
 @pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_predict_default_params_success(
     llm_text_df, model_name, session, session_us_east5, bq_connection
 ):
-    if model_name in ("claude-3-5-sonnet", "claude-3-opus"):
+    if model_name in ("claude-3-5-sonnet",):
         session = session_us_east5
     claude3_text_generator_model = llm.Claude3TextGenerator(
         model_name=model_name, connection_name=bq_connection, session=session
@@ -144,13 +144,13 @@ def test_claude3_text_generator_predict_default_params_success(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
+    ("claude-3-haiku", "claude-3-5-sonnet"),
 )
 @pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_predict_with_params_success(
     llm_text_df, model_name, session, session_us_east5, bq_connection
 ):
-    if model_name in ("claude-3-5-sonnet", "claude-3-opus"):
+    if model_name in ("claude-3-5-sonnet",):
         session = session_us_east5
     claude3_text_generator_model = llm.Claude3TextGenerator(
         model_name=model_name, connection_name=bq_connection, session=session
@@ -165,13 +165,13 @@ def test_claude3_text_generator_predict_with_params_success(
 
 @pytest.mark.parametrize(
     "model_name",
-    ("claude-3-haiku", "claude-3-5-sonnet", "claude-3-opus"),
+    ("claude-3-haiku", "claude-3-5-sonnet"),
 )
 @pytest.mark.flaky(retries=3, delay=120)
 def test_claude3_text_generator_predict_multi_col_success(
     llm_text_df, model_name, session, session_us_east5, bq_connection
 ):
-    if model_name in ("claude-3-5-sonnet", "claude-3-opus"):
+    if model_name in ("claude-3-5-sonnet",):
         session = session_us_east5
 
     llm_text_df["additional_col"] = 1
