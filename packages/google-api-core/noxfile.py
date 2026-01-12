@@ -32,6 +32,14 @@ PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
 DEFAULT_PYTHON_VERSION = "3.14"
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "asyncmock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "pytest-mock",
+]
 
 # Error if a python version is missing
 nox.options.error_on_missing_interpreters = True
