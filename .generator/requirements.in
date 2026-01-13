@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.2 # remove formatting changes
+gapic-generator==1.30.3 # Fix mypy checks https://github.com/googleapis/gapic-generator-python/pull/2520
 nox
 starlark-pyo3>=2025.1
 build
