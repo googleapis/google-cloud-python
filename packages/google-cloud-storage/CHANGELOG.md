@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [3.8.0](https://github.com/googleapis/python-storage/compare/v3.7.0...v3.8.0) (2026-01-13)
+
+
+### Features
+
+* flush the last chunk in append method (#1699) ([89bfe7a5fcd0391da35e9ceccc185279782b5420](https://github.com/googleapis/python-storage/commit/89bfe7a5fcd0391da35e9ceccc185279782b5420))
+* add write resumption strategy (#1663) ([a57ea0ec786a84c7ae9ed82c6ae5d38ecadba4af](https://github.com/googleapis/python-storage/commit/a57ea0ec786a84c7ae9ed82c6ae5d38ecadba4af))
+* add bidi stream retry manager. (#1632) ([d90f0ee09902a21b186106bcf0a8cb0b81b34340](https://github.com/googleapis/python-storage/commit/d90f0ee09902a21b186106bcf0a8cb0b81b34340))
+* implement "append_from_file" (#1686) ([1333c956da18b4db753cda98c41c3619c84caf69](https://github.com/googleapis/python-storage/commit/1333c956da18b4db753cda98c41c3619c84caf69))
+* make flush size configurable (#1677) ([f7095faf0a81239894ff9d277849788b62eb6ac5](https://github.com/googleapis/python-storage/commit/f7095faf0a81239894ff9d277849788b62eb6ac5))
+* compute chunk wise checksum for bidi_writes (#1675) ([139390cb01f93a2d61e7ec201e3637dffe0b2a34](https://github.com/googleapis/python-storage/commit/139390cb01f93a2d61e7ec201e3637dffe0b2a34))
+* expose persisted size in mrd (#1671) ([0e2961bef285fc064174a5c18e3db05c7a682521](https://github.com/googleapis/python-storage/commit/0e2961bef285fc064174a5c18e3db05c7a682521))
+
+
+### Bug Fixes
+
+* add system test for opening with read_handle (#1672) ([6dc711dacd4d38c573aa4ca9ad71fe412c0e49c1](https://github.com/googleapis/python-storage/commit/6dc711dacd4d38c573aa4ca9ad71fe412c0e49c1))
+* no state lookup while opening bidi-write stream (#1636) ([2d5a7b16846a69f3a911844971241899f60cce14](https://github.com/googleapis/python-storage/commit/2d5a7b16846a69f3a911844971241899f60cce14))
+* close write object stream always (#1661) ([4a609a4b3f4ba1396825911cb02f8a9649135cd5](https://github.com/googleapis/python-storage/commit/4a609a4b3f4ba1396825911cb02f8a9649135cd5))
+
 ## [3.7.0](https://github.com/googleapis/python-storage/compare/v3.6.0...v3.7.0) (2025-12-09)
 
 
