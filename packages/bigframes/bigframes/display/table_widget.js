@@ -170,8 +170,26 @@ function render({ model, el }) {
     model.save_changes();
   }
 
+  let isHeightInitialized = false;
+
   function handleTableHTMLChange() {
     tableContainer.innerHTML = model.get(ModelProperty.TABLE_HTML);
+
+    // After the first render, dynamically set the container height to fit the
+    // initial page (usually 10 rows) and then lock it.
+    setTimeout(() => {
+      if (!isHeightInitialized) {
+        const table = tableContainer.querySelector('table');
+        if (table) {
+          const tableHeight = table.offsetHeight;
+          // Add a small buffer(e.g. 2px) for borders to avoid scrollbars.
+          if (tableHeight > 0) {
+            tableContainer.style.height = `${tableHeight + 2}px`;
+            isHeightInitialized = true;
+          }
+        }
+      }
+    }, 0);
 
     const sortableColumns = model.get(ModelProperty.ORDERABLE_COLUMNS);
     const currentSortContext = model.get(ModelProperty.SORT_CONTEXT) || [];

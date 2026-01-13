@@ -340,6 +340,54 @@ describe('TableWidget', () => {
    * Tests that the widget correctly renders HTML with truncated columns (ellipsis)
    * and ensures that the ellipsis column is not treated as a sortable column.
    */
+  it('should set height dynamically on first load and remain fixed', () => {
+    jest.useFakeTimers();
+
+    // Mock the table's offsetHeight
+    let mockHeight = 150;
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      configurable: true,
+      get: () => mockHeight,
+    });
+
+    // Mock model properties
+    model.get.mockImplementation((property) => {
+      if (property === 'table_html') {
+        return '<table>...</table>';
+      }
+      return null;
+    });
+
+    render({ model, el });
+
+    const tableContainer = el.querySelector('.table-container');
+
+    // --- First render ---
+    const tableHtmlChangeHandler = model.on.mock.calls.find(
+      (call) => call[0] === 'change:table_html',
+    )[1];
+    tableHtmlChangeHandler();
+    jest.runAllTimers();
+
+    // Height should be set to the mocked offsetHeight + 2px buffer
+    expect(tableContainer.style.height).toBe('152px');
+
+    // --- Second render (e.g., page size change) ---
+    // Simulate the new content being taller
+    mockHeight = 350;
+    tableHtmlChangeHandler();
+    jest.runAllTimers();
+
+    // Height should NOT change
+    expect(tableContainer.style.height).toBe('152px');
+
+    // Restore original implementation
+    Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+      value: 0,
+    });
+    jest.useRealTimers();
+  });
+
   it('should render truncated columns with ellipsis and not make ellipsis sortable', () => {
     // Mock HTML with truncated columns
     // Use the structure produced by the python backend
