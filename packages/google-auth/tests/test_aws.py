@@ -1306,7 +1306,7 @@ class TestCredentials(object):
         self.assert_aws_metadata_request_kwargs(
             request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
-            {"Content-Type": "application/json"},
+            None,
         )
 
         # Retrieve subject_token again. Region should not be queried again.
@@ -1329,7 +1329,7 @@ class TestCredentials(object):
         self.assert_aws_metadata_request_kwargs(
             new_request.call_args_list[1][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
-            {"Content-Type": "application/json"},
+            None,
         )
 
     @mock.patch("google.auth._helpers.utcnow")
@@ -1394,7 +1394,6 @@ class TestCredentials(object):
             request.call_args_list[4][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
@@ -1431,7 +1430,6 @@ class TestCredentials(object):
             new_request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
@@ -1488,7 +1486,6 @@ class TestCredentials(object):
             request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
@@ -1545,7 +1542,6 @@ class TestCredentials(object):
             request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
@@ -1596,7 +1592,6 @@ class TestCredentials(object):
             request.call_args_list[2][1],
             "{}/{}".format(SECURITY_CREDS_URL, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
@@ -1684,7 +1679,6 @@ class TestCredentials(object):
             request.call_args_list[4][1],
             "{}/{}".format(SECURITY_CREDS_URL_IPV6, self.AWS_ROLE),
             {
-                "Content-Type": "application/json",
                 "X-aws-ec2-metadata-token": self.AWS_IMDSV2_SESSION_TOKEN,
             },
         )
