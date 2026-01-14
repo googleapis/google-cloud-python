@@ -142,6 +142,10 @@ def get_blob(
     if not re.match(constants.FILE_CHECK_REGEX, gcs_uri):
         raise ValueError("gcs_uri must link to a single file.")
 
+    # google-cloud-storage >= 3.0.0
+    if hasattr(storage.Blob, "from_uri"):
+        return storage.Blob.from_uri(gcs_uri, _get_storage_client(module=module))
+
     return storage.Blob.from_string(gcs_uri, _get_storage_client(module=module))
 
 

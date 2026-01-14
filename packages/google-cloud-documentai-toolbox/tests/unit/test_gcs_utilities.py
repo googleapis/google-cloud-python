@@ -579,3 +579,50 @@ def test_get_blobs_with_no_input():
         match="You must provide either `gcs_uri` or both `gcs_bucket_name` and `gcs_prefix`.",
     ):
         gcs_utilities.get_blobs()
+
+
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
+def test_get_blobs_with_gcs_uri(mock_storage):
+    client = mock_storage.Client.return_value
+    gcs_uri = "gs://test-bucket/test-directory/1/"
+
+    gcs_utilities.get_blobs(gcs_uri=gcs_uri)
+
+    mock_storage.Client.assert_called_once()
+    client.list_blobs.assert_called_once_with("test-bucket", prefix="test-directory/1/")
+
+
+def test_get_blobs_with_file_type_error():
+    with pytest.raises(ValueError, match="gcs_prefix cannot contain file types"):
+        gcs_utilities.get_blobs(gcs_bucket_name="test-bucket", gcs_prefix="test.json")
+
+
+def test_get_blob_invalid_uri():
+    with pytest.raises(ValueError, match="gcs_uri must link to a single file."):
+        gcs_utilities.get_blob("gs://test-bucket/prefix/")
+
+
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
+def test_get_blob_from_uri(mock_storage):
+    gcs_uri = "gs://test-bucket/test.json"
+
+    # Mock storage.Blob.from_uri to exist
+    mock_storage.Blob.from_uri.return_value = mock.Mock(spec=storage.blob.Blob)
+
+    gcs_utilities.get_blob(gcs_uri=gcs_uri)
+
+    mock_storage.Blob.from_uri.assert_called_once()
+
+
+@mock.patch("google.cloud.documentai_toolbox.utilities.gcs_utilities.storage")
+def test_get_blob_from_string(mock_storage):
+    gcs_uri = "gs://test-bucket/test.json"
+
+    # Mock storage.Blob to NOT have from_uri
+    del mock_storage.Blob.from_uri
+
+    mock_storage.Blob.from_string.return_value = mock.Mock(spec=storage.blob.Blob)
+
+    gcs_utilities.get_blob(gcs_uri=gcs_uri)
+
+    mock_storage.Blob.from_string.assert_called_once()
