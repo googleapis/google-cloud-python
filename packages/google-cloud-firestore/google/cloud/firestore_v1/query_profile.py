@@ -19,6 +19,12 @@ import datetime
 
 from dataclasses import dataclass
 from google.protobuf.json_format import MessageToDict
+from google.cloud.firestore_v1.types.document import MapValue
+from google.cloud.firestore_v1.types.document import Value
+from google.cloud.firestore_v1.types.explain_stats import (
+    ExplainStats as ExplainStats_pb,
+)
+from google.protobuf.wrappers_pb2 import StringValue
 
 
 @dataclass(frozen=True)
@@ -40,6 +46,32 @@ class ExplainOptions:
 
     def _to_dict(self):
         return {"analyze": self.analyze}
+
+
+@dataclass(frozen=True)
+class PipelineExplainOptions:
+    """
+    Explain options for pipeline queries.
+
+    Set on a pipeline.execution() or pipeline.stream() call, to provide
+    explain_stats in the pipeline output
+
+    :type mode: str
+    :param mode: Optional. The mode of operation for this explain query.
+        When set to 'analyze', the query will be executed and return the full
+        query results along with execution statistics.
+
+    :type output_format: str | None
+    :param output_format: Optional. The format in which to return the explain
+        stats.
+    """
+
+    mode: str = "analyze"
+
+    def _to_value(self):
+        out_dict = {"mode": Value(string_value=self.mode)}
+        value_pb = MapValue(fields=out_dict)
+        return Value(map_value=value_pb)
 
 
 @dataclass(frozen=True)
@@ -143,3 +175,54 @@ class QueryExplainError(Exception):
     """
 
     pass
+
+
+class ExplainStats:
+    """
+    Contains query profiling statistics for a pipeline query.
+
+    This class is not meant to be instantiated directly by the user. Instead, an
+    instance of `ExplainStats` may be returned by pipeline execution methods
+    when `explain_options` are provided.
+
+    It provides methods to access the explain statistics in different formats.
+    """
+
+    def __init__(self, stats_pb: ExplainStats_pb):
+        """
+        Args:
+            stats_pb (ExplainStats_pb): The raw protobuf message for explain stats.
+        """
+        self._stats_pb = stats_pb
+
+    def get_text(self) -> str:
+        """
+        Returns the explain stats as a string.
+
+        This method is suitable for explain formats that have a text-based output,
+        such as 'text' or 'json'.
+
+        Returns:
+            str: The string representation of the explain stats.
+
+        Raises:
+            QueryExplainError: If the explain stats payload from the backend is not
+                a string. This can happen if a non-text output format was requested.
+        """
+        pb_data = self._stats_pb._pb.data
+        content = StringValue()
+        if pb_data.Unpack(content):
+            return content.value
+        raise QueryExplainError(
+            "Unable to decode explain stats. Did you request an output format that returns a string value, such as 'text' or 'json'?"
+        )
+
+    def get_raw(self) -> ExplainStats_pb:
+        """
+        Returns the explain stats in an encoded proto format, as returned from the Firestore backend.
+        The caller is responsible for unpacking this proto message.
+
+        Returns:
+            google.cloud.firestore_v1.types.explain_stats.ExplainStats: the proto from the backend
+        """
+        return self._stats_pb

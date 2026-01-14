@@ -20,6 +20,7 @@ import pytest
 from google.cloud.firestore_v1.base_aggregation import (
     AggregationResult,
     AvgAggregation,
+    BaseAggregation,
     CountAggregation,
     SumAggregation,
 )
@@ -27,6 +28,7 @@ from google.cloud.firestore_v1.query_profile import ExplainMetrics, QueryExplain
 from google.cloud.firestore_v1.query_results import QueryResultsList
 from google.cloud.firestore_v1.stream_generator import StreamGenerator
 from google.cloud.firestore_v1.types import RunAggregationQueryResponse
+from google.cloud.firestore_v1.field_path import FieldPath
 from google.protobuf.timestamp_pb2 import Timestamp
 from tests.unit.v1._test_helpers import (
     make_aggregation_query,
@@ -119,6 +121,63 @@ def test_avg_aggregation_no_alias_to_pb():
     avg_aggregation = AvgAggregation("someref", alias=None)
     got_pb = avg_aggregation._to_protobuf()
     assert got_pb.alias == ""
+
+
+@pytest.mark.parametrize(
+    "in_alias,expected_alias", [("total", "total"), (None, "field_1")]
+)
+def test_count_aggregation_to_pipeline_expr(in_alias, expected_alias):
+    from google.cloud.firestore_v1.pipeline_expressions import AliasedExpression
+    from google.cloud.firestore_v1.pipeline_expressions import Count
+
+    count_aggregation = CountAggregation(alias=in_alias)
+    got = count_aggregation._to_pipeline_expr(iter([1]))
+    assert isinstance(got, AliasedExpression)
+    assert got.alias == expected_alias
+    assert isinstance(got.expr, Count)
+    assert len(got.expr.params) == 0
+
+
+@pytest.mark.parametrize(
+    "in_alias,expected_path,expected_alias",
+    [("total", "path", "total"), (None, "some_ref", "field_1")],
+)
+def test_sum_aggregation_to_pipeline_expr(in_alias, expected_path, expected_alias):
+    from google.cloud.firestore_v1.pipeline_expressions import AliasedExpression
+
+    count_aggregation = SumAggregation(expected_path, alias=in_alias)
+    got = count_aggregation._to_pipeline_expr(iter([1]))
+    assert isinstance(got, AliasedExpression)
+    assert got.alias == expected_alias
+    assert got.expr.name == "sum"
+    assert got.expr.params[0].path == expected_path
+
+
+@pytest.mark.parametrize(
+    "in_alias,expected_path,expected_alias",
+    [("total", "path", "total"), (None, "some_ref", "field_1")],
+)
+def test_avg_aggregation_to_pipeline_expr(in_alias, expected_path, expected_alias):
+    from google.cloud.firestore_v1.pipeline_expressions import AliasedExpression
+
+    count_aggregation = AvgAggregation(expected_path, alias=in_alias)
+    got = count_aggregation._to_pipeline_expr(iter([1]))
+    assert isinstance(got, AliasedExpression)
+    assert got.alias == expected_alias
+    assert got.expr.name == "average"
+    assert got.expr.params[0].path == expected_path
+
+
+def test_aggregation__pipeline_alias_increment():
+    """
+    BaseAggregation.__pipeline_alias should pull from an autoindexer to populate field numbers
+    """
+    autoindex = iter(range(10))
+    mock_instance = mock.Mock()
+    mock_instance.alias = None
+    for i in range(10):
+        got_name = BaseAggregation._pipeline_alias(mock_instance, autoindex)
+        assert got_name == f"field_{i}"
 
 
 def test_aggregation_query_constructor():
@@ -894,6 +953,16 @@ def test_aggregation_query_stream_w_explain_options_analyze_false():
     _aggregation_query_stream_helper(explain_options=ExplainOptions(analyze=False))
 
 
+def test_aggretgation__to_dict():
+    expected_alias = "alias"
+    expected_value = "value"
+    instance = AggregationResult(alias=expected_alias, value=expected_value)
+    dict_result = instance._to_dict()
+    assert len(dict_result) == 1
+    assert next(iter(dict_result)) == expected_alias
+    assert dict_result[expected_alias] == expected_value
+
+
 def test_aggregation_from_query():
     from google.cloud.firestore_v1 import _helpers
 
@@ -952,3 +1021,144 @@ def test_aggregation_from_query():
             metadata=client._rpc_metadata,
             **kwargs,
         )
+
+
+@pytest.mark.parametrize(
+    "field,in_alias,out_alias",
+    [
+        ("field", None, "field_1"),
+        (FieldPath("test"), None, "field_1"),
+        ("field", "overwrite", "overwrite"),
+    ],
+)
+def test_aggreation_to_pipeline_sum(field, in_alias, out_alias):
+    from google.cloud.firestore_v1.pipeline import Pipeline
+    from google.cloud.firestore_v1.pipeline_stages import Collection, Aggregate
+
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+    aggregation_query.sum(field, alias=in_alias)
+    pipeline = aggregation_query._build_pipeline(client.pipeline())
+    assert isinstance(pipeline, Pipeline)
+    assert len(pipeline.stages) == 2
+    assert isinstance(pipeline.stages[0], Collection)
+    assert pipeline.stages[0].path == "/dee"
+    aggregate_stage = pipeline.stages[1]
+    assert isinstance(aggregate_stage, Aggregate)
+    assert len(aggregate_stage.accumulators) == 1
+    assert aggregate_stage.accumulators[0].expr.name == "sum"
+    expected_field = field if isinstance(field, str) else field.to_api_repr()
+    assert aggregate_stage.accumulators[0].expr.params[0].path == expected_field
+    assert aggregate_stage.accumulators[0].alias == out_alias
+
+
+@pytest.mark.parametrize(
+    "field,in_alias,out_alias",
+    [
+        ("field", None, "field_1"),
+        (FieldPath("test"), None, "field_1"),
+        ("field", "overwrite", "overwrite"),
+    ],
+)
+def test_aggreation_to_pipeline_avg(field, in_alias, out_alias):
+    from google.cloud.firestore_v1.pipeline import Pipeline
+    from google.cloud.firestore_v1.pipeline_stages import Collection, Aggregate
+
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+    aggregation_query.avg(field, alias=in_alias)
+    pipeline = aggregation_query._build_pipeline(client.pipeline())
+    assert isinstance(pipeline, Pipeline)
+    assert len(pipeline.stages) == 2
+    assert isinstance(pipeline.stages[0], Collection)
+    assert pipeline.stages[0].path == "/dee"
+    aggregate_stage = pipeline.stages[1]
+    assert isinstance(aggregate_stage, Aggregate)
+    assert len(aggregate_stage.accumulators) == 1
+    assert aggregate_stage.accumulators[0].expr.name == "average"
+    expected_field = field if isinstance(field, str) else field.to_api_repr()
+    assert aggregate_stage.accumulators[0].expr.params[0].path == expected_field
+    assert aggregate_stage.accumulators[0].alias == out_alias
+
+
+@pytest.mark.parametrize(
+    "in_alias,out_alias",
+    [
+        (None, "field_1"),
+        ("overwrite", "overwrite"),
+    ],
+)
+def test_aggreation_to_pipeline_count(in_alias, out_alias):
+    from google.cloud.firestore_v1.pipeline import Pipeline
+    from google.cloud.firestore_v1.pipeline_stages import Collection, Aggregate
+    from google.cloud.firestore_v1.pipeline_expressions import Count
+
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+    aggregation_query.count(alias=in_alias)
+    pipeline = aggregation_query._build_pipeline(client.pipeline())
+    assert isinstance(pipeline, Pipeline)
+    assert len(pipeline.stages) == 2
+    assert isinstance(pipeline.stages[0], Collection)
+    assert pipeline.stages[0].path == "/dee"
+    aggregate_stage = pipeline.stages[1]
+    assert isinstance(aggregate_stage, Aggregate)
+    assert len(aggregate_stage.accumulators) == 1
+    assert isinstance(aggregate_stage.accumulators[0].expr, Count)
+    assert aggregate_stage.accumulators[0].alias == out_alias
+
+
+def test_aggreation_to_pipeline_count_increment():
+    """
+    When aliases aren't given, should assign incrementing field_n values
+    """
+    from google.cloud.firestore_v1.pipeline_expressions import Count
+
+    n = 100
+    client = make_client()
+    parent = client.collection("dee")
+    query = make_query(parent)
+    aggregation_query = make_aggregation_query(query)
+    for _ in range(n):
+        aggregation_query.count()
+    pipeline = aggregation_query._build_pipeline(client.pipeline())
+    aggregate_stage = pipeline.stages[1]
+    assert len(aggregate_stage.accumulators) == n
+    for i in range(n):
+        assert isinstance(aggregate_stage.accumulators[i].expr, Count)
+        assert aggregate_stage.accumulators[i].alias == f"field_{i + 1}"
+
+
+def test_aggreation_to_pipeline_complex():
+    from google.cloud.firestore_v1.pipeline import Pipeline
+    from google.cloud.firestore_v1.pipeline_stages import Collection, Aggregate, Select
+
+    client = make_client()
+    query = client.collection("my_col").select(["field_a", "field_b.c"])
+    aggregation_query = make_aggregation_query(query)
+    aggregation_query.sum("field", alias="alias")
+    aggregation_query.count()
+    aggregation_query.avg("other")
+    aggregation_query.sum("final")
+    pipeline = aggregation_query._build_pipeline(client.pipeline())
+    assert isinstance(pipeline, Pipeline)
+    assert len(pipeline.stages) == 3
+    assert isinstance(pipeline.stages[0], Collection)
+    assert isinstance(pipeline.stages[1], Select)
+    assert isinstance(pipeline.stages[2], Aggregate)
+    aggregate_stage = pipeline.stages[2]
+    assert len(aggregate_stage.accumulators) == 4
+    assert aggregate_stage.accumulators[0].expr.name == "sum"
+    assert aggregate_stage.accumulators[0].alias == "alias"
+    assert aggregate_stage.accumulators[1].expr.name == "count"
+    assert aggregate_stage.accumulators[1].alias == "field_1"
+    assert aggregate_stage.accumulators[2].expr.name == "average"
+    assert aggregate_stage.accumulators[2].alias == "field_2"
+    assert aggregate_stage.accumulators[3].expr.name == "sum"
+    assert aggregate_stage.accumulators[3].alias == "field_3"

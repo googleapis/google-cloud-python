@@ -75,6 +75,7 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
 SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
     "pytest-asyncio==0.21.2",
     "six",
+    "pyyaml",
 ]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []

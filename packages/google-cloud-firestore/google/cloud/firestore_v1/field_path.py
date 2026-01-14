@@ -16,7 +16,7 @@
 from __future__ import annotations
 import re
 from collections import abc
-from typing import Iterable, cast
+from typing import Any, Iterable, cast, MutableMapping
 
 _FIELD_PATH_MISSING_TOP = "{!r} is not contained in the data"
 _FIELD_PATH_MISSING_KEY = "{!r} is not contained in the data for the key {!r}"
@@ -170,7 +170,7 @@ def render_field_path(field_names: Iterable[str]):
 get_field_path = render_field_path  # backward-compatibility
 
 
-def get_nested_value(field_path: str, data: dict):
+def get_nested_value(field_path: str, data: MutableMapping[str, Any]):
     """Get a (potentially nested) value from a dictionary.
 
     If the data is nested, for example:

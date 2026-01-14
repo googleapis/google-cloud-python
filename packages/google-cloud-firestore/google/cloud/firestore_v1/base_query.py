@@ -59,6 +59,7 @@ from google.cloud.firestore_v1.types import (
     query,
 )
 from google.cloud.firestore_v1.vector import Vector
+from google.cloud.firestore_v1 import pipeline_expressions
 
 if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_stream_generator import AsyncStreamGenerator
@@ -66,6 +67,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
 
     import datetime
 
@@ -1127,6 +1129,73 @@ class BaseQuery(object):
             )
 
         return copied
+
+    def _build_pipeline(self, source: "PipelineSource"):
+        """
+        Convert this query into a Pipeline
+
+        Queries containing a `cursor` or `limit_to_last` are not currently supported
+
+        Args:
+            source: the PipelineSource to build the pipeline off of
+        Raises:
+            - NotImplementedError: raised if the query contains a `cursor` or `limit_to_last`
+        Returns:
+            a Pipeline representing the query
+        """
+        if self._all_descendants:
+            ppl = source.collection_group(self._parent.id)
+        else:
+            ppl = source.collection(self._parent._path)
+
+        # Filters
+        for filter_ in self._field_filters:
+            ppl = ppl.where(
+                pipeline_expressions.BooleanExpression._from_query_filter_pb(
+                    filter_, self._client
+                )
+            )
+
+        # Projections
+        if self._projection and self._projection.fields:
+            ppl = ppl.select(*[field.field_path for field in self._projection.fields])
+
+        # Orders
+        orders = self._normalize_orders()
+        if orders:
+            exists = []
+            orderings = []
+            for order in orders:
+                field = pipeline_expressions.Field.of(order.field.field_path)
+                exists.append(field.exists())
+                direction = (
+                    "ascending"
+                    if order.direction == StructuredQuery.Direction.ASCENDING
+                    else "descending"
+                )
+                orderings.append(pipeline_expressions.Ordering(field, direction))
+
+            # Add exists filters to match Query's implicit orderby semantics.
+            if len(exists) == 1:
+                ppl = ppl.where(exists[0])
+            else:
+                ppl = ppl.where(pipeline_expressions.And(*exists))
+
+            # Add sort orderings
+            ppl = ppl.sort(*orderings)
+
+        # Cursors, Limit and Offset
+        if self._start_at or self._end_at or self._limit_to_last:
+            raise NotImplementedError(
+                "Query to Pipeline conversion: cursors and limit_to_last is not supported yet."
+            )
+        else:  # Limit & Offset without cursors
+            if self._offset:
+                ppl = ppl.offset(self._offset)
+            if self._limit:
+                ppl = ppl.limit(self._limit)
+
+        return ppl
 
     def _comparator(self, doc1, doc2) -> int:
         _orders = self._orders

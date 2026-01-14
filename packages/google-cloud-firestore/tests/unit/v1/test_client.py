@@ -648,6 +648,18 @@ def test_client_transaction(database):
     assert transaction._id is None
 
 
+@pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
+def test_client_pipeline(database):
+    from google.cloud.firestore_v1.pipeline import Pipeline
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
+
+    client = _make_default_client(database=database)
+    ppl = client.pipeline()
+    assert client._pipeline_cls == Pipeline
+    assert isinstance(ppl, PipelineSource)
+    assert ppl.client == client
+
+
 def _make_batch_response(**kwargs):
     from google.cloud.firestore_v1.types import firestore
 

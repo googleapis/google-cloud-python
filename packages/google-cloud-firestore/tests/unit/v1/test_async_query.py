@@ -909,3 +909,22 @@ async def test_asynccollectiongroup_get_partitions_w_offset():
     query = _make_async_collection_group(parent).offset(10)
     with pytest.raises(ValueError):
         [i async for i in query.get_partitions(2)]
+
+
+def test_asyncquery_collection_pipeline_type():
+    from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
+
+    client = make_async_client()
+    parent = client.collection("test")
+    query = parent._query()
+    ppl = query._build_pipeline(client.pipeline())
+    assert isinstance(ppl, AsyncPipeline)
+
+
+def test_asyncquery_collectiongroup_pipeline_type():
+    from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
+
+    client = make_async_client()
+    query = client.collection_group("test")
+    ppl = query._build_pipeline(client.pipeline())
+    assert isinstance(ppl, AsyncPipeline)

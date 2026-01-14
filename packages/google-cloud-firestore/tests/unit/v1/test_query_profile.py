@@ -124,3 +124,64 @@ def test_explain_options__to_dict():
 
     assert ExplainOptions(analyze=True)._to_dict() == {"analyze": True}
     assert ExplainOptions(analyze=False)._to_dict() == {"analyze": False}
+
+
+@pytest.mark.parametrize("mode_str", ["analyze", "explain"])
+def test_pipeline_explain_options__to_value(mode_str):
+    """
+    Should be able to create a Value protobuf representation of ExplainOptions
+    """
+    from google.cloud.firestore_v1.query_profile import PipelineExplainOptions
+    from google.cloud.firestore_v1.types.document import MapValue
+    from google.cloud.firestore_v1.types.document import Value
+
+    options = PipelineExplainOptions(mode=mode_str)
+    expected_value = Value(
+        map_value=MapValue(fields={"mode": Value(string_value=mode_str)})
+    )
+    assert options._to_value() == expected_value
+
+
+def test_explain_stats_get_raw():
+    """
+    Test ExplainStats.get_raw(). Should return input directly
+    """
+    from google.cloud.firestore_v1.query_profile import ExplainStats
+
+    input = object()
+    stats = ExplainStats(input)
+    assert stats.get_raw() is input
+
+
+def test_explain_stats_get_text():
+    """
+    Test ExplainStats.get_text()
+    """
+    from google.cloud.firestore_v1.query_profile import ExplainStats
+    from google.cloud.firestore_v1.types import explain_stats as explain_stats_pb2
+    from google.protobuf import any_pb2
+    from google.protobuf import wrappers_pb2
+
+    expected_text = "some text"
+    text_pb = any_pb2.Any()
+    text_pb.Pack(wrappers_pb2.StringValue(value=expected_text))
+    expected_stats_pb = explain_stats_pb2.ExplainStats(data=text_pb)
+    stats = ExplainStats(expected_stats_pb)
+    assert stats.get_text() == expected_text
+
+
+def test_explain_stats_get_text_error():
+    """
+    Test ExplainStats.get_text() raises QueryExplainError
+    """
+    from google.cloud.firestore_v1.query_profile import (
+        ExplainStats,
+        QueryExplainError,
+    )
+    from google.cloud.firestore_v1.types import explain_stats as explain_stats_pb2
+
+    expected_stats_pb = explain_stats_pb2.ExplainStats(data={})
+    stats = ExplainStats(expected_stats_pb)
+    with pytest.raises(QueryExplainError) as exc:
+        stats.get_text()
+    assert "Unable to decode explain stats" in str(exc.value)

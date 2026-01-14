@@ -18,6 +18,7 @@ import mock
 import pytest
 
 from tests.unit.v1._test_helpers import make_client
+from google.cloud.firestore_v1 import pipeline_stages as stages
 
 
 def _make_base_query(*args, **kwargs):
@@ -1991,6 +1992,165 @@ def test__collection_group_query_response_to_snapshot_response():
     assert snapshot.read_time == response_pb._pb.read_time
     assert snapshot.create_time == response_pb._pb.document.create_time
     assert snapshot.update_time == response_pb._pb.document.update_time
+
+
+def test__query_pipeline_decendants():
+    client = make_client()
+    query = client.collection_group("my_col")
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 1
+    stage = pipeline.stages[0]
+    assert isinstance(stage, stages.CollectionGroup)
+    assert stage.collection_id == "my_col"
+
+
+@pytest.mark.parametrize(
+    "in_path,out_path",
+    [
+        ("my_col/doc/", "/my_col/doc/"),
+        ("/my_col/doc", "/my_col/doc"),
+        ("my_col/doc/sub_col", "/my_col/doc/sub_col"),
+    ],
+)
+def test__query_pipeline_no_decendants(in_path, out_path):
+    client = make_client()
+    collection = client.collection(in_path)
+    query = collection._query()
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 1
+    stage = pipeline.stages[0]
+    assert isinstance(stage, stages.Collection)
+    assert stage.path == out_path
+
+
+def test__query_pipeline_composite_filter():
+    from google.cloud.firestore_v1 import FieldFilter
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    client = make_client()
+    in_filter = FieldFilter("field_a", "==", "value_a")
+    query = client.collection("my_col").where(filter=in_filter)
+    with mock.patch.object(
+        expr.BooleanExpression, "_from_query_filter_pb"
+    ) as convert_mock:
+        pipeline = query._build_pipeline(client.pipeline())
+        convert_mock.assert_called_once_with(in_filter._to_pb(), client)
+        assert len(pipeline.stages) == 2
+        stage = pipeline.stages[1]
+        assert isinstance(stage, stages.Where)
+        assert stage.condition == convert_mock.return_value
+
+
+def test__query_pipeline_projections():
+    client = make_client()
+    query = client.collection("my_col").select(["field_a", "field_b.c"])
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 2
+    stage = pipeline.stages[1]
+    assert isinstance(stage, stages.Select)
+    assert len(stage.projections) == 2
+    assert stage.projections[0].path == "field_a"
+    assert stage.projections[1].path == "field_b.c"
+
+
+def test__query_pipeline_order_exists_multiple():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    client = make_client()
+    query = client.collection("my_col").order_by("field_a").order_by("field_b")
+    pipeline = query._build_pipeline(client.pipeline())
+
+    # should have collection, where, and sort
+    # we're interested in where
+    assert len(pipeline.stages) == 3
+    where_stage = pipeline.stages[1]
+    assert isinstance(where_stage, stages.Where)
+    # should have and with both orderings
+    assert isinstance(where_stage.condition, expr.And)
+    assert len(where_stage.condition.params) == 2
+    operands = [p for p in where_stage.condition.params]
+    assert operands[0].name == "exists"
+    assert operands[0].params[0].path == "field_a"
+    assert operands[1].name == "exists"
+    assert operands[1].params[0].path == "field_b"
+
+
+def test__query_pipeline_order_exists_single():
+    client = make_client()
+    query_single = client.collection("my_col").order_by("field_c")
+    pipeline_single = query_single._build_pipeline(client.pipeline())
+
+    # should have collection, where, and sort
+    # we're interested in where
+    assert len(pipeline_single.stages) == 3
+    where_stage_single = pipeline_single.stages[1]
+    assert isinstance(where_stage_single, stages.Where)
+    assert where_stage_single.condition.name == "exists"
+    assert where_stage_single.condition.params[0].path == "field_c"
+
+
+def test__query_pipeline_order_sorts():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+    from google.cloud.firestore_v1.base_query import BaseQuery
+
+    client = make_client()
+    query = (
+        client.collection("my_col")
+        .order_by("field_a", direction=BaseQuery.ASCENDING)
+        .order_by("field_b", direction=BaseQuery.DESCENDING)
+    )
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 3
+    sort_stage = pipeline.stages[2]
+    assert isinstance(sort_stage, stages.Sort)
+    assert len(sort_stage.orders) == 2
+    assert isinstance(sort_stage.orders[0], expr.Ordering)
+    assert sort_stage.orders[0].expr.path == "field_a"
+    assert sort_stage.orders[0].order_dir == expr.Ordering.Direction.ASCENDING
+    assert isinstance(sort_stage.orders[1], expr.Ordering)
+    assert sort_stage.orders[1].expr.path == "field_b"
+    assert sort_stage.orders[1].order_dir == expr.Ordering.Direction.DESCENDING
+
+
+def test__query_pipeline_unsupported():
+    client = make_client()
+    query_start = client.collection("my_col").start_at({"field_a": "value"})
+    with pytest.raises(NotImplementedError, match="cursors"):
+        query_start._build_pipeline(client.pipeline())
+
+    query_end = client.collection("my_col").end_at({"field_a": "value"})
+    with pytest.raises(NotImplementedError, match="cursors"):
+        query_end._build_pipeline(client.pipeline())
+
+    query_limit_last = client.collection("my_col").limit_to_last(10)
+    with pytest.raises(NotImplementedError, match="limit_to_last"):
+        query_limit_last._build_pipeline(client.pipeline())
+
+
+def test__query_pipeline_limit():
+    client = make_client()
+    query = client.collection("my_col").limit(15)
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 2
+    stage = pipeline.stages[1]
+    assert isinstance(stage, stages.Limit)
+    assert stage.limit == 15
+
+
+def test__query_pipeline_offset():
+    client = make_client()
+    query = client.collection("my_col").offset(5)
+    pipeline = query._build_pipeline(client.pipeline())
+
+    assert len(pipeline.stages) == 2
+    stage = pipeline.stages[1]
+    assert isinstance(stage, stages.Offset)
+    assert stage.offset == 5
 
 
 def _make_order_pb(field_path, direction):

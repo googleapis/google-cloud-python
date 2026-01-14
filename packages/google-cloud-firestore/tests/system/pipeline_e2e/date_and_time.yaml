@@ -1,0 +1,103 @@
+tests:
+  - description: testCurrentTimestamp
+    pipeline:
+      - Collection: books
+      - Limit: 1
+      - Select:
+        - AliasedExpression:
+            - And:
+              - FunctionExpression.greater_than_or_equal:
+                  - CurrentTimestamp: []
+                  - FunctionExpression.unix_seconds_to_timestamp:
+                    - Constant: 1735689600 # 2025-01-01
+              - FunctionExpression.less_than:
+                  - CurrentTimestamp: []
+                  - FunctionExpression.unix_seconds_to_timestamp:
+                    - Constant: 4892438400 # 2125-01-01
+            - "is_between_2025_and_2125"
+    assert_results:
+      - is_between_2025_and_2125: true
+    assert_proto:
+      pipeline:
+        stages:
+        - args:
+          - referenceValue: /books
+          name: collection
+        - args:
+          - integerValue: '1'
+          name: limit
+        - args:
+          - mapValue:
+              fields:
+                is_between_2025_and_2125:
+                  functionValue:
+                    name: and
+                    args:
+                    - functionValue:
+                        name: greater_than_or_equal
+                        args:
+                        - functionValue:
+                            name: current_timestamp
+                        - functionValue:
+                            name: unix_seconds_to_timestamp
+                            args:
+                            - integerValue: '1735689600'
+                    - functionValue:
+                        name: less_than
+                        args:
+                        - functionValue:
+                            name: current_timestamp
+                        - functionValue:
+                            name: unix_seconds_to_timestamp
+                            args:
+                            - integerValue: '4892438400'
+          name: select
+  - description: testTimestampFunctionExpressions
+    pipeline:
+      - Collection: timestamps
+      - Select:
+        - AliasedExpression:
+            - FunctionExpression.timestamp_to_unix_micros:
+                - Field: time
+            - "micros"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_to_unix_millis:
+                - Field: time
+            - "millis"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_to_unix_seconds:
+                - Field: time
+            - "seconds"
+        - AliasedExpression:
+            - FunctionExpression.unix_micros_to_timestamp:
+                - Field: micros
+            - "from_micros"
+        - AliasedExpression:
+            - FunctionExpression.unix_millis_to_timestamp:
+                - Field: millis
+            - "from_millis"
+        - AliasedExpression:
+            - FunctionExpression.unix_seconds_to_timestamp:
+                - Field: seconds
+            - "from_seconds"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_add:
+                - Field: time
+                - Constant: "day"
+                - Constant: 1
+            - "plus_day"
+        - AliasedExpression:
+            - FunctionExpression.timestamp_subtract:
+                - Field: time
+                - Constant: "hour"
+                - Constant: 1
+            - "minus_hour"
+    assert_results:
+      - micros:  735998460654321
+        millis:  735998460654
+        seconds: 735998460
+        from_micros: "1993-04-28T12:01:00.654321+00:00"
+        from_millis: "1993-04-28T12:01:00.654000+00:00"
+        from_seconds: "1993-04-28T12:01:00.000000+00:00"
+        plus_day: "1993-04-29T12:01:00.654321+00:00"
+        minus_hour: "1993-04-28T11:01:00.654321+00:00"

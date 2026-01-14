@@ -37,6 +37,7 @@ from typing import (
     Optional,
     Tuple,
     Union,
+    Type,
 )
 
 import google.api_core.client_options
@@ -61,6 +62,8 @@ from google.cloud.firestore_v1.base_transaction import MAX_ATTEMPTS, BaseTransac
 from google.cloud.firestore_v1.bulk_writer import BulkWriter, BulkWriterOptions
 from google.cloud.firestore_v1.field_path import render_field_path
 from google.cloud.firestore_v1.services.firestore import client as firestore_client
+from google.cloud.firestore_v1.pipeline_source import PipelineSource
+from google.cloud.firestore_v1.base_pipeline import _BasePipeline
 
 DEFAULT_DATABASE = "(default)"
 """str: The default database used in a :class:`~google.cloud.firestore_v1.client.Client`."""
@@ -500,6 +503,20 @@ class BaseClient(ClientWithProject):
     def transaction(
         self, max_attempts: int = MAX_ATTEMPTS, read_only: bool = False
     ) -> BaseTransaction:
+        raise NotImplementedError
+
+    def pipeline(self) -> PipelineSource:
+        """
+        Start a pipeline with this client.
+
+        Returns:
+            :class:`~google.cloud.firestore_v1.pipeline_source.PipelineSource`:
+            A pipeline that uses this client`
+        """
+        raise NotImplementedError
+
+    @property
+    def _pipeline_cls(self) -> Type["_BasePipeline"]:
         raise NotImplementedError
 
 

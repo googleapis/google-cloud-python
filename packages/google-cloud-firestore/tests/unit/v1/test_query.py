@@ -1046,3 +1046,22 @@ def test_collection_group_get_partitions_w_offset(database):
     query = _make_collection_group(parent).offset(10)
     with pytest.raises(ValueError):
         list(query.get_partitions(2))
+
+
+def test_asyncquery_collection_pipeline_type():
+    from google.cloud.firestore_v1.pipeline import Pipeline
+
+    client = make_client()
+    parent = client.collection("test")
+    query = parent._query()
+    ppl = query._build_pipeline(client.pipeline())
+    assert isinstance(ppl, Pipeline)
+
+
+def test_asyncquery_collectiongroup_pipeline_type():
+    from google.cloud.firestore_v1.pipeline import Pipeline
+
+    client = make_client()
+    query = client.collection_group("test")
+    ppl = query._build_pipeline(client.pipeline())
+    assert isinstance(ppl, Pipeline)

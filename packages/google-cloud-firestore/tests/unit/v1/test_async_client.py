@@ -563,6 +563,17 @@ def test_asyncclient_transaction():
     assert transaction._id is None
 
 
+def test_asyncclient_pipeline():
+    from google.cloud.firestore_v1.async_pipeline import AsyncPipeline
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
+
+    client = _make_default_async_client()
+    ppl = client.pipeline()
+    assert client._pipeline_cls == AsyncPipeline
+    assert isinstance(ppl, PipelineSource)
+    assert ppl.client == client
+
+
 def _make_credentials():
     import google.auth.credentials
 

@@ -120,6 +120,9 @@ class GeoPoint(object):
         else:
             return not equality_val
 
+    def __repr__(self):
+        return f"{type(self).__name__}(latitude={self.latitude}, longitude={self.longitude})"
+
 
 def verify_path(path, is_collection) -> None:
     """Verifies that a ``path`` has the correct form.

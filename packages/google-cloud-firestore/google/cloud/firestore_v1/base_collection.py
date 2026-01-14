@@ -49,6 +49,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.firestore_v1.async_document import AsyncDocumentReference
     from google.cloud.firestore_v1.document import DocumentReference
     from google.cloud.firestore_v1.field_path import FieldPath
+    from google.cloud.firestore_v1.pipeline_source import PipelineSource
     from google.cloud.firestore_v1.query_profile import ExplainOptions
     from google.cloud.firestore_v1.query_results import QueryResultsList
     from google.cloud.firestore_v1.stream_generator import StreamGenerator
@@ -602,6 +603,21 @@ class BaseCollectionReference(Generic[QueryType]):
             distance_result_field=distance_result_field,
             distance_threshold=distance_threshold,
         )
+
+    def _build_pipeline(self, source: "PipelineSource"):
+        """
+        Convert this query into a Pipeline
+
+        Queries containing a `cursor` or `limit_to_last` are not currently supported
+
+        Args:
+            source: the PipelineSource to build the pipeline off o
+        Raises:
+            - NotImplementedError: raised if the query contains a `cursor` or `limit_to_last`
+        Returns:
+            a Pipeline representing the query
+        """
+        return self._query()._build_pipeline(source)
 
 
 def _auto_id() -> str:
