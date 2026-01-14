@@ -350,6 +350,33 @@ class DatabaseCenterGrpcTransport(DatabaseCenterTransport):
         return self._stubs["query_products"]
 
     @property
+    def aggregate_fleet(
+        self,
+    ) -> Callable[[service.AggregateFleetRequest], service.AggregateFleetResponse]:
+        r"""Return a callable for the aggregate fleet method over gRPC.
+
+        AggregateFleet provides statistics about the fleet
+        grouped by various fields.
+
+        Returns:
+            Callable[[~.AggregateFleetRequest],
+                    ~.AggregateFleetResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "aggregate_fleet" not in self._stubs:
+            self._stubs["aggregate_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateFleet",
+                request_serializer=service.AggregateFleetRequest.serialize,
+                response_deserializer=service.AggregateFleetResponse.deserialize,
+            )
+        return self._stubs["aggregate_fleet"]
+
+    @property
     def query_database_resource_groups(
         self,
     ) -> Callable[

@@ -115,6 +115,11 @@ from grafeas.grafeas_v1.types.provenance import (
     Source,
     SourceContext,
 )
+from grafeas.grafeas_v1.types.risk import (
+    CISAKnownExploitedVulnerabilities,
+    ExploitPredictionScoringSystem,
+    Risk,
+)
 from grafeas.grafeas_v1.types.sbom import (
     SbomReferenceIntotoPayload,
     SbomReferenceIntotoPredicate,
@@ -226,6 +231,9 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "CISAKnownExploitedVulnerabilities",
+    "ExploitPredictionScoringSystem",
+    "Risk",
     "SbomReferenceIntotoPayload",
     "SbomReferenceIntotoPredicate",
     "SBOMReferenceNote",

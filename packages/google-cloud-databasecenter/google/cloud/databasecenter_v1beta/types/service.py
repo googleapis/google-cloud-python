@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.databasecenter_v1beta.types import (
@@ -32,6 +33,7 @@ __protobuf__ = proto.module(
         "ResourceCategory",
         "Edition",
         "SubResourceType",
+        "ManagementType",
         "QueryProductsRequest",
         "QueryProductsResponse",
         "QueryDatabaseResourceGroupsRequest",
@@ -39,8 +41,14 @@ __protobuf__ = proto.module(
         "DatabaseResourceGroup",
         "DatabaseResource",
         "Label",
+        "AggregateFleetRequest",
+        "AggregateFleetResponse",
+        "AggregateFleetRow",
+        "Dimension",
         "BackupDRConfig",
         "Tag",
+        "ResourceDetails",
+        "DeltaDetails",
     },
 )
 
@@ -109,6 +117,22 @@ class SubResourceType(proto.Enum):
     SUB_RESOURCE_TYPE_READ_REPLICA = 3
     SUB_RESOURCE_TYPE_EXTERNAL_PRIMARY = 5
     SUB_RESOURCE_TYPE_OTHER = 4
+
+
+class ManagementType(proto.Enum):
+    r"""The management type of the resource.
+
+    Values:
+        MANAGEMENT_TYPE_UNSPECIFIED (0):
+            Unspecified.
+        MANAGEMENT_TYPE_GCP_MANAGED (1):
+            Google-managed resource.
+        MANAGEMENT_TYPE_SELF_MANAGED (2):
+            Self-managed resource.
+    """
+    MANAGEMENT_TYPE_UNSPECIFIED = 0
+    MANAGEMENT_TYPE_GCP_MANAGED = 1
+    MANAGEMENT_TYPE_SELF_MANAGED = 2
 
 
 class QueryProductsRequest(proto.Message):
@@ -599,6 +623,429 @@ class Label(proto.Message):
     )
 
 
+class AggregateFleetRequest(proto.Message):
+    r"""The request message to aggregate fleet which are grouped by a
+    field.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. Parent can be a project, a folder, or an
+            organization. The search is limited to the resources within
+            the ``scope``.
+
+            The allowed values are:
+
+            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            - organizations/{ORGANIZATION_NUMBER} (e.g.,
+              "organizations/123456")
+        filter (str):
+            Optional. The expression to filter resources.
+
+            Supported fields are: ``full_resource_name``,
+            ``resource_type``, ``container``, ``product.type``,
+            ``product.engine``, ``product.version``, ``location``,
+            ``labels``, ``issues``, fields of availability_info,
+            data_protection_info, 'resource_name', etc.
+
+            The expression is a list of zero or more restrictions
+            combined via logical operators ``AND`` and ``OR``. When
+            ``AND`` and ``OR`` are both used in the expression,
+            parentheses must be appropriately used to group the
+            combinations.
+
+            Example: location="us-east1" Example:
+            container="projects/123" OR container="projects/456"
+            Example: (container="projects/123" OR
+            container="projects/456") AND location="us-east1".
+        group_by (str):
+            Optional. A field that statistics are grouped by. Valid
+            values are any combination of the following:
+
+            - container
+            - product.type
+            - product.engine
+            - product.version
+            - location
+            - sub_resource_type
+            - management_type
+            - tag.key
+            - tag.value
+            - tag.source
+            - tag.inherited
+            - label.key
+            - label.value
+            - label.source
+            - has_maintenance_schedule
+            - has_deny_maintenance_schedules Comma separated list.
+        order_by (str):
+            Optional. Valid values to order by are:
+
+            - resource_groups_count
+            - resources_count
+            - and all fields supported by ``group_by`` The default order
+              is ascending. Add "DESC" after the field name to indicate
+              descending order. Add "ASC" after the field name to
+              indicate ascending order. It supports ordering using
+              multiple fields. For example: order_by =
+              "resource_groups_count" sorts response in ascending order
+              order_by = "resource_groups_count DESC" sorts response in
+              descending order order_by = "product.type, product.version
+              DESC, location" orders by type in ascending order, version
+              in descending order and location in ascending order
+        page_size (int):
+            Optional. If unspecified, at most 50 items
+            will be returned. The maximum value is 1000;
+            values above 1000 will be coerced to 1000.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``AggregateFleet`` call. Provide this to retrieve the
+            subsequent page. All other parameters should match the
+            parameters in the call that provided the page token except
+            for page_size which can be different.
+        baseline_date (google.type.date_pb2.Date):
+            Optional. The baseline date w.r.t. which the
+            delta counts are calculated. If not set, delta
+            counts are not included in the response and the
+            response indicates the current state of the
+            fleet.
+
+            This field is a member of `oneof`_ ``_baseline_date``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    group_by: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    baseline_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        optional=True,
+        message=date_pb2.Date,
+    )
+
+
+class AggregateFleetResponse(proto.Message):
+    r"""The response message to aggregate a fleet by some group by
+    fields.
+
+    Attributes:
+        rows (MutableSequence[google.cloud.databasecenter_v1beta.types.AggregateFleetRow]):
+            Represents a row grouped by the fields in the
+            input.
+        resource_groups_total_count (int):
+            Count of all resource groups in the fleet.
+            This includes counts from all pages.
+        resource_total_count (int):
+            Count of all resources in the fleet. This
+            includes counts from all pages.
+        next_page_token (str):
+            A token that can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Unordered list. List of unreachable regions
+            from where data could not be retrieved.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    rows: MutableSequence["AggregateFleetRow"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AggregateFleetRow",
+    )
+    resource_groups_total_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    resource_total_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+
+
+class AggregateFleetRow(proto.Message):
+    r"""Individual row grouped by a particular dimension.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        dimension (MutableSequence[google.cloud.databasecenter_v1beta.types.Dimension]):
+            Group by dimension.
+        resource_groups_count (int):
+            Number of resource groups that have a
+            particular dimension.
+        resources_count (int):
+            Number of resources that have a particular
+            dimension.
+        delta_details (google.cloud.databasecenter_v1beta.types.DeltaDetails):
+            Optional. Delta counts and details of
+            resources which were added to/deleted from
+            fleet.
+
+            This field is a member of `oneof`_ ``_delta_details``.
+    """
+
+    dimension: MutableSequence["Dimension"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Dimension",
+    )
+    resource_groups_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    resources_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    delta_details: "DeltaDetails" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message="DeltaDetails",
+    )
+
+
+class Dimension(proto.Message):
+    r"""Dimension used to aggregate the fleet.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        container (str):
+            Specifies where the resource is created. For
+            GCP, it is the full name of the project.
+
+            This field is a member of `oneof`_ ``dimension``.
+        product_type (google.cloud.databasecenter_v1beta.types.ProductType):
+            Type to identify a product
+
+            This field is a member of `oneof`_ ``dimension``.
+        product_engine (google.cloud.databasecenter_v1beta.types.Engine):
+            Engine refers to underlying database binary
+            running in an instance.
+
+            This field is a member of `oneof`_ ``dimension``.
+        product_version (str):
+            Version of the underlying database engine
+
+            This field is a member of `oneof`_ ``dimension``.
+        location (str):
+            The location of the resources. It supports
+            returning only regional locations in GCP.
+
+            This field is a member of `oneof`_ ``dimension``.
+        resource_type (str):
+            The type of resource defined according to the
+            pattern: {Service Name}/{Type}. Ex:
+
+            sqladmin.googleapis.com/Instance
+            alloydb.googleapis.com/Cluster
+            alloydb.googleapis.com/Instance
+            spanner.googleapis.com/Instance
+
+            This field is a member of `oneof`_ ``dimension``.
+        sub_resource_type (google.cloud.databasecenter_v1beta.types.SubResourceType):
+            Subtype of the resource specified at creation
+            time.
+
+            This field is a member of `oneof`_ ``dimension``.
+        resource_category (google.cloud.databasecenter_v1beta.types.ResourceCategory):
+            The category of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        management_type (google.cloud.databasecenter_v1beta.types.ManagementType):
+            The management type of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        edition (google.cloud.databasecenter_v1beta.types.Edition):
+            The edition of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        tag_key (str):
+            Tag key of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        tag_value (str):
+            Tag value of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        tag_source (str):
+            Tag source of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        tag_inherited (bool):
+            Tag inheritance value of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        label_key (str):
+            Label key of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        label_value (str):
+            Label value of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        label_source (str):
+            Label source of the resource.
+
+            This field is a member of `oneof`_ ``dimension``.
+        has_maintenance_schedule (bool):
+            Whether the resource has a maintenance
+            schedule.
+
+            This field is a member of `oneof`_ ``dimension``.
+        has_deny_maintenance_schedules (bool):
+            Whether the resource has deny maintenance
+            schedules.
+
+            This field is a member of `oneof`_ ``dimension``.
+    """
+
+    container: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="dimension",
+    )
+    product_type: gcd_product.ProductType = proto.Field(
+        proto.ENUM,
+        number=3,
+        oneof="dimension",
+        enum=gcd_product.ProductType,
+    )
+    product_engine: gcd_product.Engine = proto.Field(
+        proto.ENUM,
+        number=4,
+        oneof="dimension",
+        enum=gcd_product.Engine,
+    )
+    product_version: str = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="dimension",
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="dimension",
+    )
+    resource_type: str = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="dimension",
+    )
+    sub_resource_type: "SubResourceType" = proto.Field(
+        proto.ENUM,
+        number=8,
+        oneof="dimension",
+        enum="SubResourceType",
+    )
+    resource_category: "ResourceCategory" = proto.Field(
+        proto.ENUM,
+        number=9,
+        oneof="dimension",
+        enum="ResourceCategory",
+    )
+    management_type: "ManagementType" = proto.Field(
+        proto.ENUM,
+        number=10,
+        oneof="dimension",
+        enum="ManagementType",
+    )
+    edition: "Edition" = proto.Field(
+        proto.ENUM,
+        number=11,
+        oneof="dimension",
+        enum="Edition",
+    )
+    tag_key: str = proto.Field(
+        proto.STRING,
+        number=12,
+        oneof="dimension",
+    )
+    tag_value: str = proto.Field(
+        proto.STRING,
+        number=13,
+        oneof="dimension",
+    )
+    tag_source: str = proto.Field(
+        proto.STRING,
+        number=14,
+        oneof="dimension",
+    )
+    tag_inherited: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+        oneof="dimension",
+    )
+    label_key: str = proto.Field(
+        proto.STRING,
+        number=16,
+        oneof="dimension",
+    )
+    label_value: str = proto.Field(
+        proto.STRING,
+        number=17,
+        oneof="dimension",
+    )
+    label_source: str = proto.Field(
+        proto.STRING,
+        number=18,
+        oneof="dimension",
+    )
+    has_maintenance_schedule: bool = proto.Field(
+        proto.BOOL,
+        number=19,
+        oneof="dimension",
+    )
+    has_deny_maintenance_schedules: bool = proto.Field(
+        proto.BOOL,
+        number=20,
+        oneof="dimension",
+    )
+
+
 class BackupDRConfig(proto.Message):
     r"""BackupDRConfig to capture the backup and disaster recovery
     details of database resource.
@@ -662,6 +1109,67 @@ class Tag(proto.Message):
     inherited: bool = proto.Field(
         proto.BOOL,
         number=4,
+    )
+
+
+class ResourceDetails(proto.Message):
+    r"""Capture the resource details for resources that are included
+    in the delta counts.
+
+    Attributes:
+        full_resource_name (str):
+            Full resource name of the resource.
+        container (str):
+            Specifies where the resource is created. For
+            GCP, it is the full name of the project.
+        product (google.cloud.databasecenter_v1beta.types.Product):
+            Product type of the resource.
+        location (str):
+            Location of the resource.
+    """
+
+    full_resource_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    container: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    product: gcd_product.Product = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_product.Product,
+    )
+    location: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeltaDetails(proto.Message):
+    r"""Captures the details of items that have increased or
+    decreased in some bucket when compared to some point in history.
+    It is currently used to capture the delta of resources that have
+    been added or removed in the fleet as well as to capture the
+    resources that have a change in Issue/Signal status.
+
+    Attributes:
+        increased_resources (MutableSequence[google.cloud.databasecenter_v1beta.types.ResourceDetails]):
+            Details of resources that have increased.
+        decreased_resources (MutableSequence[google.cloud.databasecenter_v1beta.types.ResourceDetails]):
+            Details of resources that have decreased.
+    """
+
+    increased_resources: MutableSequence["ResourceDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ResourceDetails",
+    )
+    decreased_resources: MutableSequence["ResourceDetails"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ResourceDetails",
     )
 
 

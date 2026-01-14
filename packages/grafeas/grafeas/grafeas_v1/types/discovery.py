@@ -83,6 +83,9 @@ class DiscoveryOccurrence(proto.Message):
         vulnerability_attestation (grafeas.grafeas_v1.types.DiscoveryOccurrence.VulnerabilityAttestation):
             The status of an vulnerability attestation
             generation.
+        files (MutableSequence[grafeas.grafeas_v1.types.DiscoveryOccurrence.File]):
+            Files that make up the resource described by
+            the occurrence.
     """
 
     class ContinuousAnalysis(proto.Enum):
@@ -229,6 +232,26 @@ class DiscoveryOccurrence(proto.Message):
             number=3,
         )
 
+    class File(proto.Message):
+        r"""
+
+        Attributes:
+            name (str):
+
+            digest (MutableMapping[str, str]):
+
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        digest: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
+        )
+
     continuous_analysis: ContinuousAnalysis = proto.Field(
         proto.ENUM,
         number=1,
@@ -277,6 +300,11 @@ class DiscoveryOccurrence(proto.Message):
         proto.MESSAGE,
         number=10,
         message=VulnerabilityAttestation,
+    )
+    files: MutableSequence[File] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=File,
     )
 
 

@@ -31,6 +31,7 @@ else:  # pragma: NO COVER
 from .services.config import ConfigAsyncClient, ConfigClient
 from .types.config import (
     ApplyResults,
+    AutoMigrationConfig,
     CreateDeploymentRequest,
     CreatePreviewRequest,
     DeleteDeploymentRequest,
@@ -43,6 +44,7 @@ from .types.config import (
     ExportPreviewResultRequest,
     ExportPreviewResultResponse,
     ExportRevisionStatefileRequest,
+    GetAutoMigrationConfigRequest,
     GetDeploymentRequest,
     GetPreviewRequest,
     GetResourceChangeRequest,
@@ -92,6 +94,7 @@ from .types.config import (
     TerraformVariable,
     TerraformVersion,
     UnlockDeploymentRequest,
+    UpdateAutoMigrationConfigRequest,
     UpdateDeploymentRequest,
 )
 
@@ -192,6 +195,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "ConfigAsyncClient",
     "ApplyResults",
+    "AutoMigrationConfig",
     "ConfigClient",
     "CreateDeploymentRequest",
     "CreatePreviewRequest",
@@ -205,6 +209,7 @@ __all__ = (
     "ExportPreviewResultRequest",
     "ExportPreviewResultResponse",
     "ExportRevisionStatefileRequest",
+    "GetAutoMigrationConfigRequest",
     "GetDeploymentRequest",
     "GetPreviewRequest",
     "GetResourceChangeRequest",
@@ -254,5 +259,6 @@ __all__ = (
     "TerraformVariable",
     "TerraformVersion",
     "UnlockDeploymentRequest",
+    "UpdateAutoMigrationConfigRequest",
     "UpdateDeploymentRequest",
 )

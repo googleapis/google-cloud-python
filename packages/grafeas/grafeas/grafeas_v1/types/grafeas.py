@@ -517,6 +517,12 @@ class ListOccurrencesRequest(proto.Message):
         page_token (str):
             Token to provide to skip to a particular spot
             in the list.
+        return_partial_success (bool):
+            If set, the request will return all reachable Occurrences
+            and report all unreachable regions in the ``unreachable``
+            field in the response.
+
+            Only applicable for requests in the global region.
     """
 
     parent: str = proto.Field(
@@ -535,6 +541,10 @@ class ListOccurrencesRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class ListOccurrencesResponse(proto.Message):
@@ -547,6 +557,11 @@ class ListOccurrencesResponse(proto.Message):
             The next pagination token in the list response. It should be
             used as ``page_token`` for the following request. An empty
             value means no more results.
+        unreachable (MutableSequence[str]):
+            Unreachable regions. Populated for requests from the global
+            region when ``return_partial_success`` is set.
+
+            Format: ``projects/[PROJECT_ID]/locations/[LOCATION]``
     """
 
     @property
@@ -561,6 +576,10 @@ class ListOccurrencesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -678,6 +697,12 @@ class ListNotesRequest(proto.Message):
         page_token (str):
             Token to provide to skip to a particular spot
             in the list.
+        return_partial_success (bool):
+            If set, the request will return all reachable Notes and
+            report all unreachable regions in the ``unreachable`` field
+            in the response.
+
+            Only applicable for requests in the global region.
     """
 
     parent: str = proto.Field(
@@ -696,6 +721,10 @@ class ListNotesRequest(proto.Message):
         proto.STRING,
         number=4,
     )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class ListNotesResponse(proto.Message):
@@ -708,6 +737,11 @@ class ListNotesResponse(proto.Message):
             The next pagination token in the list response. It should be
             used as ``page_token`` for the following request. An empty
             value means no more results.
+        unreachable (MutableSequence[str]):
+            Unreachable regions. Populated for requests from the global
+            region when ``return_partial_success`` is set.
+
+            Format: ``projects/[PROJECT_ID]/locations/[LOCATION]``
     """
 
     @property
@@ -722,6 +756,10 @@ class ListNotesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
     )
 
 

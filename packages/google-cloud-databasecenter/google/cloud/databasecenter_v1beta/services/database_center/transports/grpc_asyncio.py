@@ -360,6 +360,35 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
         return self._stubs["query_products"]
 
     @property
+    def aggregate_fleet(
+        self,
+    ) -> Callable[
+        [service.AggregateFleetRequest], Awaitable[service.AggregateFleetResponse]
+    ]:
+        r"""Return a callable for the aggregate fleet method over gRPC.
+
+        AggregateFleet provides statistics about the fleet
+        grouped by various fields.
+
+        Returns:
+            Callable[[~.AggregateFleetRequest],
+                    Awaitable[~.AggregateFleetResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "aggregate_fleet" not in self._stubs:
+            self._stubs["aggregate_fleet"] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateFleet",
+                request_serializer=service.AggregateFleetRequest.serialize,
+                response_deserializer=service.AggregateFleetResponse.deserialize,
+            )
+        return self._stubs["aggregate_fleet"]
+
+    @property
     def query_database_resource_groups(
         self,
     ) -> Callable[
@@ -396,6 +425,11 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
         self._wrapped_methods = {
             self.query_products: self._wrap_method(
                 self.query_products,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.aggregate_fleet: self._wrap_method(
+                self.aggregate_fleet,
                 default_timeout=None,
                 client_info=client_info,
             ),

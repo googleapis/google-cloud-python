@@ -36,6 +36,8 @@ from google.cloud.netapp_v1.types import backup_policy
 from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
+from google.cloud.netapp_v1.types import host_group
+from google.cloud.netapp_v1.types import host_group as gcn_host_group
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import quota_rule
 from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
@@ -612,6 +614,36 @@ class NetAppTransport(abc.ABC):
             ),
             self.delete_quota_rule: gapic_v1.method.wrap_method(
                 self.delete_quota_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.restore_backup_files: gapic_v1.method.wrap_method(
+                self.restore_backup_files,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_host_groups: gapic_v1.method.wrap_method(
+                self.list_host_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_host_group: gapic_v1.method.wrap_method(
+                self.get_host_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_host_group: gapic_v1.method.wrap_method(
+                self.create_host_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_host_group: gapic_v1.method.wrap_method(
+                self.update_host_group,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_host_group: gapic_v1.method.wrap_method(
+                self.delete_host_group,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -1217,6 +1249,63 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [quota_rule.DeleteQuotaRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def restore_backup_files(
+        self,
+    ) -> Callable[
+        [volume.RestoreBackupFilesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_host_groups(
+        self,
+    ) -> Callable[
+        [host_group.ListHostGroupsRequest],
+        Union[
+            host_group.ListHostGroupsResponse,
+            Awaitable[host_group.ListHostGroupsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_host_group(
+        self,
+    ) -> Callable[
+        [host_group.GetHostGroupRequest],
+        Union[host_group.HostGroup, Awaitable[host_group.HostGroup]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_host_group(
+        self,
+    ) -> Callable[
+        [gcn_host_group.CreateHostGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_host_group(
+        self,
+    ) -> Callable[
+        [gcn_host_group.UpdateHostGroupRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_host_group(
+        self,
+    ) -> Callable[
+        [host_group.DeleteHostGroupRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

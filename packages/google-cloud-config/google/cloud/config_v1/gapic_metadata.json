@@ -55,6 +55,11 @@
                 "export_revision_statefile"
               ]
             },
+            "GetAutoMigrationConfig": {
+              "methods": [
+                "get_auto_migration_config"
+              ]
+            },
             "GetDeployment": {
               "methods": [
                 "get_deployment"
@@ -138,6 +143,11 @@
             "UnlockDeployment": {
               "methods": [
                 "unlock_deployment"
+              ]
+            },
+            "UpdateAutoMigrationConfig": {
+              "methods": [
+                "update_auto_migration_config"
               ]
             },
             "UpdateDeployment": {
@@ -195,6 +205,11 @@
                 "export_revision_statefile"
               ]
             },
+            "GetAutoMigrationConfig": {
+              "methods": [
+                "get_auto_migration_config"
+              ]
+            },
             "GetDeployment": {
               "methods": [
                 "get_deployment"
@@ -278,6 +293,11 @@
             "UnlockDeployment": {
               "methods": [
                 "unlock_deployment"
+              ]
+            },
+            "UpdateAutoMigrationConfig": {
+              "methods": [
+                "update_auto_migration_config"
               ]
             },
             "UpdateDeployment": {
@@ -335,6 +355,11 @@
                 "export_revision_statefile"
               ]
             },
+            "GetAutoMigrationConfig": {
+              "methods": [
+                "get_auto_migration_config"
+              ]
+            },
             "GetDeployment": {
               "methods": [
                 "get_deployment"
@@ -418,6 +443,11 @@
             "UnlockDeployment": {
               "methods": [
                 "unlock_deployment"
+              ]
+            },
+            "UpdateAutoMigrationConfig": {
+              "methods": [
+                "update_auto_migration_config"
               ]
             },
             "UpdateDeployment": {

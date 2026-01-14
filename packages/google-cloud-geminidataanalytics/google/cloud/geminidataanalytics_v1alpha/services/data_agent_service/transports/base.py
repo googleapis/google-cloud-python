@@ -28,12 +28,12 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.geminidataanalytics_v1alpha import gapic_version as package_version
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    data_agent,
-    data_agent_service,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import data_agent as gcg_data_agent
+from google.cloud.geminidataanalytics_v1alpha.types import data_agent
+from google.cloud.geminidataanalytics_v1alpha.types import data_agent_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -160,13 +160,28 @@ class DataAgentServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_data_agent_sync: gapic_v1.method.wrap_method(
+                self.create_data_agent_sync,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_data_agent: gapic_v1.method.wrap_method(
                 self.update_data_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_data_agent_sync: gapic_v1.method.wrap_method(
+                self.update_data_agent_sync,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_data_agent: gapic_v1.method.wrap_method(
                 self.delete_data_agent,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_data_agent_sync: gapic_v1.method.wrap_method(
+                self.delete_data_agent_sync,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -269,6 +284,15 @@ class DataAgentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def create_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.CreateDataAgentRequest],
+        Union[gcg_data_agent.DataAgent, Awaitable[gcg_data_agent.DataAgent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def update_data_agent(
         self,
     ) -> Callable[
@@ -278,11 +302,29 @@ class DataAgentServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def update_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.UpdateDataAgentRequest],
+        Union[gcg_data_agent.DataAgent, Awaitable[gcg_data_agent.DataAgent]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def delete_data_agent(
         self,
     ) -> Callable[
         [data_agent_service.DeleteDataAgentRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.DeleteDataAgentRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

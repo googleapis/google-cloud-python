@@ -326,6 +326,15 @@ class StoragePool(proto.Message):
         hot_tier_size_used_gib (int):
             Output only. Total hot tier data rounded down
             to the nearest GiB used by the storage pool.
+        type_ (google.cloud.netapp_v1.types.StoragePoolType):
+            Optional. Type of the storage pool. This field is used to
+            control whether the pool supports ``FILE`` based volumes
+            only or ``UNIFIED`` (both ``FILE`` and ``BLOCK``) volumes or
+            ``UNIFIED_LARGE_CAPACITY`` (both ``FILE`` and ``BLOCK``)
+            volumes with large capacity. If not specified during
+            creation, it defaults to ``FILE``.
+
+            This field is a member of `oneof`_ ``_type``.
     """
 
     class State(proto.Enum):
@@ -489,6 +498,12 @@ class StoragePool(proto.Message):
     hot_tier_size_used_gib: int = proto.Field(
         proto.INT64,
         number=34,
+    )
+    type_: common.StoragePoolType = proto.Field(
+        proto.ENUM,
+        number=35,
+        optional=True,
+        enum=common.StoragePoolType,
     )
 
 

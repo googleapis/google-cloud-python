@@ -138,6 +138,11 @@ class DatabaseCenterTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.aggregate_fleet: gapic_v1.method.wrap_method(
+                self.aggregate_fleet,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.query_database_resource_groups: gapic_v1.method.wrap_method(
                 self.query_database_resource_groups,
                 default_timeout=None,
@@ -160,6 +165,17 @@ class DatabaseCenterTransport(abc.ABC):
     ) -> Callable[
         [service.QueryProductsRequest],
         Union[service.QueryProductsResponse, Awaitable[service.QueryProductsResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def aggregate_fleet(
+        self,
+    ) -> Callable[
+        [service.AggregateFleetRequest],
+        Union[
+            service.AggregateFleetResponse, Awaitable[service.AggregateFleetResponse]
+        ],
     ]:
         raise NotImplementedError()
 

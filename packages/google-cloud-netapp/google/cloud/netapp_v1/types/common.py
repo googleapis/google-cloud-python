@@ -26,8 +26,10 @@ __protobuf__ = proto.module(
         "FlexPerformance",
         "EncryptionType",
         "DirectoryServiceType",
+        "StoragePoolType",
         "HybridReplicationSchedule",
         "QosType",
+        "OsType",
         "LocationMetadata",
         "UserCommands",
     },
@@ -104,6 +106,25 @@ class DirectoryServiceType(proto.Enum):
     ACTIVE_DIRECTORY = 1
 
 
+class StoragePoolType(proto.Enum):
+    r"""Type of storage pool
+
+    Values:
+        STORAGE_POOL_TYPE_UNSPECIFIED (0):
+            Storage pool type is not specified.
+        FILE (1):
+            Storage pool type is file.
+        UNIFIED (2):
+            Storage pool type is unified.
+        UNIFIED_LARGE_CAPACITY (3):
+            Storage pool type is unified large capacity.
+    """
+    STORAGE_POOL_TYPE_UNSPECIFIED = 0
+    FILE = 1
+    UNIFIED = 2
+    UNIFIED_LARGE_CAPACITY = 3
+
+
 class HybridReplicationSchedule(proto.Enum):
     r"""Schedule for Hybrid Replication.
     New enum values may be added in future to support different
@@ -141,6 +162,25 @@ class QosType(proto.Enum):
     MANUAL = 2
 
 
+class OsType(proto.Enum):
+    r"""OS types for the host group
+
+    Values:
+        OS_TYPE_UNSPECIFIED (0):
+            Unspecified OS Type
+        LINUX (1):
+            OS Type is Linux
+        WINDOWS (2):
+            OS Type is Windows
+        ESXI (3):
+            OS Type is VMware ESXi
+    """
+    OS_TYPE_UNSPECIFIED = 0
+    LINUX = 1
+    WINDOWS = 2
+    ESXI = 3
+
+
 class LocationMetadata(proto.Message):
     r"""Metadata for a given
     [google.cloud.location.Location][google.cloud.location.Location].
@@ -155,6 +195,9 @@ class LocationMetadata(proto.Message):
         has_vcp (bool):
             Output only. Indicates if the location has
             VCP support.
+        has_ontap_proxy (bool):
+            Output only. Indicates if the location has
+            ONTAP Proxy support.
     """
 
     supported_service_levels: MutableSequence["ServiceLevel"] = proto.RepeatedField(
@@ -172,6 +215,10 @@ class LocationMetadata(proto.Message):
     has_vcp: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    has_ontap_proxy: bool = proto.Field(
+        proto.BOOL,
+        number=4,
     )
 
 

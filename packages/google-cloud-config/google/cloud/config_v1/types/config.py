@@ -89,6 +89,9 @@ __protobuf__ = proto.module(
         "ListResourceDriftsResponse",
         "GetResourceDriftRequest",
         "ProviderConfig",
+        "GetAutoMigrationConfigRequest",
+        "AutoMigrationConfig",
+        "UpdateAutoMigrationConfigRequest",
     },
 )
 
@@ -301,6 +304,9 @@ class Deployment(proto.Message):
             BUCKET_CREATION_FAILED (8):
                 Cloud Storage bucket creation failed due to
                 an issue unrelated to permissions.
+            EXTERNAL_VALUE_SOURCE_IMPORT_FAILED (10):
+                Failed to import values from an external
+                source.
         """
         ERROR_CODE_UNSPECIFIED = 0
         REVISION_FAILED = 1
@@ -309,6 +315,7 @@ class Deployment(proto.Message):
         DELETE_BUILD_RUN_FAILED = 6
         BUCKET_CREATION_PERMISSION_DENIED = 7
         BUCKET_CREATION_FAILED = 8
+        EXTERNAL_VALUE_SOURCE_IMPORT_FAILED = 10
 
     class LockState(proto.Enum):
         r"""Possible lock states of a deployment.
@@ -1234,12 +1241,16 @@ class Revision(proto.Message):
             QUOTA_VALIDATION_FAILED (7):
                 quota validation failed for one or more
                 resources in terraform configuration files.
+            EXTERNAL_VALUE_SOURCE_IMPORT_FAILED (8):
+                Failed to import values from an external
+                source.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
         APPLY_BUILD_API_FAILED = 4
         APPLY_BUILD_RUN_FAILED = 5
         QUOTA_VALIDATION_FAILED = 7
+        EXTERNAL_VALUE_SOURCE_IMPORT_FAILED = 8
 
     terraform_blueprint: "TerraformBlueprint" = proto.Field(
         proto.MESSAGE,
@@ -2154,6 +2165,9 @@ class Preview(proto.Message):
             PREVIEW_BUILD_RUN_FAILED (6):
                 Preview created a build but build failed and
                 logs were generated.
+            EXTERNAL_VALUE_SOURCE_IMPORT_FAILED (7):
+                Failed to import values from an external
+                source.
         """
         ERROR_CODE_UNSPECIFIED = 0
         CLOUD_BUILD_PERMISSION_DENIED = 1
@@ -2162,6 +2176,7 @@ class Preview(proto.Message):
         DEPLOYMENT_LOCK_ACQUIRE_FAILED = 4
         PREVIEW_BUILD_API_FAILED = 5
         PREVIEW_BUILD_RUN_FAILED = 6
+        EXTERNAL_VALUE_SOURCE_IMPORT_FAILED = 7
 
     terraform_blueprint: "TerraformBlueprint" = proto.Field(
         proto.MESSAGE,
@@ -3311,6 +3326,75 @@ class ProviderConfig(proto.Message):
         number=1,
         optional=True,
         enum=ProviderSource,
+    )
+
+
+class GetAutoMigrationConfigRequest(proto.Message):
+    r"""The request message for the GetAutoMigrationConfig method.
+
+    Attributes:
+        name (str):
+            Required. The name of the AutoMigrationConfig. Format:
+            'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AutoMigrationConfig(proto.Message):
+    r"""AutoMigrationConfig contains the automigration configuration
+    for a project.
+
+    Attributes:
+        name (str):
+            Identifier. The name of the AutoMigrationConfig. Format:
+            'projects/{project_id}/locations/{location}/AutoMigrationConfig'.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Time the AutoMigrationConfig was
+            last updated.
+        auto_migration_enabled (bool):
+            Optional. Whether the auto migration is
+            enabled for the project.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    auto_migration_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class UpdateAutoMigrationConfigRequest(proto.Message):
+    r"""The request message for the UpdateAutoMigrationConfig method.
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Optional. The update mask applies to the resource. See
+            [google.protobuf.FieldMask][google.protobuf.FieldMask].
+        auto_migration_config (google.cloud.config_v1.types.AutoMigrationConfig):
+            Required. The AutoMigrationConfig to update.
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    auto_migration_config: "AutoMigrationConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AutoMigrationConfig",
     )
 
 
