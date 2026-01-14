@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
+## [2.23.0](https://github.com/googleapis/python-firestore/compare/v2.22.0...v2.23.0) (2026-01-14)
+
+
+### Features
+
+* pipelines preview (#1156) ([9462d106dcda516e24a518dbd32a3ee5a39e40ca](https://github.com/googleapis/python-firestore/commit/9462d106dcda516e24a518dbd32a3ee5a39e40ca))
+
+
+### Bug Fixes
+
+* stream generator type (#1148) ([165d367c342cb4205f13cf6d4fcd001419f9e2da](https://github.com/googleapis/python-firestore/commit/165d367c342cb4205f13cf6d4fcd001419f9e2da))
+
 ## [2.22.0](https://github.com/googleapis/python-firestore/compare/v2.21.0...v2.22.0) (2025-12-16)
 
 
