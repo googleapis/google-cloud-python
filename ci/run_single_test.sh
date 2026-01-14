@@ -60,6 +60,10 @@ case ${TEST_TYPE} in
         # See https://github.com/googleapis/google-cloud-python/issues/12271
         rm -rf docs/_build
         ;;
+    mypy)
+        nox -s mypy-3.14
+        retval=$?
+        ;;
     prerelease)
         nox -s prerelease_deps-3.14
         retval=$?
