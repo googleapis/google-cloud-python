@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.15.0-alpha...v0.15.1-alpha) (2026-01-14)
+
+
+### Bug Fixes
+
+* Update `storage.Blob.from_string()` to `from_uri()` ([#385](https://github.com/googleapis/python-documentai-toolbox/issues/385)) ([dc05b4b](https://github.com/googleapis/python-documentai-toolbox/commit/dc05b4bc5e7fcb44725019f436e738115b6c2150))
+
 ## [0.15.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.14.2-alpha...v0.15.0-alpha) (2025-12-11)
 
 
