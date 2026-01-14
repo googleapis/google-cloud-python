@@ -38,6 +38,8 @@ from google.cloud.netapp_v1.types import backup_policy
 from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
+from google.cloud.netapp_v1.types import host_group
+from google.cloud.netapp_v1.types import host_group as gcn_host_group
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import quota_rule
 from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
@@ -1983,6 +1985,165 @@ class NetAppGrpcTransport(NetAppTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_quota_rule"]
+
+    @property
+    def restore_backup_files(
+        self,
+    ) -> Callable[[volume.RestoreBackupFilesRequest], operations_pb2.Operation]:
+        r"""Return a callable for the restore backup files method over gRPC.
+
+        Restore files from a backup to a volume.
+
+        Returns:
+            Callable[[~.RestoreBackupFilesRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "restore_backup_files" not in self._stubs:
+            self._stubs["restore_backup_files"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/RestoreBackupFiles",
+                request_serializer=volume.RestoreBackupFilesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["restore_backup_files"]
+
+    @property
+    def list_host_groups(
+        self,
+    ) -> Callable[
+        [host_group.ListHostGroupsRequest], host_group.ListHostGroupsResponse
+    ]:
+        r"""Return a callable for the list host groups method over gRPC.
+
+        Returns a list of host groups in a ``location``. Use ``-`` as
+        location to list host groups across all locations.
+
+        Returns:
+            Callable[[~.ListHostGroupsRequest],
+                    ~.ListHostGroupsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_host_groups" not in self._stubs:
+            self._stubs["list_host_groups"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/ListHostGroups",
+                request_serializer=host_group.ListHostGroupsRequest.serialize,
+                response_deserializer=host_group.ListHostGroupsResponse.deserialize,
+            )
+        return self._stubs["list_host_groups"]
+
+    @property
+    def get_host_group(
+        self,
+    ) -> Callable[[host_group.GetHostGroupRequest], host_group.HostGroup]:
+        r"""Return a callable for the get host group method over gRPC.
+
+        Returns details of the specified host group.
+
+        Returns:
+            Callable[[~.GetHostGroupRequest],
+                    ~.HostGroup]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_host_group" not in self._stubs:
+            self._stubs["get_host_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/GetHostGroup",
+                request_serializer=host_group.GetHostGroupRequest.serialize,
+                response_deserializer=host_group.HostGroup.deserialize,
+            )
+        return self._stubs["get_host_group"]
+
+    @property
+    def create_host_group(
+        self,
+    ) -> Callable[[gcn_host_group.CreateHostGroupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the create host group method over gRPC.
+
+        Creates a new host group.
+
+        Returns:
+            Callable[[~.CreateHostGroupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_host_group" not in self._stubs:
+            self._stubs["create_host_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/CreateHostGroup",
+                request_serializer=gcn_host_group.CreateHostGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_host_group"]
+
+    @property
+    def update_host_group(
+        self,
+    ) -> Callable[[gcn_host_group.UpdateHostGroupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update host group method over gRPC.
+
+        Updates an existing host group.
+
+        Returns:
+            Callable[[~.UpdateHostGroupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_host_group" not in self._stubs:
+            self._stubs["update_host_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/UpdateHostGroup",
+                request_serializer=gcn_host_group.UpdateHostGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_host_group"]
+
+    @property
+    def delete_host_group(
+        self,
+    ) -> Callable[[host_group.DeleteHostGroupRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete host group method over gRPC.
+
+        Deletes a host group.
+
+        Returns:
+            Callable[[~.DeleteHostGroupRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_host_group" not in self._stubs:
+            self._stubs["delete_host_group"] = self._logged_channel.unary_unary(
+                "/google.cloud.netapp.v1.NetApp/DeleteHostGroup",
+                request_serializer=host_group.DeleteHostGroupRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_host_group"]
 
     def close(self):
         self._logged_channel.close()

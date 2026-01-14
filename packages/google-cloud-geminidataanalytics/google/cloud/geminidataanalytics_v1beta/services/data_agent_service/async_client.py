@@ -813,6 +813,137 @@ class DataAgentServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def create_data_agent_sync(
+        self,
+        request: Optional[
+            Union[data_agent_service.CreateDataAgentRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        data_agent: Optional[gcg_data_agent.DataAgent] = None,
+        data_agent_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gcg_data_agent.DataAgent:
+        r"""Creates a new DataAgent in a given project and
+        location synchronously.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1beta
+
+            async def sample_create_data_agent_sync():
+                # Create a client
+                client = geminidataanalytics_v1beta.DataAgentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1beta.CreateDataAgentRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = await client.create_data_agent_sync(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1beta.types.CreateDataAgentRequest, dict]]):
+                The request object. Message for creating a DataAgent.
+            parent (:class:`str`):
+                Required. Value for parent.
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            data_agent (:class:`google.cloud.geminidataanalytics_v1beta.types.DataAgent`):
+                Required. The resource being created.
+                This corresponds to the ``data_agent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            data_agent_id (:class:`str`):
+                Optional. Id of the requesting object. Must be unique
+                within the parent. The allowed format is:
+                ``^[a-z]([a-z0-9-]{0,61}[a-z0-9])?$``. If not provided,
+                the server will auto-generate a value for the id.
+
+                This corresponds to the ``data_agent_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.geminidataanalytics_v1beta.types.DataAgent:
+                Message describing a DataAgent
+                object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [parent, data_agent, data_agent_id]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_agent_service.CreateDataAgentRequest):
+            request = data_agent_service.CreateDataAgentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if data_agent is not None:
+            request.data_agent = data_agent
+        if data_agent_id is not None:
+            request.data_agent_id = data_agent_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.create_data_agent_sync
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def update_data_agent(
         self,
         request: Optional[
@@ -956,6 +1087,135 @@ class DataAgentServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_data_agent_sync(
+        self,
+        request: Optional[
+            Union[data_agent_service.UpdateDataAgentRequest, dict]
+        ] = None,
+        *,
+        data_agent: Optional[gcg_data_agent.DataAgent] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> gcg_data_agent.DataAgent:
+        r"""Updates the parameters of a single DataAgent
+        synchronously.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1beta
+
+            async def sample_update_data_agent_sync():
+                # Create a client
+                client = geminidataanalytics_v1beta.DataAgentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1beta.UpdateDataAgentRequest(
+                )
+
+                # Make the request
+                response = await client.update_data_agent_sync(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1beta.types.UpdateDataAgentRequest, dict]]):
+                The request object. Message for updating a DataAgent.
+            data_agent (:class:`google.cloud.geminidataanalytics_v1beta.types.DataAgent`):
+                Required. The resource being updated.
+                This corresponds to the ``data_agent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Optional. Field mask is used to specify the fields to be
+                overwritten in the DataAgent resource by the update. The
+                fields specified in the update_mask are relative to the
+                resource, not the full request. A field will be
+                overwritten if it is in the mask. If the user does not
+                provide a mask then all fields with non-default values
+                present in the request will be overwritten. If a
+                wildcard mask is provided, all fields will be
+                overwritten.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.geminidataanalytics_v1beta.types.DataAgent:
+                Message describing a DataAgent
+                object.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [data_agent, update_mask]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_agent_service.UpdateDataAgentRequest):
+            request = data_agent_service.UpdateDataAgentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if data_agent is not None:
+            request.data_agent = data_agent
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.update_data_agent_sync
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("data_agent.name", request.data_agent.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_data_agent(
         self,
         request: Optional[
@@ -1087,6 +1347,104 @@ class DataAgentServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def delete_data_agent_sync(
+        self,
+        request: Optional[
+            Union[data_agent_service.DeleteDataAgentRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> None:
+        r"""Deletes a single DataAgent synchronously.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import geminidataanalytics_v1beta
+
+            async def sample_delete_data_agent_sync():
+                # Create a client
+                client = geminidataanalytics_v1beta.DataAgentServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = geminidataanalytics_v1beta.DeleteDataAgentRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                await client.delete_data_agent_sync(request=request)
+
+        Args:
+            request (Optional[Union[google.cloud.geminidataanalytics_v1beta.types.DeleteDataAgentRequest, dict]]):
+                The request object. Message for deleting a DataAgent.
+            name (:class:`str`):
+                Required. Name of the resource.
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+        """
+        # Create or coerce a protobuf request object.
+        # - Quick check: If we got a request object, we should *not* have
+        #   gotten any keyword arguments that map to the request.
+        flattened_params = [name]
+        has_flattened_params = (
+            len([param for param in flattened_params if param is not None]) > 0
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, data_agent_service.DeleteDataAgentRequest):
+            request = data_agent_service.DeleteDataAgentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._client._transport._wrapped_methods[
+            self._client._transport.delete_data_agent_sync
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def get_iam_policy(
         self,

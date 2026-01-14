@@ -92,6 +92,11 @@ from .provenance import (
     Source,
     SourceContext,
 )
+from .risk import (
+    CISAKnownExploitedVulnerabilities,
+    ExploitPredictionScoringSystem,
+    Risk,
+)
 from .sbom import (
     SbomReferenceIntotoPayload,
     SbomReferenceIntotoPredicate,
@@ -193,6 +198,9 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "CISAKnownExploitedVulnerabilities",
+    "ExploitPredictionScoringSystem",
+    "Risk",
     "SbomReferenceIntotoPayload",
     "SbomReferenceIntotoPredicate",
     "SBOMReferenceNote",

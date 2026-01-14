@@ -1063,6 +1063,62 @@ class ConfigGrpcTransport(ConfigTransport):
             )
         return self._stubs["get_resource_drift"]
 
+    @property
+    def get_auto_migration_config(
+        self,
+    ) -> Callable[[config.GetAutoMigrationConfigRequest], config.AutoMigrationConfig]:
+        r"""Return a callable for the get auto migration config method over gRPC.
+
+        Get the AutoMigrationConfig for a given project and
+        location.
+
+        Returns:
+            Callable[[~.GetAutoMigrationConfigRequest],
+                    ~.AutoMigrationConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_auto_migration_config" not in self._stubs:
+            self._stubs["get_auto_migration_config"] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/GetAutoMigrationConfig",
+                request_serializer=config.GetAutoMigrationConfigRequest.serialize,
+                response_deserializer=config.AutoMigrationConfig.deserialize,
+            )
+        return self._stubs["get_auto_migration_config"]
+
+    @property
+    def update_auto_migration_config(
+        self,
+    ) -> Callable[[config.UpdateAutoMigrationConfigRequest], operations_pb2.Operation]:
+        r"""Return a callable for the update auto migration config method over gRPC.
+
+        Updates the AutoMigrationConfig for a given project
+        and location.
+
+        Returns:
+            Callable[[~.UpdateAutoMigrationConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_auto_migration_config" not in self._stubs:
+            self._stubs[
+                "update_auto_migration_config"
+            ] = self._logged_channel.unary_unary(
+                "/google.cloud.config.v1.Config/UpdateAutoMigrationConfig",
+                request_serializer=config.UpdateAutoMigrationConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_auto_migration_config"]
+
     def close(self):
         self._logged_channel.close()
 

@@ -273,6 +273,16 @@ class ConfigTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_auto_migration_config: gapic_v1.method.wrap_method(
+                self.get_auto_migration_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_auto_migration_config: gapic_v1.method.wrap_method(
+                self.update_auto_migration_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.get_location: gapic_v1.method.wrap_method(
                 self.get_location,
                 default_timeout=None,
@@ -585,6 +595,24 @@ class ConfigTransport(abc.ABC):
     ) -> Callable[
         [config.GetResourceDriftRequest],
         Union[config.ResourceDrift, Awaitable[config.ResourceDrift]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_auto_migration_config(
+        self,
+    ) -> Callable[
+        [config.GetAutoMigrationConfigRequest],
+        Union[config.AutoMigrationConfig, Awaitable[config.AutoMigrationConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_auto_migration_config(
+        self,
+    ) -> Callable[
+        [config.UpdateAutoMigrationConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

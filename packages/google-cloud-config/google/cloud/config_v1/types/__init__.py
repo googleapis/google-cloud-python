@@ -15,6 +15,7 @@
 #
 from .config import (
     ApplyResults,
+    AutoMigrationConfig,
     CreateDeploymentRequest,
     CreatePreviewRequest,
     DeleteDeploymentRequest,
@@ -27,6 +28,7 @@ from .config import (
     ExportPreviewResultRequest,
     ExportPreviewResultResponse,
     ExportRevisionStatefileRequest,
+    GetAutoMigrationConfigRequest,
     GetDeploymentRequest,
     GetPreviewRequest,
     GetResourceChangeRequest,
@@ -76,11 +78,13 @@ from .config import (
     TerraformVariable,
     TerraformVersion,
     UnlockDeploymentRequest,
+    UpdateAutoMigrationConfigRequest,
     UpdateDeploymentRequest,
 )
 
 __all__ = (
     "ApplyResults",
+    "AutoMigrationConfig",
     "CreateDeploymentRequest",
     "CreatePreviewRequest",
     "DeleteDeploymentRequest",
@@ -93,6 +97,7 @@ __all__ = (
     "ExportPreviewResultRequest",
     "ExportPreviewResultResponse",
     "ExportRevisionStatefileRequest",
+    "GetAutoMigrationConfigRequest",
     "GetDeploymentRequest",
     "GetPreviewRequest",
     "GetResourceChangeRequest",
@@ -141,6 +146,7 @@ __all__ = (
     "TerraformVariable",
     "TerraformVersion",
     "UnlockDeploymentRequest",
+    "UpdateAutoMigrationConfigRequest",
     "UpdateDeploymentRequest",
     "QuotaValidation",
 )

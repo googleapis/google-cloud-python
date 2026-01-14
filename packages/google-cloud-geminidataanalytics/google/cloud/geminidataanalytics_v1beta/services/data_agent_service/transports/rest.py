@@ -29,10 +29,13 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.geminidataanalytics_v1beta.types import data_agent, data_agent_service
+from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
+from google.cloud.geminidataanalytics_v1beta.types import data_agent
+from google.cloud.geminidataanalytics_v1beta.types import data_agent_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDataAgentServiceRestTransport
@@ -84,6 +87,14 @@ class DataAgentServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_data_agent_sync(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_data_agent_sync(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_delete_data_agent(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -91,6 +102,10 @@ class DataAgentServiceRestInterceptor:
             def post_delete_data_agent(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_data_agent_sync(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_get_data_agent(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -137,6 +152,14 @@ class DataAgentServiceRestInterceptor:
                 return request, metadata
 
             def post_update_data_agent(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_data_agent_sync(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_data_agent_sync(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -195,6 +218,55 @@ class DataAgentServiceRestInterceptor:
         """
         return response, metadata
 
+    def pre_create_data_agent_sync(
+        self,
+        request: data_agent_service.CreateDataAgentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.CreateDataAgentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for create_data_agent_sync
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataAgentService server.
+        """
+        return request, metadata
+
+    def post_create_data_agent_sync(
+        self, response: gcg_data_agent.DataAgent
+    ) -> gcg_data_agent.DataAgent:
+        """Post-rpc interceptor for create_data_agent_sync
+
+        DEPRECATED. Please use the `post_create_data_agent_sync_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataAgentService server but before
+        it is returned to user code. This `post_create_data_agent_sync` interceptor runs
+        before the `post_create_data_agent_sync_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_data_agent_sync_with_metadata(
+        self,
+        response: gcg_data_agent.DataAgent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcg_data_agent.DataAgent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_data_agent_sync
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataAgentService server but before it is returned to user code.
+
+        We recommend only using this `post_create_data_agent_sync_with_metadata`
+        interceptor in new development instead of the `post_create_data_agent_sync` interceptor.
+        When both interceptors are used, this `post_create_data_agent_sync_with_metadata` interceptor runs after the
+        `post_create_data_agent_sync` interceptor. The (possibly modified) response returned by
+        `post_create_data_agent_sync` will be passed to
+        `post_create_data_agent_sync_with_metadata`.
+        """
+        return response, metadata
+
     def pre_delete_data_agent(
         self,
         request: data_agent_service.DeleteDataAgentRequest,
@@ -243,6 +315,21 @@ class DataAgentServiceRestInterceptor:
         `post_delete_data_agent_with_metadata`.
         """
         return response, metadata
+
+    def pre_delete_data_agent_sync(
+        self,
+        request: data_agent_service.DeleteDataAgentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.DeleteDataAgentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for delete_data_agent_sync
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataAgentService server.
+        """
+        return request, metadata
 
     def pre_get_data_agent(
         self,
@@ -534,6 +621,55 @@ class DataAgentServiceRestInterceptor:
         `post_update_data_agent` interceptor. The (possibly modified) response returned by
         `post_update_data_agent` will be passed to
         `post_update_data_agent_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_data_agent_sync(
+        self,
+        request: data_agent_service.UpdateDataAgentRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        data_agent_service.UpdateDataAgentRequest,
+        Sequence[Tuple[str, Union[str, bytes]]],
+    ]:
+        """Pre-rpc interceptor for update_data_agent_sync
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataAgentService server.
+        """
+        return request, metadata
+
+    def post_update_data_agent_sync(
+        self, response: gcg_data_agent.DataAgent
+    ) -> gcg_data_agent.DataAgent:
+        """Post-rpc interceptor for update_data_agent_sync
+
+        DEPRECATED. Please use the `post_update_data_agent_sync_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the DataAgentService server but before
+        it is returned to user code. This `post_update_data_agent_sync` interceptor runs
+        before the `post_update_data_agent_sync_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_data_agent_sync_with_metadata(
+        self,
+        response: gcg_data_agent.DataAgent,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[gcg_data_agent.DataAgent, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_data_agent_sync
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the DataAgentService server but before it is returned to user code.
+
+        We recommend only using this `post_update_data_agent_sync_with_metadata`
+        interceptor in new development instead of the `post_update_data_agent_sync` interceptor.
+        When both interceptors are used, this `post_update_data_agent_sync_with_metadata` interceptor runs after the
+        `post_update_data_agent_sync` interceptor. The (possibly modified) response returned by
+        `post_update_data_agent_sync` will be passed to
+        `post_update_data_agent_sync_with_metadata`.
         """
         return response, metadata
 
@@ -979,6 +1115,161 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
+    class _CreateDataAgentSync(
+        _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync,
+        DataAgentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataAgentServiceRestTransport.CreateDataAgentSync")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_agent_service.CreateDataAgentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gcg_data_agent.DataAgent:
+            r"""Call the create data agent sync method over HTTP.
+
+            Args:
+                request (~.data_agent_service.CreateDataAgentRequest):
+                    The request object. Message for creating a DataAgent.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gcg_data_agent.DataAgent:
+                    Message describing a DataAgent
+                object.
+
+            """
+
+            http_options = (
+                _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_data_agent_sync(
+                request, metadata
+            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataAgentServiceRestTransport._BaseCreateDataAgentSync._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1beta.DataAgentServiceClient.CreateDataAgentSync",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1beta.DataAgentService",
+                        "rpcName": "CreateDataAgentSync",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataAgentServiceRestTransport._CreateDataAgentSync._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcg_data_agent.DataAgent()
+            pb_resp = gcg_data_agent.DataAgent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_data_agent_sync(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_data_agent_sync_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcg_data_agent.DataAgent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1beta.DataAgentServiceClient.create_data_agent_sync",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1beta.DataAgentService",
+                        "rpcName": "CreateDataAgentSync",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _DeleteDataAgent(
         _BaseDataAgentServiceRestTransport._BaseDeleteDataAgent,
         DataAgentServiceRestStub,
@@ -1126,6 +1417,115 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                     },
                 )
             return resp
+
+    class _DeleteDataAgentSync(
+        _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync,
+        DataAgentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataAgentServiceRestTransport.DeleteDataAgentSync")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_agent_service.DeleteDataAgentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ):
+            r"""Call the delete data agent sync method over HTTP.
+
+            Args:
+                request (~.data_agent_service.DeleteDataAgentRequest):
+                    The request object. Message for deleting a DataAgent.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+            """
+
+            http_options = (
+                _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_data_agent_sync(
+                request, metadata
+            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync._get_transcoded_request(
+                http_options, request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataAgentServiceRestTransport._BaseDeleteDataAgentSync._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1beta.DataAgentServiceClient.DeleteDataAgentSync",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1beta.DataAgentService",
+                        "rpcName": "DeleteDataAgentSync",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataAgentServiceRestTransport._DeleteDataAgentSync._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _GetDataAgent(
         _BaseDataAgentServiceRestTransport._BaseGetDataAgent, DataAgentServiceRestStub
@@ -2185,6 +2585,161 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
                 )
             return resp
 
+    class _UpdateDataAgentSync(
+        _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync,
+        DataAgentServiceRestStub,
+    ):
+        def __hash__(self):
+            return hash("DataAgentServiceRestTransport.UpdateDataAgentSync")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: data_agent_service.UpdateDataAgentRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> gcg_data_agent.DataAgent:
+            r"""Call the update data agent sync method over HTTP.
+
+            Args:
+                request (~.data_agent_service.UpdateDataAgentRequest):
+                    The request object. Message for updating a DataAgent.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.gcg_data_agent.DataAgent:
+                    Message describing a DataAgent
+                object.
+
+            """
+
+            http_options = (
+                _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_data_agent_sync(
+                request, metadata
+            )
+            transcoded_request = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_transcoded_request(
+                http_options, request
+            )
+
+            body = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = _BaseDataAgentServiceRestTransport._BaseUpdateDataAgentSync._get_query_params_json(
+                transcoded_request
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.geminidataanalytics_v1beta.DataAgentServiceClient.UpdateDataAgentSync",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1beta.DataAgentService",
+                        "rpcName": "UpdateDataAgentSync",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = DataAgentServiceRestTransport._UpdateDataAgentSync._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcg_data_agent.DataAgent()
+            pb_resp = gcg_data_agent.DataAgent.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_data_agent_sync(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_data_agent_sync_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = gcg_data_agent.DataAgent.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.geminidataanalytics_v1beta.DataAgentServiceClient.update_data_agent_sync",
+                    extra={
+                        "serviceName": "google.cloud.geminidataanalytics.v1beta.DataAgentService",
+                        "rpcName": "UpdateDataAgentSync",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     @property
     def create_data_agent(
         self,
@@ -2196,6 +2751,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
         return self._CreateDataAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.CreateDataAgentRequest], gcg_data_agent.DataAgent
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateDataAgentSync(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_data_agent(
         self,
     ) -> Callable[
@@ -2204,6 +2769,14 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataAgent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_data_agent_sync(
+        self,
+    ) -> Callable[[data_agent_service.DeleteDataAgentRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteDataAgentSync(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_data_agent(
@@ -2260,6 +2833,16 @@ class DataAgentServiceRestTransport(_BaseDataAgentServiceRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataAgent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.UpdateDataAgentRequest], gcg_data_agent.DataAgent
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDataAgentSync(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_location(self):

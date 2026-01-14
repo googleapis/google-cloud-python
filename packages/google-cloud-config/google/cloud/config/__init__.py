@@ -22,6 +22,7 @@ from google.cloud.config_v1.services.config.async_client import ConfigAsyncClien
 from google.cloud.config_v1.services.config.client import ConfigClient
 from google.cloud.config_v1.types.config import (
     ApplyResults,
+    AutoMigrationConfig,
     CreateDeploymentRequest,
     CreatePreviewRequest,
     DeleteDeploymentRequest,
@@ -34,6 +35,7 @@ from google.cloud.config_v1.types.config import (
     ExportPreviewResultRequest,
     ExportPreviewResultResponse,
     ExportRevisionStatefileRequest,
+    GetAutoMigrationConfigRequest,
     GetDeploymentRequest,
     GetPreviewRequest,
     GetResourceChangeRequest,
@@ -83,6 +85,7 @@ from google.cloud.config_v1.types.config import (
     TerraformVariable,
     TerraformVersion,
     UnlockDeploymentRequest,
+    UpdateAutoMigrationConfigRequest,
     UpdateDeploymentRequest,
 )
 
@@ -90,6 +93,7 @@ __all__ = (
     "ConfigClient",
     "ConfigAsyncClient",
     "ApplyResults",
+    "AutoMigrationConfig",
     "CreateDeploymentRequest",
     "CreatePreviewRequest",
     "DeleteDeploymentRequest",
@@ -102,6 +106,7 @@ __all__ = (
     "ExportPreviewResultRequest",
     "ExportPreviewResultResponse",
     "ExportRevisionStatefileRequest",
+    "GetAutoMigrationConfigRequest",
     "GetDeploymentRequest",
     "GetPreviewRequest",
     "GetResourceChangeRequest",
@@ -150,6 +155,7 @@ __all__ = (
     "TerraformVariable",
     "TerraformVersion",
     "UnlockDeploymentRequest",
+    "UpdateAutoMigrationConfigRequest",
     "UpdateDeploymentRequest",
     "QuotaValidation",
 )

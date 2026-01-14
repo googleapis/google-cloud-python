@@ -38,6 +38,8 @@ from google.cloud.netapp_v1.types import backup_policy
 from google.cloud.netapp_v1.types import backup_policy as gcn_backup_policy
 from google.cloud.netapp_v1.types import backup_vault
 from google.cloud.netapp_v1.types import backup_vault as gcn_backup_vault
+from google.cloud.netapp_v1.types import host_group
+from google.cloud.netapp_v1.types import host_group as gcn_host_group
 from google.cloud.netapp_v1.types import kms
 from google.cloud.netapp_v1.types import quota_rule
 from google.cloud.netapp_v1.types import quota_rule as gcn_quota_rule
@@ -124,6 +126,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_host_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_host_group(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_kms_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -201,6 +211,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_delete_backup_vault(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_delete_host_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_delete_host_group(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -300,6 +318,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_host_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_host_group(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_kms_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -380,6 +406,14 @@ class NetAppRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_host_groups(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_host_groups(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_kms_configs(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -425,6 +459,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_list_volumes(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_restore_backup_files(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_restore_backup_files(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -505,6 +547,14 @@ class NetAppRestInterceptor:
                 return request, metadata
 
             def post_update_backup_vault(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_host_group(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_host_group(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -768,6 +818,54 @@ class NetAppRestInterceptor:
         `post_create_backup_vault` interceptor. The (possibly modified) response returned by
         `post_create_backup_vault` will be passed to
         `post_create_backup_vault_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_create_host_group(
+        self,
+        request: gcn_host_group.CreateHostGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_host_group.CreateHostGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for create_host_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_create_host_group(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for create_host_group
+
+        DEPRECATED. Please use the `post_create_host_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_create_host_group` interceptor runs
+        before the `post_create_host_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_create_host_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for create_host_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_create_host_group_with_metadata`
+        interceptor in new development instead of the `post_create_host_group` interceptor.
+        When both interceptors are used, this `post_create_host_group_with_metadata` interceptor runs after the
+        `post_create_host_group` interceptor. The (possibly modified) response returned by
+        `post_create_host_group` will be passed to
+        `post_create_host_group_with_metadata`.
         """
         return response, metadata
 
@@ -1245,6 +1343,54 @@ class NetAppRestInterceptor:
         `post_delete_backup_vault` interceptor. The (possibly modified) response returned by
         `post_delete_backup_vault` will be passed to
         `post_delete_backup_vault_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_delete_host_group(
+        self,
+        request: host_group.DeleteHostGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        host_group.DeleteHostGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for delete_host_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_delete_host_group(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for delete_host_group
+
+        DEPRECATED. Please use the `post_delete_host_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_delete_host_group` interceptor runs
+        before the `post_delete_host_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_delete_host_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for delete_host_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_delete_host_group_with_metadata`
+        interceptor in new development instead of the `post_delete_host_group` interceptor.
+        When both interceptors are used, this `post_delete_host_group_with_metadata` interceptor runs after the
+        `post_delete_host_group` interceptor. The (possibly modified) response returned by
+        `post_delete_host_group` will be passed to
+        `post_delete_host_group_with_metadata`.
         """
         return response, metadata
 
@@ -1813,6 +1959,52 @@ class NetAppRestInterceptor:
         """
         return response, metadata
 
+    def pre_get_host_group(
+        self,
+        request: host_group.GetHostGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[host_group.GetHostGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Pre-rpc interceptor for get_host_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_get_host_group(
+        self, response: host_group.HostGroup
+    ) -> host_group.HostGroup:
+        """Post-rpc interceptor for get_host_group
+
+        DEPRECATED. Please use the `post_get_host_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_get_host_group` interceptor runs
+        before the `post_get_host_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_get_host_group_with_metadata(
+        self,
+        response: host_group.HostGroup,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[host_group.HostGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for get_host_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_get_host_group_with_metadata`
+        interceptor in new development instead of the `post_get_host_group` interceptor.
+        When both interceptors are used, this `post_get_host_group_with_metadata` interceptor runs after the
+        `post_get_host_group` interceptor. The (possibly modified) response returned by
+        `post_get_host_group` will be passed to
+        `post_get_host_group_with_metadata`.
+        """
+        return response, metadata
+
     def pre_get_kms_config(
         self,
         request: kms.GetKmsConfigRequest,
@@ -2282,6 +2474,56 @@ class NetAppRestInterceptor:
         """
         return response, metadata
 
+    def pre_list_host_groups(
+        self,
+        request: host_group.ListHostGroupsRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        host_group.ListHostGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for list_host_groups
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_list_host_groups(
+        self, response: host_group.ListHostGroupsResponse
+    ) -> host_group.ListHostGroupsResponse:
+        """Post-rpc interceptor for list_host_groups
+
+        DEPRECATED. Please use the `post_list_host_groups_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_list_host_groups` interceptor runs
+        before the `post_list_host_groups_with_metadata` interceptor.
+        """
+        return response
+
+    def post_list_host_groups_with_metadata(
+        self,
+        response: host_group.ListHostGroupsResponse,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        host_group.ListHostGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Post-rpc interceptor for list_host_groups
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_list_host_groups_with_metadata`
+        interceptor in new development instead of the `post_list_host_groups` interceptor.
+        When both interceptors are used, this `post_list_host_groups_with_metadata` interceptor runs after the
+        `post_list_host_groups` interceptor. The (possibly modified) response returned by
+        `post_list_host_groups` will be passed to
+        `post_list_host_groups_with_metadata`.
+        """
+        return response, metadata
+
     def pre_list_kms_configs(
         self,
         request: kms.ListKmsConfigsRequest,
@@ -2567,6 +2809,54 @@ class NetAppRestInterceptor:
         `post_list_volumes` interceptor. The (possibly modified) response returned by
         `post_list_volumes` will be passed to
         `post_list_volumes_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_restore_backup_files(
+        self,
+        request: volume.RestoreBackupFilesRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        volume.RestoreBackupFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for restore_backup_files
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_restore_backup_files(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for restore_backup_files
+
+        DEPRECATED. Please use the `post_restore_backup_files_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_restore_backup_files` interceptor runs
+        before the `post_restore_backup_files_with_metadata` interceptor.
+        """
+        return response
+
+    def post_restore_backup_files_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for restore_backup_files
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_restore_backup_files_with_metadata`
+        interceptor in new development instead of the `post_restore_backup_files` interceptor.
+        When both interceptors are used, this `post_restore_backup_files_with_metadata` interceptor runs after the
+        `post_restore_backup_files` interceptor. The (possibly modified) response returned by
+        `post_restore_backup_files` will be passed to
+        `post_restore_backup_files_with_metadata`.
         """
         return response, metadata
 
@@ -3048,6 +3338,54 @@ class NetAppRestInterceptor:
         `post_update_backup_vault` interceptor. The (possibly modified) response returned by
         `post_update_backup_vault` will be passed to
         `post_update_backup_vault_with_metadata`.
+        """
+        return response, metadata
+
+    def pre_update_host_group(
+        self,
+        request: gcn_host_group.UpdateHostGroupRequest,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[
+        gcn_host_group.UpdateHostGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
+    ]:
+        """Pre-rpc interceptor for update_host_group
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the NetApp server.
+        """
+        return request, metadata
+
+    def post_update_host_group(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for update_host_group
+
+        DEPRECATED. Please use the `post_update_host_group_with_metadata`
+        interceptor instead.
+
+        Override in a subclass to read or manipulate the response
+        after it is returned by the NetApp server but before
+        it is returned to user code. This `post_update_host_group` interceptor runs
+        before the `post_update_host_group_with_metadata` interceptor.
+        """
+        return response
+
+    def post_update_host_group_with_metadata(
+        self,
+        response: operations_pb2.Operation,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+    ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
+        """Post-rpc interceptor for update_host_group
+
+        Override in a subclass to read or manipulate the response or metadata after it
+        is returned by the NetApp server but before it is returned to user code.
+
+        We recommend only using this `post_update_host_group_with_metadata`
+        interceptor in new development instead of the `post_update_host_group` interceptor.
+        When both interceptors are used, this `post_update_host_group_with_metadata` interceptor runs after the
+        `post_update_host_group` interceptor. The (possibly modified) response returned by
+        `post_update_host_group` will be passed to
+        `post_update_host_group_with_metadata`.
         """
         return response, metadata
 
@@ -4339,6 +4677,164 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "CreateBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _CreateHostGroup(
+        _BaseNetAppRestTransport._BaseCreateHostGroup, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.CreateHostGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_host_group.CreateHostGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the create host group method over HTTP.
+
+            Args:
+                request (~.gcn_host_group.CreateHostGroupRequest):
+                    The request object. CreateHostGroupRequest for creating a
+                host group.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseCreateHostGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_create_host_group(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseCreateHostGroup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseNetAppRestTransport._BaseCreateHostGroup._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseCreateHostGroup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.CreateHostGroup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateHostGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._CreateHostGroup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_create_host_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_create_host_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.create_host_group",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "CreateHostGroup",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -5879,6 +6375,158 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "DeleteBackupVault",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _DeleteHostGroup(
+        _BaseNetAppRestTransport._BaseDeleteHostGroup, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.DeleteHostGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: host_group.DeleteHostGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the delete host group method over HTTP.
+
+            Args:
+                request (~.host_group.DeleteHostGroupRequest):
+                    The request object. DeleteHostGroupRequest for deleting a
+                single host group.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseDeleteHostGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_delete_host_group(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseDeleteHostGroup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseDeleteHostGroup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.DeleteHostGroup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteHostGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._DeleteHostGroup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_delete_host_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_delete_host_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.delete_host_group",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "DeleteHostGroup",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -7702,6 +8350,156 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
+    class _GetHostGroup(_BaseNetAppRestTransport._BaseGetHostGroup, NetAppRestStub):
+        def __hash__(self):
+            return hash("NetAppRestTransport.GetHostGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: host_group.GetHostGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> host_group.HostGroup:
+            r"""Call the get host group method over HTTP.
+
+            Args:
+                request (~.host_group.GetHostGroupRequest):
+                    The request object. GetHostGroupRequest for getting a
+                host group.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.host_group.HostGroup:
+                    Host group is a collection of hosts
+                that can be used for accessing a Block
+                Volume.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseGetHostGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_get_host_group(request, metadata)
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseGetHostGroup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseGetHostGroup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.GetHostGroup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetHostGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._GetHostGroup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = host_group.HostGroup()
+            pb_resp = host_group.HostGroup.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_get_host_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_get_host_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = host_group.HostGroup.to_json(response)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.get_host_group",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "GetHostGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _GetKmsConfig(_BaseNetAppRestTransport._BaseGetKmsConfig, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.GetKmsConfig")
@@ -7752,7 +8550,7 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
 
             Returns:
                 ~.kms.KmsConfig:
-                    KmsConfig is the customer managed
+                    KmsConfig is the customer-managed
                 encryption key(CMEK) configuration.
 
             """
@@ -9207,6 +10005,159 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
+    class _ListHostGroups(_BaseNetAppRestTransport._BaseListHostGroups, NetAppRestStub):
+        def __hash__(self):
+            return hash("NetAppRestTransport.ListHostGroups")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+            return response
+
+        def __call__(
+            self,
+            request: host_group.ListHostGroupsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> host_group.ListHostGroupsResponse:
+            r"""Call the list host groups method over HTTP.
+
+            Args:
+                request (~.host_group.ListHostGroupsRequest):
+                    The request object. ListHostGroupsRequest for listing
+                host groups.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.host_group.ListHostGroupsResponse:
+                    ListHostGroupsResponse is the
+                response to a ListHostGroupsRequest.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseListHostGroups._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_list_host_groups(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseListHostGroups._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseListHostGroups._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = type(request).to_json(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.ListHostGroups",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListHostGroups",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._ListHostGroups._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = host_group.ListHostGroupsResponse()
+            pb_resp = host_group.ListHostGroupsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_list_host_groups(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_list_host_groups_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = host_group.ListHostGroupsResponse.to_json(
+                        response
+                    )
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.list_host_groups",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "ListHostGroups",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _ListKmsConfigs(_BaseNetAppRestTransport._BaseListKmsConfigs, NetAppRestStub):
         def __hash__(self):
             return hash("NetAppRestTransport.ListKmsConfigs")
@@ -10109,6 +11060,164 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                     extra={
                         "serviceName": "google.cloud.netapp.v1.NetApp",
                         "rpcName": "ListVolumes",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
+    class _RestoreBackupFiles(
+        _BaseNetAppRestTransport._BaseRestoreBackupFiles, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.RestoreBackupFiles")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: volume.RestoreBackupFilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the restore backup files method over HTTP.
+
+            Args:
+                request (~.volume.RestoreBackupFilesRequest):
+                    The request object. RestoreBackupFilesRequest restores
+                files from a backup to a volume.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseRestoreBackupFiles._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_restore_backup_files(
+                request, metadata
+            )
+            transcoded_request = _BaseNetAppRestTransport._BaseRestoreBackupFiles._get_transcoded_request(
+                http_options, request
+            )
+
+            body = (
+                _BaseNetAppRestTransport._BaseRestoreBackupFiles._get_request_body_json(
+                    transcoded_request
+                )
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseRestoreBackupFiles._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.RestoreBackupFiles",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "RestoreBackupFiles",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._RestoreBackupFiles._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_restore_backup_files(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_restore_backup_files_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.restore_backup_files",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "RestoreBackupFiles",
                         "metadata": http_response["headers"],
                         "httpResponse": http_response,
                     },
@@ -11688,6 +12797,164 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
                 )
             return resp
 
+    class _UpdateHostGroup(
+        _BaseNetAppRestTransport._BaseUpdateHostGroup, NetAppRestStub
+    ):
+        def __hash__(self):
+            return hash("NetAppRestTransport.UpdateHostGroup")
+
+        @staticmethod
+        def _get_response(
+            host,
+            metadata,
+            query_params,
+            session,
+            timeout,
+            transcoded_request,
+            body=None,
+        ):
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(session, method)(
+                "{host}{uri}".format(host=host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+            return response
+
+        def __call__(
+            self,
+            request: gcn_host_group.UpdateHostGroupRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the update host group method over HTTP.
+
+            Args:
+                request (~.gcn_host_group.UpdateHostGroupRequest):
+                    The request object. UpdateHostGroupRequest for updating a
+                host group.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                    sent along with the request as metadata. Normally, each value must be of type `str`,
+                    but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                    be of type `bytes`.
+
+            Returns:
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
+
+            """
+
+            http_options = (
+                _BaseNetAppRestTransport._BaseUpdateHostGroup._get_http_options()
+            )
+
+            request, metadata = self._interceptor.pre_update_host_group(
+                request, metadata
+            )
+            transcoded_request = (
+                _BaseNetAppRestTransport._BaseUpdateHostGroup._get_transcoded_request(
+                    http_options, request
+                )
+            )
+
+            body = _BaseNetAppRestTransport._BaseUpdateHostGroup._get_request_body_json(
+                transcoded_request
+            )
+
+            # Jsonify the query params
+            query_params = (
+                _BaseNetAppRestTransport._BaseUpdateHostGroup._get_query_params_json(
+                    transcoded_request
+                )
+            )
+
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(
+                    host=self._host, uri=transcoded_request["uri"]
+                )
+                method = transcoded_request["method"]
+                try:
+                    request_payload = json_format.MessageToJson(request)
+                except:
+                    request_payload = None
+                http_request = {
+                    "payload": request_payload,
+                    "requestMethod": method,
+                    "requestUrl": request_url,
+                    "headers": dict(metadata),
+                }
+                _LOGGER.debug(
+                    f"Sending request for google.cloud.netapp_v1.NetAppClient.UpdateHostGroup",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateHostGroup",
+                        "httpRequest": http_request,
+                        "metadata": http_request["headers"],
+                    },
+                )
+
+            # Send the request
+            response = NetAppRestTransport._UpdateHostGroup._get_response(
+                self._host,
+                metadata,
+                query_params,
+                self._session,
+                timeout,
+                transcoded_request,
+                body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+
+            resp = self._interceptor.post_update_host_group(resp)
+            response_metadata = [(k, str(v)) for k, v in response.headers.items()]
+            resp, _ = self._interceptor.post_update_host_group_with_metadata(
+                resp, response_metadata
+            )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+                logging.DEBUG
+            ):  # pragma: NO COVER
+                try:
+                    response_payload = json_format.MessageToJson(resp)
+                except:
+                    response_payload = None
+                http_response = {
+                    "payload": response_payload,
+                    "headers": dict(response.headers),
+                    "status": response.status_code,
+                }
+                _LOGGER.debug(
+                    "Received response for google.cloud.netapp_v1.NetAppClient.update_host_group",
+                    extra={
+                        "serviceName": "google.cloud.netapp.v1.NetApp",
+                        "rpcName": "UpdateHostGroup",
+                        "metadata": http_response["headers"],
+                        "httpResponse": http_response,
+                    },
+                )
+            return resp
+
     class _UpdateKmsConfig(
         _BaseNetAppRestTransport._BaseUpdateKmsConfig, NetAppRestStub
     ):
@@ -12988,6 +14255,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._CreateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_host_group(
+        self,
+    ) -> Callable[[gcn_host_group.CreateHostGroupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateHostGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_kms_config(
         self,
     ) -> Callable[[kms.CreateKmsConfigRequest], operations_pb2.Operation]:
@@ -13070,6 +14345,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupVault(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_host_group(
+        self,
+    ) -> Callable[[host_group.DeleteHostGroupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteHostGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_kms_config(
@@ -13168,6 +14451,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._GetBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_host_group(
+        self,
+    ) -> Callable[[host_group.GetHostGroupRequest], host_group.HostGroup]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetHostGroup(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_kms_config(self) -> Callable[[kms.GetKmsConfigRequest], kms.KmsConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -13252,6 +14543,16 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         return self._ListBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_host_groups(
+        self,
+    ) -> Callable[
+        [host_group.ListHostGroupsRequest], host_group.ListHostGroupsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListHostGroups(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_kms_configs(
         self,
     ) -> Callable[[kms.ListKmsConfigsRequest], kms.ListKmsConfigsResponse]:
@@ -13304,6 +14605,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVolumes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def restore_backup_files(
+        self,
+    ) -> Callable[[volume.RestoreBackupFilesRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._RestoreBackupFiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def resume_replication(
@@ -13394,6 +14703,14 @@ class NetAppRestTransport(_BaseNetAppRestTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_host_group(
+        self,
+    ) -> Callable[[gcn_host_group.UpdateHostGroupRequest], operations_pb2.Operation]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateHostGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_kms_config(

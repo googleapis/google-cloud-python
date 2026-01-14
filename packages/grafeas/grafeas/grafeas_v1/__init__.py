@@ -108,6 +108,11 @@ from .types.provenance import (
     Source,
     SourceContext,
 )
+from .types.risk import (
+    CISAKnownExploitedVulnerabilities,
+    ExploitPredictionScoringSystem,
+    Risk,
+)
 from .types.sbom import (
     SbomReferenceIntotoPayload,
     SbomReferenceIntotoPredicate,
@@ -243,6 +248,7 @@ __all__ = (
     "BuildOccurrence",
     "BuildProvenance",
     "BuilderConfig",
+    "CISAKnownExploitedVulnerabilities",
     "CVSS",
     "CVSSVersion",
     "CVSSv3",
@@ -266,6 +272,7 @@ __all__ = (
     "Distribution",
     "Envelope",
     "EnvelopeSignature",
+    "ExploitPredictionScoringSystem",
     "FileHashes",
     "FileLocation",
     "Fingerprint",
@@ -303,6 +310,7 @@ __all__ = (
     "Recipe",
     "RelatedUrl",
     "RepoId",
+    "Risk",
     "SBOMReferenceNote",
     "SBOMReferenceOccurrence",
     "SbomReferenceIntotoPayload",

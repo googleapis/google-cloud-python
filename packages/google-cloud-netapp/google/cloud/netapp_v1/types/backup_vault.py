@@ -70,7 +70,18 @@ class BackupVault(proto.Message):
             ``projects/{project_id}/locations/{location}/backupVaults/{backup_vault_id}``
         backup_retention_policy (google.cloud.netapp_v1.types.BackupVault.BackupRetentionPolicy):
             Optional. Backup retention policy defining
-            the retenton of backups.
+            the retention of backups.
+        kms_config (str):
+            Optional. Specifies the Key Management System (KMS)
+            configuration to be used for backup encryption. Format:
+            ``projects/{project}/locations/{location}/kmsConfigs/{kms_config}``
+        encryption_state (google.cloud.netapp_v1.types.BackupVault.EncryptionState):
+            Output only. Field indicating encryption
+            state of CMEK backups.
+        backups_crypto_key_version (str):
+            Output only. The crypto key version used to encrypt the
+            backup vault. Format:
+            ``projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}``
     """
 
     class State(proto.Enum):
@@ -111,6 +122,28 @@ class BackupVault(proto.Message):
         BACKUP_VAULT_TYPE_UNSPECIFIED = 0
         IN_REGION = 1
         CROSS_REGION = 2
+
+    class EncryptionState(proto.Enum):
+        r"""Encryption state of customer-managed encryption keys (CMEK)
+        backups.
+
+        Values:
+            ENCRYPTION_STATE_UNSPECIFIED (0):
+                Encryption state not set.
+            ENCRYPTION_STATE_PENDING (1):
+                Encryption state is pending.
+            ENCRYPTION_STATE_COMPLETED (2):
+                Encryption is complete.
+            ENCRYPTION_STATE_IN_PROGRESS (3):
+                Encryption is in progress.
+            ENCRYPTION_STATE_FAILED (4):
+                Encryption has failed.
+        """
+        ENCRYPTION_STATE_UNSPECIFIED = 0
+        ENCRYPTION_STATE_PENDING = 1
+        ENCRYPTION_STATE_COMPLETED = 2
+        ENCRYPTION_STATE_IN_PROGRESS = 3
+        ENCRYPTION_STATE_FAILED = 4
 
     class BackupRetentionPolicy(proto.Message):
         r"""Retention policy for backups in the backup vault
@@ -210,6 +243,19 @@ class BackupVault(proto.Message):
         proto.MESSAGE,
         number=11,
         message=BackupRetentionPolicy,
+    )
+    kms_config: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    encryption_state: EncryptionState = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=EncryptionState,
+    )
+    backups_crypto_key_version: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 

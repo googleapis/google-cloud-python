@@ -29,13 +29,16 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.geminidataanalytics_v1beta.types import data_agent, data_agent_service
+from google.cloud.geminidataanalytics_v1beta.types import data_agent as gcg_data_agent
+from google.cloud.geminidataanalytics_v1beta.types import data_agent
+from google.cloud.geminidataanalytics_v1beta.types import data_agent_service
 
 from .base import DEFAULT_CLIENT_INFO, DataAgentServiceTransport
 from .grpc import DataAgentServiceGrpcTransport
@@ -469,6 +472,35 @@ class DataAgentServiceGrpcAsyncIOTransport(DataAgentServiceTransport):
         return self._stubs["create_data_agent"]
 
     @property
+    def create_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.CreateDataAgentRequest], Awaitable[gcg_data_agent.DataAgent]
+    ]:
+        r"""Return a callable for the create data agent sync method over gRPC.
+
+        Creates a new DataAgent in a given project and
+        location synchronously.
+
+        Returns:
+            Callable[[~.CreateDataAgentRequest],
+                    Awaitable[~.DataAgent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_data_agent_sync" not in self._stubs:
+            self._stubs["create_data_agent_sync"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1beta.DataAgentService/CreateDataAgentSync",
+                request_serializer=data_agent_service.CreateDataAgentRequest.serialize,
+                response_deserializer=gcg_data_agent.DataAgent.deserialize,
+            )
+        return self._stubs["create_data_agent_sync"]
+
+    @property
     def update_data_agent(
         self,
     ) -> Callable[
@@ -497,6 +529,35 @@ class DataAgentServiceGrpcAsyncIOTransport(DataAgentServiceTransport):
         return self._stubs["update_data_agent"]
 
     @property
+    def update_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.UpdateDataAgentRequest], Awaitable[gcg_data_agent.DataAgent]
+    ]:
+        r"""Return a callable for the update data agent sync method over gRPC.
+
+        Updates the parameters of a single DataAgent
+        synchronously.
+
+        Returns:
+            Callable[[~.UpdateDataAgentRequest],
+                    Awaitable[~.DataAgent]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_data_agent_sync" not in self._stubs:
+            self._stubs["update_data_agent_sync"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1beta.DataAgentService/UpdateDataAgentSync",
+                request_serializer=data_agent_service.UpdateDataAgentRequest.serialize,
+                response_deserializer=gcg_data_agent.DataAgent.deserialize,
+            )
+        return self._stubs["update_data_agent_sync"]
+
+    @property
     def delete_data_agent(
         self,
     ) -> Callable[
@@ -523,6 +584,34 @@ class DataAgentServiceGrpcAsyncIOTransport(DataAgentServiceTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_data_agent"]
+
+    @property
+    def delete_data_agent_sync(
+        self,
+    ) -> Callable[
+        [data_agent_service.DeleteDataAgentRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete data agent sync method over gRPC.
+
+        Deletes a single DataAgent synchronously.
+
+        Returns:
+            Callable[[~.DeleteDataAgentRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_data_agent_sync" not in self._stubs:
+            self._stubs["delete_data_agent_sync"] = self._logged_channel.unary_unary(
+                "/google.cloud.geminidataanalytics.v1beta.DataAgentService/DeleteDataAgentSync",
+                request_serializer=data_agent_service.DeleteDataAgentRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_data_agent_sync"]
 
     @property
     def get_iam_policy(
@@ -599,13 +688,28 @@ class DataAgentServiceGrpcAsyncIOTransport(DataAgentServiceTransport):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_data_agent_sync: self._wrap_method(
+                self.create_data_agent_sync,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.update_data_agent: self._wrap_method(
                 self.update_data_agent,
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.update_data_agent_sync: self._wrap_method(
+                self.update_data_agent_sync,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_data_agent: self._wrap_method(
                 self.delete_data_agent,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_data_agent_sync: self._wrap_method(
+                self.delete_data_agent_sync,
                 default_timeout=None,
                 client_info=client_info,
             ),

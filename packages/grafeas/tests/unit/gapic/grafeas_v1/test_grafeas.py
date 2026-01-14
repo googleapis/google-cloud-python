@@ -78,6 +78,7 @@ from grafeas.grafeas_v1.types import (
     intoto_statement,
     package,
     provenance,
+    risk,
     sbom,
     secret,
     severity,
@@ -471,6 +472,7 @@ def test_list_occurrences(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = grafeas.ListOccurrencesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_occurrences(request)
 
@@ -483,6 +485,7 @@ def test_list_occurrences(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOccurrencesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_occurrences_non_empty_request_with_auto_populated_field():
@@ -615,6 +618,7 @@ async def test_list_occurrences_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             grafeas.ListOccurrencesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_occurrences(request)
@@ -628,6 +632,7 @@ async def test_list_occurrences_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOccurrencesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -3095,6 +3100,7 @@ def test_list_notes(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = grafeas.ListNotesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_notes(request)
 
@@ -3107,6 +3113,7 @@ def test_list_notes(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_notes_non_empty_request_with_auto_populated_field():
@@ -3235,6 +3242,7 @@ async def test_list_notes_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             grafeas.ListNotesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         response = await client.list_notes(request)
@@ -3248,6 +3256,7 @@ async def test_list_notes_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotesAsyncPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -5773,6 +5782,7 @@ def test_list_occurrences_rest_required_fields(
             "filter",
             "page_size",
             "page_token",
+            "return_partial_success",
         )
     )
     jsonified_request.update(unset_fields)
@@ -5835,6 +5845,7 @@ def test_list_occurrences_rest_unset_required_fields():
                 "filter",
                 "pageSize",
                 "pageToken",
+                "returnPartialSuccess",
             )
         )
         & set(("parent",))
@@ -7131,6 +7142,7 @@ def test_list_notes_rest_required_fields(request_type=grafeas.ListNotesRequest):
             "filter",
             "page_size",
             "page_token",
+            "return_partial_success",
         )
     )
     jsonified_request.update(unset_fields)
@@ -7193,6 +7205,7 @@ def test_list_notes_rest_unset_required_fields():
                 "filter",
                 "pageSize",
                 "pageToken",
+                "returnPartialSuccess",
             )
         )
         & set(("parent",))
@@ -8757,6 +8770,7 @@ async def test_list_occurrences_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             grafeas.ListOccurrencesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_occurrences(request=None)
@@ -8966,6 +8980,7 @@ async def test_list_notes_empty_call_grpc_asyncio():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             grafeas.ListNotesResponse(
                 next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
             )
         )
         await client.list_notes(request=None)
@@ -9299,6 +9314,7 @@ def test_list_occurrences_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = grafeas.ListOccurrencesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -9316,6 +9332,7 @@ def test_list_occurrences_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOccurrencesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -9612,6 +9629,12 @@ def test_create_occurrence_rest_call_success(request_type):
                 "justification": {"justification_type": 1, "details": "details_value"},
             },
             "extra_details": "extra_details_value",
+            "risk": {
+                "cisa_kev": {
+                    "known_ransomware_campaign_use": "known_ransomware_campaign_use_value"
+                },
+                "epss": {"percentile": 0.1067, "score": 0.54},
+            },
         },
         "build": {
             "provenance": {
@@ -9842,6 +9865,7 @@ def test_create_occurrence_rest_call_success(request_type):
                 "state": 1,
                 "error": "error_value",
             },
+            "files": [{"name": "name_value", "digest": {}}],
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -9913,6 +9937,8 @@ def test_create_occurrence_rest_call_success(request_type):
             "kind": 1,
             "locations": [{"file_location": {}}],
             "statuses": [{"status": 1, "update_time": {}, "message": "message_value"}],
+            "data": {},
+            "digest": {"algo": "algo_value", "digest_bytes": b"digest_bytes_blob"},
         },
         "envelope": {},
     }
@@ -10331,6 +10357,12 @@ def test_update_occurrence_rest_call_success(request_type):
                 "justification": {"justification_type": 1, "details": "details_value"},
             },
             "extra_details": "extra_details_value",
+            "risk": {
+                "cisa_kev": {
+                    "known_ransomware_campaign_use": "known_ransomware_campaign_use_value"
+                },
+                "epss": {"percentile": 0.1067, "score": 0.54},
+            },
         },
         "build": {
             "provenance": {
@@ -10561,6 +10593,7 @@ def test_update_occurrence_rest_call_success(request_type):
                 "state": 1,
                 "error": "error_value",
             },
+            "files": [{"name": "name_value", "digest": {}}],
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -10632,6 +10665,8 @@ def test_update_occurrence_rest_call_success(request_type):
             "kind": 1,
             "locations": [{"file_location": {}}],
             "statuses": [{"status": 1, "update_time": {}, "message": "message_value"}],
+            "data": {},
+            "digest": {"algo": "algo_value", "digest_bytes": b"digest_bytes_blob"},
         },
         "envelope": {},
     }
@@ -11102,6 +11137,7 @@ def test_list_notes_rest_call_success(request_type):
         # Designate an appropriate value for the returned response.
         return_value = grafeas.ListNotesResponse(
             next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
 
         # Wrap the value into a proper Response obj
@@ -11119,6 +11155,7 @@ def test_list_notes_rest_call_success(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNotesPager)
     assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

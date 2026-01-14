@@ -20,6 +20,12 @@ __version__ = package_version.__version__
 
 from google.cloud.backupdr_v1.services.backup_dr.async_client import BackupDRAsyncClient
 from google.cloud.backupdr_v1.services.backup_dr.client import BackupDRClient
+from google.cloud.backupdr_v1.services.backup_dr_protection_summary.async_client import (
+    BackupDrProtectionSummaryAsyncClient,
+)
+from google.cloud.backupdr_v1.services.backup_dr_protection_summary.client import (
+    BackupDrProtectionSummaryClient,
+)
 from google.cloud.backupdr_v1.types.backupdr import (
     CreateManagementServerRequest,
     DeleteManagementServerRequest,
@@ -158,10 +164,23 @@ from google.cloud.backupdr_v1.types.datasourcereference import (
     ListDataSourceReferencesRequest,
     ListDataSourceReferencesResponse,
 )
+from google.cloud.backupdr_v1.types.protection_summary import (
+    BackupConfigDetails,
+    BackupDrPlanConfig,
+    BackupDrPlanRule,
+    BackupDrTemplateConfig,
+    BackupLocation,
+    ListResourceBackupConfigsRequest,
+    ListResourceBackupConfigsResponse,
+    PitrSettings,
+    ResourceBackupConfig,
+)
 
 __all__ = (
     "BackupDRClient",
     "BackupDRAsyncClient",
+    "BackupDrProtectionSummaryClient",
+    "BackupDrProtectionSummaryAsyncClient",
     "CreateManagementServerRequest",
     "DeleteManagementServerRequest",
     "GetManagementServerRequest",
@@ -282,4 +301,13 @@ __all__ = (
     "GetDataSourceReferenceRequest",
     "ListDataSourceReferencesRequest",
     "ListDataSourceReferencesResponse",
+    "BackupConfigDetails",
+    "BackupDrPlanConfig",
+    "BackupDrPlanRule",
+    "BackupDrTemplateConfig",
+    "BackupLocation",
+    "ListResourceBackupConfigsRequest",
+    "ListResourceBackupConfigsResponse",
+    "PitrSettings",
+    "ResourceBackupConfig",
 )
