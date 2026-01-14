@@ -405,6 +405,56 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         self.assertEqual(request.resume_token, RESUME_TOKEN)
         self.assertNoSpans()
 
+    def test_iteration_w_raw_raising_unavailable_during_restart(self):
+        from google.api_core.exceptions import ServiceUnavailable
+
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        LAST = (self._make_item(2),)
+        before = _MockIterator(
+            *FIRST, fail_after=True, error=ServiceUnavailable("testing")
+        )
+        after = _MockIterator(*LAST)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        # The second call (the first retry) raises ServiceUnavailable immediately.
+        # The third call (the second retry) succeeds.
+        restart = mock.Mock(
+            spec=[],
+            side_effect=[before, ServiceUnavailable("retry failed"), after],
+        )
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        self.assertEqual(list(resumable), list(FIRST + LAST))
+        self.assertEqual(len(restart.mock_calls), 3)
+        self.assertEqual(request.resume_token, RESUME_TOKEN)
+        self.assertNoSpans()
+
+    def test_iteration_w_raw_raising_resumable_internal_error_during_restart(self):
+        FIRST = (self._make_item(0), self._make_item(1, resume_token=RESUME_TOKEN))
+        LAST = (self._make_item(2),)
+        before = _MockIterator(
+            *FIRST,
+            fail_after=True,
+            error=INTERNAL_SERVER_ERROR_UNEXPECTED_EOS,
+        )
+        after = _MockIterator(*LAST)
+        request = mock.Mock(test="test", spec=["test", "resume_token"])
+        restart = mock.Mock(
+            spec=[],
+            side_effect=[before, INTERNAL_SERVER_ERROR_UNEXPECTED_EOS, after],
+        )
+        database = _Database()
+        database.spanner_api = build_spanner_api()
+        session = _Session(database)
+        derived = _build_snapshot_derived(session)
+        resumable = self._call_fut(derived, restart, request, session=session)
+        self.assertEqual(list(resumable), list(FIRST + LAST))
+        self.assertEqual(len(restart.mock_calls), 3)
+        self.assertEqual(request.resume_token, RESUME_TOKEN)
+        self.assertNoSpans()
+
     def test_iteration_w_raw_w_multiuse(self):
         from google.cloud.spanner_v1 import (
             ReadRequest,
