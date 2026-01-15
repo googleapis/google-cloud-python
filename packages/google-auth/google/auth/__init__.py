@@ -42,12 +42,12 @@ class Python37DeprecationWarning(DeprecationWarning):  # pragma: NO COVER
 
 
 # Raise warnings for deprecated versions
-eol_message = """
-    You are using a Python version {} past its end of life. Google will update
-    google-auth with critical bug fixes on a best-effort basis, but not
-    with any other fixes or features. Please upgrade your Python version,
-    and then update google-auth.
-    """
+eol_message = (
+    "You are using a Python version {} past its end of life. Google will update "
+    "google-auth with critical bug fixes on a best-effort basis, but not "
+    "with any other fixes or features. Please upgrade your Python version, "
+    "and then update google-auth."
+)
 if sys.version_info.major == 3 and sys.version_info.minor == 8:  # pragma: NO COVER
     warnings.warn(eol_message.format("3.8"), FutureWarning)
 elif sys.version_info.major == 3 and sys.version_info.minor == 9:  # pragma: NO COVER
