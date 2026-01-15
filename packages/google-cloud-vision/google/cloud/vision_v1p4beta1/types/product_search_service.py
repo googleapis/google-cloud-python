@@ -17,47 +17,48 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.vision_v1p4beta1.types import geometry
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.vision.v1p4beta1",
+    package='google.cloud.vision.v1p4beta1',
     manifest={
-        "Product",
-        "ProductSet",
-        "ReferenceImage",
-        "CreateProductRequest",
-        "ListProductsRequest",
-        "ListProductsResponse",
-        "GetProductRequest",
-        "UpdateProductRequest",
-        "DeleteProductRequest",
-        "CreateProductSetRequest",
-        "ListProductSetsRequest",
-        "ListProductSetsResponse",
-        "GetProductSetRequest",
-        "UpdateProductSetRequest",
-        "DeleteProductSetRequest",
-        "CreateReferenceImageRequest",
-        "ListReferenceImagesRequest",
-        "ListReferenceImagesResponse",
-        "GetReferenceImageRequest",
-        "DeleteReferenceImageRequest",
-        "AddProductToProductSetRequest",
-        "RemoveProductFromProductSetRequest",
-        "ListProductsInProductSetRequest",
-        "ListProductsInProductSetResponse",
-        "ImportProductSetsGcsSource",
-        "ImportProductSetsInputConfig",
-        "ImportProductSetsRequest",
-        "ImportProductSetsResponse",
-        "BatchOperationMetadata",
-        "ProductSetPurgeConfig",
-        "PurgeProductsRequest",
+        'Product',
+        'ProductSet',
+        'ReferenceImage',
+        'CreateProductRequest',
+        'ListProductsRequest',
+        'ListProductsResponse',
+        'GetProductRequest',
+        'UpdateProductRequest',
+        'DeleteProductRequest',
+        'CreateProductSetRequest',
+        'ListProductSetsRequest',
+        'ListProductSetsResponse',
+        'GetProductSetRequest',
+        'UpdateProductSetRequest',
+        'DeleteProductSetRequest',
+        'CreateReferenceImageRequest',
+        'ListReferenceImagesRequest',
+        'ListReferenceImagesResponse',
+        'GetReferenceImageRequest',
+        'DeleteReferenceImageRequest',
+        'AddProductToProductSetRequest',
+        'RemoveProductFromProductSetRequest',
+        'ListProductsInProductSetRequest',
+        'ListProductsInProductSetResponse',
+        'ImportProductSetsGcsSource',
+        'ImportProductSetsInputConfig',
+        'ImportProductSetsRequest',
+        'ImportProductSetsResponse',
+        'BatchOperationMetadata',
+        'ProductSetPurgeConfig',
+        'PurgeProductsRequest',
     },
 )
 
@@ -276,10 +277,10 @@ class CreateProductRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    product: "Product" = proto.Field(
+    product: 'Product' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="Product",
+        message='Product',
     )
     product_id: str = proto.Field(
         proto.STRING,
@@ -334,10 +335,10 @@ class ListProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products: MutableSequence["Product"] = proto.RepeatedField(
+    products: MutableSequence['Product'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Product",
+        message='Product',
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -377,10 +378,10 @@ class UpdateProductRequest(proto.Message):
             ``product_labels``, ``display_name``, and ``description``.
     """
 
-    product: "Product" = proto.Field(
+    product: 'Product' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="Product",
+        message='Product',
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -429,10 +430,10 @@ class CreateProductSetRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    product_set: "ProductSet" = proto.Field(
+    product_set: 'ProductSet' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ProductSet",
+        message='ProductSet',
     )
     product_set_id: str = proto.Field(
         proto.STRING,
@@ -487,10 +488,10 @@ class ListProductSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    product_sets: MutableSequence["ProductSet"] = proto.RepeatedField(
+    product_sets: MutableSequence['ProductSet'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="ProductSet",
+        message='ProductSet',
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -529,10 +530,10 @@ class UpdateProductSetRequest(proto.Message):
             ``display_name``.
     """
 
-    product_set: "ProductSet" = proto.Field(
+    product_set: 'ProductSet' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="ProductSet",
+        message='ProductSet',
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -583,10 +584,10 @@ class CreateReferenceImageRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    reference_image: "ReferenceImage" = proto.Field(
+    reference_image: 'ReferenceImage' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ReferenceImage",
+        message='ReferenceImage',
     )
     reference_image_id: str = proto.Field(
         proto.STRING,
@@ -647,10 +648,10 @@ class ListReferenceImagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    reference_images: MutableSequence["ReferenceImage"] = proto.RepeatedField(
+    reference_images: MutableSequence['ReferenceImage'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="ReferenceImage",
+        message='ReferenceImage',
     )
     page_size: int = proto.Field(
         proto.INT32,
@@ -801,10 +802,10 @@ class ListProductsInProductSetResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products: MutableSequence["Product"] = proto.RepeatedField(
+    products: MutableSequence['Product'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Product",
+        message='Product',
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -913,11 +914,11 @@ class ImportProductSetsInputConfig(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    gcs_source: "ImportProductSetsGcsSource" = proto.Field(
+    gcs_source: 'ImportProductSetsGcsSource' = proto.Field(
         proto.MESSAGE,
         number=1,
-        oneof="source",
-        message="ImportProductSetsGcsSource",
+        oneof='source',
+        message='ImportProductSetsGcsSource',
     )
 
 
@@ -939,10 +940,10 @@ class ImportProductSetsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    input_config: "ImportProductSetsInputConfig" = proto.Field(
+    input_config: 'ImportProductSetsInputConfig' = proto.Field(
         proto.MESSAGE,
         number=2,
-        message="ImportProductSetsInputConfig",
+        message='ImportProductSetsInputConfig',
     )
 
 
@@ -968,10 +969,10 @@ class ImportProductSetsResponse(proto.Message):
             line 0.
     """
 
-    reference_images: MutableSequence["ReferenceImage"] = proto.RepeatedField(
+    reference_images: MutableSequence['ReferenceImage'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="ReferenceImage",
+        message='ReferenceImage',
     )
     statuses: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
@@ -998,7 +999,6 @@ class BatchOperationMetadata(proto.Message):
             [google.longrunning.Operation.done][google.longrunning.Operation.done]
             is set to true.
     """
-
     class State(proto.Enum):
         r"""Enumerates the possible states that the batch request can be
         in.
@@ -1092,16 +1092,16 @@ class PurgeProductsRequest(proto.Message):
             value to true to actually perform the purge.
     """
 
-    product_set_purge_config: "ProductSetPurgeConfig" = proto.Field(
+    product_set_purge_config: 'ProductSetPurgeConfig' = proto.Field(
         proto.MESSAGE,
         number=2,
-        oneof="target",
-        message="ProductSetPurgeConfig",
+        oneof='target',
+        message='ProductSetPurgeConfig',
     )
     delete_orphan_products: bool = proto.Field(
         proto.BOOL,
         number=3,
-        oneof="target",
+        oneof='target',
     )
     parent: str = proto.Field(
         proto.STRING,

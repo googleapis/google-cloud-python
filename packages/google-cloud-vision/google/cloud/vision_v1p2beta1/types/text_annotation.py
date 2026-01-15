@@ -21,15 +21,16 @@ import proto  # type: ignore
 
 from google.cloud.vision_v1p2beta1.types import geometry
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.vision.v1p2beta1",
+    package='google.cloud.vision.v1p2beta1',
     manifest={
-        "TextAnnotation",
-        "Page",
-        "Block",
-        "Paragraph",
-        "Word",
-        "Symbol",
+        'TextAnnotation',
+        'Page',
+        'Block',
+        'Paragraph',
+        'Word',
+        'Symbol',
     },
 )
 
@@ -81,7 +82,6 @@ class TextAnnotation(proto.Message):
             is_prefix (bool):
                 True if break prepends the element.
         """
-
         class BreakType(proto.Enum):
             r"""Enum to denote the type of break found. New line, space etc.
 
@@ -108,10 +108,10 @@ class TextAnnotation(proto.Message):
             HYPHEN = 4
             LINE_BREAK = 5
 
-        type_: "TextAnnotation.DetectedBreak.BreakType" = proto.Field(
+        type_: 'TextAnnotation.DetectedBreak.BreakType' = proto.Field(
             proto.ENUM,
             number=1,
-            enum="TextAnnotation.DetectedBreak.BreakType",
+            enum='TextAnnotation.DetectedBreak.BreakType',
         )
         is_prefix: bool = proto.Field(
             proto.BOOL,
@@ -129,23 +129,21 @@ class TextAnnotation(proto.Message):
                 Detected start or end of a text segment.
         """
 
-        detected_languages: MutableSequence[
-            "TextAnnotation.DetectedLanguage"
-        ] = proto.RepeatedField(
+        detected_languages: MutableSequence['TextAnnotation.DetectedLanguage'] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message="TextAnnotation.DetectedLanguage",
+            message='TextAnnotation.DetectedLanguage',
         )
-        detected_break: "TextAnnotation.DetectedBreak" = proto.Field(
+        detected_break: 'TextAnnotation.DetectedBreak' = proto.Field(
             proto.MESSAGE,
             number=2,
-            message="TextAnnotation.DetectedBreak",
+            message='TextAnnotation.DetectedBreak',
         )
 
-    pages: MutableSequence["Page"] = proto.RepeatedField(
+    pages: MutableSequence['Page'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Page",
+        message='Page',
     )
     text: str = proto.Field(
         proto.STRING,
@@ -172,10 +170,10 @@ class Page(proto.Message):
             Confidence of the OCR results on the page. Range [0, 1].
     """
 
-    property: "TextAnnotation.TextProperty" = proto.Field(
+    property: 'TextAnnotation.TextProperty' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="TextAnnotation.TextProperty",
+        message='TextAnnotation.TextProperty',
     )
     width: int = proto.Field(
         proto.INT32,
@@ -185,10 +183,10 @@ class Page(proto.Message):
         proto.INT32,
         number=3,
     )
-    blocks: MutableSequence["Block"] = proto.RepeatedField(
+    blocks: MutableSequence['Block'] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message="Block",
+        message='Block',
     )
     confidence: float = proto.Field(
         proto.FLOAT,
@@ -210,24 +208,24 @@ class Block(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like:
+            -  when the text is horizontal it might look like:
 
-              ::
+               ::
 
-                   0----1
-                   |    |
-                   3----2
+                    0----1
+                    |    |
+                    3----2
 
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes:
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes:
 
-              ::
+               ::
 
-                   2----3
-                   |    |
-                   1----0
+                    2----3
+                    |    |
+                    1----0
 
-              and the vertice order will still be (0, 1, 2, 3).
+               and the vertice order will still be (0, 1, 2, 3).
         paragraphs (MutableSequence[google.cloud.vision_v1p2beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
@@ -237,7 +235,6 @@ class Block(proto.Message):
         confidence (float):
             Confidence of the OCR results on the block. Range [0, 1].
     """
-
     class BlockType(proto.Enum):
         r"""Type of a block (text, image etc) as identified by OCR.
 
@@ -262,20 +259,20 @@ class Block(proto.Message):
         RULER = 4
         BARCODE = 5
 
-    property: "TextAnnotation.TextProperty" = proto.Field(
+    property: 'TextAnnotation.TextProperty' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="TextAnnotation.TextProperty",
+        message='TextAnnotation.TextProperty',
     )
     bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    paragraphs: MutableSequence["Paragraph"] = proto.RepeatedField(
+    paragraphs: MutableSequence['Paragraph'] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message="Paragraph",
+        message='Paragraph',
     )
     block_type: BlockType = proto.Field(
         proto.ENUM,
@@ -303,11 +300,11 @@ class Paragraph(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         words (MutableSequence[google.cloud.vision_v1p2beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
@@ -315,20 +312,20 @@ class Paragraph(proto.Message):
             1].
     """
 
-    property: "TextAnnotation.TextProperty" = proto.Field(
+    property: 'TextAnnotation.TextProperty' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="TextAnnotation.TextProperty",
+        message='TextAnnotation.TextProperty',
     )
     bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    words: MutableSequence["Word"] = proto.RepeatedField(
+    words: MutableSequence['Word'] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message="Word",
+        message='Word',
     )
     confidence: float = proto.Field(
         proto.FLOAT,
@@ -349,11 +346,11 @@ class Word(proto.Message):
             represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         symbols (MutableSequence[google.cloud.vision_v1p2beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
@@ -362,20 +359,20 @@ class Word(proto.Message):
             Confidence of the OCR results for the word. Range [0, 1].
     """
 
-    property: "TextAnnotation.TextProperty" = proto.Field(
+    property: 'TextAnnotation.TextProperty' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="TextAnnotation.TextProperty",
+        message='TextAnnotation.TextProperty',
     )
     bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,
         number=2,
         message=geometry.BoundingPoly,
     )
-    symbols: MutableSequence["Symbol"] = proto.RepeatedField(
+    symbols: MutableSequence['Symbol'] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message="Symbol",
+        message='Symbol',
     )
     confidence: float = proto.Field(
         proto.FLOAT,
@@ -397,11 +394,11 @@ class Symbol(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         text (str):
             The actual UTF-8 representation of the
             symbol.
@@ -409,10 +406,10 @@ class Symbol(proto.Message):
             Confidence of the OCR results for the symbol. Range [0, 1].
     """
 
-    property: "TextAnnotation.TextProperty" = proto.Field(
+    property: 'TextAnnotation.TextProperty' = proto.Field(
         proto.MESSAGE,
         number=1,
-        message="TextAnnotation.TextProperty",
+        message='TextAnnotation.TextProperty',
     )
     bounding_box: geometry.BoundingPoly = proto.Field(
         proto.MESSAGE,

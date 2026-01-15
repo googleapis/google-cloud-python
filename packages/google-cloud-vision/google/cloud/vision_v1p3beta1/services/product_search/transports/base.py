@@ -16,23 +16,23 @@
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
+from google.cloud.vision_v1p3beta1 import gapic_version as package_version
+
+import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, operations_v1
+from google.api_core import gapic_v1
 from google.api_core import retry as retries
-import google.auth  # type: ignore
+from google.api_core import operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.oauth2 import service_account # type: ignore
 import google.protobuf
+
+from google.cloud.vision_v1p3beta1.types import product_search_service
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.vision_v1p3beta1 import gapic_version as package_version
-from google.cloud.vision_v1p3beta1.types import product_search_service
-
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -42,25 +42,24 @@ class ProductSearchTransport(abc.ABC):
     """Abstract transport class for ProductSearch."""
 
     AUTH_SCOPES = (
-        "https://www.googleapis.com/auth/cloud-platform",
-        "https://www.googleapis.com/auth/cloud-vision",
+        'https://www.googleapis.com/auth/cloud-platform',
+        'https://www.googleapis.com/auth/cloud-vision',
     )
 
-    DEFAULT_HOST: str = "vision.googleapis.com"
+    DEFAULT_HOST: str = 'vision.googleapis.com'
 
     def __init__(
-        self,
-        *,
-        host: str = DEFAULT_HOST,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        api_audience: Optional[str] = None,
-        **kwargs,
-    ) -> None:
+            self, *,
+            host: str = DEFAULT_HOST,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            api_audience: Optional[str] = None,
+            **kwargs,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -87,8 +86,6 @@ class ProductSearchTransport(abc.ABC):
                 be used for service account credentials.
         """
 
-        scopes_kwargs = {"scopes": scopes, "default_scopes": self.AUTH_SCOPES}
-
         # Save the scopes.
         self._scopes = scopes
         if not hasattr(self, "_ignore_credentials"):
@@ -97,38 +94,31 @@ class ProductSearchTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
             credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+                                credentials_file,
+                                scopes=scopes,
+                                quota_project_id=quota_project_id,
+                                default_scopes=self.AUTH_SCOPES,
+                            )
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(scopes=scopes, quota_project_id=quota_project_id, default_scopes=self.AUTH_SCOPES)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
-        if (
-            always_use_jwt_access
-            and isinstance(credentials, service_account.Credentials)
-            and hasattr(service_account.Credentials, "with_always_use_jwt_access")
-        ):
+        if always_use_jwt_access and isinstance(credentials, service_account.Credentials) and hasattr(service_account.Credentials, "with_always_use_jwt_access"):
             credentials = credentials.with_always_use_jwt_access(True)
 
         # Save the credentials.
         self._credentials = credentials
 
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
-        if ":" not in host:
-            host += ":443"
+        if ':' not in host:
+            host += ':443'
         self._host = host
 
     @property
@@ -144,7 +134,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -186,7 +177,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -213,7 +205,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -255,7 +248,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -282,7 +276,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -339,7 +334,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -351,7 +347,8 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
@@ -378,20 +375,21 @@ class ProductSearchTransport(abc.ABC):
                     initial=0.1,
                     maximum=60.0,
                     multiplier=1.3,
-                    predicate=retries.if_exception_type(),
+                    predicate=retries.if_exception_type(
+                    ),
                     deadline=600.0,
                 ),
                 default_timeout=600.0,
                 client_info=client_info,
             ),
-        }
+         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-        .. warning::
-             Only call this method if the transport is NOT shared
-             with other clients - this may cause errors in other clients!
+       .. warning::
+            Only call this method if the transport is NOT shared
+            with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
@@ -401,198 +399,165 @@ class ProductSearchTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.CreateProductSetRequest],
-        Union[
-            product_search_service.ProductSet,
-            Awaitable[product_search_service.ProductSet],
-        ],
-    ]:
+    def create_product_set(self) -> Callable[
+            [product_search_service.CreateProductSetRequest],
+            Union[
+                product_search_service.ProductSet,
+                Awaitable[product_search_service.ProductSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_product_sets(
-        self,
-    ) -> Callable[
-        [product_search_service.ListProductSetsRequest],
-        Union[
-            product_search_service.ListProductSetsResponse,
-            Awaitable[product_search_service.ListProductSetsResponse],
-        ],
-    ]:
+    def list_product_sets(self) -> Callable[
+            [product_search_service.ListProductSetsRequest],
+            Union[
+                product_search_service.ListProductSetsResponse,
+                Awaitable[product_search_service.ListProductSetsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.GetProductSetRequest],
-        Union[
-            product_search_service.ProductSet,
-            Awaitable[product_search_service.ProductSet],
-        ],
-    ]:
+    def get_product_set(self) -> Callable[
+            [product_search_service.GetProductSetRequest],
+            Union[
+                product_search_service.ProductSet,
+                Awaitable[product_search_service.ProductSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.UpdateProductSetRequest],
-        Union[
-            product_search_service.ProductSet,
-            Awaitable[product_search_service.ProductSet],
-        ],
-    ]:
+    def update_product_set(self) -> Callable[
+            [product_search_service.UpdateProductSetRequest],
+            Union[
+                product_search_service.ProductSet,
+                Awaitable[product_search_service.ProductSet]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.DeleteProductSetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_product_set(self) -> Callable[
+            [product_search_service.DeleteProductSetRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_product(
-        self,
-    ) -> Callable[
-        [product_search_service.CreateProductRequest],
-        Union[
-            product_search_service.Product, Awaitable[product_search_service.Product]
-        ],
-    ]:
+    def create_product(self) -> Callable[
+            [product_search_service.CreateProductRequest],
+            Union[
+                product_search_service.Product,
+                Awaitable[product_search_service.Product]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [product_search_service.ListProductsRequest],
-        Union[
-            product_search_service.ListProductsResponse,
-            Awaitable[product_search_service.ListProductsResponse],
-        ],
-    ]:
+    def list_products(self) -> Callable[
+            [product_search_service.ListProductsRequest],
+            Union[
+                product_search_service.ListProductsResponse,
+                Awaitable[product_search_service.ListProductsResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_product(
-        self,
-    ) -> Callable[
-        [product_search_service.GetProductRequest],
-        Union[
-            product_search_service.Product, Awaitable[product_search_service.Product]
-        ],
-    ]:
+    def get_product(self) -> Callable[
+            [product_search_service.GetProductRequest],
+            Union[
+                product_search_service.Product,
+                Awaitable[product_search_service.Product]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def update_product(
-        self,
-    ) -> Callable[
-        [product_search_service.UpdateProductRequest],
-        Union[
-            product_search_service.Product, Awaitable[product_search_service.Product]
-        ],
-    ]:
+    def update_product(self) -> Callable[
+            [product_search_service.UpdateProductRequest],
+            Union[
+                product_search_service.Product,
+                Awaitable[product_search_service.Product]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_product(
-        self,
-    ) -> Callable[
-        [product_search_service.DeleteProductRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_product(self) -> Callable[
+            [product_search_service.DeleteProductRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def create_reference_image(
-        self,
-    ) -> Callable[
-        [product_search_service.CreateReferenceImageRequest],
-        Union[
-            product_search_service.ReferenceImage,
-            Awaitable[product_search_service.ReferenceImage],
-        ],
-    ]:
+    def create_reference_image(self) -> Callable[
+            [product_search_service.CreateReferenceImageRequest],
+            Union[
+                product_search_service.ReferenceImage,
+                Awaitable[product_search_service.ReferenceImage]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def delete_reference_image(
-        self,
-    ) -> Callable[
-        [product_search_service.DeleteReferenceImageRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_reference_image(self) -> Callable[
+            [product_search_service.DeleteReferenceImageRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_reference_images(
-        self,
-    ) -> Callable[
-        [product_search_service.ListReferenceImagesRequest],
-        Union[
-            product_search_service.ListReferenceImagesResponse,
-            Awaitable[product_search_service.ListReferenceImagesResponse],
-        ],
-    ]:
+    def list_reference_images(self) -> Callable[
+            [product_search_service.ListReferenceImagesRequest],
+            Union[
+                product_search_service.ListReferenceImagesResponse,
+                Awaitable[product_search_service.ListReferenceImagesResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def get_reference_image(
-        self,
-    ) -> Callable[
-        [product_search_service.GetReferenceImageRequest],
-        Union[
-            product_search_service.ReferenceImage,
-            Awaitable[product_search_service.ReferenceImage],
-        ],
-    ]:
+    def get_reference_image(self) -> Callable[
+            [product_search_service.GetReferenceImageRequest],
+            Union[
+                product_search_service.ReferenceImage,
+                Awaitable[product_search_service.ReferenceImage]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def add_product_to_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.AddProductToProductSetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def add_product_to_product_set(self) -> Callable[
+            [product_search_service.AddProductToProductSetRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def remove_product_from_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.RemoveProductFromProductSetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def remove_product_from_product_set(self) -> Callable[
+            [product_search_service.RemoveProductFromProductSetRequest],
+            Union[
+                empty_pb2.Empty,
+                Awaitable[empty_pb2.Empty]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def list_products_in_product_set(
-        self,
-    ) -> Callable[
-        [product_search_service.ListProductsInProductSetRequest],
-        Union[
-            product_search_service.ListProductsInProductSetResponse,
-            Awaitable[product_search_service.ListProductsInProductSetResponse],
-        ],
-    ]:
+    def list_products_in_product_set(self) -> Callable[
+            [product_search_service.ListProductsInProductSetRequest],
+            Union[
+                product_search_service.ListProductsInProductSetResponse,
+                Awaitable[product_search_service.ListProductsInProductSetResponse]
+            ]]:
         raise NotImplementedError()
 
     @property
-    def import_product_sets(
-        self,
-    ) -> Callable[
-        [product_search_service.ImportProductSetsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def import_product_sets(self) -> Callable[
+            [product_search_service.ImportProductSetsRequest],
+            Union[
+                operations_pb2.Operation,
+                Awaitable[operations_pb2.Operation]
+            ]]:
         raise NotImplementedError()
 
     @property
@@ -600,4 +565,6 @@ class ProductSearchTransport(abc.ABC):
         raise NotImplementedError()
 
 
-__all__ = ("ProductSearchTransport",)
+__all__ = (
+    'ProductSearchTransport',
+)

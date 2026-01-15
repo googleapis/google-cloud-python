@@ -53,5 +53,4 @@ def sample_import_product_sets():
     # Handle the response
     print(response)
 
-
 # [END vision_v1p4beta1_generated_ProductSearch_ImportProductSets_sync]

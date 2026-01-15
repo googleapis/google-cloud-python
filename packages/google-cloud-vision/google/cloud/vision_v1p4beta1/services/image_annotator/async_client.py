@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.vision_v1p4beta1 import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.vision_v1p4beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,22 +36,18 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-
 from google.cloud.vision_v1p4beta1.types import image_annotator
-
-from .client import ImageAnnotatorClient
-from .transports.base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
+from .transports.base import ImageAnnotatorTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ImageAnnotatorGrpcAsyncIOTransport
+from .client import ImageAnnotatorClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
-
 
 class ImageAnnotatorAsyncClient:
     """Service that performs Google Cloud Vision API detection tasks
@@ -83,30 +69,16 @@ class ImageAnnotatorAsyncClient:
     parse_product_path = staticmethod(ImageAnnotatorClient.parse_product_path)
     product_set_path = staticmethod(ImageAnnotatorClient.product_set_path)
     parse_product_set_path = staticmethod(ImageAnnotatorClient.parse_product_set_path)
-    common_billing_account_path = staticmethod(
-        ImageAnnotatorClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ImageAnnotatorClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ImageAnnotatorClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ImageAnnotatorClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ImageAnnotatorClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ImageAnnotatorClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ImageAnnotatorClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ImageAnnotatorClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ImageAnnotatorClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ImageAnnotatorClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ImageAnnotatorClient.parse_common_organization_path)
     common_project_path = staticmethod(ImageAnnotatorClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ImageAnnotatorClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ImageAnnotatorClient.parse_common_project_path)
     common_location_path = staticmethod(ImageAnnotatorClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ImageAnnotatorClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ImageAnnotatorClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -142,9 +114,7 @@ class ImageAnnotatorAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -207,16 +177,12 @@ class ImageAnnotatorAsyncClient:
 
     get_transport_class = ImageAnnotatorClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ImageAnnotatorTransport, Callable[..., ImageAnnotatorTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, ImageAnnotatorTransport, Callable[..., ImageAnnotatorTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the image annotator async client.
 
         Args:
@@ -271,43 +237,31 @@ class ImageAnnotatorAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.vision_v1p4beta1.ImageAnnotatorAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.vision.v1p4beta1.ImageAnnotator",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.vision.v1p4beta1.ImageAnnotator",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def batch_annotate_images(
-        self,
-        request: Optional[
-            Union[image_annotator.BatchAnnotateImagesRequest, dict]
-        ] = None,
-        *,
-        requests: Optional[
-            MutableSequence[image_annotator.AnnotateImageRequest]
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> image_annotator.BatchAnnotateImagesResponse:
+    async def batch_annotate_images(self,
+            request: Optional[Union[image_annotator.BatchAnnotateImagesRequest, dict]] = None,
+            *,
+            requests: Optional[MutableSequence[image_annotator.AnnotateImageRequest]] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> image_annotator.BatchAnnotateImagesResponse:
         r"""Run image detection and annotation for a batch of
         images.
 
@@ -365,14 +319,10 @@ class ImageAnnotatorAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [requests]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -386,9 +336,7 @@ class ImageAnnotatorAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_annotate_images
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_annotate_images]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -404,17 +352,14 @@ class ImageAnnotatorAsyncClient:
         # Done; return the response.
         return response
 
-    async def batch_annotate_files(
-        self,
-        request: Optional[
-            Union[image_annotator.BatchAnnotateFilesRequest, dict]
-        ] = None,
-        *,
-        requests: Optional[MutableSequence[image_annotator.AnnotateFileRequest]] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> image_annotator.BatchAnnotateFilesResponse:
+    async def batch_annotate_files(self,
+            request: Optional[Union[image_annotator.BatchAnnotateFilesRequest, dict]] = None,
+            *,
+            requests: Optional[MutableSequence[image_annotator.AnnotateFileRequest]] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> image_annotator.BatchAnnotateFilesResponse:
         r"""Service that performs image detection and annotation
         for a batch of files. Now only "application/pdf",
         "image/tiff" and "image/gif" are supported.
@@ -479,14 +424,10 @@ class ImageAnnotatorAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [requests]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -500,9 +441,7 @@ class ImageAnnotatorAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_annotate_files
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_annotate_files]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -518,20 +457,15 @@ class ImageAnnotatorAsyncClient:
         # Done; return the response.
         return response
 
-    async def async_batch_annotate_images(
-        self,
-        request: Optional[
-            Union[image_annotator.AsyncBatchAnnotateImagesRequest, dict]
-        ] = None,
-        *,
-        requests: Optional[
-            MutableSequence[image_annotator.AnnotateImageRequest]
-        ] = None,
-        output_config: Optional[image_annotator.OutputConfig] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def async_batch_annotate_images(self,
+            request: Optional[Union[image_annotator.AsyncBatchAnnotateImagesRequest, dict]] = None,
+            *,
+            requests: Optional[MutableSequence[image_annotator.AnnotateImageRequest]] = None,
+            output_config: Optional[image_annotator.OutputConfig] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Run asynchronous image detection and annotation for a list of
         images.
 
@@ -613,14 +547,10 @@ class ImageAnnotatorAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [requests, output_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -636,9 +566,7 @@ class ImageAnnotatorAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.async_batch_annotate_images
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.async_batch_annotate_images]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -662,19 +590,14 @@ class ImageAnnotatorAsyncClient:
         # Done; return the response.
         return response
 
-    async def async_batch_annotate_files(
-        self,
-        request: Optional[
-            Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict]
-        ] = None,
-        *,
-        requests: Optional[
-            MutableSequence[image_annotator.AsyncAnnotateFileRequest]
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def async_batch_annotate_files(self,
+            request: Optional[Union[image_annotator.AsyncBatchAnnotateFilesRequest, dict]] = None,
+            *,
+            requests: Optional[MutableSequence[image_annotator.AsyncAnnotateFileRequest]] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Run asynchronous image detection and annotation for a list of
         generic files, such as PDF files, which may contain multiple
         pages and multiple images per page. Progress and results can be
@@ -745,14 +668,10 @@ class ImageAnnotatorAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [requests]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -766,9 +685,7 @@ class ImageAnnotatorAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.async_batch_annotate_files
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.async_batch_annotate_files]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -798,13 +715,12 @@ class ImageAnnotatorAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("ImageAnnotatorAsyncClient",)
+__all__ = (
+    "ImageAnnotatorAsyncClient",
+)

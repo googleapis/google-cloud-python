@@ -19,12 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.vision.v1p1beta1",
+    package='google.cloud.vision.v1p1beta1',
     manifest={
-        "Vertex",
-        "BoundingPoly",
-        "Position",
+        'Vertex',
+        'BoundingPoly',
+        'Position',
     },
 )
 
@@ -59,10 +60,10 @@ class BoundingPoly(proto.Message):
             The bounding polygon vertices.
     """
 
-    vertices: MutableSequence["Vertex"] = proto.RepeatedField(
+    vertices: MutableSequence['Vertex'] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message="Vertex",
+        message='Vertex',
     )
 
 

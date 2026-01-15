@@ -14,17 +14,19 @@
 # limitations under the License.
 #
 import json  # type: ignore
+from google.api_core import path_template
+from google.api_core import gapic_v1
+
+from google.protobuf import json_format
+from .base import ProductSearchTransport, DEFAULT_CLIENT_INFO
+
 import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
-from google.api_core import gapic_v1, path_template
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
 
 from google.cloud.vision_v1p3beta1.types import product_search_service
-
-from .base import DEFAULT_CLIENT_INFO, ProductSearchTransport
+from google.protobuf import empty_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 
 class _BaseProductSearchRestTransport(ProductSearchTransport):
@@ -40,16 +42,14 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "vision.googleapis.com",
-        credentials: Optional[Any] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'vision.googleapis.com',
+            credentials: Optional[Any] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
         Args:
             host (Optional[str]):
@@ -73,9 +73,7 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
@@ -86,39 +84,33 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             credentials=credentials,
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
 
     class _BaseAddProductToProductSet:
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/productSets/*}:addProduct',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = product_search_service.AddProductToProductSetRequest.pb(
-                request
-            )
+            pb_request = product_search_service.AddProductToProductSetRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -127,23 +119,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseAddProductToProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -152,24 +138,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/products",
-                    "body": "product",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*}/products',
+                'body': 'product',
+            },
             ]
             return http_options
 
@@ -184,23 +166,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseCreateProduct._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseCreateProduct._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -209,24 +185,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets",
-                    "body": "product_set",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*}/productSets',
+                'body': 'product_set',
+            },
             ]
             return http_options
 
@@ -241,23 +213,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseCreateProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseCreateProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -266,24 +232,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages",
-                    "body": "reference_image",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages',
+                'body': 'reference_image',
+            },
             ]
             return http_options
 
@@ -298,23 +260,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseCreateReferenceImage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -323,23 +279,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/products/*}',
+            },
             ]
             return http_options
 
@@ -351,17 +303,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseDeleteProduct._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseDeleteProduct._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -370,23 +316,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/productSets/*}',
+            },
             ]
             return http_options
 
@@ -398,17 +340,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseDeleteProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseDeleteProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -417,23 +353,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "delete",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'delete',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}',
+            },
             ]
             return http_options
 
@@ -445,17 +377,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -464,23 +390,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/products/*}',
+            },
             ]
             return http_options
 
@@ -492,17 +414,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseGetProduct._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseGetProduct._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -511,23 +427,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/productSets/*}',
+            },
             ]
             return http_options
 
@@ -539,17 +451,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseGetProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseGetProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -558,23 +464,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/products/*/referenceImages/*}',
+            },
             ]
             return http_options
 
@@ -586,17 +488,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseGetReferenceImage._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseGetReferenceImage._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -605,24 +501,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets:import",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*}/productSets:import',
+                'body': '*',
+            },
             ]
             return http_options
 
@@ -637,23 +529,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseImportProductSets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseImportProductSets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -662,23 +548,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/products",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*}/products',
+            },
             ]
             return http_options
 
@@ -690,17 +572,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseListProducts._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseListProducts._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -709,23 +585,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*}/productSets",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*}/productSets',
+            },
             ]
             return http_options
 
@@ -737,17 +609,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseListProductSets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseListProductSets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -756,47 +622,35 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/productSets/*}/products',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = product_search_service.ListProductsInProductSetRequest.pb(
-                request
-            )
+            pb_request = product_search_service.ListProductsInProductSetRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseListProductsInProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -805,23 +659,19 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'get',
+                'uri': '/v1p3beta1/{parent=projects/*/locations/*/products/*}/referenceImages',
+            },
             ]
             return http_options
 
@@ -833,17 +683,11 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
 
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseListReferenceImages._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseListReferenceImages._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -852,32 +696,26 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "post",
-                    "uri": "/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct",
-                    "body": "*",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'post',
+                'uri': '/v1p3beta1/{name=projects/*/locations/*/productSets/*}:removeProduct',
+                'body': '*',
+            },
             ]
             return http_options
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = product_search_service.RemoveProductFromProductSetRequest.pb(
-                request
-            )
+            pb_request = product_search_service.RemoveProductFromProductSetRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -886,23 +724,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -911,24 +743,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1p3beta1/{product.name=projects/*/locations/*/products/*}",
-                    "body": "product",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1p3beta1/{product.name=projects/*/locations/*/products/*}',
+                'body': 'product',
+            },
             ]
             return http_options
 
@@ -943,23 +771,17 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseUpdateProduct._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseUpdateProduct._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -968,24 +790,20 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
         def __hash__(self):  # pragma: NO COVER
             return NotImplementedError("__hash__ must be implemented.")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] =  {
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}",
-                    "body": "product_set",
-                },
+            http_options: List[Dict[str, str]] = [{
+                'method': 'patch',
+                'uri': '/v1p3beta1/{product_set.name=projects/*/locations/*/productSets/*}',
+                'body': 'product_set',
+            },
             ]
             return http_options
 
@@ -1000,26 +818,22 @@ class _BaseProductSearchRestTransport(ProductSearchTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
+                transcoded_request['body'],
+                use_integers_for_enums=True
             )
             return body
-
         @staticmethod
         def _get_query_params_json(transcoded_request):
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(
-                _BaseProductSearchRestTransport._BaseUpdateProductSet._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params = json.loads(json_format.MessageToJson(
+                transcoded_request['query_params'],
+                use_integers_for_enums=True,
+            ))
+            query_params.update(_BaseProductSearchRestTransport._BaseUpdateProductSet._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
 
 
-__all__ = ("_BaseProductSearchRestTransport",)
+__all__=(
+    '_BaseProductSearchRestTransport',
+)

@@ -13,31 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from collections import OrderedDict
 import logging as std_logging
+from collections import OrderedDict
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Dict, Callable, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
+from google.cloud.vision_v1 import gapic_version as package_version
+
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
-from google.api_core.client_options import ClientOptions
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
+from google.auth import credentials as ga_credentials   # type: ignore
+from google.oauth2 import service_account              # type: ignore
 import google.protobuf
 
-from google.cloud.vision_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
@@ -46,47 +36,45 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
+from google.cloud.vision_v1.services.product_search import pagers
+from google.cloud.vision_v1.types import geometry
+from google.cloud.vision_v1.types import product_search_service
+from google.longrunning import operations_pb2 # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-
-from google.cloud.vision_v1.services.product_search import pagers
-from google.cloud.vision_v1.types import geometry, product_search_service
-
-from .client import ProductSearchClient
-from .transports.base import DEFAULT_CLIENT_INFO, ProductSearchTransport
+from .transports.base import ProductSearchTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import ProductSearchGrpcAsyncIOTransport
+from .client import ProductSearchClient
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
 
 _LOGGER = std_logging.getLogger(__name__)
 
-
 class ProductSearchAsyncClient:
     """Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
-      ``projects/*/locations/*/productSets/*``, which acts as a way to
-      put different products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
+       ``projects/*/locations/*/productSets/*``, which acts as a way to
+       put different products into groups to limit identification.
 
     In parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1.Product] has a collection of
-      [ReferenceImage][google.cloud.vision.v1.ReferenceImage] resources,
-      named ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1.Product] has a collection
+       of [ReferenceImage][google.cloud.vision.v1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     _client: ProductSearchClient
@@ -103,33 +91,17 @@ class ProductSearchAsyncClient:
     product_set_path = staticmethod(ProductSearchClient.product_set_path)
     parse_product_set_path = staticmethod(ProductSearchClient.parse_product_set_path)
     reference_image_path = staticmethod(ProductSearchClient.reference_image_path)
-    parse_reference_image_path = staticmethod(
-        ProductSearchClient.parse_reference_image_path
-    )
-    common_billing_account_path = staticmethod(
-        ProductSearchClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ProductSearchClient.parse_common_billing_account_path
-    )
+    parse_reference_image_path = staticmethod(ProductSearchClient.parse_reference_image_path)
+    common_billing_account_path = staticmethod(ProductSearchClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ProductSearchClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ProductSearchClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ProductSearchClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ProductSearchClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ProductSearchClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ProductSearchClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ProductSearchClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ProductSearchClient.parse_common_organization_path)
     common_project_path = staticmethod(ProductSearchClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ProductSearchClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ProductSearchClient.parse_common_project_path)
     common_location_path = staticmethod(ProductSearchClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ProductSearchClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ProductSearchClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -165,9 +137,7 @@ class ProductSearchAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -230,16 +200,12 @@ class ProductSearchAsyncClient:
 
     get_transport_class = ProductSearchClient.get_transport_class
 
-    def __init__(
-        self,
-        *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, ProductSearchTransport, Callable[..., ProductSearchTransport]]
-        ] = "grpc_asyncio",
-        client_options: Optional[ClientOptions] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-    ) -> None:
+    def __init__(self, *,
+            credentials: Optional[ga_credentials.Credentials] = None,
+            transport: Optional[Union[str, ProductSearchTransport, Callable[..., ProductSearchTransport]]] = "grpc_asyncio",
+            client_options: Optional[ClientOptions] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            ) -> None:
         """Instantiates the product search async client.
 
         Args:
@@ -294,49 +260,39 @@ class ProductSearchAsyncClient:
             transport=transport,
             client_options=client_options,
             client_info=client_info,
+
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.vision_v1.ProductSearchAsyncClient`.",
-                extra={
+                extra = {
                     "serviceName": "google.cloud.vision.v1.ProductSearch",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
-                }
-                if hasattr(self._client._transport, "_credentials")
-                else {
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
+                } if hasattr(self._client._transport, "_credentials") else {
                     "serviceName": "google.cloud.vision.v1.ProductSearch",
                     "credentialsType": None,
-                },
+                }
             )
 
-    async def create_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.CreateProductSetRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        product_set: Optional[product_search_service.ProductSet] = None,
-        product_set_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.ProductSet:
+    async def create_product_set(self,
+            request: Optional[Union[product_search_service.CreateProductSetRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            product_set: Optional[product_search_service.ProductSet] = None,
+            product_set_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.ProductSet:
         r"""Creates and returns a new ProductSet resource.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is
+           longer than 4096 characters.
 
         .. code-block:: python
 
@@ -412,14 +368,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, product_set, product_set_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -437,14 +389,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -461,23 +413,20 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_product_sets(
-        self,
-        request: Optional[
-            Union[product_search_service.ListProductSetsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListProductSetsAsyncPager:
+    async def list_product_sets(self,
+            request: Optional[Union[product_search_service.ListProductSetsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListProductSetsAsyncPager:
         r"""Lists ProductSets in an unspecified order.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
+           less than 1.
 
         .. code-block:: python
 
@@ -538,14 +487,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -559,14 +504,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_product_sets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_product_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -594,22 +539,19 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.GetProductSetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.ProductSet:
+    async def get_product_set(self,
+            request: Optional[Union[product_search_service.GetProductSetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.ProductSet:
         r"""Gets information associated with a ProductSet.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         .. code-block:: python
 
@@ -670,14 +612,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -691,14 +629,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -715,27 +653,24 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.UpdateProductSetRequest, dict]
-        ] = None,
-        *,
-        product_set: Optional[product_search_service.ProductSet] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.ProductSet:
+    async def update_product_set(self,
+            request: Optional[Union[product_search_service.UpdateProductSetRequest, dict]] = None,
+            *,
+            product_set: Optional[product_search_service.ProductSet] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.ProductSet:
         r"""Makes changes to a ProductSet resource. Only display_name can be
         updated currently.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but missing from the request or longer than 4096
+           characters.
 
         .. code-block:: python
 
@@ -802,14 +737,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [product_set, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -825,16 +756,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product_set.name", request.product_set.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product_set.name", request.product_set.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -851,17 +780,14 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.DeleteProductSetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_product_set(self,
+            request: Optional[Union[product_search_service.DeleteProductSetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Permanently deletes a ProductSet. Products and
         ReferenceImages in the ProductSet are not deleted.
 
@@ -915,14 +841,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -936,14 +858,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -957,29 +879,26 @@ class ProductSearchAsyncClient:
             metadata=metadata,
         )
 
-    async def create_product(
-        self,
-        request: Optional[
-            Union[product_search_service.CreateProductRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        product: Optional[product_search_service.Product] = None,
-        product_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.Product:
+    async def create_product(self,
+            request: Optional[Union[product_search_service.CreateProductRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            product: Optional[product_search_service.Product] = None,
+            product_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.Product:
         r"""Creates and returns a new product resource.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-        - Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer
+           than 4096 characters.
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID_ARGUMENT if product_category is missing or
+           invalid.
 
         .. code-block:: python
 
@@ -1050,14 +969,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, product, product_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1075,14 +990,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_product
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_product]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1099,23 +1014,20 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def list_products(
-        self,
-        request: Optional[
-            Union[product_search_service.ListProductsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListProductsAsyncPager:
+    async def list_products(self,
+            request: Optional[Union[product_search_service.ListProductsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListProductsAsyncPager:
         r"""Lists products in an unspecified order.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 
@@ -1176,14 +1088,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1197,14 +1105,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_products
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_products]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1232,20 +1140,19 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_product(
-        self,
-        request: Optional[Union[product_search_service.GetProductRequest, dict]] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.Product:
+    async def get_product(self,
+            request: Optional[Union[product_search_service.GetProductRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.Product:
         r"""Gets information associated with a Product.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         .. code-block:: python
 
@@ -1301,14 +1208,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1322,14 +1225,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_product
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_product]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1346,18 +1249,15 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def update_product(
-        self,
-        request: Optional[
-            Union[product_search_service.UpdateProductRequest, dict]
-        ] = None,
-        *,
-        product: Optional[product_search_service.Product] = None,
-        update_mask: Optional[field_mask_pb2.FieldMask] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.Product:
+    async def update_product(self,
+            request: Optional[Union[product_search_service.UpdateProductRequest, dict]] = None,
+            *,
+            product: Optional[product_search_service.Product] = None,
+            update_mask: Optional[field_mask_pb2.FieldMask] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.Product:
         r"""Makes changes to a Product resource. Only the ``display_name``,
         ``description``, and ``labels`` fields can be updated right now.
 
@@ -1366,14 +1266,14 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-        - Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-        - Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but is missing from the request or longer than
+           4096 characters.
+        -  Returns INVALID_ARGUMENT if description is present in
+           update_mask but is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         .. code-block:: python
 
@@ -1437,14 +1337,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [product, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1460,16 +1356,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_product
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_product]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product.name", request.product.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product.name", request.product.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1486,17 +1380,14 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_product(
-        self,
-        request: Optional[
-            Union[product_search_service.DeleteProductRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_product(self,
+            request: Optional[Union[product_search_service.DeleteProductRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Permanently deletes a product and its reference
         images.
         Metadata of the product and all its images will be
@@ -1551,14 +1442,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1572,14 +1459,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_product
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_product]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1593,19 +1480,16 @@ class ProductSearchAsyncClient:
             metadata=metadata,
         )
 
-    async def create_reference_image(
-        self,
-        request: Optional[
-            Union[product_search_service.CreateReferenceImageRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        reference_image: Optional[product_search_service.ReferenceImage] = None,
-        reference_image_id: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.ReferenceImage:
+    async def create_reference_image(self,
+            request: Optional[Union[product_search_service.CreateReferenceImageRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            reference_image: Optional[product_search_service.ReferenceImage] = None,
+            reference_image_id: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.ReferenceImage:
         r"""Creates and returns a new ReferenceImage resource.
 
         The ``bounding_poly`` field is optional. If ``bounding_poly`` is
@@ -1620,14 +1504,14 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if the product does not exist.
-        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-        - Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or
+           longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
+           and nothing compatible with the parent product's
+           product_category is detected.
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
+           10 polygons.
 
         .. code-block:: python
 
@@ -1708,14 +1592,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, reference_image, reference_image_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1733,14 +1613,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_reference_image
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_reference_image]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -1757,17 +1637,14 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def delete_reference_image(
-        self,
-        request: Optional[
-            Union[product_search_service.DeleteReferenceImageRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def delete_reference_image(self,
+            request: Optional[Union[product_search_service.DeleteReferenceImageRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Permanently deletes a reference image.
 
         The image metadata will be deleted right away, but
@@ -1825,14 +1702,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1846,14 +1719,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_reference_image
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_reference_image]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1867,24 +1740,21 @@ class ProductSearchAsyncClient:
             metadata=metadata,
         )
 
-    async def list_reference_images(
-        self,
-        request: Optional[
-            Union[product_search_service.ListReferenceImagesRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListReferenceImagesAsyncPager:
+    async def list_reference_images(self,
+            request: Optional[Union[product_search_service.ListReferenceImagesRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListReferenceImagesAsyncPager:
         r"""Lists reference images.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the parent product does not exist.
-        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than
+           100, or less than 1.
 
         .. code-block:: python
 
@@ -1946,14 +1816,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1967,14 +1833,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_reference_images
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_reference_images]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2002,22 +1868,19 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def get_reference_image(
-        self,
-        request: Optional[
-            Union[product_search_service.GetReferenceImageRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> product_search_service.ReferenceImage:
+    async def get_reference_image(self,
+            request: Optional[Union[product_search_service.GetReferenceImageRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> product_search_service.ReferenceImage:
         r"""Gets information associated with a ReferenceImage.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         .. code-block:: python
 
@@ -2076,14 +1939,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2097,14 +1956,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_reference_image
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_reference_image]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2121,18 +1980,15 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def add_product_to_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.AddProductToProductSetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        product: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def add_product_to_product_set(self,
+            request: Optional[Union[product_search_service.AddProductToProductSetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            product: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Adds a Product to the specified ProductSet. If the Product is
         already present, no change is made.
 
@@ -2140,8 +1996,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
+           exist.
 
         .. code-block:: python
 
@@ -2203,20 +2059,14 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, product]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, product_search_service.AddProductToProductSetRequest
-        ):
+        if not isinstance(request, product_search_service.AddProductToProductSetRequest):
             request = product_search_service.AddProductToProductSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2228,14 +2078,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.add_product_to_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.add_product_to_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2249,18 +2099,15 @@ class ProductSearchAsyncClient:
             metadata=metadata,
         )
 
-    async def remove_product_from_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.RemoveProductFromProductSetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        product: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> None:
+    async def remove_product_from_product_set(self,
+            request: Optional[Union[product_search_service.RemoveProductFromProductSetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            product: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> None:
         r"""Removes a Product from the specified ProductSet.
 
         .. code-block:: python
@@ -2323,20 +2170,14 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, product]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, product_search_service.RemoveProductFromProductSetRequest
-        ):
+        if not isinstance(request, product_search_service.RemoveProductFromProductSetRequest):
             request = product_search_service.RemoveProductFromProductSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2348,14 +2189,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.remove_product_from_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.remove_product_from_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2369,25 +2210,22 @@ class ProductSearchAsyncClient:
             metadata=metadata,
         )
 
-    async def list_products_in_product_set(
-        self,
-        request: Optional[
-            Union[product_search_service.ListProductsInProductSetRequest, dict]
-        ] = None,
-        *,
-        name: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> pagers.ListProductsInProductSetAsyncPager:
+    async def list_products_in_product_set(self,
+            request: Optional[Union[product_search_service.ListProductsInProductSetRequest, dict]] = None,
+            *,
+            name: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> pagers.ListProductsInProductSetAsyncPager:
         r"""Lists the Products in a ProductSet, in an unspecified order. If
         the ProductSet does not exist, the products field of the
         response will be empty.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 
@@ -2451,20 +2289,14 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, product_search_service.ListProductsInProductSetRequest
-        ):
+        if not isinstance(request, product_search_service.ListProductsInProductSetRequest):
             request = product_search_service.ListProductsInProductSetRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -2474,14 +2306,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_products_in_product_set
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_products_in_product_set]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("name", request.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2509,20 +2341,15 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def import_product_sets(
-        self,
-        request: Optional[
-            Union[product_search_service.ImportProductSetsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        input_config: Optional[
-            product_search_service.ImportProductSetsInputConfig
-        ] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def import_product_sets(self,
+            request: Optional[Union[product_search_service.ImportProductSetsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            input_config: Optional[product_search_service.ImportProductSetsInputConfig] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Asynchronous API that imports a list of reference images to
         specified product sets based on a list of image information.
 
@@ -2612,14 +2439,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, input_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2635,14 +2458,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_product_sets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_product_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2667,17 +2490,14 @@ class ProductSearchAsyncClient:
         # Done; return the response.
         return response
 
-    async def purge_products(
-        self,
-        request: Optional[
-            Union[product_search_service.PurgeProductsRequest, dict]
-        ] = None,
-        *,
-        parent: Optional[str] = None,
-        retry: OptionalRetry = gapic_v1.method.DEFAULT,
-        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-    ) -> operation_async.AsyncOperation:
+    async def purge_products(self,
+            request: Optional[Union[product_search_service.PurgeProductsRequest, dict]] = None,
+            *,
+            parent: Optional[str] = None,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+            ) -> operation_async.AsyncOperation:
         r"""Asynchronous API to delete all Products in a ProductSet or all
         Products that are in no ProductSet.
 
@@ -2776,14 +2596,10 @@ class ProductSearchAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of "
+                             "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2797,14 +2613,14 @@ class ProductSearchAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.purge_products
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.purge_products]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("parent", request.parent),
+            )),
         )
 
         # Validate the universe domain.
@@ -2867,7 +2683,8 @@ class ProductSearchAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("name", request.name),)),
         )
 
         # Validate the universe domain.
@@ -2875,11 +2692,7 @@ class ProductSearchAsyncClient:
 
         # Send the request.
         response = await rpc(
-            request,
-            retry=retry,
-            timeout=timeout,
-            metadata=metadata,
-        )
+            request, retry=retry, timeout=timeout, metadata=metadata,)
 
         # Done; return the response.
         return response
@@ -2890,13 +2703,12 @@ class ProductSearchAsyncClient:
     async def __aexit__(self, exc_type, exc, tb):
         await self.transport.close()
 
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
-
-if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
+if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):   # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
 
 
-__all__ = ("ProductSearchAsyncClient",)
+__all__ = (
+    "ProductSearchAsyncClient",
+)

@@ -17,16 +17,18 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.vision_v1p3beta1.types import geometry, product_search_service
+from google.cloud.vision_v1p3beta1.types import geometry
+from google.cloud.vision_v1p3beta1.types import product_search_service
+from google.protobuf import timestamp_pb2  # type: ignore
+
 
 __protobuf__ = proto.module(
-    package="google.cloud.vision.v1p3beta1",
+    package='google.cloud.vision.v1p3beta1',
     manifest={
-        "ProductSearchParams",
-        "ProductSearchResults",
+        'ProductSearchParams',
+        'ProductSearchResults',
     },
 )
 
@@ -194,17 +196,15 @@ class ProductSearchResults(proto.Message):
             number=1,
             message=geometry.BoundingPoly,
         )
-        results: MutableSequence["ProductSearchResults.Result"] = proto.RepeatedField(
+        results: MutableSequence['ProductSearchResults.Result'] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message="ProductSearchResults.Result",
+            message='ProductSearchResults.Result',
         )
-        object_annotations: MutableSequence[
-            "ProductSearchResults.ObjectAnnotation"
-        ] = proto.RepeatedField(
+        object_annotations: MutableSequence['ProductSearchResults.ObjectAnnotation'] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
-            message="ProductSearchResults.ObjectAnnotation",
+            message='ProductSearchResults.ObjectAnnotation',
         )
 
     index_time: timestamp_pb2.Timestamp = proto.Field(

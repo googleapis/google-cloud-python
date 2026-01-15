@@ -53,5 +53,4 @@ def sample_purge_products():
     # Handle the response
     print(response)
 
-
 # [END vision_v1p4beta1_generated_ProductSearch_PurgeProducts_sync]

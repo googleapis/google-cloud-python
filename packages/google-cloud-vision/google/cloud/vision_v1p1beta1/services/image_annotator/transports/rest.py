@@ -13,25 +13,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import dataclasses
-import json  # type: ignore
 import logging
+import json  # type: ignore
+
+from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
+from google.api_core import rest_helpers
+from google.api_core import rest_streaming
+from google.api_core import gapic_v1
+import google.protobuf
+
+from google.protobuf import json_format
+
+from requests import __version__ as requests_version
+import dataclasses
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1, rest_helpers, rest_streaming
-from google.api_core import retry as retries
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.requests import AuthorizedSession  # type: ignore
-import google.protobuf
-from google.protobuf import json_format
-from requests import __version__ as requests_version
 
 from google.cloud.vision_v1p1beta1.types import image_annotator
 
-from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
+
 from .rest_base import _BaseImageAnnotatorRestTransport
+from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -40,7 +46,6 @@ except AttributeError:  # pragma: NO COVER
 
 try:
     from google.api_core import client_logging  # type: ignore
-
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -85,15 +90,7 @@ class ImageAnnotatorRestInterceptor:
 
 
     """
-
-    def pre_batch_annotate_images(
-        self,
-        request: image_annotator.BatchAnnotateImagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image_annotator.BatchAnnotateImagesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def pre_batch_annotate_images(self, request: image_annotator.BatchAnnotateImagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[image_annotator.BatchAnnotateImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_annotate_images
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +98,7 @@ class ImageAnnotatorRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_annotate_images(
-        self, response: image_annotator.BatchAnnotateImagesResponse
-    ) -> image_annotator.BatchAnnotateImagesResponse:
+    def post_batch_annotate_images(self, response: image_annotator.BatchAnnotateImagesResponse) -> image_annotator.BatchAnnotateImagesResponse:
         """Post-rpc interceptor for batch_annotate_images
 
         DEPRECATED. Please use the `post_batch_annotate_images_with_metadata`
@@ -116,14 +111,7 @@ class ImageAnnotatorRestInterceptor:
         """
         return response
 
-    def post_batch_annotate_images_with_metadata(
-        self,
-        response: image_annotator.BatchAnnotateImagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        image_annotator.BatchAnnotateImagesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    def post_batch_annotate_images_with_metadata(self, response: image_annotator.BatchAnnotateImagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]) -> Tuple[image_annotator.BatchAnnotateImagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_annotate_images
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -161,21 +149,20 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
     It sends JSON representations of protocol buffers over HTTP/1.1
     """
 
-    def __init__(
-        self,
-        *,
-        host: str = "vision.googleapis.com",
-        credentials: Optional[ga_credentials.Credentials] = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-        quota_project_id: Optional[str] = None,
-        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-        always_use_jwt_access: Optional[bool] = False,
-        url_scheme: str = "https",
-        interceptor: Optional[ImageAnnotatorRestInterceptor] = None,
-        api_audience: Optional[str] = None,
-    ) -> None:
+    def __init__(self, *,
+            host: str = 'vision.googleapis.com',
+            credentials: Optional[ga_credentials.Credentials] = None,
+            credentials_file: Optional[str] = None,
+            scopes: Optional[Sequence[str]] = None,
+            client_cert_source_for_mtls: Optional[Callable[[
+                ], Tuple[bytes, bytes]]] = None,
+            quota_project_id: Optional[str] = None,
+            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+            always_use_jwt_access: Optional[bool] = False,
+            url_scheme: str = 'https',
+            interceptor: Optional[ImageAnnotatorRestInterceptor] = None,
+            api_audience: Optional[str] = None,
+            ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -219,20 +206,16 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
             client_info=client_info,
             always_use_jwt_access=always_use_jwt_access,
             url_scheme=url_scheme,
-            api_audience=api_audience,
+            api_audience=api_audience
         )
         self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+            self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ImageAnnotatorRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchAnnotateImages(
-        _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages,
-        ImageAnnotatorRestStub,
-    ):
+    class _BatchAnnotateImages(_BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages, ImageAnnotatorRestStub):
         def __hash__(self):
             return hash("ImageAnnotatorRestTransport.BatchAnnotateImages")
 
@@ -244,29 +227,27 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
             session,
             timeout,
             transcoded_request,
-            body=None,
-        ):
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
+            body=None):
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
             headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
+            headers['Content-Type'] = 'application/json'
             response = getattr(session, method)(
                 "{host}{uri}".format(host=host, uri=uri),
                 timeout=timeout,
                 headers=headers,
                 params=rest_helpers.flatten_query_params(query_params, strict=True),
                 data=body,
-            )
+                )
             return response
 
-        def __call__(
-            self,
-            request: image_annotator.BatchAnnotateImagesRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> image_annotator.BatchAnnotateImagesResponse:
+        def __call__(self,
+                request: image_annotator.BatchAnnotateImagesRequest, *,
+                retry: OptionalRetry=gapic_v1.method.DEFAULT,
+                timeout: Optional[float]=None,
+                metadata: Sequence[Tuple[str, Union[str, bytes]]]=(),
+                ) -> image_annotator.BatchAnnotateImagesResponse:
             r"""Call the batch annotate images method over HTTP.
 
             Args:
@@ -288,46 +269,32 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
 
             """
 
-            http_options = (
-                _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_http_options()
-            )
+            http_options = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_annotate_images(
-                request, metadata
-            )
-            transcoded_request = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_annotate_images(request, metadata)
+            transcoded_request = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_transcoded_request(http_options, request)
 
-            body = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImageAnnotatorRestTransport._BaseBatchAnnotateImages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
-                method = transcoded_request["method"]
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
+                method = transcoded_request['method']
                 try:
                     request_payload = type(request).to_json(request)
                 except:
                     request_payload = None
                 http_request = {
-                    "payload": request_payload,
-                    "requestMethod": method,
-                    "requestUrl": request_url,
-                    "headers": dict(metadata),
+                  "payload": request_payload,
+                  "requestMethod": method,
+                  "requestUrl": request_url,
+                  "headers": dict(metadata),
                 }
                 _LOGGER.debug(
                     f"Sending request for google.cloud.vision_v1p1beta1.ImageAnnotatorClient.BatchAnnotateImages",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.vision.v1p1beta1.ImageAnnotator",
                         "rpcName": "BatchAnnotateImages",
                         "httpRequest": http_request,
@@ -336,15 +303,7 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
                 )
 
             # Send the request
-            response = ImageAnnotatorRestTransport._BatchAnnotateImages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = ImageAnnotatorRestTransport._BatchAnnotateImages._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -359,26 +318,20 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
 
             resp = self._interceptor.post_batch_annotate_images(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_annotate_images_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_annotate_images_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        image_annotator.BatchAnnotateImagesResponse.to_json(response)
-                    )
+                    response_payload = image_annotator.BatchAnnotateImagesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
-                    "payload": response_payload,
-                    "headers": dict(response.headers),
-                    "status": response.status_code,
+                "payload": response_payload,
+                "headers":  dict(response.headers),
+                "status": response.status_code,
                 }
                 _LOGGER.debug(
                     "Received response for google.cloud.vision_v1p1beta1.ImageAnnotatorClient.batch_annotate_images",
-                    extra={
+                    extra = {
                         "serviceName": "google.cloud.vision.v1p1beta1.ImageAnnotator",
                         "rpcName": "BatchAnnotateImages",
                         "metadata": http_response["headers"],
@@ -388,15 +341,12 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
             return resp
 
     @property
-    def batch_annotate_images(
-        self,
-    ) -> Callable[
-        [image_annotator.BatchAnnotateImagesRequest],
-        image_annotator.BatchAnnotateImagesResponse,
-    ]:
+    def batch_annotate_images(self) -> Callable[
+            [image_annotator.BatchAnnotateImagesRequest],
+            image_annotator.BatchAnnotateImagesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._BatchAnnotateImages(self._session, self._host, self._interceptor)  # type: ignore
+        return self._BatchAnnotateImages(self._session, self._host, self._interceptor) # type: ignore
 
     @property
     def kind(self) -> str:
@@ -406,4 +356,6 @@ class ImageAnnotatorRestTransport(_BaseImageAnnotatorRestTransport):
         self._session.close()
 
 
-__all__ = ("ImageAnnotatorRestTransport",)
+__all__=(
+    'ImageAnnotatorRestTransport',
+)

@@ -19,10 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+
 __protobuf__ = proto.module(
-    package="google.cloud.vision.v1p4beta1",
+    package='google.cloud.vision.v1p4beta1',
     manifest={
-        "WebDetection",
+        'WebDetection',
     },
 )
 
@@ -137,19 +138,15 @@ class WebDetection(proto.Message):
             proto.STRING,
             number=3,
         )
-        full_matching_images: MutableSequence[
-            "WebDetection.WebImage"
-        ] = proto.RepeatedField(
+        full_matching_images: MutableSequence['WebDetection.WebImage'] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
-            message="WebDetection.WebImage",
+            message='WebDetection.WebImage',
         )
-        partial_matching_images: MutableSequence[
-            "WebDetection.WebImage"
-        ] = proto.RepeatedField(
+        partial_matching_images: MutableSequence['WebDetection.WebImage'] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
-            message="WebDetection.WebImage",
+            message='WebDetection.WebImage',
         )
 
     class WebLabel(proto.Message):

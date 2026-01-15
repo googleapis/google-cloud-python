@@ -50,5 +50,4 @@ async def sample_list_reference_images():
     async for response in page_result:
         print(response)
 
-
 # [END vision_v1p4beta1_generated_ProductSearch_ListReferenceImages_async]

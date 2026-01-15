@@ -3,5 +3,4 @@ gapic-generator==1.30.3 # Fix mypy checks https://github.com/googleapis/gapic-ge
 nox
 starlark-pyo3>=2025.1
 build
-black==23.7.0
-isort==5.11.0
+ruff

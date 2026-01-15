@@ -17,6 +17,7 @@ import os
 import pathlib
 import re
 import shutil
+
 from typing import Dict, List
 import warnings
 
@@ -234,12 +235,7 @@ def unit(session, protobuf_implementation):
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13", "3.14"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     constraints_path = str(
@@ -381,10 +377,8 @@ def docs(session):
         "-W",  # warnings as errors
         "-T",  # show full traceback on exception
         "-N",  # no colors
-        "-b",
-        "html",  # builder
-        "-d",
-        os.path.join("docs", "_build", "doctrees", ""),  # cache directory
+        "-b",  "html",  # builder
+        "-d",  os.path.join("docs", "_build", "doctrees", ""),  # cache directory
         # paths to build:
         os.path.join("docs", ""),
         os.path.join("docs", "_build", "html", ""),
@@ -452,12 +446,7 @@ def prerelease_deps(session, protobuf_implementation):
 
     # TODO(https://github.com/googleapis/gapic-generator-python/issues/2388):
     # Remove this check once support for Protobuf 3.x is dropped.
-    if protobuf_implementation == "cpp" and session.python in (
-        "3.11",
-        "3.12",
-        "3.13",
-        "3.14",
-    ):
+    if protobuf_implementation == "cpp" and session.python in ("3.11", "3.12", "3.13", "3.14"):
         session.skip("cpp implementation is not supported in python 3.11+")
 
     # Install all dependencies

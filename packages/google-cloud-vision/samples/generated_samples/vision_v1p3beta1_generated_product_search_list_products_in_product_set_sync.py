@@ -50,5 +50,4 @@ def sample_list_products_in_product_set():
     for response in page_result:
         print(response)
 
-
 # [END vision_v1p3beta1_generated_ProductSearch_ListProductsInProductSet_sync]

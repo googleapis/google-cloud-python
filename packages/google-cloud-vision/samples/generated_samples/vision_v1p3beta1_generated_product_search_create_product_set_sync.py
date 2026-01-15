@@ -49,5 +49,4 @@ def sample_create_product_set():
     # Handle the response
     print(response)
 
-
 # [END vision_v1p3beta1_generated_ProductSearch_CreateProductSet_sync]
