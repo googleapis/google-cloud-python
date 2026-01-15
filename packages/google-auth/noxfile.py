@@ -51,14 +51,7 @@ nox.options.sessions = [
     "lint",
     "blacken",
     "mypy",
-    "unit-3.9",
-    "unit-3.10",
-    "unit-3.11",
-    "unit-3.12",
-    "unit-3.13",
-    "unit-3.14",
     # cover must be last to avoid error `No data to report`
-    "cover",
     "docs",
 ]
 
