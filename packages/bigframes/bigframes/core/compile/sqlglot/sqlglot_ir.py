@@ -642,6 +642,15 @@ def _select_to_cte(expr: sge.Select, cte_name: sge.Identifier) -> sge.Select:
     return new_select_expr
 
 
+def _is_null_literal(expr: sge.Expression) -> bool:
+    """Checks if the given expression is a NULL literal."""
+    if isinstance(expr, sge.Null):
+        return True
+    if isinstance(expr, sge.Cast) and isinstance(expr.this, sge.Null):
+        return True
+    return False
+
+
 def _literal(value: typing.Any, dtype: dtypes.Dtype) -> sge.Expression:
     sqlglot_type = sgt.from_bigframes_dtype(dtype) if dtype else None
     if sqlglot_type is None:

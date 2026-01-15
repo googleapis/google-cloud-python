@@ -19,7 +19,7 @@ import bigframes_vendored.sqlglot.expressions as sge
 
 from bigframes import dtypes
 from bigframes import operations as ops
-from bigframes.core.compile.sqlglot import sqlglot_types
+from bigframes.core.compile.sqlglot import sqlglot_ir, sqlglot_types
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
@@ -101,11 +101,23 @@ def _(expr: TypedExpr) -> sge.Expression:
 def _(expr: TypedExpr, op: ops.MapOp) -> sge.Expression:
     if len(op.mappings) == 0:
         return expr.expr
+
+    mappings = [
+        (
+            sqlglot_ir._literal(key, dtypes.is_compatible(key, expr.dtype)),
+            sqlglot_ir._literal(value, dtypes.is_compatible(value, expr.dtype)),
+        )
+        for key, value in op.mappings
+    ]
     return sge.Case(
-        this=expr.expr,
         ifs=[
-            sge.If(this=sge.convert(key), true=sge.convert(value))
-            for key, value in op.mappings
+            sge.If(
+                this=sge.EQ(this=expr.expr, expression=key)
+                if not sqlglot_ir._is_null_literal(key)
+                else sge.Is(this=expr.expr, expression=sge.Null()),
+                true=value,
+            )
+            for key, value in mappings
         ],
         default=expr.expr,
     )

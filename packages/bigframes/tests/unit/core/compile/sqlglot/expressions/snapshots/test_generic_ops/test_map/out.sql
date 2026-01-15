@@ -5,7 +5,13 @@ WITH `bfcte_0` AS (
 ), `bfcte_1` AS (
   SELECT
     *,
-    CASE `string_col` WHEN 'value1' THEN 'mapped1' ELSE `string_col` END AS `bfcol_1`
+    CASE
+      WHEN `string_col` = 'value1'
+      THEN 'mapped1'
+      WHEN `string_col` IS NULL
+      THEN 'UNKNOWN'
+      ELSE `string_col`
+    END AS `bfcol_1`
   FROM `bfcte_0`
 )
 SELECT

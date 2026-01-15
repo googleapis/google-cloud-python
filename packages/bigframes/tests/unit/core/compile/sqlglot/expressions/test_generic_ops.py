@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import pandas as pd
 import pytest
 
 from bigframes import dtypes
@@ -342,7 +343,11 @@ def test_map(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[[col_name]]
     sql = utils._apply_ops_to_sql(
         bf_df,
-        [ops.MapOp(mappings=(("value1", "mapped1"),)).as_expr(col_name)],
+        [
+            ops.MapOp(mappings=(("value1", "mapped1"), (pd.NA, "UNKNOWN"))).as_expr(
+                col_name
+            )
+        ],
         [col_name],
     )
 

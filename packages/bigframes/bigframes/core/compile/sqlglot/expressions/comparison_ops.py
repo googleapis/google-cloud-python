@@ -16,11 +16,13 @@ from __future__ import annotations
 
 import typing
 
+import bigframes_vendored.sqlglot as sg
 import bigframes_vendored.sqlglot.expressions as sge
 import pandas as pd
 
 from bigframes import dtypes
 from bigframes import operations as ops
+from bigframes.core.compile.sqlglot import sqlglot_ir
 from bigframes.core.compile.sqlglot.expressions.typed_expr import TypedExpr
 import bigframes.core.compile.sqlglot.scalar_compiler as scalar_compiler
 
@@ -62,6 +64,10 @@ def _(expr: TypedExpr, op: ops.IsInOp) -> sge.Expression:
 
 @register_binary_op(ops.eq_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sqlglot_ir._is_null_literal(left.expr):
+        return sge.Is(this=right.expr, expression=sge.Null())
+    if sqlglot_ir._is_null_literal(right.expr):
+        return sge.Is(this=left.expr, expression=sge.Null())
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.EQ(this=left_expr, expression=right_expr)
@@ -139,6 +145,17 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
 
 @register_binary_op(ops.ne_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
+    if sqlglot_ir._is_null_literal(left.expr):
+        return sge.Is(
+            this=sge.paren(right.expr, copy=False),
+            expression=sg.not_(sge.Null(), copy=False),
+        )
+    if sqlglot_ir._is_null_literal(right.expr):
+        return sge.Is(
+            this=sge.paren(left.expr, copy=False),
+            expression=sg.not_(sge.Null(), copy=False),
+        )
+
     left_expr = _coerce_bool_to_int(left)
     right_expr = _coerce_bool_to_int(right)
     return sge.NEQ(this=left_expr, expression=right_expr)

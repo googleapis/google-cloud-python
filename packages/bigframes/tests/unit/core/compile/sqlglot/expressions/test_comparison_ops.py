@@ -59,11 +59,12 @@ def test_eq_null_match(scalar_types_df: bpd.DataFrame, snapshot):
 def test_eq_numeric(scalar_types_df: bpd.DataFrame, snapshot):
     bf_df = scalar_types_df[["int64_col", "bool_col"]]
 
-    bf_df["int_ne_int"] = bf_df["int64_col"] == bf_df["int64_col"]
-    bf_df["int_ne_1"] = bf_df["int64_col"] == 1
+    bf_df["int_eq_int"] = bf_df["int64_col"] == bf_df["int64_col"]
+    bf_df["int_eq_1"] = bf_df["int64_col"] == 1
+    bf_df["int_eq_null"] = bf_df["int64_col"] == pd.NA
 
-    bf_df["int_ne_bool"] = bf_df["int64_col"] == bf_df["bool_col"]
-    bf_df["bool_ne_int"] = bf_df["bool_col"] == bf_df["int64_col"]
+    bf_df["int_eq_bool"] = bf_df["int64_col"] == bf_df["bool_col"]
+    bf_df["bool_eq_int"] = bf_df["bool_col"] == bf_df["int64_col"]
 
     snapshot.assert_match(bf_df.sql, "out.sql")
 
@@ -135,6 +136,7 @@ def test_ne_numeric(scalar_types_df: bpd.DataFrame, snapshot):
 
     bf_df["int_ne_int"] = bf_df["int64_col"] != bf_df["int64_col"]
     bf_df["int_ne_1"] = bf_df["int64_col"] != 1
+    bf_df["int_ne_null"] = bf_df["int64_col"] != pd.NA
 
     bf_df["int_ne_bool"] = bf_df["int64_col"] != bf_df["bool_col"]
     bf_df["bool_ne_int"] = bf_df["bool_col"] != bf_df["int64_col"]
