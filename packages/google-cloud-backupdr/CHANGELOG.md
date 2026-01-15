@@ -4,6 +4,23 @@
 
 [1]: https://pypi.org/project/google-cloud-backupdr/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.6.0...google-cloud-backupdr-v0.7.0) (2026-01-15)
+
+
+### Features
+
+* A new service `BackupDrProtectionSummary` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `BackupDrTemplateConfig` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `BackupLocation` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `PitrSettings` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `ListResourceBackupConfigsResponse` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `BackupConfigDetails` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `ResourceBackupConfig` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `BackupDrPlanConfig` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `BackupDrPlanRule` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new resource_definition `backupdr.googleapis.com/ResourceBackupConfig` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* A new message `ListResourceBackupConfigsRequest` is added ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-backupdr-v0.5.0...google-cloud-backupdr-v0.6.0) (2026-01-08)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-netapp/#history
 
+## [0.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.6.0...google-cloud-netapp-v0.7.0) (2026-01-15)
+
+
+### Features
+
+* Update NetApp v1 API with Host Groups, Block Volumes, Cache Volumes, and Backup Restore This CL introduces several new features and enhancements to the NetApp API: - **Host Groups:** Added a new `HostGroup` resource to manage collections of hosts for Block Volume access. Includes full CRUD operations. - **Block Volumes:** Enhanced the `Volume` resource to support `ISCSI` protocol and `BlockDevice` configurations. - **Cache Volumes:** Added `CacheParameters` to the `Volume` resource to support FlexCache volumes. - **Backup Restore:** Introduced a new `RestoreBackupFiles` RPC to restore individual files from a backup. - **CMEK for Backup Vaults:** Added fields to `BackupVault` to support Customer Managed Encryption Keys (CMEK). - **Storage Pool Type:** Added a `type` field to `StoragePool` to specify support for FILE, UNIFIED, or UNIFIED_LARGE_CAPACITY volumes. -   **Location Metadata:** Added `has_ontap_proxy` flag. -   Updated copyright year to 2026. ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+
 ## [0.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.5.0...google-cloud-netapp-v0.6.0) (2026-01-09)
 
 
