@@ -70,8 +70,8 @@ class GetServingConfigRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the ServingConfig
-            to get. Format:
+            Required. The resource name of the ServingConfig to get.
+            Format:
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
     """
 
@@ -86,18 +86,17 @@ class ListServingConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of the parent
-            resource. Format:
+            Required. Full resource name of the parent resource.
+            Format:
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
         page_size (int):
-            Optional. Maximum number of results to
-            return. If unspecified, defaults to 100. If a
-            value greater than 100 is provided, at most 100
-            results are returned.
+            Optional. Maximum number of results to return. If
+            unspecified, defaults to 100. If a value greater than
+            100 is provided, at most 100 results are returned.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListServingConfigs`` call. Provide this to
-            retrieve the subsequent page.
+            ``ListServingConfigs`` call. Provide this to retrieve
+            the subsequent page.
     """
 
     parent: str = proto.Field(
@@ -121,8 +120,8 @@ class ListServingConfigsResponse(proto.Message):
         serving_configs (MutableSequence[google.cloud.discoveryengine_v1beta.types.ServingConfig]):
             All the ServingConfigs for a given dataStore.
         next_page_token (str):
-            Pagination token, if not returned indicates
-            the last page.
+            Pagination token, if not returned indicates the last
+            page.
     """
 
     @property

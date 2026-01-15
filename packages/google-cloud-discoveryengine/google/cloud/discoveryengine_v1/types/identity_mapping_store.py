@@ -31,28 +31,26 @@ __protobuf__ = proto.module(
 
 
 class IdentityMappingStore(proto.Message):
-    r"""Identity Mapping Store which contains Identity Mapping
-    Entries.
+    r"""Identity Mapping Store which contains Identity Mapping Entries.
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the
-            identity mapping store. Format:
+            Immutable. The full resource name of the identity
+            mapping store. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}``.
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         kms_key_name (str):
-            Input only. The KMS key to be used to protect
-            this Identity Mapping Store at creation time.
+            Input only. The KMS key to be used to protect this
+            Identity Mapping Store at creation time.
 
-            Must be set for requests that need to comply
-            with CMEK Org Policy protections.
+            Must be set for requests that need to comply with CMEK
+            Org Policy protections.
 
-            If this field is set and processed successfully,
-            the Identity Mapping Store will be protected by
-            the KMS key, as indicated in the cmek_config
-            field.
+            If this field is set and processed successfully, the
+            Identity Mapping Store will be protected by the KMS key,
+            as indicated in the cmek_config field.
         cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Output only. CMEK-related information for the
             Identity Mapping Store.
@@ -74,8 +72,8 @@ class IdentityMappingStore(proto.Message):
 
 
 class IdentityMappingEntry(proto.Message):
-    r"""Identity Mapping Entry that maps an external identity to an
-    internal identity.
+    r"""Identity Mapping Entry that maps an external identity to an internal
+    identity.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -87,26 +85,26 @@ class IdentityMappingEntry(proto.Message):
     Attributes:
         user_id (str):
             User identifier.
-            For Google Workspace user account, user_id
-            should be the google workspace user email.
-            For non-google identity provider, user_id is the
-            mapped user identifier configured during the
-            workforcepool config.
+            For Google Workspace user account, user_id should be the
+            google workspace user email.
+            For non-google identity provider, user_id is the mapped
+            user identifier configured during the workforcepool
+            config.
 
             This field is a member of `oneof`_ ``identity_provider_id``.
         group_id (str):
             Group identifier.
-            For Google Workspace user account, group_id
-            should be the google workspace group email.
-            For non-google identity provider, group_id is
-            the mapped group identifier configured during
-            the workforcepool config.
+            For Google Workspace user account, group_id should be
+            the google workspace group email.
+            For non-google identity provider, group_id is the mapped
+            group identifier configured during the workforcepool
+            config.
 
             This field is a member of `oneof`_ ``identity_provider_id``.
         external_identity (str):
-            Required. Identity outside the customer
-            identity provider. The length limit of external
-            identity will be of 100 characters.
+            Required. Identity outside the customer identity
+            provider. The length limit of external identity will be
+            of 100 characters.
     """
 
     user_id: str = proto.Field(

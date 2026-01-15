@@ -109,9 +109,8 @@ class SearchUseCase(proto.Enum):
 
 
 class SearchTier(proto.Enum):
-    r"""Tiers of search features. Different tiers might have
-    different pricing. To learn more, check the pricing
-    documentation.
+    r"""Tiers of search features. Different tiers might have different
+    pricing. To learn more, check the pricing documentation.
 
     Values:
         SEARCH_TIER_UNSPECIFIED (0):
@@ -193,8 +192,8 @@ class Interval(proto.Message):
 
 
 class CustomAttribute(proto.Message):
-    r"""A custom attribute that is not explicitly modeled in a resource,
-    e.g. `UserEvent <google.cloud.discoveryengine.v1.UserEvent>`__.
+    r"""A custom attribute that is not explicitly modeled in a resource, e.g.
+    `UserEvent <google.cloud.discoveryengine.v1.UserEvent>`__.
 
     Attributes:
         text (MutableSequence[str]):
@@ -211,12 +210,11 @@ class CustomAttribute(proto.Message):
             or
             `CustomAttribute.numbers
             <google.cloud.discoveryengine.v1.CustomAttribute.numbers>`__
-            should be set. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            should be set. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
         numbers (MutableSequence[float]):
-            The numerical values of this custom attribute.
-            For example, ``[2.3, 15.4]`` when the key is
-            "lengths_cm".
+            The numerical values of this custom attribute. For
+            example, ``[2.3, 15.4]`` when the key is "lengths_cm".
 
             Exactly one of
             `CustomAttribute.text
@@ -224,8 +222,8 @@ class CustomAttribute(proto.Message):
             or
             `CustomAttribute.numbers
             <google.cloud.discoveryengine.v1.CustomAttribute.numbers>`__
-            should be set. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            should be set. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     text: MutableSequence[str] = proto.RepeatedField(
@@ -244,29 +242,27 @@ class UserInfo(proto.Message):
     Attributes:
         user_id (str):
             Highly recommended for logged-in users. Unique
-            identifier for logged-in user, such as a user
-            name. Don't set for anonymous users.
+            identifier for logged-in user, such as a user name.
+            Don't set for anonymous users.
 
             Always use a hashed value for this ID.
 
-            Don't set the field to the same fixed ID for
-            different users. This mixes the event history of
-            those users together, which results in degraded
-            model quality.
+            Don't set the field to the same fixed ID for different
+            users. This mixes the event history of those users
+            together, which results in degraded model quality.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
+            The field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
         user_agent (str):
             User agent as included in the HTTP header.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 1,000 characters. Otherwise, an
+            The field must be a UTF-8 encoded string with a length
+            limit of 1,000 characters. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
 
-            This should not be set when using the client
-            side event reporting with GTM or JavaScript tag
-            in
+            This should not be set when using the client side event
+            reporting with GTM or JavaScript tag in
             `UserEventService.CollectUserEvent
             <google.cloud.discoveryengine.v1.UserEventService.CollectUserEvent>`__
             or if
@@ -274,8 +270,7 @@ class UserInfo(proto.Message):
             <google.cloud.discoveryengine.v1.UserEvent.direct_user_request>`__
             is set.
         time_zone (str):
-            Optional. IANA time zone, e.g.
-            Europe/Budapest.
+            Optional. IANA time zone, e.g. Europe/Budapest.
     """
 
     user_id: str = proto.Field(
@@ -319,25 +314,25 @@ class Principal(proto.Message):
     Attributes:
         user_id (str):
             User identifier.
-            For Google Workspace user account, user_id
-            should be the google workspace user email.
-            For non-google identity provider user account,
-            user_id is the mapped user identifier configured
-            during the workforcepool config.
+            For Google Workspace user account, user_id should be the
+            google workspace user email.
+            For non-google identity provider user account, user_id
+            is the mapped user identifier configured during the
+            workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         group_id (str):
             Group identifier.
-            For Google Workspace user account, group_id
-            should be the google workspace group email.
-            For non-google identity provider user account,
-            group_id is the mapped group identifier
-            configured during the workforcepool config.
+            For Google Workspace user account, group_id should be
+            the google workspace group email.
+            For non-google identity provider user account, group_id
+            is the mapped group identifier configured during the
+            workforcepool config.
 
             This field is a member of `oneof`_ ``principal``.
         external_entity_id (str):
-            For 3P application identities which are not
-            present in the customer identity provider.
+            For 3P application identities which are not present
+            in the customer identity provider.
 
             This field is a member of `oneof`_ ``principal``.
     """
@@ -366,17 +361,16 @@ class HealthcareFhirConfig(proto.Message):
         enable_configurable_schema (bool):
             Whether to enable configurable schema for
             ``HEALTHCARE_FHIR`` vertical.
-            If set to ``true``, the predefined healthcare
-            fhir schema can be extended for more customized
-            searching and filtering.
+            If set to ``true``, the predefined healthcare fhir
+            schema can be extended for more customized searching and
+            filtering.
         enable_static_indexing_for_batch_ingestion (bool):
             Whether to enable static indexing for
             ``HEALTHCARE_FHIR`` batch ingestion.
 
             If set to ``true``, the batch ingestion will be
-            processed in a static indexing mode which is
-            slower but more capable of handling larger
-            volume.
+            processed in a static indexing mode which is slower but
+            more capable of handling larger volume.
     """
 
     enable_configurable_schema: bool = proto.Field(
@@ -390,33 +384,31 @@ class HealthcareFhirConfig(proto.Message):
 
 
 class SearchLinkPromotion(proto.Message):
-    r"""Promotion proto includes uri and other helping information to
-    display the promotion.
+    r"""Promotion proto includes uri and other helping information to display
+    the promotion.
 
     Attributes:
         title (str):
             Required. The title of the promotion.
             Maximum length: 160 characters.
         uri (str):
-            Optional. The URL for the page the user wants
-            to promote. Must be set for site search. For
-            other verticals, this is optional.
+            Optional. The URL for the page the user wants to
+            promote. Must be set for site search. For other
+            verticals, this is optional.
         document (str):
             Optional. The `Document
-            <google.cloud.discoveryengine.v1.Document>`__
-            the user wants to promote. For site search,
-            leave unset and only populate uri. Can be set
-            along with uri.
+            <google.cloud.discoveryengine.v1.Document>`__ the user
+            wants to promote. For site search, leave unset and only
+            populate uri. Can be set along with uri.
         image_uri (str):
             Optional. The promotion thumbnail image url.
         description (str):
             Optional. The Promotion description.
             Maximum length: 200 characters.
         enabled (bool):
-            Optional. The enabled promotion will be
-            returned for any serving configs associated with
-            the parent of the control this promotion is
-            attached to.
+            Optional. The enabled promotion will be returned for
+            any serving configs associated with the parent of the
+            control this promotion is attached to.
 
             This flag is used for basic site search only.
     """

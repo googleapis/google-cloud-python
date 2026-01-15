@@ -42,9 +42,9 @@ class Session(proto.Message):
         display_name (str):
             Optional. The display name of the session.
 
-            This field is used to identify the session in
-            the UI. By default, the display name is the
-            first turn query text in the session.
+            This field is used to identify the session in the UI. By
+            default, the display name is the first turn query text
+            in the session.
         state (google.cloud.discoveryengine_v1.types.Session.State):
             The state of the session.
         user_pseudo_id (str):
@@ -59,9 +59,9 @@ class Session(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session finished.
         is_pinned (bool):
-            Optional. Whether the session is pinned,
-            pinned session will be displayed on the top of
-            the session list.
+            Optional. Whether the session is pinned, pinned
+            session will be displayed on the top of the session
+            list.
     """
 
     class State(proto.Enum):
@@ -82,14 +82,13 @@ class Session(proto.Message):
 
         Attributes:
             query (google.cloud.discoveryengine_v1.types.Query):
-                Optional. The user query. May not be set if
-                this turn is merely regenerating an answer to a
-                different turn
+                Optional. The user query. May not be set if this turn
+                is merely regenerating an answer to a different turn
             answer (str):
-                Optional. The resource name of the answer to
-                the user query.
-                Only set if the answer generation (/answer API
-                call) happened in this turn.
+                Optional. The resource name of the answer to the user
+                query.
+                Only set if the answer generation (/answer API call)
+                happened in this turn.
             detailed_answer (google.cloud.discoveryengine_v1.types.Answer):
                 Output only. In
                 `ConversationalSearchService.GetSession
@@ -97,8 +96,8 @@ class Session(proto.Message):
                 API, if
                 `GetSessionRequest.include_answer_details
                 <google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details>`__
-                is set to true, this field will be populated
-                when getting answer query session.
+                is set to true, this field will be populated when
+                getting answer query session.
             detailed_assist_answer (google.cloud.discoveryengine_v1.types.AssistAnswer):
                 Output only. In
                 `ConversationalSearchService.GetSession
@@ -106,14 +105,14 @@ class Session(proto.Message):
                 API, if
                 `GetSessionRequest.include_answer_details
                 <google.cloud.discoveryengine.v1.GetSessionRequest.include_answer_details>`__
-                is set to true, this field will be populated
-                when getting assistant session.
+                is set to true, this field will be populated when
+                getting assistant session.
             query_config (MutableMapping[str, str]):
-                Optional. Represents metadata related to the
-                query config, for example LLM model and version
-                used, model parameters (temperature, grounding
-                parameters, etc.). The prefix "google." is
-                reserved for Google-developed functionality.
+                Optional. Represents metadata related to the query
+                config, for example LLM model and version used, model
+                parameters (temperature, grounding parameters, etc.).
+                The prefix "google." is reserved for Google-developed
+                functionality.
         """
 
         query: "Query" = proto.Field(

@@ -34,50 +34,48 @@ __protobuf__ = proto.module(
 
 class Evaluation(proto.Message):
     r"""An evaluation is a single execution (or run) of an evaluation
-    process. It encapsulates the state of the evaluation and the
-    resulting data.
+    process. It encapsulates the state of the evaluation and the resulting
+    data.
 
     Attributes:
         name (str):
             Identifier. The full resource name of the
             `Evaluation
-            <google.cloud.discoveryengine.v1alpha.Evaluation>`__,
-            in the format of
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__, in
+            the format of
             ``projects/{project}/locations/{location}/evaluations/{evaluation}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         evaluation_spec (google.cloud.discoveryengine_v1alpha.types.Evaluation.EvaluationSpec):
-            Required. The specification of the
-            evaluation.
+            Required. The specification of the evaluation.
         quality_metrics (google.cloud.discoveryengine_v1alpha.types.QualityMetrics):
-            Output only. The metrics produced by the
-            evaluation, averaged across all `SampleQuery
+            Output only. The metrics produced by the evaluation,
+            averaged across all `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__s
             in the `SampleQuerySet
             <google.cloud.discoveryengine.v1alpha.SampleQuerySet>`__.
 
-            Only populated when the evaluation's state is
-            SUCCEEDED.
+            Only populated when the evaluation's state is SUCCEEDED.
         state (google.cloud.discoveryengine_v1alpha.types.Evaluation.State):
             Output only. The state of the evaluation.
         error (google.rpc.status_pb2.Status):
             Output only. The error that occurred during
-            evaluation. Only populated when the evaluation's
-            state is FAILED.
+            evaluation. Only populated when the evaluation's state
+            is FAILED.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `Evaluation
-            <google.cloud.discoveryengine.v1alpha.Evaluation>`__
-            was created at.
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__ was
+            created at.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `Evaluation
-            <google.cloud.discoveryengine.v1alpha.Evaluation>`__
-            was completed at.
+            <google.cloud.discoveryengine.v1alpha.Evaluation>`__ was
+            completed at.
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            Output only. A sample of errors encountered
-            while processing the request.
+            Output only. A sample of errors encountered while
+            processing the request.
     """
 
     class State(proto.Enum):
@@ -109,11 +107,11 @@ class Evaluation(proto.Message):
 
         Attributes:
             search_request (google.cloud.discoveryengine_v1alpha.types.SearchRequest):
-                Required. The search request that is used to
-                perform the evaluation.
-                Only the following fields within SearchRequest
-                are supported; if any other fields are provided,
-                an UNSUPPORTED error will be returned:
+                Required. The search request that is used to perform the
+                evaluation.
+                Only the following fields within SearchRequest are
+                supported; if any other fields are provided, an
+                UNSUPPORTED error will be returned:
 
                 * `SearchRequest.serving_config
                 <google.cloud.discoveryengine.v1alpha.SearchRequest.serving_config>`__
@@ -213,31 +211,31 @@ class QualityMetrics(proto.Message):
 
     Attributes:
         doc_recall (google.cloud.discoveryengine_v1alpha.types.QualityMetrics.TopkMetrics):
-            Recall per document, at various top-k cutoff
-            levels.
-            Recall is the fraction of relevant documents
-            retrieved out of all relevant documents.
+            Recall per document, at various top-k cutoff levels.
+
+            Recall is the fraction of relevant documents retrieved
+            out of all relevant documents.
 
             Example (top-5):
 
             * For a single
              `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__,
-            If 3 out  of 5 relevant documents are retrieved
-            in the top-5, recall@5 = 3/5 = 0.6
+            If 3 out  of 5 relevant documents are retrieved in the
+            top-5, recall@5 = 3/5 = 0.6
         doc_precision (google.cloud.discoveryengine_v1alpha.types.QualityMetrics.TopkMetrics):
-            Precision per document, at various top-k cutoff
-            levels.
-            Precision is the fraction of retrieved documents
-            that are relevant.
+            Precision per document, at various top-k cutoff levels.
+
+            Precision is the fraction of retrieved documents that
+            are relevant.
 
             Example (top-5):
 
             * For a single
              `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__,
-            If 4 out  of 5 retrieved documents in the top-5
-            are relevant, precision@5 = 4/5 =  0.8
+            If 4 out  of 5 retrieved documents in the top-5 are
+            relevant, precision@5 = 4/5 =  0.8
         doc_ndcg (google.cloud.discoveryengine_v1alpha.types.QualityMetrics.TopkMetrics):
             Normalized discounted cumulative gain (NDCG) per
             document, at various top-k cutoff levels.
@@ -249,9 +247,9 @@ class QualityMetrics(proto.Message):
 
              Suppose `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__
-            with three retrieved documents (D1, D2, D3) and
-            binary relevance  judgements (1 for relevant, 0
-            for not relevant):
+            with three retrieved documents (D1, D2, D3) and binary
+            relevance  judgements (1 for relevant, 0 for not
+            relevant):
 
               Retrieved:  [D3 (0), D1 (1), D2 (1)]
               Ideal:      [D1 (1), D2 (1), D3 (0)]
@@ -260,27 +258,27 @@ class QualityMetrics(proto.Message):
               `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__:
 
-            * DCG@3: 0/log2(1+1) + 1/log2(2+1) + 1/log2(3+1)
-            = 1.13    * Ideal DCG@3: 1/log2(1+1) +
-            1/log2(2+1) + 0/log2(3+1) = 1.63
+            * DCG@3: 0/log2(1+1) + 1/log2(2+1) + 1/log2(3+1) = 1.13
+            * Ideal DCG@3: 1/log2(1+1) + 1/log2(2+1) + 0/log2(3+1) =
+            1.63
 
             * NDCG@3: 1.13/1.63 = 0.693
         page_recall (google.cloud.discoveryengine_v1alpha.types.QualityMetrics.TopkMetrics):
             Recall per page, at various top-k cutoff levels.
 
-            Recall is the fraction of relevant pages
-            retrieved out of all relevant pages.
+            Recall is the fraction of relevant pages retrieved out
+            of all relevant pages.
 
             Example (top-5):
 
             * For a single
              `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__,
-            if 3 out  of 5 relevant pages are retrieved in
-            the top-5, recall@5 = 3/5 = 0.6
+            if 3 out  of 5 relevant pages are retrieved in the
+            top-5, recall@5 = 3/5 = 0.6
         page_ndcg (google.cloud.discoveryengine_v1alpha.types.QualityMetrics.TopkMetrics):
-            Normalized discounted cumulative gain (NDCG) per
-            page, at various top-k cutoff levels.
+            Normalized discounted cumulative gain (NDCG) per page,
+            at various top-k cutoff levels.
 
             NDCG measures the ranking quality, giving higher
             relevance to top results.
@@ -289,9 +287,9 @@ class QualityMetrics(proto.Message):
 
              Suppose `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__
-            with three retrieved pages (P1, P2, P3) and
-            binary relevance judgements (1  for relevant, 0
-            for not relevant):
+            with three retrieved pages (P1, P2, P3) and binary
+            relevance judgements (1  for relevant, 0 for not
+            relevant):
 
               Retrieved:  [P3 (0), P1 (1), P2 (1)]
               Ideal:      [P1 (1), P2 (1), P3 (0)]
@@ -300,9 +298,9 @@ class QualityMetrics(proto.Message):
               `SampleQuery
             <google.cloud.discoveryengine.v1alpha.SampleQuery>`__:
 
-            * DCG@3: 0/log2(1+1) + 1/log2(2+1) + 1/log2(3+1)
-            = 1.13    * Ideal DCG@3: 1/log2(1+1) +
-            1/log2(2+1) + 0/log2(3+1) = 1.63
+            * DCG@3: 0/log2(1+1) + 1/log2(2+1) + 1/log2(3+1) = 1.13
+            * Ideal DCG@3: 1/log2(1+1) + 1/log2(2+1) + 0/log2(3+1) =
+            1.63
 
             * NDCG@3: 1.13/1.63 = 0.693
     """

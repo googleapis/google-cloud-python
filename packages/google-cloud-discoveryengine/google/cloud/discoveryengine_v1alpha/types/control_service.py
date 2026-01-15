@@ -40,17 +40,17 @@ class CreateControlRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of parent data
-            store. Format:
+            Required. Full resource name of parent data store.
+            Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
             or
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
         control (google.cloud.discoveryengine_v1alpha.types.Control):
             Required. The Control to create.
         control_id (str):
-            Required. The ID to use for the Control, which
-            will become the final component of the Control's
-            resource name.
+            Required. The ID to use for the Control, which will
+            become the final component of the Control's resource
+            name.
 
             This value must be within 1-63 characters.
             Valid characters are /`a-z <0-9>`__-_/.
@@ -80,16 +80,15 @@ class UpdateControlRequest(proto.Message):
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Optional. Indicates which fields in the provided
             `Control
-            <google.cloud.discoveryengine.v1alpha.Control>`__
-            to update. The following are NOT supported:
+            <google.cloud.discoveryengine.v1alpha.Control>`__ to
+            update. The following are NOT supported:
 
             * `Control.name
-            <google.cloud.discoveryengine.v1alpha.Control.name>`__
-            * `Control.solution_type
+            <google.cloud.discoveryengine.v1alpha.Control.name>`__ *
+            `Control.solution_type
             <google.cloud.discoveryengine.v1alpha.Control.solution_type>`__
 
-            If not set or empty, all supported fields are
-            updated.
+            If not set or empty, all supported fields are updated.
     """
 
     control: gcd_control.Control = proto.Field(
@@ -109,8 +108,8 @@ class DeleteControlRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Control to
-            delete. Format:
+            Required. The resource name of the Control to delete.
+            Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
     """
 
@@ -125,8 +124,8 @@ class GetControlRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The resource name of the Control to
-            get. Format:
+            Required. The resource name of the Control to get.
+            Format:
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/controls/{control_id}``
     """
 
@@ -142,22 +141,22 @@ class ListControlsRequest(proto.Message):
     Attributes:
         parent (str):
             Required. The data store resource name. Format:
+
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}``
             or
             ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``.
         page_size (int):
-            Optional. Maximum number of results to
-            return. If unspecified, defaults to 50. Max
-            allowed value is 1000.
+            Optional. Maximum number of results to return. If
+            unspecified, defaults to 50. Max allowed value is 1000.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListControls`` call. Provide this to retrieve
-            the subsequent page.
+            ``ListControls`` call. Provide this to retrieve the
+            subsequent page.
         filter (str):
             Optional. A filter to apply on the list results.
             Supported features:
-            * List all the products under the parent branch
-            if `filter
+            * List all the products under the parent branch if
+            `filter
             <google.cloud.discoveryengine.v1alpha.ListControlsRequest.filter>`__
             is unset. Currently this field is unsupported.
     """
@@ -187,8 +186,8 @@ class ListControlsResponse(proto.Message):
         controls (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Control]):
             All the Controls for a given data store.
         next_page_token (str):
-            Pagination token, if not returned indicates
-            the last page.
+            Pagination token, if not returned indicates the last
+            page.
     """
 
     @property

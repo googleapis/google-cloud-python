@@ -32,8 +32,7 @@ __protobuf__ = proto.module(
 
 
 class Condition(proto.Message):
-    r"""Defines circumstances to be checked before allowing a
-    behavior
+    r"""Defines circumstances to be checked before allowing a behavior
 
     Attributes:
         query_terms (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Condition.QueryTerm]):
@@ -42,8 +41,8 @@ class Condition(proto.Message):
 
             Maximum of 10 query terms.
         active_time_range (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Condition.TimeRange]):
-            Range of time(s) specifying when condition is
-            active.
+            Range of time(s) specifying when condition is active.
+
             Maximum of 10 time ranges.
     """
 
@@ -55,12 +54,12 @@ class Condition(proto.Message):
                 The specific query value to match against
 
                 Must be lowercase, must be UTF-8.
-                Can have at most 3 space separated terms if
-                full_match is true. Cannot be an empty string.
+                Can have at most 3 space separated terms if full_match
+                is true. Cannot be an empty string.
                 Maximum length of 5000 characters.
             full_match (bool):
-                Whether the search query needs to exactly
-                match the query term.
+                Whether the search query needs to exactly match the
+                query term.
         """
 
         value: str = proto.Field(
@@ -113,9 +112,8 @@ class Condition(proto.Message):
 class Control(proto.Message):
     r"""Defines a conditioned behavior to employ during serving.
     Must be attached to a
-    `ServingConfig
-    <google.cloud.discoveryengine.v1alpha.ServingConfig>`__ to be
-    considered at serving time. Permitted actions dependent on
+    `ServingConfig <google.cloud.discoveryengine.v1alpha.ServingConfig>`__
+    to be considered at serving time. Permitted actions dependent on
     ``SolutionType``.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -140,28 +138,27 @@ class Control(proto.Message):
 
             This field is a member of `oneof`_ ``action``.
         synonyms_action (google.cloud.discoveryengine_v1alpha.types.Control.SynonymsAction):
-            Treats a group of terms as synonyms of one
-            another.
+            Treats a group of terms as synonyms of one another.
 
             This field is a member of `oneof`_ ``action``.
         name (str):
             Immutable. Fully qualified name
             ``projects/*/locations/global/dataStore/*/controls/*``
         display_name (str):
-            Required. Human readable name. The identifier
-            used in UI views.
-            Must be UTF-8 encoded string. Length limit is
-            128 characters. Otherwise an INVALID ARGUMENT
-            error is thrown.
+            Required. Human readable name. The identifier used in
+            UI views.
+            Must be UTF-8 encoded string. Length limit is 128
+            characters. Otherwise an INVALID ARGUMENT error is
+            thrown.
         associated_serving_config_ids (MutableSequence[str]):
             Output only. List of all
             `ServingConfig
             <google.cloud.discoveryengine.v1alpha.ServingConfig>`__
-            IDs this control is attached to. May take up to
-            10 minutes to update after changes.
+            IDs this control is attached to. May take up to 10
+            minutes to update after changes.
         solution_type (google.cloud.discoveryengine_v1alpha.types.SolutionType):
-            Required. Immutable. What solution the
-            control belongs to.
+            Required. Immutable. What solution the control
+            belongs to.
             Must be compatible with vertical of resource.
             Otherwise an INVALID ARGUMENT error is thrown.
         use_cases (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchUseCase]):
@@ -175,12 +172,11 @@ class Control(proto.Message):
             `SolutionType.SOLUTION_TYPE_SEARCH
             <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_SEARCH>`__.
         conditions (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Condition]):
-            Determines when the associated action will
-            trigger.
+            Determines when the associated action will trigger.
+
             Omit to always apply the action.
-            Currently only a single condition may be
-            specified. Otherwise an INVALID ARGUMENT error
-            is thrown.
+            Currently only a single condition may be specified.
+            Otherwise an INVALID ARGUMENT error is thrown.
     """
 
     class BoostAction(proto.Message):
@@ -188,22 +184,21 @@ class Control(proto.Message):
 
         Attributes:
             boost (float):
-                Required. Strength of the boost, which should be
-                in [-1, 1]. Negative boost means demotion.
-                Default is 0.0 (No-op).
+                Required. Strength of the boost, which should be in [-1,
+                1]. Negative boost means demotion. Default is 0.0
+                (No-op).
             filter (str):
-                Required. Specifies which products to apply
-                the boost to.
-                If no filter is provided all products will be
-                boosted (No-op). Syntax documentation:
+                Required. Specifies which products to apply the boost
+                to.
+                If no filter is provided all products will be boosted
+                (No-op). Syntax documentation:
 
                 https://cloud.google.com/retail/docs/filter-and-order
                 Maximum length is 5000 characters.
                 Otherwise an INVALID ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents
-                can be boosted by this control. Full data store
-                name e.g.
+                Required. Specifies which data store's documents can be
+                boosted by this control. Full data store name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
@@ -226,18 +221,17 @@ class Control(proto.Message):
 
         Attributes:
             filter (str):
-                Required. A filter to apply on the matching
-                condition results.
+                Required. A filter to apply on the matching condition
+                results.
                 Required
                 Syntax documentation:
 
                 https://cloud.google.com/retail/docs/filter-and-order
-                Maximum length is 5000 characters. Otherwise an
-                INVALID ARGUMENT error is thrown.
+                Maximum length is 5000 characters. Otherwise an INVALID
+                ARGUMENT error is thrown.
             data_store (str):
-                Required. Specifies which data store's documents
-                can be filtered by this control. Full data store
-                name e.g.
+                Required. Specifies which data store's documents can be
+                filtered by this control. Full data store name e.g.
                 projects/123/locations/global/collections/default_collection/dataStores/default_data_store
         """
 
@@ -255,12 +249,11 @@ class Control(proto.Message):
 
         Attributes:
             redirect_uri (str):
-                Required. The URI to which the shopper will
-                be redirected.
+                Required. The URI to which the shopper will be
+                redirected.
                 Required.
-                URI must have length equal or less than 2000
-                characters. Otherwise an INVALID ARGUMENT error
-                is thrown.
+                URI must have length equal or less than 2000 characters.
+                Otherwise an INVALID ARGUMENT error is thrown.
         """
 
         redirect_uri: str = proto.Field(
@@ -269,17 +262,17 @@ class Control(proto.Message):
         )
 
     class SynonymsAction(proto.Message):
-        r"""Creates a set of terms that will act as synonyms of one
-        another.
-        Example: "happy" will also be considered as "glad", "glad" will
-        also be considered as "happy".
+        r"""Creates a set of terms that will act as synonyms of one another.
+
+        Example: "happy" will also be considered as "glad", "glad" will also be
+        considered as "happy".
 
         Attributes:
             synonyms (MutableSequence[str]):
                 Defines a set of synonyms.
                 Can specify up to 100 synonyms.
-                Must specify at least 2 synonyms. Otherwise an
-                INVALID ARGUMENT error is thrown.
+                Must specify at least 2 synonyms. Otherwise an INVALID
+                ARGUMENT error is thrown.
         """
 
         synonyms: MutableSequence[str] = proto.RepeatedField(

@@ -76,9 +76,9 @@ class Session(proto.Message):
         display_name (str):
             Optional. The display name of the session.
 
-            This field is used to identify the session in
-            the UI. By default, the display name is the
-            first turn query text in the session.
+            This field is used to identify the session in the UI. By
+            default, the display name is the first turn query text
+            in the session.
         state (google.cloud.discoveryengine_v1alpha.types.Session.State):
             The state of the session.
         user_pseudo_id (str):
@@ -90,9 +90,9 @@ class Session(proto.Message):
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the session finished.
         is_pinned (bool):
-            Optional. Whether the session is pinned,
-            pinned session will be displayed on the top of
-            the session list.
+            Optional. Whether the session is pinned, pinned
+            session will be displayed on the top of the session
+            list.
     """
 
     class State(proto.Enum):
@@ -113,14 +113,13 @@ class Session(proto.Message):
 
         Attributes:
             query (google.cloud.discoveryengine_v1alpha.types.Query):
-                Optional. The user query. May not be set if
-                this turn is merely regenerating an answer to a
-                different turn
+                Optional. The user query. May not be set if this turn
+                is merely regenerating an answer to a different turn
             answer (str):
-                Optional. The resource name of the answer to
-                the user query.
-                Only set if the answer generation (/answer API
-                call) happened in this turn.
+                Optional. The resource name of the answer to the user
+                query.
+                Only set if the answer generation (/answer API call)
+                happened in this turn.
             detailed_answer (google.cloud.discoveryengine_v1alpha.types.Answer):
                 Output only. In
                 `ConversationalSearchService.GetSession
@@ -128,14 +127,14 @@ class Session(proto.Message):
                 API, if
                 `GetSessionRequest.include_answer_details
                 <google.cloud.discoveryengine.v1alpha.GetSessionRequest.include_answer_details>`__
-                is set to true, this field will be populated
-                when getting answer query session.
+                is set to true, this field will be populated when
+                getting answer query session.
             query_config (MutableMapping[str, str]):
-                Optional. Represents metadata related to the
-                query config, for example LLM model and version
-                used, model parameters (temperature, grounding
-                parameters, etc.). The prefix "google." is
-                reserved for Google-developed functionality.
+                Optional. Represents metadata related to the query
+                config, for example LLM model and version used, model
+                parameters (temperature, grounding parameters, etc.).
+                The prefix "google." is reserved for Google-developed
+                functionality.
         """
 
         query: "Query" = proto.Field(
@@ -230,16 +229,15 @@ class ImageCharacteristics(proto.Message):
         height (int):
             Output only. Image height in pixels.
         color_space (google.cloud.discoveryengine_v1alpha.types.ImageCharacteristics.ColorSpace):
-            Output only. Color space of the image (e.g.,
-            "RGB", "CMYK", "Grayscale").
+            Output only. Color space of the image (e.g., "RGB",
+            "CMYK", "Grayscale").
         bit_depth (int):
-            Output only. Bit depth of the image (e.g.,
-            8-bit, 16-bit).
+            Output only. Bit depth of the image (e.g., 8-bit,
+            16-bit).
     """
 
     class ColorSpace(proto.Enum):
-        r"""Possible color spaces of an image (e.g., "RGB", "CMYK",
-        "Grayscale").
+        r"""Possible color spaces of an image (e.g., "RGB", "CMYK", "Grayscale").
 
         Values:
             COLOR_SPACE_UNSPECIFIED (0):
@@ -354,9 +352,8 @@ class FileCharacteristics(proto.Message):
 
 
 class FileView(proto.Message):
-    r"""Represents a specific alternate version or "view" of a file
-    object, such as a summary, a thumbnail, a translated version,
-    etc.
+    r"""Represents a specific alternate version or "view" of a file object,
+    such as a summary, a thumbnail, a translated version, etc.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -367,26 +364,22 @@ class FileView(proto.Message):
 
     Attributes:
         image_characteristics (google.cloud.discoveryengine_v1alpha.types.ImageCharacteristics):
-            Output only. Characteristics of an image
-            media view.
+            Output only. Characteristics of an image media view.
 
             This field is a member of `oneof`_ ``characteristics``.
         video_characteristics (google.cloud.discoveryengine_v1alpha.types.VideoCharacteristics):
-            Output only. Characteristics of a video media
-            view.
+            Output only. Characteristics of a video media view.
 
             This field is a member of `oneof`_ ``characteristics``.
         file_characteristics (google.cloud.discoveryengine_v1alpha.types.FileCharacteristics):
-            Output only. Characteristics of other file
-            types.
+            Output only. Characteristics of other file types.
 
             This field is a member of `oneof`_ ``characteristics``.
         view_id (str):
-            Output only. Globally Unique id for this
-            specific view.
-        uri (str):
-            Output only. The URI to access this media
+            Output only. Globally Unique id for this specific
             view.
+        uri (str):
+            Output only. The URI to access this media view.
         mime_type (str):
             Output only. MIME type (e.g., "image/jpeg",
             "image/png", "text/plain", "video/mp4")
@@ -449,58 +442,53 @@ class FileMetadata(proto.Message):
             The content type of the file, see
             https://www.iana.org/assignments/media-types/media-types.xhtml.
         byte_size (int):
-            Output only. The size of the context file in
-            bytes.
+            Output only. The size of the context file in bytes.
         original_uri (str):
-            Optional. The original location of the file.
-            It may be a local file path, or any other URI
-            that allows accessing the file in an external
-            system. There are two scenarios in which this
-            url may be empty:
+            Optional. The original location of the file. It may
+            be a local file path, or any other URI that allows
+            accessing the file in an external system. There are two
+            scenarios in which this url may be empty:
 
-            1. If the file was sent as inline data (e.g.
-                pasted from the clipboard).
+            1. If the file was sent as inline data (e.g. pasted from
+                the clipboard).
             2. If the original location is not available.
 
-            Note that there's no guarantee that the URI will
-            be pointing to a valid or actually existing
-            file. For example, a file might have been
-            uploaded to the session, and then deleted from
-            the original source.
+            Note that there's no guarantee that the URI will be
+            pointing to a valid or actually existing file. For
+            example, a file might have been uploaded to the session,
+            and then deleted from the original source.
         original_source_type (google.cloud.discoveryengine_v1alpha.types.FileSource):
-            Optional. The type of the original source of
-            the file.
+            Optional. The type of the original source of the
+            file.
         upload_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the file was uploaded
-            (If this is a file generated by an internal
-            process and then made available to the session,
-            this indicates the moment it happened).
+            Output only. The time the file was uploaded (If this
+            is a file generated by an internal process and then made
+            available to the session, this indicates the moment it
+            happened).
         last_add_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the file was added to
-            the session. Note that if a file was added, then
-            modified externally, then added again, the add
-            time will be updated.
+            Output only. The time the file was added to the
+            session. Note that if a file was added, then modified
+            externally, then added again, the add time will be
+            updated.
         metadata (MutableMapping[str, str]):
-            Optional. Represents metadata related to the
-            file that can suit particular use cases. The
-            prefix "google." is reserved for the key for use
-            by Google, but other prefixes can be freely
-            used.
+            Optional. Represents metadata related to the file
+            that can suit particular use cases. The prefix "google."
+            is reserved for the key for use by Google, but other
+            prefixes can be freely used.
         download_uri (str):
             Output only. The
             `AssistantService.DownloadSessionFile
             <google.cloud.discoveryengine.v1alpha.AssistantService.DownloadSessionFile>`__
-            URL to download the file. This URL will need the
-            same credentials as
-            `AssistantService.ListSessionFileMetadata
+            URL to download the file. This URL will need the same
+            credentials as `AssistantService.ListSessionFileMetadata
             <google.cloud.discoveryengine.v1alpha.AssistantService.ListSessionFileMetadata>`__
             method and will provide the resource.
         file_origin_type (google.cloud.discoveryengine_v1alpha.types.FileOriginType):
             Optional. The origin of the file.
         views (MutableMapping[str, google.cloud.discoveryengine_v1alpha.types.FileView]):
-            Output only. Alternate views of this file
-            object. Each file view is attached to a specific
-            role. Possible example keys:
+            Output only. Alternate views of this file object. Each
+            file view is attached to a specific role. Possible
+            example keys:
 
             - "thumbnail"
               - "mobile_thumbnail"

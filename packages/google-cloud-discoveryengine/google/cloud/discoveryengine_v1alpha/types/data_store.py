@@ -37,63 +37,62 @@ __protobuf__ = proto.module(
 
 
 class DataStore(proto.Message):
-    r"""DataStore captures global settings and configs at the
-    DataStore level.
+    r"""DataStore captures global settings and configs at the DataStore
+    level.
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the data
-            store. Format:
+            Immutable. The full resource name of the data store.
+            Format:
 
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         industry_vertical (google.cloud.discoveryengine_v1alpha.types.IndustryVertical):
-            Immutable. The industry vertical that the
-            data store registers.
+            Immutable. The industry vertical that the data store
+            registers.
         solution_types (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SolutionType]):
-            The solutions that the data store enrolls.
-            Available solutions for each `industry_vertical
+            The solutions that the data store enrolls. Available
+            solutions for each `industry_vertical
             <google.cloud.discoveryengine.v1alpha.DataStore.industry_vertical>`__:
 
-            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION``
-            and ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
-            ``SOLUTION_TYPE_SEARCH`` is automatically
-            enrolled. Other   solutions cannot be enrolled.
+            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+            ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
+            ``SOLUTION_TYPE_SEARCH`` is automatically enrolled.
+            Other   solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            `Schema
-            <google.cloud.discoveryengine.v1alpha.Schema>`__
+            `Schema <google.cloud.discoveryengine.v1alpha.Schema>`__
             asscociated to this data store.
         content_config (google.cloud.discoveryengine_v1alpha.types.DataStore.ContentConfig):
-            Immutable. The content config of the data store.
-            If this field is unset, the server behavior
-            defaults to `ContentConfig.NO_CONTENT
+            Immutable. The content config of the data store. If this
+            field is unset, the server behavior defaults to
+            `ContentConfig.NO_CONTENT
             <google.cloud.discoveryengine.v1alpha.DataStore.ContentConfig.NO_CONTENT>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `DataStore
-            <google.cloud.discoveryengine.v1alpha.DataStore>`__
-            was created at.
+            <google.cloud.discoveryengine.v1alpha.DataStore>`__ was
+            created at.
         language_info (google.cloud.discoveryengine_v1alpha.types.LanguageInfo):
             Language info for DataStore.
         idp_config (google.cloud.discoveryengine_v1alpha.types.IdpConfig):
-            Output only. Data store level identity
-            provider config.
+            Output only. Data store level identity provider
+            config.
         acl_enabled (bool):
             Immutable. Whether data in the
             `DataStore
-            <google.cloud.discoveryengine.v1alpha.DataStore>`__
-            has ACL information. If set to ``true``, the
-            source data must have ACL. ACL will be ingested
-            when data is ingested by
+            <google.cloud.discoveryengine.v1alpha.DataStore>`__ has
+            ACL information. If set to ``true``, the source data
+            must have ACL. ACL will be ingested when data is
+            ingested by
             `DocumentService.ImportDocuments
             <google.cloud.discoveryengine.v1alpha.DocumentService.ImportDocuments>`__
             methods.
@@ -102,20 +101,19 @@ class DataStore(proto.Message):
             `DataStore
             <google.cloud.discoveryengine.v1alpha.DataStore>`__,
             `Document
-            <google.cloud.discoveryengine.v1alpha.Document>`__
-            can't be accessed by calling
+            <google.cloud.discoveryengine.v1alpha.Document>`__ can't
+            be accessed by calling
             `DocumentService.GetDocument
             <google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument>`__
             or
             `DocumentService.ListDocuments
             <google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments>`__.
 
-            Currently ACL is only supported in ``GENERIC``
-            industry vertical with non-``PUBLIC_WEBSITE``
-            content config.
+            Currently ACL is only supported in ``GENERIC`` industry
+            vertical with non-``PUBLIC_WEBSITE`` content config.
         workspace_config (google.cloud.discoveryengine_v1alpha.types.WorkspaceConfig):
-            Config to store data store type configuration
-            for workspace data. This must be set when
+            Config to store data store type configuration for
+            workspace data. This must be set when
             `DataStore.content_config
             <google.cloud.discoveryengine.v1alpha.DataStore.content_config>`__
             is set as
@@ -127,22 +125,22 @@ class DataStore(proto.Message):
         starting_schema (google.cloud.discoveryengine_v1alpha.types.Schema):
             The start schema to use for this
             `DataStore
-            <google.cloud.discoveryengine.v1alpha.DataStore>`__
-            when provisioning it. If unset, a default
-            vertical specialized schema will be used.
+            <google.cloud.discoveryengine.v1alpha.DataStore>`__ when
+            provisioning it. If unset, a default vertical
+            specialized schema will be used.
 
-            This field is only used by [CreateDataStore][]
-            API, and will be ignored if used in other APIs.
-            This field will be omitted from all API
-            responses including [CreateDataStore][] API. To
-            retrieve a schema of a `DataStore
-            <google.cloud.discoveryengine.v1alpha.DataStore>`__,
-            use `SchemaService.GetSchema
+            This field is only used by [CreateDataStore][] API, and
+            will be ignored if used in other APIs. This field will
+            be omitted from all API responses including
+            [CreateDataStore][] API. To retrieve a schema of a
+            `DataStore
+            <google.cloud.discoveryengine.v1alpha.DataStore>`__, use
+            `SchemaService.GetSchema
             <google.cloud.discoveryengine.v1alpha.SchemaService.GetSchema>`__
             API instead.
 
-            The provided schema will be validated against
-            certain rules on schema. Learn more from `this
+            The provided schema will be validated against certain
+            rules on schema. Learn more from `this
             doc
             <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
     """
@@ -251,15 +249,13 @@ class LanguageInfo(proto.Message):
             ``en_GB``, ``en-UK`` or ``en-gb`` will have
             normalized_language_code of ``en-GB``.
         language (str):
-            Output only. Language part of
-            normalized_language_code. E.g.: ``en-US`` ->
-            ``en``, ``zh-Hans-HK`` -> ``zh``, ``en`` ->
-            ``en``.
+            Output only. Language part of normalized_language_code.
+            E.g.: ``en-US`` -> ``en``, ``zh-Hans-HK`` -> ``zh``,
+            ``en`` -> ``en``.
         region (str):
-            Output only. Region part of
-            normalized_language_code, if present. E.g.:
-            ``en-US`` -> ``US``, ``zh-Hans-HK`` -> ``HK``,
-            ``en`` -> ``.
+            Output only. Region part of normalized_language_code, if
+            present. E.g.: ``en-US`` -> ``US``, ``zh-Hans-HK`` ->
+            ``HK``, ``en`` -> ``.
     """
 
     language_code: str = proto.Field(
@@ -281,8 +277,7 @@ class LanguageInfo(proto.Message):
 
 
 class WorkspaceConfig(proto.Message):
-    r"""Config to store data store type configuration for workspace
-    data
+    r"""Config to store data store type configuration for workspace data
 
     Attributes:
         type_ (google.cloud.discoveryengine_v1alpha.types.WorkspaceConfig.Type):
@@ -292,8 +287,7 @@ class WorkspaceConfig(proto.Message):
     """
 
     class Type(proto.Enum):
-        r"""Specifies the type of Workspace App supported by this
-        DataStore
+        r"""Specifies the type of Workspace App supported by this DataStore
 
         Values:
             TYPE_UNSPECIFIED (0):

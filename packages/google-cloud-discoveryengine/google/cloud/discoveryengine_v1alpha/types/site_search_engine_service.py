@@ -78,10 +78,9 @@ class GetSiteSearchEngineRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-            If the caller does not have permission to access
-            the [SiteSearchEngine], regardless of whether or
-            not it exists, a PERMISSION_DENIED error is
-            returned.
+            If the caller does not have permission to access the
+            [SiteSearchEngine], regardless of whether or not it
+            exists, a PERMISSION_DENIED error is returned.
     """
 
     name: str = proto.Field(
@@ -105,8 +104,8 @@ class CreateTargetSiteRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
             Required. The `TargetSite
-            <google.cloud.discoveryengine.v1alpha.TargetSite>`__
-            to create.
+            <google.cloud.discoveryengine.v1alpha.TargetSite>`__ to
+            create.
     """
 
     parent: str = proto.Field(
@@ -131,8 +130,8 @@ class CreateTargetSiteMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -155,16 +154,15 @@ class BatchCreateTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all
-            TargetSites being created.
+            Required. The parent resource shared by all TargetSites
+            being created.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
-            The parent field in the CreateBookRequest
-            messages must either be empty or match this
-            field.
+            The parent field in the CreateBookRequest messages must
+            either be empty or match this field.
         requests (MutableSequence[google.cloud.discoveryengine_v1alpha.types.CreateTargetSiteRequest]):
             Required. The request message specifying the
-            resources to create. A maximum of 20 TargetSites
-            can be created in a batch.
+            resources to create. A maximum of 20 TargetSites can be
+            created in a batch.
     """
 
     parent: str = proto.Field(
@@ -192,8 +190,8 @@ class GetTargetSiteRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access
-            the `TargetSite
+            If the caller does not have permission to access the
+            `TargetSite
             <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
             regardless of whether or not it exists, a
             PERMISSION_DENIED error is returned.
@@ -219,16 +217,15 @@ class UpdateTargetSiteRequest(proto.Message):
     Attributes:
         target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
             Required. The target site to update.
-            If the caller does not have permission to update
-            the `TargetSite
+            If the caller does not have permission to update the
+            `TargetSite
             <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
             regardless of whether or not it exists, a
             PERMISSION_DENIED error is returned.
 
             If the `TargetSite
-            <google.cloud.discoveryengine.v1alpha.TargetSite>`__
-            to update does not exist, a NOT_FOUND error is
-            returned.
+            <google.cloud.discoveryengine.v1alpha.TargetSite>`__ to
+            update does not exist, a NOT_FOUND error is returned.
     """
 
     target_site: gcd_site_search_engine.TargetSite = proto.Field(
@@ -249,8 +246,8 @@ class UpdateTargetSiteMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -279,8 +276,8 @@ class DeleteTargetSiteRequest(proto.Message):
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-            If the caller does not have permission to access
-            the `TargetSite
+            If the caller does not have permission to access the
+            `TargetSite
             <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
             regardless of whether or not it exists, a
             PERMISSION_DENIED error is returned.
@@ -308,8 +305,8 @@ class DeleteTargetSiteMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -332,33 +329,32 @@ class ListTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent site search engine resource
-            name, such as
+            Required. The parent site search engine resource name,
+            such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
             If the caller does not have permission to list
             `TargetSite
             <google.cloud.discoveryengine.v1alpha.TargetSite>`__s
-            under this site search engine, regardless of
-            whether or not this branch exists, a
-            PERMISSION_DENIED error is returned.
+            under this site search engine, regardless of whether or
+            not this branch exists, a PERMISSION_DENIED error is
+            returned.
         page_size (int):
-            Requested page size. Server may return fewer
-            items than requested. If unspecified, server
-            will pick an appropriate default. The maximum
-            value is 1000; values above 1000 will be coerced
-            to 1000.
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an
+            appropriate default. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT
-            error is returned.
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
         page_token (str):
             A page token, received from a previous
-            ``ListTargetSites`` call. Provide this to
-            retrieve the subsequent page.
+            ``ListTargetSites`` call. Provide this to retrieve the
+            subsequent page.
 
-            When paginating, all other parameters provided
-            to ``ListTargetSites`` must match the call that
-            provided the page token.
+            When paginating, all other parameters provided to
+            ``ListTargetSites`` must match the call that provided
+            the page token.
     """
 
     parent: str = proto.Field(
@@ -385,13 +381,12 @@ class ListTargetSitesResponse(proto.Message):
         target_sites (MutableSequence[google.cloud.discoveryengine_v1alpha.types.TargetSite]):
             List of TargetSites.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to
-            retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            A token that can be sent as ``page_token`` to retrieve
+            the next page. If this field is omitted, there are no
+            subsequent pages.
         total_size (int):
-            The total number of items matching the
-            request. This will always be populated in the
-            response.
+            The total number of items matching the request.
+            This will always be populated in the response.
     """
 
     @property
@@ -426,8 +421,8 @@ class BatchCreateTargetSiteMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -503,8 +498,8 @@ class EnableAdvancedSiteSearchMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -560,8 +555,8 @@ class DisableAdvancedSiteSearchMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -590,12 +585,11 @@ class RecrawlUrisRequest(proto.Message):
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         uris (MutableSequence[str]):
-            Required. List of URIs to crawl. At most 10K
-            URIs are supported, otherwise an
-            INVALID_ARGUMENT error is thrown. Each URI
-            should match at least one `TargetSite
-            <google.cloud.discoveryengine.v1alpha.TargetSite>`__
-            in ``site_search_engine``.
+            Required. List of URIs to crawl. At most 10K URIs are
+            supported, otherwise an INVALID_ARGUMENT error is
+            thrown. Each URI should match at least one `TargetSite
+            <google.cloud.discoveryengine.v1alpha.TargetSite>`__ in
+            ``site_search_engine``.
     """
 
     site_search_engine: str = proto.Field(
@@ -616,11 +610,9 @@ class RecrawlUrisResponse(proto.Message):
 
     Attributes:
         failure_samples (MutableSequence[google.cloud.discoveryengine_v1alpha.types.RecrawlUrisResponse.FailureInfo]):
-            Details for a sample of up to 10
-            ``failed_uris``.
+            Details for a sample of up to 10 ``failed_uris``.
         failed_uris (MutableSequence[str]):
-            URIs that were not crawled before the LRO
-            terminated.
+            URIs that were not crawled before the LRO terminated.
     """
 
     class FailureInfo(proto.Message):
@@ -631,14 +623,13 @@ class RecrawlUrisResponse(proto.Message):
             uri (str):
                 URI that failed to be crawled.
             failure_reasons (MutableSequence[google.cloud.discoveryengine_v1alpha.types.RecrawlUrisResponse.FailureInfo.FailureReason]):
-                List of failure reasons by corpus type (e.g.
-                desktop, mobile).
+                List of failure reasons by corpus type (e.g. desktop,
+                mobile).
         """
 
         class FailureReason(proto.Message):
-            r"""Details about why crawling failed for a particular
-            CorpusType, e.g., DESKTOP and MOBILE crawling may fail for
-            different reasons.
+            r"""Details about why crawling failed for a particular CorpusType, e.g.,
+            DESKTOP and MOBILE crawling may fail for different reasons.
 
             Attributes:
                 corpus_type (google.cloud.discoveryengine_v1alpha.types.RecrawlUrisResponse.FailureInfo.FailureReason.CorpusType):
@@ -710,25 +701,23 @@ class RecrawlUrisMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
         invalid_uris (MutableSequence[str]):
-            Unique URIs in the request that don't match
-            any TargetSite in the DataStore, only match
-            TargetSites that haven't been fully indexed, or
-            match a TargetSite with type EXCLUDE.
+            Unique URIs in the request that don't match any
+            TargetSite in the DataStore, only match TargetSites that
+            haven't been fully indexed, or match a TargetSite with
+            type EXCLUDE.
         valid_uris_count (int):
-            Total number of unique URIs in the request that
-            are not in invalid_uris.
+            Total number of unique URIs in the request that are not
+            in invalid_uris.
         success_count (int):
-            Total number of URIs that have been crawled
-            so far.
+            Total number of URIs that have been crawled so far.
         pending_count (int):
-            Total number of URIs that have yet to be
-            crawled.
+            Total number of URIs that have yet to be crawled.
         quota_exceeded_count (int):
-            Total number of URIs that were rejected due
-            to insufficient indexing resources.
+            Total number of URIs that were rejected due to
+            insufficient indexing resources.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -771,8 +760,8 @@ class BatchVerifyTargetSitesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource shared by all
-            TargetSites being verified.
+            Required. The parent resource shared by all TargetSites
+            being verified.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
     """
 
@@ -802,8 +791,8 @@ class BatchVerifyTargetSitesMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -826,27 +815,25 @@ class FetchDomainVerificationStatusRequest(proto.Message):
 
     Attributes:
         site_search_engine (str):
-            Required. The site search engine resource under
-            which we fetch all the domain verification
-            status.
+            Required. The site search engine resource under which we
+            fetch all the domain verification status.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
         page_size (int):
-            Requested page size. Server may return fewer
-            items than requested. If unspecified, server
-            will pick an appropriate default. The maximum
-            value is 1000; values above 1000 will be coerced
-            to 1000.
+            Requested page size. Server may return fewer items than
+            requested. If unspecified, server will pick an
+            appropriate default. The maximum value is 1000; values
+            above 1000 will be coerced to 1000.
 
-            If this field is negative, an INVALID_ARGUMENT
-            error is returned.
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
         page_token (str):
             A page token, received from a previous
-            ``FetchDomainVerificationStatus`` call. Provide
-            this to retrieve the subsequent page.
+            ``FetchDomainVerificationStatus`` call. Provide this to
+            retrieve the subsequent page.
 
-            When paginating, all other parameters provided
-            to ``FetchDomainVerificationStatus`` must match
-            the call that provided the page token.
+            When paginating, all other parameters provided to
+            ``FetchDomainVerificationStatus`` must match the call
+            that provided the page token.
     """
 
     site_search_engine: str = proto.Field(
@@ -871,16 +858,15 @@ class FetchDomainVerificationStatusResponse(proto.Message):
 
     Attributes:
         target_sites (MutableSequence[google.cloud.discoveryengine_v1alpha.types.TargetSite]):
-            List of TargetSites containing the site
-            verification status.
+            List of TargetSites containing the site verification
+            status.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to
-            retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            A token that can be sent as ``page_token`` to retrieve
+            the next page. If this field is omitted, there are no
+            subsequent pages.
         total_size (int):
-            The total number of items matching the
-            request. This will always be populated in the
-            response.
+            The total number of items matching the request.
+            This will always be populated in the response.
     """
 
     @property
@@ -918,13 +904,12 @@ class SetUriPatternDocumentDataRequest(proto.Message):
             such as
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine``.
         document_data_map (MutableMapping[str, google.protobuf.struct_pb2.Struct]):
-            Document data keyed by URI pattern. Each entry
-            must be consistent with the `Schema
-            <google.cloud.discoveryengine.v1alpha.Schema>`__.
-            For example:
+            Document data keyed by URI pattern. Each entry must be
+            consistent with the `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__. For
+            example:
 
-            `Schema
-            <google.cloud.discoveryengine.v1alpha.Schema>`__
+            `Schema <google.cloud.discoveryengine.v1alpha.Schema>`__
             = { "type": "object",
             "properties": {
               "Categories": {
@@ -951,12 +936,11 @@ class SetUriPatternDocumentDataRequest(proto.Message):
             must be empty.
         schema (google.protobuf.struct_pb2.Struct):
             Optional. If not provided, the current
-            `Schema
-            <google.cloud.discoveryengine.v1alpha.Schema>`__
+            `Schema <google.cloud.discoveryengine.v1alpha.Schema>`__
             is used. If provided, validates and updates the
             `Schema
-            <google.cloud.discoveryengine.v1alpha.Schema>`__.
-            If validation fails, an error is returned.
+            <google.cloud.discoveryengine.v1alpha.Schema>`__. If
+            validation fails, an error is returned.
     """
 
     site_search_engine: str = proto.Field(
@@ -1000,8 +984,8 @@ class SetUriPatternDocumentDataMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -1046,6 +1030,7 @@ class GetUriPatternDocumentDataResponse(proto.Message):
     Attributes:
         document_data_map (MutableMapping[str, google.protobuf.struct_pb2.Struct]):
             Document data keyed by URI pattern. For example:
+
             document_data_map = {
               "www.url1.com/*": {
                 "Categories": ["category1", "category2"]

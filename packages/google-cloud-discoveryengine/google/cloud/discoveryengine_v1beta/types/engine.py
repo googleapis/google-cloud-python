@@ -31,8 +31,8 @@ __protobuf__ = proto.module(
 
 
 class Engine(proto.Message):
-    r"""Metadata that describes the training and serving parameters of
-    an `Engine <google.cloud.discoveryengine.v1beta.Engine>`__.
+    r"""Metadata that describes the training and serving parameters of an
+    `Engine <google.cloud.discoveryengine.v1beta.Engine>`__.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -43,8 +43,8 @@ class Engine(proto.Message):
 
     Attributes:
         chat_engine_config (google.cloud.discoveryengine_v1beta.types.Engine.ChatEngineConfig):
-            Configurations for the Chat Engine. Only
-            applicable if `solution_type
+            Configurations for the Chat Engine. Only applicable if
+            `solution_type
             <google.cloud.discoveryengine.v1beta.Engine.solution_type>`__
             is
             `SOLUTION_TYPE_CHAT
@@ -52,8 +52,8 @@ class Engine(proto.Message):
 
             This field is a member of `oneof`_ ``engine_config``.
         search_engine_config (google.cloud.discoveryengine_v1beta.types.Engine.SearchEngineConfig):
-            Configurations for the Search Engine. Only
-            applicable if `solution_type
+            Configurations for the Search Engine. Only applicable if
+            `solution_type
             <google.cloud.discoveryengine.v1beta.Engine.solution_type>`__
             is
             `SOLUTION_TYPE_SEARCH
@@ -61,8 +61,8 @@ class Engine(proto.Message):
 
             This field is a member of `oneof`_ ``engine_config``.
         chat_engine_metadata (google.cloud.discoveryengine_v1beta.types.Engine.ChatEngineMetadata):
-            Output only. Additional information of the Chat
-            Engine. Only applicable if
+            Output only. Additional information of the Chat Engine.
+            Only applicable if
             `solution_type
             <google.cloud.discoveryengine.v1beta.Engine.solution_type>`__
             is
@@ -71,28 +71,27 @@ class Engine(proto.Message):
 
             This field is a member of `oneof`_ ``engine_metadata``.
         name (str):
-            Immutable. The fully qualified resource name of
-            the engine.
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            Immutable. The fully qualified resource name of the
+            engine.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
 
             Format:
 
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}``
-            engine should be 1-63 characters, and valid
-            characters are /`a-z0-9 <a-z0-9-_>`__*/.
-            Otherwise, an INVALID_ARGUMENT error is
-            returned.
+            engine should be 1-63 characters, and valid characters
+            are /`a-z0-9 <a-z0-9-_>`__*/. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         display_name (str):
-            Required. The display name of the engine.
-            Should be human readable. UTF-8 encoded string
-            with limit of 1024 characters.
+            Required. The display name of the engine. Should be
+            human readable. UTF-8 encoded string with limit of 1024
+            characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Timestamp the Recommendation
-            Engine was created at.
+            Output only. Timestamp the Recommendation Engine was
+            created at.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. Timestamp the Recommendation
-            Engine was last updated.
+            Output only. Timestamp the Recommendation Engine was
+            last updated.
         data_store_ids (MutableSequence[str]):
             The data stores associated with this engine.
 
@@ -102,8 +101,8 @@ class Engine(proto.Message):
             and
             `SOLUTION_TYPE_RECOMMENDATION
             <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__
-            type of engines, they can only associate with at
-            most one data store.
+            type of engines, they can only associate with at most
+            one data store.
 
             If
             `solution_type
@@ -112,32 +111,32 @@ class Engine(proto.Message):
             `SOLUTION_TYPE_CHAT
             <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_CHAT>`__,
             multiple `DataStore
-            <google.cloud.discoveryengine.v1beta.DataStore>`__s
-            in the same `Collection
-            <google.cloud.discoveryengine.v1beta.Collection>`__
-            can be associated here.
+            <google.cloud.discoveryengine.v1beta.DataStore>`__s in
+            the same `Collection
+            <google.cloud.discoveryengine.v1beta.Collection>`__ can
+            be associated here.
 
             Note that when used in
             `CreateEngineRequest
             <google.cloud.discoveryengine.v1beta.CreateEngineRequest>`__,
-            one DataStore id must be provided as the system
-            will use it for necessary initializations.
+            one DataStore id must be provided as the system will use
+            it for necessary initializations.
         solution_type (google.cloud.discoveryengine_v1beta.types.SolutionType):
             Required. The solutions of the engine.
         industry_vertical (google.cloud.discoveryengine_v1beta.types.IndustryVertical):
             The industry vertical that the engine registers.
-            The restriction of the Engine industry vertical
-            is based on `DataStore
-            <google.cloud.discoveryengine.v1beta.DataStore>`__:
-            If unspecified, default to ``GENERIC``. Vertical
-            on Engine has to match vertical of the DataStore
-            linked to the engine.
+            The restriction of the Engine industry vertical is based
+            on `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__: If
+            unspecified, default to ``GENERIC``. Vertical on Engine
+            has to match vertical of the DataStore linked to the
+            engine.
         common_config (google.cloud.discoveryengine_v1beta.types.Engine.CommonConfig):
-            Common config spec that specifies the
-            metadata of the engine.
+            Common config spec that specifies the metadata of the
+            engine.
         disable_analytics (bool):
-            Optional. Whether to disable analytics for
-            searches performed on this engine.
+            Optional. Whether to disable analytics for searches
+            performed on this engine.
     """
 
     class SearchEngineConfig(proto.Message):
@@ -148,8 +147,7 @@ class Engine(proto.Message):
                 The search feature tier of this engine.
 
                 Different tiers might have different
-                pricing. To learn more, check the pricing
-                documentation.
+                pricing. To learn more, check the pricing documentation.
 
                 Defaults to
                 `SearchTier.SEARCH_TIER_STANDARD
@@ -175,32 +173,29 @@ class Engine(proto.Message):
 
         Attributes:
             agent_creation_config (google.cloud.discoveryengine_v1beta.types.Engine.ChatEngineConfig.AgentCreationConfig):
-                The configurationt generate the Dialogflow agent
-                that is associated to this Engine.
+                The configurationt generate the Dialogflow agent that is
+                associated to this Engine.
 
-                Note that these configurations are one-time
-                consumed by and passed to Dialogflow service. It
-                means they cannot be retrieved using
-                `EngineService.GetEngine
+                Note that these configurations are one-time consumed by
+                and passed to Dialogflow service. It means they cannot
+                be retrieved using `EngineService.GetEngine
                 <google.cloud.discoveryengine.v1beta.EngineService.GetEngine>`__
                 or
                 `EngineService.ListEngines
                 <google.cloud.discoveryengine.v1beta.EngineService.ListEngines>`__
                 API after engine creation.
             dialogflow_agent_to_link (str):
-                The resource name of an exist Dialogflow agent
-                to link to this Chat Engine. Customers can
-                either provide ``agent_creation_config`` to
-                create agent or provide an agent name that links
-                the agent with the Chat engine.
+                The resource name of an exist Dialogflow agent to link
+                to this Chat Engine. Customers can either provide
+                ``agent_creation_config`` to create agent or provide an
+                agent name that links the agent with the Chat engine.
 
-                Format: ``projects/<Project
-                ID>/locations/<Location ID>/agents/<Agent ID>``.
+                Format: ``projects/<Project ID>/locations/<Location
+                ID>/agents/<Agent ID>``.
 
-                Note that the ``dialogflow_agent_to_link`` are
-                one-time consumed by and passed to Dialogflow
-                service. It means they cannot be retrieved using
-                `EngineService.GetEngine
+                Note that the ``dialogflow_agent_to_link`` are one-time
+                consumed by and passed to Dialogflow service. It means
+                they cannot be retrieved using `EngineService.GetEngine
                 <google.cloud.discoveryengine.v1beta.EngineService.GetEngine>`__
                 or
                 `EngineService.ListEngines
@@ -208,46 +203,40 @@ class Engine(proto.Message):
                 API after engine creation. Use
                 `ChatEngineMetadata.dialogflow_agent
                 <google.cloud.discoveryengine.v1beta.Engine.ChatEngineMetadata.dialogflow_agent>`__
-                for actual agent association after Engine is
-                created.
+                for actual agent association after Engine is created.
         """
 
         class AgentCreationConfig(proto.Message):
             r"""Configurations for generating a Dialogflow agent.
 
-            Note that these configurations are one-time consumed by and
-            passed to Dialogflow service. It means they cannot be retrieved
+            Note that these configurations are one-time consumed by
+            and passed to Dialogflow service. It means they cannot be retrieved
             using `EngineService.GetEngine
-            <google.cloud.discoveryengine.v1beta.EngineService.GetEngine>`__
-            or
+            <google.cloud.discoveryengine.v1beta.EngineService.GetEngine>`__ or
             `EngineService.ListEngines
-            <google.cloud.discoveryengine.v1beta.EngineService.ListEngines>`__
-            API after engine creation.
+            <google.cloud.discoveryengine.v1beta.EngineService.ListEngines>`__ API
+            after engine creation.
 
             Attributes:
                 business (str):
-                    Name of the company, organization or other
-                    entity that the agent represents. Used for
-                    knowledge connector LLM prompt and for knowledge
-                    search.
+                    Name of the company, organization or other entity
+                    that the agent represents. Used for knowledge connector
+                    LLM prompt and for knowledge search.
                 default_language_code (str):
                     Required. The default language of the agent as a
                     language tag. See `Language
                     Support
                     <https://cloud.google.com/dialogflow/docs/reference/language>`__
-                    for a list of the currently supported language
-                    codes.
+                    for a list of the currently supported language codes.
                 time_zone (str):
-                    Required. The time zone of the agent from the
-                    `time zone database
-                    <https://www.iana.org/time-zones>`__, e.g.,
+                    Required. The time zone of the agent from the `time zone
+                    database <https://www.iana.org/time-zones>`__, e.g.,
                     America/New_York, Europe/Paris.
                 location (str):
-                    Agent location for Agent creation, supported
-                    values: global/us/eu. If not provided, us Engine
-                    will create Agent using us-central-1 by default;
-                    eu Engine will create Agent using eu-west-1 by
-                    default.
+                    Agent location for Agent creation, supported values:
+                    global/us/eu. If not provided, us Engine will create
+                    Agent using us-central-1 by default; eu Engine will
+                    create Agent using eu-west-1 by default.
             """
 
             business: str = proto.Field(
@@ -284,9 +273,9 @@ class Engine(proto.Message):
 
         Attributes:
             company_name (str):
-                The name of the company, business or entity
-                that is associated with the engine. Setting this
-                may help improve LLM related features.
+                The name of the company, business or entity that is
+                associated with the engine. Setting this may help
+                improve LLM related features.
         """
 
         company_name: str = proto.Field(
@@ -300,11 +289,11 @@ class Engine(proto.Message):
 
         Attributes:
             dialogflow_agent (str):
-                The resource name of a Dialogflow agent, that
-                this Chat Engine refers to.
+                The resource name of a Dialogflow agent, that this Chat
+                Engine refers to.
 
-                Format: ``projects/<Project
-                ID>/locations/<Location ID>/agents/<Agent ID>``.
+                Format: ``projects/<Project ID>/locations/<Location
+                ID>/agents/<Agent ID>``.
         """
 
         dialogflow_agent: str = proto.Field(

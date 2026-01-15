@@ -48,20 +48,19 @@ class GetDocumentRequest(proto.Message):
         name (str):
             Required. Full resource name of
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__,
-            such as
+            <google.cloud.discoveryengine.v1beta.Document>`__, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-            If the caller does not have permission to access
-            the `Document
+            If the caller does not have permission to access the
+            `Document
             <google.cloud.discoveryengine.v1beta.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the requested `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            does not exist, a ``NOT_FOUND`` error is
-            returned.
+            <google.cloud.discoveryengine.v1beta.Document>`__ does
+            not exist, a ``NOT_FOUND`` error is returned.
     """
 
     name: str = proto.Field(
@@ -78,27 +77,25 @@ class ListDocumentsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent branch resource name, such
-            as
+            Required. The parent branch resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
             Use ``default_branch`` as the branch ID, to list
             documents under the default branch.
 
             If the caller does not have permission to list
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__s
-            under this branch, regardless of whether or not
-            this branch exists, a ``PERMISSION_DENIED``
-            error is returned.
+            <google.cloud.discoveryengine.v1beta.Document>`__s under
+            this branch, regardless of whether or not this branch
+            exists, a ``PERMISSION_DENIED`` error is returned.
         page_size (int):
             Maximum number of `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__s
-            to return. If unspecified, defaults to 100. The
-            maximum allowed value is
+            <google.cloud.discoveryengine.v1beta.Document>`__s to
+            return. If unspecified, defaults to 100. The maximum
+            allowed value is
             1000. Values above 1000 are set to 1000.
 
-            If this field is negative, an
-            ``INVALID_ARGUMENT`` error is returned.
+            If this field is negative, an ``INVALID_ARGUMENT`` error
+            is returned.
         page_token (str):
             A page token
             `ListDocumentsResponse.next_page_token
@@ -106,15 +103,13 @@ class ListDocumentsRequest(proto.Message):
             received from a previous
             `DocumentService.ListDocuments
             <google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments>`__
-            call. Provide this to retrieve the subsequent
-            page.
+            call. Provide this to retrieve the subsequent page.
 
-            When paginating, all other parameters provided
-            to `DocumentService.ListDocuments
+            When paginating, all other parameters provided to
+            `DocumentService.ListDocuments
             <google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments>`__
-            must match the call that provided the page
-            token. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            must match the call that provided the page token.
+            Otherwise, an ``INVALID_ARGUMENT`` error is returned.
     """
 
     parent: str = proto.Field(
@@ -145,8 +140,8 @@ class ListDocumentsResponse(proto.Message):
             A token that can be sent as
             `ListDocumentsRequest.page_token
             <google.cloud.discoveryengine.v1beta.ListDocumentsRequest.page_token>`__
-            to retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            to retrieve the next page. If this field is omitted,
+            there are no subsequent pages.
     """
 
     @property
@@ -176,35 +171,33 @@ class CreateDocumentRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         document (google.cloud.discoveryengine_v1beta.types.Document):
             Required. The `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            to create.
+            <google.cloud.discoveryengine.v1beta.Document>`__ to
+            create.
         document_id (str):
             Required. The ID to use for the
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__,
-            which becomes the final component of the
+            <google.cloud.discoveryengine.v1beta.Document>`__, which
+            becomes the final component of the
             `Document.name
             <google.cloud.discoveryengine.v1beta.Document.name>`__.
 
-            If the caller does not have permission to create
-            the `Document
+            If the caller does not have permission to create the
+            `Document
             <google.cloud.discoveryengine.v1beta.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             This field must be unique among all
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__s
-            with the same `parent
+            <google.cloud.discoveryengine.v1beta.Document>`__s with
+            the same `parent
             <google.cloud.discoveryengine.v1beta.CreateDocumentRequest.parent>`__.
-            Otherwise, an ``ALREADY_EXISTS`` error is
-            returned.
+            Otherwise, an ``ALREADY_EXISTS`` error is returned.
 
             This field must conform to `RFC-1034
-            <https://tools.ietf.org/html/rfc1034>`__
-            standard with a length limit of 63 characters.
-            Otherwise, an ``INVALID_ARGUMENT`` error is
-            returned.
+            <https://tools.ietf.org/html/rfc1034>`__ standard with a
+            length limit of 63 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
     """
 
     parent: str = proto.Field(
@@ -232,29 +225,29 @@ class UpdateDocumentRequest(proto.Message):
         document (google.cloud.discoveryengine_v1beta.types.Document):
             Required. The document to update/create.
 
-            If the caller does not have permission to update
-            the `Document
+            If the caller does not have permission to update the
+            `Document
             <google.cloud.discoveryengine.v1beta.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            to update does not exist and
+            <google.cloud.discoveryengine.v1beta.Document>`__ to
+            update does not exist and
             `allow_missing
             <google.cloud.discoveryengine.v1beta.UpdateDocumentRequest.allow_missing>`__
             is not set, a ``NOT_FOUND`` error is returned.
         allow_missing (bool):
             If set to ``true`` and the
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            is not found, a new `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            is be created.
+            <google.cloud.discoveryengine.v1beta.Document>`__ is not
+            found, a new `Document
+            <google.cloud.discoveryengine.v1beta.Document>`__ is be
+            created.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            Indicates which fields in the provided
-            imported 'document' to update. If not set, by
-            default updates all fields.
+            Indicates which fields in the provided imported
+            'document' to update. If not set, by default updates all
+            fields.
     """
 
     document: gcd_document.Document = proto.Field(
@@ -283,20 +276,20 @@ class DeleteDocumentRequest(proto.Message):
         name (str):
             Required. Full resource name of
             `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__,
-            such as
+            <google.cloud.discoveryengine.v1beta.Document>`__, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-            If the caller does not have permission to delete
-            the `Document
+            If the caller does not have permission to delete the
+            `Document
             <google.cloud.discoveryengine.v1beta.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the `Document
-            <google.cloud.discoveryengine.v1beta.Document>`__
-            to delete does not exist, a ``NOT_FOUND`` error
-            is returned.
+            <google.cloud.discoveryengine.v1beta.Document>`__ to
+            delete does not exist, a ``NOT_FOUND`` error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -313,8 +306,7 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent branch resource name, such
-            as
+            Required. The parent branch resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         matcher (google.cloud.discoveryengine_v1beta.types.BatchGetDocumentsMetadataRequest.Matcher):
             Required. Matcher for the
@@ -324,8 +316,7 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
     class UrisMatcher(proto.Message):
         r"""Matcher for the `Document
-        <google.cloud.discoveryengine.v1beta.Document>`__s by exact
-        uris.
+        <google.cloud.discoveryengine.v1beta.Document>`__s by exact uris.
 
         Attributes:
             uris (MutableSequence[str]):
@@ -339,8 +330,8 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
     class FhirMatcher(proto.Message):
         r"""Matcher for the `Document
-        <google.cloud.discoveryengine.v1beta.Document>`__s by FHIR
-        resource names.
+        <google.cloud.discoveryengine.v1beta.Document>`__s by FHIR resource
+        names.
 
         Attributes:
             fhir_resources (MutableSequence[str]):
@@ -357,8 +348,8 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
     class Matcher(proto.Message):
         r"""Matcher for the `Document
-        <google.cloud.discoveryengine.v1beta.Document>`__s. Currently
-        supports matching by exact URIs.
+        <google.cloud.discoveryengine.v1beta.Document>`__s. Currently supports
+        matching by exact URIs.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -448,16 +439,16 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
         Attributes:
             matcher_value (google.cloud.discoveryengine_v1beta.types.BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue):
-                The value of the matcher that was used to match
-                the `Document
+                The value of the matcher that was used to match the
+                `Document
                 <google.cloud.discoveryengine.v1beta.Document>`__.
             state (google.cloud.discoveryengine_v1beta.types.BatchGetDocumentsMetadataResponse.State):
                 The state of the document.
             last_refreshed_time (google.protobuf.timestamp_pb2.Timestamp):
                 The timestamp of the last time the
                 `Document
-                <google.cloud.discoveryengine.v1beta.Document>`__
-                was last indexed.
+                <google.cloud.discoveryengine.v1beta.Document>`__ was
+                last indexed.
             data_ingestion_source (str):
                 The data ingestion source of the
                 `Document
@@ -466,8 +457,8 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
                 Allowed values are:
 
                 * ``batch``: Data ingested via Batch API, e.g.,
-                ImportDocuments. * ``streaming`` Data ingested
-                via Streaming API, e.g., FHIR streaming.
+                ImportDocuments. * ``streaming`` Data ingested via
+                Streaming API, e.g., FHIR streaming.
         """
 
         class MatcherValue(proto.Message):

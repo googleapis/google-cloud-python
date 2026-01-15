@@ -48,14 +48,13 @@ class PurgeUserEventsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The resource name of the catalog under
-            which the events are created. The format is
+            Required. The resource name of the catalog under which
+            the events are created. The format is
             ``projects/{project}/locations/global/collections/{collection}/dataStores/{dataStore}``.
         filter (str):
-            Required. The filter string to specify the
-            events to be deleted with a length limit of
-            5,000 characters. The eligible fields for
-            filtering are:
+            Required. The filter string to specify the events to be
+            deleted with a length limit of 5,000 characters. The
+            eligible fields for filtering are:
 
             * ``eventType``: Double quoted
             `UserEvent.event_type
@@ -63,13 +62,11 @@ class PurgeUserEventsRequest(proto.Message):
             string.
 
             * ``eventTime``: in ISO 8601 "zulu" format.
-            * ``userPseudoId``: Double quoted string.
-            Specifying this will delete all   events
-            associated with a visitor.
+            * ``userPseudoId``: Double quoted string. Specifying
+            this will delete all   events associated with a visitor.
 
-            * ``userId``: Double quoted string. Specifying
-            this will delete all events   associated with a
-            user.
+            * ``userId``: Double quoted string. Specifying this will
+            delete all events   associated with a user.
 
             Examples:
 
@@ -90,18 +87,17 @@ class PurgeUserEventsRequest(proto.Message):
 
               ``*``
 
-            The filtering fields are assumed to have an
-            implicit AND.
+            The filtering fields are assumed to have an implicit
+            AND.
         force (bool):
-            The ``force`` field is currently not supported.
-            Purge user event requests will permanently
-            delete all purgeable events. Once the
-            development is complete:
+            The ``force`` field is currently not supported. Purge
+            user event requests will permanently delete all
+            purgeable events. Once the development is complete:
 
-            If ``force`` is set to false, the method will
-            return the expected purge count without deleting
-            any user events. This field will default to
-            false if not included in the request.
+            If ``force`` is set to false, the method will return the
+            expected purge count without deleting any user events.
+            This field will default to false if not included in the
+            request.
     """
 
     parent: str = proto.Field(
@@ -119,14 +115,14 @@ class PurgeUserEventsRequest(proto.Message):
 
 
 class PurgeUserEventsResponse(proto.Message):
-    r"""Response of the PurgeUserEventsRequest. If the long running
-    operation is successfully done, then this message is returned by
-    the google.longrunning.Operations.response field.
+    r"""Response of the PurgeUserEventsRequest. If the long running operation
+    is successfully done, then this message is returned by the
+    google.longrunning.Operations.response field.
 
     Attributes:
         purge_count (int):
-            The total count of events purged as a result
-            of the operation.
+            The total count of events purged as a result of the
+            operation.
     """
 
     purge_count: int = proto.Field(
@@ -136,22 +132,21 @@ class PurgeUserEventsResponse(proto.Message):
 
 
 class PurgeUserEventsMetadata(proto.Message):
-    r"""Metadata related to the progress of the PurgeUserEvents
-    operation. This will be returned by the
-    google.longrunning.Operation.metadata field.
+    r"""Metadata related to the progress of the PurgeUserEvents operation.
+    This will be returned by the google.longrunning.Operation.metadata
+    field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
         success_count (int):
-            Count of entries that were deleted
-            successfully.
+            Count of entries that were deleted successfully.
         failure_count (int):
-            Count of entries that encountered errors
-            while processing.
+            Count of entries that encountered errors while
+            processing.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -181,11 +176,10 @@ class PurgeErrorConfig(proto.Message):
 
     Attributes:
         gcs_prefix (str):
-            Cloud Storage prefix for purge errors. This must
-            be an empty, existing Cloud Storage directory.
-            Purge errors are written to sharded files in
-            this directory, one per line, as a JSON-encoded
-            ``google.rpc.Status`` message.
+            Cloud Storage prefix for purge errors. This must be an
+            empty, existing Cloud Storage directory. Purge errors
+            are written to sharded files in this directory, one per
+            line, as a JSON-encoded ``google.rpc.Status`` message.
 
             This field is a member of `oneof`_ ``destination``.
     """
@@ -217,29 +211,28 @@ class PurgeDocumentsRequest(proto.Message):
 
             * ``document_id``: One valid
             `Document.id
-            <google.cloud.discoveryengine.v1beta.Document.id>`__
-            per line.
+            <google.cloud.discoveryengine.v1beta.Document.id>`__ per
+            line.
 
             This field is a member of `oneof`_ ``source``.
         inline_source (google.cloud.discoveryengine_v1beta.types.PurgeDocumentsRequest.InlineSource):
-            Inline source for the input content for
-            purge.
+            Inline source for the input content for purge.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         filter (str):
-            Required. Filter matching documents to purge.
-            Only currently supported value is
+            Required. Filter matching documents to purge. Only
+            currently supported value is
             ``*`` (all items).
         error_config (google.cloud.discoveryengine_v1beta.types.PurgeErrorConfig):
-            The desired location of errors incurred
-            during the purge.
+            The desired location of errors incurred during the
+            purge.
         force (bool):
-            Actually performs the purge. If ``force`` is set
-            to false, return the expected purge count
-            without deleting any documents.
+            Actually performs the purge. If ``force`` is set to
+            false, return the expected purge count without deleting
+            any documents.
     """
 
     class InlineSource(proto.Message):
@@ -250,8 +243,8 @@ class PurgeDocumentsRequest(proto.Message):
 
         Attributes:
             documents (MutableSequence[str]):
-                Required. A list of full resource name of
-                documents to purge. In the format
+                Required. A list of full resource name of documents to
+                purge. In the format
                 ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 Recommended max of 100 items.
         """
@@ -296,19 +289,18 @@ class PurgeDocumentsResponse(proto.Message):
     r"""Response message for
     `DocumentService.PurgeDocuments
     <google.cloud.discoveryengine.v1beta.DocumentService.PurgeDocuments>`__
-    method. If the long running operation is successfully done, then
-    this message is returned by the
-    google.longrunning.Operations.response field.
+    method. If the long running operation is successfully done, then this
+    message is returned by the google.longrunning.Operations.response field.
 
     Attributes:
         purge_count (int):
-            The total count of documents purged as a
-            result of the operation.
+            The total count of documents purged as a result of
+            the operation.
         purge_sample (MutableSequence[str]):
-            A sample of document names that will be deleted.
-            Only populated if ``force`` is set to false. A
-            max of 100 names will be returned and the names
-            are chosen at random.
+            A sample of document names that will be deleted. Only
+            populated if ``force`` is set to false. A max of 100
+            names will be returned and the names are chosen at
+            random.
     """
 
     purge_count: int = proto.Field(
@@ -322,25 +314,24 @@ class PurgeDocumentsResponse(proto.Message):
 
 
 class PurgeDocumentsMetadata(proto.Message):
-    r"""Metadata related to the progress of the PurgeDocuments
-    operation. This will be returned by the
-    google.longrunning.Operation.metadata field.
+    r"""Metadata related to the progress of the PurgeDocuments operation.
+    This will be returned by the google.longrunning.Operation.metadata
+    field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
         success_count (int):
-            Count of entries that were deleted
-            successfully.
+            Count of entries that were deleted successfully.
         failure_count (int):
-            Count of entries that encountered errors
-            while processing.
+            Count of entries that encountered errors while
+            processing.
         ignored_count (int):
-            Count of entries that were ignored as entries
-            were not found.
+            Count of entries that were ignored as entries were
+            not found.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -375,9 +366,8 @@ class PurgeSuggestionDenyListEntriesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name
-            for which to import denylist entries. Follows
-            pattern
+            Required. The parent data store resource name for which
+            to import denylist entries. Follows pattern
             projects/*/locations/*/collections/*/dataStores/*.
     """
 
@@ -395,11 +385,10 @@ class PurgeSuggestionDenyListEntriesResponse(proto.Message):
 
     Attributes:
         purge_count (int):
-            Number of suggestion deny list entries
-            purged.
+            Number of suggestion deny list entries purged.
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            A sample of errors encountered while
-            processing the request.
+            A sample of errors encountered while processing the
+            request.
     """
 
     purge_count: int = proto.Field(
@@ -415,15 +404,15 @@ class PurgeSuggestionDenyListEntriesResponse(proto.Message):
 
 class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    PurgeSuggestionDenyListEntries operation. This is returned by
-    the google.longrunning.Operation.metadata field.
+    PurgeSuggestionDenyListEntries operation. This is returned by the
+    google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -446,9 +435,8 @@ class PurgeCompletionSuggestionsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name
-            for which to purge completion suggestions.
-            Follows pattern
+            Required. The parent data store resource name for which
+            to purge completion suggestions. Follows pattern
             projects/*/locations/*/collections/*/dataStores/*.
     """
 
@@ -466,11 +454,11 @@ class PurgeCompletionSuggestionsResponse(proto.Message):
 
     Attributes:
         purge_succeeded (bool):
-            Whether the completion suggestions were
-            successfully purged.
+            Whether the completion suggestions were successfully
+            purged.
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            A sample of errors encountered while
-            processing the request.
+            A sample of errors encountered while processing the
+            request.
     """
 
     purge_succeeded: bool = proto.Field(
@@ -485,16 +473,16 @@ class PurgeCompletionSuggestionsResponse(proto.Message):
 
 
 class PurgeCompletionSuggestionsMetadata(proto.Message):
-    r"""Metadata related to the progress of the
-    PurgeCompletionSuggestions operation. This is returned by the
-    google.longrunning.Operation.metadata field.
+    r"""Metadata related to the progress of the PurgeCompletionSuggestions
+    operation. This is returned by the google.longrunning.Operation.metadata
+    field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(

@@ -40,17 +40,17 @@ class WriteUserEventRequest(proto.Message):
             Required. The parent resource name.
             If the write user event action is applied in
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__
-            level, the format is:
+            <google.cloud.discoveryengine.v1.DataStore>`__ level,
+            the format is:
 
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
             If the write user event action is applied in
-            `Location <google.cloud.location.Location>`__
-            level, for example, the event with `Document
-            <google.cloud.discoveryengine.v1.Document>`__
-            across multiple `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__,
-            the format is:
+            `Location <google.cloud.location.Location>`__ level, for
+            example, the event with `Document
+            <google.cloud.discoveryengine.v1.Document>`__ across
+            multiple `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__, the
+            format is:
 
             ``projects/{project}/locations/{location}``.
         user_event (google.cloud.discoveryengine_v1.types.UserEvent):
@@ -59,8 +59,8 @@ class WriteUserEventRequest(proto.Message):
             This field is a member of `oneof`_ ``_user_event``.
         write_async (bool):
             If set to true, the user event is written
-            asynchronously after validation, and the API
-            responds without waiting for the write.
+            asynchronously after validation, and the API responds
+            without waiting for the write.
     """
 
     parent: str = proto.Field(
@@ -89,35 +89,34 @@ class CollectUserEventRequest(proto.Message):
             Required. The parent resource name.
             If the collect user event action is applied in
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__
-            level, the format is:
+            <google.cloud.discoveryengine.v1.DataStore>`__ level,
+            the format is:
 
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
             If the collect user event action is applied in
-            `Location <google.cloud.location.Location>`__
-            level, for example, the event with `Document
-            <google.cloud.discoveryengine.v1.Document>`__
-            across multiple `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__,
-            the format is:
+            `Location <google.cloud.location.Location>`__ level, for
+            example, the event with `Document
+            <google.cloud.discoveryengine.v1.Document>`__ across
+            multiple `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__, the
+            format is:
 
             ``projects/{project}/locations/{location}``.
         user_event (str):
-            Required. URL encoded UserEvent proto with a
-            length limit of 2,000,000 characters.
+            Required. URL encoded UserEvent proto with a length
+            limit of 2,000,000 characters.
         uri (str):
-            The URL including cgi-parameters but
-            excluding the hash fragment with a length limit
-            of 5,000 characters. This is often more useful
-            than the referer URL, because many browsers only
-            send the domain for third-party requests.
+            The URL including cgi-parameters but excluding the
+            hash fragment with a length limit of 5,000 characters.
+            This is often more useful than the referer URL, because
+            many browsers only send the domain for third-party
+            requests.
 
             This field is a member of `oneof`_ ``_uri``.
         ets (int):
-            The event timestamp in milliseconds. This
-            prevents browser caching of otherwise identical
-            get requests. The name is abbreviated to reduce
-            the payload bytes.
+            The event timestamp in milliseconds. This prevents
+            browser caching of otherwise identical get requests. The
+            name is abbreviated to reduce the payload bytes.
 
             This field is a member of `oneof`_ ``_ets``.
     """

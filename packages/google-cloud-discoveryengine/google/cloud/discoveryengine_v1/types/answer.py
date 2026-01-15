@@ -45,8 +45,8 @@ class Answer(proto.Message):
         answer_text (str):
             The textual answer.
         grounding_score (float):
-            A score in the range of [0, 1] describing how
-            grounded the answer is by the reference chunks.
+            A score in the range of [0, 1] describing how grounded
+            the answer is by the reference chunks.
 
             This field is a member of `oneof`_ ``_grounding_score``.
         citations (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Citation]):
@@ -62,9 +62,9 @@ class Answer(proto.Message):
         query_understanding_info (google.cloud.discoveryengine_v1.types.Answer.QueryUnderstandingInfo):
             Query understanding information.
         answer_skipped_reasons (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.AnswerSkippedReason]):
-            Additional answer-skipped reasons. This
-            provides the reason for ignored cases. If
-            nothing is skipped, this field is not set.
+            Additional answer-skipped reasons. This provides the
+            reason for ignored cases. If nothing is skipped, this
+            field is not set.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Answer creation timestamp.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -179,17 +179,15 @@ class Answer(proto.Message):
 
         Attributes:
             start_index (int):
-                Index indicates the start of the segment,
-                measured in bytes (UTF-8 unicode). If there are
-                multi-byte characters,such as non-ASCII
-                characters, the index measurement is longer than
-                the string length.
+                Index indicates the start of the segment, measured in
+                bytes (UTF-8 unicode). If there are multi-byte
+                characters,such as non-ASCII characters, the index
+                measurement is longer than the string length.
             end_index (int):
-                End of the attributed segment, exclusive.
-                Measured in bytes (UTF-8 unicode). If there are
-                multi-byte characters,such as non-ASCII
-                characters, the index measurement is longer than
-                the string length.
+                End of the attributed segment, exclusive. Measured in
+                bytes (UTF-8 unicode). If there are multi-byte
+                characters,such as non-ASCII characters, the index
+                measurement is longer than the string length.
             sources (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.CitationSource]):
                 Citation sources for the attributed segment.
         """
@@ -228,24 +226,23 @@ class Answer(proto.Message):
 
         Attributes:
             start_index (int):
-                Required. Index indicates the start of the
-                claim, measured in bytes (UTF-8 unicode).
+                Required. Index indicates the start of the claim,
+                measured in bytes (UTF-8 unicode).
             end_index (int):
                 Required. End of the claim, exclusive.
             grounding_score (float):
-                A score in the range of [0, 1] describing how
-                grounded is a specific claim by the references.
-                Higher value means that the claim is better
-                supported by the reference chunks.
+                A score in the range of [0, 1] describing how grounded
+                is a specific claim by the references.
+                Higher value means that the claim is better supported by
+                the reference chunks.
 
                 This field is a member of `oneof`_ ``_grounding_score``.
             grounding_check_required (bool):
-                Indicates that this claim required grounding
-                check. When the system decided this claim didn't
-                require attribution/grounding check, this field
-                is set to false. In that case, no grounding
-                check was done for the claim and therefore
-                ``grounding_score``, ``sources`` is not
+                Indicates that this claim required grounding check. When
+                the system decided this claim didn't require
+                attribution/grounding check, this field is set to false.
+                In that case, no grounding check was done for the claim
+                and therefore ``grounding_score``, ``sources`` is not
                 returned.
 
                 This field is a member of `oneof`_ ``_grounding_check_required``.
@@ -313,12 +310,12 @@ class Answer(proto.Message):
                 title (str):
                     Title.
                 chunk_contents (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Reference.UnstructuredDocumentInfo.ChunkContent]):
-                    List of cited chunk contents derived from
-                    document content.
+                    List of cited chunk contents derived from document
+                    content.
                 struct_data (google.protobuf.struct_pb2.Struct):
-                    The structured JSON metadata for the
-                    document. It is populated from the struct data
-                    from the Chunk in search result.
+                    The structured JSON metadata for the document.
+                    It is populated from the struct data from the Chunk in
+                    search result.
             """
 
             class ChunkContent(proto.Message):
@@ -332,12 +329,12 @@ class Answer(proto.Message):
                     page_identifier (str):
                         Page identifier.
                     relevance_score (float):
-                        The relevance of the chunk for a given query.
-                        Values range from 0.0 (completely irrelevant) to
-                        1.0 (completely relevant). This value is for
-                        informational purpose only. It may change for
-                        the same query and chunk at any time due to a
-                        model retraining or change in implementation.
+                        The relevance of the chunk for a given query. Values
+                        range from 0.0 (completely irrelevant) to 1.0
+                        (completely relevant). This value is for informational
+                        purpose only. It may change for the same query and chunk
+                        at any time due to a model retraining or change in
+                        implementation.
 
                         This field is a member of `oneof`_ ``_relevance_score``.
                 """
@@ -392,12 +389,12 @@ class Answer(proto.Message):
                 content (str):
                     Chunk textual content.
                 relevance_score (float):
-                    The relevance of the chunk for a given query.
-                    Values range from 0.0 (completely irrelevant) to
-                    1.0 (completely relevant). This value is for
-                    informational purpose only. It may change for
-                    the same query and chunk at any time due to a
-                    model retraining or change in implementation.
+                    The relevance of the chunk for a given query. Values
+                    range from 0.0 (completely irrelevant) to 1.0
+                    (completely relevant). This value is for informational
+                    purpose only. It may change for the same query and chunk
+                    at any time due to a model retraining or change in
+                    implementation.
 
                     This field is a member of `oneof`_ ``_relevance_score``.
                 document_metadata (google.cloud.discoveryengine_v1.types.Answer.Reference.ChunkInfo.DocumentMetadata):
@@ -417,9 +414,9 @@ class Answer(proto.Message):
                     page_identifier (str):
                         Page identifier.
                     struct_data (google.protobuf.struct_pb2.Struct):
-                        The structured JSON metadata for the
-                        document. It is populated from the struct data
-                        from the Chunk in search result.
+                        The structured JSON metadata for the document.
+                        It is populated from the struct data from the Chunk in
+                        search result.
                 """
 
                 document: str = proto.Field(
@@ -584,9 +581,9 @@ class Answer(proto.Message):
 
                 Attributes:
                     search_results (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult]):
-                        Search results observed by the search action,
-                        it can be snippets info or chunk info, depending
-                        on the citation type set by the user.
+                        Search results observed by the search action, it can
+                        be snippets info or chunk info, depending on the
+                        citation type set by the user.
                 """
 
                 class SearchResult(proto.Message):
@@ -600,16 +597,16 @@ class Answer(proto.Message):
                         title (str):
                             Title.
                         snippet_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.SnippetInfo]):
-                            If citation_type is DOCUMENT_LEVEL_CITATION,
-                            populate document level snippets.
+                            If citation_type is DOCUMENT_LEVEL_CITATION, populate
+                            document level snippets.
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
-                            If citation_type is CHUNK_LEVEL_CITATION and
-                            chunk mode is on, populate chunk info.
+                            If citation_type is CHUNK_LEVEL_CITATION and chunk mode
+                            is on, populate chunk info.
                         struct_data (google.protobuf.struct_pb2.Struct):
                             Data representation.
                             The structured JSON data for the document.
-                            It's populated from the struct data from the
-                            Document, or the Chunk in search result.
+                            It's populated from the struct data from the Document,
+                            or the Chunk in search result.
                     """
 
                     class SnippetInfo(proto.Message):
@@ -619,8 +616,7 @@ class Answer(proto.Message):
                             snippet (str):
                                 Snippet content.
                             snippet_status (str):
-                                Status of the snippet defined by the search
-                                team.
+                                Status of the snippet defined by the search team.
                         """
 
                         snippet: str = proto.Field(
@@ -643,12 +639,12 @@ class Answer(proto.Message):
                             content (str):
                                 Chunk textual content.
                             relevance_score (float):
-                                The relevance of the chunk for a given query.
-                                Values range from 0.0 (completely irrelevant) to
-                                1.0 (completely relevant). This value is for
-                                informational purpose only. It may change for
-                                the same query and chunk at any time due to a
-                                model retraining or change in implementation.
+                                The relevance of the chunk for a given query. Values
+                                range from 0.0 (completely irrelevant) to 1.0
+                                (completely relevant). This value is for informational
+                                purpose only. It may change for the same query and chunk
+                                at any time due to a model retraining or change in
+                                implementation.
 
                                 This field is a member of `oneof`_ ``_relevance_score``.
                         """

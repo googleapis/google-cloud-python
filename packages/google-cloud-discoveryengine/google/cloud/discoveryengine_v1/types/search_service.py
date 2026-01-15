@@ -36,166 +36,154 @@ __protobuf__ = proto.module(
 class SearchRequest(proto.Message):
     r"""Request message for
     `SearchService.Search
-    <google.cloud.discoveryengine.v1.SearchService.Search>`__
-    method.
+    <google.cloud.discoveryengine.v1.SearchService.Search>`__ method.
 
     Attributes:
         serving_config (str):
-            Required. The resource name of the Search
-            serving config, such as
+            Required. The resource name of the Search serving
+            config, such as
             ``projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config``,
             or
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store/servingConfigs/default_serving_config``.
-            This field is used to identify the serving
-            configuration name, set of models used to make
-            the search.
+            This field is used to identify the serving configuration
+            name, set of models used to make the search.
         branch (str):
             The branch resource name, such as
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store/branches/0``.
 
-            Use ``default_branch`` as the branch ID or leave
-            this field empty, to search documents under the
-            default branch.
+            Use ``default_branch`` as the branch ID or leave this
+            field empty, to search documents under the default
+            branch.
         query (str):
             Raw search query.
         image_query (google.cloud.discoveryengine_v1.types.SearchRequest.ImageQuery):
             Raw image query.
         page_size (int):
             Maximum number of `Document
-            <google.cloud.discoveryengine.v1.Document>`__s
-            to return. The maximum allowed value depends on
-            the data type. Values above the maximum value
-            are coerced to the maximum value.
+            <google.cloud.discoveryengine.v1.Document>`__s to
+            return. The maximum allowed value depends on the data
+            type. Values above the maximum value are coerced to the
+            maximum value.
 
-            * Websites with basic indexing: Default ``10``,
-            Maximum ``25``. * Websites with advanced
-            indexing: Default ``25``, Maximum ``50``.
+            * Websites with basic indexing: Default ``10``, Maximum
+            ``25``. * Websites with advanced indexing: Default
+            ``25``, Maximum ``50``.
 
             * Other: Default ``50``, Maximum ``100``.
 
-            If this field is negative, an
-            ``INVALID_ARGUMENT`` is returned.
+            If this field is negative, an  ``INVALID_ARGUMENT`` is
+            returned.
         page_token (str):
             A page token received from a previous
             `SearchService.Search
             <google.cloud.discoveryengine.v1.SearchService.Search>`__
-            call. Provide this to retrieve the subsequent
-            page.
+            call. Provide this to retrieve the subsequent page.
 
-            When paginating, all other parameters provided
-            to `SearchService.Search
+            When paginating, all other parameters provided to
+            `SearchService.Search
             <google.cloud.discoveryengine.v1.SearchService.Search>`__
-            must match the call that provided the page
-            token. Otherwise, an  ``INVALID_ARGUMENT``
-            error is returned.
+            must match the call that provided the page token.
+            Otherwise, an  ``INVALID_ARGUMENT``  error is returned.
         offset (int):
-            A 0-indexed integer that specifies the current
-            offset (that is, starting result location,
-            amongst the `Document
-            <google.cloud.discoveryengine.v1.Document>`__s
-            deemed by the API as relevant) in search
-            results. This field is only considered if
-            `page_token
+            A 0-indexed integer that specifies the current offset
+            (that is, starting result location, amongst the
+            `Document <google.cloud.discoveryengine.v1.Document>`__s
+            deemed by the API as relevant) in search results. This
+            field is only considered if `page_token
             <google.cloud.discoveryengine.v1.SearchRequest.page_token>`__
             is unset.
 
-            If this field is negative, an
-            ``INVALID_ARGUMENT``  is returned.
+            If this field is negative, an  ``INVALID_ARGUMENT``  is
+            returned.
         one_box_page_size (int):
-            The maximum number of results to return for
-            OneBox. This applies to each OneBox type
-            individually. Default number is 10.
+            The maximum number of results to return for OneBox.
+            This applies to each OneBox type individually.
+            Default number is 10.
         data_store_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.DataStoreSpec]):
             Specifications that define the specific
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__s
-            to be searched, along with configurations for
-            those data stores. This is only considered for
-            `Engine
-            <google.cloud.discoveryengine.v1.Engine>`__s
-            with multiple data stores. For engines with a
-            single data store, the specs directly under
-            `SearchRequest
+            <google.cloud.discoveryengine.v1.DataStore>`__s to be
+            searched, along with configurations for those data
+            stores. This is only considered for `Engine
+            <google.cloud.discoveryengine.v1.Engine>`__s with
+            multiple data stores. For engines with a single data
+            store, the specs directly under `SearchRequest
             <google.cloud.discoveryengine.v1.SearchRequest>`__
             should be used.
         filter (str):
-            The filter syntax consists of an expression
-            language for constructing a predicate from one
-            or more fields of the documents being filtered.
-            Filter expression is case-sensitive.
+            The filter syntax consists of an expression language for
+            constructing a predicate from one or more fields of the
+            documents being filtered. Filter expression is
+            case-sensitive.
 
             If this field is unrecognizable, an
             ``INVALID_ARGUMENT``  is returned.
 
-            Filtering in Vertex AI Search is done by mapping
-            the LHS filter key to a key property defined in
-            the Vertex AI Search backend -- this mapping is
-            defined by the customer in their schema. For
-            example a media customer might have a field
-            'name' in their schema. In this case the filter
-            would look like this: filter --> name:'ANY("king
-            kong")'
+            Filtering in Vertex AI Search is done by mapping the LHS
+            filter key to a key property defined in the Vertex AI
+            Search backend -- this mapping is defined by the
+            customer in their schema. For example a media customer
+            might have a field 'name' in their schema. In this case
+            the filter would look like this: filter -->
+            name:'ANY("king kong")'
 
-            For more information about filtering including
-            syntax and filter operators, see
+            For more information about filtering including syntax
+            and filter operators, see
             `Filter
             <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
         canonical_filter (str):
-            The default filter that is applied when a user
-            performs a search without checking any filters
-            on the search page.
+            The default filter that is applied when a user performs
+            a search without checking any filters on the search
+            page.
 
-            The filter applied to every search request when
-            quality improvement such as query expansion is
-            needed. In the case a query does not have a
-            sufficient amount of results this filter will be
-            used to determine whether or not to enable the
-            query expansion flow. The original filter will
-            still be used for the query expanded search.
-            This field is strongly recommended to achieve
-            high search quality.
+            The filter applied to every search request when quality
+            improvement such as query expansion is needed. In the
+            case a query does not have a sufficient amount of
+            results this filter will be used to determine whether or
+            not to enable the query expansion flow. The original
+            filter will still be used for the query expanded search.
+            This field is strongly recommended to achieve high
+            search quality.
 
             For more information about filter syntax, see
             `SearchRequest.filter
             <google.cloud.discoveryengine.v1.SearchRequest.filter>`__.
         order_by (str):
-            The order in which documents are returned.
-            Documents can be ordered by a field in an
-            `Document
-            <google.cloud.discoveryengine.v1.Document>`__
-            object. Leave it unset if ordered by relevance.
-            ``order_by`` expression is case-sensitive.
+            The order in which documents are returned. Documents can
+            be ordered by a field in an `Document
+            <google.cloud.discoveryengine.v1.Document>`__ object.
+            Leave it unset if ordered by relevance. ``order_by``
+            expression is case-sensitive.
 
-            For more information on ordering the website
-            search results, see `Order web search
+            For more information on ordering the website search
+            results, see `Order web search
             results
             <https://cloud.google.com/generative-ai-app-builder/docs/order-web-search-results>`__.
-            For more information on ordering the healthcare
-            search results, see `Order healthcare search
+            For more information on ordering the healthcare search
+            results, see `Order healthcare search
             results
             <https://cloud.google.com/generative-ai-app-builder/docs/order-hc-results>`__.
-            If this field is unrecognizable, an
-            ``INVALID_ARGUMENT`` is returned.
+            If this field is unrecognizable, an ``INVALID_ARGUMENT``
+            is returned.
         user_info (google.cloud.discoveryengine_v1.types.UserInfo):
             Information about the end user.
-            Highly recommended for analytics and
-            personalization. `UserInfo.user_agent
+            Highly recommended for analytics and personalization.
+            `UserInfo.user_agent
             <google.cloud.discoveryengine.v1.UserInfo.user_agent>`__
             is used to deduce ``device_type`` for analytics.
         language_code (str):
-            The BCP-47 language code, such as "en-US" or
-            "sr-Latn". For more information, see `Standard
+            The BCP-47 language code, such as "en-US" or "sr-Latn".
+            For more information, see `Standard
             fields
             <https://cloud.google.com/apis/design/standard_fields>`__.
-            This field helps to better interpret the query.
-            If a value isn't specified, the query language
-            code is automatically detected, which may not be
-            accurate.
+            This field helps to better interpret the query. If a
+            value isn't specified, the query language code is
+            automatically detected, which may not be accurate.
         facet_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.FacetSpec]):
-            Facet specifications for faceted search. If
-            empty, no facets are returned.
-            A maximum of 100 values are allowed. Otherwise,
-            an  ``INVALID_ARGUMENT`` error is returned.
+            Facet specifications for faceted search. If empty, no
+            facets are returned.
+            A maximum of 100 values are allowed. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         boost_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec):
             Boost specification to boost certain documents.
             For more information on boosting, see
@@ -204,38 +192,34 @@ class SearchRequest(proto.Message):
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
-            For public website search only, supported values
-            are:
+            For public website search only, supported values are:
 
-            * ``user_country_code``: string. Default empty.
-            If set to non-empty, results    are restricted
-            or boosted based on the location provided.
-            For example, ``user_country_code: "au"``
+            * ``user_country_code``: string. Default empty. If set
+            to non-empty, results    are restricted or boosted based
+            on the location provided.    For example,
+            ``user_country_code: "au"``
 
                For available codes see `Country
                Codes
             <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
 
-            * ``search_type``: double. Default empty.
-            Enables non-webpage searching    depending on
-            the value. The only valid non-default value is
-            1,    which enables image searching.
+            * ``search_type``: double. Default empty. Enables
+            non-webpage searching    depending on the value. The
+            only valid non-default value is 1,    which enables
+            image searching.
                For example, ``search_type: 1``
         query_expansion_spec (google.cloud.discoveryengine_v1.types.SearchRequest.QueryExpansionSpec):
-            The query expansion specification that
-            specifies the conditions under which query
-            expansion occurs.
+            The query expansion specification that specifies the
+            conditions under which query expansion occurs.
         spell_correction_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SpellCorrectionSpec):
-            The spell correction specification that
-            specifies the mode under which spell correction
-            takes effect.
+            The spell correction specification that specifies the
+            mode under which spell correction takes effect.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For
-            example, this could be implemented with an HTTP
-            cookie, which should be able to uniquely
-            identify a visitor on a single device. This
-            unique identifier should not change if the
-            visitor logs in or out of the website.
+            A unique identifier for tracking visitors. For example,
+            this could be implemented with an HTTP cookie, which
+            should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change
+            if the visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -247,35 +231,34 @@ class SearchRequest(proto.Message):
             `CompleteQueryRequest.user_pseudo_id
             <google.cloud.discoveryengine.v1.CompleteQueryRequest.user_pseudo_id>`__
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
+            The field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an
             ``INVALID_ARGUMENT``  error is returned.
         content_search_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec):
-            A specification for configuring the behavior
-            of content search.
+            A specification for configuring the behavior of
+            content search.
         safe_search (bool):
             Whether to turn on safe search. This is only
             supported for website search.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet
-            the following requirements:
-            * Each resource can have multiple labels, up to
-            a maximum of 64.
+            The user labels applied to a resource must meet the
+            following requirements:
+            * Each resource can have multiple labels, up to a
+            maximum of 64.
 
             * Each label must be a key-value pair.
-            * Keys have a minimum length of 1 character and
-            a maximum length of 63   characters and cannot
-            be empty. Values can be empty and have a maximum
-            length of 63 characters.
+            * Keys have a minimum length of 1 character and a
+            maximum length of 63   characters and cannot be empty.
+            Values can be empty and have a maximum   length of 63
+            characters.
 
-            * Keys and values can contain only lowercase
-            letters, numeric characters,   underscores, and
-            dashes. All characters must use UTF-8 encoding,
-            and   international characters are allowed.
+            * Keys and values can contain only lowercase letters,
+            numeric characters,   underscores, and dashes. All
+            characters must use UTF-8 encoding, and   international
+            characters are allowed.
 
-            * The key portion of a label must be unique.
-            However, you can use the same   key with
-            multiple resources.
+            * The key portion of a label must be unique. However,
+            you can use the same   key with multiple resources.
 
             * Keys must start with a lowercase letter or
             international character.
@@ -285,57 +268,54 @@ class SearchRequest(proto.Message):
             <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
         search_as_you_type_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SearchAsYouTypeSpec):
-            Search as you type configuration. Only supported
-            for the `IndustryVertical.MEDIA
+            Search as you type configuration. Only supported for the
+            `IndustryVertical.MEDIA
             <google.cloud.discoveryengine.v1.IndustryVertical.MEDIA>`__
             vertical.
         display_spec (google.cloud.discoveryengine_v1.types.SearchRequest.DisplaySpec):
-            Optional. Config for display feature, like
-            match highlighting on search results.
+            Optional. Config for display feature, like match
+            highlighting on search results.
         session (str):
             The session resource name. Optional.
 
-            Session allows users to do multi-turn /search
-            API calls or coordination between /search API
-            calls and /answer API calls.
+            Session allows users to do multi-turn /search API calls
+            or coordination between /search API calls and /answer
+            API calls.
 
             Example #1 (multi-turn /search API calls):
 
-            - Call /search API with the session ID generated
-              in the first call.   Here, the previous search
-              query gets considered in query   standing. I.e.,
-              if the first query is "How did Alphabet do in
-              2022?"   and the current query is "How about
-              2023?", the current query will   be interpreted
-              as "How did Alphabet do in 2023?".
+              Call /search API with the session ID generated in the
+            first call.   Here, the previous search query gets
+            considered in query   standing. I.e., if the first query
+            is "How did Alphabet do in 2022?"   and the current
+            query is "How about 2023?", the current query will   be
+            interpreted as "How did Alphabet do in 2023?".
 
-            Example #2 (coordination between /search API
-            calls and /answer API calls):
+            Example #2 (coordination between /search API calls and
+            /answer API calls):
 
-            - Call /answer API with the session ID generated
-              in the first call.   Here, the answer generation
-              happens in the context of the search   results
-              from the first search call.
+              Call /answer API with the session ID generated in the
+            first call.   Here, the answer generation happens in the
+            context of the search   results from the first search
+            call.
 
-            Multi-turn Search feature is currently at
-            private GA stage. Please use v1alpha or v1beta
-            version instead before we launch this feature to
-            public GA. Or ask for allowlisting through
-            Google Support team.
+            Multi-turn Search feature is currently at private GA
+            stage. Please use v1alpha or v1beta version instead
+            before we launch this feature to public GA. Or ask for
+            allowlisting through Google Support team.
         session_spec (google.cloud.discoveryengine_v1.types.SearchRequest.SessionSpec):
             Session specification.
 
             Can be used only when ``session`` is set.
         relevance_threshold (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceThreshold):
-            The relevance threshold of the search
-            results.
-            Default to Google defined threshold, leveraging
-            a balance of precision and recall to deliver
-            both highly accurate results and comprehensive
-            coverage of relevant information.
+            The relevance threshold of the search results.
 
-            This feature is not supported for healthcare
-            search.
+            Default to Google defined threshold, leveraging a
+            balance of precision and recall to deliver both highly
+            accurate results and comprehensive coverage of relevant
+            information.
+
+            This feature is not supported for healthcare search.
         relevance_score_spec (google.cloud.discoveryengine_v1.types.SearchRequest.RelevanceScoreSpec):
             Optional. The specification for returning the
             relevance score.
@@ -398,9 +378,9 @@ class SearchRequest(proto.Message):
     """
 
     class RelevanceThreshold(proto.Enum):
-        r"""The relevance threshold of the search results. The higher
-        relevance threshold is, the higher relevant results are shown
-        and the less number of results are returned.
+        r"""The relevance threshold of the search results. The higher relevance
+        threshold is, the higher relevant results are shown and the less number
+        of results are returned.
 
         Values:
             RELEVANCE_THRESHOLD_UNSPECIFIED (0):
@@ -445,8 +425,8 @@ class SearchRequest(proto.Message):
 
         Attributes:
             image_bytes (str):
-                Base64 encoded image bytes. Supported image
-                formats: JPEG, PNG, and BMP.
+                Base64 encoded image bytes. Supported image formats:
+                JPEG, PNG, and BMP.
 
                 This field is a member of `oneof`_ ``image``.
         """
@@ -459,21 +439,19 @@ class SearchRequest(proto.Message):
 
     class DataStoreSpec(proto.Message):
         r"""A struct to define data stores to filter on in a search call and
-        configurations for those data stores. Otherwise, an
-        ``INVALID_ARGUMENT`` error is returned.
+        configurations for those data stores. Otherwise, an ``INVALID_ARGUMENT``
+        error is returned.
 
         Attributes:
             data_store (str):
                 Required. Full resource name of
                 `DataStore
-                <google.cloud.discoveryengine.v1.DataStore>`__,
-                such as
+                <google.cloud.discoveryengine.v1.DataStore>`__, such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
             filter (str):
-                Optional. Filter specification to filter
-                documents in the data store specified by
-                data_store field. For more information on
-                filtering, see `Filtering
+                Optional. Filter specification to filter documents in
+                the data store specified by data_store field. For more
+                information on filtering, see `Filtering
                 <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
             boost_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec):
                 Optional. Boost specification to boost certain
@@ -481,10 +459,10 @@ class SearchRequest(proto.Message):
                 `Boosting
                 <https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results>`__
             custom_search_operators (str):
-                Optional. Custom search operators which if
-                specified will be used to filter results from
-                workspace data stores. For more information on
-                custom search operators, see
+                Optional. Custom search operators which if specified
+                will be used to filter results from workspace data
+                stores. For more information on custom search operators,
+                see
                 `SearchOperators
                 <https://support.google.com/cloudsearch/answer/6172299>`__.
         """
@@ -514,75 +492,70 @@ class SearchRequest(proto.Message):
             facet_key (google.cloud.discoveryengine_v1.types.SearchRequest.FacetSpec.FacetKey):
                 Required. The facet key specification.
             limit (int):
-                Maximum facet values that are returned for this
-                facet. If unspecified, defaults to 20. The
-                maximum allowed value is 300. Values above 300
-                are coerced to 300.
+                Maximum facet values that are returned for this facet.
+                If unspecified, defaults to 20. The maximum allowed
+                value is 300. Values above 300 are coerced to 300.
                 For aggregation in healthcare search, when the
-                [FacetKey.key] is "healthcare_aggregation_key",
-                the limit will be overridden to 10,000
-                internally, regardless of the value set here.
+                [FacetKey.key] is "healthcare_aggregation_key", the
+                limit will be overridden to 10,000 internally,
+                regardless of the value set here.
 
-                If this field is negative, an
-                ``INVALID_ARGUMENT``  is returned.
+                If this field is negative, an  ``INVALID_ARGUMENT``  is
+                returned.
             excluded_filter_keys (MutableSequence[str]):
                 List of keys to exclude when faceting.
 
                 By default,
                 `FacetKey.key
                 <google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key>`__
-                is not excluded from the filter unless it is
-                listed in this field.
+                is not excluded from the filter unless it is listed in
+                this field.
 
-                Listing a facet key in this field allows its
-                values to appear as facet results, even when
-                they are filtered out of search results. Using
-                this field does not affect what search results
-                are returned.
+                Listing a facet key in this field allows its values to
+                appear as facet results, even when they are filtered out
+                of search results. Using this field does not affect what
+                search results are returned.
 
-                For example, suppose there are 100 documents
-                with the color facet "Red" and 200 documents
-                with the color facet "Blue". A query containing
-                the filter "color:ANY("Red")" and having "color"
-                as `FacetKey.key
+                For example, suppose there are 100 documents with the
+                color facet "Red" and 200 documents with the color facet
+                "Blue". A query containing the filter "color:ANY("Red")"
+                and having "color" as
+                `FacetKey.key
                 <google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key>`__
-                would by default return only "Red" documents in
-                the search results, and also return "Red" with
-                count 100 as the only color facet. Although
-                there are also blue documents available, "Blue"
-                would not be shown as an available facet value.
+                would by default return only "Red" documents in the
+                search results, and also return "Red" with count 100 as
+                the only color facet. Although there are also blue
+                documents available, "Blue" would not be shown as an
+                available facet value.
 
-                If "color" is listed in "excludedFilterKeys",
-                then the query returns the facet values "Red"
-                with count 100 and "Blue" with count 200,
-                because the "color" key is now excluded from the
-                filter. Because this field doesn't affect search
-                results, the search results are still correctly
-                filtered to return only "Red" documents.
+                If "color" is listed in "excludedFilterKeys", then the
+                query returns the facet values "Red" with count 100 and
+                "Blue" with count 200, because the "color" key is now
+                excluded from the filter. Because this field doesn't
+                affect search results, the search results are still
+                correctly filtered to return only "Red" documents.
 
-                A maximum of 100 values are allowed. Otherwise,
-                an  ``INVALID_ARGUMENT`` error is returned.
+                A maximum of 100 values are allowed. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
             enable_dynamic_position (bool):
-                Enables dynamic position for this facet. If set
-                to true, the position of this facet among all
-                facets in the response is determined
-                automatically. If dynamic facets are enabled, it
-                is ordered together. If set to false, the
-                position of this facet in the response is the
-                same as in the request, and it is ranked before
-                the facets with dynamic position enable and all
+                Enables dynamic position for this facet. If set to true,
+                the position of this facet among all facets in the
+                response is determined automatically. If dynamic facets
+                are enabled, it is ordered together. If set to false,
+                the position of this facet in the
+                response is the same as in the request, and it is ranked
+                before the facets with dynamic position enable and all
                 dynamic facets.
 
-                For example, you may always want to have rating
-                facet returned in the response, but it's not
-                necessarily to always display the rating facet
-                at the top. In that case, you can set
-                enable_dynamic_position to true so that the
-                position of rating facet in response is
+                For example, you may always want to have rating facet
+                returned in the response, but it's not necessarily to
+                always display the rating facet at the top. In that
+                case, you can set enable_dynamic_position to true so
+                that the position of rating facet in response is
                 determined automatically.
 
-                Another example, assuming you have the following
-                facets in the request:
+                Another example, assuming you have the following facets
+                in the request:
 
                 * "rating", enable_dynamic_position = true
 
@@ -590,14 +563,13 @@ class SearchRequest(proto.Message):
 
                 * "brands", enable_dynamic_position = false
 
-                And also you have a dynamic facets enabled,
-                which generates a facet ``gender``. Then the
-                final order of the facets in the response can be
-                ("price", "brands", "rating", "gender") or
-                ("price", "brands", "gender", "rating") depends
-                on how API orders "gender" and "rating" facets.
-                However, notice that "price" and "brands" are
-                always ranked at first and second position
+                And also you have a dynamic facets enabled, which
+                generates a facet ``gender``. Then the final order of
+                the facets in the response can be ("price", "brands",
+                "rating", "gender") or ("price", "brands", "gender",
+                "rating") depends on how API orders "gender" and
+                "rating" facets. However, notice that "price" and
+                "brands" are always ranked at first and second position
                 because their enable_dynamic_position is false.
         """
 
@@ -606,45 +578,41 @@ class SearchRequest(proto.Message):
 
             Attributes:
                 key (str):
-                    Required. Supported textual and numerical facet
-                    keys in `Document
-                    <google.cloud.discoveryengine.v1.Document>`__
-                    object, over which the facet values are
-                    computed. Facet key is case-sensitive.
+                    Required. Supported textual and numerical facet keys in
+                    `Document <google.cloud.discoveryengine.v1.Document>`__
+                    object, over which the facet values are computed. Facet
+                    key is case-sensitive.
                 intervals (MutableSequence[google.cloud.discoveryengine_v1.types.Interval]):
-                    Set only if values should be bucketed into
-                    intervals. Must be set for facets with numerical
-                    values. Must not be set for facet with text
-                    values. Maximum number of intervals is 30.
+                    Set only if values should be bucketed into intervals.
+                    Must be set for facets with numerical values. Must not
+                    be set for facet with text values. Maximum number of
+                    intervals is 30.
                 restricted_values (MutableSequence[str]):
-                    Only get facet for the given restricted values.
-                    Only supported on textual fields. For example,
-                    suppose "category" has three values "Action >
-                    2022", "Action > 2021" and "Sci-Fi > 2022". If
-                    set "restricted_values" to "Action > 2022", the
-                    "category" facet only contains "Action > 2022".
-                    Only supported on textual fields. Maximum is 10.
+                    Only get facet for the given restricted values. Only
+                    supported on textual fields. For example, suppose
+                    "category" has three values "Action > 2022", "Action >
+                    2021" and "Sci-Fi > 2022". If set "restricted_values" to
+                    "Action > 2022", the "category" facet only contains
+                    "Action > 2022". Only supported on textual fields.
+                    Maximum is 10.
                 prefixes (MutableSequence[str]):
-                    Only get facet values that start with the
-                    given string prefix. For example, suppose
-                    "category" has three values "Action > 2022",
-                    "Action > 2021" and "Sci-Fi > 2022". If set
-                    "prefixes" to "Action", the "category" facet
-                    only contains "Action > 2022" and "Action >
-                    2021". Only supported on textual fields. Maximum
-                    is 10.
+                    Only get facet values that start with the given
+                    string prefix. For example, suppose "category" has three
+                    values "Action > 2022", "Action > 2021" and "Sci-Fi >
+                    2022". If set "prefixes" to "Action", the "category"
+                    facet only contains "Action > 2022" and "Action > 2021".
+                    Only supported on textual fields. Maximum is 10.
                 contains (MutableSequence[str]):
-                    Only get facet values that contain the given
-                    strings. For example, suppose "category" has
-                    three values "Action > 2022", "Action > 2021"
-                    and "Sci-Fi > 2022". If set "contains" to
-                    "2022", the "category" facet only contains
-                    "Action > 2022" and "Sci-Fi > 2022". Only
-                    supported on textual fields. Maximum is 10.
+                    Only get facet values that contain the given strings.
+                    For example, suppose "category" has three values "Action
+                    > 2022", "Action > 2021" and "Sci-Fi > 2022". If set
+                    "contains" to "2022", the "category" facet only contains
+                    "Action > 2022" and "Sci-Fi > 2022". Only supported on
+                    textual fields. Maximum is 10.
                 case_insensitive (bool):
-                    True to make facet keys case insensitive when
-                    getting faceting values with prefixes or
-                    contains; false otherwise.
+                    True to make facet keys case insensitive when getting
+                    faceting values with prefixes or contains; false
+                    otherwise.
                 order_by (str):
                     The order in which documents are returned.
 
@@ -661,11 +629,10 @@ class SearchRequest(proto.Message):
                     descending.
                       Only applies to textual facets.
 
-                    If not set, textual values are sorted in
-                    `natural order
+                    If not set, textual values are sorted in `natural
+                    order
                     <https://en.wikipedia.org/wiki/Natural_sort_order>`__;
-                    numerical intervals are sorted in the order
-                    given by
+                    numerical intervals are sorted in the order given by
                     `FacetSpec.FacetKey.intervals
                     <google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.intervals>`__.
             """
@@ -723,12 +690,11 @@ class SearchRequest(proto.Message):
 
         Attributes:
             condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec]):
-                Condition boost specifications. If a document
-                matches multiple conditions in the
-                specifications, boost scores from these
-                specifications are all applied and combined in a
-                non-linear way. Maximum number of specifications
-                is 20.
+                Condition boost specifications. If a document matches
+                multiple conditions in the specifications, boost scores
+                from these specifications are all applied and combined
+                in a non-linear way. Maximum number of specifications is
+                20.
         """
 
         class ConditionBoostSpec(proto.Message):
@@ -736,9 +702,9 @@ class SearchRequest(proto.Message):
 
             Attributes:
                 condition (str):
-                    An expression which specifies a boost condition.
-                    The syntax and supported fields are the same as
-                    a filter expression. See `SearchRequest.filter
+                    An expression which specifies a boost condition. The
+                    syntax and supported fields are the same as a filter
+                    expression. See `SearchRequest.filter
                     <google.cloud.discoveryengine.v1.SearchRequest.filter>`__
                     for detail syntax and limitations.
 
@@ -747,71 +713,66 @@ class SearchRequest(proto.Message):
                     * To boost documents with document ID "doc_1" or
                     "doc_2", and color "Red" or "Blue":
 
-                    ``(document_id: ANY("doc_1", "doc_2")) AND
-                    (color: ANY("Red", "Blue"))``
+                    ``(document_id: ANY("doc_1", "doc_2")) AND (color:
+                    ANY("Red", "Blue"))``
                 boost (float):
-                    Strength of the condition boost, which should be
-                    in [-1, 1]. Negative boost means demotion.
-                    Default is 0.0.
+                    Strength of the condition boost, which should be in [-1,
+                    1]. Negative boost means demotion. Default is 0.0.
 
-                    Setting to 1.0 gives the document a big
-                    promotion. However, it does not necessarily mean
-                    that the boosted document will be the top result
-                    at all times, nor that other documents will be
-                    excluded. Results could still be shown even when
-                    none of them matches the condition. And results
-                    that are significantly more relevant to the
-                    search query can still trump your heavily
-                    favored but irrelevant documents.
+                    Setting to 1.0 gives the document a big promotion.
+                    However, it does not necessarily mean that the boosted
+                    document will be the top result at all times, nor that
+                    other documents will be excluded. Results could still be
+                    shown even when none of them matches the condition. And
+                    results that are significantly more relevant to the
+                    search query can still trump your heavily favored but
+                    irrelevant documents.
 
-                    Setting to -1.0 gives the document a big
-                    demotion. However, results that are deeply
-                    relevant might still be shown. The document will
-                    have an upstream battle to get a fairly high
-                    ranking, but it is not blocked out completely.
+                    Setting to -1.0 gives the document a big demotion.
+                    However, results that are deeply relevant might still be
+                    shown. The document will have an upstream battle to get
+                    a fairly high ranking, but it is not blocked out
+                    completely.
 
-                    Setting to 0.0 means no boost applied. The
-                    boosting condition is ignored. Only one of the
-                    (condition, boost) combination or the
-                    boost_control_spec below are set. If both are
-                    set then the global boost is ignored and the
+                    Setting to 0.0 means no boost applied. The boosting
+                    condition is ignored. Only one of the (condition, boost)
+                    combination or the boost_control_spec below are set. If
+                    both are set then the global boost is ignored and the
                     more fine-grained boost_control_spec is applied.
                 boost_control_spec (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec):
-                    Complex specification for custom ranking
-                    based on customer defined attribute value.
+                    Complex specification for custom ranking based on
+                    customer defined attribute value.
             """
 
             class BoostControlSpec(proto.Message):
                 r"""Specification for custom ranking based on customer specified
-                attribute value. It provides more controls for customized
-                ranking than the simple (condition, boost) combination above.
+                attribute value. It provides more controls for customized ranking than
+                the simple (condition, boost) combination above.
 
                 Attributes:
                     field_name (str):
-                        The name of the field whose value will be
-                        used to determine the boost amount.
+                        The name of the field whose value will be used to
+                        determine the boost amount.
                     attribute_type (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.AttributeType):
-                        The attribute type to be used to determine the
-                        boost amount. The attribute value can be derived
-                        from the field value of the specified
-                        field_name. In the case of numerical it is
-                        straightforward i.e. attribute_value =
-                        numerical_field_value. In the case of freshness
-                        however, attribute_value = (time.now() -
-                        datetime_field_value).
+                        The attribute type to be used to determine the boost
+                        amount. The attribute value can be derived from the
+                        field value of the specified field_name. In the case of
+                        numerical it is straightforward i.e. attribute_value =
+                        numerical_field_value. In the case of freshness however,
+                        attribute_value = (time.now() - datetime_field_value).
                     interpolation_type (google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType):
-                        The interpolation type to be applied to
-                        connect the control points listed below.
+                        The interpolation type to be applied to connect the
+                        control points listed below.
                     control_points (MutableSequence[google.cloud.discoveryengine_v1.types.SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint]):
                         The control points used to define the curve. The
                         monotonic function (defined through the
-                        interpolation_type above) passes through the
-                        control points listed here.
+                        interpolation_type above) passes through the control
+                        points listed here.
                 """
 
                 class AttributeType(proto.Enum):
-                    r"""The attribute(or function) for which the custom ranking is to
-                    be applied.
+                    r"""The attribute(or function) for which the custom ranking is to be
+                    applied.
 
                     Values:
                         ATTRIBUTE_TYPE_UNSPECIFIED (0):
@@ -853,9 +814,9 @@ class SearchRequest(proto.Message):
                     LINEAR = 1
 
                 class ControlPoint(proto.Message):
-                    r"""The control points used to define the curve. The curve
-                    defined through these control points can only be monotonically
-                    increasing or decreasing(constant values are acceptable).
+                    r"""The control points used to define the curve. The curve defined
+                    through these control points can only be monotonically increasing or
+                    decreasing(constant values are acceptable).
 
                     Attributes:
                         attribute_value (str):
@@ -865,13 +826,13 @@ class SearchRequest(proto.Message):
                             2. The duration spec for freshness:
 
                             The value must be formatted as an XSD
-                            ``dayTimeDuration`` value (a restricted subset
-                            of an ISO 8601 duration value). The pattern for
-                            this is: ```nD <T[nH>`__`nM <nS>`__]``.
+                            ``dayTimeDuration`` value (a restricted subset of an ISO
+                            8601 duration value). The pattern for this is: ```nD
+                            <T[nH>`__`nM <nS>`__]``.
                         boost_amount (float):
-                            The value between -1 to 1 by which to boost the
-                            score if the attribute_value evaluates to the
-                            value specified above.
+                            The value between -1 to 1 by which to boost the score if
+                            the attribute_value evaluates to the value specified
+                            above.
                     """
 
                     attribute_value: str = proto.Field(
@@ -928,24 +889,22 @@ class SearchRequest(proto.Message):
         )
 
     class QueryExpansionSpec(proto.Message):
-        r"""Specification to determine under which conditions query
-        expansion should occur.
+        r"""Specification to determine under which conditions query expansion
+        should occur.
 
         Attributes:
             condition (google.cloud.discoveryengine_v1.types.SearchRequest.QueryExpansionSpec.Condition):
-                The condition under which query expansion should
-                occur. Default to `Condition.DISABLED
+                The condition under which query expansion should occur.
+                Default to `Condition.DISABLED
                 <google.cloud.discoveryengine.v1.SearchRequest.QueryExpansionSpec.Condition.DISABLED>`__.
             pin_unexpanded_results (bool):
-                Whether to pin unexpanded results. If this
-                field is set to true, unexpanded products are
-                always at the top of the search results,
-                followed by the expanded results.
+                Whether to pin unexpanded results. If this field is
+                set to true, unexpanded products are always at the top
+                of the search results, followed by the expanded results.
         """
 
         class Condition(proto.Enum):
-            r"""Enum describing under which condition query expansion should
-            occur.
+            r"""Enum describing under which condition query expansion should occur.
 
             Values:
                 CONDITION_UNSPECIFIED (0):
@@ -989,8 +948,7 @@ class SearchRequest(proto.Message):
         """
 
         class Mode(proto.Enum):
-            r"""Enum describing under which mode spell correction should
-            occur.
+            r"""Enum describing under which mode spell correction should occur.
 
             Values:
                 MODE_UNSPECIFIED (0):
@@ -1021,27 +979,24 @@ class SearchRequest(proto.Message):
         )
 
     class ContentSearchSpec(proto.Message):
-        r"""A specification for configuring the behavior of content
-        search.
+        r"""A specification for configuring the behavior of content search.
 
         Attributes:
             snippet_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SnippetSpec):
-                If ``snippetSpec`` is not specified, snippets
-                are not included in the search response.
+                If ``snippetSpec`` is not specified, snippets are not
+                included in the search response.
             summary_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec):
-                If ``summarySpec`` is not specified, summaries
-                are not included in the search response.
+                If ``summarySpec`` is not specified, summaries are not
+                included in the search response.
             extractive_content_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
-                If there is no extractive_content_spec provided,
-                there will be no extractive answer in the search
-                response.
+                If there is no extractive_content_spec provided, there
+                will be no extractive answer in the search response.
             search_result_mode (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SearchResultMode):
-                Specifies the search result mode. If
-                unspecified, the search result mode defaults to
-                ``DOCUMENTS``.
+                Specifies the search result mode. If unspecified, the
+                search result mode defaults to ``DOCUMENTS``.
             chunk_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.ChunkSpec):
-                Specifies the chunk spec to be returned from the
-                search response. Only available if the
+                Specifies the chunk spec to be returned from the search
+                response. Only available if the
                 `SearchRequest.ContentSearchSpec.search_result_mode
                 <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode>`__
                 is set to
@@ -1070,24 +1025,22 @@ class SearchRequest(proto.Message):
             CHUNKS = 2
 
         class SnippetSpec(proto.Message):
-            r"""A specification for configuring snippets in a search
-            response.
+            r"""A specification for configuring snippets in a search response.
 
             Attributes:
                 max_snippet_count (int):
-                    [DEPRECATED] This field is deprecated. To
-                    control snippet return, use ``return_snippet``
-                    field. For backwards compatibility, we will
-                    return snippet if max_snippet_count > 0.
+                    [DEPRECATED] This field is deprecated. To control
+                    snippet return, use ``return_snippet`` field. For
+                    backwards compatibility, we will return snippet if
+                    max_snippet_count > 0.
                 reference_only (bool):
-                    [DEPRECATED] This field is deprecated and will
-                    have no affect on the snippet.
+                    [DEPRECATED] This field is deprecated and will have no
+                    affect on the snippet.
                 return_snippet (bool):
-                    If ``true``, then return snippet. If no snippet
-                    can be generated, we return "No snippet is
-                    available for this page." A ``snippet_status``
-                    with ``SUCCESS`` or ``NO_SNIPPET_AVAILABLE``
-                    will also be returned.
+                    If ``true``, then return snippet. If no snippet can be
+                    generated, we return "No snippet is available for this
+                    page." A ``snippet_status`` with ``SUCCESS`` or
+                    ``NO_SNIPPET_AVAILABLE`` will also be returned.
             """
 
             max_snippet_count: int = proto.Field(
@@ -1104,123 +1057,112 @@ class SearchRequest(proto.Message):
             )
 
         class SummarySpec(proto.Message):
-            r"""A specification for configuring a summary returned in a
-            search response.
+            r"""A specification for configuring a summary returned in a search
+            response.
 
             Attributes:
                 summary_result_count (int):
-                    The number of top results to generate the
-                    summary from. If the number of results returned
-                    is less than ``summaryResultCount``, the summary
-                    is generated from all of the results.
+                    The number of top results to generate the summary from.
+                    If the number of results returned is less than
+                    ``summaryResultCount``, the summary is generated from
+                    all of the results.
 
-                    At most 10 results for documents mode, or 50 for
-                    chunks mode, can be used to generate a summary.
-                    The chunks mode is used when
+                    At most 10 results for documents mode, or 50 for chunks
+                    mode, can be used to generate a summary. The chunks mode
+                    is used when
                     `SearchRequest.ContentSearchSpec.search_result_mode
                     <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode>`__
                     is set to
                     `CHUNKS
                     <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS>`__.
                 include_citations (bool):
-                    Specifies whether to include citations in the
-                    summary. The default value is ``false``.
+                    Specifies whether to include citations in the summary.
+                    The default value is ``false``.
 
-                    When this field is set to ``true``, summaries
-                    include in-line citation numbers.
+                    When this field is set to ``true``, summaries include
+                    in-line citation numbers.
 
                     Example summary including citations:
 
-                    BigQuery is Google Cloud's fully managed and
-                    completely serverless enterprise data warehouse
-                    [1]. BigQuery supports all data types, works
-                    across clouds, and has built-in machine learning
-                    and business intelligence, all within a unified
-                    platform [2, 3].
+                    BigQuery is Google Cloud's fully managed and completely
+                    serverless enterprise data warehouse [1]. BigQuery
+                    supports all data types, works across clouds, and has
+                    built-in machine learning and business intelligence, all
+                    within a unified platform [2, 3].
 
-                    The citation numbers refer to the returned
-                    search results and are 1-indexed. For example,
-                    [1] means that the sentence is attributed to the
-                    first search result. [2, 3] means that the
-                    sentence is attributed to both the second and
-                    third search results.
+                    The citation numbers refer to the returned search
+                    results and are 1-indexed. For example, [1] means that
+                    the sentence is attributed to the first search result.
+                    [2, 3] means that the sentence is attributed to both the
+                    second and third search results.
                 ignore_adversarial_query (bool):
-                    Specifies whether to filter out adversarial
+                    Specifies whether to filter out adversarial queries. The
+                    default value is ``false``.
+
+                    Google employs search-query classification to detect
+                    adversarial queries. No summary is returned if the
+                    search query is classified as an adversarial query. For
+                    example, a user might ask a question regarding negative
+                    comments about the company or submit a query designed to
+                    generate unsafe, policy-violating output. If this field
+                    is set to ``true``, we skip generating summaries for
+                    adversarial queries and return fallback messages
+                    instead.
+                ignore_non_summary_seeking_query (bool):
+                    Specifies whether to filter out queries that are not
+                    summary-seeking. The default value is ``false``.
+
+                    Google employs search-query classification to detect
+                    summary-seeking queries. No summary is returned if the
+                    search query is classified as a non-summary seeking
+                    query. For example, ``why is the sky blue`` and ``Who is
+                    the best soccer player in the world?`` are
+                    summary-seeking queries, but ``SFO airport`` and ``world
+                    cup 2026`` are not. They are most likely navigational
+                    queries. If this field is set to ``true``, we skip
+                    generating summaries for non-summary seeking queries and
+                    return fallback messages instead.
+                ignore_low_relevant_content (bool):
+                    Specifies whether to filter out queries that have low
+                    relevance. The default value is ``false``.
+
+                    If this field is set to ``false``, all search results
+                    are used regardless of relevance to generate answers. If
+                    set to ``true``, only queries with high relevance search
+                    results will generate answers.
+                ignore_jail_breaking_query (bool):
+                    Optional. Specifies whether to filter out jail-breaking
                     queries. The default value is ``false``.
 
-                    Google employs search-query classification to
-                    detect adversarial queries. No summary is
-                    returned if the search query is classified as an
-                    adversarial query. For example, a user might ask
-                    a question regarding negative comments about the
-                    company or submit a query designed to generate
-                    unsafe, policy-violating output. If this field
-                    is set to ``true``, we skip generating summaries
-                    for adversarial queries and return fallback
-                    messages instead.
-                ignore_non_summary_seeking_query (bool):
-                    Specifies whether to filter out queries that are
-                    not summary-seeking. The default value is
-                    ``false``.
-
-                    Google employs search-query classification to
-                    detect summary-seeking queries. No summary is
-                    returned if the search query is classified as a
-                    non-summary seeking query. For example, ``why is
-                    the sky blue`` and ``Who is the best soccer
-                    player in the world?`` are summary-seeking
-                    queries, but ``SFO airport`` and ``world cup
-                    2026`` are not. They are most likely
-                    navigational queries. If this field is set to
-                    ``true``, we skip generating summaries for
-                    non-summary seeking queries and return fallback
-                    messages instead.
-                ignore_low_relevant_content (bool):
-                    Specifies whether to filter out queries that
-                    have low relevance. The default value is
-                    ``false``.
-
-                    If this field is set to ``false``, all search
-                    results are used regardless of relevance to
-                    generate answers. If set to ``true``, only
-                    queries with high relevance search results will
-                    generate answers.
-                ignore_jail_breaking_query (bool):
-                    Optional. Specifies whether to filter out
-                    jail-breaking queries. The default value is
-                    ``false``.
-
-                    Google employs search-query classification to
-                    detect jail-breaking queries. No summary is
-                    returned if the search query is classified as a
-                    jail-breaking query. A user might add
-                    instructions to the query to change the tone,
-                    style, language, content of the answer, or ask
-                    the model to act as a different entity, e.g.
-                    "Reply in the tone of a competing company's
-                    CEO". If this field is set to ``true``, we skip
-                    generating summaries for jail-breaking queries
-                    and return fallback messages instead.
+                    Google employs search-query classification to detect
+                    jail-breaking queries. No summary is returned if the
+                    search query is classified as a jail-breaking query. A
+                    user might add instructions to the query to change the
+                    tone, style, language, content of the answer, or ask the
+                    model to act as a different entity, e.g. "Reply in the
+                    tone of a competing company's CEO". If this field is set
+                    to ``true``, we skip generating summaries for
+                    jail-breaking queries and return fallback messages
+                    instead.
                 model_prompt_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec):
-                    If specified, the spec will be used to modify
-                    the prompt provided to the LLM.
+                    If specified, the spec will be used to modify the
+                    prompt provided to the LLM.
                 language_code (str):
-                    Language code for Summary. Use language tags
-                    defined by `BCP47
-                    <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
-                    Note: This is an experimental feature.
+                    Language code for Summary. Use language tags defined by
+                    `BCP47
+                    <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__. Note:
+                    This is an experimental feature.
                 model_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec):
-                    If specified, the spec will be used to modify
-                    the model specification provided to the LLM.
+                    If specified, the spec will be used to modify the
+                    model specification provided to the LLM.
                 use_semantic_chunks (bool):
-                    If true, answer will be generated from most
-                    relevant chunks from top search results. This
-                    feature will improve summary quality. Note that
-                    with this feature enabled, not all top search
-                    results will be referenced and included in the
-                    reference list, so the citation source index
-                    only points to the search results listed in the
-                    reference list.
+                    If true, answer will be generated from most relevant
+                    chunks from top search results. This feature will
+                    improve summary quality. Note that with this feature
+                    enabled, not all top search results will be referenced
+                    and included in the reference list, so the citation
+                    source index only points to the search results listed in
+                    the reference list.
             """
 
             class ModelPromptSpec(proto.Message):
@@ -1228,9 +1170,8 @@ class SearchRequest(proto.Message):
 
                 Attributes:
                     preamble (str):
-                        Text at the beginning of the prompt that
-                        instructs the assistant. Examples are available
-                        in the user guide.
+                        Text at the beginning of the prompt that instructs
+                        the assistant. Examples are available in the user guide.
                 """
 
                 preamble: str = proto.Field(
@@ -1247,16 +1188,15 @@ class SearchRequest(proto.Message):
 
                         Supported values are:
 
-                        * ``stable``: string. Default value when no
-                        value is specified. Uses a    generally
-                        available, fine-tuned model. For more
-                        information, see    `Answer generation model
-                        versions and
+                        * ``stable``: string. Default value when no value is
+                        specified. Uses a    generally available, fine-tuned
+                        model. For more information, see    `Answer generation
+                        model versions and
                            lifecycle
                         <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
 
-                        * ``preview``: string. (Public preview) Uses a
-                        preview model. For more    information, see
+                        * ``preview``: string. (Public preview) Uses a preview
+                        model. For more    information, see
                            `Answer generation model versions and
                            lifecycle
                         <https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models>`__.
@@ -1313,33 +1253,31 @@ class SearchRequest(proto.Message):
             )
 
         class ExtractiveContentSpec(proto.Message):
-            r"""A specification for configuring the extractive content in a
-            search response.
+            r"""A specification for configuring the extractive content in a search
+            response.
 
             Attributes:
                 max_extractive_answer_count (int):
-                    The maximum number of extractive answers
-                    returned in each search result.
+                    The maximum number of extractive answers returned in
+                    each search result.
 
-                    An extractive answer is a verbatim answer
-                    extracted from the original document, which
-                    provides a precise and contextually relevant
-                    answer to the search query.
+                    An extractive answer is a verbatim answer extracted from
+                    the original document, which provides a precise and
+                    contextually relevant answer to the search query.
 
-                    If the number of matching answers is less than
-                    the ``max_extractive_answer_count``, return all
-                    of the answers. Otherwise, return the
+                    If the number of matching answers is less than the
+                    ``max_extractive_answer_count``, return all of the
+                    answers. Otherwise, return the
                     ``max_extractive_answer_count``.
 
                     At most five answers are returned for each
                     `SearchResult
                     <google.cloud.discoveryengine.v1.SearchResponse.SearchResult>`__.
                 max_extractive_segment_count (int):
-                    The max number of extractive segments returned
-                    in each search result. Only applied if the
+                    The max number of extractive segments returned in each
+                    search result. Only applied if the
                     `DataStore
-                    <google.cloud.discoveryengine.v1.DataStore>`__
-                    is set to
+                    <google.cloud.discoveryengine.v1.DataStore>`__ is set to
                     `DataStore.ContentConfig.CONTENT_REQUIRED
                     <google.cloud.discoveryengine.v1.DataStore.ContentConfig.CONTENT_REQUIRED>`__
                     or
@@ -1349,32 +1287,30 @@ class SearchRequest(proto.Message):
                     `SOLUTION_TYPE_CHAT
                     <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_CHAT>`__.
 
-                    An extractive segment is a text segment
-                    extracted from the original document that is
-                    relevant to the search query, and, in general,
-                    more verbose than an extractive answer. The
-                    segment could then be used as input for LLMs to
-                    generate summaries and answers.
+                    An extractive segment is a text segment extracted from
+                    the original document that is relevant to the search
+                    query, and, in general, more verbose than an extractive
+                    answer. The segment could then be used as input for LLMs
+                    to generate summaries and answers.
 
                     If the number of matching segments is less than
-                    ``max_extractive_segment_count``, return all of
-                    the segments. Otherwise, return the
+                    ``max_extractive_segment_count``, return all of the
+                    segments. Otherwise, return the
                     ``max_extractive_segment_count``.
                 return_extractive_segment_score (bool):
-                    Specifies whether to return the confidence score
-                    from the extractive segments in each search
-                    result. This feature is available only for new
-                    or allowlisted data stores. To allowlist your
-                    data store, contact your Customer Engineer. The
-                    default value is ``false``.
+                    Specifies whether to return the confidence score from
+                    the extractive segments in each search result. This
+                    feature is available only for new or allowlisted data
+                    stores. To allowlist your data store, contact your
+                    Customer Engineer. The default value is ``false``.
                 num_previous_segments (int):
-                    Specifies whether to also include the adjacent
-                    from each selected segments.
-                    Return at most ``num_previous_segments``
-                    segments before each selected segments.
+                    Specifies whether to also include the adjacent from each
+                    selected segments.
+                    Return at most ``num_previous_segments`` segments before
+                    each selected segments.
                 num_next_segments (int):
-                    Return at most ``num_next_segments`` segments
-                    after each selected segments.
+                    Return at most ``num_next_segments`` segments after each
+                    selected segments.
             """
 
             max_extractive_answer_count: int = proto.Field(
@@ -1399,8 +1335,8 @@ class SearchRequest(proto.Message):
             )
 
         class ChunkSpec(proto.Message):
-            r"""Specifies the chunk spec to be returned from the search
-            response. Only available if the
+            r"""Specifies the chunk spec to be returned from the search response.
+            Only available if the
             `SearchRequest.ContentSearchSpec.search_result_mode
             <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.search_result_mode>`__
             is set to
@@ -1409,15 +1345,13 @@ class SearchRequest(proto.Message):
 
             Attributes:
                 num_previous_chunks (int):
-                    The number of previous chunks to be returned
-                    of the current chunk. The maximum allowed value
-                    is 3. If not specified, no previous chunks will
-                    be returned.
+                    The number of previous chunks to be returned of the
+                    current chunk. The maximum allowed value is 3.
+                    If not specified, no previous chunks will be returned.
                 num_next_chunks (int):
-                    The number of next chunks to be returned of
-                    the current chunk. The maximum allowed value is
-                    3. If not specified, no next chunks will be
-                    returned.
+                    The number of next chunks to be returned of the
+                    current chunk. The maximum allowed value is 3.
+                    If not specified, no next chunks will be returned.
             """
 
             num_previous_chunks: int = proto.Field(
@@ -1462,15 +1396,15 @@ class SearchRequest(proto.Message):
 
         Attributes:
             condition (google.cloud.discoveryengine_v1.types.SearchRequest.SearchAsYouTypeSpec.Condition):
-                The condition under which search as you type
-                should occur. Default to
+                The condition under which search as you type should
+                occur. Default to
                 `Condition.DISABLED
                 <google.cloud.discoveryengine.v1.SearchRequest.SearchAsYouTypeSpec.Condition.DISABLED>`__.
         """
 
         class Condition(proto.Enum):
-            r"""Enum describing under which condition search as you type
-            should occur.
+            r"""Enum describing under which condition search as you type should
+            occur.
 
             Values:
                 CONDITION_UNSPECIFIED (0):
@@ -1503,13 +1437,13 @@ class SearchRequest(proto.Message):
 
         Attributes:
             match_highlighting_condition (google.cloud.discoveryengine_v1.types.SearchRequest.DisplaySpec.MatchHighlightingCondition):
-                The condition under which match highlighting
-                should occur.
+                The condition under which match highlighting should
+                occur.
         """
 
         class MatchHighlightingCondition(proto.Enum):
-            r"""Enum describing under which condition match highlighting
-            should occur.
+            r"""Enum describing under which condition match highlighting should
+            occur.
 
             Values:
                 MATCH_HIGHLIGHTING_CONDITION_UNSPECIFIED (0):
@@ -1533,18 +1467,17 @@ class SearchRequest(proto.Message):
     class SessionSpec(proto.Message):
         r"""Session specification.
 
-        Multi-turn Search feature is currently at private GA stage.
-        Please use v1alpha or v1beta version instead before we launch
-        this feature to public GA. Or ask for allowlisting through
-        Google Support team.
+        Multi-turn Search feature is currently at private GA stage. Please use
+        v1alpha or v1beta version instead before we launch this feature to
+        public GA. Or ask for allowlisting through Google Support team.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
         Attributes:
             query_id (str):
-                If set, the search result gets stored to the
-                "turn" specified by this query ID.
+                If set, the search result gets stored to the "turn"
+                specified by this query ID.
 
                 Example: Let's say the session looks like this:
 
@@ -1555,36 +1488,33 @@ class SearchRequest(proto.Message):
                 ".../questions/yyy" }       answer: "Foo is ..."
                     }
                     turns {
-                      query { text: "How about bar then?"
-                query_id: ".../questions/zzz" }     }
+                      query { text: "How about bar then?" query_id:
+                ".../questions/zzz" }     }
                   }
 
-                The user can call /search API with a request
-                like this:
+                The user can call /search API with a request like this:
 
                    session: ".../sessions/xxx"
-                   session_spec { query_id: ".../questions/zzz"
-                }
+                   session_spec { query_id: ".../questions/zzz" }
 
-                Then, the API stores the search result,
-                associated with the last turn. The stored search
-                result can be used by a subsequent /answer API
-                call (with the session ID and the query ID
-                specified). Also, it is possible to call /search
-                and /answer in parallel with the same session ID
+                Then, the API stores the search result, associated with
+                the last turn. The stored search result can be used by a
+                subsequent /answer API call (with the session ID and the
+                query ID specified). Also, it is possible to call
+                /search and /answer in parallel with the same session ID
                 & query ID.
             search_result_persistence_count (int):
                 The number of top search results to persist. The
-                persisted search results can be used for the
-                subsequent /answer api call.
+                persisted search results can be used for the subsequent
+                /answer api call.
 
-                This field is similar to the
-                ``summary_result_count`` field in
+                This field is similar to the ``summary_result_count``
+                field in
                 `SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count
                 <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SummarySpec.summary_result_count>`__.
 
-                At most 10 results for documents mode, or 50 for
-                chunks mode.
+                At most 10 results for documents mode, or 50 for chunks
+                mode.
 
                 This field is a member of `oneof`_ ``_search_result_persistence_count``.
         """
@@ -1604,9 +1534,9 @@ class SearchRequest(proto.Message):
 
         Attributes:
             return_relevance_score (bool):
-                Optional. Whether to return the relevance
-                score for search results. The higher the score,
-                the more relevant the document is to the query.
+                Optional. Whether to return the relevance score for
+                search results. The higher the score, the more relevant
+                the document is to the query.
         """
 
         return_relevance_score: bool = proto.Field(
@@ -1760,36 +1690,34 @@ class SearchRequest(proto.Message):
 class SearchResponse(proto.Message):
     r"""Response message for
     `SearchService.Search
-    <google.cloud.discoveryengine.v1.SearchService.Search>`__
-    method.
+    <google.cloud.discoveryengine.v1.SearchService.Search>`__ method.
 
     Attributes:
         results (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.SearchResult]):
-            A list of matched documents. The order
-            represents the ranking.
+            A list of matched documents. The order represents the
+            ranking.
         facets (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Facet]):
             Results of facets requested by user.
         total_size (int):
-            The estimated total count of matched items
-            irrespective of pagination. The count of
-            `results
+            The estimated total count of matched items irrespective
+            of pagination. The count of `results
             <google.cloud.discoveryengine.v1.SearchResponse.results>`__
             returned by pagination may be less than the
             `total_size
             <google.cloud.discoveryengine.v1.SearchResponse.total_size>`__
             that matches.
         attribution_token (str):
-            A unique search token. This should be included
-            in the `UserEvent
-            <google.cloud.discoveryengine.v1.UserEvent>`__
-            logs resulting from this search, which enables
-            accurate attribution of search model
-            performance. This also helps to identify a
-            request during the customer support scenarios.
+            A unique search token. This should be included in the
+            `UserEvent
+            <google.cloud.discoveryengine.v1.UserEvent>`__ logs
+            resulting from this search, which enables accurate
+            attribution of search model performance. This also helps
+            to identify a request during the customer support
+            scenarios.
         redirect_uri (str):
-            The URI of a customer-defined redirect page. If
-            redirect action is triggered, no search is
-            performed, and only `redirect_uri
+            The URI of a customer-defined redirect page. If redirect
+            action is triggered, no search is performed, and only
+            `redirect_uri
             <google.cloud.discoveryengine.v1.SearchResponse.redirect_uri>`__
             and
             `attribution_token
@@ -1799,13 +1727,13 @@ class SearchResponse(proto.Message):
             A token that can be sent as
             `SearchRequest.page_token
             <google.cloud.discoveryengine.v1.SearchRequest.page_token>`__
-            to retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            to retrieve the next page. If this field is omitted,
+            there are no subsequent pages.
         corrected_query (str):
-            Contains the spell corrected query, if found. If
-            the spell correction type is AUTOMATIC, then the
-            search results are based on corrected_query.
-            Otherwise the original query is used for search.
+            Contains the spell corrected query, if found. If the
+            spell correction type is AUTOMATIC, then the search
+            results are based on corrected_query. Otherwise the
+            original query is used for search.
         summary (google.cloud.discoveryengine_v1.types.SearchResponse.Summary):
             A summary as part of the search results.
             This field is only returned if
@@ -1813,16 +1741,14 @@ class SearchResponse(proto.Message):
             <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.summary_spec>`__
             is set.
         query_expansion_info (google.cloud.discoveryengine_v1.types.SearchResponse.QueryExpansionInfo):
-            Query expansion information for the returned
-            results.
+            Query expansion information for the returned results.
         session_info (google.cloud.discoveryengine_v1.types.SearchResponse.SessionInfo):
             Session information.
 
             Only set if
             `SearchRequest.session
             <google.cloud.discoveryengine.v1.SearchRequest.session>`__
-            is provided. See its description for more
-            details.
+            is provided. See its description for more details.
         search_link_promotions (MutableSequence[google.cloud.discoveryengine_v1.types.SearchLinkPromotion]):
             Promotions for site search.
     """
@@ -1833,13 +1759,12 @@ class SearchResponse(proto.Message):
         Attributes:
             id (str):
                 `Document.id
-                <google.cloud.discoveryengine.v1.Document.id>`__
-                of the searched `Document
+                <google.cloud.discoveryengine.v1.Document.id>`__ of the
+                searched `Document
                 <google.cloud.discoveryengine.v1.Document>`__.
             document (google.cloud.discoveryengine_v1.types.Document):
-                The document data snippet in the search
-                response. Only fields that are marked as
-                ``retrievable`` are populated.
+                The document data snippet in the search response. Only
+                fields that are marked as ``retrievable`` are populated.
             chunk (google.cloud.discoveryengine_v1.types.Chunk):
                 The chunk data in the search response if the
                 `SearchRequest.ContentSearchSpec.search_result_mode
@@ -1848,11 +1773,9 @@ class SearchResponse(proto.Message):
                 `CHUNKS
                 <google.cloud.discoveryengine.v1.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS>`__.
             model_scores (MutableMapping[str, google.cloud.discoveryengine_v1.types.DoubleList]):
-                Output only. Google provided available
-                scores.
+                Output only. Google provided available scores.
             rank_signals (google.cloud.discoveryengine_v1.types.SearchResponse.SearchResult.RankSignals):
-                A set of ranking signals associated with the
-                result.
+                A set of ranking signals associated with the result.
         """
 
         class RankSignals(proto.Message):
@@ -1874,8 +1797,7 @@ class SearchResponse(proto.Message):
 
                     This field is a member of `oneof`_ ``_semantic_similarity_score``.
                 pctr_rank (float):
-                    Predicted conversion rate adjustment as a
-                    rank.
+                    Predicted conversion rate adjustment as a rank.
 
                     This field is a member of `oneof`_ ``_pctr_rank``.
                 topicality_rank (float):
@@ -1903,8 +1825,8 @@ class SearchResponse(proto.Message):
                     name (str):
                         Name of the signal.
                     value (float):
-                        Float value representing the ranking signal
-                        (e.g. 1.25 for BM25).
+                        Float value representing the ranking signal (e.g.
+                        1.25 for BM25).
                 """
 
                 name: str = proto.Field(
@@ -1994,8 +1916,8 @@ class SearchResponse(proto.Message):
 
         Attributes:
             key (str):
-                The key for this facet. For example,
-                ``"colors"`` or ``"price"``. It matches
+                The key for this facet. For example, ``"colors"`` or
+                ``"price"``. It matches
                 `SearchRequest.FacetSpec.FacetKey.key
                 <google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.key>`__.
             values (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Facet.FacetValue]):
@@ -2016,13 +1938,13 @@ class SearchResponse(proto.Message):
 
             Attributes:
                 value (str):
-                    Text value of a facet, such as "Black" for
-                    facet "colors".
+                    Text value of a facet, such as "Black" for facet
+                    "colors".
 
                     This field is a member of `oneof`_ ``facet_value``.
                 interval (google.cloud.discoveryengine_v1.types.Interval):
-                    Interval value for a facet, such as `10, 20) for
-                    facet "price". It matches
+                    Interval value for a facet, such as `10, 20) for facet
+                    "price". It matches
                     [SearchRequest.FacetSpec.FacetKey.intervals
                     <google.cloud.discoveryengine.v1.SearchRequest.FacetSpec.FacetKey.intervals>`__.
 
@@ -2064,19 +1986,18 @@ class SearchResponse(proto.Message):
         )
 
     class Summary(proto.Message):
-        r"""Summary of the top N search results specified by the summary
-        spec.
+        r"""Summary of the top N search results specified by the summary spec.
 
         Attributes:
             summary_text (str):
                 The summary content.
             summary_skipped_reasons (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Summary.SummarySkippedReason]):
-                Additional summary-skipped reasons. This
-                provides the reason for ignored cases. If
-                nothing is skipped, this field is not set.
+                Additional summary-skipped reasons. This provides the
+                reason for ignored cases. If nothing is skipped, this
+                field is not set.
             safety_attributes (google.cloud.discoveryengine_v1.types.SearchResponse.Summary.SafetyAttributes):
-                A collection of Safety Attribute categories
-                and their associated confidence scores.
+                A collection of Safety Attribute categories and their
+                associated confidence scores.
             summary_with_metadata (google.cloud.discoveryengine_v1.types.SearchResponse.Summary.SummaryWithMetadata):
                 Summary with metadata information.
         """
@@ -2165,18 +2086,17 @@ class SearchResponse(proto.Message):
             TIME_OUT = 10
 
         class SafetyAttributes(proto.Message):
-            r"""Safety Attribute categories and their associated confidence
-            scores.
+            r"""Safety Attribute categories and their associated confidence scores.
 
             Attributes:
                 categories (MutableSequence[str]):
-                    The display names of Safety Attribute
-                    categories associated with the generated
-                    content. Order matches the Scores.
+                    The display names of Safety Attribute categories
+                    associated with the generated content. Order matches the
+                    Scores.
                 scores (MutableSequence[float]):
-                    The confidence scores of the each category,
-                    higher value means higher confidence. Order
-                    matches the Categories.
+                    The confidence scores of the each category, higher
+                    value means higher confidence. Order matches the
+                    Categories.
             """
 
             categories: MutableSequence[str] = proto.RepeatedField(
@@ -2209,8 +2129,8 @@ class SearchResponse(proto.Message):
 
             Attributes:
                 start_index (int):
-                    Index indicates the start of the segment,
-                    measured in bytes/unicode.
+                    Index indicates the start of the segment, measured in
+                    bytes/unicode.
                 end_index (int):
                     End of the attributed segment, exclusive.
                 sources (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Summary.CitationSource]):
@@ -2239,9 +2159,9 @@ class SearchResponse(proto.Message):
             Attributes:
                 reference_index (int):
                     Document reference index from
-                    SummaryWithMetadata.references. It is 0-indexed
-                    and the value will be zero if the
-                    reference_index is not set explicitly.
+                    SummaryWithMetadata.references. It is 0-indexed and the
+                    value will be zero if the reference_index is not set
+                    explicitly.
             """
 
             reference_index: int = proto.Field(
@@ -2258,15 +2178,15 @@ class SearchResponse(proto.Message):
                 document (str):
                     Required.
                     `Document.name
-                    <google.cloud.discoveryengine.v1.Document.name>`__
-                    of the document. Full resource name of the
-                    referenced document, in the format
+                    <google.cloud.discoveryengine.v1.Document.name>`__ of
+                    the document. Full resource name of the referenced
+                    document, in the format
                     ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 uri (str):
                     Cloud Storage or HTTP uri for the document.
                 chunk_contents (MutableSequence[google.cloud.discoveryengine_v1.types.SearchResponse.Summary.Reference.ChunkContent]):
-                    List of cited chunk contents derived from
-                    document content.
+                    List of cited chunk contents derived from document
+                    content.
             """
 
             class ChunkContent(proto.Message):
@@ -2362,16 +2282,15 @@ class SearchResponse(proto.Message):
         )
 
     class QueryExpansionInfo(proto.Message):
-        r"""Information describing query expansion including whether
-        expansion has occurred.
+        r"""Information describing query expansion including whether expansion
+        has occurred.
 
         Attributes:
             expanded_query (bool):
-                Bool describing whether query expansion has
-                occurred.
+                Bool describing whether query expansion has occurred.
             pinned_result_count (int):
-                Number of pinned results. This field will only
-                be set when expansion happens and
+                Number of pinned results. This field will only be set
+                when expansion happens and
                 `SearchRequest.QueryExpansionSpec.pin_unexpanded_results
                 <google.cloud.discoveryengine.v1.SearchRequest.QueryExpansionSpec.pin_unexpanded_results>`__
                 is set to true.
@@ -2395,17 +2314,16 @@ class SearchResponse(proto.Message):
                 If the auto-session mode is used (when
                 `SearchRequest.session
                 <google.cloud.discoveryengine.v1.SearchRequest.session>`__
-                ends with "-"), this field holds the newly
-                generated session name.
+                ends with "-"), this field holds the newly generated
+                session name.
             query_id (str):
-                Query ID that corresponds to this search API
-                call. One session can have multiple turns, each
-                with a unique query ID.
+                Query ID that corresponds to this search API call.
+                One session can have multiple turns, each with a unique
+                query ID.
 
-                By specifying the session name and this query ID
-                in the Answer API call, the answer generation
-                happens in the context of the search results
-                from this search call.
+                By specifying the session name and this query ID in the
+                Answer API call, the answer generation happens in the
+                context of the search results from this search call.
         """
 
         name: str = proto.Field(

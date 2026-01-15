@@ -43,25 +43,25 @@ class ListUserLicensesRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent [UserStore][] resource
-            name, format:
+            Required. The parent [UserStore][] resource name,
+            format:
             ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
         page_size (int):
-            Optional. Requested page size. Server may return
-            fewer items than requested. If unspecified,
-            defaults to 10. The maximum value is 50; values
-            above 50 will be coerced to 50.
+            Optional. Requested page size. Server may return fewer
+            items than requested. If unspecified, defaults to 10.
+            The maximum value is 50; values above 50 will be coerced
+            to 50.
 
-            If this field is negative, an INVALID_ARGUMENT
-            error is returned.
+            If this field is negative, an INVALID_ARGUMENT error is
+            returned.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListUserLicenses`` call. Provide this to
-            retrieve the subsequent page.
+            ``ListUserLicenses`` call. Provide this to retrieve the
+            subsequent page.
 
-            When paginating, all other parameters provided
-            to ``ListUserLicenses`` must match the call that
-            provided the page token.
+            When paginating, all other parameters provided to
+            ``ListUserLicenses`` must match the call that provided
+            the page token.
         filter (str):
             Optional. Filter for the list request.
 
@@ -71,18 +71,17 @@ class ListUserLicensesRequest(proto.Message):
 
             Examples:
 
-            * ``license_assignment_state = ASSIGNED`` to
-            list assigned user licenses. *
-            ``license_assignment_state = NO_LICENSE`` to
-            list not licensed users.
+            * ``license_assignment_state = ASSIGNED`` to list
+            assigned user licenses. * ``license_assignment_state =
+            NO_LICENSE`` to list not licensed users.
 
             * ``license_assignment_state =
-            NO_LICENSE_ATTEMPTED_LOGIN`` to list users who
-            attempted login but no license assigned.
+            NO_LICENSE_ATTEMPTED_LOGIN`` to list users who attempted
+            login but no license assigned.
 
             * ``license_assignment_state !=
-            NO_LICENSE_ATTEMPTED_LOGIN`` to filter out users
-            who attempted login but no license assigned.
+            NO_LICENSE_ATTEMPTED_LOGIN`` to filter out users who
+            attempted login but no license assigned.
     """
 
     parent: str = proto.Field(
@@ -114,9 +113,9 @@ class ListUserLicensesResponse(proto.Message):
             `UserLicense
             <google.cloud.discoveryengine.v1.UserLicense>`__s.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to
-            retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            A token, which can be sent as ``page_token`` to retrieve
+            the next page. If this field is omitted, there are no
+            subsequent pages.
     """
 
     @property
@@ -145,29 +144,29 @@ class BatchUpdateUserLicensesRequest(proto.Message):
 
     Attributes:
         inline_source (google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesRequest.InlineSource):
-            The inline source for the input content for
-            document embeddings.
+            The inline source for the input content for document
+            embeddings.
 
             This field is a member of `oneof`_ ``source``.
         parent (str):
-            Required. The parent [UserStore][] resource
-            name, format:
+            Required. The parent [UserStore][] resource name,
+            format:
             ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
         delete_unassigned_user_licenses (bool):
             Optional. If true, if user licenses removed
-            associated license config, the user license will
-            be deleted. By default which is false, the user
-            license will be updated to unassigned state.
+            associated license config, the user license will be
+            deleted. By default which is false, the user license
+            will be updated to unassigned state.
     """
 
     class InlineSource(proto.Message):
-        r"""The inline source for the input config for
-        BatchUpdateUserLicenses method.
+        r"""The inline source for the input config for BatchUpdateUserLicenses
+        method.
 
         Attributes:
             user_licenses (MutableSequence[google.cloud.discoveryengine_v1.types.UserLicense]):
-                Required. A list of user licenses to update.
-                Each user license must have a valid
+                Required. A list of user licenses to update. Each user
+                license must have a valid
                 `UserLicense.user_principal
                 <google.cloud.discoveryengine.v1.UserLicense.user_principal>`__.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
@@ -212,13 +211,12 @@ class BatchUpdateUserLicensesMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
         success_count (int):
             Count of user licenses successfully updated.
         failure_count (int):
-            Count of user licenses that failed to be
-            updated.
+            Count of user licenses that failed to be updated.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -251,8 +249,8 @@ class BatchUpdateUserLicensesResponse(proto.Message):
         user_licenses (MutableSequence[google.cloud.discoveryengine_v1.types.UserLicense]):
             UserLicenses successfully updated.
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            A sample of errors encountered while
-            processing the request.
+            A sample of errors encountered while processing the
+            request.
     """
 
     user_licenses: MutableSequence[user_license.UserLicense] = proto.RepeatedField(

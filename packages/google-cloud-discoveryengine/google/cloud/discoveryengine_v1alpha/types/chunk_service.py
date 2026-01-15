@@ -34,27 +34,23 @@ __protobuf__ = proto.module(
 class GetChunkRequest(proto.Message):
     r"""Request message for
     `ChunkService.GetChunk
-    <google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk>`__
-    method.
+    <google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk>`__ method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            `Chunk
-            <google.cloud.discoveryengine.v1alpha.Chunk>`__,
+            `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}``.
 
-            If the caller does not have permission to access
-            the `Chunk
-            <google.cloud.discoveryengine.v1alpha.Chunk>`__,
+            If the caller does not have permission to access the
+            `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             If the requested `Chunk
-            <google.cloud.discoveryengine.v1alpha.Chunk>`__
-            does not exist, a ``NOT_FOUND`` error is
-            returned.
+            <google.cloud.discoveryengine.v1alpha.Chunk>`__ does not
+            exist, a ``NOT_FOUND`` error is returned.
     """
 
     name: str = proto.Field(
@@ -71,25 +67,23 @@ class ListChunksRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent document resource name,
-            such as
+            Required. The parent document resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
             If the caller does not have permission to list
-            `Chunk
-            <google.cloud.discoveryengine.v1alpha.Chunk>`__s
-            under this document, regardless of whether or
-            not this document exists, a
-            ``PERMISSION_DENIED`` error is returned.
+            `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__s
+            under this document, regardless of whether or not this
+            document exists, a ``PERMISSION_DENIED`` error is
+            returned.
         page_size (int):
             Maximum number of `Chunk
-            <google.cloud.discoveryengine.v1alpha.Chunk>`__s
-            to return. If unspecified, defaults to 100. The
-            maximum allowed value is 1000. Values above 1000
-            will be coerced to 1000.
+            <google.cloud.discoveryengine.v1alpha.Chunk>`__s to
+            return. If unspecified, defaults to 100. The maximum
+            allowed value is 1000. Values above 1000 will be coerced
+            to 1000.
 
-            If this field is negative, an
-            ``INVALID_ARGUMENT`` error is returned.
+            If this field is negative, an ``INVALID_ARGUMENT`` error
+            is returned.
         page_token (str):
             A page token
             `ListChunksResponse.next_page_token
@@ -97,15 +91,13 @@ class ListChunksRequest(proto.Message):
             received from a previous
             `ChunkService.ListChunks
             <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
-            call. Provide this to retrieve the subsequent
-            page.
+            call. Provide this to retrieve the subsequent page.
 
-            When paginating, all other parameters provided
-            to `ChunkService.ListChunks
+            When paginating, all other parameters provided to
+            `ChunkService.ListChunks
             <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
-            must match the call that provided the page
-            token. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            must match the call that provided the page token.
+            Otherwise, an ``INVALID_ARGUMENT`` error is returned.
     """
 
     parent: str = proto.Field(
@@ -136,8 +128,8 @@ class ListChunksResponse(proto.Message):
             A token that can be sent as
             `ListChunksRequest.page_token
             <google.cloud.discoveryengine.v1alpha.ListChunksRequest.page_token>`__
-            to retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            to retrieve the next page. If this field is omitted,
+            there are no subsequent pages.
     """
 
     @property

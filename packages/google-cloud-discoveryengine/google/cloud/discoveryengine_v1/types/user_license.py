@@ -33,35 +33,32 @@ class UserLicense(proto.Message):
 
     Attributes:
         user_principal (str):
-            Required. Immutable. The user principal of
-            the User, could be email address or other
-            prinical identifier. This field is immutable.
-            Admin assign licenses based on the user
-            principal.
+            Required. Immutable. The user principal of the User,
+            could be email address or other prinical identifier.
+            This field is immutable. Admin assign licenses based on
+            the user principal.
         user_profile (str):
             Optional. The user profile.
-            We user user full name(First name + Last name)
-            as user profile.
+            We user user full name(First name + Last name) as user
+            profile.
         license_assignment_state (google.cloud.discoveryengine_v1.types.UserLicense.LicenseAssignmentState):
-            Output only. License assignment state of the
-            user. If the user is assigned with a license
-            config, the user loggin will be assigned with
-            the license;
-            If the user's license assignment state is
-            unassigned or unspecified, no license config
-            will be associated to the user;
+            Output only. License assignment state of the user.
+            If the user is assigned with a license config, the user
+            loggin will be assigned with the license;
+            If the user's license assignment state is unassigned or
+            unspecified, no license config will be associated to the
+            user;
         license_config (str):
             Optional. The full resource name of the
-            Subscription(LicenseConfig) assigned to the
-            user.
+            Subscription(LicenseConfig) assigned to the user.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. User created timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. User update timestamp.
         last_login_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. User last logged in time.
-            If the user has not logged in yet, this field
-            will be empty.
+            If the user has not logged in yet, this field will be
+            empty.
     """
 
     class LicenseAssignmentState(proto.Enum):

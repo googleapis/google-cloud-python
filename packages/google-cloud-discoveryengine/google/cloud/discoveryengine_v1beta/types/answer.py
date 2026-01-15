@@ -51,9 +51,9 @@ class Answer(proto.Message):
         query_understanding_info (google.cloud.discoveryengine_v1beta.types.Answer.QueryUnderstandingInfo):
             Query understanding information.
         answer_skipped_reasons (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.AnswerSkippedReason]):
-            Additional answer-skipped reasons. This
-            provides the reason for ignored cases. If
-            nothing is skipped, this field is not set.
+            Additional answer-skipped reasons. This provides the
+            reason for ignored cases. If nothing is skipped, this
+            field is not set.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Answer creation timestamp.
         complete_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -147,8 +147,8 @@ class Answer(proto.Message):
 
         Attributes:
             start_index (int):
-                Index indicates the start of the segment,
-                measured in bytes (UTF-8 unicode).
+                Index indicates the start of the segment, measured in
+                bytes (UTF-8 unicode).
             end_index (int):
                 End of the attributed segment, exclusive.
             sources (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.CitationSource]):
@@ -218,12 +218,12 @@ class Answer(proto.Message):
                 title (str):
                     Title.
                 chunk_contents (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Reference.UnstructuredDocumentInfo.ChunkContent]):
-                    List of cited chunk contents derived from
-                    document content.
+                    List of cited chunk contents derived from document
+                    content.
                 struct_data (google.protobuf.struct_pb2.Struct):
-                    The structured JSON metadata for the
-                    document. It is populated from the struct data
-                    from the Chunk in search result.
+                    The structured JSON metadata for the document.
+                    It is populated from the struct data from the Chunk in
+                    search result.
             """
 
             class ChunkContent(proto.Message):
@@ -237,12 +237,12 @@ class Answer(proto.Message):
                     page_identifier (str):
                         Page identifier.
                     relevance_score (float):
-                        The relevance of the chunk for a given query.
-                        Values range from 0.0 (completely irrelevant) to
-                        1.0 (completely relevant). This value is for
-                        informational purpose only. It may change for
-                        the same query and chunk at any time due to a
-                        model retraining or change in implementation.
+                        The relevance of the chunk for a given query. Values
+                        range from 0.0 (completely irrelevant) to 1.0
+                        (completely relevant). This value is for informational
+                        purpose only. It may change for the same query and chunk
+                        at any time due to a model retraining or change in
+                        implementation.
 
                         This field is a member of `oneof`_ ``_relevance_score``.
                 """
@@ -297,12 +297,12 @@ class Answer(proto.Message):
                 content (str):
                     Chunk textual content.
                 relevance_score (float):
-                    The relevance of the chunk for a given query.
-                    Values range from 0.0 (completely irrelevant) to
-                    1.0 (completely relevant). This value is for
-                    informational purpose only. It may change for
-                    the same query and chunk at any time due to a
-                    model retraining or change in implementation.
+                    The relevance of the chunk for a given query. Values
+                    range from 0.0 (completely irrelevant) to 1.0
+                    (completely relevant). This value is for informational
+                    purpose only. It may change for the same query and chunk
+                    at any time due to a model retraining or change in
+                    implementation.
 
                     This field is a member of `oneof`_ ``_relevance_score``.
                 document_metadata (google.cloud.discoveryengine_v1beta.types.Answer.Reference.ChunkInfo.DocumentMetadata):
@@ -322,9 +322,9 @@ class Answer(proto.Message):
                     page_identifier (str):
                         Page identifier.
                     struct_data (google.protobuf.struct_pb2.Struct):
-                        The structured JSON metadata for the
-                        document. It is populated from the struct data
-                        from the Chunk in search result.
+                        The structured JSON metadata for the document.
+                        It is populated from the struct data from the Chunk in
+                        search result.
                 """
 
                 document: str = proto.Field(
@@ -477,9 +477,9 @@ class Answer(proto.Message):
 
                 Attributes:
                     search_results (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Step.Action.Observation.SearchResult]):
-                        Search results observed by the search action,
-                        it can be snippets info or chunk info, depending
-                        on the citation type set by the user.
+                        Search results observed by the search action, it can
+                        be snippets info or chunk info, depending on the
+                        citation type set by the user.
                 """
 
                 class SearchResult(proto.Message):
@@ -493,16 +493,16 @@ class Answer(proto.Message):
                         title (str):
                             Title.
                         snippet_info (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Step.Action.Observation.SearchResult.SnippetInfo]):
-                            If citation_type is DOCUMENT_LEVEL_CITATION,
-                            populate document level snippets.
+                            If citation_type is DOCUMENT_LEVEL_CITATION, populate
+                            document level snippets.
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1beta.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
-                            If citation_type is CHUNK_LEVEL_CITATION and
-                            chunk mode is on, populate chunk info.
+                            If citation_type is CHUNK_LEVEL_CITATION and chunk mode
+                            is on, populate chunk info.
                         struct_data (google.protobuf.struct_pb2.Struct):
                             Data representation.
                             The structured JSON data for the document.
-                            It's populated from the struct data from the
-                            Document, or the Chunk in search result.
+                            It's populated from the struct data from the Document,
+                            or the Chunk in search result.
                     """
 
                     class SnippetInfo(proto.Message):
@@ -512,8 +512,7 @@ class Answer(proto.Message):
                             snippet (str):
                                 Snippet content.
                             snippet_status (str):
-                                Status of the snippet defined by the search
-                                team.
+                                Status of the snippet defined by the search team.
                         """
 
                         snippet: str = proto.Field(
@@ -536,12 +535,12 @@ class Answer(proto.Message):
                             content (str):
                                 Chunk textual content.
                             relevance_score (float):
-                                The relevance of the chunk for a given query.
-                                Values range from 0.0 (completely irrelevant) to
-                                1.0 (completely relevant). This value is for
-                                informational purpose only. It may change for
-                                the same query and chunk at any time due to a
-                                model retraining or change in implementation.
+                                The relevance of the chunk for a given query. Values
+                                range from 0.0 (completely irrelevant) to 1.0
+                                (completely relevant). This value is for informational
+                                purpose only. It may change for the same query and chunk
+                                at any time due to a model retraining or change in
+                                implementation.
 
                                 This field is a member of `oneof`_ ``_relevance_score``.
                         """

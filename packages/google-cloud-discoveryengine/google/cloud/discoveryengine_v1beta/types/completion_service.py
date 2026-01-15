@@ -42,45 +42,44 @@ class CompleteQueryRequest(proto.Message):
 
     Attributes:
         data_store (str):
-            Required. The parent data store resource name
-            for which the completion is performed, such as
+            Required. The parent data store resource name for which
+            the completion is performed, such as
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store``.
         query (str):
             Required. The typeahead input used to fetch
             suggestions. Maximum length is 128 characters.
         query_model (str):
-            Specifies the autocomplete data model. This
-            overrides any model specified in the
-            Configuration > Autocomplete section of the
-            Cloud console. Currently supported values:
+            Specifies the autocomplete data model. This overrides
+            any model specified in the Configuration > Autocomplete
+            section of the Cloud console. Currently supported
+            values:
 
-            * ``document`` - Using suggestions generated
-            from user-imported documents. *
-            ``search-history`` - Using suggestions generated
-            from the past history of `SearchService.Search
+            * ``document`` - Using suggestions generated from
+            user-imported documents. * ``search-history`` - Using
+            suggestions generated from the past history of
+            `SearchService.Search
             <google.cloud.discoveryengine.v1beta.SearchService.Search>`__
-            API calls. Do not use it when there is no
-            traffic for Search API.
+            API calls. Do not use it when there is no traffic for
+            Search API.
 
-            * ``user-event`` - Using suggestions generated
-            from user-imported search events.
+            * ``user-event`` - Using suggestions generated from
+            user-imported search events.
 
-            * ``document-completable`` - Using suggestions
-            taken directly from user-imported document
-            fields marked as completable.
+            * ``document-completable`` - Using suggestions taken
+            directly from user-imported document fields marked as
+            completable.
 
             Default values:
 
             * ``document`` is the default model for regular
-            dataStores. * ``search-history`` is the default
-            model for site search dataStores.
+            dataStores. * ``search-history`` is the default model
+            for site search dataStores.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For
-            example, this could be implemented with an HTTP
-            cookie, which should be able to uniquely
-            identify a visitor on a single device. This
-            unique identifier should not change if the
-            visitor logs in or out of the website.
+            A unique identifier for tracking visitors. For example,
+            this could be implemented with an HTTP cookie, which
+            should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change
+            if the visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -92,16 +91,15 @@ class CompleteQueryRequest(proto.Message):
             `SearchRequest.user_pseudo_id
             <google.cloud.discoveryengine.v1beta.SearchRequest.user_pseudo_id>`__.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
+            The field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
         include_tail_suggestions (bool):
-            Indicates if tail suggestions should be
-            returned if there are no suggestions that match
-            the full query. Even if set to true, if there
-            are suggestions that match the full query, those
-            are returned and no tail suggestions are
-            returned.
+            Indicates if tail suggestions should be returned if
+            there are no suggestions that match the full query. Even
+            if set to true, if there are suggestions that match the
+            full query, those are returned and no tail suggestions
+            are returned.
     """
 
     data_store: str = proto.Field(
@@ -134,16 +132,15 @@ class CompleteQueryResponse(proto.Message):
 
     Attributes:
         query_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.CompleteQueryResponse.QuerySuggestion]):
-            Results of the matched query suggestions. The
-            result list is ordered and the first result is a
-            top suggestion.
+            Results of the matched query suggestions. The result
+            list is ordered and the first result is a top
+            suggestion.
         tail_match_triggered (bool):
             True if the returned suggestions are all tail
             suggestions.
             For tail matching to be triggered,
-            include_tail_suggestions in the request must be
-            true and there must be no suggestions that match
-            the full query.
+            include_tail_suggestions in the request must be true and
+            there must be no suggestions that match the full query.
     """
 
     class QuerySuggestion(proto.Message):
@@ -153,9 +150,9 @@ class CompleteQueryResponse(proto.Message):
             suggestion (str):
                 The suggestion for the query.
             completable_field_paths (MutableSequence[str]):
-                The unique document field paths that serve as
-                the source of this suggestion if it was
-                generated from completable fields.
+                The unique document field paths that serve as the
+                source of this suggestion if it was generated from
+                completable fields.
 
                 This field is only populated for the
                 document-completable model.
@@ -190,56 +187,54 @@ class AdvancedCompleteQueryRequest(proto.Message):
 
     Attributes:
         completion_config (str):
-            Required. The completion_config of the parent
-            dataStore or engine resource name for which the
-            completion is performed, such as
+            Required. The completion_config of the parent dataStore
+            or engine resource name for which the completion is
+            performed, such as
             ``projects/*/locations/global/collections/default_collection/dataStores/*/completionConfig``
             ``projects/*/locations/global/collections/default_collection/engines/*/completionConfig``.
         query (str):
-            Required. The typeahead input used to fetch
-            suggestions. Maximum length is 128 characters.
+            Required. The typeahead input used to fetch suggestions.
+            Maximum length is 128 characters.
 
-            The query can not be empty for most of the
-            suggestion types. If it is empty, an
-            ``INVALID_ARGUMENT`` error is returned. The
-            exception is when the suggestion_types contains
-            only the type ``RECENT_SEARCH``, the query can
-            be an empty string. The is called "zero prefix"
-            feature, which returns user's recently searched
-            queries given the empty query.
+            The query can not be empty for most of the suggestion
+            types. If it is empty, an ``INVALID_ARGUMENT`` error is
+            returned. The exception is when the suggestion_types
+            contains only the type ``RECENT_SEARCH``, the query can
+            be an empty string. The is called "zero prefix" feature,
+            which returns user's recently searched queries given the
+            empty query.
         query_model (str):
-            Specifies the autocomplete data model. This
-            overrides any model specified in the
-            Configuration > Autocomplete section of the
-            Cloud console. Currently supported values:
+            Specifies the autocomplete data model. This overrides
+            any model specified in the Configuration > Autocomplete
+            section of the Cloud console. Currently supported
+            values:
 
-            * ``document`` - Using suggestions generated
-            from user-imported documents. *
-            ``search-history`` - Using suggestions generated
-            from the past history of `SearchService.Search
+            * ``document`` - Using suggestions generated from
+            user-imported documents. * ``search-history`` - Using
+            suggestions generated from the past history of
+            `SearchService.Search
             <google.cloud.discoveryengine.v1beta.SearchService.Search>`__
-            API calls. Do not use it when there is no
-            traffic for Search API.
+            API calls. Do not use it when there is no traffic for
+            Search API.
 
-            * ``user-event`` - Using suggestions generated
-            from user-imported search events.
+            * ``user-event`` - Using suggestions generated from
+            user-imported search events.
 
-            * ``document-completable`` - Using suggestions
-            taken directly from user-imported document
-            fields marked as completable.
+            * ``document-completable`` - Using suggestions taken
+            directly from user-imported document fields marked as
+            completable.
 
             Default values:
 
             * ``document`` is the default model for regular
-            dataStores. * ``search-history`` is the default
-            model for site search dataStores.
+            dataStores. * ``search-history`` is the default model
+            for site search dataStores.
         user_pseudo_id (str):
-            A unique identifier for tracking visitors. For
-            example, this could be implemented with an HTTP
-            cookie, which should be able to uniquely
-            identify a visitor on a single device. This
-            unique identifier should not change if the
-            visitor logs in or out of the website.
+            A unique identifier for tracking visitors. For example,
+            this could be implemented with an HTTP cookie, which
+            should be able to uniquely identify a visitor on a
+            single device. This unique identifier should not change
+            if the visitor logs in or out of the website.
 
             This field should NOT have a fixed value such as
             ``unknown_visitor``.
@@ -251,32 +246,30 @@ class AdvancedCompleteQueryRequest(proto.Message):
             `SearchRequest.user_pseudo_id
             <google.cloud.discoveryengine.v1beta.SearchRequest.user_pseudo_id>`__.
 
-            The field must be a UTF-8 encoded string with a
-            length limit of 128
+            The field must be a UTF-8 encoded string with a length
+            limit of 128
         user_info (google.cloud.discoveryengine_v1beta.types.UserInfo):
             Optional. Information about the end user.
 
-            This should be the same identifier information
-            as `UserEvent.user_info
+            This should be the same identifier information as
+            `UserEvent.user_info
             <google.cloud.discoveryengine.v1beta.UserEvent.user_info>`__
             and
             `SearchRequest.user_info
             <google.cloud.discoveryengine.v1beta.SearchRequest.user_info>`__.
         include_tail_suggestions (bool):
-            Indicates if tail suggestions should be
-            returned if there are no suggestions that match
-            the full query. Even if set to true, if there
-            are suggestions that match the full query, those
-            are returned and no tail suggestions are
-            returned.
+            Indicates if tail suggestions should be returned if
+            there are no suggestions that match the full query. Even
+            if set to true, if there are suggestions that match the
+            full query, those are returned and no tail suggestions
+            are returned.
         boost_spec (google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.BoostSpec):
-            Optional. Specification to boost suggestions
-            matching the condition.
+            Optional. Specification to boost suggestions matching
+            the condition.
         suggestion_types (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.SuggestionType]):
-            Optional. Suggestion types to return. If
-            empty or unspecified, query suggestions are
-            returned. Only one suggestion type is supported
-            at the moment.
+            Optional. Suggestion types to return. If empty or
+            unspecified, query suggestions are returned. Only one
+            suggestion type is supported at the moment.
     """
 
     class SuggestionType(proto.Enum):
@@ -304,20 +297,18 @@ class AdvancedCompleteQueryRequest(proto.Message):
         GOOGLE_WORKSPACE = 5
 
     class BoostSpec(proto.Message):
-        r"""Specification to boost suggestions based on the condtion of
-        the suggestion.
+        r"""Specification to boost suggestions based on the condtion of the
+        suggestion.
 
         Attributes:
             condition_boost_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryRequest.BoostSpec.ConditionBoostSpec]):
-                Condition boost specifications. If a
-                suggestion matches multiple conditions in the
-                specifictions, boost values from these
-                specifications are all applied and combined in a
-                non-linear way. Maximum number of specifications
-                is 20.
+                Condition boost specifications. If a suggestion
+                matches multiple conditions in the specifictions, boost
+                values from these specifications are all applied and
+                combined in a non-linear way. Maximum number of
+                specifications is 20.
 
-                Note: Currently only support language condition
-                boost.
+                Note: Currently only support language condition boost.
         """
 
         class ConditionBoostSpec(proto.Message):
@@ -325,35 +316,32 @@ class AdvancedCompleteQueryRequest(proto.Message):
 
             Attributes:
                 condition (str):
-                    An expression which specifies a boost condition.
-                    The syntax is the same as `filter expression
+                    An expression which specifies a boost condition. The
+                    syntax is the same as `filter expression
                     syntax
                     <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata#filter-expression-syntax>`__.
-                    Currently, the only supported condition is a
-                    list of BCP-47 lang codes.
+                    Currently, the only supported condition is a list of
+                    BCP-47 lang codes.
 
                     Example:
 
-                    * To boost suggestions in languages ``en`` or
-                    ``fr``:
+                    * To boost suggestions in languages ``en`` or ``fr``:
 
                     ``(lang_code: ANY("en", "fr"))``
                 boost (float):
-                    Strength of the boost, which should be in [-1,
-                    1]. Negative boost means demotion. Default is
-                    0.0.
+                    Strength of the boost, which should be in [-1, 1].
+                    Negative boost means demotion. Default is 0.0.
 
-                    Setting to 1.0 gives the suggestions a big
-                    promotion. However, it does not necessarily mean
-                    that the top result will be a boosted
-                    suggestion.
+                    Setting to 1.0 gives the suggestions a big promotion.
+                    However, it does not necessarily mean that the top
+                    result will be a boosted suggestion.
 
-                    Setting to -1.0 gives the suggestions a big
-                    demotion. However, other suggestions that are
-                    relevant might still be shown.
+                    Setting to -1.0 gives the suggestions a big demotion.
+                    However, other suggestions that are relevant might still
+                    be shown.
 
-                    Setting to 0.0 means no boost applied. The
-                    boosting condition is ignored.
+                    Setting to 0.0 means no boost applied. The boosting
+                    condition is ignored.
             """
 
             condition: str = proto.Field(
@@ -418,28 +406,27 @@ class AdvancedCompleteQueryResponse(proto.Message):
 
     Attributes:
         query_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.QuerySuggestion]):
-            Results of the matched query suggestions. The
-            result list is ordered and the first result is a
-            top suggestion.
+            Results of the matched query suggestions. The result
+            list is ordered and the first result is a top
+            suggestion.
         tail_match_triggered (bool):
             True if the returned suggestions are all tail
             suggestions.
             For tail matching to be triggered,
-            include_tail_suggestions in the request must be
-            true and there must be no suggestions that match
-            the full query.
+            include_tail_suggestions in the request must be true and
+            there must be no suggestions that match the full query.
         people_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.PersonSuggestion]):
-            Results of the matched people suggestions.
-            The result list is ordered and the first result
-            is the top suggestion.
+            Results of the matched people suggestions. The result
+            list is ordered and the first result is the top
+            suggestion.
         content_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.ContentSuggestion]):
-            Results of the matched content suggestions.
-            The result list is ordered and the first result
-            is the top suggestion.
+            Results of the matched content suggestions. The
+            result list is ordered and the first result is the top
+            suggestion.
         recent_search_suggestions (MutableSequence[google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.RecentSearchSuggestion]):
-            Results of the matched "recent search"
-            suggestions. The result list is ordered and the
-            first result is the top suggestion.
+            Results of the matched "recent search" suggestions.
+            The result list is ordered and the first result is the
+            top suggestion.
     """
 
     class QuerySuggestion(proto.Message):
@@ -449,15 +436,15 @@ class AdvancedCompleteQueryResponse(proto.Message):
             suggestion (str):
                 The suggestion for the query.
             completable_field_paths (MutableSequence[str]):
-                The unique document field paths that serve as
-                the source of this suggestion if it was
-                generated from completable fields.
+                The unique document field paths that serve as the
+                source of this suggestion if it was generated from
+                completable fields.
 
                 This field is only populated for the
                 document-completable model.
             data_store (MutableSequence[str]):
-                The name of the dataStore that this
-                suggestion belongs to.
+                The name of the dataStore that this suggestion
+                belongs to.
         """
 
         suggestion: str = proto.Field(
@@ -482,11 +469,11 @@ class AdvancedCompleteQueryResponse(proto.Message):
             person_type (google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.PersonSuggestion.PersonType):
                 The type of the person.
             document (google.cloud.discoveryengine_v1beta.types.Document):
-                The document data snippet in the suggestion.
-                Only a subset of fields is populated.
+                The document data snippet in the suggestion. Only a
+                subset of fields is populated.
             data_store (str):
-                The name of the dataStore that this
-                suggestion belongs to.
+                The name of the dataStore that this suggestion
+                belongs to.
         """
 
         class PersonType(proto.Enum):
@@ -535,11 +522,11 @@ class AdvancedCompleteQueryResponse(proto.Message):
             content_type (google.cloud.discoveryengine_v1beta.types.AdvancedCompleteQueryResponse.ContentSuggestion.ContentType):
                 The type of the content suggestion.
             document (google.cloud.discoveryengine_v1beta.types.Document):
-                The document data snippet in the suggestion.
-                Only a subset of fields will be populated.
+                The document data snippet in the suggestion. Only a
+                subset of fields will be populated.
             data_store (str):
-                The name of the dataStore that this
-                suggestion belongs to.
+                The name of the dataStore that this suggestion
+                belongs to.
         """
 
         class ContentType(proto.Enum):

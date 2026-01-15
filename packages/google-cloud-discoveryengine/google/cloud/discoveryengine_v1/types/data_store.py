@@ -37,77 +37,73 @@ __protobuf__ = proto.module(
 
 
 class DataStore(proto.Message):
-    r"""DataStore captures global settings and configs at the
-    DataStore level.
+    r"""DataStore captures global settings and configs at the DataStore
+    level.
 
     Attributes:
         name (str):
-            Immutable. Identifier. The full resource name of
-            the data store. Format:
+            Immutable. Identifier. The full resource name of the
+            data store. Format:
 
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
-            Immutable. The industry vertical that the
-            data store registers.
+            Immutable. The industry vertical that the data store
+            registers.
         solution_types (MutableSequence[google.cloud.discoveryengine_v1.types.SolutionType]):
-            The solutions that the data store enrolls.
-            Available solutions for each `industry_vertical
+            The solutions that the data store enrolls. Available
+            solutions for each `industry_vertical
             <google.cloud.discoveryengine.v1.DataStore.industry_vertical>`__:
 
-            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION``
-            and ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
-            ``SOLUTION_TYPE_SEARCH`` is automatically
-            enrolled. Other   solutions cannot be enrolled.
+            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+            ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
+            ``SOLUTION_TYPE_SEARCH`` is automatically enrolled.
+            Other   solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            `Schema
-            <google.cloud.discoveryengine.v1.Schema>`__
+            `Schema <google.cloud.discoveryengine.v1.Schema>`__
             associated to this data store.
         content_config (google.cloud.discoveryengine_v1.types.DataStore.ContentConfig):
-            Immutable. The content config of the data store.
-            If this field is unset, the server behavior
-            defaults to `ContentConfig.NO_CONTENT
+            Immutable. The content config of the data store. If this
+            field is unset, the server behavior defaults to
+            `ContentConfig.NO_CONTENT
             <google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__
-            was created at.
+            <google.cloud.discoveryengine.v1.DataStore>`__ was
+            created at.
         advanced_site_search_config (google.cloud.discoveryengine_v1.types.AdvancedSiteSearchConfig):
-            Optional. Configuration for advanced site
-            search.
+            Optional. Configuration for advanced site search.
         kms_key_name (str):
-            Input only. The KMS key to be used to protect
-            this DataStore at creation time.
+            Input only. The KMS key to be used to protect this
+            DataStore at creation time.
 
-            Must be set for requests that need to comply
-            with CMEK Org Policy protections.
+            Must be set for requests that need to comply with CMEK
+            Org Policy protections.
 
-            If this field is set and processed successfully,
-            the DataStore will be protected by the KMS key,
-            as indicated in the cmek_config field.
+            If this field is set and processed successfully, the
+            DataStore will be protected by the KMS key, as indicated
+            in the cmek_config field.
         cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Output only. CMEK-related information for the
             DataStore.
         billing_estimation (google.cloud.discoveryengine_v1.types.DataStore.BillingEstimation):
-            Output only. Data size estimation for
-            billing.
+            Output only. Data size estimation for billing.
         acl_enabled (bool):
             Immutable. Whether data in the
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__
-            has ACL information. If set to ``true``, the
-            source data must have ACL. ACL will be ingested
-            when data is ingested by
+            <google.cloud.discoveryengine.v1.DataStore>`__ has ACL
+            information. If set to ``true``, the source data must
+            have ACL. ACL will be ingested when data is ingested by
             `DocumentService.ImportDocuments
             <google.cloud.discoveryengine.v1.DocumentService.ImportDocuments>`__
             methods.
@@ -115,8 +111,7 @@ class DataStore(proto.Message):
             When ACL is enabled for the
             `DataStore
             <google.cloud.discoveryengine.v1.DataStore>`__,
-            `Document
-            <google.cloud.discoveryengine.v1.Document>`__
+            `Document <google.cloud.discoveryengine.v1.Document>`__
             can't be accessed by calling
             `DocumentService.GetDocument
             <google.cloud.discoveryengine.v1.DocumentService.GetDocument>`__
@@ -124,12 +119,11 @@ class DataStore(proto.Message):
             `DocumentService.ListDocuments
             <google.cloud.discoveryengine.v1.DocumentService.ListDocuments>`__.
 
-            Currently ACL is only supported in ``GENERIC``
-            industry vertical with non-``PUBLIC_WEBSITE``
-            content config.
+            Currently ACL is only supported in ``GENERIC`` industry
+            vertical with non-``PUBLIC_WEBSITE`` content config.
         workspace_config (google.cloud.discoveryengine_v1.types.WorkspaceConfig):
-            Config to store data store type configuration
-            for workspace data. This must be set when
+            Config to store data store type configuration for
+            workspace data. This must be set when
             `DataStore.content_config
             <google.cloud.discoveryengine.v1.DataStore.content_config>`__
             is set as
@@ -141,39 +135,37 @@ class DataStore(proto.Message):
         starting_schema (google.cloud.discoveryengine_v1.types.Schema):
             The start schema to use for this
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__
-            when provisioning it. If unset, a default
-            vertical specialized schema will be used.
+            <google.cloud.discoveryengine.v1.DataStore>`__ when
+            provisioning it. If unset, a default vertical
+            specialized schema will be used.
 
             This field is only used by
             `CreateDataStore
             <google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore>`__
-            API, and will be ignored if used in other APIs.
-            This field will be omitted from all API
-            responses including
+            API, and will be ignored if used in other APIs. This
+            field will be omitted from all API responses including
             `CreateDataStore
             <google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore>`__
             API. To retrieve a schema of a
             `DataStore
-            <google.cloud.discoveryengine.v1.DataStore>`__,
-            use `SchemaService.GetSchema
+            <google.cloud.discoveryengine.v1.DataStore>`__, use
+            `SchemaService.GetSchema
             <google.cloud.discoveryengine.v1.SchemaService.GetSchema>`__
             API instead.
 
-            The provided schema will be validated against
-            certain rules on schema. Learn more from `this
+            The provided schema will be validated against certain
+            rules on schema. Learn more from `this
             doc
             <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
         healthcare_fhir_config (google.cloud.discoveryengine_v1.types.HealthcareFhirConfig):
             Optional. Configuration for ``HEALTHCARE_FHIR``
             vertical.
         identity_mapping_store (str):
-            Immutable. The fully qualified resource name of
-            the associated `IdentityMappingStore
+            Immutable. The fully qualified resource name of the
+            associated `IdentityMappingStore
             <google.cloud.discoveryengine.v1.IdentityMappingStore>`__.
-            This field can only be set for acl_enabled
-            DataStores with ``THIRD_PARTY`` or ``GSUITE``
-            IdP. Format:
+            This field can only be set for acl_enabled DataStores
+            with ``THIRD_PARTY`` or ``GSUITE`` IdP. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}``.
     """
@@ -212,11 +204,9 @@ class DataStore(proto.Message):
 
         Attributes:
             structured_data_size (int):
-                Data size for structured data in terms of
-                bytes.
+                Data size for structured data in terms of bytes.
             unstructured_data_size (int):
-                Data size for unstructured data in terms of
-                bytes.
+                Data size for unstructured data in terms of bytes.
             website_data_size (int):
                 Data size for websites in terms of bytes.
             structured_data_update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -343,13 +333,13 @@ class AdvancedSiteSearchConfig(proto.Message):
 
     Attributes:
         disable_initial_index (bool):
-            If set true, initial indexing is disabled for
-            the DataStore.
+            If set true, initial indexing is disabled for the
+            DataStore.
 
             This field is a member of `oneof`_ ``_disable_initial_index``.
         disable_automatic_refresh (bool):
-            If set true, automatic refresh is disabled
-            for the DataStore.
+            If set true, automatic refresh is disabled for the
+            DataStore.
 
             This field is a member of `oneof`_ ``_disable_automatic_refresh``.
     """
@@ -367,8 +357,7 @@ class AdvancedSiteSearchConfig(proto.Message):
 
 
 class WorkspaceConfig(proto.Message):
-    r"""Config to store data store type configuration for workspace
-    data
+    r"""Config to store data store type configuration for workspace data
 
     Attributes:
         type_ (google.cloud.discoveryengine_v1.types.WorkspaceConfig.Type):
@@ -376,20 +365,19 @@ class WorkspaceConfig(proto.Message):
         dasher_customer_id (str):
             Obfuscated Dasher customer ID.
         super_admin_service_account (str):
-            Optional. The super admin service account for
-            the workspace that will be used for access token
-            generation. For now we only use it for Native
-            Google Drive connector data ingestion.
+            Optional. The super admin service account for the
+            workspace that will be used for access token generation.
+            For now we only use it for Native Google Drive connector
+            data ingestion.
         super_admin_email_address (str):
-            Optional. The super admin email address for
-            the workspace that will be used for access token
-            generation. For now we only use it for Native
-            Google Drive connector data ingestion.
+            Optional. The super admin email address for the
+            workspace that will be used for access token generation.
+            For now we only use it for Native Google Drive connector
+            data ingestion.
     """
 
     class Type(proto.Enum):
-        r"""Specifies the type of Workspace App supported by this
-        DataStore
+        r"""Specifies the type of Workspace App supported by this DataStore
 
         Values:
             TYPE_UNSPECIFIED (0):

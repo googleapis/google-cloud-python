@@ -29,17 +29,17 @@ __protobuf__ = proto.module(
 
 
 class SuggestionDenyListEntry(proto.Message):
-    r"""Suggestion deny list entry identifying the phrase to block
-    from suggestions and the applied operation for the phrase.
+    r"""Suggestion deny list entry identifying the phrase to block from
+    suggestions and the applied operation for the phrase.
 
     Attributes:
         block_phrase (str):
-            Required. Phrase to block from suggestions
-            served. Can be maximum 125 characters.
+            Required. Phrase to block from suggestions served.
+            Can be maximum 125 characters.
         match_operator (google.cloud.discoveryengine_v1.types.SuggestionDenyListEntry.MatchOperator):
-            Required. The match operator to apply for
-            this phrase. Whether to block the exact phrase,
-            or block any suggestions containing this phrase.
+            Required. The match operator to apply for this
+            phrase. Whether to block the exact phrase, or block any
+            suggestions containing this phrase.
     """
 
     class MatchOperator(proto.Enum):
@@ -82,13 +82,13 @@ class CompletionSuggestion(proto.Message):
 
     Attributes:
         global_score (float):
-            Global score of this suggestion. Control how
-            this suggestion would be scored / ranked.
+            Global score of this suggestion. Control how this
+            suggestion would be scored / ranked.
 
             This field is a member of `oneof`_ ``ranking_info``.
         frequency (int):
-            Frequency of this suggestion. Will be used to
-            rank suggestions when score is not available.
+            Frequency of this suggestion. Will be used to rank
+            suggestions when score is not available.
 
             This field is a member of `oneof`_ ``ranking_info``.
         suggestion (str):
@@ -96,17 +96,14 @@ class CompletionSuggestion(proto.Message):
         language_code (str):
             BCP-47 language code of this suggestion.
         group_id (str):
-            If two suggestions have the same groupId,
-            they will not be returned together. Instead the
-            one ranked higher will be returned. This can be
-            used to deduplicate semantically identical
-            suggestions.
+            If two suggestions have the same groupId, they will
+            not be returned together. Instead the one ranked higher
+            will be returned. This can be used to deduplicate
+            semantically identical suggestions.
         group_score (float):
-            The score of this suggestion within its
-            group.
+            The score of this suggestion within its group.
         alternative_phrases (MutableSequence[str]):
-            Alternative matching phrases for this
-            suggestion.
+            Alternative matching phrases for this suggestion.
     """
 
     global_score: float = proto.Field(

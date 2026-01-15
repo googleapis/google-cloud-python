@@ -38,62 +38,60 @@ __protobuf__ = proto.module(
 
 
 class DataStore(proto.Message):
-    r"""DataStore captures global settings and configs at the
-    DataStore level.
+    r"""DataStore captures global settings and configs at the DataStore
+    level.
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the data
-            store. Format:
+            Immutable. The full resource name of the data store.
+            Format:
 
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         industry_vertical (google.cloud.discoveryengine_v1beta.types.IndustryVertical):
-            Immutable. The industry vertical that the
-            data store registers.
+            Immutable. The industry vertical that the data store
+            registers.
         solution_types (MutableSequence[google.cloud.discoveryengine_v1beta.types.SolutionType]):
-            The solutions that the data store enrolls.
-            Available solutions for each `industry_vertical
+            The solutions that the data store enrolls. Available
+            solutions for each `industry_vertical
             <google.cloud.discoveryengine.v1beta.DataStore.industry_vertical>`__:
 
-            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION``
-            and ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
-            ``SOLUTION_TYPE_SEARCH`` is automatically
-            enrolled. Other   solutions cannot be enrolled.
+            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
+            ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
+            ``SOLUTION_TYPE_SEARCH`` is automatically enrolled.
+            Other   solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            `Schema
-            <google.cloud.discoveryengine.v1beta.Schema>`__
+            `Schema <google.cloud.discoveryengine.v1beta.Schema>`__
             asscociated to this data store.
         content_config (google.cloud.discoveryengine_v1beta.types.DataStore.ContentConfig):
-            Immutable. The content config of the data store.
-            If this field is unset, the server behavior
-            defaults to `ContentConfig.NO_CONTENT
+            Immutable. The content config of the data store. If this
+            field is unset, the server behavior defaults to
+            `ContentConfig.NO_CONTENT
             <google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.NO_CONTENT>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `DataStore
-            <google.cloud.discoveryengine.v1beta.DataStore>`__
-            was created at.
+            <google.cloud.discoveryengine.v1beta.DataStore>`__ was
+            created at.
         language_info (google.cloud.discoveryengine_v1beta.types.LanguageInfo):
             Language info for DataStore.
         natural_language_query_understanding_config (google.cloud.discoveryengine_v1beta.types.NaturalLanguageQueryUnderstandingConfig):
-            Optional. Configuration for Natural Language
-            Query Understanding.
+            Optional. Configuration for Natural Language Query
+            Understanding.
         billing_estimation (google.cloud.discoveryengine_v1beta.types.DataStore.BillingEstimation):
-            Output only. Data size estimation for
-            billing.
+            Output only. Data size estimation for billing.
         workspace_config (google.cloud.discoveryengine_v1beta.types.WorkspaceConfig):
-            Config to store data store type configuration
-            for workspace data. This must be set when
+            Config to store data store type configuration for
+            workspace data. This must be set when
             `DataStore.content_config
             <google.cloud.discoveryengine.v1beta.DataStore.content_config>`__
             is set as
@@ -105,27 +103,26 @@ class DataStore(proto.Message):
         starting_schema (google.cloud.discoveryengine_v1beta.types.Schema):
             The start schema to use for this
             `DataStore
-            <google.cloud.discoveryengine.v1beta.DataStore>`__
-            when provisioning it. If unset, a default
-            vertical specialized schema will be used.
+            <google.cloud.discoveryengine.v1beta.DataStore>`__ when
+            provisioning it. If unset, a default vertical
+            specialized schema will be used.
 
-            This field is only used by [CreateDataStore][]
-            API, and will be ignored if used in other APIs.
-            This field will be omitted from all API
-            responses including [CreateDataStore][] API. To
-            retrieve a schema of a `DataStore
-            <google.cloud.discoveryengine.v1beta.DataStore>`__,
-            use `SchemaService.GetSchema
+            This field is only used by [CreateDataStore][] API, and
+            will be ignored if used in other APIs. This field will
+            be omitted from all API responses including
+            [CreateDataStore][] API. To retrieve a schema of a
+            `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__, use
+            `SchemaService.GetSchema
             <google.cloud.discoveryengine.v1beta.SchemaService.GetSchema>`__
             API instead.
 
-            The provided schema will be validated against
-            certain rules on schema. Learn more from `this
+            The provided schema will be validated against certain
+            rules on schema. Learn more from `this
             doc
             <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
         serving_config_data_store (google.cloud.discoveryengine_v1beta.types.DataStore.ServingConfigDataStore):
-            Optional. Stores serving config at DataStore
-            level.
+            Optional. Stores serving config at DataStore level.
     """
 
     class ContentConfig(proto.Enum):
@@ -162,11 +159,9 @@ class DataStore(proto.Message):
 
         Attributes:
             structured_data_size (int):
-                Data size for structured data in terms of
-                bytes.
+                Data size for structured data in terms of bytes.
             unstructured_data_size (int):
-                Data size for unstructured data in terms of
-                bytes.
+                Data size for unstructured data in terms of bytes.
             website_data_size (int):
                 Data size for websites in terms of bytes.
             structured_data_update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -206,13 +201,13 @@ class DataStore(proto.Message):
         )
 
     class ServingConfigDataStore(proto.Message):
-        r"""Stores information regarding the serving configurations at
-        DataStore level.
+        r"""Stores information regarding the serving configurations at DataStore
+        level.
 
         Attributes:
             disabled_for_serving (bool):
-                If set true, the DataStore will not be
-                available for serving search requests.
+                If set true, the DataStore will not be available for
+                serving search requests.
         """
 
         disabled_for_serving: bool = proto.Field(
@@ -301,15 +296,13 @@ class LanguageInfo(proto.Message):
             ``en_GB``, ``en-UK`` or ``en-gb`` will have
             normalized_language_code of ``en-GB``.
         language (str):
-            Output only. Language part of
-            normalized_language_code. E.g.: ``en-US`` ->
-            ``en``, ``zh-Hans-HK`` -> ``zh``, ``en`` ->
-            ``en``.
+            Output only. Language part of normalized_language_code.
+            E.g.: ``en-US`` -> ``en``, ``zh-Hans-HK`` -> ``zh``,
+            ``en`` -> ``en``.
         region (str):
-            Output only. Region part of
-            normalized_language_code, if present. E.g.:
-            ``en-US`` -> ``US``, ``zh-Hans-HK`` -> ``HK``,
-            ``en`` -> ``.
+            Output only. Region part of normalized_language_code, if
+            present. E.g.: ``en-US`` -> ``US``, ``zh-Hans-HK`` ->
+            ``HK``, ``en`` -> ``.
     """
 
     language_code: str = proto.Field(
@@ -335,18 +328,17 @@ class NaturalLanguageQueryUnderstandingConfig(proto.Message):
 
     Attributes:
         mode (google.cloud.discoveryengine_v1beta.types.NaturalLanguageQueryUnderstandingConfig.Mode):
-            Mode of Natural Language Query Understanding. If
-            this field is unset, the behavior defaults to
+            Mode of Natural Language Query Understanding. If this
+            field is unset, the behavior defaults to
             `NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED
             <google.cloud.discoveryengine.v1beta.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED>`__.
     """
 
     class Mode(proto.Enum):
         r"""Mode of Natural Language Query Understanding. When the
-        NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the
-        natural language understanding capabilities will be enabled for
-        a search request if the
-        NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition
+        NaturalLanguageQueryUnderstandingConfig.Mode is ENABLED, the natural
+        language understanding capabilities will be enabled for a search request
+        if the NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition
         in the SearchRequest is ENABLED.
 
         Values:
@@ -371,8 +363,7 @@ class NaturalLanguageQueryUnderstandingConfig(proto.Message):
 
 
 class WorkspaceConfig(proto.Message):
-    r"""Config to store data store type configuration for workspace
-    data
+    r"""Config to store data store type configuration for workspace data
 
     Attributes:
         type_ (google.cloud.discoveryengine_v1beta.types.WorkspaceConfig.Type):
@@ -380,20 +371,19 @@ class WorkspaceConfig(proto.Message):
         dasher_customer_id (str):
             Obfuscated Dasher customer ID.
         super_admin_service_account (str):
-            Optional. The super admin service account for
-            the workspace that will be used for access token
-            generation. For now we only use it for Native
-            Google Drive connector data ingestion.
+            Optional. The super admin service account for the
+            workspace that will be used for access token generation.
+            For now we only use it for Native Google Drive connector
+            data ingestion.
         super_admin_email_address (str):
-            Optional. The super admin email address for
-            the workspace that will be used for access token
-            generation. For now we only use it for Native
-            Google Drive connector data ingestion.
+            Optional. The super admin email address for the
+            workspace that will be used for access token generation.
+            For now we only use it for Native Google Drive connector
+            data ingestion.
     """
 
     class Type(proto.Enum):
-        r"""Specifies the type of Workspace App supported by this
-        DataStore
+        r"""Specifies the type of Workspace App supported by this DataStore
 
         Values:
             TYPE_UNSPECIFIED (0):

@@ -31,9 +31,9 @@ __protobuf__ = proto.module(
 
 
 class ServingConfig(proto.Message):
-    r"""Configures metadata that is used to generate serving time
-    results (e.g. search results or recommendation predictions). The
-    ServingConfig is passed in the search and predict request and
+    r"""Configures metadata that is used to generate serving time results
+    (e.g. search results or recommendation predictions).
+    The ServingConfig is passed in the search and predict request and
     generates results.
 
     This message has `oneof`_ fields (mutually exclusive fields).
@@ -49,40 +49,36 @@ class ServingConfig(proto.Message):
 
             This field is a member of `oneof`_ ``vertical_config``.
         generic_config (google.cloud.discoveryengine_v1.types.ServingConfig.GenericConfig):
-            The GenericConfig of the serving
-            configuration.
+            The GenericConfig of the serving configuration.
 
             This field is a member of `oneof`_ ``vertical_config``.
         name (str):
             Immutable. Fully qualified name
             ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/servingConfigs/{serving_config_id}``
         display_name (str):
-            Required. The human readable serving config
-            display name. Used in Discovery UI.
+            Required. The human readable serving config display
+            name. Used in Discovery UI.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters. Otherwise, an
-            INVALID_ARGUMENT error is returned.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
+            error is returned.
         solution_type (google.cloud.discoveryengine_v1.types.SolutionType):
-            Required. Immutable. Specifies the solution
-            type that a serving config can be associated
-            with.
+            Required. Immutable. Specifies the solution type that
+            a serving config can be associated with.
         model_id (str):
             The id of the model to use at serving time.
-            Currently only RecommendationModels are
-            supported. Can be changed but only to a
-            compatible model (e.g. others-you-may-like CTR
-            to others-you-may-like CVR).
+            Currently only RecommendationModels are supported.
+            Can be changed but only to a compatible model (e.g.
+            others-you-may-like CTR to others-you-may-like CVR).
 
             Required when `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
             `SOLUTION_TYPE_RECOMMENDATION
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
         diversity_level (str):
-            How much diversity to use in recommendation
-            model results e.g. ``medium-diversity`` or
-            ``high-diversity``. Currently supported values:
+            How much diversity to use in recommendation model
+            results e.g. ``medium-diversity`` or ``high-diversity``.
+            Currently supported values:
 
             * ``no-diversity``
             * ``low-diversity``
@@ -98,25 +94,22 @@ class ServingConfig(proto.Message):
 
             Can only be set if
             `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_RECOMMENDATION
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_RECOMMENDATION
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
         ranking_expression (str):
-            The ranking expression controls the customized
-            ranking on retrieval documents. To leverage
-            this, document embedding is required. The
-            ranking expression setting in ServingConfig
-            applies to all search requests served by the
-            serving config. However, if
-            ``SearchRequest.ranking_expression`` is
-            specified, it overrides the ServingConfig
-            ranking expression.
+            The ranking expression controls the customized ranking
+            on retrieval documents. To leverage this, document
+            embedding is required. The ranking expression setting in
+            ServingConfig applies to all search requests served by
+            the serving config. However, if
+            ``SearchRequest.ranking_expression`` is specified, it
+            overrides the ServingConfig ranking expression.
 
-            The ranking expression is a single function or
-            multiple functions that are joined by "+".
+            The ranking expression is a single function or multiple
+            functions that are joined by "+".
 
-            * ranking_expression = function, { " + ",
-            function };
+            * ranking_expression = function, { " + ", function };
 
             Supported functions:
 
@@ -125,24 +118,20 @@ class ServingConfig(proto.Message):
 
             Function variables:
 
-            * ``relevance_score``: pre-defined keywords,
-            used for measure relevance   between query and
-            document.
+            * ``relevance_score``: pre-defined keywords, used for
+            measure relevance   between query and document.
 
-            * ``embedding_field_path``: the document
-            embedding field   used with query embedding
-            vector.
+            * ``embedding_field_path``: the document embedding field
+            used with query embedding vector.
 
             * ``dotProduct``: embedding function between
-            embedding_field_path and query   embedding
-            vector.
+            embedding_field_path and query   embedding vector.
 
              Example ranking expression:
 
-               If document has an embedding field
-            doc_embedding, the ranking expression    could
-            be ``0.5 * relevance_score + 0.3 *
-            dotProduct(doc_embedding)``.
+               If document has an embedding field doc_embedding, the
+            ranking expression    could be ``0.5 * relevance_score +
+            0.3 * dotProduct(doc_embedding)``.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. ServingConfig created timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -150,78 +139,72 @@ class ServingConfig(proto.Message):
         filter_control_ids (MutableSequence[str]):
             Filter controls to use in serving path.
             All triggered filter controls will be applied.
-            Filter controls must be in the same data store
-            as the serving config. Maximum of 20 filter
-            controls.
+            Filter controls must be in the same data store as the
+            serving config. Maximum of 20 filter controls.
         boost_control_ids (MutableSequence[str]):
             Boost controls to use in serving path.
             All triggered boost controls will be applied.
-            Boost controls must be in the same data store as
-            the serving config. Maximum of 20 boost
-            controls.
+            Boost controls must be in the same data store as the
+            serving config. Maximum of 20 boost controls.
         redirect_control_ids (MutableSequence[str]):
-            IDs of the redirect controls. Only the first
-            triggered redirect action is applied, even if
-            multiple apply. Maximum number of specifications
-            is 100.
+            IDs of the redirect controls. Only the first triggered
+            redirect action is applied, even if multiple apply.
+            Maximum number of specifications is 100.
 
             Can only be set if
             `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_SEARCH
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_SEARCH
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
         synonyms_control_ids (MutableSequence[str]):
-            Condition synonyms specifications. If multiple
-            synonyms conditions match, all matching synonyms
-            controls in the list will execute. Maximum
+            Condition synonyms specifications. If multiple synonyms
+            conditions match, all matching synonyms controls in the
+            list will execute. Maximum number of specifications is
+            100.
+
+            Can only be set if
+            `SolutionType
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_SEARCH
+            <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
+        oneway_synonyms_control_ids (MutableSequence[str]):
+            Condition oneway synonyms specifications. If multiple
+            oneway synonyms conditions match, all matching oneway
+            synonyms controls in the list will execute. Maximum
             number of specifications is 100.
 
             Can only be set if
             `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_SEARCH
-            <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
-        oneway_synonyms_control_ids (MutableSequence[str]):
-            Condition oneway synonyms specifications. If
-            multiple oneway synonyms conditions match, all
-            matching oneway synonyms controls in the list
-            will execute. Maximum number of specifications
-            is 100.
-
-            Can only be set if
-            `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_SEARCH
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_SEARCH
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
         dissociate_control_ids (MutableSequence[str]):
-            Condition do not associate specifications. If
-            multiple do not associate conditions match, all
-            matching do not associate controls in the list
-            will execute.
+            Condition do not associate specifications. If multiple
+            do not associate conditions match, all matching do not
+            associate controls in the list will execute.
             Order does not matter.
             Maximum number of specifications is 100.
 
             Can only be set if
             `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_SEARCH
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_SEARCH
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
         replacement_control_ids (MutableSequence[str]):
             Condition replacement specifications.
             Applied according to the order in the list.
-            A previously replaced term can not be
-            re-replaced. Maximum number of specifications is
-            100.
+            A previously replaced term can not be re-replaced.
+            Maximum number of specifications is 100.
 
             Can only be set if
             `SolutionType
-            <google.cloud.discoveryengine.v1.SolutionType>`__
-            is `SOLUTION_TYPE_SEARCH
+            <google.cloud.discoveryengine.v1.SolutionType>`__ is
+            `SOLUTION_TYPE_SEARCH
             <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_SEARCH>`__.
         ignore_control_ids (MutableSequence[str]):
-            Condition ignore specifications. If multiple
-            ignore conditions match, all matching ignore
-            controls in the list will execute.
+            Condition ignore specifications. If multiple ignore
+            conditions match, all matching ignore controls in the
+            list will execute.
             Order does not matter.
             Maximum number of specifications is 100.
         promote_control_ids (MutableSequence[str]):
@@ -231,23 +214,22 @@ class ServingConfig(proto.Message):
     """
 
     class MediaConfig(proto.Message):
-        r"""Specifies the configurations needed for Media Discovery.
-        Currently we support:
+        r"""Specifies the configurations needed for Media Discovery. Currently we
+        support:
 
-        * ``demote_content_watched``: Threshold for watched content
-        demotion. Customers can specify if using watched content
-        demotion or use viewed detail page. Using the content watched
-        demotion, customers need to specify the watched minutes or
-        percentage exceeds the threshold, the content will be demoted in
-        the recommendation result.
+        * ``demote_content_watched``: Threshold for watched content demotion.
+        Customers can specify if using watched content demotion or use viewed
+        detail page. Using the content watched demotion, customers need to
+        specify the watched minutes or percentage exceeds the threshold, the
+        content will be demoted in the recommendation result.
 
-        * ``promote_fresh_content``: cutoff days for fresh content
-        promotion. Customers can specify if using content freshness
-        promotion. If the content was published within the cutoff days,
-        the content will be promoted in the recommendation result.
+        * ``promote_fresh_content``: cutoff days for fresh content promotion.
+        Customers can specify if using content freshness promotion. If the
+        content was published within the cutoff days, the content will be
+        promoted in the recommendation result.
         Can only be set if
-        `SolutionType <google.cloud.discoveryengine.v1.SolutionType>`__
-        is `SOLUTION_TYPE_RECOMMENDATION
+        `SolutionType <google.cloud.discoveryengine.v1.SolutionType>`__ is
+        `SOLUTION_TYPE_RECOMMENDATION
         <google.cloud.discoveryengine.v1.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         This message has `oneof`_ fields (mutually exclusive fields).
@@ -259,41 +241,38 @@ class ServingConfig(proto.Message):
 
         Attributes:
             content_watched_percentage_threshold (float):
-                Specifies the content watched percentage
-                threshold for demotion. Threshold value must be
-                between [0, 1.0] inclusive.
+                Specifies the content watched percentage threshold for
+                demotion. Threshold value must be between [0, 1.0]
+                inclusive.
 
                 This field is a member of `oneof`_ ``demote_content_watched``.
             content_watched_seconds_threshold (float):
-                Specifies the content watched minutes
-                threshold for demotion.
+                Specifies the content watched minutes threshold for
+                demotion.
 
                 This field is a member of `oneof`_ ``demote_content_watched``.
             demotion_event_type (str):
                 Specifies the event type used for demoting
-                recommendation result. Currently supported
-                values:
+                recommendation result. Currently supported values:
 
                 * ``view-item``: Item viewed.
-                * ``media-play``: Start/resume watching a video,
-                playing a song, etc.
+                * ``media-play``: Start/resume watching a video, playing
+                a song, etc.
 
-                * ``media-complete``: Finished or stopped midway
-                through a video, song, etc.
+                * ``media-complete``: Finished or stopped midway through
+                a video, song, etc.
 
-                If unset, watch history demotion will not be
-                applied. Content freshness demotion will still
-                be applied.
+                If unset, watch history demotion will not be applied.
+                Content freshness demotion will still be applied.
             demote_content_watched_past_days (int):
-                Optional. Specifies the number of days to
-                look back for demoting watched content. If set
-                to zero or unset, defaults to the maximum of 365
-                days.
+                Optional. Specifies the number of days to look back
+                for demoting watched content. If set to zero or unset,
+                defaults to the maximum of 365 days.
             content_freshness_cutoff_days (int):
                 Specifies the content freshness used for
-                recommendation result. Contents will be demoted
-                if contents were published for more than content
-                freshness cutoff days.
+                recommendation result. Contents will be demoted if
+                contents were published for more than content freshness
+                cutoff days.
         """
 
         content_watched_percentage_threshold: float = proto.Field(
@@ -320,17 +299,15 @@ class ServingConfig(proto.Message):
         )
 
     class GenericConfig(proto.Message):
-        r"""Specifies the configurations needed for Generic
-        Discovery.Currently we support:
+        r"""Specifies the configurations needed for Generic Discovery.Currently we
+        support:
 
-        * ``content_search_spec``: configuration for generic content
-        search.
+        * ``content_search_spec``: configuration for generic content search.
 
         Attributes:
             content_search_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec):
-                Specifies the expected behavior of content
-                search. Only valid for content-search enabled
-                data store.
+                Specifies the expected behavior of content search.
+                Only valid for content-search enabled data store.
         """
 
         content_search_spec: search_service.SearchRequest.ContentSearchSpec = (

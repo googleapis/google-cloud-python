@@ -29,8 +29,8 @@ __protobuf__ = proto.module(
 
 
 class SampleQuerySet(proto.Message):
-    r"""A SampleQuerySet is the parent resource of SampleQuery, and
-    contains the configurations shared by all SampleQuery under it.
+    r"""A SampleQuerySet is the parent resource of SampleQuery, and contains
+    the configurations shared by all SampleQuery under it.
 
     Attributes:
         name (str):
@@ -40,13 +40,13 @@ class SampleQuerySet(proto.Message):
             in the format of
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         display_name (str):
             Required. The sample query set display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
             `SampleQuerySet

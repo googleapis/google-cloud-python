@@ -33,20 +33,20 @@ class CustomTuningModel(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified resource name of
-            the model.
+            Required. The fully qualified resource name of the
+            model.
             Format:
 
             ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}``
-            model must be an alpha-numerical string with
-            limit of 40 characters.
+            model must be an alpha-numerical string with limit of 40
+            characters.
         display_name (str):
             The display name of the model.
         model_version (int):
             The version of the model.
         model_state (google.cloud.discoveryengine_v1alpha.types.CustomTuningModel.ModelState):
-            The state that the model is in (e.g.``TRAINING``
-            or ``TRAINING_FAILED``).
+            The state that the model is in (e.g.``TRAINING`` or
+            ``TRAINING_FAILED``).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp the Model was created at.
         training_start_time (google.protobuf.timestamp_pb2.Timestamp):

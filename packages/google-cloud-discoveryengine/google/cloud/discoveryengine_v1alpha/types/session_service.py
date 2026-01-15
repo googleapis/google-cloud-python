@@ -42,14 +42,12 @@ class ListFilesRequest(proto.Message):
             Format:
 
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}``
-            Name of the session resource to which the file
-            belong.
+            Name of the session resource to which the file belong.
         filter (str):
-            Optional. The filter syntax consists of an
-            expression language for constructing a predicate
-            from one or more fields of the files being
-            filtered. Filter expression is case-sensitive.
-            Currently supported field names are:
+            Optional. The filter syntax consists of an expression
+            language for constructing a predicate from one or more
+            fields of the files being filtered. Filter expression is
+            case-sensitive. Currently supported field names are:
 
             * upload_time
             * last_add_time
@@ -62,30 +60,28 @@ class ListFilesRequest(proto.Message):
             Some examples of filters would be:
 
             * "file_name = 'file_1'"
-            * "file_name = 'file_1' AND mime_type =
-            'text/plain'"
+            * "file_name = 'file_1' AND mime_type = 'text/plain'"
 
             * "last_use_time > '2025-06-14T12:00:00Z'"
 
-            For a full description of the filter format,
-            please see https://google.aip.dev/160.
+            For a full description of the filter format, please see
+            https://google.aip.dev/160.
         page_size (int):
-            Optional. The maximum number of files to return.
-            The service may return fewer than this value. If
-            unspecified, at most 100 files will be returned.
-            The maximum value is 1000; values above 1000
-            will be coerced to 1000. If user specifies a
-            value less than or equal to 0 - the request will
-            be rejected with an INVALID_ARGUMENT error.
+            Optional. The maximum number of files to return. The
+            service may return fewer than this value. If
+            unspecified, at most 100 files will be returned. The
+            maximum value is 1000; values above 1000 will be coerced
+            to 1000. If user specifies a value less than or equal to
+            0 - the request will be rejected with an
+            INVALID_ARGUMENT error.
         page_token (str):
             Optional. A page token received from a previous
             ``ListFiles`` call. Provide this to retrieve the
             subsequent page.
 
-            When paginating, all other parameters provided
-            to ``ListFiles`` must match the call that
-            provided the page token (except ``page_size``,
-            which may differ).
+            When paginating, all other parameters provided to
+            ``ListFiles`` must match the call that provided the page
+            token (except ``page_size``, which may differ).
     """
 
     parent: str = proto.Field(
@@ -121,8 +117,8 @@ class ListFilesResponse(proto.Message):
             Pass this value in the
             `ListFilesRequest.page_token
             <google.cloud.discoveryengine.v1main.ListFilesRequest.page_token>`__
-            field in the subsequent call to ``ListFiles``
-            method to retrieve the next page of results.
+            field in the subsequent call to ``ListFiles`` method to
+            retrieve the next page of results.
     """
 
     @property

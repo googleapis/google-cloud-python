@@ -43,11 +43,11 @@ class ListCustomModelsRequest(proto.Message):
 
     Attributes:
         data_store (str):
-            Required. The resource name of the parent Data
-            Store, such as
+            Required. The resource name of the parent Data Store,
+            such as
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store``.
-            This field is used to identify the data store
-            where to fetch the models from.
+            This field is used to identify the data store where to
+            fetch the models from.
     """
 
     data_store: str = proto.Field(
@@ -91,19 +91,18 @@ class TrainCustomModelRequest(proto.Message):
 
             This field is a member of `oneof`_ ``training_input``.
         data_store (str):
-            Required. The resource name of the Data Store,
-            such as
+            Required. The resource name of the Data Store, such as
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store``.
-            This field is used to identify the data store
-            where to train the models.
+            This field is used to identify the data store where to
+            train the models.
         model_type (str):
             Model to be trained. Supported values are:
 
-            * **search-tuning**: Fine tuning the search
-            system based on data provided.
+            * **search-tuning**: Fine tuning the search system based
+            on data provided.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
-            The desired location of errors incurred
-            during the data ingestion and training.
+            The desired location of errors incurred during the
+            data ingestion and training.
         model_id (str):
             If not provided, a UUID will be generated.
     """
@@ -113,45 +112,42 @@ class TrainCustomModelRequest(proto.Message):
 
         Attributes:
             corpus_data_path (str):
-                The Cloud Storage corpus data which could be
-                associated in train data. The data path format
-                is ``gs://<bucket_to_data>/<jsonl_file_name>``.
-                A newline delimited jsonl/ndjson file.
+                The Cloud Storage corpus data which could be associated
+                in train data. The data path format is
+                ``gs://<bucket_to_data>/<jsonl_file_name>``. A newline
+                delimited jsonl/ndjson file.
 
-                For search-tuning model, each line should have
-                the _id, title and text. Example:
+                For search-tuning model, each line should have the _id,
+                title and text. Example:
 
                 ``{"_id": "doc1", title: "relevant doc", "text":
                 "relevant text"}``
             query_data_path (str):
-                The gcs query data which could be associated in
-                train data. The data path format is
-                ``gs://<bucket_to_data>/<jsonl_file_name>``. A
-                newline delimited jsonl/ndjson file.
+                The gcs query data which could be associated in train
+                data. The data path format is
+                ``gs://<bucket_to_data>/<jsonl_file_name>``. A newline
+                delimited jsonl/ndjson file.
 
-                For search-tuning model, each line should have
-                the _id and text. Example: {"_id": "query1",
-                "text": "example query"}
+                For search-tuning model, each line should have the _id
+                and text. Example: {"_id": "query1",  "text": "example
+                query"}
             train_data_path (str):
-                Cloud Storage training data path whose format
-                should be
-                ``gs://<bucket_to_data>/<tsv_file_name>``. The
-                file should be in tsv format. Each line should
-                have the doc_id and query_id and score (number).
+                Cloud Storage training data path whose format should be
+                ``gs://<bucket_to_data>/<tsv_file_name>``. The file
+                should be in tsv format. Each line should have the
+                doc_id and query_id and score (number).
 
-                For search-tuning model, it should have the
-                query-id corpus-id score as tsv file header. The
-                score should be a number in ``[0, inf+)``. The
-                larger the number is, the more relevant the pair
-                is. Example:
+                For search-tuning model, it should have the query-id
+                corpus-id score as tsv file header. The score should be
+                a number in ``[0, inf+)``. The larger the number is, the
+                more relevant the pair is. Example:
 
                 * ``query-id\tcorpus-id\tscore``
                 * ``query1\tdoc1\t1``
             test_data_path (str):
-                Cloud Storage test data. Same format as
-                train_data_path. If not provided, a random 80/20
-                train/test split will be performed on
-                train_data_path.
+                Cloud Storage test data. Same format as train_data_path.
+                If not provided, a random 80/20 train/test split will be
+                performed on train_data_path.
         """
 
         corpus_data_path: str = proto.Field(
@@ -199,39 +195,35 @@ class TrainCustomModelRequest(proto.Message):
 class TrainCustomModelResponse(proto.Message):
     r"""Response of the
     `TrainCustomModelRequest
-    <google.cloud.discoveryengine.v1beta.TrainCustomModelRequest>`__.
-    This message is returned by the
-    google.longrunning.Operations.response field.
+    <google.cloud.discoveryengine.v1beta.TrainCustomModelRequest>`__. This
+    message is returned by the google.longrunning.Operations.response field.
 
     Attributes:
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            A sample of errors encountered while
-            processing the data.
+            A sample of errors encountered while processing the
+            data.
         error_config (google.cloud.discoveryengine_v1beta.types.ImportErrorConfig):
-            Echoes the destination for the complete
-            errors in the request if set.
+            Echoes the destination for the complete errors in the
+            request if set.
         model_status (str):
             The trained model status. Possible values are:
 
-            * **bad-data**: The training data quality is
-            bad.
+            * **bad-data**: The training data quality is bad.
 
-            * **no-improvement**: Tuning didn't improve
-            performance. Won't deploy.  * **in-progress**:
-            Model training job creation is in progress.
+            * **no-improvement**: Tuning didn't improve performance.
+            Won't deploy.  * **in-progress**: Model training job
+            creation is in progress.
 
             * **training**: Model is actively training.
-             * **evaluating**: The model is evaluating
-            trained metrics.
+             * **evaluating**: The model is evaluating trained
+            metrics.
 
-            * **indexing**: The model trained metrics are
-            indexing.  * **ready**: The model is ready for
-            serving.
+            * **indexing**: The model trained metrics are indexing.
+            * **ready**: The model is ready for serving.
         metrics (MutableMapping[str, float]):
             The metrics of the trained model.
         model_name (str):
-            Fully qualified name of the
-            CustomTuningModel.
+            Fully qualified name of the CustomTuningModel.
     """
 
     error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
@@ -260,16 +252,15 @@ class TrainCustomModelResponse(proto.Message):
 
 
 class TrainCustomModelMetadata(proto.Message):
-    r"""Metadata related to the progress of the TrainCustomModel
-    operation. This is returned by the
-    google.longrunning.Operation.metadata field.
+    r"""Metadata related to the progress of the TrainCustomModel operation.
+    This is returned by the google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(

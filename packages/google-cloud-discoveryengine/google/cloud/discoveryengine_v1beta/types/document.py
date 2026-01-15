@@ -43,67 +43,66 @@ class Document(proto.Message):
 
     Attributes:
         struct_data (google.protobuf.struct_pb2.Struct):
-            The structured JSON data for the document. It
-            should conform to the registered `Schema
-            <google.cloud.discoveryengine.v1beta.Schema>`__
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            The structured JSON data for the document. It should
+            conform to the registered `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__ or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         json_data (str):
-            The JSON string representation of the document.
-            It should conform to the registered `Schema
-            <google.cloud.discoveryengine.v1beta.Schema>`__
-            or an ``INVALID_ARGUMENT`` error is thrown.
+            The JSON string representation of the document. It
+            should conform to the registered `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__ or an
+            ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         name (str):
-            Immutable. The full resource name of the
-            document. Format:
+            Immutable. The full resource name of the document.
+            Format:
 
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}``.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 1024 characters.
         id (str):
             Immutable. The identifier of the document.
 
             Id should conform to `RFC-1034
-            <https://tools.ietf.org/html/rfc1034>`__
-            standard with a length limit of 63 characters.
+            <https://tools.ietf.org/html/rfc1034>`__ standard with a
+            length limit of 63 characters.
         schema_id (str):
-            The identifier of the schema located in the
-            same data store.
+            The identifier of the schema located in the same data
+            store.
         content (google.cloud.discoveryengine_v1beta.types.Document.Content):
-            The unstructured data linked to this document.
-            Content must be set if this document is under a
+            The unstructured data linked to this document. Content
+            must be set if this document is under a
             ``CONTENT_REQUIRED`` data store.
         parent_document_id (str):
             The identifier of the parent document. Currently
             supports at most two level document hierarchy.
 
             Id should conform to `RFC-1034
-            <https://tools.ietf.org/html/rfc1034>`__
-            standard with a length limit of 63 characters.
+            <https://tools.ietf.org/html/rfc1034>`__ standard with a
+            length limit of 63 characters.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY.
-            It contains derived data that are not in the
-            original input document.
+            It contains derived data that are not in the original
+            input document.
         index_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last time the document was
-            indexed. If this field is set, the document
-            could be returned in search results.
+            Output only. The last time the document was indexed. If
+            this field is set, the document could be returned in
+            search results.
 
             This field is OUTPUT_ONLY. If this field is not
-            populated, it means the document has never been
-            indexed.
+            populated, it means the document has never been indexed.
         index_status (google.cloud.discoveryengine_v1beta.types.Document.IndexStatus):
             Output only. The index status of the document.
 
-            * If document is indexed successfully, the
-            index_time field is populated.
+            * If document is indexed successfully, the index_time
+            field is populated.
 
-            * Otherwise, if document is not indexed due to
-            errors, the error_samples   field is populated.
+            * Otherwise, if document is not indexed due to errors,
+            the error_samples   field is populated.
 
             * Otherwise, index_status is unset.
     """
@@ -120,24 +119,22 @@ class Document(proto.Message):
 
         Attributes:
             raw_bytes (bytes):
-                The content represented as a stream of bytes.
-                The maximum length is 1,000,000 bytes (1 MB /
-                ~0.95 MiB).
+                The content represented as a stream of bytes. The
+                maximum length is 1,000,000 bytes (1 MB / ~0.95 MiB).
 
-                Note: As with all ``bytes`` fields, this field
-                is represented as pure binary in Protocol
-                Buffers and base64-encoded string in JSON. For
-                example, ``abc123!?$*&()'-=@~`` should be
-                represented as ``YWJjMTIzIT8kKiYoKSctPUB+`` in
-                JSON. See
+                Note: As with all ``bytes`` fields, this field is
+                represented as pure binary in Protocol Buffers and
+                base64-encoded string in JSON. For example,
+                ``abc123!?$*&()'-=@~`` should be represented as
+                ``YWJjMTIzIT8kKiYoKSctPUB+`` in JSON. See
                 https://developers.google.com/protocol-buffers/docs/proto3#json.
 
                 This field is a member of `oneof`_ ``content``.
             uri (str):
-                The URI of the content. Only Cloud Storage URIs
-                (e.g. ``gs://bucket-name/path/to/file``) are
-                supported. The maximum file size is 2.5 MB for
-                text-based formats, 200 MB for other formats.
+                The URI of the content. Only Cloud Storage URIs (e.g.
+                ``gs://bucket-name/path/to/file``) are supported. The
+                maximum file size is 2.5 MB for text-based formats, 200
+                MB for other formats.
 
                 This field is a member of `oneof`_ ``content``.
             mime_type (str):
@@ -180,12 +177,12 @@ class Document(proto.Message):
         Attributes:
             index_time (google.protobuf.timestamp_pb2.Timestamp):
                 The time when the document was indexed.
-                If this field is populated, it means the
-                document has been indexed.
+                If this field is populated, it means the document has
+                been indexed.
             error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-                A sample of errors encountered while indexing
-                the document. If this field is populated, the
-                document is not indexed due to errors.
+                A sample of errors encountered while indexing the
+                document. If this field is populated, the document is
+                not indexed due to errors.
         """
 
         index_time: timestamp_pb2.Timestamp = proto.Field(

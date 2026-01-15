@@ -40,8 +40,8 @@ class GetAclConfigRequest(proto.Message):
             <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
             such as ``projects/*/locations/*/aclConfig``.
 
-            If the caller does not have permission to access
-            the `AclConfig
+            If the caller does not have permission to access the
+            `AclConfig
             <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
             regardless of whether or not it exists, a
             PERMISSION_DENIED error is returned.

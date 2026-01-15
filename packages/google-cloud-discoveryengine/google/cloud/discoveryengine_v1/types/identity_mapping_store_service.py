@@ -58,30 +58,27 @@ class CreateIdentityMappingStoreRequest(proto.Message):
 
     Attributes:
         cmek_config_name (str):
-            Resource name of the CmekConfig to use for
-            protecting this Identity Mapping Store.
+            Resource name of the CmekConfig to use for protecting
+            this Identity Mapping Store.
 
             This field is a member of `oneof`_ ``cmek_options``.
         disable_cmek (bool):
-            Identity Mapping Store without CMEK
-            protections. If a default CmekConfig is set for
-            the project, setting this field will override
-            the default CmekConfig as well.
+            Identity Mapping Store without CMEK protections. If a
+            default CmekConfig is set for the project, setting this
+            field will override the default CmekConfig as well.
 
             This field is a member of `oneof`_ ``cmek_options``.
         parent (str):
-            Required. The parent collection resource name,
-            such as
+            Required. The parent collection resource name, such as
             ``projects/{project}/locations/{location}``.
         identity_mapping_store_id (str):
-            Required. The ID of the Identity Mapping Store
-            to create.
-            The ID must contain only letters (a-z, A-Z),
-            numbers (0-9), underscores (_), and hyphens (-).
-            The maximum length is 63 characters.
-        identity_mapping_store (google.cloud.discoveryengine_v1.types.IdentityMappingStore):
-            Required. The Identity Mapping Store to
+            Required. The ID of the Identity Mapping Store to
             create.
+            The ID must contain only letters (a-z, A-Z), numbers
+            (0-9), underscores (_), and hyphens (-). The maximum
+            length is 63 characters.
+        identity_mapping_store (google.cloud.discoveryengine_v1.types.IdentityMappingStore):
+            Required. The Identity Mapping Store to create.
     """
 
     cmek_config_name: str = proto.Field(
@@ -118,8 +115,8 @@ class GetIdentityMappingStoreRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Identity Mapping Store
-            to get. Format:
+            Required. The name of the Identity Mapping Store to get.
+            Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
     """
@@ -137,8 +134,8 @@ class DeleteIdentityMappingStoreRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the Identity Mapping Store
-            to delete. Format:
+            Required. The name of the Identity Mapping Store to
+            delete. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
     """
@@ -159,13 +156,13 @@ class ImportIdentityMappingsRequest(proto.Message):
 
     Attributes:
         inline_source (google.cloud.discoveryengine_v1.types.ImportIdentityMappingsRequest.InlineSource):
-            The inline source to import identity mapping
-            entries from.
+            The inline source to import identity mapping entries
+            from.
 
             This field is a member of `oneof`_ ``source``.
         identity_mapping_store (str):
-            Required. The name of the Identity Mapping Store
-            to import Identity Mapping Entries to. Format:
+            Required. The name of the Identity Mapping Store to
+            import Identity Mapping Entries to. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
     """
@@ -175,8 +172,8 @@ class ImportIdentityMappingsRequest(proto.Message):
 
         Attributes:
             identity_mapping_entries (MutableSequence[google.cloud.discoveryengine_v1.types.IdentityMappingEntry]):
-                A maximum of 10000 entries can be imported at
-                one time
+                A maximum of 10000 entries can be imported at one
+                time
         """
 
         identity_mapping_entries: MutableSequence[
@@ -206,8 +203,8 @@ class ImportIdentityMappingsResponse(proto.Message):
 
     Attributes:
         error_samples (MutableSequence[google.rpc.status_pb2.Status]):
-            A sample of errors encountered while
-            processing the request.
+            A sample of errors encountered while processing the
+            request.
     """
 
     error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
@@ -227,26 +224,26 @@ class PurgeIdentityMappingsRequest(proto.Message):
 
     Attributes:
         inline_source (google.cloud.discoveryengine_v1.types.PurgeIdentityMappingsRequest.InlineSource):
-            The inline source to purge identity mapping
-            entries from.
+            The inline source to purge identity mapping entries
+            from.
 
             This field is a member of `oneof`_ ``source``.
         identity_mapping_store (str):
-            Required. The name of the Identity Mapping Store
-            to purge Identity Mapping Entries from. Format:
+            Required. The name of the Identity Mapping Store to
+            purge Identity Mapping Entries from. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
         filter (str):
             Filter matching identity mappings to purge.
             The eligible field for filtering is:
 
-            * ``update_time``: in ISO 8601 "zulu" format. *
-            ``external_id``
+            * ``update_time``: in ISO 8601 "zulu" format.
+            * ``external_id``
 
             Examples:
 
-            * Deleting all identity mappings updated in a
-            time range:
+            * Deleting all identity mappings updated in a time
+            range:
 
               ``update_time > "2012-04-23T18:25:43.511Z" AND
             update_time <   "2012-04-23T18:30:43.511Z"``
@@ -256,22 +253,21 @@ class PurgeIdentityMappingsRequest(proto.Message):
 
             ``external_id = "id1"``
 
-            * Deleting all identity mappings inside an
-            identity mapping store:
+            * Deleting all identity mappings inside an identity
+            mapping store:
 
               ``*``
 
-            The filtering fields are assumed to have an
-            implicit AND. Should not be used with source. An
-            error will be thrown, if both are provided.
+            The filtering fields are assumed to have an implicit
+            AND. Should not be used with source. An error will be
+            thrown, if both are provided.
         force (bool):
-            Actually performs the purge. If ``force`` is set
-            to false, return the expected purge count
-            without deleting any identity mappings. This
-            field is only supported for purge with filter.
-            For input source this field is ignored and data
-            will be purged regardless of the value of this
-            field.
+            Actually performs the purge. If ``force`` is set to
+            false, return the expected purge count without deleting
+            any identity mappings. This field is only supported for
+            purge with filter. For input source this field is
+            ignored and data will be purged regardless of the value
+            of this field.
 
             This field is a member of `oneof`_ ``_force``.
     """
@@ -281,8 +277,7 @@ class PurgeIdentityMappingsRequest(proto.Message):
 
         Attributes:
             identity_mapping_entries (MutableSequence[google.cloud.discoveryengine_v1.types.IdentityMappingEntry]):
-                A maximum of 10000 entries can be purged at
-                one time
+                A maximum of 10000 entries can be purged at one time
         """
 
         identity_mapping_entries: MutableSequence[
@@ -321,23 +316,22 @@ class ListIdentityMappingsRequest(proto.Message):
 
     Attributes:
         identity_mapping_store (str):
-            Required. The name of the Identity Mapping Store
-            to list Identity Mapping Entries in. Format:
+            Required. The name of the Identity Mapping Store to list
+            Identity Mapping Entries in. Format:
 
             ``projects/{project}/locations/{location}/identityMappingStores/{identityMappingStore}``
         page_size (int):
-            Maximum number of IdentityMappings to return.
-            If unspecified, defaults to 2000. The maximum
-            allowed value is 10000. Values above 10000 will
-            be coerced to 10000.
+            Maximum number of IdentityMappings to return. If
+            unspecified, defaults to 2000. The maximum allowed value
+            is 10000. Values above 10000 will be coerced to 10000.
         page_token (str):
             A page token, received from a previous
-            ``ListIdentityMappings`` call. Provide this to
-            retrieve the subsequent page.
+            ``ListIdentityMappings`` call. Provide this to retrieve
+            the subsequent page.
 
-            When paginating, all other parameters provided
-            to ``ListIdentityMappings`` must match the call
-            that provided the page token.
+            When paginating, all other parameters provided to
+            ``ListIdentityMappings`` must match the call that
+            provided the page token.
     """
 
     identity_mapping_store: str = proto.Field(
@@ -363,9 +357,9 @@ class ListIdentityMappingsResponse(proto.Message):
         identity_mapping_entries (MutableSequence[google.cloud.discoveryengine_v1.types.IdentityMappingEntry]):
             The Identity Mapping Entries.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to
-            retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            A token that can be sent as ``page_token`` to retrieve
+            the next page. If this field is omitted, there are no
+            subsequent pages.
     """
 
     @property
@@ -392,23 +386,22 @@ class ListIdentityMappingStoresRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent of the Identity Mapping
-            Stores to list. Format:
+            Required. The parent of the Identity Mapping Stores to
+            list. Format:
 
             ``projects/{project}/locations/{location}``.
         page_size (int):
-            Maximum number of IdentityMappingStores to
-            return. If unspecified, defaults to 100. The
-            maximum allowed value is 1000. Values above 1000
-            will be coerced to 1000.
+            Maximum number of IdentityMappingStores to return. If
+            unspecified, defaults to 100. The maximum allowed value
+            is 1000. Values above 1000 will be coerced to 1000.
         page_token (str):
             A page token, received from a previous
-            ``ListIdentityMappingStores`` call. Provide this
-            to retrieve the subsequent page.
+            ``ListIdentityMappingStores`` call. Provide this to
+            retrieve the subsequent page.
 
-            When paginating, all other parameters provided
-            to ``ListIdentityMappingStores`` must match the
-            call that provided the page token.
+            When paginating, all other parameters provided to
+            ``ListIdentityMappingStores`` must match the call that
+            provided the page token.
     """
 
     parent: str = proto.Field(
@@ -434,9 +427,9 @@ class ListIdentityMappingStoresResponse(proto.Message):
         identity_mapping_stores (MutableSequence[google.cloud.discoveryengine_v1.types.IdentityMappingStore]):
             The Identity Mapping Stores.
         next_page_token (str):
-            A token that can be sent as ``page_token`` to
-            retrieve the next page. If this field is
-            omitted, there are no subsequent pages.
+            A token that can be sent as ``page_token`` to retrieve
+            the next page. If this field is omitted, there are no
+            subsequent pages.
     """
 
     @property
@@ -466,14 +459,14 @@ class IdentityMappingEntryOperationMetadata(proto.Message):
 
     Attributes:
         success_count (int):
-            The number of IdentityMappingEntries that
-            were successfully processed.
+            The number of IdentityMappingEntries that were
+            successfully processed.
         failure_count (int):
-            The number of IdentityMappingEntries that
-            failed to be processed.
+            The number of IdentityMappingEntries that failed to
+            be processed.
         total_count (int):
-            The total number of IdentityMappingEntries
-            that were processed.
+            The total number of IdentityMappingEntries that were
+            processed.
     """
 
     success_count: int = proto.Field(
@@ -501,8 +494,8 @@ class DeleteIdentityMappingStoreMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(

@@ -32,8 +32,7 @@ __protobuf__ = proto.module(
 class RankingRecord(proto.Message):
     r"""Record message for
     `RankService.Rank
-    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__
-    method.
+    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__ method.
 
     Attributes:
         id (str):
@@ -45,8 +44,8 @@ class RankingRecord(proto.Message):
             <google.cloud.discoveryengine.v1alpha.RankingRecord.title>`__
             or `content
             <google.cloud.discoveryengine.v1alpha.RankingRecord.content>`__
-            should be set otherwise an INVALID_ARGUMENT
-            error is thrown.
+            should be set otherwise an INVALID_ARGUMENT error is
+            thrown.
         content (str):
             The content of the record. Empty by default.
             At least one of
@@ -54,11 +53,11 @@ class RankingRecord(proto.Message):
             <google.cloud.discoveryengine.v1alpha.RankingRecord.title>`__
             or `content
             <google.cloud.discoveryengine.v1alpha.RankingRecord.content>`__
-            should be set otherwise an INVALID_ARGUMENT
-            error is thrown.
+            should be set otherwise an INVALID_ARGUMENT error is
+            thrown.
         score (float):
-            The score of this record based on the given
-            query and selected model.
+            The score of this record based on the given query and
+            selected model.
     """
 
     id: str = proto.Field(
@@ -82,55 +81,52 @@ class RankingRecord(proto.Message):
 class RankRequest(proto.Message):
     r"""Request message for
     `RankService.Rank
-    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__
-    method.
+    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__ method.
 
     Attributes:
         ranking_config (str):
-            Required. The resource name of the rank service
-            config, such as
+            Required. The resource name of the rank service config,
+            such as
             ``projects/{project_num}/locations/{location_id}/rankingConfigs/default_ranking_config``.
         model (str):
-            The identifier of the model to use. It is one
-            of:
-            * ``semantic-ranker-512@latest``: Semantic
-            ranking model with maxiumn input token size 512.
+            The identifier of the model to use. It is one of:
 
-            It is set to ``semantic-ranker-512@latest`` by
-            default if unspecified.
+            * ``semantic-ranker-512@latest``: Semantic ranking model
+            with maxiumn input token size 512.
+
+            It is set to ``semantic-ranker-512@latest`` by default
+            if unspecified.
         top_n (int):
-            The number of results to return. If this is
-            unset or no bigger than zero, returns all
-            results.
+            The number of results to return. If this is unset or
+            no bigger than zero, returns all results.
         query (str):
             The query to use.
         records (MutableSequence[google.cloud.discoveryengine_v1alpha.types.RankingRecord]):
-            Required. A list of records to rank. At most
-            200 records to rank.
+            Required. A list of records to rank. At most 200
+            records to rank.
         ignore_record_details_in_response (bool):
-            If true, the response will contain only
-            record ID and score. By default, it is false,
-            the response will contain record details.
+            If true, the response will contain only record ID and
+            score. By default, it is false, the response will
+            contain record details.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet
-            the following requirements:
-            * Each resource can have multiple labels, up to
-            a maximum of 64.
+            The user labels applied to a resource must meet the
+            following requirements:
+            * Each resource can have multiple labels, up to a
+            maximum of 64.
 
             * Each label must be a key-value pair.
-            * Keys have a minimum length of 1 character and
-            a maximum length of 63   characters and cannot
-            be empty. Values can be empty and have a maximum
-            length of 63 characters.
+            * Keys have a minimum length of 1 character and a
+            maximum length of 63   characters and cannot be empty.
+            Values can be empty and have a maximum   length of 63
+            characters.
 
-            * Keys and values can contain only lowercase
-            letters, numeric characters,   underscores, and
-            dashes. All characters must use UTF-8 encoding,
-            and   international characters are allowed.
+            * Keys and values can contain only lowercase letters,
+            numeric characters,   underscores, and dashes. All
+            characters must use UTF-8 encoding, and   international
+            characters are allowed.
 
-            * The key portion of a label must be unique.
-            However, you can use the same   key with
-            multiple resources.
+            * The key portion of a label must be unique. However,
+            you can use the same   key with multiple resources.
 
             * Keys must start with a lowercase letter or
             international character.
@@ -176,8 +172,7 @@ class RankRequest(proto.Message):
 class RankResponse(proto.Message):
     r"""Response message for
     `RankService.Rank
-    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__
-    method.
+    <google.cloud.discoveryengine.v1alpha.RankService.Rank>`__ method.
 
     Attributes:
         records (MutableSequence[google.cloud.discoveryengine_v1alpha.types.RankingRecord]):

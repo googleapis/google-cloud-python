@@ -34,8 +34,7 @@ class GroundingConfig(proto.Message):
 
     Attributes:
         name (str):
-            Required. Name of the GroundingConfig, of the
-            form
+            Required. Name of the GroundingConfig, of the form
             ``projects/{project}/locations/{location}/groundingConfigs/{grounding_config}``.
     """
 
@@ -54,9 +53,9 @@ class GroundingFact(proto.Message):
             characters long.
         attributes (MutableMapping[str, str]):
             Attributes associated with the fact.
-            Common attributes include ``source`` (indicating
-            where the fact was sourced from), ``author``
-            (indicating the author of the fact), and so on.
+            Common attributes include ``source`` (indicating where
+            the fact was sourced from), ``author`` (indicating the
+            author of the fact), and so on.
     """
 
     fact_text: str = proto.Field(
@@ -75,17 +74,16 @@ class FactChunk(proto.Message):
 
     Attributes:
         chunk_text (str):
-            Text content of the fact chunk. Can be at
-            most 10K characters long.
+            Text content of the fact chunk. Can be at most 10K
+            characters long.
         source (str):
-            Source from which this fact chunk was
-            retrieved. If it was retrieved from the
-            GroundingFacts provided in the request then this
-            field will contain the index of the specific
-            fact from which this chunk was retrieved.
+            Source from which this fact chunk was retrieved. If
+            it was retrieved from the GroundingFacts provided in the
+            request then this field will contain the index of the
+            specific fact from which this chunk was retrieved.
         index (int):
-            The index of this chunk. Currently, only used
-            for the streaming mode.
+            The index of this chunk. Currently, only used for the
+            streaming mode.
         source_metadata (MutableMapping[str, str]):
             More fine-grained information for the source
             reference.

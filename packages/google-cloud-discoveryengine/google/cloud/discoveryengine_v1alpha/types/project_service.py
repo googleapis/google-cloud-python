@@ -40,8 +40,8 @@ class GetProjectRequest(proto.Message):
         name (str):
             Required. Full resource name of a
             `Project
-            <google.cloud.discoveryengine.v1alpha.Project>`__,
-            such as ``projects/{project_id_or_number}``.
+            <google.cloud.discoveryengine.v1alpha.Project>`__, such
+            as ``projects/{project_id_or_number}``.
     """
 
     name: str = proto.Field(
@@ -60,22 +60,20 @@ class ProvisionProjectRequest(proto.Message):
         name (str):
             Required. Full resource name of a
             `Project
-            <google.cloud.discoveryengine.v1alpha.Project>`__,
-            such as ``projects/{project_id_or_number}``.
+            <google.cloud.discoveryengine.v1alpha.Project>`__, such
+            as ``projects/{project_id_or_number}``.
         accept_data_use_terms (bool):
-            Required. Set to ``true`` to specify that caller
-            has read and would like to give consent to the
-            `Terms for data use
+            Required. Set to ``true`` to specify that caller has
+            read and would like to give consent to the `Terms for
+            data use
             <https://cloud.google.com/retail/data-use-terms>`__.
         data_use_terms_version (str):
             Required. The version of the `Terms for data
-            use
-            <https://cloud.google.com/retail/data-use-terms>`__
-            that caller has read and would like to give
-            consent to.
+            use <https://cloud.google.com/retail/data-use-terms>`__
+            that caller has read and would like to give consent to.
 
-            Acceptable version is ``2022-11-23``, and this
-            may change over time.
+            Acceptable version is ``2022-11-23``, and this may
+            change over time.
     """
 
     name: str = proto.Field(
@@ -101,28 +99,27 @@ class ReportConsentChangeRequest(proto.Message):
 
     Attributes:
         consent_change_action (google.cloud.discoveryengine_v1alpha.types.ReportConsentChangeRequest.ConsentChangeAction):
-            Required. Whether customer decides to accept
-            or decline service term.
+            Required. Whether customer decides to accept or
+            decline service term.
             At this moment, only accept action is supported.
         project (str):
             Required. Full resource name of a
             `Project
-            <google.cloud.discoveryengine.v1alpha.Project>`__,
-            such as ``projects/{project_id_or_number}``.
+            <google.cloud.discoveryengine.v1alpha.Project>`__, such
+            as ``projects/{project_id_or_number}``.
         service_term_id (str):
-            Required. The unique identifier of the terms of
-            service to update. Available term ids:
+            Required. The unique identifier of the terms of service
+            to update. Available term ids:
 
             * ``GA_DATA_USE_TERMS``: `Terms for data
-            use
-            <https://cloud.google.com/retail/data-use-terms>`__.
+            use <https://cloud.google.com/retail/data-use-terms>`__.
             When using this service term id, the acceptable
             `service_term_version
             <google.cloud.discoveryengine.v1alpha.ReportConsentChangeRequest.service_term_version>`__
             to provide is ``2022-11-23``.
         service_term_version (str):
-            Required. The version string of the terms of
-            service to update.
+            Required. The version string of the terms of service
+            to update.
     """
 
     class ConsentChangeAction(proto.Enum):

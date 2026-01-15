@@ -45,10 +45,10 @@ class RecommendRequest(proto.Message):
             or
             ``projects/*/locations/global/collections/*/dataStores/*/servingConfigs/*``
 
-            One default serving config is created along with
-            your recommendation engine creation. The engine
-            ID is used as the ID of the default serving
-            config. For example, for Engine
+            One default serving config is created along with your
+            recommendation engine creation. The engine ID is used as
+            the ID of the default serving config. For example, for
+            Engine
             ``projects/*/locations/global/collections/*/engines/my-engine``,
             you can use
             ``projects/*/locations/global/collections/*/engines/my-engine/servingConfigs/my-engine``
@@ -57,12 +57,11 @@ class RecommendRequest(proto.Message):
             <google.cloud.discoveryengine.v1alpha.RecommendationService.Recommend>`__
             requests.
         user_event (google.cloud.discoveryengine_v1alpha.types.UserEvent):
-            Required. Context about the user, what they are
-            looking at and what action they took to trigger
-            the Recommend request. Note that this user event
-            detail won't be ingested to userEvent logs.
-            Thus, a separate userEvent write request is
-            required for event logging.
+            Required. Context about the user, what they are looking
+            at and what action they took to trigger the Recommend
+            request. Note that this user event detail won't be
+            ingested to userEvent logs. Thus, a separate userEvent
+            write request is required for event logging.
 
             Don't set
             `UserEvent.user_pseudo_id
@@ -70,11 +69,10 @@ class RecommendRequest(proto.Message):
             or
             `UserEvent.user_info.user_id
             <google.cloud.discoveryengine.v1alpha.UserInfo.user_id>`__
-            to the same fixed ID for different users. If you
-            are trying to receive non-personalized
-            recommendations (not recommended; this can
-            negatively impact model performance), instead
-            set
+            to the same fixed ID for different users. If you are
+            trying to receive non-personalized recommendations (not
+            recommended; this can negatively impact model
+            performance), instead set
             `UserEvent.user_pseudo_id
             <google.cloud.discoveryengine.v1alpha.UserEvent.user_pseudo_id>`__
             to a random unique ID and leave
@@ -83,82 +81,77 @@ class RecommendRequest(proto.Message):
             unset.
         page_size (int):
             Maximum number of results to return. Set this
-            property to the number of recommendation results
-            needed. If zero, the service chooses a
-            reasonable default. The maximum allowed value is
-            100. Values above 100 are set to 100.
+            property to the number of recommendation results needed.
+            If zero, the service chooses a reasonable default. The
+            maximum allowed value is 100. Values above 100 are set
+            to 100.
         filter (str):
-            Filter for restricting recommendation results
-            with a length limit of 5,000 characters.
-            Currently, only filter expressions on the
-            ``filter_tags`` attribute is supported.
+            Filter for restricting recommendation results with a
+            length limit of 5,000 characters. Currently, only filter
+            expressions on the ``filter_tags`` attribute is
+            supported.
 
             Examples:
 
-            * ``(filter_tags: ANY("Red", "Blue") OR
-            filter_tags: ANY("Hot", "Cold"))``  *
-            ``(filter_tags: ANY("Red", "Blue")) AND NOT
-            (filter_tags: ANY("Green"))``
+            * ``(filter_tags: ANY("Red", "Blue") OR filter_tags:
+            ANY("Hot", "Cold"))``  * ``(filter_tags: ANY("Red",
+            "Blue")) AND NOT (filter_tags: ANY("Green"))``
 
-            If ``attributeFilteringSyntax`` is set to true
-            under the ``params`` field, then attribute-based
-            expressions are expected instead of the above
-            described tag-based syntax. Examples:
+            If ``attributeFilteringSyntax`` is set to true under the
+            ``params`` field, then attribute-based expressions are
+            expected instead of the above described tag-based
+            syntax. Examples:
 
-            * (launguage: ANY("en", "es")) AND NOT
-            (categories: ANY("Movie"))  * (available: true)
-            AND
+            * (launguage: ANY("en", "es")) AND NOT (categories:
+            ANY("Movie"))  * (available: true) AND
                (launguage: ANY("en", "es")) OR (categories:
             ANY("Movie"))
 
-            If your filter blocks all results, the API
-            returns generic (unfiltered) popular Documents.
-            If you only want results strictly matching the
-            filters, set ``strictFiltering`` to ``true`` in
+            If your filter blocks all results, the API returns
+            generic (unfiltered) popular Documents. If you only want
+            results strictly matching the filters, set
+            ``strictFiltering`` to ``true`` in
             `RecommendRequest.params
             <google.cloud.discoveryengine.v1alpha.RecommendRequest.params>`__
             to receive empty results instead.
 
             Note that the API never returns
             `Document
-            <google.cloud.discoveryengine.v1alpha.Document>`__s
-            with ``storageStatus`` as ``EXPIRED`` or
-            ``DELETED`` regardless of filter choices.
+            <google.cloud.discoveryengine.v1alpha.Document>`__s with
+            ``storageStatus`` as ``EXPIRED`` or ``DELETED``
+            regardless of filter choices.
         validate_only (bool):
-            Use validate only mode for this recommendation
-            query. If set to ``true``, a fake model is used
-            that returns arbitrary Document IDs. Note that
-            the validate only mode should only be used for
-            testing the API, or if the model is not ready.
+            Use validate only mode for this recommendation query. If
+            set to ``true``, a fake model is used that returns
+            arbitrary Document IDs. Note that the validate only mode
+            should only be used for testing the API, or if the model
+            is not ready.
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional domain specific parameters for the
             recommendations.
             Allowed values:
 
-            * ``returnDocument``: Boolean. If set to
-            ``true``, the associated Document    object is
-            returned in
-            `RecommendResponse.RecommendationResult.document
+            * ``returnDocument``: Boolean. If set to ``true``, the
+            associated Document    object is returned in
+               `RecommendResponse.RecommendationResult.document
             <google.cloud.discoveryengine.v1alpha.RecommendResponse.RecommendationResult.document>`__.
 
             * ``returnScore``: Boolean. If set to true, the
-            recommendation score    corresponding to each
-            returned Document is set in
+            recommendation score    corresponding to each returned
+            Document is set in
             `RecommendResponse.RecommendationResult.metadata
             <google.cloud.discoveryengine.v1alpha.RecommendResponse.RecommendationResult.metadata>`__.
-            The given score indicates the probability of a
-            Document conversion given    the user's context
-            and history.
+            The given score indicates the probability of a Document
+            conversion given    the user's context and history.
 
-            * ``strictFiltering``: Boolean. True by default.
-            If set to ``false``, the service
-               returns generic (unfiltered) popular
-            Documents instead of empty if    your filter
-            blocks all recommendation results.
+            * ``strictFiltering``: Boolean. True by default. If set
+            to ``false``, the service
+               returns generic (unfiltered) popular Documents
+            instead of empty if    your filter blocks all
+            recommendation results.
 
-            * ``diversityLevel``: String. Default empty. If
-            set to be non-empty, then    it needs to be one
-            of:
+            * ``diversityLevel``: String. Default empty. If set to
+            be non-empty, then    it needs to be one of:
 
             *  ``no-diversity``
                 *  ``low-diversity``
@@ -168,33 +161,31 @@ class RecommendRequest(proto.Message):
 
             *  ``auto-diversity``
                This gives request-level control and adjusts
-            recommendation results    based on Document
-            category.
+            recommendation results    based on Document category.
 
-            * ``attributeFilteringSyntax``: Boolean. False
-            by default. If set to true,    the ``filter``
-            field is interpreted according to the new,
-            attribute-based syntax.
+            * ``attributeFilteringSyntax``: Boolean. False by
+            default. If set to true,    the ``filter`` field is
+            interpreted according to the new,    attribute-based
+            syntax.
         user_labels (MutableMapping[str, str]):
-            The user labels applied to a resource must meet
-            the following requirements:
-            * Each resource can have multiple labels, up to
-            a maximum of 64.
+            The user labels applied to a resource must meet the
+            following requirements:
+            * Each resource can have multiple labels, up to a
+            maximum of 64.
 
             * Each label must be a key-value pair.
-            * Keys have a minimum length of 1 character and
-            a maximum length of 63   characters and cannot
-            be empty. Values can be empty and have a maximum
-            length of 63 characters.
+            * Keys have a minimum length of 1 character and a
+            maximum length of 63   characters and cannot be empty.
+            Values can be empty and have a maximum   length of 63
+            characters.
 
-            * Keys and values can contain only lowercase
-            letters, numeric characters,   underscores, and
-            dashes. All characters must use UTF-8 encoding,
-            and   international characters are allowed.
+            * Keys and values can contain only lowercase letters,
+            numeric characters,   underscores, and dashes. All
+            characters must use UTF-8 encoding, and   international
+            characters are allowed.
 
-            * The key portion of a label must be unique.
-            However, you can use the same   key with
-            multiple resources.
+            * The key portion of a label must be unique. However,
+            you can use the same   key with multiple resources.
 
             * Keys must start with a lowercase letter or
             international character.
@@ -244,20 +235,20 @@ class RecommendResponse(proto.Message):
 
     Attributes:
         results (MutableSequence[google.cloud.discoveryengine_v1alpha.types.RecommendResponse.RecommendationResult]):
-            A list of recommended Documents. The order
-            represents the ranking (from the most relevant
-            Document to the least).
+            A list of recommended Documents. The order represents
+            the ranking (from the most relevant Document to the
+            least).
         attribution_token (str):
-            A unique attribution token. This should be
-            included in the `UserEvent
-            <google.cloud.discoveryengine.v1alpha.UserEvent>`__
-            logs resulting from this recommendation, which
-            enables accurate attribution of recommendation
-            model performance.
+            A unique attribution token. This should be included in
+            the `UserEvent
+            <google.cloud.discoveryengine.v1alpha.UserEvent>`__ logs
+            resulting from this recommendation, which enables
+            accurate attribution of recommendation model
+            performance.
         missing_ids (MutableSequence[str]):
-            IDs of documents in the request that were
-            missing from the default Branch associated with
-            the requested ServingConfig.
+            IDs of documents in the request that were missing
+            from the default Branch associated with the requested
+            ServingConfig.
         validate_only (bool):
             True if
             `RecommendRequest.validate_only
@@ -266,8 +257,8 @@ class RecommendResponse(proto.Message):
     """
 
     class RecommendationResult(proto.Message):
-        r"""RecommendationResult represents a generic recommendation
-        result with associated metadata.
+        r"""RecommendationResult represents a generic recommendation result with
+        associated metadata.
 
         Attributes:
             id (str):
@@ -281,9 +272,8 @@ class RecommendResponse(proto.Message):
 
                 Possible values:
 
-                * ``score``: Recommendation score in double
-                value. Is set if   ``returnScore`` is set to
-                true in
+                * ``score``: Recommendation score in double value. Is
+                set if   ``returnScore`` is set to true in
                   `RecommendRequest.params
                 <google.cloud.discoveryengine.v1alpha.RecommendRequest.params>`__.
         """

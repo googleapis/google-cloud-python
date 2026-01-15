@@ -44,9 +44,8 @@ class UpdateCmekConfigRequest(proto.Message):
         config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Required. The CmekConfig resource.
         set_default (bool):
-            Set the following CmekConfig as the default
-            to be used for child resources if one is not
-            specified.
+            Set the following CmekConfig as the default to be
+            used for child resources if one is not specified.
     """
 
     config: "CmekConfig" = proto.Field(
@@ -67,12 +66,12 @@ class GetCmekConfigRequest(proto.Message):
         name (str):
             Required. Resource name of
             `CmekConfig
-            <google.cloud.discoveryengine.v1.CmekConfig>`__,
-            such as ``projects/*/locations/*/cmekConfig`` or
+            <google.cloud.discoveryengine.v1.CmekConfig>`__, such as
+            ``projects/*/locations/*/cmekConfig`` or
             ``projects/*/locations/*/cmekConfigs/*``.
 
-            If the caller does not have permission to access
-            the `CmekConfig
+            If the caller does not have permission to access the
+            `CmekConfig
             <google.cloud.discoveryengine.v1.CmekConfig>`__,
             regardless of whether or not it exists, a
             PERMISSION_DENIED error is returned.
@@ -89,8 +88,8 @@ class SingleRegionKey(proto.Message):
 
     Attributes:
         kms_key (str):
-            Required. Single-regional kms key resource name
-            which will be used to encrypt resources
+            Required. Single-regional kms key resource name which
+            will be used to encrypt resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
     """
 
@@ -101,8 +100,8 @@ class SingleRegionKey(proto.Message):
 
 
 class CmekConfig(proto.Message):
-    r"""Configurations used to enable CMEK data encryption with Cloud
-    KMS keys.
+    r"""Configurations used to enable CMEK data encryption with Cloud KMS
+    keys.
 
     Attributes:
         name (str):
@@ -111,27 +110,25 @@ class CmekConfig(proto.Message):
             or
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
         kms_key (str):
-            KMS key resource name which will be used to
-            encrypt resources
+            KMS key resource name which will be used to encrypt
+            resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
         kms_key_version (str):
-            KMS key version resource name which will be used
-            to encrypt resources
+            KMS key version resource name which will be used to
+            encrypt resources
             ``<kms_key>/cryptoKeyVersions/{keyVersion}``.
         state (google.cloud.discoveryengine_v1.types.CmekConfig.State):
             Output only. The states of the CmekConfig.
         is_default (bool):
-            Output only. The default CmekConfig for the
-            Customer.
+            Output only. The default CmekConfig for the Customer.
         last_rotation_timestamp_micros (int):
-            Output only. The timestamp of the last key
-            rotation.
+            Output only. The timestamp of the last key rotation.
         single_region_keys (MutableSequence[google.cloud.discoveryengine_v1.types.SingleRegionKey]):
-            Optional. Single-regional CMEKs that are
-            required for some VAIS features.
+            Optional. Single-regional CMEKs that are required for
+            some VAIS features.
         notebooklm_state (google.cloud.discoveryengine_v1.types.CmekConfig.NotebookLMState):
-            Output only. Whether the NotebookLM Corpus is
-            ready to be used.
+            Output only. Whether the NotebookLM Corpus is ready
+            to be used.
     """
 
     class State(proto.Enum):
@@ -236,8 +233,8 @@ class UpdateCmekConfigMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -260,16 +257,14 @@ class ListCmekConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent location resource name,
-            such as
+            Required. The parent location resource name, such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
             `CmekConfig
-            <google.cloud.discoveryengine.v1.CmekConfig>`__s
-            under this location, regardless of whether or
-            not a CmekConfig exists, a PERMISSION_DENIED
-            error is returned.
+            <google.cloud.discoveryengine.v1.CmekConfig>`__s under
+            this location, regardless of whether or not a CmekConfig
+            exists, a PERMISSION_DENIED error is returned.
     """
 
     parent: str = proto.Field(
@@ -308,8 +303,8 @@ class DeleteCmekConfigRequest(proto.Message):
         name (str):
             Required. The resource name of the
             `CmekConfig
-            <google.cloud.discoveryengine.v1.CmekConfig>`__
-            to delete, such as
+            <google.cloud.discoveryengine.v1.CmekConfig>`__ to
+            delete, such as
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
     """
 
@@ -330,8 +325,8 @@ class DeleteCmekConfigMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(

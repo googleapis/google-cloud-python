@@ -32,14 +32,13 @@ __protobuf__ = proto.module(
 
 
 class SiteSearchEngine(proto.Message):
-    r"""SiteSearchEngine captures DataStore level site search
-    persisting configurations. It is a singleton value per data
-    store.
+    r"""SiteSearchEngine captures DataStore level site search persisting
+    configurations. It is a singleton value per data store.
 
     Attributes:
         name (str):
-            The fully qualified resource name of the site
-            search engine. Format:
+            The fully qualified resource name of the site search
+            engine. Format:
             ``projects/*/locations/*/dataStores/*/siteSearchEngine``
     """
 
@@ -54,42 +53,37 @@ class TargetSite(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The fully qualified resource name
-            of the target site.
+            Output only. The fully qualified resource name of the
+            target site.
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``
             The ``target_site_id`` is system-generated.
         provided_uri_pattern (str):
-            Required. Input only. The user provided URI
-            pattern from which the ``generated_uri_pattern``
-            is generated.
+            Required. Input only. The user provided URI pattern from
+            which the ``generated_uri_pattern`` is generated.
         type_ (google.cloud.discoveryengine_v1beta.types.TargetSite.Type):
-            The type of the target site, e.g., whether
-            the site is to be included or excluded.
+            The type of the target site, e.g., whether the site
+            is to be included or excluded.
         exact_match (bool):
-            Input only. If set to false, a uri_pattern is
-            generated to include all pages whose address
-            contains the provided_uri_pattern. If set to
-            true, an uri_pattern is generated to try to be
-            an exact match of the provided_uri_pattern or
-            just the specific page if the
+            Input only. If set to false, a uri_pattern is generated
+            to include all pages whose address contains the
+            provided_uri_pattern. If set to true, an uri_pattern is
+            generated to try to be an exact match of the
+            provided_uri_pattern or just the specific page if the
             provided_uri_pattern is a specific one.
-            provided_uri_pattern is always normalized to
-            generate the URI pattern to be used by the
-            search engine.
+            provided_uri_pattern is always normalized to generate
+            the URI pattern to be used by the search engine.
         generated_uri_pattern (str):
-            Output only. This is system-generated based on
-            the provided_uri_pattern.
-        root_domain_uri (str):
-            Output only. Root domain of the
+            Output only. This is system-generated based on the
             provided_uri_pattern.
+        root_domain_uri (str):
+            Output only. Root domain of the provided_uri_pattern.
         site_verification_info (google.cloud.discoveryengine_v1beta.types.SiteVerificationInfo):
-            Output only. Site ownership and validity
-            verification status.
+            Output only. Site ownership and validity verification
+            status.
         indexing_status (google.cloud.discoveryengine_v1beta.types.TargetSite.IndexingStatus):
             Output only. Indexing status.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The target site's last updated
-            time.
+            Output only. The target site's last updated time.
         failure_reason (google.cloud.discoveryengine_v1beta.types.TargetSite.FailureReason):
             Output only. Failure reason.
     """
@@ -157,9 +151,8 @@ class TargetSite(proto.Message):
 
             Attributes:
                 total_required_quota (int):
-                    This number is an estimation on how much
-                    total quota this project needs to successfully
-                    complete indexing.
+                    This number is an estimation on how much total quota
+                    this project needs to successfully complete indexing.
             """
 
             total_required_quota: int = proto.Field(
@@ -222,13 +215,12 @@ class TargetSite(proto.Message):
 
 
 class SiteVerificationInfo(proto.Message):
-    r"""Verification information for target sites in advanced site
-    search.
+    r"""Verification information for target sites in advanced site search.
 
     Attributes:
         site_verification_state (google.cloud.discoveryengine_v1beta.types.SiteVerificationInfo.SiteVerificationState):
-            Site verification state indicating the
-            ownership and validity.
+            Site verification state indicating the ownership and
+            validity.
         verify_time (google.protobuf.timestamp_pb2.Timestamp):
             Latest site verification time.
     """
@@ -277,8 +269,8 @@ class Sitemap(proto.Message):
 
             This field is a member of `oneof`_ ``feed``.
         name (str):
-            Output only. The fully qualified resource name
-            of the sitemap.
+            Output only. The fully qualified resource name of the
+            sitemap.
             ``projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/sitemaps/*``
             The ``sitemap_id`` suffix is system-generated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

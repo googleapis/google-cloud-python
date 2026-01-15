@@ -37,8 +37,8 @@ class Assistant(proto.Message):
 
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}``
 
-            It must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            It must be a UTF-8 encoded string with a length limit of
+            1024 characters.
     """
 
     name: str = proto.Field(

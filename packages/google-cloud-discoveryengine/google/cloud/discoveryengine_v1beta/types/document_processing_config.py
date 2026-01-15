@@ -29,10 +29,9 @@ __protobuf__ = proto.module(
 
 class DocumentProcessingConfig(proto.Message):
     r"""A singleton resource of
-    `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__.
-    If it's empty when `DataStore
-    <google.cloud.discoveryengine.v1beta.DataStore>`__ is created
-    and `DataStore
+    `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__. If it's
+    empty when `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__
+    is created and `DataStore
     <google.cloud.discoveryengine.v1beta.DataStore>`__ is set to
     `DataStore.ContentConfig.CONTENT_REQUIRED
     <google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.CONTENT_REQUIRED>`__,
@@ -40,46 +39,39 @@ class DocumentProcessingConfig(proto.Message):
 
     Attributes:
         name (str):
-            The full resource name of the Document
-            Processing Config. Format:
+            The full resource name of the Document Processing
+            Config. Format:
 
             ``projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig``.
         chunking_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ChunkingConfig):
             Whether chunking mode is enabled.
         default_parsing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ParsingConfig):
             Configurations for default Document parser.
-            If not specified, we will configure it as
-            default DigitalParsingConfig, and the default
-            parsing config will be applied to all file types
-            for Document parsing.
+            If not specified, we will configure it as default
+            DigitalParsingConfig, and the default parsing config
+            will be applied to all file types for Document parsing.
         parsing_config_overrides (MutableMapping[str, google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ParsingConfig]):
-            Map from file type to override the default
-            parsing configuration based on the file type.
-            Supported keys:
+            Map from file type to override the default parsing
+            configuration based on the file type. Supported keys:
 
-            * ``pdf``: Override parsing config for PDF
-            files, either digital parsing, ocr parsing or
-            layout parsing is supported.
+            * ``pdf``: Override parsing config for PDF files, either
+            digital parsing, ocr parsing or layout parsing is
+            supported.
 
-            * ``html``: Override parsing config for HTML
-            files, only digital parsing and layout parsing
-            are supported.
+            * ``html``: Override parsing config for HTML files, only
+            digital parsing and layout parsing are supported.
 
-            * ``docx``: Override parsing config for DOCX
-            files, only digital parsing and layout parsing
-            are supported.
+            * ``docx``: Override parsing config for DOCX files, only
+            digital parsing and layout parsing are supported.
 
-            * ``pptx``: Override parsing config for PPTX
-            files, only digital parsing and layout parsing
-            are supported.
+            * ``pptx``: Override parsing config for PPTX files, only
+            digital parsing and layout parsing are supported.
 
-            * ``xlsm``: Override parsing config for XLSM
-            files, only digital parsing and layout parsing
-            are supported.
+            * ``xlsm``: Override parsing config for XLSM files, only
+            digital parsing and layout parsing are supported.
 
-            * ``xlsx``: Override parsing config for XLSX
-            files, only digital parsing and layout parsing
-            are supported.
+            * ``xlsx``: Override parsing config for XLSX files, only
+            digital parsing and layout parsing are supported.
     """
 
     class ChunkingConfig(proto.Message):
@@ -104,9 +96,9 @@ class DocumentProcessingConfig(proto.Message):
                     Supported values: 100-500 (inclusive).
                     Default value: 500.
                 include_ancestor_headings (bool):
-                    Whether to include appending different levels
-                    of headings to chunks from the middle of the
-                    document to prevent context loss.
+                    Whether to include appending different levels of
+                    headings to chunks from the middle of the document to
+                    prevent context loss.
 
                     Default value: False.
             """
@@ -128,8 +120,7 @@ class DocumentProcessingConfig(proto.Message):
         )
 
     class ParsingConfig(proto.Message):
-        r"""Related configurations applied to a specific type of document
-        parser.
+        r"""Related configurations applied to a specific type of document parser.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -144,8 +135,8 @@ class DocumentProcessingConfig(proto.Message):
 
                 This field is a member of `oneof`_ ``type_dedicated_config``.
             ocr_parsing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ParsingConfig.OcrParsingConfig):
-                Configurations applied to OCR parser.
-                Currently it only applies to PDFs.
+                Configurations applied to OCR parser. Currently it
+                only applies to PDFs.
 
                 This field is a member of `oneof`_ ``type_dedicated_config``.
             layout_parsing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig.ParsingConfig.LayoutParsingConfig):
@@ -162,13 +153,12 @@ class DocumentProcessingConfig(proto.Message):
 
             Attributes:
                 enhanced_document_elements (MutableSequence[str]):
-                    [DEPRECATED] This field is deprecated. To use
-                    the additional enhanced document elements
-                    processing, please switch to
-                    ``layout_parsing_config``.
+                    [DEPRECATED] This field is deprecated. To use the
+                    additional enhanced document elements processing, please
+                    switch to ``layout_parsing_config``.
                 use_native_text (bool):
-                    If true, will use native text instead of OCR
-                    text on pages containing native text.
+                    If true, will use native text instead of OCR text on
+                    pages containing native text.
             """
 
             enhanced_document_elements: MutableSequence[str] = proto.RepeatedField(

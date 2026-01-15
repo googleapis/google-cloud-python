@@ -55,8 +55,7 @@ class EstimateDataSizeRequest(proto.Message):
 
             This field is a member of `oneof`_ ``data_source``.
         location (str):
-            Required. Full resource name of the location,
-            such as
+            Required. Full resource name of the location, such as
             ``projects/{project}/locations/{location}``.
     """
 
@@ -66,9 +65,9 @@ class EstimateDataSizeRequest(proto.Message):
 
         Attributes:
             estimator_uri_patterns (MutableSequence[google.cloud.discoveryengine_v1alpha.types.EstimateDataSizeRequest.WebsiteDataSource.EstimatorUriPattern]):
-                Required. The URI patterns to estimate the data
-                sizes. At most 10 patterns are allowed,
-                otherwise an INVALID_ARGUMENT error is thrown.
+                Required. The URI patterns to estimate the data sizes.
+                At most 10 patterns are allowed, otherwise an
+                INVALID_ARGUMENT error is thrown.
         """
 
         class EstimatorUriPattern(proto.Message):
@@ -79,13 +78,13 @@ class EstimateDataSizeRequest(proto.Message):
                     User provided URI pattern. For example,
                     ``foo.com/bar/*``.
                 exact_match (bool):
-                    Whether we infer the generated URI or use the
-                    exact provided one.
+                    Whether we infer the generated URI or use the exact
+                    provided one.
                 exclusive (bool):
-                    Whether the pattern is exclusive or not. If
-                    set to true, the pattern is considered
-                    exclusive. If unset or set to false, the pattern
-                    is considered inclusive by default.
+                    Whether the pattern is exclusive or not. If set to
+                    true, the pattern is considered exclusive. If unset or
+                    set to false, the pattern is considered inclusive by
+                    default.
             """
 
             provided_uri_pattern: str = proto.Field(
@@ -110,8 +109,7 @@ class EstimateDataSizeRequest(proto.Message):
         )
 
     class FileDataSource(proto.Message):
-        r"""Data source contains files either in Cloud Storage or
-        BigQuery.
+        r"""Data source contains files either in Cloud Storage or BigQuery.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -165,8 +163,8 @@ class EstimateDataSizeRequest(proto.Message):
 class EstimateDataSizeResponse(proto.Message):
     r"""Response of the EstimateDataSize request. If the long running
     operation was successful, then this message is returned by the
-    google.longrunning.Operations.response field if the operation
-    was successful.
+    google.longrunning.Operations.response field if the operation was
+    successful.
 
     Attributes:
         data_size_bytes (int):
@@ -186,9 +184,8 @@ class EstimateDataSizeResponse(proto.Message):
 
 
 class EstimateDataSizeMetadata(proto.Message):
-    r"""Metadata related to the progress of the EstimateDataSize
-    operation. This is returned by the
-    google.longrunning.Operation.metadata field.
+    r"""Metadata related to the progress of the EstimateDataSize operation.
+    This is returned by the google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
