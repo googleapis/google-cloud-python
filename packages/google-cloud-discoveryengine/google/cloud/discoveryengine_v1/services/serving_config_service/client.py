@@ -115,7 +115,8 @@ class ServingConfigServiceClientMeta(type):
 
 class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
     """Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig].
+    `ServingConfig
+    <google.cloud.discoveryengine.v1.ServingConfig>`__.
     """
 
     @staticmethod
@@ -757,7 +758,8 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
     ) -> gcd_serving_config.ServingConfig:
         r"""Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         .. code-block:: python
 
@@ -803,12 +805,16 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig]
-                to update. The following are NOT supported:
+                `ServingConfig
+                <google.cloud.discoveryengine.v1.ServingConfig>`__
+                to update. The following are NOT
+                supported:
 
-                - [ServingConfig.name][google.cloud.discoveryengine.v1.ServingConfig.name]
+                * `ServingConfig.name
+                <google.cloud.discoveryengine.v1.ServingConfig.name>`__
 
-                If not set, all supported fields are updated.
+                If not set, all supported fields are
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this

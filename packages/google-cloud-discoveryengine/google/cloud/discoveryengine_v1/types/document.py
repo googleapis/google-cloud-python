@@ -45,66 +45,73 @@ class Document(proto.Message):
 
     Attributes:
         struct_data (google.protobuf.struct_pb2.Struct):
-            The structured JSON data for the document. It should conform
-            to the registered
-            [Schema][google.cloud.discoveryengine.v1.Schema] or an
-            ``INVALID_ARGUMENT`` error is thrown.
+            The structured JSON data for the document. It
+            should conform to the registered `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ or
+            an ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         json_data (str):
-            The JSON string representation of the document. It should
-            conform to the registered
-            [Schema][google.cloud.discoveryengine.v1.Schema] or an
-            ``INVALID_ARGUMENT`` error is thrown.
+            The JSON string representation of the document.
+            It should conform to the registered `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__ or
+            an ``INVALID_ARGUMENT`` error is thrown.
 
             This field is a member of `oneof`_ ``data``.
         name (str):
-            Immutable. The full resource name of the document. Format:
+            Immutable. The full resource name of the
+            document. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         id (str):
             Immutable. The identifier of the document.
 
-            Id should conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 128 characters.
+            Id should conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 128 characters.
         schema_id (str):
             The identifier of the schema located in the
             same data store.
         content (google.cloud.discoveryengine_v1.types.Document.Content):
-            The unstructured data linked to this document. Content can
-            only be set and must be set if this document is under a
-            ``CONTENT_REQUIRED`` data store.
+            The unstructured data linked to this document.
+            Content can only be set and must be set if this
+            document is under a ``CONTENT_REQUIRED`` data
+            store.
         parent_document_id (str):
-            The identifier of the parent document. Currently supports at
-            most two level document hierarchy.
+            The identifier of the parent document. Currently
+            supports at most two level document hierarchy.
 
-            Id should conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            Id should conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
-            Output only. This field is OUTPUT_ONLY. It contains derived
-            data that are not in the original input document.
+            Output only. This field is OUTPUT_ONLY.
+            It contains derived data that are not in the
+            original input document.
         acl_info (google.cloud.discoveryengine_v1.types.Document.AclInfo):
             Access control information for the document.
         index_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The last time the document was indexed. If this
-            field is set, the document could be returned in search
-            results.
+            Output only. The last time the document was
+            indexed. If this field is set, the document
+            could be returned in search results.
 
-            This field is OUTPUT_ONLY. If this field is not populated,
-            it means the document has never been indexed.
+            This field is OUTPUT_ONLY. If this field is not
+            populated, it means the document has never been
+            indexed.
         index_status (google.cloud.discoveryengine_v1.types.Document.IndexStatus):
             Output only. The index status of the document.
 
-            - If document is indexed successfully, the index_time field
-              is populated.
-            - Otherwise, if document is not indexed due to errors, the
-              error_samples field is populated.
-            - Otherwise, if document's index is in progress, the
-              pending_message field is populated.
+            * If document is indexed successfully, the
+            index_time field is populated.
+
+            * Otherwise, if document is not indexed due to
+            errors, the error_samples   field is populated.
+
+            * Otherwise, if document's index is in progress,
+            the pending_message field   is populated.
     """
 
     class Content(proto.Message):
@@ -119,49 +126,62 @@ class Document(proto.Message):
 
         Attributes:
             raw_bytes (bytes):
-                The content represented as a stream of bytes. The maximum
-                length is 1,000,000 bytes (1 MB / ~0.95 MiB).
+                The content represented as a stream of bytes.
+                The maximum length is 1,000,000 bytes (1 MB /
+                ~0.95 MiB).
 
-                Note: As with all ``bytes`` fields, this field is
-                represented as pure binary in Protocol Buffers and
-                base64-encoded string in JSON. For example,
-                ``abc123!?$*&()'-=@~`` should be represented as
-                ``YWJjMTIzIT8kKiYoKSctPUB+`` in JSON. See
+                Note: As with all ``bytes`` fields, this field
+                is represented as pure binary in Protocol
+                Buffers and base64-encoded string in JSON. For
+                example, ``abc123!?$*&()'-=@~`` should be
+                represented as ``YWJjMTIzIT8kKiYoKSctPUB+`` in
+                JSON. See
                 https://developers.google.com/protocol-buffers/docs/proto3#json.
 
                 This field is a member of `oneof`_ ``content``.
             uri (str):
-                The URI of the content. Only Cloud Storage URIs (e.g.
-                ``gs://bucket-name/path/to/file``) are supported. The
-                maximum file size is 2.5 MB for text-based formats, 200 MB
-                for other formats.
+                The URI of the content. Only Cloud Storage URIs
+                (e.g. ``gs://bucket-name/path/to/file``) are
+                supported. The maximum file size is 2.5 MB for
+                text-based formats, 200 MB for other formats.
 
                 This field is a member of `oneof`_ ``content``.
             mime_type (str):
                 The MIME type of the content. Supported types:
 
-                - ``application/pdf`` (PDF, only native PDFs are supported
-                  for now)
-                - ``text/html`` (HTML)
-                - ``text/plain`` (TXT)
-                - ``application/xml`` or ``text/xml`` (XML)
-                - ``application/json`` (JSON)
-                - ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
-                  (DOCX)
-                - ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
-                  (PPTX)
-                - ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
-                  (XLSX)
-                - ``application/vnd.ms-excel.sheet.macroenabled.12`` (XLSM)
+                * ``application/pdf`` (PDF, only native PDFs are
+                supported for now)
 
-                The following types are supported only if layout parser is
-                enabled in the data store:
+                * ``text/html`` (HTML)
+                * ``text/plain`` (TXT)
 
-                - ``image/bmp`` (BMP)
-                - ``image/gif`` (GIF)
-                - ``image/jpeg`` (JPEG)
-                - ``image/png`` (PNG)
-                - ``image/tiff`` (TIFF)
+                * ``application/xml`` or ``text/xml`` (XML)
+                * ``application/json`` (JSON)
+
+                *
+                ``application/vnd.openxmlformats-officedocument.wordprocessingml.document``
+                (DOCX) *
+                ``application/vnd.openxmlformats-officedocument.presentationml.presentation``
+                (PPTX)
+
+                *
+                ``application/vnd.openxmlformats-officedocument.spreadsheetml.sheet``
+                (XLSX)
+
+                *
+                ``application/vnd.ms-excel.sheet.macroenabled.12``
+                (XLSM)
+
+                The following types are supported only if layout
+                parser is enabled in the data store:
+
+                * ``image/bmp`` (BMP)
+                * ``image/gif`` (GIF)
+
+                * ``image/jpeg`` (JPEG)
+                * ``image/png`` (PNG)
+
+                * ``image/tiff`` (TIFF)
 
                 See
                 https://www.iana.org/assignments/media-types/media-types.xhtml.
@@ -198,16 +218,59 @@ class Document(proto.Message):
 
             Document Hierarchy - Space_S --> Page_P.
 
-            Readers: Space_S: group_1, user_1 Page_P: group_2, group_3, user_2
+            Readers:
 
-            Space_S ACL Restriction - { "acl_info": { "readers": [ {
-            "principals": [ { "group_id": "group_1" }, { "user_id": "user_1" } ]
-            } ] } }
+              Space_S: group_1, user_1
+              Page_P: group_2, group_3, user_2
 
-            Page_P ACL Restriction. { "acl_info": { "readers": [ { "principals":
-            [ { "group_id": "group_2" }, { "group_id": "group_3" }, { "user_id":
-            "user_2" } ], }, { "principals": [ { "group_id": "group_1" }, {
-            "user_id": "user_1" } ], } ] } }
+            Space_S ACL Restriction -
+            {
+              "acl_info": {
+                "readers": [
+                  {
+                    "principals": [
+                      {
+                        "group_id": "group_1"
+                      },
+                      {
+                        "user_id": "user_1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+
+            Page_P ACL Restriction.
+            {
+              "acl_info": {
+                "readers": [
+                  {
+                    "principals": [
+                      {
+                        "group_id": "group_2"
+                      },
+                      {
+                        "group_id": "group_3"
+                      },
+                      {
+                        "user_id": "user_2"
+                      }
+                    ],
+                  },
+                  {
+                    "principals": [
+                      {
+                        "group_id": "group_1"
+                      },
+                      {
+                        "user_id": "user_1"
+                      }
+                    ],
+                  }
+                ]
+              }
+            }
 
             Attributes:
                 principals (MutableSequence[google.cloud.discoveryengine_v1.types.Principal]):

@@ -37,18 +37,22 @@ class WriteUserEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name. If the write user event
-            action is applied in
-            [DataStore][google.cloud.discoveryengine.v1.DataStore]
+            Required. The parent resource name.
+            If the write user event action is applied in
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
             level, the format is:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
             If the write user event action is applied in
-            [Location][google.cloud.location.Location] level, for
-            example, the event with
-            [Document][google.cloud.discoveryengine.v1.Document] across
-            multiple
-            [DataStore][google.cloud.discoveryengine.v1.DataStore], the
-            format is: ``projects/{project}/locations/{location}``.
+            `Location <google.cloud.location.Location>`__
+            level, for example, the event with `Document
+            <google.cloud.discoveryengine.v1.Document>`__
+            across multiple `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__,
+            the format is:
+
+            ``projects/{project}/locations/{location}``.
         user_event (google.cloud.discoveryengine_v1.types.UserEvent):
             Required. User event to write.
 
@@ -82,18 +86,22 @@ class CollectUserEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name. If the collect user
-            event action is applied in
-            [DataStore][google.cloud.discoveryengine.v1.DataStore]
+            Required. The parent resource name.
+            If the collect user event action is applied in
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
             level, the format is:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
             If the collect user event action is applied in
-            [Location][google.cloud.location.Location] level, for
-            example, the event with
-            [Document][google.cloud.discoveryengine.v1.Document] across
-            multiple
-            [DataStore][google.cloud.discoveryengine.v1.DataStore], the
-            format is: ``projects/{project}/locations/{location}``.
+            `Location <google.cloud.location.Location>`__
+            level, for example, the event with `Document
+            <google.cloud.discoveryengine.v1.Document>`__
+            across multiple `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__,
+            the format is:
+
+            ``projects/{project}/locations/{location}``.
         user_event (str):
             Required. URL encoded UserEvent proto with a
             length limit of 2,000,000 characters.

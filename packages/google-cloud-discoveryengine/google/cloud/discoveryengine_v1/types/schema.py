@@ -48,12 +48,12 @@ class Schema(proto.Message):
 
             This field is a member of `oneof`_ ``schema``.
         name (str):
-            Immutable. The full resource name of the schema, in the
-            format of
+            Immutable. The full resource name of the schema,
+            in the format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
     """
 
     struct_schema: struct_pb2.Struct = proto.Field(

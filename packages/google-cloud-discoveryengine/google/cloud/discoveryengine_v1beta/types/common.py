@@ -38,7 +38,7 @@ __protobuf__ = proto.module(
 
 class IndustryVertical(proto.Enum):
     r"""The industry vertical associated with the
-    [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+    `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__.
 
     Values:
         INDUSTRY_VERTICAL_UNSPECIFIED (0):
@@ -71,10 +71,10 @@ class SolutionType(proto.Enum):
             Used for use cases related to the Generative
             AI agent.
         SOLUTION_TYPE_GENERATIVE_CHAT (4):
-            Used for use cases related to the Generative Chat agent.
-            It's used for Generative chat engine only, the associated
-            data stores must enrolled with ``SOLUTION_TYPE_CHAT``
-            solution.
+            Used for use cases related to the Generative
+            Chat agent. It's used for Generative chat engine
+            only, the associated data stores must enrolled
+            with ``SOLUTION_TYPE_CHAT`` solution.
     """
     SOLUTION_TYPE_UNSPECIFIED = 0
     SOLUTION_TYPE_RECOMMENDATION = 1
@@ -84,19 +84,22 @@ class SolutionType(proto.Enum):
 
 
 class SearchUseCase(proto.Enum):
-    r"""Defines a further subdivision of ``SolutionType``. Specifically
-    applies to
-    [SOLUTION_TYPE_SEARCH][google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_SEARCH].
+    r"""Defines a further subdivision of ``SolutionType``.
+    Specifically applies to
+    `SOLUTION_TYPE_SEARCH
+    <google.cloud.discoveryengine.v1beta.SolutionType.SOLUTION_TYPE_SEARCH>`__.
 
     Values:
         SEARCH_USE_CASE_UNSPECIFIED (0):
             Value used when unset. Will not occur in CSS.
         SEARCH_USE_CASE_SEARCH (1):
-            Search use case. Expects the traffic has a non-empty
-            [query][google.cloud.discoveryengine.v1beta.SearchRequest.query].
+            Search use case. Expects the traffic has a
+            non-empty `query
+            <google.cloud.discoveryengine.v1beta.SearchRequest.query>`__.
         SEARCH_USE_CASE_BROWSE (2):
-            Browse use case. Expects the traffic has an empty
-            [query][google.cloud.discoveryengine.v1beta.SearchRequest.query].
+            Browse use case. Expects the traffic has an
+            empty `query
+            <google.cloud.discoveryengine.v1beta.SearchRequest.query>`__.
     """
     SEARCH_USE_CASE_UNSPECIFIED = 0
     SEARCH_USE_CASE_SEARCH = 1
@@ -189,32 +192,39 @@ class Interval(proto.Message):
 
 class CustomAttribute(proto.Message):
     r"""A custom attribute that is not explicitly modeled in a resource,
-    e.g. [UserEvent][google.cloud.discoveryengine.v1beta.UserEvent].
+    e.g. `UserEvent
+    <google.cloud.discoveryengine.v1beta.UserEvent>`__.
 
     Attributes:
         text (MutableSequence[str]):
-            The textual values of this custom attribute. For example,
-            ``["yellow", "green"]`` when the key is "color".
+            The textual values of this custom attribute. For
+            example, ``["yellow", "green"]`` when the key is
+            "color".
 
             Empty string is not allowed. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
 
             Exactly one of
-            [CustomAttribute.text][google.cloud.discoveryengine.v1beta.CustomAttribute.text]
+            `CustomAttribute.text
+            <google.cloud.discoveryengine.v1beta.CustomAttribute.text>`__
             or
-            [CustomAttribute.numbers][google.cloud.discoveryengine.v1beta.CustomAttribute.numbers]
-            should be set. Otherwise, an ``INVALID_ARGUMENT`` error is
-            returned.
+            `CustomAttribute.numbers
+            <google.cloud.discoveryengine.v1beta.CustomAttribute.numbers>`__
+            should be set. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         numbers (MutableSequence[float]):
-            The numerical values of this custom attribute. For example,
-            ``[2.3, 15.4]`` when the key is "lengths_cm".
+            The numerical values of this custom attribute.
+            For example, ``[2.3, 15.4]`` when the key is
+            "lengths_cm".
 
             Exactly one of
-            [CustomAttribute.text][google.cloud.discoveryengine.v1beta.CustomAttribute.text]
+            `CustomAttribute.text
+            <google.cloud.discoveryengine.v1beta.CustomAttribute.text>`__
             or
-            [CustomAttribute.numbers][google.cloud.discoveryengine.v1beta.CustomAttribute.numbers]
-            should be set. Otherwise, an ``INVALID_ARGUMENT`` error is
-            returned.
+            `CustomAttribute.numbers
+            <google.cloud.discoveryengine.v1beta.CustomAttribute.numbers>`__
+            should be set. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
     """
 
     text: MutableSequence[str] = proto.RepeatedField(
@@ -232,31 +242,35 @@ class UserInfo(proto.Message):
 
     Attributes:
         user_id (str):
-            Highly recommended for logged-in users. Unique identifier
-            for logged-in user, such as a user name. Don't set for
-            anonymous users.
+            Highly recommended for logged-in users. Unique
+            identifier for logged-in user, such as a user
+            name. Don't set for anonymous users.
 
             Always use a hashed value for this ID.
 
-            Don't set the field to the same fixed ID for different
-            users. This mixes the event history of those users together,
-            which results in degraded model quality.
+            Don't set the field to the same fixed ID for
+            different users. This mixes the event history of
+            those users together, which results in degraded
+            model quality.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 128 characters. Otherwise, an ``INVALID_ARGUMENT`` error
-            is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
         user_agent (str):
             User agent as included in the HTTP header.
 
-            The field must be a UTF-8 encoded string with a length limit
-            of 1,000 characters. Otherwise, an ``INVALID_ARGUMENT``
-            error is returned.
+            The field must be a UTF-8 encoded string with a
+            length limit of 1,000 characters. Otherwise, an
+            ``INVALID_ARGUMENT`` error is returned.
 
-            This should not be set when using the client side event
-            reporting with GTM or JavaScript tag in
-            [UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1beta.UserEventService.CollectUserEvent]
+            This should not be set when using the client
+            side event reporting with GTM or JavaScript tag
+            in
+            `UserEventService.CollectUserEvent
+            <google.cloud.discoveryengine.v1beta.UserEventService.CollectUserEvent>`__
             or if
-            [UserEvent.direct_user_request][google.cloud.discoveryengine.v1beta.UserEvent.direct_user_request]
+            `UserEvent.direct_user_request
+            <google.cloud.discoveryengine.v1beta.UserEvent.direct_user_request>`__
             is set.
     """
 

@@ -43,40 +43,45 @@ class DataStore(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the data store. Format:
+            Immutable. The full resource name of the data
+            store. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         industry_vertical (google.cloud.discoveryengine_v1beta.types.IndustryVertical):
             Immutable. The industry vertical that the
             data store registers.
         solution_types (MutableSequence[google.cloud.discoveryengine_v1beta.types.SolutionType]):
-            The solutions that the data store enrolls. Available
-            solutions for each
-            [industry_vertical][google.cloud.discoveryengine.v1beta.DataStore.industry_vertical]:
+            The solutions that the data store enrolls.
+            Available solutions for each `industry_vertical
+            <google.cloud.discoveryengine.v1beta.DataStore.industry_vertical>`__:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION``
+            and ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
+            ``SOLUTION_TYPE_SEARCH`` is automatically
+            enrolled. Other   solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            [Schema][google.cloud.discoveryengine.v1beta.Schema]
+            `Schema
+            <google.cloud.discoveryengine.v1beta.Schema>`__
             asscociated to this data store.
         content_config (google.cloud.discoveryengine_v1beta.types.DataStore.ContentConfig):
-            Immutable. The content config of the data store. If this
-            field is unset, the server behavior defaults to
-            [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.NO_CONTENT].
+            Immutable. The content config of the data store.
+            If this field is unset, the server behavior
+            defaults to `ContentConfig.NO_CONTENT
+            <google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.NO_CONTENT>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
+            `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__
             was created at.
         language_info (google.cloud.discoveryengine_v1beta.types.LanguageInfo):
             Language info for DataStore.
@@ -87,32 +92,37 @@ class DataStore(proto.Message):
             Output only. Data size estimation for
             billing.
         workspace_config (google.cloud.discoveryengine_v1beta.types.WorkspaceConfig):
-            Config to store data store type configuration for workspace
-            data. This must be set when
-            [DataStore.content_config][google.cloud.discoveryengine.v1beta.DataStore.content_config]
+            Config to store data store type configuration
+            for workspace data. This must be set when
+            `DataStore.content_config
+            <google.cloud.discoveryengine.v1beta.DataStore.content_config>`__
             is set as
-            [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.GOOGLE_WORKSPACE].
+            `DataStore.ContentConfig.GOOGLE_WORKSPACE
+            <google.cloud.discoveryengine.v1beta.DataStore.ContentConfig.GOOGLE_WORKSPACE>`__.
         document_processing_config (google.cloud.discoveryengine_v1beta.types.DocumentProcessingConfig):
             Configuration for Document understanding and
             enrichment.
         starting_schema (google.cloud.discoveryengine_v1beta.types.Schema):
             The start schema to use for this
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
-            when provisioning it. If unset, a default vertical
-            specialized schema will be used.
+            `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__
+            when provisioning it. If unset, a default
+            vertical specialized schema will be used.
 
-            This field is only used by [CreateDataStore][] API, and will
-            be ignored if used in other APIs. This field will be omitted
-            from all API responses including [CreateDataStore][] API. To
-            retrieve a schema of a
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-            use
-            [SchemaService.GetSchema][google.cloud.discoveryengine.v1beta.SchemaService.GetSchema]
+            This field is only used by [CreateDataStore][]
+            API, and will be ignored if used in other APIs.
+            This field will be omitted from all API
+            responses including [CreateDataStore][] API. To
+            retrieve a schema of a `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__,
+            use `SchemaService.GetSchema
+            <google.cloud.discoveryengine.v1beta.SchemaService.GetSchema>`__
             API instead.
 
-            The provided schema will be validated against certain rules
-            on schema. Learn more from `this
-            doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
+            The provided schema will be validated against
+            certain rules on schema. Learn more from `this
+            doc
+            <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
         serving_config_data_store (google.cloud.discoveryengine_v1beta.types.DataStore.ServingConfigDataStore):
             Optional. Stores serving config at DataStore
             level.
@@ -126,17 +136,20 @@ class DataStore(proto.Message):
                 Default value.
             NO_CONTENT (1):
                 Only contains documents without any
-                [Document.content][google.cloud.discoveryengine.v1beta.Document.content].
+                `Document.content
+                <google.cloud.discoveryengine.v1beta.Document.content>`__.
             CONTENT_REQUIRED (2):
                 Only contains documents with
-                [Document.content][google.cloud.discoveryengine.v1beta.Document.content].
+                `Document.content
+                <google.cloud.discoveryengine.v1beta.Document.content>`__.
             PUBLIC_WEBSITE (3):
                 The data store is used for public website
                 search.
             GOOGLE_WORKSPACE (4):
-                The data store is used for workspace search. Details of
-                workspace data store are specified in the
-                [WorkspaceConfig][google.cloud.discoveryengine.v1beta.WorkspaceConfig].
+                The data store is used for workspace search.
+                Details of workspace data store are specified in
+                the `WorkspaceConfig
+                <google.cloud.discoveryengine.v1beta.WorkspaceConfig>`__.
         """
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1
@@ -283,17 +296,20 @@ class LanguageInfo(proto.Message):
         language_code (str):
             The language code for the DataStore.
         normalized_language_code (str):
-            Output only. This is the normalized form of language_code.
-            E.g.: language_code of ``en-GB``, ``en_GB``, ``en-UK`` or
-            ``en-gb`` will have normalized_language_code of ``en-GB``.
+            Output only. This is the normalized form of
+            language_code. E.g.: language_code of ``en-GB``,
+            ``en_GB``, ``en-UK`` or ``en-gb`` will have
+            normalized_language_code of ``en-GB``.
         language (str):
-            Output only. Language part of normalized_language_code.
-            E.g.: ``en-US`` -> ``en``, ``zh-Hans-HK`` -> ``zh``, ``en``
-            -> ``en``.
+            Output only. Language part of
+            normalized_language_code. E.g.: ``en-US`` ->
+            ``en``, ``zh-Hans-HK`` -> ``zh``, ``en`` ->
+            ``en``.
         region (str):
-            Output only. Region part of normalized_language_code, if
-            present. E.g.: ``en-US`` -> ``US``, ``zh-Hans-HK`` ->
-            ``HK``, ``en`` -> \`\`.
+            Output only. Region part of
+            normalized_language_code, if present. E.g.:
+            ``en-US`` -> ``US``, ``zh-Hans-HK`` -> ``HK``,
+            ``en`` -> ``.
     """
 
     language_code: str = proto.Field(
@@ -319,9 +335,10 @@ class NaturalLanguageQueryUnderstandingConfig(proto.Message):
 
     Attributes:
         mode (google.cloud.discoveryengine_v1beta.types.NaturalLanguageQueryUnderstandingConfig.Mode):
-            Mode of Natural Language Query Understanding. If this field
-            is unset, the behavior defaults to
-            [NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED][google.cloud.discoveryengine.v1beta.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED].
+            Mode of Natural Language Query Understanding. If
+            this field is unset, the behavior defaults to
+            `NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED
+            <google.cloud.discoveryengine.v1beta.NaturalLanguageQueryUnderstandingConfig.Mode.DISABLED>`__.
     """
 
     class Mode(proto.Enum):

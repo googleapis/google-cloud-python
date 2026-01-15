@@ -41,24 +41,28 @@ __protobuf__ = proto.module(
 
 class GetDocumentRequest(proto.Message):
     r"""Request message for
-    [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
+    `DocumentService.GetDocument
+    <google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-            If the caller does not have permission to access the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            If the caller does not have permission to access
+            the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
-            If the requested
-            [Document][google.cloud.discoveryengine.v1alpha.Document]
-            does not exist, a ``NOT_FOUND`` error is returned.
+            If the requested `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            does not exist, a ``NOT_FOUND`` error is
+            returned.
     """
 
     name: str = proto.Field(
@@ -69,39 +73,50 @@ class GetDocumentRequest(proto.Message):
 
 class ListDocumentsRequest(proto.Message):
     r"""Request message for
-    [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
+    `DocumentService.ListDocuments
+    <google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent branch resource name, such as
+            Required. The parent branch resource name, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
-            Use ``default_branch`` as the branch ID, to list documents
-            under the default branch.
+            Use ``default_branch`` as the branch ID, to list
+            documents under the default branch.
 
             If the caller does not have permission to list
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s
-            under this branch, regardless of whether or not this branch
-            exists, a ``PERMISSION_DENIED`` error is returned.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s
+            under this branch, regardless of whether or not
+            this branch exists, a ``PERMISSION_DENIED``
+            error is returned.
         page_size (int):
             Maximum number of
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s
-            to return. If unspecified, defaults to 100. The maximum
-            allowed value is 1000. Values above 1000 are set to 1000.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s
+            to return. If unspecified, defaults to 100. The
+            maximum allowed value is 1000. Values above 1000
+            are set to 1000.
 
-            If this field is negative, an ``INVALID_ARGUMENT`` error is
-            returned.
+            If this field is negative, an
+            ``INVALID_ARGUMENT`` error is returned.
         page_token (str):
             A page token
-            [ListDocumentsResponse.next_page_token][google.cloud.discoveryengine.v1alpha.ListDocumentsResponse.next_page_token],
+            `ListDocumentsResponse.next_page_token
+            <google.cloud.discoveryengine.v1alpha.ListDocumentsResponse.next_page_token>`__,
             received from a previous
-            [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
-            call. Provide this to retrieve the subsequent page.
+            `DocumentService.ListDocuments
+            <google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments>`__
+            call. Provide this to retrieve the subsequent
+            page.
 
-            When paginating, all other parameters provided to
-            [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
-            must match the call that provided the page token. Otherwise,
-            an ``INVALID_ARGUMENT`` error is returned.
+            When paginating, all other parameters provided
+            to `DocumentService.ListDocuments
+            <google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments>`__
+            must match the call that provided the page
+            token. Otherwise, an ``INVALID_ARGUMENT`` error
+            is returned.
     """
 
     parent: str = proto.Field(
@@ -120,18 +135,20 @@ class ListDocumentsRequest(proto.Message):
 
 class ListDocumentsResponse(proto.Message):
     r"""Response message for
-    [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments]
+    `DocumentService.ListDocuments
+    <google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments>`__
     method.
 
     Attributes:
         documents (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Document]):
-            The
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s.
+            The `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s.
         next_page_token (str):
             A token that can be sent as
-            [ListDocumentsRequest.page_token][google.cloud.discoveryengine.v1alpha.ListDocumentsRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            `ListDocumentsRequest.page_token
+            <google.cloud.discoveryengine.v1alpha.ListDocumentsRequest.page_token>`__
+            to retrieve the next page. If this field is
+            omitted, there are no subsequent pages.
     """
 
     @property
@@ -151,7 +168,8 @@ class ListDocumentsResponse(proto.Message):
 
 class CreateDocumentRequest(proto.Message):
     r"""Request message for
-    [DocumentService.CreateDocument][google.cloud.discoveryengine.v1alpha.DocumentService.CreateDocument]
+    `DocumentService.CreateDocument
+    <google.cloud.discoveryengine.v1alpha.DocumentService.CreateDocument>`__
     method.
 
     Attributes:
@@ -159,30 +177,36 @@ class CreateDocumentRequest(proto.Message):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         document (google.cloud.discoveryengine_v1alpha.types.Document):
-            Required. The
-            [Document][google.cloud.discoveryengine.v1alpha.Document] to
-            create.
+            Required. The `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            to create.
         document_id (str):
             Required. The ID to use for the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             which becomes the final component of the
-            [Document.name][google.cloud.discoveryengine.v1alpha.Document.name].
+            `Document.name
+            <google.cloud.discoveryengine.v1alpha.Document.name>`__.
 
-            If the caller does not have permission to create the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            If the caller does not have permission to create
+            the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
             This field must be unique among all
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s
-            with the same
-            [parent][google.cloud.discoveryengine.v1alpha.CreateDocumentRequest.parent].
-            Otherwise, an ``ALREADY_EXISTS`` error is returned.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s
+            with the same `parent
+            <google.cloud.discoveryengine.v1alpha.CreateDocumentRequest.parent>`__.
+            Otherwise, an ``ALREADY_EXISTS`` error is
+            returned.
 
-            This field must conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters. Otherwise, an
-            ``INVALID_ARGUMENT`` error is returned.
+            This field must conform to `RFC-1034
+            <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
+            Otherwise, an ``INVALID_ARGUMENT`` error is
+            returned.
     """
 
     parent: str = proto.Field(
@@ -202,29 +226,33 @@ class CreateDocumentRequest(proto.Message):
 
 class UpdateDocumentRequest(proto.Message):
     r"""Request message for
-    [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1alpha.DocumentService.UpdateDocument]
+    `DocumentService.UpdateDocument
+    <google.cloud.discoveryengine.v1alpha.DocumentService.UpdateDocument>`__
     method.
 
     Attributes:
         document (google.cloud.discoveryengine_v1alpha.types.Document):
             Required. The document to update/create.
 
-            If the caller does not have permission to update the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            If the caller does not have permission to update
+            the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
-            If the
-            [Document][google.cloud.discoveryengine.v1alpha.Document] to
-            update does not exist and
-            [allow_missing][google.cloud.discoveryengine.v1alpha.UpdateDocumentRequest.allow_missing]
+            If the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            to update does not exist and
+            `allow_missing
+            <google.cloud.discoveryengine.v1alpha.UpdateDocumentRequest.allow_missing>`__
             is not set, a ``NOT_FOUND`` error is returned.
         allow_missing (bool):
             If set to ``true`` and the
-            [Document][google.cloud.discoveryengine.v1alpha.Document] is
-            not found, a new
-            [Document][google.cloud.discoveryengine.v1alpha.Document] is
-            be created.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            is not found, a new `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            is be created.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
             imported 'document' to update. If not set, by
@@ -249,24 +277,28 @@ class UpdateDocumentRequest(proto.Message):
 
 class DeleteDocumentRequest(proto.Message):
     r"""Request message for
-    [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1alpha.DocumentService.DeleteDocument]
+    `DocumentService.DeleteDocument
+    <google.cloud.discoveryengine.v1alpha.DocumentService.DeleteDocument>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-            If the caller does not have permission to delete the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            If the caller does not have permission to delete
+            the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
-            If the
-            [Document][google.cloud.discoveryengine.v1alpha.Document] to
-            delete does not exist, a ``NOT_FOUND`` error is returned.
+            If the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            to delete does not exist, a ``NOT_FOUND`` error
+            is returned.
     """
 
     name: str = proto.Field(
@@ -277,24 +309,28 @@ class DeleteDocumentRequest(proto.Message):
 
 class GetProcessedDocumentRequest(proto.Message):
     r"""Request message for
-    [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
+    `DocumentService.GetDocument
+    <google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-            If the caller does not have permission to access the
-            [Document][google.cloud.discoveryengine.v1alpha.Document],
+            If the caller does not have permission to access
+            the `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__,
             regardless of whether or not it exists, a
             ``PERMISSION_DENIED`` error is returned.
 
-            If the requested
-            [Document][google.cloud.discoveryengine.v1alpha.Document]
-            does not exist, a ``NOT_FOUND`` error is returned.
+            If the requested `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__
+            does not exist, a ``NOT_FOUND`` error is
+            returned.
         processed_document_type (google.cloud.discoveryengine_v1alpha.types.GetProcessedDocumentRequest.ProcessedDocumentType):
             Required. What type of processing to return.
         processed_document_format (google.cloud.discoveryengine_v1alpha.types.GetProcessedDocumentRequest.ProcessedDocumentFormat):
@@ -354,21 +390,24 @@ class GetProcessedDocumentRequest(proto.Message):
 
 class BatchGetDocumentsMetadataRequest(proto.Message):
     r"""Request message for
-    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata]
+    `DocumentService.BatchGetDocumentsMetadata
+    <google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent branch resource name, such as
+            Required. The parent branch resource name, such
+            as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         matcher (google.cloud.discoveryengine_v1alpha.types.BatchGetDocumentsMetadataRequest.Matcher):
             Required. Matcher for the
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s.
     """
 
     class UrisMatcher(proto.Message):
-        r"""Matcher for the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s by exact
+        r"""Matcher for the `Document
+        <google.cloud.discoveryengine.v1alpha.Document>`__s by exact
         uris.
 
         Attributes:
@@ -382,9 +421,9 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
         )
 
     class Matcher(proto.Message):
-        r"""Matcher for the
-        [Document][google.cloud.discoveryengine.v1alpha.Document]s.
-        Currently supports matching by exact URIs.
+        r"""Matcher for the `Document
+        <google.cloud.discoveryengine.v1alpha.Document>`__s. Currently
+        supports matching by exact URIs.
 
 
         .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -416,35 +455,38 @@ class BatchGetDocumentsMetadataRequest(proto.Message):
 
 class BatchGetDocumentsMetadataResponse(proto.Message):
     r"""Response message for
-    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata]
+    `DocumentService.BatchGetDocumentsMetadata
+    <google.cloud.discoveryengine.v1alpha.DocumentService.BatchGetDocumentsMetadata>`__
     method.
 
     Attributes:
         documents_metadata (MutableSequence[google.cloud.discoveryengine_v1alpha.types.BatchGetDocumentsMetadataResponse.DocumentMetadata]):
             The metadata of the
-            [Document][google.cloud.discoveryengine.v1alpha.Document]s.
+            `Document
+            <google.cloud.discoveryengine.v1alpha.Document>`__s.
     """
 
     class State(proto.Enum):
         r"""The state of the
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
+        `Document <google.cloud.discoveryengine.v1alpha.Document>`__.
 
         Values:
             STATE_UNSPECIFIED (0):
                 Should never be set.
             INDEXED (1):
-                The
-                [Document][google.cloud.discoveryengine.v1alpha.Document] is
-                indexed.
+                The `Document
+                <google.cloud.discoveryengine.v1alpha.Document>`__
+                is indexed.
             NOT_IN_TARGET_SITE (2):
-                The
-                [Document][google.cloud.discoveryengine.v1alpha.Document] is
-                not indexed because its URI is not in the
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+                The `Document
+                <google.cloud.discoveryengine.v1alpha.Document>`__
+                is not indexed because its URI is not in the
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
             NOT_IN_INDEX (3):
-                The
-                [Document][google.cloud.discoveryengine.v1alpha.Document] is
-                not indexed.
+                The `Document
+                <google.cloud.discoveryengine.v1alpha.Document>`__
+                is not indexed.
         """
         STATE_UNSPECIFIED = 0
         INDEXED = 1
@@ -453,23 +495,25 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
 
     class DocumentMetadata(proto.Message):
         r"""The metadata of a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
+        `Document <google.cloud.discoveryengine.v1alpha.Document>`__.
 
         Attributes:
             matcher_value (google.cloud.discoveryengine_v1alpha.types.BatchGetDocumentsMetadataResponse.DocumentMetadata.MatcherValue):
-                The value of the matcher that was used to match the
-                [Document][google.cloud.discoveryengine.v1alpha.Document].
+                The value of the matcher that was used to match
+                the `Document
+                <google.cloud.discoveryengine.v1alpha.Document>`__.
             state (google.cloud.discoveryengine_v1alpha.types.BatchGetDocumentsMetadataResponse.State):
                 The state of the document.
             last_refreshed_time (google.protobuf.timestamp_pb2.Timestamp):
                 The timestamp of the last time the
-                [Document][google.cloud.discoveryengine.v1alpha.Document]
+                `Document
+                <google.cloud.discoveryengine.v1alpha.Document>`__
                 was last indexed.
         """
 
         class MatcherValue(proto.Message):
             r"""The value of the matcher that was used to match the
-            [Document][google.cloud.discoveryengine.v1alpha.Document].
+            `Document <google.cloud.discoveryengine.v1alpha.Document>`__.
 
 
             .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -477,7 +521,8 @@ class BatchGetDocumentsMetadataResponse(proto.Message):
             Attributes:
                 uri (str):
                     If match by URI, the URI of the
-                    [Document][google.cloud.discoveryengine.v1alpha.Document].
+                    `Document
+                    <google.cloud.discoveryengine.v1alpha.Document>`__.
 
                     This field is a member of `oneof`_ ``matcher_value``.
             """

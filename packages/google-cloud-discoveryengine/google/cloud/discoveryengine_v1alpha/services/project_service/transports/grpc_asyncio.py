@@ -121,7 +121,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     """gRPC AsyncIO backend transport for ProjectService.
 
     Service for operations on the
-    [Project][google.cloud.discoveryengine.v1alpha.Project].
+    `Project <google.cloud.discoveryengine.v1alpha.Project>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -357,7 +357,8 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     ) -> Callable[[project_service.GetProjectRequest], Awaitable[project.Project]]:
         r"""Return a callable for the get project method over gRPC.
 
-        Gets a [Project][google.cloud.discoveryengine.v1alpha.Project].
+        Gets a `Project
+        <google.cloud.discoveryengine.v1alpha.Project>`__.
         Returns NOT_FOUND when the project is not yet created.
 
         Returns:
@@ -386,13 +387,14 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     ]:
         r"""Return a callable for the provision project method over gRPC.
 
-        Provisions the project resource. During the process, related
-        systems will get prepared and initialized.
+        Provisions the project resource. During the
+        process, related systems will get prepared and
+        initialized.
 
         Caller must read the `Terms for data
-        use <https://cloud.google.com/retail/data-use-terms>`__, and
-        optionally specify in request to provide consent to that service
-        terms.
+        use <https://cloud.google.com/retail/data-use-terms>`__,
+        and optionally specify in request to provide consent to
+        that service terms.
 
         Returns:
             Callable[[~.ProvisionProjectRequest],
@@ -422,13 +424,13 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
 
         Updates service terms for this project.
 
-        This method can be used to retroactively accept the latest
-        terms.
+        This method can be used to retroactively accept the
+        latest terms.
 
         Terms available for update:
 
-        - `Terms for data
-          use <https://cloud.google.com/retail/data-use-terms>`__
+        * `Terms for data use
+        <https://cloud.google.com/retail/data-use-terms>`__
 
         Returns:
             Callable[[~.ReportConsentChangeRequest],

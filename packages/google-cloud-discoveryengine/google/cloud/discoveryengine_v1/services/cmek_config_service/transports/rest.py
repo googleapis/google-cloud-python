@@ -697,7 +697,8 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             Args:
                 request (~.cmek_config_service.DeleteCmekConfigRequest):
                     The request object. Request message for
-                [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+                `CmekConfigService.DeleteCmekConfig
+                <google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -995,7 +996,8 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             Args:
                 request (~.cmek_config_service.ListCmekConfigsRequest):
                     The request object. Request message for
-                [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+                `CmekConfigService.ListCmekConfigs
+                <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1008,7 +1010,8 @@ class CmekConfigServiceRestTransport(_BaseCmekConfigServiceRestTransport):
             Returns:
                 ~.cmek_config_service.ListCmekConfigsResponse:
                     Response message for
-                [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+                `CmekConfigService.ListCmekConfigs
+                <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
                 method.
 
             """

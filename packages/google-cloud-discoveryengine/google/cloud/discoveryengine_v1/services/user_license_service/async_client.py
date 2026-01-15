@@ -343,10 +343,11 @@ class UserLicenseServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.ListUserLicensesRequest, dict]]):
                 The request object. Request message for
-                [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+                `UserLicenseService.ListUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses>`__.
             parent (:class:`str`):
-                Required. The parent [UserStore][] resource name,
-                format:
+                Required. The parent [UserStore][]
+                resource name, format:
                 ``projects/{project}/locations/{location}/userStores/{user_store_id}``.
 
                 This corresponds to the ``parent`` field
@@ -363,10 +364,12 @@ class UserLicenseServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.user_license_service.pagers.ListUserLicensesAsyncPager:
                 Response message for
-                   [UserLicenseService.ListUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses].
+                `UserLicenseService.ListUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.ListUserLicenses>`__.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -480,7 +483,8 @@ class UserLicenseServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesRequest, dict]]):
                 The request object. Request message for
-                [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
+                `UserLicenseService.BatchUpdateUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -492,11 +496,15 @@ class UserLicenseServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesResponse` Response message for
-                   [UserLicenseService.BatchUpdateUserLicenses][google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.BatchUpdateUserLicensesResponse`
+                Response message for
+                `UserLicenseService.BatchUpdateUserLicenses
+                <google.cloud.discoveryengine.v1.UserLicenseService.BatchUpdateUserLicenses>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

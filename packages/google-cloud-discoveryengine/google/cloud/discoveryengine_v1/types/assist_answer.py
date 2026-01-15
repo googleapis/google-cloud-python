@@ -31,15 +31,18 @@ __protobuf__ = proto.module(
 
 class AssistAnswer(proto.Message):
     r"""AssistAnswer resource, main part of
-    [AssistResponse][google.cloud.discoveryengine.v1.AssistResponse].
+    `AssistResponse
+    <google.cloud.discoveryengine.v1.AssistResponse>`__.
 
     Attributes:
         name (str):
-            Immutable. Resource name of the ``AssistAnswer``. Format:
+            Immutable. Resource name of the
+            ``AssistAnswer``. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/sessions/{session}/assistAnswers/{assist_answer}``
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         state (google.cloud.discoveryengine_v1.types.AssistAnswer.State):
             State of the answer generation.
         replies (MutableSequence[google.cloud.discoveryengine_v1.types.AssistAnswer.Reply]):
@@ -246,8 +249,8 @@ class AssistantContent(proto.Message):
                 OUTCOME_OK (1):
                     Code execution completed successfully.
                 OUTCOME_FAILED (2):
-                    Code execution finished but with a failure. ``stderr``
-                    should contain the reason.
+                    Code execution finished but with a failure.
+                    ``stderr`` should contain the reason.
                 OUTCOME_DEADLINE_EXCEEDED (3):
                     Code execution ran for too long, and was
                     cancelled. There may or may not be a partial
@@ -409,10 +412,10 @@ class AssistantGroundedContent(proto.Message):
 
                         This field is a member of `oneof`_ ``_page_identifier``.
                     domain (str):
-                        Domain name from the document URI. Note that the ``uri``
-                        field may contain a URL that redirects to the actual
-                        website, in which case this will contain the domain name of
-                        the target site.
+                        Domain name from the document URI. Note that the
+                        ``uri`` field may contain a URL that redirects
+                        to the actual website, in which case this will
+                        contain the domain name of the target site.
 
                         This field is a member of `oneof`_ ``_domain``.
                 """

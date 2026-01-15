@@ -478,11 +478,11 @@ class Answer(proto.Message):
                         title (str):
                             Title.
                         snippet_info (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Answer.Step.Action.Observation.SearchResult.SnippetInfo]):
-                            If citation_type is DOCUMENT_LEVEL_CITATION, populate
-                            document level snippets.
+                            If citation_type is DOCUMENT_LEVEL_CITATION,
+                            populate document level snippets.
                         chunk_info (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Answer.Step.Action.Observation.SearchResult.ChunkInfo]):
-                            If citation_type is CHUNK_LEVEL_CITATION and chunk mode is
-                            on, populate chunk info.
+                            If citation_type is CHUNK_LEVEL_CITATION and
+                            chunk mode is on, populate chunk info.
                         struct_data (google.protobuf.struct_pb2.Struct):
                             Data representation.
                             The structured JSON data for the document.

@@ -117,7 +117,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
     """gRPC backend transport for SampleQueryService.
 
     Service for managing
-    [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s,
+    `SampleQuery
+    <google.cloud.discoveryengine.v1alpha.SampleQuery>`__s,
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -353,8 +354,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
     ]:
         r"""Return a callable for the get sample query method over gRPC.
 
-        Gets a
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
+        Gets a `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__.
 
         Returns:
             Callable[[~.GetSampleQueryRequest],
@@ -384,7 +385,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
         r"""Return a callable for the list sample queries method over gRPC.
 
         Gets a list of
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__s.
 
         Returns:
             Callable[[~.ListSampleQueriesRequest],
@@ -412,8 +414,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
     ]:
         r"""Return a callable for the create sample query method over gRPC.
 
-        Creates a
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]
+        Creates a `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__
 
         Returns:
             Callable[[~.CreateSampleQueryRequest],
@@ -441,8 +443,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
     ]:
         r"""Return a callable for the update sample query method over gRPC.
 
-        Updates a
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
+        Updates a `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__.
 
         Returns:
             Callable[[~.UpdateSampleQueryRequest],
@@ -468,8 +470,8 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
     ) -> Callable[[sample_query_service.DeleteSampleQueryRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete sample query method over gRPC.
 
-        Deletes a
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery].
+        Deletes a `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__.
 
         Returns:
             Callable[[~.DeleteSampleQueryRequest],
@@ -496,11 +498,13 @@ class SampleQueryServiceGrpcTransport(SampleQueryServiceTransport):
         r"""Return a callable for the import sample queries method over gRPC.
 
         Bulk import of multiple
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__s.
         Sample queries that already exist may be deleted.
 
         Note: It is possible for a subset of the
-        [SampleQuery][google.cloud.discoveryengine.v1alpha.SampleQuery]s
+        `SampleQuery
+        <google.cloud.discoveryengine.v1alpha.SampleQuery>`__s
         to be successfully imported.
 
         Returns:

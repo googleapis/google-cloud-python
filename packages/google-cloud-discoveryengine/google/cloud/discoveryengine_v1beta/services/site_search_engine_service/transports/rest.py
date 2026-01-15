@@ -1318,7 +1318,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.BatchCreateTargetSitesRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites]
+                `SiteSearchEngineService.BatchCreateTargetSites
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1474,7 +1475,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.BatchVerifyTargetSitesRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites]
+                `SiteSearchEngineService.BatchVerifyTargetSites
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1630,7 +1632,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.CreateSitemapRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.CreateSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap]
+                `SiteSearchEngineService.CreateSitemap
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateSitemap>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1786,7 +1789,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.CreateTargetSiteRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite]
+                `SiteSearchEngineService.CreateTargetSite
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1943,7 +1947,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.DeleteSitemapRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.DeleteSitemap][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap]
+                `SiteSearchEngineService.DeleteSitemap
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteSitemap>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2093,7 +2098,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.DeleteTargetSiteRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite]
+                `SiteSearchEngineService.DeleteTargetSite
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2249,7 +2255,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 Args:
                     request (~.site_search_engine_service.DisableAdvancedSiteSearchRequest):
                         The request object. Request message for
-                    [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                    `SiteSearchEngineService.DisableAdvancedSiteSearch
+                    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -2406,7 +2413,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 Args:
                     request (~.site_search_engine_service.EnableAdvancedSiteSearchRequest):
                         The request object. Request message for
-                    [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                    `SiteSearchEngineService.EnableAdvancedSiteSearch
+                    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -2564,7 +2572,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 Args:
                     request (~.site_search_engine_service.FetchDomainVerificationStatusRequest):
                         The request object. Request message for
-                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus]
+                    `SiteSearchEngineService.FetchDomainVerificationStatus
+                    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -2577,7 +2586,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
                 Returns:
                     ~.site_search_engine_service.FetchDomainVerificationStatusResponse:
                         Response message for
-                    [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus]
+                    `SiteSearchEngineService.FetchDomainVerificationStatus
+                    <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus>`__
                     method.
 
             """
@@ -2725,7 +2735,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.FetchSitemapsRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps]
+                `SiteSearchEngineService.FetchSitemaps
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2738,7 +2749,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Returns:
                 ~.site_search_engine_service.FetchSitemapsResponse:
                     Response message for
-                [SiteSearchEngineService.FetchSitemaps][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps]
+                `SiteSearchEngineService.FetchSitemaps
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchSitemaps>`__
                 method.
 
             """
@@ -2881,7 +2893,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.GetSiteSearchEngineRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine]
+                `SiteSearchEngineService.GetSiteSearchEngine
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3038,7 +3051,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.GetTargetSiteRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite]
+                `SiteSearchEngineService.GetTargetSite
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3189,7 +3203,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.ListTargetSitesRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites]
+                `SiteSearchEngineService.ListTargetSites
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3202,7 +3217,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Returns:
                 ~.site_search_engine_service.ListTargetSitesResponse:
                     Response message for
-                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites]
+                `SiteSearchEngineService.ListTargetSites
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites>`__
                 method.
 
             """
@@ -3348,7 +3364,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.RecrawlUrisRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris]
+                `SiteSearchEngineService.RecrawlUris
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -3502,7 +3519,8 @@ class SiteSearchEngineServiceRestTransport(_BaseSiteSearchEngineServiceRestTrans
             Args:
                 request (~.site_search_engine_service.UpdateTargetSiteRequest):
                     The request object. Request message for
-                [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite]
+                `SiteSearchEngineService.UpdateTargetSite
+                <google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

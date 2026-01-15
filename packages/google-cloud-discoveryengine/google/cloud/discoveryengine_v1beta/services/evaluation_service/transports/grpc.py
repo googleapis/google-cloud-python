@@ -113,7 +113,8 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
     """gRPC backend transport for EvaluationService.
 
     Service for managing
-    [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation]s,
+    `Evaluation
+    <google.cloud.discoveryengine.v1beta.Evaluation>`__s,
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -347,8 +348,8 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
     ) -> Callable[[evaluation_service.GetEvaluationRequest], evaluation.Evaluation]:
         r"""Return a callable for the get evaluation method over gRPC.
 
-        Gets a
-        [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation].
+        Gets a `Evaluation
+        <google.cloud.discoveryengine.v1beta.Evaluation>`__.
 
         Returns:
             Callable[[~.GetEvaluationRequest],
@@ -378,7 +379,8 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
         r"""Return a callable for the list evaluations method over gRPC.
 
         Gets a list of
-        [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation]s.
+        `Evaluation
+        <google.cloud.discoveryengine.v1beta.Evaluation>`__s.
 
         Returns:
             Callable[[~.ListEvaluationsRequest],
@@ -406,11 +408,10 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
     ]:
         r"""Return a callable for the create evaluation method over gRPC.
 
-        Creates a
-        [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation].
-
-        Upon creation, the evaluation will be automatically triggered
-        and begin execution.
+        Creates a `Evaluation
+        <google.cloud.discoveryengine.v1beta.Evaluation>`__.
+        Upon creation, the evaluation will be automatically
+        triggered and begin execution.
 
         Returns:
             Callable[[~.CreateEvaluationRequest],
@@ -440,7 +441,8 @@ class EvaluationServiceGrpcTransport(EvaluationServiceTransport):
         r"""Return a callable for the list evaluation results method over gRPC.
 
         Gets a list of results for a given a
-        [Evaluation][google.cloud.discoveryengine.v1beta.Evaluation].
+        `Evaluation
+        <google.cloud.discoveryengine.v1beta.Evaluation>`__.
 
         Returns:
             Callable[[~.ListEvaluationResultsRequest],

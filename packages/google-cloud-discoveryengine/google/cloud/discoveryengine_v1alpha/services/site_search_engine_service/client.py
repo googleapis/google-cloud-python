@@ -785,7 +785,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_search_engine.SiteSearchEngine:
         r"""Gets the
-        [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine].
+        `SiteSearchEngine
+        <google.cloud.discoveryengine.v1alpha.SiteSearchEngine>`__.
 
         .. code-block:: python
 
@@ -816,17 +817,20 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetSiteSearchEngineRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.GetSiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine]
+                `SiteSearchEngineService.GetSiteSearchEngine
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetSiteSearchEngine>`__
                 method.
             name (str):
                 Required. Resource name of
-                [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine],
+                `SiteSearchEngine
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngine>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-                If the caller does not have permission to access the
-                [SiteSearchEngine], regardless of whether or not it
-                exists, a PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the [SiteSearchEngine],
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -907,8 +911,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        r"""Creates a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         .. code-block:: python
 
@@ -947,11 +951,13 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.CreateTargetSiteRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.CreateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite]
+                `SiteSearchEngineService.CreateTargetSite
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.CreateTargetSite>`__
                 method.
             parent (str):
                 Required. Parent resource name of
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
@@ -959,8 +965,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
-                Required. The
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
+                Required. The `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__
                 to create.
 
                 This corresponds to the ``target_site`` field
@@ -976,9 +982,10 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`
                 A target site for the SiteSearchEngine.
 
@@ -1049,8 +1056,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in
+        r"""Creates `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__ in
         a batch.
 
         .. code-block:: python
@@ -1091,7 +1098,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+                `SiteSearchEngineService.BatchCreateTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1103,11 +1111,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesResponse` Response message for
-                   [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesResponse`
+                Response message for
+                `SiteSearchEngineService.BatchCreateTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1163,8 +1175,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> site_search_engine.TargetSite:
-        r"""Gets a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        r"""Gets a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         .. code-block:: python
 
@@ -1195,22 +1207,27 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetTargetSiteRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.GetTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite]
+                `SiteSearchEngineService.GetTargetSite
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetTargetSite>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-                If the caller does not have permission to access the
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
-                does not exist, a NOT_FOUND error is returned.
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1286,8 +1303,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Updates a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        r"""Updates a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         .. code-block:: python
 
@@ -1325,18 +1342,21 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateTargetSiteRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.UpdateTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite]
+                `SiteSearchEngineService.UpdateTargetSite
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.UpdateTargetSite>`__
                 method.
             target_site (google.cloud.discoveryengine_v1alpha.types.TargetSite):
-                Required. The target site to update. If the caller does
-                not have permission to update the
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                Required. The target site to update.
+                If the caller does not have permission
+                to update the `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
-                If the
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
-                to update does not exist, a NOT_FOUND error is returned.
+                If the `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``target_site`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1351,9 +1371,10 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.discoveryengine_v1alpha.types.TargetSite`
                 A target site for the SiteSearchEngine.
 
@@ -1425,8 +1446,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        r"""Deletes a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         .. code-block:: python
 
@@ -1461,22 +1482,27 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.DeleteTargetSiteRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.DeleteTargetSite][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite]
+                `SiteSearchEngineService.DeleteTargetSite
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DeleteTargetSite>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}``.
 
-                If the caller does not have permission to access the
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]
-                does not exist, a NOT_FOUND error is returned.
+                `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1491,18 +1517,21 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1571,7 +1600,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListTargetSitesPager:
         r"""Gets a list of
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s.
+        `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__s.
 
         .. code-block:: python
 
@@ -1603,17 +1633,20 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListTargetSitesRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
+                `SiteSearchEngineService.ListTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites>`__
                 method.
             parent (str):
-                Required. The parent site search engine resource name,
-                such as
+                Required. The parent site search engine
+                resource name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine``.
 
-                If the caller does not have permission to list
-                [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s
-                under this site search engine, regardless of whether or
-                not this branch exists, a PERMISSION_DENIED error is
+                If the caller does not have permission
+                to list `TargetSite
+                <google.cloud.discoveryengine.v1alpha.TargetSite>`__s
+                under this site search engine,
+                regardless of whether or not this branch
+                exists, a PERMISSION_DENIED error is
                 returned.
 
                 This corresponds to the ``parent`` field
@@ -1630,11 +1663,13 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Returns:
             google.cloud.discoveryengine_v1alpha.services.site_search_engine_service.pagers.ListTargetSitesPager:
                 Response message for
-                   [SiteSearchEngineService.ListTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites]
-                   method.
+                `SiteSearchEngineService.ListTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.ListTargetSites>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1740,7 +1775,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.EnableAdvancedSiteSearchRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
+                `SiteSearchEngineService.EnableAdvancedSiteSearch
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1752,11 +1788,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.EnableAdvancedSiteSearchResponse` Response message for
-                   [SiteSearchEngineService.EnableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.EnableAdvancedSiteSearchResponse`
+                Response message for
+                `SiteSearchEngineService.EnableAdvancedSiteSearch
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.EnableAdvancedSiteSearch>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1851,7 +1891,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.DisableAdvancedSiteSearchRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
+                `SiteSearchEngineService.DisableAdvancedSiteSearch
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1863,11 +1904,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.DisableAdvancedSiteSearchResponse` Response message for
-                   [SiteSearchEngineService.DisableAdvancedSiteSearch][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.DisableAdvancedSiteSearchResponse`
+                Response message for
+                `SiteSearchEngineService.DisableAdvancedSiteSearch
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.DisableAdvancedSiteSearch>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -1962,7 +2007,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.RecrawlUrisRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.RecrawlUris]
+                `SiteSearchEngineService.RecrawlUris
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.RecrawlUris>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -1974,11 +2020,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.RecrawlUrisResponse` Response message for
-                   [SiteSearchEngineService.RecrawlUris][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.RecrawlUris]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.RecrawlUrisResponse`
+                Response message for
+                `SiteSearchEngineService.RecrawlUris
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.RecrawlUris>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2068,7 +2118,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.BatchVerifyTargetSitesRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
+                `SiteSearchEngineService.BatchVerifyTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2080,11 +2131,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.BatchVerifyTargetSitesResponse` Response message for
-                   [SiteSearchEngineService.BatchVerifyTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.BatchVerifyTargetSitesResponse`
+                Response message for
+                `SiteSearchEngineService.BatchVerifyTargetSites
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchVerifyTargetSites>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2139,9 +2194,10 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.FetchDomainVerificationStatusPager:
-        r"""Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        r"""Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         .. code-block:: python
 
@@ -2173,7 +2229,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.FetchDomainVerificationStatusRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
+                `SiteSearchEngineService.FetchDomainVerificationStatus
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2186,11 +2243,13 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Returns:
             google.cloud.discoveryengine_v1alpha.services.site_search_engine_service.pagers.FetchDomainVerificationStatusPager:
                 Response message for
-                   [SiteSearchEngineService.FetchDomainVerificationStatus][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus]
-                   method.
+                `SiteSearchEngineService.FetchDomainVerificationStatus
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.FetchDomainVerificationStatus>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2288,7 +2347,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.SetUriPatternDocumentDataRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
+                `SiteSearchEngineService.SetUriPatternDocumentData
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2300,11 +2360,15 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.SetUriPatternDocumentDataResponse` Response message for
-                   [SiteSearchEngineService.SetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.SetUriPatternDocumentDataResponse`
+                Response message for
+                `SiteSearchEngineService.SetUriPatternDocumentData
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.SetUriPatternDocumentData>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -2395,7 +2459,8 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetUriPatternDocumentDataRequest, dict]):
                 The request object. Request message for
-                [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
+                `SiteSearchEngineService.GetUriPatternDocumentData
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -2408,8 +2473,9 @@ class SiteSearchEngineServiceClient(metaclass=SiteSearchEngineServiceClientMeta)
         Returns:
             google.cloud.discoveryengine_v1alpha.types.GetUriPatternDocumentDataResponse:
                 Response message for
-                   [SiteSearchEngineService.GetUriPatternDocumentData][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData]
-                   method.
+                `SiteSearchEngineService.GetUriPatternDocumentData
+                <google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.GetUriPatternDocumentData>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

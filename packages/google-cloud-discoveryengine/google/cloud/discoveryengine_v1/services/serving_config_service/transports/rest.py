@@ -225,7 +225,8 @@ class ServingConfigServiceRestTransport(_BaseServingConfigServiceRestTransport):
     """REST backend synchronous transport for ServingConfigService.
 
     Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig].
+    `ServingConfig
+    <google.cloud.discoveryengine.v1.ServingConfig>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

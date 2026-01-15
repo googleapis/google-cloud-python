@@ -32,13 +32,15 @@ __protobuf__ = proto.module(
 
 class GetProjectRequest(proto.Message):
     r"""Request message for
-    [ProjectService.GetProject][google.cloud.discoveryengine.v1alpha.ProjectService.GetProject]
+    `ProjectService.GetProject
+    <google.cloud.discoveryengine.v1alpha.ProjectService.GetProject>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of a
-            [Project][google.cloud.discoveryengine.v1alpha.Project],
+            `Project
+            <google.cloud.discoveryengine.v1alpha.Project>`__,
             such as ``projects/{project_id_or_number}``.
     """
 
@@ -50,25 +52,30 @@ class GetProjectRequest(proto.Message):
 
 class ProvisionProjectRequest(proto.Message):
     r"""Request for
-    [ProjectService.ProvisionProject][google.cloud.discoveryengine.v1alpha.ProjectService.ProvisionProject]
+    `ProjectService.ProvisionProject
+    <google.cloud.discoveryengine.v1alpha.ProjectService.ProvisionProject>`__
     method.
 
     Attributes:
         name (str):
             Required. Full resource name of a
-            [Project][google.cloud.discoveryengine.v1alpha.Project],
+            `Project
+            <google.cloud.discoveryengine.v1alpha.Project>`__,
             such as ``projects/{project_id_or_number}``.
         accept_data_use_terms (bool):
-            Required. Set to ``true`` to specify that caller has read
-            and would like to give consent to the `Terms for data
-            use <https://cloud.google.com/retail/data-use-terms>`__.
+            Required. Set to ``true`` to specify that caller
+            has read and would like to give consent to the
+            `Terms for data use
+            <https://cloud.google.com/retail/data-use-terms>`__.
         data_use_terms_version (str):
             Required. The version of the `Terms for data
-            use <https://cloud.google.com/retail/data-use-terms>`__ that
-            caller has read and would like to give consent to.
+            use
+            <https://cloud.google.com/retail/data-use-terms>`__
+            that caller has read and would like to give
+            consent to.
 
-            Acceptable version is ``2022-11-23``, and this may change
-            over time.
+            Acceptable version is ``2022-11-23``, and this
+            may change over time.
     """
 
     name: str = proto.Field(
@@ -99,17 +106,20 @@ class ReportConsentChangeRequest(proto.Message):
             At this moment, only accept action is supported.
         project (str):
             Required. Full resource name of a
-            [Project][google.cloud.discoveryengine.v1alpha.Project],
+            `Project
+            <google.cloud.discoveryengine.v1alpha.Project>`__,
             such as ``projects/{project_id_or_number}``.
         service_term_id (str):
-            Required. The unique identifier of the terms of service to
-            update. Available term ids:
+            Required. The unique identifier of the terms of
+            service to update. Available term ids:
 
-            - ``GA_DATA_USE_TERMS``: `Terms for data
-              use <https://cloud.google.com/retail/data-use-terms>`__.
-              When using this service term id, the acceptable
-              [service_term_version][google.cloud.discoveryengine.v1alpha.ReportConsentChangeRequest.service_term_version]
-              to provide is ``2022-11-23``.
+            * ``GA_DATA_USE_TERMS``: `Terms for data
+            use
+            <https://cloud.google.com/retail/data-use-terms>`__.
+            When using this service term id, the acceptable
+            `service_term_version
+            <google.cloud.discoveryengine.v1alpha.ReportConsentChangeRequest.service_term_version>`__
+            to provide is ``2022-11-23``.
         service_term_version (str):
             Required. The version string of the terms of
             service to update.

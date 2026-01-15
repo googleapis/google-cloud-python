@@ -123,11 +123,13 @@ class Session(proto.Message):
                 call) happened in this turn.
             detailed_answer (google.cloud.discoveryengine_v1alpha.types.Answer):
                 Output only. In
-                [ConversationalSearchService.GetSession][google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetSession]
+                `ConversationalSearchService.GetSession
+                <google.cloud.discoveryengine.v1alpha.ConversationalSearchService.GetSession>`__
                 API, if
-                [GetSessionRequest.include_answer_details][google.cloud.discoveryengine.v1alpha.GetSessionRequest.include_answer_details]
-                is set to true, this field will be populated when getting
-                answer query session.
+                `GetSessionRequest.include_answer_details
+                <google.cloud.discoveryengine.v1alpha.GetSessionRequest.include_answer_details>`__
+                is set to true, this field will be populated
+                when getting answer query session.
             query_config (MutableMapping[str, str]):
                 Optional. Represents metadata related to the
                 query config, for example LLM model and version
@@ -486,21 +488,26 @@ class FileMetadata(proto.Message):
             used.
         download_uri (str):
             Output only. The
-            [AssistantService.DownloadSessionFile][google.cloud.discoveryengine.v1alpha.AssistantService.DownloadSessionFile]
-            URL to download the file. This URL will need the same
-            credentials as
-            [AssistantService.ListSessionFileMetadata][google.cloud.discoveryengine.v1alpha.AssistantService.ListSessionFileMetadata]
+            `AssistantService.DownloadSessionFile
+            <google.cloud.discoveryengine.v1alpha.AssistantService.DownloadSessionFile>`__
+            URL to download the file. This URL will need the
+            same credentials as
+            `AssistantService.ListSessionFileMetadata
+            <google.cloud.discoveryengine.v1alpha.AssistantService.ListSessionFileMetadata>`__
             method and will provide the resource.
         file_origin_type (google.cloud.discoveryengine_v1alpha.types.FileOriginType):
             Optional. The origin of the file.
         views (MutableMapping[str, google.cloud.discoveryengine_v1alpha.types.FileView]):
-            Output only. Alternate views of this file object. Each file
-            view is attached to a specific role. Possible example keys:
+            Output only. Alternate views of this file
+            object. Each file view is attached to a specific
+            role. Possible example keys:
 
             - "thumbnail"
-            - "mobile_thumbnail"
+              - "mobile_thumbnail"
+
             - "clip"
-            - "summary"
+              - "summary"
+
             - "translation".
     """
 

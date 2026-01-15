@@ -37,20 +37,24 @@ class Chunk(proto.Message):
 
     Attributes:
         name (str):
-            The full resource name of the chunk. Format:
+            The full resource name of the chunk.
+            Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document_id}/chunks/{chunk_id}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         id (str):
             Unique chunk ID of the current chunk.
         content (str):
             Content is a string from a document (parsed
             content).
         relevance_score (float):
-            Output only. Represents the relevance score based on
-            similarity. Higher score indicates higher chunk relevance.
-            The score is in range [-1.0, 1.0]. Only populated on
+            Output only. Represents the relevance score
+            based on similarity. Higher score indicates
+            higher chunk relevance. The score is in range
+            [-1.0, 1.0].
+            Only populated on
             [SearchService.SearchResponse][].
 
             This field is a member of `oneof`_ ``_relevance_score``.
@@ -58,8 +62,9 @@ class Chunk(proto.Message):
             Metadata of the document from the current
             chunk.
         derived_struct_data (google.protobuf.struct_pb2.Struct):
-            Output only. This field is OUTPUT_ONLY. It contains derived
-            data that are not in the original input document.
+            Output only. This field is OUTPUT_ONLY.
+            It contains derived data that are not in the
+            original input document.
         page_span (google.cloud.discoveryengine_v1alpha.types.Chunk.PageSpan):
             Page span of the chunk.
         chunk_metadata (google.cloud.discoveryengine_v1alpha.types.Chunk.ChunkMetadata):
@@ -76,10 +81,11 @@ class Chunk(proto.Message):
             title (str):
                 Title of the document.
             struct_data (google.protobuf.struct_pb2.Struct):
-                Data representation. The structured JSON data for the
-                document. It should conform to the registered
-                [Schema][google.cloud.discoveryengine.v1alpha.Schema] or an
-                ``INVALID_ARGUMENT`` error is thrown.
+                Data representation.
+                The structured JSON data for the document. It
+                should conform to the registered `Schema
+                <google.cloud.discoveryengine.v1alpha.Schema>`__
+                or an ``INVALID_ARGUMENT`` error is thrown.
         """
 
         uri: str = proto.Field(
@@ -117,23 +123,28 @@ class Chunk(proto.Message):
 
     class ChunkMetadata(proto.Message):
         r"""Metadata of the current chunk. This field is only populated on
-        [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+        `SearchService.Search
+        <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
         API.
 
         Attributes:
             previous_chunks (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Chunk]):
-                The previous chunks of the current chunk. The number is
-                controlled by
-                [SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks].
+                The previous chunks of the current chunk. The
+                number is controlled by
+                `SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks
+                <google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_previous_chunks>`__.
                 This field is only populated on
-                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
                 API.
             next_chunks (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Chunk]):
-                The next chunks of the current chunk. The number is
-                controlled by
-                [SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks].
+                The next chunks of the current chunk. The number
+                is controlled by
+                `SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks
+                <google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.ChunkSpec.num_next_chunks>`__.
                 This field is only populated on
-                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
                 API.
         """
 

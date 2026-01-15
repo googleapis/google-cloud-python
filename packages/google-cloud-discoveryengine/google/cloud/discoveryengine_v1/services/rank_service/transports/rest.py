@@ -335,7 +335,8 @@ class RankServiceRestTransport(_BaseRankServiceRestTransport):
             Args:
                 request (~.rank_service.RankRequest):
                     The request object. Request message for
-                [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1.RankService.Rank>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -348,7 +349,8 @@ class RankServiceRestTransport(_BaseRankServiceRestTransport):
             Returns:
                 ~.rank_service.RankResponse:
                     Response message for
-                [RankService.Rank][google.cloud.discoveryengine.v1.RankService.Rank]
+                `RankService.Rank
+                <google.cloud.discoveryengine.v1.RankService.Rank>`__
                 method.
 
             """

@@ -66,14 +66,16 @@ class GetCmekConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig],
+            `CmekConfig
+            <google.cloud.discoveryengine.v1.CmekConfig>`__,
             such as ``projects/*/locations/*/cmekConfig`` or
             ``projects/*/locations/*/cmekConfigs/*``.
 
-            If the caller does not have permission to access the
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `CmekConfig
+            <google.cloud.discoveryengine.v1.CmekConfig>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
     """
 
     name: str = proto.Field(
@@ -87,8 +89,8 @@ class SingleRegionKey(proto.Message):
 
     Attributes:
         kms_key (str):
-            Required. Single-regional kms key resource name which will
-            be used to encrypt resources
+            Required. Single-regional kms key resource name
+            which will be used to encrypt resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
     """
 
@@ -105,15 +107,17 @@ class CmekConfig(proto.Message):
     Attributes:
         name (str):
             Required. The name of the CmekConfig of the form
-            ``projects/{project}/locations/{location}/cmekConfig`` or
+            ``projects/{project}/locations/{location}/cmekConfig``
+            or
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
         kms_key (str):
-            KMS key resource name which will be used to encrypt
-            resources
+            KMS key resource name which will be used to
+            encrypt resources
             ``projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}``.
         kms_key_version (str):
-            KMS key version resource name which will be used to encrypt
-            resources ``<kms_key>/cryptoKeyVersions/{keyVersion}``.
+            KMS key version resource name which will be used
+            to encrypt resources
+            ``<kms_key>/cryptoKeyVersions/{keyVersion}``.
         state (google.cloud.discoveryengine_v1.types.CmekConfig.State):
             Output only. The states of the CmekConfig.
         is_default (bool):
@@ -223,7 +227,8 @@ class CmekConfig(proto.Message):
 
 class UpdateCmekConfigMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [CmekConfigService.UpdateCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.UpdateCmekConfig]
+    `CmekConfigService.UpdateCmekConfig
+    <google.cloud.discoveryengine.v1.CmekConfigService.UpdateCmekConfig>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 
@@ -249,18 +254,22 @@ class UpdateCmekConfigMetadata(proto.Message):
 
 class ListCmekConfigsRequest(proto.Message):
     r"""Request message for
-    [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+    `CmekConfigService.ListCmekConfigs
+    <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent location resource name, such as
+            Required. The parent location resource name,
+            such as
             ``projects/{project}/locations/{location}``.
 
             If the caller does not have permission to list
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s
-            under this location, regardless of whether or not a
-            CmekConfig exists, a PERMISSION_DENIED error is returned.
+            `CmekConfig
+            <google.cloud.discoveryengine.v1.CmekConfig>`__s
+            under this location, regardless of whether or
+            not a CmekConfig exists, a PERMISSION_DENIED
+            error is returned.
     """
 
     parent: str = proto.Field(
@@ -271,13 +280,15 @@ class ListCmekConfigsRequest(proto.Message):
 
 class ListCmekConfigsResponse(proto.Message):
     r"""Response message for
-    [CmekConfigService.ListCmekConfigs][google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs]
+    `CmekConfigService.ListCmekConfigs
+    <google.cloud.discoveryengine.v1.CmekConfigService.ListCmekConfigs>`__
     method.
 
     Attributes:
         cmek_configs (MutableSequence[google.cloud.discoveryengine_v1.types.CmekConfig]):
             All the customer's
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig]s.
+            `CmekConfig
+            <google.cloud.discoveryengine.v1.CmekConfig>`__s.
     """
 
     cmek_configs: MutableSequence["CmekConfig"] = proto.RepeatedField(
@@ -289,14 +300,16 @@ class ListCmekConfigsResponse(proto.Message):
 
 class DeleteCmekConfigRequest(proto.Message):
     r"""Request message for
-    [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+    `CmekConfigService.DeleteCmekConfig
+    <google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig>`__
     method.
 
     Attributes:
         name (str):
             Required. The resource name of the
-            [CmekConfig][google.cloud.discoveryengine.v1.CmekConfig] to
-            delete, such as
+            `CmekConfig
+            <google.cloud.discoveryengine.v1.CmekConfig>`__
+            to delete, such as
             ``projects/{project}/locations/{location}/cmekConfigs/{cmek_config}``.
     """
 
@@ -308,7 +321,8 @@ class DeleteCmekConfigRequest(proto.Message):
 
 class DeleteCmekConfigMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [CmekConfigService.DeleteCmekConfig][google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig]
+    `CmekConfigService.DeleteCmekConfig
+    <google.cloud.discoveryengine.v1.CmekConfigService.DeleteCmekConfig>`__
     operation. This will be returned by the
     google.longrunning.Operation.metadata field.
 

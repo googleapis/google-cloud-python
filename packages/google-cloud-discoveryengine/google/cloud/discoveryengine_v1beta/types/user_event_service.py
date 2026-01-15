@@ -37,17 +37,22 @@ class WriteUserEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent resource name. If the write user event
-            action is applied in
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
+            Required. The parent resource name.
+            If the write user event action is applied in
+            `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__
             level, the format is:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
-            If the write user event action is applied in [Location][]
-            level, for example, the event with
-            [Document][google.cloud.discoveryengine.v1beta.Document]
-            across multiple
-            [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
-            the format is: ``projects/{project}/locations/{location}``.
+            If the write user event action is applied in
+            [Location][] level, for example, the event with
+            `Document
+            <google.cloud.discoveryengine.v1beta.Document>`__
+            across multiple `DataStore
+            <google.cloud.discoveryengine.v1beta.DataStore>`__,
+            the format is:
+
+            ``projects/{project}/locations/{location}``.
         user_event (google.cloud.discoveryengine_v1beta.types.UserEvent):
             Required. User event to write.
 
@@ -81,7 +86,8 @@ class CollectUserEventRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The parent DataStore resource name, such as
+            Required. The parent DataStore resource name,
+            such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         user_event (str):
             Required. URL encoded UserEvent proto with a

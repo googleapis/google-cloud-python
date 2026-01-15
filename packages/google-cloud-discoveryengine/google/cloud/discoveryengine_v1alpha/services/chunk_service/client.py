@@ -111,8 +111,8 @@ class ChunkServiceClientMeta(type):
 
 class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
     """Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__
+    information of the customer's unstructured data.
     """
 
     @staticmethod
@@ -771,8 +771,8 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> chunk.Chunk:
-        r"""Gets a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
+        r"""Gets a `Document
+        <google.cloud.discoveryengine.v1alpha.Document>`__.
 
         .. code-block:: python
 
@@ -803,22 +803,27 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetChunkRequest, dict]):
                 The request object. Request message for
-                [ChunkService.GetChunk][google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk]
+                `ChunkService.GetChunk
+                <google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk],
+                `Chunk
+                <google.cloud.discoveryengine.v1alpha.Chunk>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}``.
 
-                If the caller does not have permission to access the
-                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                If the caller does not have permission
+                to access the `Chunk
+                <google.cloud.discoveryengine.v1alpha.Chunk>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
-                If the requested
-                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] does
-                not exist, a ``NOT_FOUND`` error is returned.
+                If the requested `Chunk
+                <google.cloud.discoveryengine.v1alpha.Chunk>`__
+                does not exist, a ``NOT_FOUND`` error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -893,8 +898,8 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListChunksPager:
-        r"""Gets a list of
-        [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s.
+        r"""Gets a list of `Chunk
+        <google.cloud.discoveryengine.v1alpha.Chunk>`__s.
 
         .. code-block:: python
 
@@ -926,17 +931,20 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListChunksRequest, dict]):
                 The request object. Request message for
-                [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
+                `ChunkService.ListChunks
+                <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
                 method.
             parent (str):
-                Required. The parent document resource name, such as
+                Required. The parent document resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}``.
 
-                If the caller does not have permission to list
-                [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s
-                under this document, regardless of whether or not this
-                document exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                If the caller does not have permission
+                to list `Chunk
+                <google.cloud.discoveryengine.v1alpha.Chunk>`__s
+                under this document, regardless of
+                whether or not this document exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -952,11 +960,13 @@ class ChunkServiceClient(metaclass=ChunkServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.chunk_service.pagers.ListChunksPager:
                 Response message for
-                   [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
-                   method.
+                `ChunkService.ListChunks
+                <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

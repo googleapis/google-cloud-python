@@ -125,7 +125,7 @@ class DataStoreServiceClientMeta(type):
 
 class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
     """Service for managing
-    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+    `DataStore <google.cloud.discoveryengine.v1alpha.DataStore>`__
     configuration.
     """
 
@@ -833,14 +833,15 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-
+        r"""Creates a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1alpha.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine] needs to
-        be created separately.
+        `Documents
+        <google.cloud.discoveryengine.v1alpha.Document>`__. To
+        serve these documents for Search, or Recommendation use
+        case, an `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__ needs
+        to be created separately.
 
         .. code-block:: python
 
@@ -880,18 +881,20 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.CreateDataStoreRequest, dict]):
                 The request object. Request for
-                [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore]
+                `DataStoreService.CreateDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.CreateDataStore>`__
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             data_store (google.cloud.discoveryengine_v1alpha.types.DataStore):
-                Required. The
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                Required. The `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
                 to create.
 
                 This corresponds to the ``data_store`` field
@@ -899,15 +902,19 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
                 should not be set.
             data_store_id (str):
                 Required. The ID to use for the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                which will become the final component of the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]'s
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
+                which will become the final component of
+                the
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__'s
                 resource name.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an INVALID_ARGUMENT error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                INVALID_ARGUMENT error is returned.
 
                 This corresponds to the ``data_store_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -922,12 +929,13 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.discoveryengine_v1alpha.types.DataStore`
-                DataStore captures global settings and configs at the
-                DataStore level.
+                DataStore captures global settings and
+                configs at the DataStore level.
 
         """
         # Create or coerce a protobuf request object.
@@ -997,8 +1005,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> data_store.DataStore:
-        r"""Gets a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        r"""Gets a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
 
         .. code-block:: python
 
@@ -1029,22 +1037,27 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetDataStoreRequest, dict]):
                 The request object. Request message for
-                [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore]
+                `DataStoreService.GetDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.GetDataStore>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to access the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                does not exist, a NOT_FOUND error is returned.
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1118,8 +1131,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListDataStoresPager:
-        r"""Lists all the
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
+        r"""Lists all the `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__s
         associated with the project.
 
         .. code-block:: python
@@ -1152,17 +1165,20 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListDataStoresRequest, dict]):
                 The request object. Request message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores>`__
                 method.
             parent (str):
-                Required. The parent branch resource name, such as
+                Required. The parent branch resource
+                name, such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
-                If the caller does not have permission to list
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
-                under this location, regardless of whether or not this
-                data store exists, a PERMISSION_DENIED error is
-                returned.
+                If the caller does not have permission
+                to list `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__s
+                under this location, regardless of
+                whether or not this data store exists, a
+                PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1178,11 +1194,13 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.data_store_service.pagers.ListDataStoresPager:
                 Response message for
-                   [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores]
-                   method.
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.ListDataStores>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1253,8 +1271,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        r"""Deletes a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
 
         .. code-block:: python
 
@@ -1289,22 +1307,26 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.DeleteDataStoreRequest, dict]):
                 The request object. Request message for
-                [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore]
+                `DataStoreService.DeleteDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.DeleteDataStore>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-                If the caller does not have permission to delete the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to delete the `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
-                If the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                to delete does not exist, a NOT_FOUND error is returned.
+                If the `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                to delete does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1319,18 +1341,21 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1399,8 +1424,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_data_store.DataStore:
-        r"""Updates a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+        r"""Updates a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__
 
         .. code-block:: python
 
@@ -1434,32 +1459,37 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateDataStoreRequest, dict]):
                 The request object. Request message for
-                [DataStoreService.UpdateDataStore][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore]
+                `DataStoreService.UpdateDataStore
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDataStore>`__
                 method.
             data_store (google.cloud.discoveryengine_v1alpha.types.DataStore):
-                Required. The
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                Required. The `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
                 to update.
 
-                If the caller does not have permission to update the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to update the `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
-                If the
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                to update does not exist, a NOT_FOUND error is returned.
+                If the `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``data_store`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
                 to update.
 
-                If an unsupported or unknown field is provided, an
-                INVALID_ARGUMENT error is returned.
+                If an unsupported or unknown field is
+                provided, an INVALID_ARGUMENT error is
+                returned.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1540,7 +1570,8 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> document_processing_config.DocumentProcessingConfig:
         r"""Gets a
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
 
         .. code-block:: python
 
@@ -1571,11 +1602,12 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetDocumentProcessingConfigRequest, dict]):
                 The request object. Request for
-                [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
+                `DataStoreService.GetDocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig>`__
                 method.
             name (str):
-                Required. Full DocumentProcessingConfig resource name.
-                Format:
+                Required. Full DocumentProcessingConfig
+                resource name. Format:
                 ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/documentProcessingConfig``
 
                 This corresponds to the ``name`` field
@@ -1592,13 +1624,15 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
                 A singleton resource of
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                   It's empty when
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                   is created, which defaults to digital parser. The
-                   first call to
-                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
-                   method will initialize the config.
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+                It's empty when `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                is created, which defaults to digital
+                parser. The first call to
+                `DataStoreService.UpdateDocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
+                method will initialize the config.
 
         """
         # Create or coerce a protobuf request object.
@@ -1666,14 +1700,18 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_document_processing_config.DocumentProcessingConfig:
         r"""Updates the
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__
         is a singleon resource of
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-        It's empty when
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
+        `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+        It's empty when `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__ is
         created. The first call to this method will set up
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
 
         .. code-block:: python
 
@@ -1703,32 +1741,42 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateDocumentProcessingConfigRequest, dict]):
                 The request object. Request for
-                [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                `DataStoreService.UpdateDocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
                 method.
             document_processing_config (google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig):
                 Required. The
-                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+                `DocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__
                 to update.
 
-                If the caller does not have permission to update the
-                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig],
-                then a PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to update the `DocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__,
+                then a PERMISSION_DENIED error is
+                returned.
 
                 If the
-                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-                to update does not exist, a NOT_FOUND error is returned.
+                `DocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``document_processing_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
-                to update. The following are the only supported fields:
+                `DocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__
+                to update. The following are the only
+                supported fields:
 
-                - [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+                * `DocumentProcessingConfig.ocr_config
+                <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config>`__
 
-                If not set, all supported fields are updated.
+                If not set, all supported fields are
+                updated.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1744,13 +1792,15 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
                 A singleton resource of
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-                   It's empty when
-                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
-                   is created, which defaults to digital parser. The
-                   first call to
-                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
-                   method will initialize the config.
+                `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+                It's empty when `DataStore
+                <google.cloud.discoveryengine.v1alpha.DataStore>`__
+                is created, which defaults to digital
+                parser. The first call to
+                `DataStoreService.UpdateDocumentProcessingConfig
+                <google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig>`__
+                method will initialize the config.
 
         """
         # Create or coerce a protobuf request object.

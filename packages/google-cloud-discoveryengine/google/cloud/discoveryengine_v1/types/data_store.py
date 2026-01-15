@@ -42,55 +42,59 @@ class DataStore(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. Identifier. The full resource name of the data
-            store. Format:
+            Immutable. Identifier. The full resource name of
+            the data store. Format:
+
             ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 1024 characters.
+            This field must be a UTF-8 encoded string with a
+            length limit of 1024 characters.
         display_name (str):
             Required. The data store display name.
 
-            This field must be a UTF-8 encoded string with a length
-            limit of 128 characters. Otherwise, an INVALID_ARGUMENT
-            error is returned.
+            This field must be a UTF-8 encoded string with a
+            length limit of 128 characters. Otherwise, an
+            INVALID_ARGUMENT error is returned.
         industry_vertical (google.cloud.discoveryengine_v1.types.IndustryVertical):
             Immutable. The industry vertical that the
             data store registers.
         solution_types (MutableSequence[google.cloud.discoveryengine_v1.types.SolutionType]):
-            The solutions that the data store enrolls. Available
-            solutions for each
-            [industry_vertical][google.cloud.discoveryengine.v1.DataStore.industry_vertical]:
+            The solutions that the data store enrolls.
+            Available solutions for each `industry_vertical
+            <google.cloud.discoveryengine.v1.DataStore.industry_vertical>`__:
 
-            - ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION`` and
-              ``SOLUTION_TYPE_SEARCH``.
-            - ``SITE_SEARCH``: ``SOLUTION_TYPE_SEARCH`` is automatically
-              enrolled. Other solutions cannot be enrolled.
+            * ``MEDIA``: ``SOLUTION_TYPE_RECOMMENDATION``
+            and ``SOLUTION_TYPE_SEARCH``. * ``SITE_SEARCH``:
+            ``SOLUTION_TYPE_SEARCH`` is automatically
+            enrolled. Other   solutions cannot be enrolled.
         default_schema_id (str):
             Output only. The id of the default
-            [Schema][google.cloud.discoveryengine.v1.Schema] associated
-            to this data store.
+            `Schema
+            <google.cloud.discoveryengine.v1.Schema>`__
+            associated to this data store.
         content_config (google.cloud.discoveryengine_v1.types.DataStore.ContentConfig):
-            Immutable. The content config of the data store. If this
-            field is unset, the server behavior defaults to
-            [ContentConfig.NO_CONTENT][google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT].
+            Immutable. The content config of the data store.
+            If this field is unset, the server behavior
+            defaults to `ContentConfig.NO_CONTENT
+            <google.cloud.discoveryengine.v1.DataStore.ContentConfig.NO_CONTENT>`__.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
-            [DataStore][google.cloud.discoveryengine.v1.DataStore] was
-            created at.
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
+            was created at.
         advanced_site_search_config (google.cloud.discoveryengine_v1.types.AdvancedSiteSearchConfig):
             Optional. Configuration for advanced site
             search.
         kms_key_name (str):
-            Input only. The KMS key to be used to protect this DataStore
-            at creation time.
+            Input only. The KMS key to be used to protect
+            this DataStore at creation time.
 
-            Must be set for requests that need to comply with CMEK Org
-            Policy protections.
+            Must be set for requests that need to comply
+            with CMEK Org Policy protections.
 
-            If this field is set and processed successfully, the
-            DataStore will be protected by the KMS key, as indicated in
-            the cmek_config field.
+            If this field is set and processed successfully,
+            the DataStore will be protected by the KMS key,
+            as indicated in the cmek_config field.
         cmek_config (google.cloud.discoveryengine_v1.types.CmekConfig):
             Output only. CMEK-related information for the
             DataStore.
@@ -99,58 +103,78 @@ class DataStore(proto.Message):
             billing.
         acl_enabled (bool):
             Immutable. Whether data in the
-            [DataStore][google.cloud.discoveryengine.v1.DataStore] has
-            ACL information. If set to ``true``, the source data must
-            have ACL. ACL will be ingested when data is ingested by
-            [DocumentService.ImportDocuments][google.cloud.discoveryengine.v1.DocumentService.ImportDocuments]
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
+            has ACL information. If set to ``true``, the
+            source data must have ACL. ACL will be ingested
+            when data is ingested by
+            `DocumentService.ImportDocuments
+            <google.cloud.discoveryengine.v1.DocumentService.ImportDocuments>`__
             methods.
 
             When ACL is enabled for the
-            [DataStore][google.cloud.discoveryengine.v1.DataStore],
-            [Document][google.cloud.discoveryengine.v1.Document] can't
-            be accessed by calling
-            [DocumentService.GetDocument][google.cloud.discoveryengine.v1.DocumentService.GetDocument]
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__,
+            `Document
+            <google.cloud.discoveryengine.v1.Document>`__
+            can't be accessed by calling
+            `DocumentService.GetDocument
+            <google.cloud.discoveryengine.v1.DocumentService.GetDocument>`__
             or
-            [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments].
+            `DocumentService.ListDocuments
+            <google.cloud.discoveryengine.v1.DocumentService.ListDocuments>`__.
 
-            Currently ACL is only supported in ``GENERIC`` industry
-            vertical with non-``PUBLIC_WEBSITE`` content config.
+            Currently ACL is only supported in ``GENERIC``
+            industry vertical with non-``PUBLIC_WEBSITE``
+            content config.
         workspace_config (google.cloud.discoveryengine_v1.types.WorkspaceConfig):
-            Config to store data store type configuration for workspace
-            data. This must be set when
-            [DataStore.content_config][google.cloud.discoveryengine.v1.DataStore.content_config]
+            Config to store data store type configuration
+            for workspace data. This must be set when
+            `DataStore.content_config
+            <google.cloud.discoveryengine.v1.DataStore.content_config>`__
             is set as
-            [DataStore.ContentConfig.GOOGLE_WORKSPACE][google.cloud.discoveryengine.v1.DataStore.ContentConfig.GOOGLE_WORKSPACE].
+            `DataStore.ContentConfig.GOOGLE_WORKSPACE
+            <google.cloud.discoveryengine.v1.DataStore.ContentConfig.GOOGLE_WORKSPACE>`__.
         document_processing_config (google.cloud.discoveryengine_v1.types.DocumentProcessingConfig):
             Configuration for Document understanding and
             enrichment.
         starting_schema (google.cloud.discoveryengine_v1.types.Schema):
             The start schema to use for this
-            [DataStore][google.cloud.discoveryengine.v1.DataStore] when
-            provisioning it. If unset, a default vertical specialized
-            schema will be used.
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__
+            when provisioning it. If unset, a default
+            vertical specialized schema will be used.
 
             This field is only used by
-            [CreateDataStore][google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore]
-            API, and will be ignored if used in other APIs. This field
-            will be omitted from all API responses including
-            [CreateDataStore][google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore]
+            `CreateDataStore
+            <google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore>`__
+            API, and will be ignored if used in other APIs.
+            This field will be omitted from all API
+            responses including
+            `CreateDataStore
+            <google.cloud.discoveryengine.v1.DataStoreService.CreateDataStore>`__
             API. To retrieve a schema of a
-            [DataStore][google.cloud.discoveryengine.v1.DataStore], use
-            [SchemaService.GetSchema][google.cloud.discoveryengine.v1.SchemaService.GetSchema]
+            `DataStore
+            <google.cloud.discoveryengine.v1.DataStore>`__,
+            use `SchemaService.GetSchema
+            <google.cloud.discoveryengine.v1.SchemaService.GetSchema>`__
             API instead.
 
-            The provided schema will be validated against certain rules
-            on schema. Learn more from `this
-            doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
+            The provided schema will be validated against
+            certain rules on schema. Learn more from `this
+            doc
+            <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
         healthcare_fhir_config (google.cloud.discoveryengine_v1.types.HealthcareFhirConfig):
-            Optional. Configuration for ``HEALTHCARE_FHIR`` vertical.
+            Optional. Configuration for ``HEALTHCARE_FHIR``
+            vertical.
         identity_mapping_store (str):
-            Immutable. The fully qualified resource name of the
-            associated
-            [IdentityMappingStore][google.cloud.discoveryengine.v1.IdentityMappingStore].
-            This field can only be set for acl_enabled DataStores with
-            ``THIRD_PARTY`` or ``GSUITE`` IdP. Format:
+            Immutable. The fully qualified resource name of
+            the associated `IdentityMappingStore
+            <google.cloud.discoveryengine.v1.IdentityMappingStore>`__.
+            This field can only be set for acl_enabled
+            DataStores with ``THIRD_PARTY`` or ``GSUITE``
+            IdP. Format:
+
             ``projects/{project}/locations/{location}/identityMappingStores/{identity_mapping_store}``.
     """
 
@@ -162,17 +186,20 @@ class DataStore(proto.Message):
                 Default value.
             NO_CONTENT (1):
                 Only contains documents without any
-                [Document.content][google.cloud.discoveryengine.v1.Document.content].
+                `Document.content
+                <google.cloud.discoveryengine.v1.Document.content>`__.
             CONTENT_REQUIRED (2):
                 Only contains documents with
-                [Document.content][google.cloud.discoveryengine.v1.Document.content].
+                `Document.content
+                <google.cloud.discoveryengine.v1.Document.content>`__.
             PUBLIC_WEBSITE (3):
                 The data store is used for public website
                 search.
             GOOGLE_WORKSPACE (4):
-                The data store is used for workspace search. Details of
-                workspace data store are specified in the
-                [WorkspaceConfig][google.cloud.discoveryengine.v1.WorkspaceConfig].
+                The data store is used for workspace search.
+                Details of workspace data store are specified in
+                the `WorkspaceConfig
+                <google.cloud.discoveryengine.v1.WorkspaceConfig>`__.
         """
         CONTENT_CONFIG_UNSPECIFIED = 0
         NO_CONTENT = 1

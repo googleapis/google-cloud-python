@@ -346,7 +346,8 @@ class GroundedGenerationServiceRestTransport(
             Args:
                 request (~.grounded_generation_service.CheckGroundingRequest):
                     The request object. Request message for
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -359,7 +360,8 @@ class GroundedGenerationServiceRestTransport(
             Returns:
                 ~.grounded_generation_service.CheckGroundingResponse:
                     Response message for the
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1alpha.GroundedGenerationService.CheckGrounding>`__
                 method.
 
             """

@@ -36,13 +36,15 @@ class GetAclConfigRequest(proto.Message):
     Attributes:
         name (str):
             Required. Resource name of
-            [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
+            `AclConfig
+            <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
             such as ``projects/*/locations/*/aclConfig``.
 
-            If the caller does not have permission to access the
-            [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
-            regardless of whether or not it exists, a PERMISSION_DENIED
-            error is returned.
+            If the caller does not have permission to access
+            the `AclConfig
+            <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
+            regardless of whether or not it exists, a
+            PERMISSION_DENIED error is returned.
     """
 
     name: str = proto.Field(

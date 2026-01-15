@@ -454,7 +454,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
     """REST backend synchronous transport for DataStoreService.
 
     Service for managing
-    [DataStore][google.cloud.discoveryengine.v1beta.DataStore]
+    `DataStore <google.cloud.discoveryengine.v1beta.DataStore>`__
     configuration.
 
     This class defines the same methods as the primary client, so the
@@ -740,7 +740,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.CreateDataStoreRequest):
                     The request object. Request for
-                [DataStoreService.CreateDataStore][google.cloud.discoveryengine.v1beta.DataStoreService.CreateDataStore]
+                `DataStoreService.CreateDataStore
+                <google.cloud.discoveryengine.v1beta.DataStoreService.CreateDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -895,7 +896,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.DeleteDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.DeleteDataStore][google.cloud.discoveryengine.v1beta.DataStoreService.DeleteDataStore]
+                `DataStoreService.DeleteDataStore
+                <google.cloud.discoveryengine.v1beta.DataStoreService.DeleteDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1044,7 +1046,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.GetDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.GetDataStore][google.cloud.discoveryengine.v1beta.DataStoreService.GetDataStore]
+                `DataStoreService.GetDataStore
+                <google.cloud.discoveryengine.v1beta.DataStoreService.GetDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1192,7 +1195,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.ListDataStoresRequest):
                     The request object. Request message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores]
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1205,7 +1209,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Returns:
                 ~.data_store_service.ListDataStoresResponse:
                     Response message for
-                [DataStoreService.ListDataStores][google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores]
+                `DataStoreService.ListDataStores
+                <google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores>`__
                 method.
 
             """
@@ -1347,7 +1352,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             Args:
                 request (~.data_store_service.UpdateDataStoreRequest):
                     The request object. Request message for
-                [DataStoreService.UpdateDataStore][google.cloud.discoveryengine.v1beta.DataStoreService.UpdateDataStore]
+                `DataStoreService.UpdateDataStore
+                <google.cloud.discoveryengine.v1beta.DataStoreService.UpdateDataStore>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

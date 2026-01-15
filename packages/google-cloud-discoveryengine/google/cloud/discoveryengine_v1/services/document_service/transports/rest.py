@@ -585,9 +585,9 @@ class DocumentServiceRestStub:
 class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
     """REST backend synchronous transport for DocumentService.
 
-    Service for ingesting
-    [Document][google.cloud.discoveryengine.v1.Document] information of
-    the customer's website.
+    Service for ingesting `Document
+    <google.cloud.discoveryengine.v1.Document>`__ information of the
+    customer's website.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -890,7 +890,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 Args:
                     request (~.document_service.BatchGetDocumentsMetadataRequest):
                         The request object. Request message for
-                    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+                    `DocumentService.BatchGetDocumentsMetadata
+                    <google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -903,7 +904,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
                 Returns:
                     ~.document_service.BatchGetDocumentsMetadataResponse:
                         Response message for
-                    [DocumentService.BatchGetDocumentsMetadata][google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata]
+                    `DocumentService.BatchGetDocumentsMetadata
+                    <google.cloud.discoveryengine.v1.DocumentService.BatchGetDocumentsMetadata>`__
                     method.
 
             """
@@ -1048,7 +1050,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.document_service.CreateDocumentRequest):
                     The request object. Request message for
-                [DocumentService.CreateDocument][google.cloud.discoveryengine.v1.DocumentService.CreateDocument]
+                `DocumentService.CreateDocument
+                <google.cloud.discoveryengine.v1.DocumentService.CreateDocument>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1202,7 +1205,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.document_service.DeleteDocumentRequest):
                     The request object. Request message for
-                [DocumentService.DeleteDocument][google.cloud.discoveryengine.v1.DocumentService.DeleteDocument]
+                `DocumentService.DeleteDocument
+                <google.cloud.discoveryengine.v1.DocumentService.DeleteDocument>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1310,7 +1314,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.document_service.GetDocumentRequest):
                     The request object. Request message for
-                [DocumentService.GetDocument][google.cloud.discoveryengine.v1.DocumentService.GetDocument]
+                `DocumentService.GetDocument
+                <google.cloud.discoveryengine.v1.DocumentService.GetDocument>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1612,7 +1617,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.document_service.ListDocumentsRequest):
                     The request object. Request message for
-                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments]
+                `DocumentService.ListDocuments
+                <google.cloud.discoveryengine.v1.DocumentService.ListDocuments>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1625,7 +1631,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Returns:
                 ~.document_service.ListDocumentsResponse:
                     Response message for
-                [DocumentService.ListDocuments][google.cloud.discoveryengine.v1.DocumentService.ListDocuments]
+                `DocumentService.ListDocuments
+                <google.cloud.discoveryengine.v1.DocumentService.ListDocuments>`__
                 method.
 
             """
@@ -1764,7 +1771,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.purge_config.PurgeDocumentsRequest):
                     The request object. Request message for
-                [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments]
+                `DocumentService.PurgeDocuments
+                <google.cloud.discoveryengine.v1.DocumentService.PurgeDocuments>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1917,7 +1925,8 @@ class DocumentServiceRestTransport(_BaseDocumentServiceRestTransport):
             Args:
                 request (~.document_service.UpdateDocumentRequest):
                     The request object. Request message for
-                [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1.DocumentService.UpdateDocument]
+                `DocumentService.UpdateDocument
+                <google.cloud.discoveryengine.v1.DocumentService.UpdateDocument>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

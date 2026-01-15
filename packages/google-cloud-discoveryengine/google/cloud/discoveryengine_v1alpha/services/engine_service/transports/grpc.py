@@ -114,8 +114,8 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
 class EngineServiceGrpcTransport(EngineServiceTransport):
     """gRPC backend transport for EngineService.
 
-    Service for managing
-    [Engine][google.cloud.discoveryengine.v1alpha.Engine] configuration.
+    Service for managing `Engine
+    <google.cloud.discoveryengine.v1alpha.Engine>`__ configuration.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -349,7 +349,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.CreateEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the create engine method over gRPC.
 
-        Creates a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        Creates a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         Returns:
             Callable[[~.CreateEngineRequest],
@@ -375,7 +376,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.DeleteEngineRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete engine method over gRPC.
 
-        Deletes a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        Deletes a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         Returns:
             Callable[[~.DeleteEngineRequest],
@@ -401,7 +403,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.UpdateEngineRequest], gcd_engine.Engine]:
         r"""Return a callable for the update engine method over gRPC.
 
-        Updates an [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+        Updates an `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__
 
         Returns:
             Callable[[~.UpdateEngineRequest],
@@ -425,7 +428,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     def get_engine(self) -> Callable[[engine_service.GetEngineRequest], engine.Engine]:
         r"""Return a callable for the get engine method over gRPC.
 
-        Gets a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        Gets a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         Returns:
             Callable[[~.GetEngineRequest],
@@ -453,8 +457,8 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the list engines method over gRPC.
 
-        Lists all the
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine]s
+        Lists all the `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__s
         associated with the project.
 
         Returns:
@@ -481,10 +485,11 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.PauseEngineRequest], engine.Engine]:
         r"""Return a callable for the pause engine method over gRPC.
 
-        Pauses the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        Pauses the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.PauseEngineRequest],
@@ -510,10 +515,11 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
     ) -> Callable[[engine_service.ResumeEngineRequest], engine.Engine]:
         r"""Return a callable for the resume engine method over gRPC.
 
-        Resumes the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        Resumes the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.ResumeEngineRequest],
@@ -540,9 +546,10 @@ class EngineServiceGrpcTransport(EngineServiceTransport):
         r"""Return a callable for the tune engine method over gRPC.
 
         Tunes an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         Returns:
             Callable[[~.TuneEngineRequest],
