@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-geminidataanalytics/#history
 
+## [0.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.8.0...google-cloud-geminidataanalytics-v0.9.0) (2026-01-15)
+
+
+### Features
+
+* added sync APIs for the CRUD operations of Data Agent ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+
 ## [0.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-geminidataanalytics-v0.7.0...google-cloud-geminidataanalytics-v0.8.0) (2026-01-08)
 
 

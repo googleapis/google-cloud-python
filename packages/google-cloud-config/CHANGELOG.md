@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-config/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.3.0...google-cloud-config-v0.4.0) (2026-01-15)
+
+
+### Features
+
+* add support for enabling automigration from deprecated Terraform versions ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+* added error code when failing import values from an external source ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.2.0...google-cloud-config-v0.3.0) (2026-01-08)
 
 

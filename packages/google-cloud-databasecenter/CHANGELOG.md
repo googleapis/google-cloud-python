@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-databasecenter/#history
 
+## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.2.0...google-cloud-databasecenter-v0.3.0) (2026-01-15)
+
+
+### Features
+
+* Adding Method AggregateFleet of Database Center API v1beta This release includes: -   `DatabaseCenter` service with `AggregateFleet` method. -   `All related enums. ([1a81689422520562771f36a58575d07e1ee18dd5](https://github.com/googleapis/google-cloud-python/commit/1a81689422520562771f36a58575d07e1ee18dd5))
+
 ## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.1.0...google-cloud-databasecenter-v0.2.0) (2026-01-08)
 
 

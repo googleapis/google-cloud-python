@@ -572,7 +572,7 @@ libraries:
       - packages/google-cloud-automl/
     tag_format: '{id}-v{version}'
   - id: google-cloud-backupdr
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/backupdr/v1
@@ -1200,7 +1200,7 @@ libraries:
       - packages/google-cloud-confidentialcomputing/
     tag_format: '{id}-v{version}'
   - id: google-cloud-config
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/config/v1
@@ -1343,7 +1343,7 @@ libraries:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.2.0
+    version: 0.3.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1878,7 +1878,7 @@ libraries:
       - packages/google-cloud-gdchardwaremanagement/
     tag_format: '{id}-v{version}'
   - id: google-cloud-geminidataanalytics
-    version: 0.8.0
+    version: 0.9.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/geminidataanalytics/v1beta
@@ -2103,7 +2103,7 @@ libraries:
       - packages/google-cloud-ids/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
-    version: 3.8.0
+    version: 3.9.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/kms/v1
@@ -2445,7 +2445,7 @@ libraries:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
   - id: google-cloud-netapp
-    version: 0.6.0
+    version: 0.7.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: google/cloud/netapp/v1
@@ -4290,7 +4290,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
-    version: 1.17.0
+    version: 1.18.0
     last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
     apis:
       - path: grafeas/v1
