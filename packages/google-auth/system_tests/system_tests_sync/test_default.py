@@ -16,6 +16,7 @@ import os
 
 import google.auth
 from google.auth.exceptions import RefreshError
+import google.oauth2.credentials
 
 EXPECT_PROJECT_ID = os.getenv("EXPECT_PROJECT_ID")
 CREDENTIALS = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "")
@@ -32,12 +33,16 @@ def test_application_default_credentials(verify_refresh):
     except RefreshError as e:
         # allow expired credentials for explicit_authorized_user tests
         # TODO: https://github.com/googleapis/google-auth-library-python/issues/1882
-        if not CREDENTIALS.endswith("authorized_user.json"):
+        is_user_credentials = isinstance(
+            credentials, google.oauth2.credentials.Credentials
+        )
+        if not is_user_credentials and not CREDENTIALS.endswith("authorized_user.json"):
             raise
 
         error_message = str(e)
         if (
             "Token has been expired or revoked" not in error_message
             and "invalid_grant" not in error_message
+            and "invalid_client" not in error_message
         ):
             raise
