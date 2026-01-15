@@ -540,7 +540,9 @@ class GbqDataLoader:
         commit_request = bq_storage_types.BatchCommitWriteStreamsRequest(
             parent=parent, write_streams=stream_names
         )
-        self._write_client.batch_commit_write_streams(commit_request)
+        response = self._write_client.batch_commit_write_streams(commit_request)
+        for error in response.stream_errors:
+            raise ValueError(f"Errors commiting stream {error}")
 
         result_table = bq_data.GbqTable.from_ref_and_schema(
             bq_table_ref, schema=bq_schema, cluster_cols=[offsets_col]
