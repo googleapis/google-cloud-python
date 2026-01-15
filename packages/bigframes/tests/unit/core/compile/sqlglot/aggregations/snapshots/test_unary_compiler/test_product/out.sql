@@ -7,7 +7,7 @@ WITH `bfcte_0` AS (
     CASE
       WHEN LOGICAL_OR(`int64_col` = 0)
       THEN 0
-      ELSE EXP(SUM(CASE WHEN `int64_col` = 0 THEN 0 ELSE LN(ABS(`int64_col`)) END)) * IF(MOD(SUM(CASE WHEN SIGN(`int64_col`) < 0 THEN 1 ELSE 0 END), 2) = 1, -1, 1)
+      ELSE POWER(2, SUM(IF(`int64_col` = 0, 0, LOG(ABS(`int64_col`), 2)))) * POWER(-1, MOD(SUM(CASE WHEN SIGN(`int64_col`) = -1 THEN 1 ELSE 0 END), 2))
     END AS `bfcol_1`
   FROM `bfcte_0`
 )

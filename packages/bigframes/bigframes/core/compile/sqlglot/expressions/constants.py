@@ -20,6 +20,7 @@ _ZERO = sge.Cast(this=sge.convert(0), to="INT64")
 _NAN = sge.Cast(this=sge.convert("NaN"), to="FLOAT64")
 _INF = sge.Cast(this=sge.convert("Infinity"), to="FLOAT64")
 _NEG_INF = sge.Cast(this=sge.convert("-Infinity"), to="FLOAT64")
+_DAY_TO_MICROSECONDS = sge.convert(86400000000)
 
 # Approx Highest number you can pass in to EXP function and get a valid FLOAT64 result
 # FLOAT64 has 11 exponent bits, so max values is about 2**(2**10)

@@ -23,6 +23,7 @@ from bigframes import dtypes
 from bigframes.core import window_spec
 import bigframes.core.compile.sqlglot.aggregations.op_registration as reg
 from bigframes.core.compile.sqlglot.aggregations.windows import apply_window_if_present
+from bigframes.core.compile.sqlglot.expressions import constants
 import bigframes.core.compile.sqlglot.expressions.typed_expr as typed_expr
 import bigframes.core.compile.sqlglot.sqlglot_ir as ir
 from bigframes.operations import aggregations as agg_ops
@@ -44,9 +45,13 @@ def _(
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
-    # BQ will return null for empty column, result would be false in pandas.
-    result = apply_window_if_present(sge.func("LOGICAL_AND", column.expr), window)
-    return sge.func("IFNULL", result, sge.true())
+    expr = column.expr
+    if column.dtype != dtypes.BOOL_DTYPE:
+        expr = sge.NEQ(this=expr, expression=sge.convert(0))
+    expr = apply_window_if_present(sge.func("LOGICAL_AND", expr), window)
+
+    # BQ will return null for empty column, result would be true in pandas.
+    return sge.func("COALESCE", expr, sge.convert(True))
 
 
 @UNARY_OP_REGISTRATION.register(agg_ops.AnyOp)
@@ -56,6 +61,8 @@ def _(
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
     expr = column.expr
+    if column.dtype != dtypes.BOOL_DTYPE:
+        expr = sge.NEQ(this=expr, expression=sge.convert(0))
     expr = apply_window_if_present(sge.func("LOGICAL_OR", expr), window)
 
     # BQ will return null for empty column, result would be false in pandas.
@@ -326,6 +333,15 @@ def _(
             unit=sge.Identifier(this="MICROSECOND"),
         )
 
+    if column.dtype == dtypes.DATE_DTYPE:
+        date_diff = sge.DateDiff(
+            this=column.expr, expression=shifted, unit=sge.Identifier(this="DAY")
+        )
+        return sge.Cast(
+            this=sge.Floor(this=date_diff * constants._DAY_TO_MICROSECONDS),
+            to="INT64",
+        )
+
     raise TypeError(f"Cannot perform diff on type {column.dtype}")
 
 
@@ -410,24 +426,28 @@ def _(
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
     # Need to short-circuit as log with zeroes is illegal sql
-    is_zero = sge.EQ(this=column.expr, expression=sge.convert(0))
+    is_zero = sge.EQ(this=expr, expression=sge.convert(0))
 
     # There is no product sql aggregate function, so must implement as a sum of logs, and then
     # apply power after. Note, log and power base must be equal! This impl uses natural log.
-    logs = (
-        sge.Case()
-        .when(is_zero, sge.convert(0))
-        .else_(sge.func("LN", sge.func("ABS", column.expr)))
+    logs = sge.If(
+        this=is_zero,
+        true=sge.convert(0),
+        false=sge.func("LOG", sge.convert(2), sge.func("ABS", expr)),
     )
     logs_sum = apply_window_if_present(sge.func("SUM", logs), window)
-    magnitude = sge.func("EXP", logs_sum)
+    magnitude = sge.func("POWER", sge.convert(2), logs_sum)
 
     # Can't determine sign from logs, so have to determine parity of count of negative inputs
     is_negative = (
         sge.Case()
         .when(
-            sge.LT(this=sge.func("SIGN", column.expr), expression=sge.convert(0)),
+            sge.EQ(this=sge.func("SIGN", expr), expression=sge.convert(-1)),
             sge.convert(1),
         )
         .else_(sge.convert(0))
@@ -445,11 +465,7 @@ def _(
         .else_(
             sge.Mul(
                 this=magnitude,
-                expression=sge.If(
-                    this=sge.EQ(this=negative_count_parity, expression=sge.convert(1)),
-                    true=sge.convert(-1),
-                    false=sge.convert(1),
-                ),
+                expression=sge.func("POWER", sge.convert(-1), negative_count_parity),
             )
         )
     )
@@ -499,14 +515,18 @@ def _(
     column: typed_expr.TypedExpr,
     window: typing.Optional[window_spec.WindowSpec] = None,
 ) -> sge.Expression:
-    # TODO: Support interpolation argument
-    # TODO: Support percentile_disc
-    result: sge.Expression = sge.func("PERCENTILE_CONT", column.expr, sge.convert(op.q))
+    expr = column.expr
+    if column.dtype == dtypes.BOOL_DTYPE:
+        expr = sge.Cast(this=expr, to="INT64")
+
+    result: sge.Expression = sge.func("PERCENTILE_CONT", expr, sge.convert(op.q))
     if window is None:
-        # PERCENTILE_CONT is a navigation function, not an aggregate function, so it always needs an OVER clause.
+        # PERCENTILE_CONT is a navigation function, not an aggregate function,
+        # so it always needs an OVER clause.
         result = sge.Window(this=result)
     else:
         result = apply_window_if_present(result, window)
+
     if op.should_floor_result:
         result = sge.Cast(this=sge.func("FLOOR", result), to="INT64")
     return result

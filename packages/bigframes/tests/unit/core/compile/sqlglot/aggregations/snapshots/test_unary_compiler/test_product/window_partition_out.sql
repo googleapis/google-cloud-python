@@ -9,15 +9,15 @@ WITH `bfcte_0` AS (
     CASE
       WHEN LOGICAL_OR(`int64_col` = 0) OVER (PARTITION BY `string_col`)
       THEN 0
-      ELSE EXP(
-        SUM(CASE WHEN `int64_col` = 0 THEN 0 ELSE LN(ABS(`int64_col`)) END) OVER (PARTITION BY `string_col`)
-      ) * IF(
-        MOD(
-          SUM(CASE WHEN SIGN(`int64_col`) < 0 THEN 1 ELSE 0 END) OVER (PARTITION BY `string_col`),
-          2
-        ) = 1,
+      ELSE POWER(
+        2,
+        SUM(IF(`int64_col` = 0, 0, LOG(ABS(`int64_col`), 2))) OVER (PARTITION BY `string_col`)
+      ) * POWER(
         -1,
-        1
+        MOD(
+          SUM(CASE WHEN SIGN(`int64_col`) = -1 THEN 1 ELSE 0 END) OVER (PARTITION BY `string_col`),
+          2
+        )
       )
     END AS `bfcol_2`
   FROM `bfcte_0`
