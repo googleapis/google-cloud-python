@@ -31,9 +31,22 @@ def _(expr: TypedExpr) -> sge.Expression:
 
 @register_unary_op(ops.ObjGetAccessUrl, pass_op=True)
 def _(expr: TypedExpr, op: ops.ObjGetAccessUrl) -> sge.Expression:
-    return sge.func("OBJ.GET_ACCESS_URL", expr.expr, sge.convert(op.mode))
+    args = [expr.expr, sge.Literal.string(op.mode)]
+    if op.duration is not None:
+        args.append(
+            sge.Interval(
+                this=sge.Literal.number(op.duration),
+                unit=sge.Var(this="MICROSECOND"),
+            )
+        )
+    return sge.func("OBJ.GET_ACCESS_URL", *args)
 
 
 @register_binary_op(ops.obj_make_ref_op)
 def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.func("OBJ.MAKE_REF", left.expr, right.expr)
+
+
+@register_unary_op(ops.obj_make_ref_json_op)
+def _(expr: TypedExpr) -> sge.Expression:
+    return sge.func("OBJ.MAKE_REF", expr.expr)

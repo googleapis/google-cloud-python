@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import functools
 import typing
+from typing import cast
 
 from bigframes_vendored import ibis
 import bigframes_vendored.ibis.expr.api as ibis_api
@@ -1247,6 +1248,13 @@ def obj_fetch_metadata_op_impl(obj_ref: ibis_types.Value):
 
 @scalar_op_compiler.register_unary_op(ops.ObjGetAccessUrl, pass_op=True)
 def obj_get_access_url_op_impl(obj_ref: ibis_types.Value, op: ops.ObjGetAccessUrl):
+    if op.duration is not None:
+        duration_value = cast(
+            ibis_types.IntegerValue, ibis_types.literal(op.duration)
+        ).to_interval("us")
+        return obj_get_access_url_with_duration(
+            obj_ref=obj_ref, mode=op.mode, duration=duration_value
+        )
     return obj_get_access_url(obj_ref=obj_ref, mode=op.mode)
 
 
@@ -1807,6 +1815,11 @@ def obj_make_ref_op(x: ibis_types.Value, y: ibis_types.Value):
     return obj_make_ref(uri=x, authorizer=y)
 
 
+@scalar_op_compiler.register_unary_op(ops.obj_make_ref_json_op)
+def obj_make_ref_json_op(x: ibis_types.Value):
+    return obj_make_ref_json(objectref_json=x)
+
+
 # Ternary Operations
 @scalar_op_compiler.register_ternary_op(ops.where_op)
 def where_op(
@@ -2141,8 +2154,18 @@ def obj_make_ref(uri: str, authorizer: str) -> _OBJ_REF_IBIS_DTYPE:  # type: ign
     """Make ObjectRef Struct from uri and connection."""
 
 
+@ibis_udf.scalar.builtin(name="OBJ.MAKE_REF")
+def obj_make_ref_json(objectref_json: ibis_dtypes.JSON) -> _OBJ_REF_IBIS_DTYPE:  # type: ignore
+    """Make ObjectRef Struct from json."""
+
+
 @ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
 def obj_get_access_url(obj_ref: _OBJ_REF_IBIS_DTYPE, mode: ibis_dtypes.String) -> ibis_dtypes.JSON:  # type: ignore
+    """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
+
+
+@ibis_udf.scalar.builtin(name="OBJ.GET_ACCESS_URL")
+def obj_get_access_url_with_duration(obj_ref, mode, duration) -> ibis_dtypes.JSON:  # type: ignore
     """Get access url (as ObjectRefRumtime JSON) from ObjectRef."""
 
 

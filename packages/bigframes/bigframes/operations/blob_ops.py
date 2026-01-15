@@ -29,6 +29,7 @@ obj_fetch_metadata_op = ObjFetchMetadataOp()
 class ObjGetAccessUrl(base_ops.UnaryOp):
     name: typing.ClassVar[str] = "obj_get_access_url"
     mode: str  # access mode, e.g. R read, W write, RW read & write
+    duration: typing.Optional[int] = None  # duration in microseconds
 
     def output_type(self, *input_types):
         return dtypes.JSON_DTYPE
@@ -46,3 +47,14 @@ class ObjMakeRef(base_ops.BinaryOp):
 
 
 obj_make_ref_op = ObjMakeRef()
+
+
+@dataclasses.dataclass(frozen=True)
+class ObjMakeRefJson(base_ops.UnaryOp):
+    name: typing.ClassVar[str] = "obj_make_ref_json"
+
+    def output_type(self, *input_types):
+        return dtypes.OBJ_REF_DTYPE
+
+
+obj_make_ref_json_op = ObjMakeRefJson()
