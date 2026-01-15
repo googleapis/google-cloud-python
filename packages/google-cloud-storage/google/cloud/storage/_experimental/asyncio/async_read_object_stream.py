@@ -151,8 +151,15 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         """Closes the bidi-gRPC connection."""
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
+        await self.requests_done()
         await self.socket_like_rpc.close()
         self._is_stream_open = False
+
+    async def requests_done(self):
+        """Signals that all requests have been sent."""
+
+        await self.socket_like_rpc.send(None)
+        await self.socket_like_rpc.recv()
 
     async def send(
         self, bidi_read_object_request: _storage_v2.BidiReadObjectRequest

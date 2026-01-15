@@ -289,11 +289,13 @@ async def test_close(mock_cls_async_bidi_rpc, mock_client):
     write_obj_stream = await instantiate_write_obj_stream(
         mock_client, mock_cls_async_bidi_rpc, open=True
     )
+    write_obj_stream.requests_done = AsyncMock()
 
     # Act
     await write_obj_stream.close()
 
     # Assert
+    write_obj_stream.requests_done.assert_called_once()
     write_obj_stream.socket_like_rpc.close.assert_called_once()
     assert not write_obj_stream.is_stream_open
 
@@ -394,3 +396,24 @@ async def test_recv_without_open_should_raise_error(
     # Act & Assert
     with pytest.raises(ValueError, match="Stream is not open"):
         await write_obj_stream.recv()
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+)
+async def test_requests_done(mock_cls_async_bidi_rpc, mock_client):
+    """Test that requests_done signals the end of requests."""
+    # Arrange
+    write_obj_stream = await instantiate_write_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+    write_obj_stream.socket_like_rpc.send = AsyncMock()
+    write_obj_stream.socket_like_rpc.recv = AsyncMock()
+
+    # Act
+    await write_obj_stream.requests_done()
+
+    # Assert
+    write_obj_stream.socket_like_rpc.send.assert_called_once_with(None)
+    write_obj_stream.socket_like_rpc.recv.assert_called_once()

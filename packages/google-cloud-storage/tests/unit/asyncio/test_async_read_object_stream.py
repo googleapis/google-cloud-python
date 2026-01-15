@@ -197,13 +197,39 @@ async def test_close(mock_client, mock_cls_async_bidi_rpc):
     read_obj_stream = await instantiate_read_obj_stream(
         mock_client, mock_cls_async_bidi_rpc, open=True
     )
+    read_obj_stream.requests_done = AsyncMock()
 
     # act
     await read_obj_stream.close()
 
     # assert
+    read_obj_stream.requests_done.assert_called_once()
     read_obj_stream.socket_like_rpc.close.assert_called_once()
     assert not read_obj_stream.is_stream_open
+
+
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_read_object_stream.AsyncBidiRpc"
+)
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+)
+@pytest.mark.asyncio
+async def test_requests_done(mock_client, mock_cls_async_bidi_rpc):
+    """Test that requests_done signals the end of requests."""
+    # Arrange
+    read_obj_stream = await instantiate_read_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+    read_obj_stream.socket_like_rpc.send = AsyncMock()
+    read_obj_stream.socket_like_rpc.recv = AsyncMock()
+
+    # Act
+    await read_obj_stream.requests_done()
+
+    # Assert
+    read_obj_stream.socket_like_rpc.send.assert_called_once_with(None)
+    read_obj_stream.socket_like_rpc.recv.assert_called_once()
 
 
 @mock.patch(
