@@ -152,6 +152,25 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.Coalesce(this=left.expr, expressions=[right.expr])
 
 
+@register_unary_op(ops.RemoteFunctionOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
+    routine_ref = op.function_def.routine_ref
+    # Quote project, dataset, and routine IDs to avoid keyword clashes.
+    func_name = (
+        f"`{routine_ref.project}`.`{routine_ref.dataset_id}`.`{routine_ref.routine_id}`"
+    )
+    func = sge.func(func_name, expr.expr)
+
+    if not op.apply_on_null:
+        return sge.If(
+            this=sge.Is(this=expr.expr, expression=sge.Null()),
+            true=expr.expr,
+            false=func,
+        )
+
+    return func
+
+
 @register_binary_op(ops.BinaryRemoteFunctionOp, pass_op=True)
 def _(
     left: TypedExpr, right: TypedExpr, op: ops.BinaryRemoteFunctionOp
