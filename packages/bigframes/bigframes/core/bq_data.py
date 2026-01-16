@@ -186,11 +186,22 @@ def get_arrow_batches(
     columns: Sequence[str],
     storage_read_client: bigquery_storage_v1.BigQueryReadClient,
     project_id: str,
+    sample_rate: Optional[float] = None,
 ) -> ReadResult:
     table_mod_options = {}
     read_options_dict: dict[str, Any] = {"selected_fields": list(columns)}
+
+    predicates = []
     if data.sql_predicate:
-        read_options_dict["row_restriction"] = data.sql_predicate
+        predicates.append(data.sql_predicate)
+    if sample_rate is not None:
+        assert isinstance(sample_rate, float)
+        predicates.append(f"RAND() < {sample_rate}")
+
+    if predicates:
+        full_predicates = " AND ".join(f"( {pred} )" for pred in predicates)
+        read_options_dict["row_restriction"] = full_predicates
+
     read_options = bq_storage_types.ReadSession.TableReadOptions(**read_options_dict)
 
     if data.at_time:

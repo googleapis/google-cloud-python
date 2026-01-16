@@ -4524,7 +4524,7 @@ def test_df_kurt(scalars_dfs):
         "n_default",
     ],
 )
-def test_sample(scalars_dfs, frac, n, random_state):
+def test_df_to_pandas_sample(scalars_dfs, frac, n, random_state):
     scalars_df, _ = scalars_dfs
     df = scalars_df.sample(frac=frac, n=n, random_state=random_state)
     bf_result = df.to_pandas()
@@ -4535,7 +4535,7 @@ def test_sample(scalars_dfs, frac, n, random_state):
     assert bf_result.shape[1] == scalars_df.shape[1]
 
 
-def test_sample_determinism(penguins_df_default_index):
+def test_df_to_pandas_sample_determinism(penguins_df_default_index):
     df = penguins_df_default_index.sample(n=100, random_state=12345).head(15)
     bf_result = df.to_pandas()
     bf_result2 = df.to_pandas()
@@ -4543,7 +4543,7 @@ def test_sample_determinism(penguins_df_default_index):
     pandas.testing.assert_frame_equal(bf_result, bf_result2)
 
 
-def test_sample_raises_value_error(scalars_dfs):
+def test_df_to_pandas_sample_raises_value_error(scalars_dfs):
     scalars_df, _ = scalars_dfs
     with pytest.raises(
         ValueError, match="Only one of 'n' or 'frac' parameter can be specified."

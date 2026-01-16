@@ -818,49 +818,30 @@ class Block:
             total_rows = result_batches.approx_total_rows
             # Remove downsampling config from subsequent invocations, as otherwise could result in many
             # iterations if downsampling undershoots
-            return self._downsample(
-                total_rows=total_rows,
-                sampling_method=sample_config.sampling_method,
-                fraction=fraction,
-                random_state=sample_config.random_state,
-            )._materialize_local(
-                MaterializationOptions(ordered=materialize_options.ordered)
-            )
+            if sample_config.sampling_method == "head":
+                # Just truncates the result iterator without a follow-up query
+                raw_df = result_batches.to_pandas(limit=int(total_rows * fraction))
+            elif (
+                sample_config.sampling_method == "uniform"
+                and sample_config.random_state is None
+            ):
+                # Pushes sample into result without new query
+                sampled_batches = execute_result.batches(sample_rate=fraction)
+                raw_df = sampled_batches.to_pandas()
+            else:  # uniform sample with random state requires a full follow-up query
+                down_sampled_block = self.split(
+                    fracs=(fraction,),
+                    random_state=sample_config.random_state,
+                    sort=False,
+                )[0]
+                return down_sampled_block._materialize_local(
+                    MaterializationOptions(ordered=materialize_options.ordered)
+                )
         else:
-            df = result_batches.to_pandas()
-            df = self._copy_index_to_pandas(df)
-            df.set_axis(self.column_labels, axis=1, copy=False)
-            return df, execute_result.query_job
-
-    def _downsample(
-        self, total_rows: int, sampling_method: str, fraction: float, random_state
-    ) -> Block:
-        # either selecting fraction or number of rows
-        if sampling_method == _HEAD:
-            filtered_block = self.slice(stop=int(total_rows * fraction))
-            return filtered_block
-        elif (sampling_method == _UNIFORM) and (random_state is None):
-            filtered_expr = self.expr._uniform_sampling(fraction)
-            block = Block(
-                filtered_expr,
-                index_columns=self.index_columns,
-                column_labels=self.column_labels,
-                index_labels=self.index.names,
-            )
-            return block
-        elif sampling_method == _UNIFORM:
-            block = self.split(
-                fracs=(fraction,),
-                random_state=random_state,
-                sort=False,
-            )[0]
-            return block
-        else:
-            # This part should never be called, just in case.
-            raise NotImplementedError(
-                f"The downsampling method {sampling_method} is not implemented, "
-                f"please choose from {','.join(_SAMPLING_METHODS)}."
-            )
+            raw_df = result_batches.to_pandas()
+        df = self._copy_index_to_pandas(raw_df)
+        df.set_axis(self.column_labels, axis=1, copy=False)
+        return df, execute_result.query_job
 
     def split(
         self,

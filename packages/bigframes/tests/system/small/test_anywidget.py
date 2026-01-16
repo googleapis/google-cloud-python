@@ -165,7 +165,7 @@ def mock_execute_result_with_params(
         def schema(self) -> Any:
             return schema
 
-        def batches(self) -> ResultsIterator:
+        def batches(self, sample_rate=None) -> ResultsIterator:
             return ResultsIterator(
                 arrow_batches_val,
                 self.schema,

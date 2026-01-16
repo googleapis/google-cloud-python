@@ -88,7 +88,7 @@ class ResultsIterator(Iterator[pa.RecordBatch]):
 
             yield batch
 
-    def to_arrow_table(self) -> pyarrow.Table:
+    def to_arrow_table(self, limit: Optional[int] = None) -> pyarrow.Table:
         # Need to provide schema if no result rows, as arrow can't infer
         # If ther are rows, it is safest to infer schema from batches.
         # Any discrepencies between predicted schema and actual schema will produce errors.
@@ -97,9 +97,12 @@ class ResultsIterator(Iterator[pa.RecordBatch]):
         peek_value = list(peek_it)
         # TODO: Enforce our internal schema on the table for consistency
         if len(peek_value) > 0:
-            return pyarrow.Table.from_batches(
-                itertools.chain(peek_value, batches),  # reconstruct
-            )
+            batches = itertools.chain(peek_value, batches)  # reconstruct
+            if limit:
+                batches = pyarrow_utils.truncate_pyarrow_iterable(
+                    batches, max_results=limit
+                )
+            return pyarrow.Table.from_batches(batches)
         else:
             try:
                 return self._schema.to_pyarrow().empty_table()
@@ -107,8 +110,8 @@ class ResultsIterator(Iterator[pa.RecordBatch]):
                 # Bug with some pyarrow versions, empty_table only supports base storage types, not extension types.
                 return self._schema.to_pyarrow(use_storage_types=True).empty_table()
 
-    def to_pandas(self) -> pd.DataFrame:
-        return io_pandas.arrow_to_pandas(self.to_arrow_table(), self._schema)
+    def to_pandas(self, limit: Optional[int] = None) -> pd.DataFrame:
+        return io_pandas.arrow_to_pandas(self.to_arrow_table(limit=limit), self._schema)
 
     def to_pandas_batches(
         self, page_size: Optional[int] = None, max_results: Optional[int] = None
@@ -158,7 +161,7 @@ class ExecuteResult(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def batches(self) -> ResultsIterator:
+    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator:
         ...
 
     @property
@@ -200,9 +203,9 @@ class LocalExecuteResult(ExecuteResult):
     def schema(self) -> bigframes.core.schema.ArraySchema:
         return self._data.schema
 
-    def batches(self) -> ResultsIterator:
+    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator:
         return ResultsIterator(
-            iter(self._data.to_arrow()[1]),
+            iter(self._data.to_arrow(sample_rate=sample_rate)[1]),
             self.schema,
             self._data.metadata.row_count,
             self._data.metadata.total_bytes,
@@ -226,7 +229,7 @@ class EmptyExecuteResult(ExecuteResult):
     def schema(self) -> bigframes.core.schema.ArraySchema:
         return self._schema
 
-    def batches(self) -> ResultsIterator:
+    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator:
         return ResultsIterator(iter([]), self.schema, 0, 0)
 
 
@@ -260,12 +263,13 @@ class BQTableExecuteResult(ExecuteResult):
         source_ids = [selection[0] for selection in self._selected_fields]
         return self._data.schema.select(source_ids).rename(dict(self._selected_fields))
 
-    def batches(self) -> ResultsIterator:
+    def batches(self, sample_rate: Optional[float] = None) -> ResultsIterator:
         read_batches = bq_data.get_arrow_batches(
             self._data,
             [x[0] for x in self._selected_fields],
             self._storage_client,
             self._project_id,
+            sample_rate=sample_rate,
         )
         arrow_batches: Iterator[pa.RecordBatch] = map(
             functools.partial(
