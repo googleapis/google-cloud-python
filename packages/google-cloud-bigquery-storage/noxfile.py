@@ -112,8 +112,9 @@ def mypy(session):
         "mypy<1.16.0",
         "types-requests",
         "types-protobuf",
+        "pandas-stubs",
     )
-    session.install(".")
+    session.install(".[fastavro]")
     session.run(
         "mypy",
         "-p",
