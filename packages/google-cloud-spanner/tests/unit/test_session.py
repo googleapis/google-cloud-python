@@ -14,7 +14,10 @@
 
 
 import google.api_core.gapic_v1.method
-from google.cloud.spanner_v1._opentelemetry_tracing import trace_call
+from google.cloud.spanner_v1._opentelemetry_tracing import (
+    trace_call,
+    GCP_RESOURCE_NAME_PREFIX,
+)
 import mock
 import datetime
 from google.cloud.spanner_v1 import (
@@ -130,6 +133,7 @@ class TestSession(OpenTelemetryBase):
         "gcp.client.service": "spanner",
         "gcp.client.version": LIB_VERSION,
         "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": GCP_RESOURCE_NAME_PREFIX + DATABASE_NAME,
         "cloud.region": "global",
     }
     enrich_with_otel_scope(BASE_ATTRIBUTES)

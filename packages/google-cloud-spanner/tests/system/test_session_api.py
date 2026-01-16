@@ -21,6 +21,7 @@ import struct
 import threading
 import time
 import uuid
+from google.cloud.spanner_v1 import _opentelemetry_tracing
 import pytest
 
 import grpc
@@ -362,6 +363,8 @@ def _make_attributes(db_instance, **kwargs):
         "gcp.client.service": "spanner",
         "gcp.client.version": ot_helpers.LIB_VERSION,
         "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX
+        + db_instance,
     }
     ot_helpers.enrich_with_otel_scope(attributes)
 

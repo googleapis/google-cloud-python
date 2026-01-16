@@ -25,6 +25,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
     ResultSetMetadata,
+    _opentelemetry_tracing,
 )
 from google.cloud.spanner_v1._helpers import GOOGLE_CLOUD_REGION_GLOBAL
 from google.cloud.spanner_v1 import DefaultTransactionOptions
@@ -1345,6 +1346,8 @@ class TestTransaction(OpenTelemetryBase):
                 "gcp.client.service": "spanner",
                 "gcp.client.version": LIB_VERSION,
                 "gcp.client.repo": "googleapis/python-spanner",
+                "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX
+                + database.name,
                 "cloud.region": GOOGLE_CLOUD_REGION_GLOBAL,
             }
         )

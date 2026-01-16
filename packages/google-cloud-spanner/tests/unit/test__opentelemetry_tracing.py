@@ -28,7 +28,10 @@ def _make_rpc_error(error_cls, trailing_metadata=None):
 def _make_session():
     from google.cloud.spanner_v1.session import Session
 
-    return mock.Mock(autospec=Session, instance=True)
+    session = mock.Mock(autospec=Session, instance=True)
+    # Set a string name to allow concatenation
+    session._database.name = "projects/p/instances/i/databases/d"
+    return session
 
 
 class TestTracing(OpenTelemetryBase):
@@ -52,6 +55,8 @@ class TestTracing(OpenTelemetryBase):
                 "gcp.client.service": "spanner",
                 "gcp.client.version": LIB_VERSION,
                 "gcp.client.repo": "googleapis/python-spanner",
+                "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX
+                + "projects/p/instances/i/databases/d",
             }
         )
         expected_attributes.update(extra_attributes)
@@ -87,6 +92,8 @@ class TestTracing(OpenTelemetryBase):
                 "gcp.client.service": "spanner",
                 "gcp.client.version": LIB_VERSION,
                 "gcp.client.repo": "googleapis/python-spanner",
+                "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX
+                + "projects/p/instances/i/databases/d",
             }
         )
         expected_attributes.update(extra_attributes)

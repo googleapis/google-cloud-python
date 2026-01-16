@@ -26,6 +26,7 @@ from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     TransactionOptions,
     TransactionSelector,
+    _opentelemetry_tracing,
 )
 from google.cloud.spanner_v1.snapshot import _SnapshotBase
 from tests._builders import (
@@ -80,6 +81,7 @@ BASE_ATTRIBUTES = {
     "gcp.client.service": "spanner",
     "gcp.client.version": LIB_VERSION,
     "gcp.client.repo": "googleapis/python-spanner",
+    "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX + "testing",
 }
 enrich_with_otel_scope(BASE_ATTRIBUTES)
 
@@ -2282,6 +2284,8 @@ def _build_span_attributes(
         "gcp.client.service": "spanner",
         "gcp.client.version": LIB_VERSION,
         "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX
+        + database.name,
         "x_goog_spanner_request_id": _build_request_id(database, attempt),
     }
     attributes.update(extra_attributes)

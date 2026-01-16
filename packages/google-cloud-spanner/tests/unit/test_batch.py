@@ -29,6 +29,7 @@ from google.cloud.spanner_v1 import (
     Mutation,
     BatchWriteResponse,
     DefaultTransactionOptions,
+    _opentelemetry_tracing,
 )
 import mock
 from google.cloud._helpers import UTC, _datetime_to_pb_timestamp
@@ -58,6 +59,7 @@ BASE_ATTRIBUTES = {
     "gcp.client.service": "spanner",
     "gcp.client.version": LIB_VERSION,
     "gcp.client.repo": "googleapis/python-spanner",
+    "gcp.resource.name": _opentelemetry_tracing.GCP_RESOURCE_NAME_PREFIX + "testing",
     "cloud.region": "global",
 }
 enrich_with_otel_scope(BASE_ATTRIBUTES)

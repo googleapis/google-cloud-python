@@ -36,6 +36,7 @@ from google.cloud.spanner_v1.metrics.metrics_capture import MetricsCapture
 
 TRACER_NAME = "cloud.google.com/python/spanner"
 TRACER_VERSION = gapic_version.__version__
+GCP_RESOURCE_NAME_PREFIX = "//spanner.googleapis.com/"
 extended_tracing_globally_disabled = (
     os.getenv("SPANNER_ENABLE_EXTENDED_TRACING", "").lower() == "false"
 )
@@ -106,6 +107,7 @@ def trace_call(
         "gcp.client.service": "spanner",
         "gcp.client.version": TRACER_VERSION,
         "gcp.client.repo": "googleapis/python-spanner",
+        "gcp.resource.name": GCP_RESOURCE_NAME_PREFIX + db_name,
     }
 
     if extra_attributes:
