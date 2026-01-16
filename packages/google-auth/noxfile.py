@@ -33,7 +33,6 @@ BLACK_PATHS = [
 
 DEFAULT_PYTHON_VERSION = "3.14"
 UNIT_TEST_PYTHON_VERSIONS = [
-    "3.7",
     "3.8",
     "3.9",
     "3.10",
