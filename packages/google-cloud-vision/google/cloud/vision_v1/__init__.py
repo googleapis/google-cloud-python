@@ -28,11 +28,7 @@ else:  # pragma: NO COVER
     # this code path once we drop support for Python 3.7
     import importlib_metadata as metadata
 
-from google.cloud.vision_helpers import VisionHelpers
-from google.cloud.vision_helpers.decorators import add_single_feature_methods
-
-from .services.image_annotator import ImageAnnotatorAsyncClient
-from .services.image_annotator import ImageAnnotatorClient as IacImageAnnotatorClient
+from .services.image_annotator import ImageAnnotatorAsyncClient, ImageAnnotatorClient
 from .services.product_search import ProductSearchAsyncClient, ProductSearchClient
 from .types.geometry import BoundingPoly, NormalizedVertex, Position, Vertex
 from .types.image_annotator import (
@@ -207,13 +203,6 @@ else:  # pragma: NO COVER
             + "using a supported version of Python; see "
             + "https://devguide.python.org/versions/"
         )
-
-
-@add_single_feature_methods
-class ImageAnnotatorClient(VisionHelpers, IacImageAnnotatorClient):
-    __doc__ = IacImageAnnotatorClient.__doc__
-    Feature = Feature
-
 
 __all__ = (
     "ImageAnnotatorAsyncClient",

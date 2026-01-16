@@ -87,11 +87,11 @@ class Likelihood(proto.Enum):
 
 
 class Feature(proto.Message):
-    r"""Users describe the type of Google Cloud Vision API tasks to perform
-    over images by using *Feature*\ s. Each Feature indicates a type of
-    image detection task to perform. Features encode the Cloud Vision
-    API vertical to operate on and the number of top-scoring results to
-    return.
+    r"""Users describe the type of Google Cloud Vision API tasks to
+    perform over images by using *Feature*s. Each Feature indicates
+    a type of image detection task to perform. Features encode the
+    Cloud Vision API vertical to operate on and the number of
+    top-scoring results to return.
 
     Attributes:
         type_ (google.cloud.vision_v1p1beta1.types.Feature.Type):
@@ -99,11 +99,12 @@ class Feature(proto.Message):
         max_results (int):
             Maximum number of results of this type.
         model (str):
-            Model to use for the feature. Supported values:
-            "builtin/stable" (the default if unset) and
-            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
-            ``TEXT_DETECTION`` also support "builtin/weekly" for the
-            bleeding edge release updated weekly.
+            Model to use for the feature.
+            Supported values: "builtin/stable" (the default
+            if unset) and "builtin/latest".
+            ``DOCUMENT_TEXT_DETECTION`` and
+            ``TEXT_DETECTION`` also support "builtin/weekly"
+            for the bleeding edge release updated weekly.
     """
 
     class Type(proto.Enum):
@@ -123,8 +124,9 @@ class Feature(proto.Message):
             TEXT_DETECTION (5):
                 Run OCR.
             DOCUMENT_TEXT_DETECTION (11):
-                Run dense text document OCR. Takes precedence when both
-                DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+                Run dense text document OCR. Takes precedence
+                when both DOCUMENT_TEXT_DETECTION and
+                TEXT_DETECTION are present.
             SAFE_SEARCH_DETECTION (6):
                 Run computer vision models to compute image
                 safe-search properties.
@@ -168,24 +170,33 @@ class ImageSource(proto.Message):
 
     Attributes:
         gcs_image_uri (str):
-            NOTE: For new code ``image_uri`` below is preferred. Google
-            Cloud Storage image URI, which must be in the following
-            form: ``gs://bucket_name/object_name`` (for details, see
-            `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-uris>`__).
-            NOTE: Cloud Storage object versioning is not supported.
+            NOTE: For new code ``image_uri`` below is
+            preferred. Google Cloud Storage image URI, which
+            must be in the following form:
+
+            ``gs://bucket_name/object_name`` (for details,
+            see `Google Cloud Storage Request
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__).
+            NOTE: Cloud Storage object versioning is not
+            supported.
         image_uri (str):
             Image URI which supports:
 
-            1) Google Cloud Storage image URI, which must be in the
-               following form: ``gs://bucket_name/object_name`` (for
-               details, see `Google Cloud Storage Request
-               URIs <https://cloud.google.com/storage/docs/reference-uris>`__).
-               NOTE: Cloud Storage object versioning is not supported.
-            2) Publicly accessible image HTTP/HTTPS URL. This is
-               preferred over the legacy ``gcs_image_uri`` above. When
-               both ``gcs_image_uri`` and ``image_uri`` are specified,
-               ``image_uri`` takes precedence.
+            1) Google Cloud Storage image URI, which must be
+            in the following form:
+
+            ``gs://bucket_name/object_name`` (for details,
+            see `Google Cloud Storage Request
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__).
+            NOTE: Cloud Storage object versioning is not
+            supported. 2) Publicly accessible image
+            HTTP/HTTPS URL.
+            This is preferred over the legacy
+            ``gcs_image_uri`` above. When both
+            ``gcs_image_uri`` and ``image_uri`` are
+            specified, ``image_uri`` takes precedence.
     """
 
     gcs_image_uri: str = proto.Field(
@@ -203,14 +214,15 @@ class Image(proto.Message):
 
     Attributes:
         content (bytes):
-            Image content, represented as a stream of bytes. Note: as
-            with all ``bytes`` fields, protobuffers use a pure binary
-            representation, whereas JSON representations use base64.
+            Image content, represented as a stream of bytes.
+            Note: as with all ``bytes`` fields, protobuffers
+            use a pure binary representation, whereas JSON
+            representations use base64.
         source (google.cloud.vision_v1p1beta1.types.ImageSource):
-            Google Cloud Storage image location. If both ``content`` and
-            ``source`` are provided for an image, ``content`` takes
-            precedence and is used to perform the image annotation
-            request.
+            Google Cloud Storage image location. If both
+            ``content`` and ``source`` are provided for an
+            image, ``content`` takes precedence and is used
+            to perform the image annotation request.
     """
 
     content: bytes = proto.Field(
@@ -230,36 +242,43 @@ class FaceAnnotation(proto.Message):
 
     Attributes:
         bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding polygon around the face. The coordinates of the
-            bounding box are in the original image's scale, as returned
-            in ``ImageParams``. The bounding box is computed to "frame"
-            the face in accordance with human expectations. It is based
-            on the landmarker results. Note that one or more x and/or y
-            coordinates may not be generated in the ``BoundingPoly``
-            (the polygon will be unbounded) if only a partial face
-            appears in the image to be annotated.
+            The bounding polygon around the face. The
+            coordinates of the bounding box are in the
+            original image's scale, as returned in
+            ``ImageParams``. The bounding box is computed to
+            "frame" the face in accordance with human
+            expectations. It is based on the landmarker
+            results. Note that one or more x and/or y
+            coordinates may not be generated in the
+            ``BoundingPoly`` (the polygon will be unbounded)
+            if only a partial face appears in the image to
+            be annotated.
         fd_bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The ``fd_bounding_poly`` bounding polygon is tighter than
-            the ``boundingPoly``, and encloses only the skin part of the
-            face. Typically, it is used to eliminate the face from any
-            image analysis that detects the "amount of skin" visible in
-            an image. It is not based on the landmarker results, only on
-            the initial face detection, hence the fd (face detection)
-            prefix.
+            The ``fd_bounding_poly`` bounding polygon is
+            tighter than the ``boundingPoly``, and encloses
+            only the skin part of the face. Typically, it is
+            used to eliminate the face from any image
+            analysis that detects the "amount of skin"
+            visible in an image. It is not based on the
+            landmarker results, only on the initial face
+            detection, hence the <code>fd</code> (face
+            detection) prefix.
         landmarks (MutableSequence[google.cloud.vision_v1p1beta1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
             Roll angle, which indicates the amount of
-            clockwise/anti-clockwise rotation of the face relative to
-            the image vertical about the axis perpendicular to the face.
-            Range [-180,180].
+            clockwise/anti-clockwise rotation of the face
+            relative to the image vertical about the axis
+            perpendicular to the face. Range [-180,180].
         pan_angle (float):
-            Yaw angle, which indicates the leftward/rightward angle that
-            the face is pointing relative to the vertical plane
+            Yaw angle, which indicates the
+            leftward/rightward angle that the face is
+            pointing relative to the vertical plane
             perpendicular to the image. Range [-180,180].
         tilt_angle (float):
-            Pitch angle, which indicates the upwards/downwards angle
-            that the face is pointing relative to the image's horizontal
+            Pitch angle, which indicates the
+            upwards/downwards angle that the face is
+            pointing relative to the image's horizontal
             plane. Range [-180,180].
         detection_confidence (float):
             Detection confidence. Range [0, 1].
@@ -292,10 +311,10 @@ class FaceAnnotation(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Face landmark (feature) type. Left and right are defined from the
-            vantage of the viewer of the image without considering mirror
-            projections typical of photos. So, ``LEFT_EYE``, typically, is the
-            person's right eye.
+            r"""Face landmark (feature) type.
+            Left and right are defined from the vantage of the viewer of the
+            image without considering mirror projections typical of photos.
+            So, ``LEFT_EYE``, typically, is the person's right eye.
 
             Values:
                 UNKNOWN_LANDMARK (0):
@@ -535,43 +554,48 @@ class EntityAnnotation(proto.Message):
 
     Attributes:
         mid (str):
-            Opaque entity ID. Some IDs may be available in `Google
-            Knowledge Graph Search
-            API <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in
+            `Google Knowledge Graph Search
+            API
+            <https://developers.google.com/knowledge-graph/>`__.
         locale (str):
-            The language code for the locale in which the entity textual
-            ``description`` is expressed.
+            The language code for the locale in which the
+            entity textual ``description`` is expressed.
         description (str):
-            Entity textual description, expressed in its ``locale``
-            language.
+            Entity textual description, expressed in its
+            ``locale`` language.
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
-            The accuracy of the entity detection in an image. For
-            example, for an image in which the "Eiffel Tower" entity is
-            detected, this field represents the confidence that there is
-            a tower in the query image. Range [0, 1].
+            The accuracy of the entity detection in an
+            image. For example, for an image in which the
+            "Eiffel Tower" entity is detected, this field
+            represents the confidence that there is a tower
+            in the query image. Range [0, 1].
         topicality (float):
-            The relevancy of the ICA (Image Content Annotation) label to
-            the image. For example, the relevancy of "tower" is likely
-            higher to an image containing the detected "Eiffel Tower"
-            than to an image containing a detected distant towering
-            building, even though the confidence that there is a tower
-            in each image may be the same. Range [0, 1].
+            The relevancy of the ICA (Image Content
+            Annotation) label to the image. For example, the
+            relevancy of "tower" is likely higher to an
+            image containing the detected "Eiffel Tower"
+            than to an image containing a detected distant
+            towering building, even though the confidence
+            that there is a tower in each image may be the
+            same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            Image region to which this entity belongs. Not produced for
-            ``LABEL_DETECTION`` features.
+            Image region to which this entity belongs. Not
+            produced for ``LABEL_DETECTION`` features.
         locations (MutableSequence[google.cloud.vision_v1p1beta1.types.LocationInfo]):
-            The location information for the detected entity. Multiple
-            ``LocationInfo`` elements can be present because one
-            location may indicate the location of the scene in the
-            image, and another location may indicate the location of the
-            place where the image was taken. Location information is
-            usually present for landmarks.
+            The location information for the detected
+            entity. Multiple ``LocationInfo`` elements can
+            be present because one location may indicate the
+            location of the scene in the image, and another
+            location may indicate the location of the place
+            where the image was taken. Location information
+            is usually present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1p1beta1.types.Property]):
-            Some entities may have optional user-supplied ``Property``
-            (name/value) fields, such a score or string that qualifies
-            the entity.
+            Some entities may have optional user-supplied
+            ``Property`` (name/value) fields, such a score
+            or string that qualifies the entity.
     """
 
     mid: str = proto.Field(
@@ -701,10 +725,11 @@ class ColorInfo(proto.Message):
         color (google.type.color_pb2.Color):
             RGB components of the color.
         score (float):
-            Image-specific score for this color. Value in range [0, 1].
+            Image-specific score for this color. Value in
+            range [0, 1].
         pixel_fraction (float):
-            The fraction of pixels the color occupies in the image.
-            Value in range [0, 1].
+            The fraction of pixels the color occupies in the
+            image. Value in range [0, 1].
     """
 
     color: color_pb2.Color = proto.Field(
@@ -760,11 +785,13 @@ class CropHint(proto.Message):
 
     Attributes:
         bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding polygon for the crop region. The coordinates of
-            the bounding box are in the original image's scale, as
-            returned in ``ImageParams``.
+            The bounding polygon for the crop region. The
+            coordinates of the bounding box are in the
+            original image's scale, as returned in
+            ``ImageParams``.
         confidence (float):
-            Confidence of this being a salient region. Range [0, 1].
+            Confidence of this being a salient region.
+            Range [0, 1].
         importance_fraction (float):
             Fraction of importance of this salient region
             with respect to the original image.
@@ -843,9 +870,10 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.
@@ -869,16 +897,19 @@ class ImageContext(proto.Message):
             lat/long rectangle that specifies the
             location of the image.
         language_hints (MutableSequence[str]):
-            List of languages to use for TEXT_DETECTION. In most cases,
-            an empty value yields the best results since it enables
-            automatic language detection. For languages based on the
-            Latin alphabet, setting ``language_hints`` is not needed. In
-            rare cases, when the language of the text in the image is
-            known, setting a hint will help get better results (although
-            it will be a significant hindrance if the hint is wrong).
-            Text detection returns an error if one or more of the
-            specified languages is not one of the `supported
-            languages <https://cloud.google.com/vision/docs/languages>`__.
+            List of languages to use for TEXT_DETECTION. In
+            most cases, an empty value yields the best
+            results since it enables automatic language
+            detection. For languages based on the Latin
+            alphabet, setting ``language_hints`` is not
+            needed. In rare cases, when the language of the
+            text in the image is known, setting a hint will
+            help get better results (although it will be a
+            significant hindrance if the hint is wrong).
+            Text detection returns an error if one or more
+            of the specified languages is not one of the
+            `supported languages
+            <https://cloud.google.com/vision/docs/languages>`__.
         crop_hints_params (google.cloud.vision_v1p1beta1.types.CropHintsParams):
             Parameters for crop hints annotation request.
         web_detection_params (google.cloud.vision_v1p1beta1.types.WebDetectionParams):
@@ -982,9 +1013,10 @@ class AnnotateImageResponse(proto.Message):
             If present, web detection has completed
             successfully.
         error (google.rpc.status_pb2.Status):
-            If set, represents the error message for the operation. Note
-            that filled-in image annotations are guaranteed to be
-            correct, even when ``error`` is set.
+            If set, represents the error message for the
+            operation. Note that filled-in image annotations
+            are guaranteed to be correct, even when
+            ``error`` is set.
     """
 
     face_annotations: MutableSequence["FaceAnnotation"] = proto.RepeatedField(

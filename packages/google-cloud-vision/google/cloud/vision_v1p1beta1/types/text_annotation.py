@@ -35,13 +35,16 @@ __protobuf__ = proto.module(
 
 
 class TextAnnotation(proto.Message):
-    r"""TextAnnotation contains a structured representation of OCR extracted
-    text. The hierarchy of an OCR extracted text structure is like this:
-    TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol Each
-    structural component, starting from Page, may further have their own
-    properties. Properties describe detected languages, breaks etc..
-    Please refer to the
-    [TextAnnotation.TextProperty][google.cloud.vision.v1p1beta1.TextAnnotation.TextProperty]
+    r"""TextAnnotation contains a structured representation of OCR
+    extracted text. The hierarchy of an OCR extracted text structure
+    is like this:
+
+        TextAnnotation -> Page -> Block -> Paragraph -> Word ->
+    Symbol Each structural component, starting from Page, may
+    further have their own properties. Properties describe detected
+    languages, breaks etc.. Please refer to the
+    `TextAnnotation.TextProperty
+    <google.cloud.vision.v1p1beta1.TextAnnotation.TextProperty>`__
     message definition below for more detail.
 
     Attributes:
@@ -56,8 +59,8 @@ class TextAnnotation(proto.Message):
 
         Attributes:
             language_code (str):
-                The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more information, see
+                The BCP-47 language code, such as "en-US" or
+                "sr-Latn". For more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
@@ -95,9 +98,9 @@ class TextAnnotation(proto.Message):
                 EOL_SURE_SPACE (3):
                     Line-wrapping break.
                 HYPHEN (4):
-                    End-line hyphen that is not present in text; does not
-                    co-occur with ``SPACE``, ``LEADER_SPACE``, or
-                    ``LINE_BREAK``.
+                    End-line hyphen that is not present in text;
+                    does not co-occur with ``SPACE``,
+                    ``LEADER_SPACE``, or ``LINE_BREAK``.
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """
@@ -167,7 +170,8 @@ class Page(proto.Message):
             List of blocks of text, images etc on this
             page.
         confidence (float):
-            Confidence of the OCR results on the page. Range [0, 1].
+            Confidence of the OCR results on the page. Range
+            [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -202,17 +206,20 @@ class Block(proto.Message):
             Additional information detected for the
             block.
         bounding_box (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding box for the block. The vertices are in the
-            order of top-left, top-right, bottom-right, bottom-left.
-            When a rotation of the bounding box is detected the rotation
-            is represented as around the top-left corner as defined when
-            the text is read in the 'natural' orientation. For example:
+            The bounding box for the block. The vertices are
+            in the order of top-left, top-right,
+            bottom-right, bottom-left. When a rotation of
+            the bounding box is detected the rotation is
+            represented as around the top-left corner as
+            defined when the text is read in the 'natural'
+            orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look
+              like: 0----1 \|   \| 3----2
+            -  when it's rotated 180 degrees around the
+              top-left corner   it becomes: 2----3 \| \|
+              1----0 and the vertice order   will still be
+              (0, 1, 2, 3).
         paragraphs (MutableSequence[google.cloud.vision_v1p1beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
@@ -220,7 +227,8 @@ class Block(proto.Message):
             Detected block type (text, image etc) for
             this block.
         confidence (float):
-            Confidence of the OCR results on the block. Range [0, 1].
+            Confidence of the OCR results on the block.
+            Range [0, 1].
     """
 
     class BlockType(proto.Enum):
@@ -282,22 +290,25 @@ class Paragraph(proto.Message):
             Additional information detected for the
             paragraph.
         bounding_box (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding box for the paragraph. The vertices are in the
-            order of top-left, top-right, bottom-right, bottom-left.
-            When a rotation of the bounding box is detected the rotation
-            is represented as around the top-left corner as defined when
-            the text is read in the 'natural' orientation. For example:
+            The bounding box for the paragraph. The vertices
+            are in the order of top-left, top-right,
+            bottom-right, bottom-left. When a rotation of
+            the bounding box is detected the rotation is
+            represented as around the top-left corner as
+            defined when the text is read in the 'natural'
+            orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look
+              like: 0----1 \|   \| 3----2
+            -  when it's rotated 180 degrees around the
+              top-left corner   it becomes: 2----3 \| \|
+              1----0 and the vertice order   will still be
+              (0, 1, 2, 3).
         words (MutableSequence[google.cloud.vision_v1p1beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
-            Confidence of the OCR results for the paragraph. Range [0,
-            1].
+            Confidence of the OCR results for the paragraph.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -328,23 +339,27 @@ class Word(proto.Message):
         property (google.cloud.vision_v1p1beta1.types.TextAnnotation.TextProperty):
             Additional information detected for the word.
         bounding_box (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding box for the word. The vertices are in the order
-            of top-left, top-right, bottom-right, bottom-left. When a
-            rotation of the bounding box is detected the rotation is
-            represented as around the top-left corner as defined when
-            the text is read in the 'natural' orientation. For example:
+            The bounding box for the word. The vertices are
+            in the order of top-left, top-right,
+            bottom-right, bottom-left. When a rotation of
+            the bounding box is detected the rotation is
+            represented as around the top-left corner as
+            defined when the text is read in the 'natural'
+            orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look
+              like: 0----1 \|   \| 3----2
+            -  when it's rotated 180 degrees around the
+              top-left corner   it becomes: 2----3 \| \|
+              1----0 and the vertice order   will still be
+              (0, 1, 2, 3).
         symbols (MutableSequence[google.cloud.vision_v1p1beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
             reading order.
         confidence (float):
-            Confidence of the OCR results for the word. Range [0, 1].
+            Confidence of the OCR results for the word.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(
@@ -376,22 +391,26 @@ class Symbol(proto.Message):
             Additional information detected for the
             symbol.
         bounding_box (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The bounding box for the symbol. The vertices are in the
-            order of top-left, top-right, bottom-right, bottom-left.
-            When a rotation of the bounding box is detected the rotation
-            is represented as around the top-left corner as defined when
-            the text is read in the 'natural' orientation. For example:
+            The bounding box for the symbol. The vertices
+            are in the order of top-left, top-right,
+            bottom-right, bottom-left. When a rotation of
+            the bounding box is detected the rotation is
+            represented as around the top-left corner as
+            defined when the text is read in the 'natural'
+            orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look
+              like: 0----1 \|   \| 3----2
+            -  when it's rotated 180 degrees around the
+              top-left corner   it becomes: 2----3 \| \|
+              1----0 and the vertice order   will still be
+              (0, 1, 2, 3).
         text (str):
             The actual UTF-8 representation of the
             symbol.
         confidence (float):
-            Confidence of the OCR results for the symbol. Range [0, 1].
+            Confidence of the OCR results for the symbol.
+            Range [0, 1].
     """
 
     property: "TextAnnotation.TextProperty" = proto.Field(

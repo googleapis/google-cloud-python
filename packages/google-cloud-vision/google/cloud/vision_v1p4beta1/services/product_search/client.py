@@ -117,20 +117,21 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     product search. It uses the following resource model:
 
     - The API has a collection of
-      [ProductSet][google.cloud.vision.v1p4beta1.ProductSet] resources,
-      named ``projects/*/locations/*/productSets/*``, which acts as a
-      way to put different products into groups to limit identification.
+    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__
+    resources, named ``projects/*/locations/*/productSets/*``, which
+    acts as a way to put different products into groups to limit
+    identification.
 
     In parallel,
 
     - The API has a collection of
-      [Product][google.cloud.vision.v1p4beta1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources,
+    named   ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1p4beta1.Product] has a
-      collection of
-      [ReferenceImage][google.cloud.vision.v1p4beta1.ReferenceImage]
-      resources, named
+    - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a
+      collection of `ReferenceImage
+      <google.cloud.vision.v1p4beta1.ReferenceImage>`__ resources,
+      named
       ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
@@ -817,8 +818,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        * Returns INVALID_ARGUMENT if display_name is missing,
+        or is longer than   4096 characters.
 
         .. code-block:: python
 
@@ -848,12 +849,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.CreateProductSetRequest, dict]):
-                The request object. Request message for the ``CreateProductSet`` method.
+                The request object. Request message for the
+                ``CreateProductSet`` method.
             parent (str):
-                Required. The project in which the ProductSet should be
-                created.
-
-                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+                Required. The project in which the
+                ProductSet should be created.
+                Format is
+                ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -864,11 +866,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             product_set_id (str):
-                A user-supplied resource id for this ProductSet. If set,
-                the server will attempt to use this value as the
-                resource id. If it is already in use, an error is
-                returned with code ALREADY_EXISTS. Must be at most 128
-                characters long. It cannot contain the character ``/``.
+                A user-supplied resource id for this
+                ProductSet. If set, the server will
+                attempt to use this value as the
+                resource id. If it is already in use, an
+                error is returned with code
+                ALREADY_EXISTS. Must be at most 128
+                characters long. It cannot contain the
+                character ``/``.
 
                 This corresponds to the ``product_set_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -955,8 +960,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        * Returns INVALID_ARGUMENT if page_size is greater than
+        100, or less   than 1.
 
         .. code-block:: python
 
@@ -987,12 +992,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.ListProductSetsRequest, dict]):
-                The request object. Request message for the ``ListProductSets`` method.
+                The request object. Request message for the
+                ``ListProductSets`` method.
             parent (str):
-                Required. The project from which ProductSets should be
-                listed.
-
-                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+                Required. The project from which
+                ProductSets should be listed.
+                Format is
+                ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1007,10 +1013,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductSetsPager:
-                Response message for the ListProductSets method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Response message for the
+                ``ListProductSets`` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1085,7 +1092,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        * Returns NOT_FOUND if the ProductSet does not exist.
 
         .. code-block:: python
 
@@ -1115,11 +1122,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.GetProductSetRequest, dict]):
-                The request object. Request message for the ``GetProductSet`` method.
+                The request object. Request message for the
+                ``GetProductSet`` method.
             name (str):
-                Required. Resource name of the ProductSet to get.
-
+                Required. Resource name of the
+                ProductSet to get.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -1200,15 +1209,15 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.ProductSet:
-        r"""Makes changes to a ProductSet resource. Only display_name can be
-        updated currently.
+        r"""Makes changes to a ProductSet resource.
+        Only display_name can be updated currently.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        * Returns NOT_FOUND if the ProductSet does not exist. *
+        Returns INVALID_ARGUMENT if display_name is present in
+        update_mask but   missing from the request or longer
+        than 4096 characters.
 
         .. code-block:: python
 
@@ -1237,7 +1246,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.UpdateProductSetRequest, dict]):
-                The request object. Request message for the ``UpdateProductSet`` method.
+                The request object. Request message for the
+                ``UpdateProductSet`` method.
             product_set (google.cloud.vision_v1p4beta1.types.ProductSet):
                 Required. The ProductSet resource
                 which replaces the one on the server.
@@ -1246,10 +1256,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The [FieldMask][google.protobuf.FieldMask] that
-                specifies which fields to update. If update_mask isn't
-                specified, all mutable fields are to be updated. Valid
-                mask path is ``display_name``.
+                The `FieldMask
+                <google.protobuf.FieldMask>`__ that
+                specifies which fields to update. If
+                update_mask isn't specified, all mutable
+                fields are to be updated. Valid mask
+                path is ``display_name``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1363,11 +1375,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.DeleteProductSetRequest, dict]):
-                The request object. Request message for the ``DeleteProductSet`` method.
+                The request object. Request message for the
+                ``DeleteProductSet`` method.
             name (str):
-                Required. Resource name of the ProductSet to delete.
-
+                Required. Resource name of the
+                ProductSet to delete.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -1441,12 +1455,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-        - Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        * Returns INVALID_ARGUMENT if display_name is missing or
+        longer than 4096   characters.
+
+        * Returns INVALID_ARGUMENT if description is longer than
+        4096 characters. * Returns INVALID_ARGUMENT if
+        product_category is missing or invalid.
 
         .. code-block:: python
 
@@ -1476,12 +1490,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.CreateProductRequest, dict]):
-                The request object. Request message for the ``CreateProduct`` method.
+                The request object. Request message for the
+                ``CreateProduct`` method.
             parent (str):
-                Required. The project in which the Product should be
-                created.
-
-                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+                Required. The project in which the
+                Product should be created.
+                Format is
+                ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1492,11 +1507,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             product_id (str):
-                A user-supplied resource id for this Product. If set,
-                the server will attempt to use this value as the
-                resource id. If it is already in use, an error is
-                returned with code ALREADY_EXISTS. Must be at most 128
-                characters long. It cannot contain the character ``/``.
+                A user-supplied resource id for this
+                Product. If set, the server will attempt
+                to use this value as the resource id. If
+                it is already in use, an error is
+                returned with code ALREADY_EXISTS. Must
+                be at most 128 characters long. It
+                cannot contain the character ``/``.
 
                 This corresponds to the ``product_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1578,8 +1595,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        * Returns INVALID_ARGUMENT if page_size is greater than
+        100 or less than 1.
 
         .. code-block:: python
 
@@ -1610,12 +1627,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.ListProductsRequest, dict]):
-                The request object. Request message for the ``ListProducts`` method.
+                The request object. Request message for the ``ListProducts``
+                method.
             parent (str):
-                Required. The project OR ProductSet from which Products
-                should be listed.
+                Required. The project OR ProductSet from
+                which Products should be listed.
+                Format:
 
-                Format: ``projects/PROJECT_ID/locations/LOC_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1630,10 +1649,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductsPager:
-                Response message for the ListProducts method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Response message for the
+                ``ListProducts`` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1706,7 +1726,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
+        * Returns NOT_FOUND if the Product does not exist.
 
         .. code-block:: python
 
@@ -1736,11 +1756,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.GetProductRequest, dict]):
-                The request object. Request message for the ``GetProduct`` method.
+                The request object. Request message for the ``GetProduct``
+                method.
             name (str):
-                Required. Resource name of the Product to get.
-
+                Required. Resource name of the Product
+                to get.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -1816,22 +1838,25 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.Product:
-        r"""Makes changes to a Product resource. Only the ``display_name``,
-        ``description``, and ``labels`` fields can be updated right now.
+        r"""Makes changes to a Product resource.
+        Only the ``display_name``, ``description``, and
+        ``labels`` fields can be updated right now.
 
-        If labels are updated, the change will not be reflected in
-        queries until the next index time.
+        If labels are updated, the change will not be reflected
+        in queries until the next index time.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-        - Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-        - Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        * Returns NOT_FOUND if the Product does not exist. *
+        Returns INVALID_ARGUMENT if display_name is present in
+        update_mask but is   missing from the request or longer
+        than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if description is present in
+        update_mask but is   longer than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if product_category is
+        present in update_mask.
 
         .. code-block:: python
 
@@ -1860,7 +1885,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.UpdateProductRequest, dict]):
-                The request object. Request message for the ``UpdateProduct`` method.
+                The request object. Request message for the
+                ``UpdateProduct`` method.
             product (google.cloud.vision_v1p4beta1.types.Product):
                 Required. The Product resource which
                 replaces the one on the server.
@@ -1870,11 +1896,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The [FieldMask][google.protobuf.FieldMask] that
-                specifies which fields to update. If update_mask isn't
-                specified, all mutable fields are to be updated. Valid
-                mask paths include ``product_labels``, ``display_name``,
-                and ``description``.
+                The `FieldMask
+                <google.protobuf.FieldMask>`__ that
+                specifies which fields to update. If
+                update_mask isn't specified, all mutable
+                fields are to be updated. Valid mask
+                paths include ``product_labels``,
+                ``display_name``, and ``description``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1984,11 +2012,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.DeleteProductRequest, dict]):
-                The request object. Request message for the ``DeleteProduct`` method.
+                The request object. Request message for the
+                ``DeleteProduct`` method.
             name (str):
-                Required. Resource name of product to delete.
-
+                Required. Resource name of product to
+                delete.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -2060,26 +2090,29 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     ) -> product_search_service.ReferenceImage:
         r"""Creates and returns a new ReferenceImage resource.
 
-        The ``bounding_poly`` field is optional. If ``bounding_poly`` is
-        not specified, the system will try to detect regions of interest
-        in the image that are compatible with the product_category on
-        the parent product. If it is specified, detection is ALWAYS
+        The ``bounding_poly`` field is optional. If
+        ``bounding_poly`` is not specified, the system will try
+        to detect regions of interest in the image that are
+        compatible with the product_category on the parent
+        product. If it is specified, detection is ALWAYS
         skipped. The system converts polygons into non-rotated
         rectangles.
 
-        Note that the pipeline will resize the image if the image
-        resolution is too large to process (above 50MP).
+        Note that the pipeline will resize the image if the
+        image resolution is too large to process (above 50MP).
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if the product does not exist.
-        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-        - Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        * Returns INVALID_ARGUMENT if the image_uri is missing
+        or longer than 4096   characters.
+
+        * Returns INVALID_ARGUMENT if the product does not
+        exist. * Returns INVALID_ARGUMENT if bounding_poly is
+        not provided, and nothing   compatible with the parent
+        product's product_category is detected.
+
+        * Returns INVALID_ARGUMENT if bounding_poly contains
+        more than 10 polygons.
 
         .. code-block:: python
 
@@ -2113,10 +2146,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.CreateReferenceImageRequest, dict]):
-                The request object. Request message for the ``CreateReferenceImage`` method.
+                The request object. Request message for the
+                ``CreateReferenceImage`` method.
             parent (str):
-                Required. Resource name of the product in which to
-                create the reference image.
+                Required. Resource name of the product
+                in which to create the reference image.
 
                 Format is
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
@@ -2133,11 +2167,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reference_image_id (str):
-                A user-supplied resource id for the ReferenceImage to be
-                added. If set, the server will attempt to use this value
-                as the resource id. If it is already in use, an error is
-                returned with code ALREADY_EXISTS. Must be at most 128
-                characters long. It cannot contain the character ``/``.
+                A user-supplied resource id for the
+                ReferenceImage to be added. If set, the
+                server will attempt to use this value as
+                the resource id. If it is already in
+                use, an error is returned with code
+                ALREADY_EXISTS. Must be at most 128
+                characters long. It cannot contain the
+                character ``/``.
 
                 This corresponds to the ``reference_image_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2152,8 +2189,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.types.ReferenceImage:
-                A ReferenceImage represents a product image and its associated metadata,
-                   such as bounding boxes.
+                A ``ReferenceImage`` represents a
+                product image and its associated
+                metadata, such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2251,11 +2289,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.DeleteReferenceImageRequest, dict]):
-                The request object. Request message for the ``DeleteReferenceImage`` method.
+                The request object. Request message for the
+                ``DeleteReferenceImage`` method.
             name (str):
-                Required. The resource name of the reference image to
-                delete.
-
+                Required. The resource name of the
+                reference image to delete.
                 Format is:
 
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
@@ -2329,9 +2367,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the parent product does not exist.
-        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        * Returns NOT_FOUND if the parent product does not
+        exist. * Returns INVALID_ARGUMENT if the page_size is
+        greater than 100, or less   than 1.
 
         .. code-block:: python
 
@@ -2362,11 +2400,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.ListReferenceImagesRequest, dict]):
-                The request object. Request message for the ``ListReferenceImages`` method.
+                The request object. Request message for the
+                ``ListReferenceImages`` method.
             parent (str):
-                Required. Resource name of the product containing the
-                reference images.
-
+                Required. Resource name of the product
+                containing the reference images.
                 Format is
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
@@ -2383,10 +2421,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListReferenceImagesPager:
-                Response message for the ListReferenceImages method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Response message for the
+                ``ListReferenceImages`` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2461,7 +2500,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the specified image does not exist.
+        * Returns NOT_FOUND if the specified image does not
+        exist.
 
         .. code-block:: python
 
@@ -2491,11 +2531,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.GetReferenceImageRequest, dict]):
-                The request object. Request message for the ``GetReferenceImage`` method.
+                The request object. Request message for the
+                ``GetReferenceImage`` method.
             name (str):
-                Required. The resource name of the ReferenceImage to
-                get.
-
+                Required. The resource name of the
+                ReferenceImage to get.
                 Format is:
 
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
@@ -2513,8 +2553,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.types.ReferenceImage:
-                A ReferenceImage represents a product image and its associated metadata,
-                   such as bounding boxes.
+                A ``ReferenceImage`` represents a
+                product image and its associated
+                metadata, such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2575,15 +2616,15 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Adds a Product to the specified ProductSet. If the Product is
-        already present, no change is made.
+        r"""Adds a Product to the specified ProductSet. If the
+        Product is already present, no change is made.
 
         One Product can be added to at most 100 ProductSets.
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        * Returns NOT_FOUND if the Product or the ProductSet
+        doesn't exist.
 
         .. code-block:: python
 
@@ -2611,23 +2652,23 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.AddProductToProductSetRequest, dict]):
-                The request object. Request message for the ``AddProductToProductSet``
-                method.
+                The request object. Request message for the
+                ``AddProductToProductSet`` method.
             name (str):
-                Required. The resource name for the ProductSet to
-                modify.
-
+                Required. The resource name for the
+                ProductSet to modify.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             product (str):
-                Required. The resource name for the Product to be added
-                to this ProductSet.
-
+                Required. The resource name for the
+                Product to be added to this ProductSet.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2730,23 +2771,25 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.RemoveProductFromProductSetRequest, dict]):
-                The request object. Request message for the ``RemoveProductFromProductSet``
-                method.
+                The request object. Request message for the
+                ``RemoveProductFromProductSet`` method.
             name (str):
-                Required. The resource name for the ProductSet to
-                modify.
-
+                Required. The resource name for the
+                ProductSet to modify.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             product (str):
-                Required. The resource name for the Product to be
-                removed from this ProductSet.
+                Required. The resource name for the
+                Product to be removed from this
+                ProductSet.
 
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2820,14 +2863,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListProductsInProductSetPager:
-        r"""Lists the Products in a ProductSet, in an unspecified order. If
-        the ProductSet does not exist, the products field of the
-        response will be empty.
+        r"""Lists the Products in a ProductSet, in an unspecified
+        order. If the ProductSet does not exist, the products
+        field of the response will be empty.
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        * Returns INVALID_ARGUMENT if page_size is greater than
+        100 or less than 1.
 
         .. code-block:: python
 
@@ -2858,13 +2901,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.ListProductsInProductSetRequest, dict]):
-                The request object. Request message for the ``ListProductsInProductSet``
-                method.
+                The request object. Request message for the
+                ``ListProductsInProductSet`` method.
             name (str):
-                Required. The ProductSet resource for which to retrieve
-                Products.
-
+                Required. The ProductSet resource for
+                which to retrieve Products.
                 Format is:
+
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2880,11 +2923,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductsInProductSetPager:
-                Response message for the ListProductsInProductSet
-                method.
-
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Response message for the
+                ``ListProductsInProductSet`` method.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -2962,18 +3005,22 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Asynchronous API that imports a list of reference images to
-        specified product sets based on a list of image information.
+        r"""Asynchronous API that imports a list of reference images
+        to specified product sets based on a list of image
+        information.
 
-        The [google.longrunning.Operation][google.longrunning.Operation]
-        API can be used to keep track of the progress and results of the
-        request. ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress) ``Operation.response``
-        contains ``ImportProductSetsResponse``. (results)
+        The `google.longrunning.Operation
+        <google.longrunning.Operation>`__ API can be used to
+        keep track of the progress and results of the request.
+        ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress)
+        ``Operation.response`` contains
+        ``ImportProductSetsResponse``. (results)
 
-        The input source of this method is a csv file on Google Cloud
-        Storage. For the format of the csv file please see
-        [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri].
+        The input source of this method is a csv file on Google
+        Cloud Storage. For the format of the csv file please see
+        `ImportProductSetsGcsSource.csv_file_uri
+        <google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
         .. code-block:: python
 
@@ -3007,12 +3054,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.ImportProductSetsRequest, dict]):
-                The request object. Request message for the ``ImportProductSets`` method.
+                The request object. Request message for the
+                ``ImportProductSets`` method.
             parent (str):
-                Required. The project in which the ProductSets should be
-                imported.
-
-                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+                Required. The project in which the
+                ProductSets should be imported.
+                Format is
+                ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3034,17 +3082,21 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.vision_v1p4beta1.types.ImportProductSetsResponse``
+                Response message for the
+                ``ImportProductSets` method.
 
-                The result type for the operation will be
-                :class:`google.cloud.vision_v1p4beta1.types.ImportProductSetsResponse`
-                Response message for the ImportProductSets method.
-
-                   This message is returned by the
-                   [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
-                   method in the returned
-                   [google.longrunning.Operation.response][google.longrunning.Operation.response]
-                   field.
+                This message is returned by the
+                `google.longrunning.Operations.GetOperation
+                <google.longrunning.Operations.GetOperation>`__
+                method in the returned
+                `google.longrunning.Operation.response
+                <google.longrunning.Operation.response>`__
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -3114,32 +3166,36 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Asynchronous API to delete all Products in a ProductSet or all
-        Products that are in no ProductSet.
+        r"""Asynchronous API to delete all Products in a ProductSet
+        or all Products that are in no ProductSet.
 
-        If a Product is a member of the specified ProductSet in addition
-        to other ProductSets, the Product will still be deleted.
+        If a Product is a member of the specified ProductSet in
+        addition to other ProductSets, the Product will still be
+        deleted.
 
-        It is recommended to not delete the specified ProductSet until
-        after this operation has completed. It is also recommended to
-        not add any of the Products involved in the batch delete to a
-        new ProductSet while this operation is running because those
-        Products may still end up deleted.
+        It is recommended to not delete the specified ProductSet
+        until after this operation has completed. It is also
+        recommended to not add any of the Products involved in
+        the batch delete to a new ProductSet while this
+        operation is running because those Products may still
+        end up deleted.
 
         It's not possible to undo the PurgeProducts operation.
-        Therefore, it is recommended to keep the csv files used in
-        ImportProductSets (if that was how you originally built the
-        Product Set) before starting PurgeProducts, in case you need to
-        re-import the data after deletion.
+        Therefore, it is recommended to keep the csv files used
+        in ImportProductSets (if that was how you originally
+        built the Product Set) before starting PurgeProducts, in
+        case you need to re-import the data after deletion.
 
-        If the plan is to purge all of the Products from a ProductSet
-        and then re-use the empty ProductSet to re-import new Products
-        into the empty ProductSet, you must wait until the PurgeProducts
-        operation has finished for that ProductSet.
+        If the plan is to purge all of the Products from a
+        ProductSet and then re-use the empty ProductSet to
+        re-import new Products into the empty ProductSet, you
+        must wait until the PurgeProducts operation has finished
+        for that ProductSet.
 
-        The [google.longrunning.Operation][google.longrunning.Operation]
-        API can be used to keep track of the progress and results of the
-        request. ``Operation.metadata`` contains
+        The `google.longrunning.Operation
+        <google.longrunning.Operation>`__ API can be used to
+        keep track of the progress and results of the request.
+        ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
 
         .. code-block:: python
@@ -3174,12 +3230,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1p4beta1.types.PurgeProductsRequest, dict]):
-                The request object. Request message for the ``PurgeProducts`` method.
+                The request object. Request message for the
+                ``PurgeProducts`` method.
             parent (str):
-                Required. The project and location in which the Products
-                should be deleted.
-
-                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+                Required. The project and location in
+                which the Products should be deleted.
+                Format is
+                ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -3194,18 +3251,21 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
