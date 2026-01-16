@@ -426,16 +426,16 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
     ]:
         r"""Return a callable for the async batch annotate images method over gRPC.
 
-        Run asynchronous image detection and annotation for a
-        list of images.
+        Run asynchronous image detection and annotation for a list of
+        images.
         Progress and results can be retrieved through the
         ``google.longrunning.Operations`` interface.
         ``Operation.metadata`` contains ``OperationMetadata``
         (metadata). ``Operation.response`` contains
         ``AsyncBatchAnnotateImagesResponse`` (results).
 
-        This service will write image annotation outputs to json
-        files in customer GCS bucket, each json file containing
+        This service will write image annotation outputs to json files
+        in customer GCS bucket, each json file containing
         BatchAnnotateImagesResponse proto.
 
         Returns:
@@ -467,11 +467,11 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
     ]:
         r"""Return a callable for the async batch annotate files method over gRPC.
 
-        Run asynchronous image detection and annotation for a
-        list of generic files, such as PDF files, which may
-        contain multiple pages and multiple images per page.
-        Progress and results can be retrieved through the
-        ``google.longrunning.Operations`` interface.
+        Run asynchronous image detection and annotation for a list of
+        generic files, such as PDF files, which may contain multiple
+        pages and multiple images per page. Progress and results can be
+        retrieved through the ``google.longrunning.Operations``
+        interface.
         ``Operation.metadata`` contains ``OperationMetadata``
         (metadata). ``Operation.response`` contains
         ``AsyncBatchAnnotateFilesResponse`` (results).

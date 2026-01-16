@@ -36,11 +36,10 @@ class FaceRecognitionParams(proto.Message):
         celebrity_set (MutableSequence[str]):
             The resource names for one or more
             `CelebritySet
-            <google.cloud.vision.v1p4beta1.CelebritySet>`__s.
-            A celebrity set is preloaded and can be
-            specified as "builtin/default". If this is
-            specified, the algorithm will try to match the
-            faces detected in the input image to the
+            <google.cloud.vision.v1p4beta1.CelebritySet>`__s. A
+            celebrity set is preloaded and can be specified as
+            "builtin/default". If this is specified, the algorithm will
+            try to match the faces detected in the input image to the
             Celebrities in the CelebritySets.
     """
 
@@ -55,8 +54,8 @@ class Celebrity(proto.Message):
 
     Attributes:
         name (str):
-            The resource name of the preloaded Celebrity.
-            Has the format ``builtin/{mid}``.
+            The resource name of the preloaded Celebrity. Has the format
+            ``builtin/{mid}``.
         display_name (str):
             The Celebrity's display name.
         description (str):
@@ -82,8 +81,7 @@ class FaceRecognitionResult(proto.Message):
 
     Attributes:
         celebrity (google.cloud.vision_v1p4beta1.types.Celebrity):
-            The `Celebrity
-            <google.cloud.vision.v1p4beta1.Celebrity>`__
+            The `Celebrity <google.cloud.vision.v1p4beta1.Celebrity>`__
             that this face was matched to.
         confidence (float):
             Recognition confidence. Range [0, 1].

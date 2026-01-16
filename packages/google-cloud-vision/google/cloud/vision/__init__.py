@@ -21,7 +21,7 @@ __version__ = package_version.__version__
 from google.cloud.vision_v1.services.image_annotator.async_client import (
     ImageAnnotatorAsyncClient,
 )
-from google.cloud.vision_v1.services.image_annotator.client import ImageAnnotatorClient
+from google.cloud.vision_v1 import ImageAnnotatorClient
 from google.cloud.vision_v1.services.product_search.async_client import (
     ProductSearchAsyncClient,
 )
