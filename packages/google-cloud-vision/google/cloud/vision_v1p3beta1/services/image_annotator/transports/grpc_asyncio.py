@@ -396,10 +396,8 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
         images per page. Progress and results can be retrieved through
         the
         ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata).
-        ``Operation.response`` contains
-        ``AsyncBatchAnnotateFilesResponse`` (results).
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Returns:
             Callable[[~.AsyncBatchAnnotateFilesRequest],

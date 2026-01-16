@@ -120,9 +120,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     - The API has a collection of `ProductSet
       <google.cloud.vision.v1.ProductSet>`__ resources, named
-      ``projects/*/locations/*/productSets/*``, which acts as a way to
-      put different products into groups to limit identification. In
-      parallel,
+      ``projects/*/locations/*/productSets/*``, which acts as a way to put different products
+      into groups to limit identification. In parallel,
 
     - The API has a collection of `Product
       <google.cloud.vision.v1.Product>`__ resources, named
@@ -130,8 +129,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     - Each `Product <google.cloud.vision.v1.Product>`__ has a collection
       of `ReferenceImage <google.cloud.vision.v1.ReferenceImage>`__
-      resources, named
-      ``projects/*/locations/*/products/*/referenceImages/*``
+      resources, named ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     @staticmethod
@@ -1122,8 +1120,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the ProductSet to get.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-                CT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1373,8 +1370,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the ProductSet to delete.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-                CT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1751,8 +1747,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the Product to get.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1828,8 +1823,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.Product:
         r"""Makes changes to a Product resource.
-        Only the ``display_name``, ``description``, and ``labels``
-        fields can be updated
+        Only the ``display_name``, ``description``, and
+        ``labels`` fields can be updated
         right now.
 
         If labels are updated, the change will not be reflected in
@@ -2006,8 +2001,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of product to delete.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2142,8 +2136,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 image.
 
                 Format is
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``.
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2285,8 +2278,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 delete.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID/referenceImages/IMAGE_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2396,8 +2388,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 reference images.
 
                 Format is
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``.
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2526,8 +2517,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 get.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID/referenceImages/IMAGE_ID``.
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2642,15 +2632,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1.types.AddProductToProductSetRequest, dict]):
-                The request object. Request message for the ``AddProductToProductSet``
-                method.
+                The request object. Request message for the ``AddProductToProductSet`` method.
             name (str):
                 Required. The resource name for the ProductSet to
                 modify.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-                CT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2660,8 +2648,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 to this ProductSet.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2763,15 +2750,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1.types.RemoveProductFromProductSetRequest, dict]):
-                The request object. Request message for the ``RemoveProductFromProductSet``
-                method.
+                The request object. Request message for the ``RemoveProductFromProductSet`` method.
             name (str):
                 Required. The resource name for the ProductSet to
                 modify.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-                CT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2782,8 +2767,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 ProductSet.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-                ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2896,15 +2880,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Args:
             request (Union[google.cloud.vision_v1.types.ListProductsInProductSetRequest, dict]):
-                The request object. Request message for the ``ListProductsInProductSet``
-                method.
+                The request object. Request message for the ``ListProductsInProductSet`` method.
             name (str):
                 Required. The ProductSet resource for which to retrieve
                 Products.
 
                 Format is:
-                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-                CT_SET_ID``
+                ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2919,8 +2901,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.services.product_search.pagers.ListProductsInProductSetPager:
-                Response message for the ``ListProductsInProductSet``
-                method.
+                Response message for the ``ListProductsInProductSet`` method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -3008,16 +2989,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         The `google.longrunning.Operation
         <google.longrunning.Operation>`__ API can be
         used to keep track of the progress and results of the request.
-        ``Operation.metadata`` contains ``BatchOperationMetadata``.
-        (progress)
-        ``Operation.response`` contains ``ImportProductSetsResponse``.
-        (results)
+        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)
+        ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
 
         The input source of this method is a csv file on Google Cloud
         Storage.
         For the format of the csv file please see
-        `ImportProductSetsGcsSource.csv_file_uri <google.cloud.vision.v1
-        .ImportProductSetsGcsSource.csv_file_uri>`__.
+        `ImportProductSetsGcsSource.csv_file_uri
+        <google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
         .. code-block:: python
 
@@ -3080,9 +3059,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:``googl
-                e.cloud.vision_v1.types.ImportProductSetsResponse``
-                Response message for the ``ImportProductSets`` method.
+                The result type for the operation will be
+                :class:``google.cloud.vision_v1.types.ImportProductSetsResponse`` Response message for the
+                ``ImportProductSets`` method.
 
                 This message is returned by the
                 `google.longrunning.Operations.GetOperation
@@ -3196,8 +3175,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         The `google.longrunning.Operation
         <google.longrunning.Operation>`__ API can be
         used to keep track of the progress and results of the request.
-        ``Operation.metadata`` contains ``BatchOperationMetadata``.
-        (progress)
+        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)
 
         .. code-block:: python
 
@@ -3254,9 +3232,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``google.protobuf.empty_pb2.Empty`` A generic
-                empty message that you can re-use to avoid defining
-                duplicated
+                :class:``google.protobuf.empty_pb2.Empty`` A generic empty message that
+                you can re-use to avoid defining duplicated
                 empty messages in your APIs. A typical example is to use
                 it as the request
                 or the response type of an API method. For instance:

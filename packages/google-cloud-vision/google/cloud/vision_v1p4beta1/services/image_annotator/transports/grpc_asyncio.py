@@ -431,10 +431,8 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
 
         Progress and results can be retrieved through the
         ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata).
-        ``Operation.response`` contains
-        ``AsyncBatchAnnotateImagesResponse`` (results).
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateImagesResponse`` (results).
 
         This service will write image annotation outputs to json files
         in customer
@@ -477,10 +475,8 @@ class ImageAnnotatorGrpcAsyncIOTransport(ImageAnnotatorTransport):
         images per page. Progress and results can be retrieved through
         the
         ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata).
-        ``Operation.response`` contains
-        ``AsyncBatchAnnotateFilesResponse`` (results).
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         Returns:
             Callable[[~.AsyncBatchAnnotateFilesRequest],

@@ -46,8 +46,7 @@ class ProductSearchParams(proto.Message):
             similar images.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_S
-            ET_ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``.
         product_categories (MutableSequence[str]):
             The list of product categories to search in.
             Currently, we only consider the first category,
@@ -153,8 +152,7 @@ class ProductSearchResults(proto.Message):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
                 more
                 information, see
-                http://www.unicode.org/reports/tr35/#Unicode_locale_identifi
-                er.
+                http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             name (str):
                 Object name, expressed in its ``language_code`` language.
             score (float):

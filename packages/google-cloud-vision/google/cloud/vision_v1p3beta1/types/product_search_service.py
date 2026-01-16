@@ -68,8 +68,7 @@ class Product(proto.Message):
             The resource name of the product.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
-            .
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
             This field is ignored when creating a product.
         display_name (str):
@@ -157,8 +156,7 @@ class ProductSet(proto.Message):
             The resource name of the ProductSet.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_S
-            ET_ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``.
 
             This field is ignored when creating a ProductSet.
         display_name (str):
@@ -214,8 +212,7 @@ class ReferenceImage(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/r
-            eferenceImages/IMAGE_ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
 
             This field is ignored when creating a reference image.
         uri (str):
@@ -356,8 +353,7 @@ class GetProductRequest(proto.Message):
             Required. Resource name of the Product to get.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
     name: str = proto.Field(
@@ -405,8 +401,7 @@ class DeleteProductRequest(proto.Message):
             Required. Resource name of product to delete.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
     name: str = proto.Field(
@@ -517,8 +512,7 @@ class GetProductSetRequest(proto.Message):
             Required. Resource name of the ProductSet to get.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-            CT_SET_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
     name: str = proto.Field(
@@ -563,8 +557,7 @@ class DeleteProductSetRequest(proto.Message):
             Required. Resource name of the ProductSet to delete.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-            CT_SET_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
     name: str = proto.Field(
@@ -582,8 +575,7 @@ class CreateReferenceImageRequest(proto.Message):
             create the reference image.
 
             Format is
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
         reference_image (google.cloud.vision_v1p3beta1.types.ReferenceImage):
             Required. The reference image to create.
             If an image ID is specified, it is ignored.
@@ -622,8 +614,7 @@ class ListReferenceImagesRequest(proto.Message):
             reference images.
 
             Format is
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
@@ -693,8 +684,7 @@ class GetReferenceImageRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID/referenceImages/IMAGE_ID``.
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
     """
 
     name: str = proto.Field(
@@ -713,8 +703,7 @@ class DeleteReferenceImageRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID/referenceImages/IMAGE_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
     """
 
     name: str = proto.Field(
@@ -724,8 +713,7 @@ class DeleteReferenceImageRequest(proto.Message):
 
 
 class AddProductToProductSetRequest(proto.Message):
-    r"""Request message for the ``AddProductToProductSet``
-    method.
+    r"""Request message for the ``AddProductToProductSet`` method.
 
     Attributes:
         name (str):
@@ -733,15 +721,13 @@ class AddProductToProductSetRequest(proto.Message):
             modify.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-            CT_SET_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
         product (str):
             Required. The resource name for the Product to be added
             to this ProductSet.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
     name: str = proto.Field(
@@ -755,8 +741,7 @@ class AddProductToProductSetRequest(proto.Message):
 
 
 class RemoveProductFromProductSetRequest(proto.Message):
-    r"""Request message for the ``RemoveProductFromProductSet``
-    method.
+    r"""Request message for the ``RemoveProductFromProductSet`` method.
 
     Attributes:
         name (str):
@@ -764,15 +749,13 @@ class RemoveProductFromProductSetRequest(proto.Message):
             modify.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-            CT_SET_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
         product (str):
             Required. The resource name for the Product to be
             removed from this ProductSet.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_
-            ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
     name: str = proto.Field(
@@ -786,8 +769,7 @@ class RemoveProductFromProductSetRequest(proto.Message):
 
 
 class ListProductsInProductSetRequest(proto.Message):
-    r"""Request message for the ``ListProductsInProductSet``
-    method.
+    r"""Request message for the ``ListProductsInProductSet`` method.
 
     Attributes:
         name (str):
@@ -795,8 +777,7 @@ class ListProductsInProductSetRequest(proto.Message):
             Products.
 
             Format is:
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODU
-            CT_SET_ID``
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
@@ -820,8 +801,7 @@ class ListProductsInProductSetRequest(proto.Message):
 
 
 class ListProductsInProductSetResponse(proto.Message):
-    r"""Response message for the ``ListProductsInProductSet``
-    method.
+    r"""Response message for the ``ListProductsInProductSet`` method.
 
     Attributes:
         products (MutableSequence[google.cloud.vision_v1p3beta1.types.Product]):
@@ -1028,10 +1008,9 @@ class ImportProductSetsResponse(proto.Message):
 class BatchOperationMetadata(proto.Message):
     r"""Metadata for the batch operations such as the current state.
 
-    This is included in the ``metadata`` field of the ``Operation``
-    returned by the
-    ``GetOperation`` call of the ``google::longrunning::Operations``
-    service.
+    This is included in the ``metadata`` field of the
+    ``Operation`` returned by the
+    ``GetOperation`` call of the ``google::longrunning::Operations`` service.
 
     Attributes:
         state (google.cloud.vision_v1p3beta1.types.BatchOperationMetadata.State):

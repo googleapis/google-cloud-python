@@ -103,8 +103,8 @@ class Feature(proto.Message):
             Model to use for the feature.
             Supported values: "builtin/stable" (the default if unset)
             and
-            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
-            ``TEXT_DETECTION`` also
+            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION``
+            also
             support "builtin/weekly" for the bleeding edge release
             updated weekly.
     """
@@ -176,8 +176,8 @@ class ImageSource(proto.Message):
             following form:
             ``gs://bucket_name/object_name`` (for details, see
             `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-
-            uris>`__).
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__).
             NOTE: Cloud Storage object versioning is not supported.
         image_uri (str):
             Image URI which supports:
@@ -185,8 +185,8 @@ class ImageSource(proto.Message):
             following form:
             ``gs://bucket_name/object_name`` (for details, see
             `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-
-            uris>`__).
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__).
             NOTE: Cloud Storage object versioning is not supported.
             2) Publicly accessible image HTTP/HTTPS URL.
             This is preferred over the legacy ``gcs_image_uri`` above.
@@ -212,14 +212,14 @@ class Image(proto.Message):
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes.
-            Note: as with all ``bytes`` fields, protobuffers use a pure
-            binary
+            Note: as with all ``bytes`` fields, protobuffers use
+            a pure binary
             representation, whereas JSON representations use base64.
         source (google.cloud.vision_v1p1beta1.types.ImageSource):
-            Google Cloud Storage image location. If both ``content`` and
-            ``source``
-            are provided for an image, ``content`` takes precedence and
-            is
+            Google Cloud Storage image location. If both
+            ``content`` and ``source``
+            are provided for an image, ``content`` takes
+            precedence and is
             used to perform the image annotation request.
     """
 
@@ -253,8 +253,7 @@ class FaceAnnotation(proto.Message):
             partial face
             appears in the image to be annotated.
         fd_bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The ``fd_bounding_poly`` bounding polygon is tighter than
-            the
+            The ``fd_bounding_poly`` bounding polygon is tighter than the
             ``boundingPoly``, and encloses only the skin part of the
             face. Typically, it
             is used to eliminate the face from any image analysis that
@@ -266,8 +265,8 @@ class FaceAnnotation(proto.Message):
         landmarks (MutableSequence[google.cloud.vision_v1p1beta1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
-            Roll angle, which indicates the amount of clockwise/anti-
-            clockwise rotation
+            Roll angle, which indicates the amount of
+            clockwise/anti-clockwise rotation
             of the face relative to the image vertical about the axis
             perpendicular to
             the face. Range [-180,180].
@@ -565,8 +564,8 @@ class EntityAnnotation(proto.Message):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
         description (str):
-            Entity textual description, expressed in its ``locale``
-            language.
+            Entity textual description, expressed in its
+            ``locale`` language.
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
@@ -600,8 +599,8 @@ class EntityAnnotation(proto.Message):
             taken.
             Location information is usually present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1p1beta1.types.Property]):
-            Some entities may have optional user-supplied ``Property``
-            (name/value)
+            Some entities may have optional user-supplied
+            ``Property`` (name/value)
             fields, such a score or string that qualifies the entity.
     """
 

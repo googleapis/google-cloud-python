@@ -106,8 +106,8 @@ class Likelihood(proto.Enum):
 class Feature(proto.Message):
     r"""The type of Google Cloud Vision API detection to perform, and the
     maximum
-    number of results to return for that type. Multiple ``Feature``
-    objects can
+    number of results to return for that type. Multiple
+    ``Feature`` objects can
     be specified in the ``features`` list.
 
     Attributes:
@@ -115,14 +115,13 @@ class Feature(proto.Message):
             The feature type.
         max_results (int):
             Maximum number of results of this type. Does not apply to
-            ``TEXT_DETECTION``, ``DOCUMENT_TEXT_DETECTION``, or
-            ``CROP_HINTS``.
+            ``TEXT_DETECTION``, ``DOCUMENT_TEXT_DETECTION``, or ``CROP_HINTS``.
         model (str):
             Model to use for the feature.
             Supported values: "builtin/stable" (the default if unset)
             and
-            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
-            ``TEXT_DETECTION`` also
+            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION``
+            also
             support "builtin/weekly" for the bleeding edge release
             updated weekly.
     """
@@ -149,8 +148,7 @@ class Feature(proto.Message):
                 a document, use ``DOCUMENT_TEXT_DETECTION`` instead.
             DOCUMENT_TEXT_DETECTION (11):
                 Run dense text document OCR. Takes precedence when both
-                ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are
-                present.
+                ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are present.
             SAFE_SEARCH_DETECTION (6):
                 Run Safe Search to detect potentially unsafe
                 or undesirable content.
@@ -204,20 +202,20 @@ class ImageSource(proto.Message):
             **Use ``image_uri`` instead.**
 
             The Google Cloud Storage  URI of the form
-            ``gs://bucket_name/object_name``. Object versioning is not
-            supported. See
+            ``gs://bucket_name/object_name``. Object versioning is not supported. See
             `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-
-            uris>`__ for more info.
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__
+            for more info.
         image_uri (str):
             The URI of the source image. Can be either:
 
             1. A Google Cloud Storage URI of the form
-            ``gs://bucket_name/object_name``. Object versioning is not
-            supported. See
+            ``gs://bucket_name/object_name``. Object versioning is not supported. See
             `Google Cloud Storage Request
-            URIs <https://cloud.google.com/storage/docs/reference-
-            uris>`__ for more
+            URIs
+            <https://cloud.google.com/storage/docs/reference-uris>`__
+            for more
             info.
 
             2. A publicly-accessible image HTTP/HTTPS URL. When fetching
@@ -233,8 +231,8 @@ class ImageSource(proto.Message):
             depend on externally-hosted images for production
             applications.
 
-            When both ``gcs_image_uri`` and ``image_uri`` are specified,
-            ``image_uri`` takes
+            When both ``gcs_image_uri`` and ``image_uri`` are
+            specified, ``image_uri`` takes
             precedence.
     """
 
@@ -254,14 +252,14 @@ class Image(proto.Message):
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes.
-            Note: As with all ``bytes`` fields, protobuffers use a pure
-            binary
+            Note: As with all ``bytes`` fields, protobuffers use
+            a pure binary
             representation, whereas JSON representations use base64.
         source (google.cloud.vision_v1p3beta1.types.ImageSource):
             Google Cloud Storage image location, or publicly-accessible
             image
-            URL. If both ``content`` and ``source`` are provided for an
-            image, ``content``
+            URL. If both ``content`` and ``source`` are
+            provided for an image, ``content``
             takes precedence and is used to perform the image annotation
             request.
     """
@@ -296,8 +294,7 @@ class FaceAnnotation(proto.Message):
             partial face
             appears in the image to be annotated.
         fd_bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
-            The ``fd_bounding_poly`` bounding polygon is tighter than
-            the
+            The ``fd_bounding_poly`` bounding polygon is tighter than the
             ``boundingPoly``, and encloses only the skin part of the
             face. Typically, it
             is used to eliminate the face from any image analysis that
@@ -309,8 +306,8 @@ class FaceAnnotation(proto.Message):
         landmarks (MutableSequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
-            Roll angle, which indicates the amount of clockwise/anti-
-            clockwise rotation
+            Roll angle, which indicates the amount of
+            clockwise/anti-clockwise rotation
             of the face relative to the image vertical about the axis
             perpendicular to
             the face. Range [-180,180].
@@ -608,8 +605,8 @@ class EntityAnnotation(proto.Message):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
         description (str):
-            Entity textual description, expressed in its ``locale``
-            language.
+            Entity textual description, expressed in its
+            ``locale`` language.
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
@@ -644,8 +641,8 @@ class EntityAnnotation(proto.Message):
             taken.
             Location information is usually present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1p3beta1.types.Property]):
-            Some entities may have optional user-supplied ``Property``
-            (name/value)
+            Some entities may have optional user-supplied
+            ``Property`` (name/value)
             fields, such a score or string that qualifies the entity.
     """
 
@@ -701,8 +698,7 @@ class LocalizedObjectAnnotation(proto.Message):
             The BCP-47 language code, such as "en-US" or "sr-Latn". For
             more
             information, see
-            http://www.unicode.org/reports/tr35/#Unicode_locale_identifi
-            er.
+            http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         name (str):
             Object name, expressed in its ``language_code`` language.
         score (float):
@@ -1418,7 +1414,8 @@ class OutputConfig(proto.Message):
 
             For example, for one pdf file with 100 pages, 100 response
             protos will
-            be generated. If ``batch_size`` = 20, then 5 json files each
+            be generated. If ``batch_size`` = 20, then 5 json files
+            each
             containing 20 response protos will be written under the
             prefix
             ``gcs_destination``.``uri``.

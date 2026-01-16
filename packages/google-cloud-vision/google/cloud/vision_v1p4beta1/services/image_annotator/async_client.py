@@ -537,10 +537,8 @@ class ImageAnnotatorAsyncClient:
 
         Progress and results can be retrieved through the
         ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata).
-        ``Operation.response`` contains
-        ``AsyncBatchAnnotateImagesResponse`` (results).
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateImagesResponse`` (results).
 
         This service will write image annotation outputs to json files
         in customer
@@ -606,10 +604,9 @@ class ImageAnnotatorAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:``googl
-                e.cloud.vision_v1p4beta1.types.AsyncBatchAnnotateImagesR
-                esponse`` Response to an async batch image annotation
-                request.
+                The result type for the operation will be
+                :class:``google.cloud.vision_v1p4beta1.types.AsyncBatchAnnotateImagesResponse`` Response to an async batch
+                image annotation request.
 
         """
         # Create or coerce a protobuf request object.
@@ -685,10 +682,8 @@ class ImageAnnotatorAsyncClient:
         images per page. Progress and results can be retrieved through
         the
         ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata).
-        ``Operation.response`` contains
-        ``AsyncBatchAnnotateFilesResponse`` (results).
+        ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         .. code-block:: python
 
@@ -743,10 +738,9 @@ class ImageAnnotatorAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:``googl
-                e.cloud.vision_v1p4beta1.types.AsyncBatchAnnotateFilesRe
-                sponse`` Response to an async batch file annotation
-                request.
+                The result type for the operation will be
+                :class:``google.cloud.vision_v1p4beta1.types.AsyncBatchAnnotateFilesResponse`` Response to an async batch file
+                annotation request.
 
         """
         # Create or coerce a protobuf request object.

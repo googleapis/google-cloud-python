@@ -124,9 +124,8 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
 
     - The API has a collection of `ProductSet
       <google.cloud.vision.v1p3beta1.ProductSet>`__ resources, named
-      ``projects/*/locations/*/productSets/*``, which acts as a way to
-      put different products into groups to limit identification. In
-      parallel,
+      ``projects/*/locations/*/productSets/*``, which acts as a way to put different products
+      into groups to limit identification. In parallel,
 
     - The API has a collection of `Product
       <google.cloud.vision.v1p3beta1.Product>`__ resources, named
@@ -1025,16 +1024,14 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
         The `google.longrunning.Operation
         <google.longrunning.Operation>`__ API can be
         used to keep track of the progress and results of the request.
-        ``Operation.metadata`` contains ``BatchOperationMetadata``.
-        (progress)
-        ``Operation.response`` contains ``ImportProductSetsResponse``.
-        (results)
+        ``Operation.metadata`` contains ``BatchOperationMetadata``. (progress)
+        ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
 
         The input source of this method is a csv file on Google Cloud
         Storage.
         For the format of the csv file please see
-        `ImportProductSetsGcsSource.csv_file_uri <google.cloud.vision.v1
-        p3beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
+        `ImportProductSetsGcsSource.csv_file_uri
+        <google.cloud.vision.v1p3beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
         Returns:
             Callable[[~.ImportProductSetsRequest],

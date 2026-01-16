@@ -63,8 +63,7 @@ class TextAnnotation(proto.Message):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
                 more
                 information, see
-                http://www.unicode.org/reports/tr35/#Unicode_locale_identifi
-                er.
+                http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
         """
@@ -101,8 +100,8 @@ class TextAnnotation(proto.Message):
                 EOL_SURE_SPACE (3):
                     Line-wrapping break.
                 HYPHEN (4):
-                    End-line hyphen that is not present in text; does not co-
-                    occur with
+                    End-line hyphen that is not present in text; does not
+                    co-occur with
                     ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
