@@ -152,6 +152,42 @@ async def test_open_for_new_object(mock_async_bidi_rpc, mock_client):
 @mock.patch(
     "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
 )
+async def test_open_for_new_object_with_generation_zero(mock_async_bidi_rpc, mock_client):
+    """Test opening a stream for a new object."""
+    # Arrange
+    socket_like_rpc = mock.AsyncMock()
+    mock_async_bidi_rpc.return_value = socket_like_rpc
+    socket_like_rpc.open = mock.AsyncMock()
+
+    mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
+    mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
+    mock_response.resource.generation = GENERATION
+    mock_response.resource.size = 0
+    mock_response.write_handle = WRITE_HANDLE
+    socket_like_rpc.recv = mock.AsyncMock(return_value=mock_response)
+
+    stream = _AsyncWriteObjectStream(mock_client, BUCKET, OBJECT, generation_number=0)
+
+    # Act
+    await stream.open()
+
+    # Assert
+    mock_async_bidi_rpc.assert_called_once()
+    _, call_kwargs = mock_async_bidi_rpc.call_args
+    initial_request = call_kwargs["initial_request"]
+    assert initial_request.write_object_spec.if_generation_match == 0
+    assert stream._is_stream_open
+    socket_like_rpc.open.assert_called_once()
+    socket_like_rpc.recv.assert_called_once()
+    assert stream.generation_number == GENERATION
+    assert stream.write_handle == WRITE_HANDLE
+    assert stream.persisted_size == 0
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+)
 async def test_open_for_existing_object(mock_async_bidi_rpc, mock_client):
     """Test opening a stream for an existing object."""
     # Arrange

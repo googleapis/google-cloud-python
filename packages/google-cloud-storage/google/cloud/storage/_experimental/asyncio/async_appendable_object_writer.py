@@ -97,15 +97,29 @@ class AsyncAppendableObjectWriter:
         :param object_name: The name of the GCS Appendable Object to be written.
 
         :type generation: int
-        :param generation: (Optional) If present, selects a specific revision of
-                            that object.
-                            If None, a new object is created.
-                            If None and Object already exists then it'll will be
-                            overwritten.
+        :param generation: (Optional) If present, creates writer for that
+            specific revision of that object. Use this to append data to an
+            existing Appendable Object.
+
+            Setting to ``0`` makes the `writer.open()` succeed only if
+            object doesn't exist in the bucket (useful for not accidentally
+            overwriting existing objects).
+
+            Warning: If `None`, a new object is created. If an object with the
+            same name already exists, it will be overwritten the moment 
+            `writer.open()` is called.
 
         :type write_handle: bytes
-        :param write_handle: (Optional) An existing handle for writing the object.
-                            If provided, opening the bidi-gRPC connection will be faster.
+        :param write_handle: (Optional) An handle for writing the object.
+            If provided, opening the bidi-gRPC connection will be faster.
+
+        :type writer_options: dict
+        :param writer_options: (Optional) A dictionary of writer options.
+            Supported options:
+            - "FLUSH_INTERVAL_BYTES": int
+                The number of bytes to append before "persisting" data in GCS
+                servers. Default is `_DEFAULT_FLUSH_INTERVAL_BYTES`.
+                Must be a multiple of `_MAX_CHUNK_SIZE_BYTES`.
         """
         raise_if_no_fast_crc32c()
         self.client = client
@@ -133,7 +147,6 @@ class AsyncAppendableObjectWriter:
         self.flush_interval = writer_options.get(
             "FLUSH_INTERVAL_BYTES", _DEFAULT_FLUSH_INTERVAL_BYTES
         )
-        # TODO: add test case for this.
         if self.flush_interval < _MAX_CHUNK_SIZE_BYTES:
             raise exceptions.OutOfRange(
                 f"flush_interval must be >= {_MAX_CHUNK_SIZE_BYTES} , but provided {self.flush_interval}"
@@ -345,6 +358,11 @@ class AsyncAppendableObjectWriter:
         self._is_stream_open = False
         self.offset = None
         return self.object_resource
+
+    @property
+    def is_stream_open(self) -> bool:
+        return self._is_stream_open
+
 
     # helper methods.
     async def append_from_string(self, data: str):

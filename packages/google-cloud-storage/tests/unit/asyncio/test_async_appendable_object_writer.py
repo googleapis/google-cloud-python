@@ -55,7 +55,7 @@ def test_init(mock_write_object_stream, mock_client):
     assert writer.object_name == OBJECT
     assert writer.generation is None
     assert writer.write_handle is None
-    assert not writer._is_stream_open
+    assert not writer.is_stream_open
     assert writer.offset is None
     assert writer.persisted_size is None
     assert writer.bytes_appended_since_last_flush == 0
@@ -225,7 +225,7 @@ async def test_open_appendable_object_writer(mock_write_object_stream, mock_clie
 
     # Assert
     mock_stream.open.assert_awaited_once()
-    assert writer._is_stream_open
+    assert writer.is_stream_open
     assert writer.generation == GENERATION
     assert writer.write_handle == WRITE_HANDLE
     assert writer.persisted_size == 0
@@ -255,7 +255,7 @@ async def test_open_appendable_object_writer_existing_object(
 
     # Assert
     mock_stream.open.assert_awaited_once()
-    assert writer._is_stream_open
+    assert writer.is_stream_open
     assert writer.generation == GENERATION
     assert writer.write_handle == WRITE_HANDLE
     assert writer.persisted_size == PERSISTED_SIZE
@@ -379,7 +379,7 @@ async def test_close(mock_write_object_stream, mock_client):
     mock_stream.close.assert_awaited_once()
     assert writer.offset is None
     assert persisted_size == 1024
-    assert not writer._is_stream_open
+    assert not writer.is_stream_open
 
 
 @pytest.mark.asyncio
@@ -415,7 +415,7 @@ async def test_finalize_on_close(mock_write_object_stream, mock_client):
 
     # Assert
     mock_stream.close.assert_awaited_once()
-    assert not writer._is_stream_open
+    assert not writer.is_stream_open
     assert writer.offset is None
     assert writer.object_resource == mock_resource
     assert writer.persisted_size == 2048
@@ -448,7 +448,7 @@ async def test_finalize(mock_write_object_stream, mock_client):
     assert writer.object_resource == mock_resource
     assert writer.persisted_size == 123
     assert gcs_object == mock_resource
-    assert writer._is_stream_open is False
+    assert not writer.is_stream_open
     assert writer.offset is None
 
 

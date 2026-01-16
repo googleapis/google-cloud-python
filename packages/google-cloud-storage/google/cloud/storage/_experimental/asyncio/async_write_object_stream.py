@@ -47,8 +47,17 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     :param object_name: The name of the GCS ``Appendable Object`` to be write.
 
     :type generation_number: int
-    :param generation_number: (Optional) If present, selects a specific revision of
-                              this object. If None, a new object is created.
+    :param generation_number: (Optional) If present, creates writer for that
+        specific revision of that object. Use this to append data to an
+        existing Appendable Object.
+
+        Setting to ``0`` makes the `writer.open()` succeed only if
+        object doesn't exist in the bucket (useful for not accidentally
+        overwriting existing objects).
+
+        Warning: If `None`, a new object is created. If an object with the
+        same name already exists, it will be overwritten the moment
+        `writer.open()` is called.
 
     :type write_handle: bytes
     :param write_handle: (Optional) An existing handle for writing the object.
@@ -101,13 +110,16 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         # Create a new object or overwrite existing one if generation_number
         # is None. This makes it consistent with GCS JSON API behavior.
         # Created object type would be Appendable Object.
-        if self.generation_number is None:
+        # if `generation_number` == 0 new object will be created only if there
+        # isn't any existing object.
+        if self.generation_number is None or self.generation_number == 0:
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
                     resource=_storage_v2.Object(
                         name=self.object_name, bucket=self._full_bucket_name
                     ),
                     appendable=True,
+                    if_generation_match=self.generation_number,
                 ),
             )
         else:
@@ -118,7 +130,6 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                     generation=self.generation_number,
                 ),
             )
-
         self.socket_like_rpc = AsyncBidiRpc(
             self.rpc, initial_request=self.first_bidi_write_req, metadata=self.metadata
         )
