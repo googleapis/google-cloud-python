@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from bigframes.core.logging import log_adapter
+from bigframes.core.logging import data_types, log_adapter
 
-__all__ = ["log_adapter"]
+__all__ = ["log_adapter", "data_types"]
