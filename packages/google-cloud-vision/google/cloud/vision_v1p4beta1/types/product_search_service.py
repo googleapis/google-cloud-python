@@ -71,7 +71,7 @@ class Product(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
 
             This field is ignored when creating a product.
         display_name (str):
@@ -162,7 +162,7 @@ class ProductSet(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
 
             This field is ignored when creating a ProductSet.
         display_name (str):
@@ -209,7 +209,7 @@ class ProductSet(proto.Message):
 
 
 class ReferenceImage(proto.Message):
-    r"""A ``ReferenceImage`` represents a product image and its
+    r"""A `ReferenceImage` represents a product image and its
     associated metadata, such as bounding boxes.
 
     Attributes:
@@ -218,13 +218,13 @@ class ReferenceImage(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
 
             This field is ignored when creating a reference image.
         uri (str):
             Required. The Google Cloud Storage URI of the reference
             image.
-            The URI must start with ``gs://``.
+            The URI must start with `gs://`.
         bounding_polys (MutableSequence[google.cloud.vision_v1p4beta1.types.BoundingPoly]):
             Optional. Bounding polygons around the areas
             of interest in the reference image. If this
@@ -255,14 +255,14 @@ class ReferenceImage(proto.Message):
 
 
 class CreateProductRequest(proto.Message):
-    r"""Request message for the ``CreateProduct`` method.
+    r"""Request message for the `CreateProduct` method.
 
     Attributes:
         parent (str):
             Required. The project in which the Product should be
             created.
             Format is
-            ``projects/PROJECT_ID/locations/LOC_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID`.
         product (google.cloud.vision_v1p4beta1.types.Product):
             Required. The product to create.
         product_id (str):
@@ -270,7 +270,7 @@ class CreateProductRequest(proto.Message):
             the server will attempt to use this value as the
             resource id. If it is already in use, an error is
             returned with code ALREADY_EXISTS. Must be at most 128
-            characters long. It cannot contain the character ``/``.
+            characters long. It cannot contain the character `/`.
     """
 
     parent: str = proto.Field(
@@ -289,7 +289,7 @@ class CreateProductRequest(proto.Message):
 
 
 class ListProductsRequest(proto.Message):
-    r"""Request message for the ``ListProducts`` method.
+    r"""Request message for the `ListProducts` method.
 
     Attributes:
         parent (str):
@@ -297,7 +297,7 @@ class ListProductsRequest(proto.Message):
             should be listed.
             Format:
 
-            ``projects/PROJECT_ID/locations/LOC_ID``
+            `projects/PROJECT_ID/locations/LOC_ID`
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
@@ -321,7 +321,7 @@ class ListProductsRequest(proto.Message):
 
 
 class ListProductsResponse(proto.Message):
-    r"""Response message for the ``ListProducts`` method.
+    r"""Response message for the `ListProducts` method.
 
     Attributes:
         products (MutableSequence[google.cloud.vision_v1p4beta1.types.Product]):
@@ -348,7 +348,7 @@ class ListProductsResponse(proto.Message):
 
 
 class GetProductRequest(proto.Message):
-    r"""Request message for the ``GetProduct`` method.
+    r"""Request message for the `GetProduct` method.
 
     Attributes:
         name (str):
@@ -356,7 +356,7 @@ class GetProductRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     """
 
     name: str = proto.Field(
@@ -366,7 +366,7 @@ class GetProductRequest(proto.Message):
 
 
 class UpdateProductRequest(proto.Message):
-    r"""Request message for the ``UpdateProduct`` method.
+    r"""Request message for the `UpdateProduct` method.
 
     Attributes:
         product (google.cloud.vision_v1p4beta1.types.Product):
@@ -374,12 +374,11 @@ class UpdateProductRequest(proto.Message):
             the one on the server. product.name is
             immutable.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
+            The [FieldMask][google.protobuf.FieldMask] that
             specifies which fields to update.
             If update_mask isn't specified, all mutable fields are
             to be updated. Valid mask paths include
-            ``product_labels``, ``display_name``, and
-            ``description``.
+            `product_labels`, `display_name`, and `description`.
     """
 
     product: "Product" = proto.Field(
@@ -395,7 +394,7 @@ class UpdateProductRequest(proto.Message):
 
 
 class DeleteProductRequest(proto.Message):
-    r"""Request message for the ``DeleteProduct`` method.
+    r"""Request message for the `DeleteProduct` method.
 
     Attributes:
         name (str):
@@ -403,7 +402,7 @@ class DeleteProductRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     """
 
     name: str = proto.Field(
@@ -413,13 +412,13 @@ class DeleteProductRequest(proto.Message):
 
 
 class CreateProductSetRequest(proto.Message):
-    r"""Request message for the ``CreateProductSet`` method.
+    r"""Request message for the `CreateProductSet` method.
 
     Attributes:
         parent (str):
             Required. The project in which the ProductSet should be
             created.
-            Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+            Format is `projects/PROJECT_ID/locations/LOC_ID`.
         product_set (google.cloud.vision_v1p4beta1.types.ProductSet):
             Required. The ProductSet to create.
         product_set_id (str):
@@ -427,7 +426,7 @@ class CreateProductSetRequest(proto.Message):
             the server will attempt to use this value as the
             resource id. If it is already in use, an error is
             returned with code ALREADY_EXISTS. Must be at most 128
-            characters long. It cannot contain the character ``/``.
+            characters long. It cannot contain the character `/`.
     """
 
     parent: str = proto.Field(
@@ -446,13 +445,13 @@ class CreateProductSetRequest(proto.Message):
 
 
 class ListProductSetsRequest(proto.Message):
-    r"""Request message for the ``ListProductSets`` method.
+    r"""Request message for the `ListProductSets` method.
 
     Attributes:
         parent (str):
             Required. The project from which ProductSets should be
             listed.
-            Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+            Format is `projects/PROJECT_ID/locations/LOC_ID`.
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
@@ -476,7 +475,7 @@ class ListProductSetsRequest(proto.Message):
 
 
 class ListProductSetsResponse(proto.Message):
-    r"""Response message for the ``ListProductSets`` method.
+    r"""Response message for the `ListProductSets` method.
 
     Attributes:
         product_sets (MutableSequence[google.cloud.vision_v1p4beta1.types.ProductSet]):
@@ -503,7 +502,7 @@ class ListProductSetsResponse(proto.Message):
 
 
 class GetProductSetRequest(proto.Message):
-    r"""Request message for the ``GetProductSet`` method.
+    r"""Request message for the `GetProductSet` method.
 
     Attributes:
         name (str):
@@ -511,7 +510,7 @@ class GetProductSetRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     """
 
     name: str = proto.Field(
@@ -521,17 +520,17 @@ class GetProductSetRequest(proto.Message):
 
 
 class UpdateProductSetRequest(proto.Message):
-    r"""Request message for the ``UpdateProductSet`` method.
+    r"""Request message for the `UpdateProductSet` method.
 
     Attributes:
         product_set (google.cloud.vision_v1p4beta1.types.ProductSet):
             Required. The ProductSet resource which
             replaces the one on the server.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
+            The [FieldMask][google.protobuf.FieldMask] that
             specifies which fields to update.
             If update_mask isn't specified, all mutable fields are
-            to be updated. Valid mask path is ``display_name``.
+            to be updated. Valid mask path is `display_name`.
     """
 
     product_set: "ProductSet" = proto.Field(
@@ -547,7 +546,7 @@ class UpdateProductSetRequest(proto.Message):
 
 
 class DeleteProductSetRequest(proto.Message):
-    r"""Request message for the ``DeleteProductSet`` method.
+    r"""Request message for the `DeleteProductSet` method.
 
     Attributes:
         name (str):
@@ -555,7 +554,7 @@ class DeleteProductSetRequest(proto.Message):
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     """
 
     name: str = proto.Field(
@@ -565,7 +564,7 @@ class DeleteProductSetRequest(proto.Message):
 
 
 class CreateReferenceImageRequest(proto.Message):
-    r"""Request message for the ``CreateReferenceImage`` method.
+    r"""Request message for the `CreateReferenceImage` method.
 
     Attributes:
         parent (str):
@@ -573,7 +572,7 @@ class CreateReferenceImageRequest(proto.Message):
             create the reference image.
 
             Format is
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
         reference_image (google.cloud.vision_v1p4beta1.types.ReferenceImage):
             Required. The reference image to create.
             If an image ID is specified, it is ignored.
@@ -582,7 +581,7 @@ class CreateReferenceImageRequest(proto.Message):
             added. If set, the server will attempt to use this value
             as the resource id. If it is already in use, an error is
             returned with code ALREADY_EXISTS. Must be at most 128
-            characters long. It cannot contain the character ``/``.
+            characters long. It cannot contain the character `/`.
     """
 
     parent: str = proto.Field(
@@ -601,20 +600,20 @@ class CreateReferenceImageRequest(proto.Message):
 
 
 class ListReferenceImagesRequest(proto.Message):
-    r"""Request message for the ``ListReferenceImages`` method.
+    r"""Request message for the `ListReferenceImages` method.
 
     Attributes:
         parent (str):
             Required. Resource name of the product containing the
             reference images.
             Format is
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
             A token identifying a page of results to be returned. This
-            is the value of ``nextPageToken`` returned in a previous
+            is the value of `nextPageToken` returned in a previous
             reference image list request.
 
             Defaults to the first page if not specified.
@@ -635,7 +634,7 @@ class ListReferenceImagesRequest(proto.Message):
 
 
 class ListReferenceImagesResponse(proto.Message):
-    r"""Response message for the ``ListReferenceImages`` method.
+    r"""Response message for the `ListReferenceImages` method.
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
@@ -668,7 +667,7 @@ class ListReferenceImagesResponse(proto.Message):
 
 
 class GetReferenceImageRequest(proto.Message):
-    r"""Request message for the ``GetReferenceImage`` method.
+    r"""Request message for the `GetReferenceImage` method.
 
     Attributes:
         name (str):
@@ -676,7 +675,7 @@ class GetReferenceImageRequest(proto.Message):
             get.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
     """
 
     name: str = proto.Field(
@@ -686,7 +685,7 @@ class GetReferenceImageRequest(proto.Message):
 
 
 class DeleteReferenceImageRequest(proto.Message):
-    r"""Request message for the ``DeleteReferenceImage`` method.
+    r"""Request message for the `DeleteReferenceImage` method.
 
     Attributes:
         name (str):
@@ -694,7 +693,7 @@ class DeleteReferenceImageRequest(proto.Message):
             delete.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`
     """
 
     name: str = proto.Field(
@@ -704,8 +703,7 @@ class DeleteReferenceImageRequest(proto.Message):
 
 
 class AddProductToProductSetRequest(proto.Message):
-    r"""Request message for the ``AddProductToProductSet``
-    method.
+    r"""Request message for the `AddProductToProductSet` method.
 
     Attributes:
         name (str):
@@ -713,13 +711,13 @@ class AddProductToProductSetRequest(proto.Message):
             modify.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
         product (str):
             Required. The resource name for the Product to be added
             to this ProductSet.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     """
 
     name: str = proto.Field(
@@ -733,7 +731,7 @@ class AddProductToProductSetRequest(proto.Message):
 
 
 class RemoveProductFromProductSetRequest(proto.Message):
-    r"""Request message for the ``RemoveProductFromProductSet``
+    r"""Request message for the `RemoveProductFromProductSet`
     method.
 
     Attributes:
@@ -742,14 +740,14 @@ class RemoveProductFromProductSetRequest(proto.Message):
             modify.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
         product (str):
             Required. The resource name for the Product to be
             removed from this ProductSet.
 
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     """
 
     name: str = proto.Field(
@@ -763,7 +761,7 @@ class RemoveProductFromProductSetRequest(proto.Message):
 
 
 class ListProductsInProductSetRequest(proto.Message):
-    r"""Request message for the ``ListProductsInProductSet``
+    r"""Request message for the `ListProductsInProductSet`
     method.
 
     Attributes:
@@ -772,7 +770,7 @@ class ListProductsInProductSetRequest(proto.Message):
             Products.
             Format is:
 
-            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
         page_size (int):
             The maximum number of items to return.
             Default 10, maximum 100.
@@ -796,7 +794,7 @@ class ListProductsInProductSetRequest(proto.Message):
 
 
 class ListProductsInProductSetResponse(proto.Message):
-    r"""Response message for the ``ListProductsInProductSet``
+    r"""Response message for the `ListProductsInProductSet`
     method.
 
     Attributes:
@@ -831,7 +829,7 @@ class ImportProductSetsGcsSource(proto.Message):
         csv_file_uri (str):
             The Google Cloud Storage URI of the input csv file.
 
-            The URI must start with ``gs://``.
+            The URI must start with `gs://`.
 
             The format of the input csv file should be one image per
             line. In each line, there are 8 columns.
@@ -845,57 +843,52 @@ class ImportProductSetsGcsSource(proto.Message):
             7.  labels
             8.  bounding-poly
 
-            The ``image-uri``, ``product-set-id``, ``product-id``, and
-            ``product-category`` columns are required. All other columns
+            The `image-uri`, `product-set-id`, `product-id`, and
+            `product-category` columns are required. All other columns
             are optional.
 
-            If the ``ProductSet`` or ``Product`` specified by the
-            ``product-set-id`` and ``product-id`` values does not exist,
-            then the system will create a new ``ProductSet`` or
-            ``Product`` for the image. In this case, the
-            ``product-display-name`` column refers to
-            `display_name
-            <google.cloud.vision.v1p4beta1.Product.display_name>`__, the
-            ``product-category`` column refers to
-            `product_category
-            <google.cloud.vision.v1p4beta1.Product.product_category>`__,
-            and the ``labels`` column refers to
-            `product_labels
-            <google.cloud.vision.v1p4beta1.Product.product_labels>`__.
+            If the `ProductSet` or `Product` specified by the
+            `product-set-id` and `product-id` values does not exist,
+            then the system will create a new `ProductSet` or `Product`
+            for the image. In this case, the `product-display-name`
+            column refers to
+            [display_name][google.cloud.vision.v1p4beta1.Product.display_name],
+            the `product-category` column refers to
+            [product_category][google.cloud.vision.v1p4beta1.Product.product_category],
+            and the `labels` column refers to
+            [product_labels][google.cloud.vision.v1p4beta1.Product.product_labels].
 
-            The ``image-id`` column is optional but must be unique if
+            The `image-id` column is optional but must be unique if
             provided. If it is empty, the system will automatically
             assign a unique id to the image.
 
-            The ``product-display-name`` column is optional. If it is
-            empty, the system sets the `display_name
-            <google.cloud.vision.v1p4beta1.Product.display_name>`__
+            The `product-display-name` column is optional. If it is
+            empty, the system sets the
+            [display_name][google.cloud.vision.v1p4beta1.Product.display_name]
             field for the product to a space (" "). You can update the
-            ``display_name`` later by using the API.
+            `display_name` later by using the API.
 
-            If a ``Product`` with the specified ``product-id`` already
-            exists, then the system ignores the
-            ``product-display-name``, ``product-category``, and
-            ``labels`` columns.
+            If a `Product` with the specified `product-id` already
+            exists, then the system ignores the `product-display-name`,
+            `product-category`, and `labels` columns.
 
-            The ``labels`` column (optional) is a line containing a list
+            The `labels` column (optional) is a line containing a list
             of comma-separated key-value pairs, in the following format:
 
                 "key_1=value_1,key_2=value_2,...,key_n=value_n"
 
-            The ``bounding-poly`` column (optional) identifies one
-            region of interest from the image in the same manner as
-            ``CreateReferenceImage``. If you do not specify the
-            ``bounding-poly`` column, then the system will try to detect
+            The `bounding-poly` column (optional) identifies one region
+            of interest from the image in the same manner as
+            `CreateReferenceImage`. If you do not specify the
+            `bounding-poly` column, then the system will try to detect
             regions of interest automatically.
 
-            At most one ``bounding-poly`` column is allowed per line. If
+            At most one `bounding-poly` column is allowed per line. If
             the image contains multiple regions of interest, add a line
             to the CSV file that includes the same product information,
-            and the ``bounding-poly`` values for each region of
-            interest.
+            and the `bounding-poly` values for each region of interest.
 
-            The ``bounding-poly`` column must contain an even number of
+            The `bounding-poly` column must contain an even number of
             comma-separated numbers, in the format
             "p1_x,p1_y,p2_x,p2_y,...,pn_x,pn_y". Use non-negative
             integers for absolute bounding polygons, and float values in
@@ -912,7 +905,7 @@ class ImportProductSetsGcsSource(proto.Message):
 
 
 class ImportProductSetsInputConfig(proto.Message):
-    r"""The input content for the ``ImportProductSets`` method.
+    r"""The input content for the `ImportProductSets` method.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -934,13 +927,13 @@ class ImportProductSetsInputConfig(proto.Message):
 
 
 class ImportProductSetsRequest(proto.Message):
-    r"""Request message for the ``ImportProductSets`` method.
+    r"""Request message for the `ImportProductSets` method.
 
     Attributes:
         parent (str):
             Required. The project in which the ProductSets should be
             imported.
-            Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+            Format is `projects/PROJECT_ID/locations/LOC_ID`.
         input_config (google.cloud.vision_v1p4beta1.types.ImportProductSetsInputConfig):
             Required. The input content for the list of
             requests.
@@ -958,14 +951,13 @@ class ImportProductSetsRequest(proto.Message):
 
 
 class ImportProductSetsResponse(proto.Message):
-    r"""Response message for the ``ImportProductSets`` method.
+    r"""Response message for the `ImportProductSets` method.
 
     This message is returned by the
-    `google.longrunning.Operations.GetOperation
-    <google.longrunning.Operations.GetOperation>`__ method in the
-    returned
-    `google.longrunning.Operation.response
-    <google.longrunning.Operation.response>`__ field.
+    [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+    method in the returned
+    [google.longrunning.Operation.response][google.longrunning.Operation.response]
+    field.
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
@@ -995,9 +987,9 @@ class ImportProductSetsResponse(proto.Message):
 class BatchOperationMetadata(proto.Message):
     r"""Metadata for the batch operations such as the current state.
 
-    This is included in the ``metadata`` field of the ``Operation``
-    returned by the ``GetOperation`` call of the
-    ``google::longrunning::Operations`` service.
+    This is included in the `metadata` field of the `Operation` returned
+    by the `GetOperation` call of the `google::longrunning::Operations`
+    service.
 
     Attributes:
         state (google.cloud.vision_v1p4beta1.types.BatchOperationMetadata.State):
@@ -1007,8 +999,8 @@ class BatchOperationMetadata(proto.Message):
             to the server.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request is finished and
-            `google.longrunning.Operation.done
-            <google.longrunning.Operation.done>`__ is set to true.
+            [google.longrunning.Operation.done][google.longrunning.Operation.done]
+            is set to true.
     """
 
     class State(proto.Enum):
@@ -1074,7 +1066,7 @@ class ProductSetPurgeConfig(proto.Message):
 
 
 class PurgeProductsRequest(proto.Message):
-    r"""Request message for the ``PurgeProducts`` method.
+    r"""Request message for the `PurgeProducts` method.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -1097,7 +1089,7 @@ class PurgeProductsRequest(proto.Message):
         parent (str):
             Required. The project and location in which the Products
             should be deleted.
-            Format is ``projects/PROJECT_ID/locations/LOC_ID``.
+            Format is `projects/PROJECT_ID/locations/LOC_ID`.
         force (bool):
             The default value is false. Override this
             value to true to actually perform the purge.

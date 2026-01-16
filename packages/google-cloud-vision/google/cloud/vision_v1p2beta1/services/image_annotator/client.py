@@ -835,10 +835,10 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         r"""Run async image detection and annotation for a list of generic
         files (e.g. PDF) which may contain multiple pages and multiple
         images per page. Progress and results can be retrieved through
-        the ``google.longrunning.Operations`` interface.
-        ``Operation.metadata`` contains ``OperationMetadata``
-        (metadata). ``Operation.response`` contains
-        ``AsyncBatchAnnotateFilesResponse`` (results).
+        the `google.longrunning.Operations` interface.
+        `Operation.metadata` contains `OperationMetadata` (metadata).
+        `Operation.response` contains `AsyncBatchAnnotateFilesResponse`
+        (results).
 
         .. code-block:: python
 

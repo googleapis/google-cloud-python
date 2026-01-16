@@ -106,20 +106,20 @@ class Likelihood(proto.Enum):
 class Feature(proto.Message):
     r"""The type of Google Cloud Vision API detection to perform, and the
     maximum number of results to return for that type. Multiple
-    ``Feature`` objects can be specified in the ``features`` list.
+    `Feature` objects can be specified in the `features` list.
 
     Attributes:
         type_ (google.cloud.vision_v1p3beta1.types.Feature.Type):
             The feature type.
         max_results (int):
             Maximum number of results of this type. Does not apply to
-            ``TEXT_DETECTION``, ``DOCUMENT_TEXT_DETECTION``, or
-            ``CROP_HINTS``.
+            `TEXT_DETECTION`, `DOCUMENT_TEXT_DETECTION`, or
+            `CROP_HINTS`.
         model (str):
             Model to use for the feature.
             Supported values: "builtin/stable" (the default if unset)
-            and "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
-            ``TEXT_DETECTION`` also support "builtin/weekly" for the
+            and "builtin/latest". `DOCUMENT_TEXT_DETECTION` and
+            `TEXT_DETECTION` also support "builtin/weekly" for the
             bleeding edge release updated weekly.
     """
 
@@ -141,11 +141,10 @@ class Feature(proto.Message):
                 Run text detection / optical character recognition (OCR).
                 Text detection is optimized for areas of text within a
                 larger image; if the image is a document, use
-                ``DOCUMENT_TEXT_DETECTION`` instead.
+                `DOCUMENT_TEXT_DETECTION` instead.
             DOCUMENT_TEXT_DETECTION (11):
                 Run dense text document OCR. Takes precedence when both
-                ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` are
-                present.
+                `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` are present.
             SAFE_SEARCH_DETECTION (6):
                 Run Safe Search to detect potentially unsafe
                 or undesirable content.
@@ -196,22 +195,20 @@ class ImageSource(proto.Message):
 
     Attributes:
         gcs_image_uri (str):
-            **Use ``image_uri`` instead.**
+            **Use `image_uri` instead.**
 
             The Google Cloud Storage  URI of the form
-            ``gs://bucket_name/object_name``. Object versioning is not
-            supported. See `Google Cloud Storage Request
-            URIs
-            <https://cloud.google.com/storage/docs/reference-uris>`__
+            `gs://bucket_name/object_name`. Object versioning is not
+            supported. See [Google Cloud Storage Request
+            URIs](https://cloud.google.com/storage/docs/reference-uris)
             for more info.
         image_uri (str):
             The URI of the source image. Can be either:
 
             1. A Google Cloud Storage URI of the form
-               ``gs://bucket_name/object_name``. Object versioning is
-            not supported. See    `Google Cloud Storage Request
-               URIs
-            <https://cloud.google.com/storage/docs/reference-uris>`__
+               `gs://bucket_name/object_name`. Object versioning is not
+            supported. See    [Google Cloud Storage Request
+            URIs](https://cloud.google.com/storage/docs/reference-uris)
             for more    info.
 
             2. A publicly-accessible image HTTP/HTTPS URL. When fetching
@@ -223,8 +220,8 @@ class ImageSource(proto.Message):
                 prevention. You should not    depend on
                 externally-hosted images for production applications.
 
-            When both ``gcs_image_uri`` and ``image_uri`` are specified,
-            ``image_uri`` takes precedence.
+            When both `gcs_image_uri` and `image_uri` are specified,
+            `image_uri` takes precedence.
     """
 
     gcs_image_uri: str = proto.Field(
@@ -243,14 +240,14 @@ class Image(proto.Message):
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes.
-            Note: As with all ``bytes`` fields, protobuffers use a pure
+            Note: As with all `bytes` fields, protobuffers use a pure
             binary representation, whereas JSON representations use
             base64.
         source (google.cloud.vision_v1p3beta1.types.ImageSource):
             Google Cloud Storage image location, or publicly-accessible
-            image URL. If both ``content`` and ``source`` are provided
-            for an image, ``content`` takes precedence and is used to
-            perform the image annotation request.
+            image URL. If both `content` and `source` are provided for
+            an image, `content` takes precedence and is used to perform
+            the image annotation request.
     """
 
     content: bytes = proto.Field(
@@ -272,18 +269,18 @@ class FaceAnnotation(proto.Message):
         bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding polygon around the face. The coordinates of the
             bounding box are in the original image's scale, as returned
-            in ``ImageParams``. The bounding box is computed to "frame"
+            in `ImageParams`. The bounding box is computed to "frame"
             the face in accordance with human expectations. It is based
             on the landmarker results. Note that one or more x and/or y
-            coordinates may not be generated in the ``BoundingPoly``
-            (the polygon will be unbounded) if only a partial face
-            appears in the image to be annotated.
+            coordinates may not be generated in the `BoundingPoly` (the
+            polygon will be unbounded) if only a partial face appears in
+            the image to be annotated.
         fd_bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
-            The ``fd_bounding_poly`` bounding polygon is tighter than
-            the ``boundingPoly``, and encloses only the skin part of the
-            face. Typically, it is used to eliminate the face from any
-            image analysis that detects the "amount of skin" visible in
-            an image. It is not based on the landmarker results, only on
+            The `fd_bounding_poly` bounding polygon is tighter than the
+            `boundingPoly`, and encloses only the skin part of the face.
+            Typically, it is used to eliminate the face from any image
+            analysis that detects the "amount of skin" visible in an
+            image. It is not based on the landmarker results, only on
             the initial face detection, hence the <code>fd</code> (face
             detection) prefix.
         landmarks (MutableSequence[google.cloud.vision_v1p3beta1.types.FaceAnnotation.Landmark]):
@@ -335,7 +332,7 @@ class FaceAnnotation(proto.Message):
             r"""Face landmark (feature) type.
             Left and right are defined from the vantage of the viewer of the
             image without considering mirror projections typical of photos. So,
-            ``LEFT_EYE``, typically, is the person's right eye.
+            `LEFT_EYE`, typically, is the person's right eye.
 
             Values:
                 UNKNOWN_LANDMARK (0):
@@ -545,7 +542,7 @@ class LocationInfo(proto.Message):
 
 
 class Property(proto.Message):
-    r"""A ``Property`` consists of a user-supplied name/value pair.
+    r"""A `Property` consists of a user-supplied name/value pair.
 
     Attributes:
         name (str):
@@ -576,18 +573,18 @@ class EntityAnnotation(proto.Message):
     Attributes:
         mid (str):
             Opaque entity ID. Some IDs may be available in
-            `Google Knowledge Graph Search
-            API <https://developers.google.com/knowledge-graph/>`__.
+            [Google Knowledge Graph Search
+            API](https://developers.google.com/knowledge-graph/).
         locale (str):
             The language code for the locale in which the entity textual
-            ``description`` is expressed.
+            `description` is expressed.
         description (str):
-            Entity textual description, expressed in its ``locale``
+            Entity textual description, expressed in its `locale`
             language.
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
-            **Deprecated. Use ``score`` instead.**
+            **Deprecated. Use `score` instead.**
             The accuracy of the entity detection in an image. For
             example, for an image in which the "Eiffel Tower" entity is
             detected, this field represents the confidence that there is
@@ -601,16 +598,16 @@ class EntityAnnotation(proto.Message):
             in each image may be the same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             Image region to which this entity belongs. Not produced
-            for ``LABEL_DETECTION`` features.
+            for `LABEL_DETECTION` features.
         locations (MutableSequence[google.cloud.vision_v1p3beta1.types.LocationInfo]):
             The location information for the detected entity. Multiple
-            ``LocationInfo`` elements can be present because one
-            location may indicate the location of the scene in the
-            image, and another location may indicate the location of the
-            place where the image was taken. Location information is
-            usually present for landmarks.
+            `LocationInfo` elements can be present because one location
+            may indicate the location of the scene in the image, and
+            another location may indicate the location of the place
+            where the image was taken. Location information is usually
+            present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1p3beta1.types.Property]):
-            Some entities may have optional user-supplied ``Property``
+            Some entities may have optional user-supplied `Property`
             (name/value) fields, such a score or string that qualifies
             the entity.
     """
@@ -668,7 +665,7 @@ class LocalizedObjectAnnotation(proto.Message):
             more information, see
             http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         name (str):
-            Object name, expressed in its ``language_code`` language.
+            Object name, expressed in its `language_code` language.
         score (float):
             Score of the result. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
@@ -756,7 +753,7 @@ class SafeSearchAnnotation(proto.Message):
 
 
 class LatLongRect(proto.Message):
-    r"""Rectangle determined by min and max ``LatLng`` pairs.
+    r"""Rectangle determined by min and max `LatLng` pairs.
 
     Attributes:
         min_lat_lng (google.type.latlng_pb2.LatLng):
@@ -846,7 +843,7 @@ class CropHint(proto.Message):
         bounding_poly (google.cloud.vision_v1p3beta1.types.BoundingPoly):
             The bounding polygon for the crop region. The coordinates of
             the bounding box are in the original image's scale, as
-            returned in ``ImageParams``.
+            returned in `ImageParams`.
         confidence (float):
             Confidence of this being a salient region.  Range [0, 1].
         importance_fraction (float):
@@ -955,13 +952,13 @@ class ImageContext(proto.Message):
             List of languages to use for TEXT_DETECTION. In most cases,
             an empty value yields the best results since it enables
             automatic language detection. For languages based on the
-            Latin alphabet, setting ``language_hints`` is not needed. In
+            Latin alphabet, setting `language_hints` is not needed. In
             rare cases, when the language of the text in the image is
             known, setting a hint will help get better results (although
             it will be a significant hindrance if the hint is wrong).
             Text detection returns an error if one or more of the
-            specified languages is not one of the `supported languages
-            <https://cloud.google.com/vision/docs/languages>`__.
+            specified languages is not one of the [supported
+            languages](https://cloud.google.com/vision/docs/languages).
         crop_hints_params (google.cloud.vision_v1p3beta1.types.CropHintsParams):
             Parameters for crop hints annotation request.
         product_search_params (google.cloud.vision_v1p3beta1.types.ProductSearchParams):
@@ -1105,7 +1102,7 @@ class AnnotateImageResponse(proto.Message):
         error (google.rpc.status_pb2.Status):
             If set, represents the error message for the operation.
             Note that filled-in image annotations are guaranteed to be
-            correct, even when ``error`` is set.
+            correct, even when `error` is set.
         context (google.cloud.vision_v1p3beta1.types.ImageAnnotationContext):
             If present, contextual information is needed
             to understand where this image comes from.
@@ -1370,9 +1367,9 @@ class OutputConfig(proto.Message):
             value is 20.
 
             For example, for one pdf file with 100 pages, 100 response
-            protos will be generated. If ``batch_size`` = 20, then 5
-            json files each containing 20 response protos will be
-            written under the prefix ``gcs_destination``.``uri``.
+            protos will be generated. If `batch_size` = 20, then 5 json
+            files each containing 20 response protos will be written
+            under the prefix `gcs_destination`.`uri`.
 
             Currently, batch_size only applies to GcsDestination, with
             potential future support for other output configurations.
@@ -1416,19 +1413,18 @@ class GcsDestination(proto.Message):
             Results will be in JSON format and preceded by its
             corresponding input URI. This field can either represent a
             single file, or a prefix for multiple outputs. Prefixes must
-            end in a ``/``.
+            end in a `/`.
 
             Examples:
 
             *    File: gs://bucket-name/filename.json
             *    Prefix: gs://bucket-name/prefix/here/
-            *    File: gs://bucket-name/prefix/here
-
-            If multiple outputs, each response is still
-            AnnotateFileResponse, each of which contains some subset of
-            the full list of AnnotateImageResponse. Multiple outputs can
-            happen if, for example, the output JSON is too large and
-            overflows into multiple sharded files.
+            *    File: gs://bucket-name/prefix/here If multiple outputs,
+            each response is still AnnotateFileResponse, each of which
+            contains some subset of the full list of
+            AnnotateImageResponse. Multiple outputs can happen if, for
+            example, the output JSON is too large and overflows into
+            multiple sharded files.
     """
 
     uri: str = proto.Field(
