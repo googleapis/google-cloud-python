@@ -566,7 +566,7 @@ class TestAuthorizedSession(object):
 
         # Mock call_client_cert_callback to return the new certificate.
         with mock.patch.object(
-            google.auth.transport._mtls_helper._agent_identity_utils,
+            google.auth.transport._mtls_helper,
             "call_client_cert_callback",
             return_value=(new_cert, new_key),
         ) as mock_callback:
@@ -605,7 +605,7 @@ class TestAuthorizedSession(object):
 
         # Mock call_client_cert_callback to return the new certificate.
         with mock.patch.object(
-            google.auth.transport._mtls_helper._agent_identity_utils,
+            google.auth.transport._mtls_helper,
             "call_client_cert_callback",
             return_value=(new_cert, new_key),
         ):
@@ -638,7 +638,7 @@ class TestAuthorizedSession(object):
 
         # Mock call_client_cert_callback to return the new certificate.
         with mock.patch.object(
-            google.auth.transport._mtls_helper._agent_identity_utils,
+            google.auth.transport._mtls_helper,
             "call_client_cert_callback",
             return_value=(new_cert, new_key),
         ) as mock_callback:
@@ -688,7 +688,7 @@ class TestAuthorizedSession(object):
         authed_session._is_mtls = True
 
         with mock.patch.object(
-            google.auth.transport._mtls_helper._agent_identity_utils,
+            google.auth.transport._mtls_helper,
             "call_client_cert_callback",
             return_value=(new_cert, new_key),
         ):

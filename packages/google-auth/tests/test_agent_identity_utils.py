@@ -282,23 +282,6 @@ class TestAgentIdentityUtils:
         mock_sleep.assert_called_once()
         assert mock_is_ready.call_count == 2
 
-    @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
-    def test_call_client_cert_callback(self, mock_get_client_ssl_credentials):
-        mock_get_client_ssl_credentials.return_value = (
-            True,
-            b"cert_bytes",
-            b"key_bytes",
-            b"passphrase",
-        )
-
-        cert, key = _agent_identity_utils.call_client_cert_callback()
-
-        assert cert == b"cert_bytes"
-        assert key == b"key_bytes"
-        mock_get_client_ssl_credentials.assert_called_once_with(
-            generate_encrypted_key=True
-        )
-
     def test_get_cached_cert_fingerprint_no_cert(self):
         with pytest.raises(ValueError, match="mTLS connection is not configured."):
             _agent_identity_utils.get_cached_cert_fingerprint(None)

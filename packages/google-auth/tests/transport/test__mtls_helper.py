@@ -813,11 +813,12 @@ class TestCheckUseClientCert(object):
 
 
 class TestMtlsHelper:
+    @mock.patch.object(_mtls_helper, "call_client_cert_callback")
     @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
     def test_check_parameters_for_unauthorized_response_with_cached_cert(
-        self, mock_agent_identity_utils
+        self, mock_agent_identity_utils, mock_call_client_cert_callback
     ):
-        mock_agent_identity_utils.call_client_cert_callback.return_value = (
+        mock_call_client_cert_callback.return_value = (
             CERT_MOCK_VAL,
             KEY_MOCK_VAL,
         )
@@ -841,16 +842,17 @@ class TestMtlsHelper:
         assert key == KEY_MOCK_VAL
         assert cached_fingerprint == "cached_fingerprint"
         assert current_fingerprint == "current_fingerprint"
-        mock_agent_identity_utils.call_client_cert_callback.assert_called_once()
+        mock_call_client_cert_callback.assert_called_once()
         mock_agent_identity_utils.get_cached_cert_fingerprint.assert_called_once_with(
             b"cached_cert_bytes"
         )
 
-    @mock.patch("google.auth.transport._mtls_helper._agent_identity_utils")
+    @mock.patch.object(_mtls_helper, "call_client_cert_callback")
+    @mock.patch.object(_mtls_helper, "_agent_identity_utils")
     def test_check_parameters_for_unauthorized_response_without_cached_cert(
-        self, mock_agent_identity_utils
+        self, mock_agent_identity_utils, mock_call_client_cert_callback
     ):
-        mock_agent_identity_utils.call_client_cert_callback.return_value = (
+        mock_call_client_cert_callback.return_value = (
             CERT_MOCK_VAL,
             KEY_MOCK_VAL,
         )
@@ -869,5 +871,22 @@ class TestMtlsHelper:
         assert key == KEY_MOCK_VAL
         assert cached_fingerprint == "current_fingerprint"
         assert current_fingerprint == "current_fingerprint"
-        mock_agent_identity_utils.call_client_cert_callback.assert_called_once()
+        mock_call_client_cert_callback.assert_called_once()
         mock_agent_identity_utils.get_cached_cert_fingerprint.assert_not_called()
+
+    @mock.patch("google.auth.transport._mtls_helper.get_client_ssl_credentials")
+    def test_call_client_cert_callback(self, mock_get_client_ssl_credentials):
+        mock_get_client_ssl_credentials.return_value = (
+            True,
+            b"cert_bytes",
+            b"key_bytes",
+            b"passphrase",
+        )
+
+        cert, key = _mtls_helper.call_client_cert_callback()
+
+        assert cert == b"cert_bytes"
+        assert key == b"key_bytes"
+        mock_get_client_ssl_credentials.assert_called_once_with(
+            generate_encrypted_key=True
+        )

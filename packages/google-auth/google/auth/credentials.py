@@ -17,6 +17,7 @@
 
 import abc
 from enum import Enum
+import logging
 import os
 from typing import List
 
@@ -24,12 +25,13 @@ from google.auth import _helpers, environment_vars
 from google.auth import exceptions
 from google.auth import metrics
 from google.auth._credentials_base import _BaseCredentials
-from google.auth._default import _LOGGER
 from google.auth._refresh_worker import RefreshThreadManager
 
 DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 NO_OP_TRUST_BOUNDARY_LOCATIONS: List[str] = []
 NO_OP_TRUST_BOUNDARY_ENCODED_LOCATIONS = "0x0"
+
+_LOGGER = logging.getLogger("google.auth._default")
 
 
 class Credentials(_BaseCredentials):
