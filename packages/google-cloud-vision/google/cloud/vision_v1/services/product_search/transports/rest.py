@@ -1032,21 +1032,23 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     """REST backend synchronous transport for ProductSearch.
 
     Manages Products and ProductSets of reference images for use in
-    product search. It uses the following resource model:
+    product
+    search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
-      `projects/*/locations/*/productSets/*`, which acts as a way to put
-      different products into groups to limit identification. In
+    - The API has a collection of `ProductSet
+      <google.cloud.vision.v1.ProductSet>`__ resources, named
+      ``projects/*/locations/*/productSets/*``, which acts as a way to
+      put different products into groups to limit identification. In
       parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1.Product] resources, named
-      `projects/*/locations/*/products/*`
+    - The API has a collection of `Product
+      <google.cloud.vision.v1.Product>`__ resources, named
+      ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1.Product] has a collection of
-      [ReferenceImage][google.cloud.vision.v1.ReferenceImage] resources,
-      named `projects/*/locations/*/products/*/referenceImages/*`
+    - Each `Product <google.cloud.vision.v1.Product>`__ has a collection
+      of `ReferenceImage <google.cloud.vision.v1.ReferenceImage>`__
+      resources, named
+      ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1213,7 +1215,8 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
                 Args:
                     request (~.product_search_service.AddProductToProductSetRequest):
-                        The request object. Request message for the `AddProductToProductSet` method.
+                        The request object. Request message for the ``AddProductToProductSet``
+                    method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
                     timeout (float): The timeout for this request.
@@ -1327,7 +1330,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.CreateProductRequest):
-                    The request object. Request message for the `CreateProduct` method.
+                    The request object. Request message for the ``CreateProduct`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1477,7 +1480,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.CreateProductSetRequest):
-                    The request object. Request message for the `CreateProductSet` method.
+                    The request object. Request message for the ``CreateProductSet`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1636,7 +1639,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.CreateReferenceImageRequest):
-                    The request object. Request message for the `CreateReferenceImage` method.
+                    The request object. Request message for the ``CreateReferenceImage`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1647,8 +1650,9 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ReferenceImage:
-                    A `ReferenceImage` represents a product image and its
-                associated metadata, such as bounding boxes.
+                    A ``ReferenceImage`` represents a product image and its
+                associated metadata,
+                such as bounding boxes.
 
             """
 
@@ -1791,7 +1795,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.DeleteProductRequest):
-                    The request object. Request message for the `DeleteProduct` method.
+                    The request object. Request message for the ``DeleteProduct`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -1897,7 +1901,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.DeleteProductSetRequest):
-                    The request object. Request message for the `DeleteProductSet` method.
+                    The request object. Request message for the ``DeleteProductSet`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2005,7 +2009,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.DeleteReferenceImageRequest):
-                    The request object. Request message for the `DeleteReferenceImage` method.
+                    The request object. Request message for the ``DeleteReferenceImage`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2113,7 +2117,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.GetProductRequest):
-                    The request object. Request message for the `GetProduct` method.
+                    The request object. Request message for the ``GetProduct`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2261,7 +2265,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.GetProductSetRequest):
-                    The request object. Request message for the `GetProductSet` method.
+                    The request object. Request message for the ``GetProductSet`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2412,7 +2416,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.GetReferenceImageRequest):
-                    The request object. Request message for the `GetReferenceImage` method.
+                    The request object. Request message for the ``GetReferenceImage`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2423,8 +2427,9 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ReferenceImage:
-                    A `ReferenceImage` represents a product image and its
-                associated metadata, such as bounding boxes.
+                    A ``ReferenceImage`` represents a product image and its
+                associated metadata,
+                such as bounding boxes.
 
             """
 
@@ -2563,7 +2568,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.ImportProductSetsRequest):
-                    The request object. Request message for the `ImportProductSets` method.
+                    The request object. Request message for the ``ImportProductSets`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2715,7 +2720,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.ListProductsRequest):
-                    The request object. Request message for the `ListProducts` method.
+                    The request object. Request message for the ``ListProducts`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2726,7 +2731,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ListProductsResponse:
-                    Response message for the `ListProducts` method.
+                    Response message for the ``ListProducts`` method.
             """
 
             http_options = (
@@ -2861,7 +2866,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.ListProductSetsRequest):
-                    The request object. Request message for the `ListProductSets` method.
+                    The request object. Request message for the ``ListProductSets`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -2872,7 +2877,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ListProductSetsResponse:
-                    Response message for the `ListProductSets` method.
+                    Response message for the ``ListProductSets`` method.
             """
 
             http_options = (
@@ -3011,7 +3016,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
                 Args:
                     request (~.product_search_service.ListProductsInProductSetRequest):
-                        The request object. Request message for the `ListProductsInProductSet`
+                        The request object. Request message for the ``ListProductsInProductSet``
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -3023,7 +3028,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
                 Returns:
                     ~.product_search_service.ListProductsInProductSetResponse:
-                        Response message for the `ListProductsInProductSet`
+                        Response message for the ``ListProductsInProductSet``
                     method.
 
             """
@@ -3166,7 +3171,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.ListReferenceImagesRequest):
-                    The request object. Request message for the `ListReferenceImages` method.
+                    The request object. Request message for the ``ListReferenceImages`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3177,7 +3182,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ListReferenceImagesResponse:
-                    Response message for the `ListReferenceImages` method.
+                    Response message for the ``ListReferenceImages`` method.
             """
 
             http_options = (
@@ -3317,7 +3322,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.PurgeProductsRequest):
-                    The request object. Request message for the `PurgeProducts` method.
+                    The request object. Request message for the ``PurgeProducts`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3470,7 +3475,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
                 Args:
                     request (~.product_search_service.RemoveProductFromProductSetRequest):
-                        The request object. Request message for the `RemoveProductFromProductSet`
+                        The request object. Request message for the ``RemoveProductFromProductSet``
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -3587,7 +3592,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.UpdateProductRequest):
-                    The request object. Request message for the `UpdateProduct` method.
+                    The request object. Request message for the ``UpdateProduct`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3737,7 +3742,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Args:
                 request (~.product_search_service.UpdateProductSetRequest):
-                    The request object. Request message for the `UpdateProductSet` method.
+                    The request object. Request message for the ``UpdateProductSet`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.

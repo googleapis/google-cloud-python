@@ -40,11 +40,13 @@ class ProductSearchParams(proto.Message):
             interest in the image. If it is not specified,
             system discretion will be applied.
         product_set (str):
-            The resource name of a
-            [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] to be
-            searched for similar images.  Format is:
+            The resource name of a `ProductSet
+            <google.cloud.vision.v1p3beta1.ProductSet>`__ to be searched
+            for similar images.
 
-            `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
+            Format is:
+            ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_S
+            ET_ID``.
         product_categories (MutableSequence[str]):
             The list of product categories to search in.
             Currently, we only consider the first category,
@@ -148,10 +150,12 @@ class ProductSearchResults(proto.Message):
                 EntityAnnotation mid.
             language_code (str):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more information, see
-                http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+                more
+                information, see
+                http://www.unicode.org/reports/tr35/#Unicode_locale_identifi
+                er.
             name (str):
-                Object name, expressed in its `language_code` language.
+                Object name, expressed in its ``language_code`` language.
             score (float):
                 Score of the result. Range [0, 1].
         """
