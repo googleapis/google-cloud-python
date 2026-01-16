@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.62.0](https://github.com/googleapis/python-spanner/compare/v3.61.0...v3.62.0) (2026-01-14)
+
+
+### Features
+
+* add uuid support (#1310) ([3b1792aad1d046b6ae1e5c982f5047289dffd95c](https://github.com/googleapis/python-spanner/commit/3b1792aad1d046b6ae1e5c982f5047289dffd95c))
+
+
+### Bug Fixes
+
+* handle errors during stream restart in snapshot (#1471) ([c0668735cb69532f4c852bb7678f63e54da2d34e](https://github.com/googleapis/python-spanner/commit/c0668735cb69532f4c852bb7678f63e54da2d34e))
+* resolve pre-release dependency failures and sqlparse recursion (#1472) ([9ec95b7df5e921112bd58b820722103177e0e5b6](https://github.com/googleapis/python-spanner/commit/9ec95b7df5e921112bd58b820722103177e0e5b6))
+* transaction_tag should be set on BeginTransactionRequest (#1463) ([3d3cea0b5afb414a506ab08eebae733d803f17ac](https://github.com/googleapis/python-spanner/commit/3d3cea0b5afb414a506ab08eebae733d803f17ac))
+
 ## [3.61.0](https://github.com/googleapis/python-spanner/compare/v3.60.0...v3.61.0) (2025-12-16)
 
 
