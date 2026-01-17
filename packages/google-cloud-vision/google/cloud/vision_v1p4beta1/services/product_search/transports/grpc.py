@@ -117,22 +117,18 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
     - The API has a collection of
 
-    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__ resources,
-    named ``projects/*/locations/*/productSets/*``, which acts as a way to put different products into
-    groups to limit identification.
+    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__ resources, named ``projects/*/locations/*/productSets/*``, which acts as a way to
+    put different products into groups to limit identification.
 
     In parallel,
 
     - The API has a collection of
 
-    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources, named
-    ``projects/*/locations/*/products/*``
+    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources, named ``projects/*/locations/*/products/*``
 
-    - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a
-      collection of
+    - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a collection of
 
-    `ReferenceImage <google.cloud.vision.v1p4beta1.ReferenceImage>`__
-    resources, named ``projects/*/locations/*/products/*/referenceImages/*``
+    `ReferenceImage <google.cloud.vision.v1p4beta1.ReferenceImage>`__ resources, named ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -642,7 +638,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         r"""Return a callable for the update product method over gRPC.
 
         Makes changes to a Product resource. Only the ``display_name``,
-        ``description``, and ``labels`` fields can be updated right now.
+        ``description``, and ``labels`` fields can be updated right
+        now.
 
         If labels are updated, the change will not be reflected in
         queries until the next index time.
@@ -721,11 +718,11 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Creates and returns a new ReferenceImage resource.
 
-        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,
-        the system will try to detect regions of interest in the image
-        that are compatible with the product_category on the parent
-        product. If it is specified, detection is ALWAYS skipped. The
-        system converts polygons into non-rotated rectangles.
+        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not
+        specified, the system will try to detect regions of interest in
+        the image that are compatible with the product_category on the
+        parent product. If it is specified, detection is ALWAYS skipped.
+        The system converts polygons into non-rotated rectangles.
 
         Note that the pipeline will resize the image if the image
         resolution is too large to process (above 50MP).
@@ -984,15 +981,14 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         Asynchronous API that imports a list of reference images to
         specified product sets based on a list of image information.
 
-        The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be used to keep track
-        of the progress and results of the request. ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
+        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
+        and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``.
+        (results)
 
         The input source of this method is a csv file on Google Cloud
         Storage. For the format of the csv file please see
-        `ImportProductSetsGcsSource.csv_file_uri
-        <google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
+        `ImportProductSetsGcsSource.csv_file_uri <google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
         Returns:
             Callable[[~.ImportProductSetsRequest],
@@ -1043,9 +1039,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         into the empty ProductSet, you must wait until the PurgeProducts
         operation has finished for that ProductSet.
 
-        The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be used to keep track
-        of the progress and results of the request. ``Operation.metadata`` contains
+        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
+        and results of the request. ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
 
         Returns:

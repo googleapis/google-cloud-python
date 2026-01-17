@@ -118,22 +118,18 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     - The API has a collection of
 
-    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__ resources,
-    named ``projects/*/locations/*/productSets/*``, which acts as a way to put different products into
-    groups to limit identification.
+    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__ resources, named ``projects/*/locations/*/productSets/*``, which acts as a way to
+    put different products into groups to limit identification.
 
     In parallel,
 
     - The API has a collection of
 
-    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources, named
-    ``projects/*/locations/*/products/*``
+    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources, named ``projects/*/locations/*/products/*``
 
-    - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a
-      collection of
+    - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a collection of
 
-    `ReferenceImage <google.cloud.vision.v1p4beta1.ReferenceImage>`__
-    resources, named ``projects/*/locations/*/products/*/referenceImages/*``
+    `ReferenceImage <google.cloud.vision.v1p4beta1.ReferenceImage>`__ resources, named ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     @staticmethod
@@ -1249,10 +1245,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The `FieldMask <google.protobuf.FieldMask>`__ that
-                specifies which fields to update. If update_mask isn't
-                specified, all mutable fields are to be updated. Valid
-                mask path is ``display_name``.
+                The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+                If update_mask isn't specified, all mutable fields are
+                to be updated. Valid mask path is ``display_name``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1821,7 +1816,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.Product:
         r"""Makes changes to a Product resource. Only the ``display_name``,
-        ``description``, and ``labels`` fields can be updated right now.
+        ``description``, and ``labels`` fields can be updated right
+        now.
 
         If labels are updated, the change will not be reflected in
         queries until the next index time.
@@ -1877,10 +1873,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
-                The `FieldMask <google.protobuf.FieldMask>`__ that
-                specifies which fields to update. If update_mask isn't
-                specified, all mutable fields are to be updated. Valid
-                mask paths include ``product_labels``, ``display_name``, and ``description``.
+                The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+                If update_mask isn't specified, all mutable fields are
+                to be updated. Valid mask paths include ``product_labels``,
+                ``display_name``, and ``description``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2065,11 +2061,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     ) -> product_search_service.ReferenceImage:
         r"""Creates and returns a new ReferenceImage resource.
 
-        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,
-        the system will try to detect regions of interest in the image
-        that are compatible with the product_category on the parent
-        product. If it is specified, detection is ALWAYS skipped. The
-        system converts polygons into non-rotated rectangles.
+        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not
+        specified, the system will try to detect regions of interest in
+        the image that are compatible with the product_category on the
+        parent product. If it is specified, detection is ALWAYS skipped.
+        The system converts polygons into non-rotated rectangles.
 
         Note that the pipeline will resize the image if the image
         resolution is too large to process (above 50MP).
@@ -2963,15 +2959,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         r"""Asynchronous API that imports a list of reference images to
         specified product sets based on a list of image information.
 
-        The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be used to keep track
-        of the progress and results of the request. ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
+        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
+        and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``.
+        (results)
 
         The input source of this method is a csv file on Google Cloud
         Storage. For the format of the csv file please see
-        `ImportProductSetsGcsSource.csv_file_uri
-        <google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
+        `ImportProductSetsGcsSource.csv_file_uri <google.cloud.vision.v1p4beta1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
         .. code-block:: python
 
@@ -3038,11 +3033,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 :class:`google.cloud.vision_v1p4beta1.types.ImportProductSetsResponse`` Response message for the ``ImportProductSets`
                 method.
 
-                This message is returned by the
-                `google.longrunning.Operations.GetOperation
-                <google.longrunning.Operations.GetOperation>`__ method
-                in the returned `google.longrunning.Operation.response
-                <google.longrunning.Operation.response>`__ field.
+                This message is returned by the `google.longrunning.Operations.GetOperation <google.longrunning.Operations.GetOperation>`__ method in
+                the returned `google.longrunning.Operation.response <google.longrunning.Operation.response>`__ field.
 
         """
         # Create or coerce a protobuf request object.
@@ -3135,9 +3127,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         into the empty ProductSet, you must wait until the PurgeProducts
         operation has finished for that ProductSet.
 
-        The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be used to keep track
-        of the progress and results of the request. ``Operation.metadata`` contains
+        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
+        and results of the request. ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
 
         .. code-block:: python

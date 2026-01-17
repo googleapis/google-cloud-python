@@ -369,10 +369,10 @@ class UpdateProductRequest(proto.Message):
             the one on the server. product.name is
             immutable.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
-            specifies which fields to update. If update_mask isn't
-            specified, all mutable fields are to be updated. Valid
-            mask paths include ``product_labels``, ``display_name``, and ``description``.
+            The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+            If update_mask isn't specified, all mutable fields are
+            to be updated. Valid mask paths include ``product_labels``,
+            ``display_name``, and ``description``.
     """
 
     product: "Product" = proto.Field(
@@ -520,10 +520,9 @@ class UpdateProductSetRequest(proto.Message):
             Required. The ProductSet resource which
             replaces the one on the server.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
-            specifies which fields to update. If update_mask isn't
-            specified, all mutable fields are to be updated. Valid
-            mask path is ``display_name``.
+            The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+            If update_mask isn't specified, all mutable fields are
+            to be updated. Valid mask path is ``display_name``.
     """
 
     product_set: "ProductSet" = proto.Field(
@@ -604,8 +603,8 @@ class ListReferenceImagesRequest(proto.Message):
             Default 10, maximum 100.
         page_token (str):
             A token identifying a page of results to be returned. This
-            is the value of ``nextPageToken`` returned in a previous reference
-            image list request.
+            is the value of ``nextPageToken`` returned in a previous
+            reference image list request.
 
             Defaults to the first page if not specified.
     """
@@ -834,42 +833,41 @@ class ImportProductSetsGcsSource(proto.Message):
 
             8.  bounding-poly
 
-            The ``image-uri``, ``product-set-id``, ``product-id``, and ``product-category`` columns
-            are required. All other columns are optional.
+            The ``image-uri``, ``product-set-id``, ``product-id``, and
+            ``product-category`` columns are required. All other columns are
+            optional.
 
-            If the ``ProductSet`` or ``Product`` specified by the ``product-set-id`` and
-            ``product-id`` values does not exist, then the system will create
-            a new ``ProductSet`` or ``Product`` for the image. In this case,
-            the ``product-display-name`` column refers to `display_name
-            <google.cloud.vision.v1p4beta1.Product.display_name>`__, the
-            ``product-category`` column refers to `product_category
-            <google.cloud.vision.v1p4beta1.Product.product_category>`__,
-            and the ``labels`` column refers to `product_labels
-            <google.cloud.vision.v1p4beta1.Product.product_labels>`__.
+            If the ``ProductSet`` or ``Product`` specified by the
+            ``product-set-id`` and ``product-id`` values does not exist, then
+            the system will create a new ``ProductSet`` or ``Product``
+            for the image. In this case, the ``product-display-name`` column refers
+            to `display_name <google.cloud.vision.v1p4beta1.Product.display_name>`__, the ``product-category`` column refers to
+            `product_category <google.cloud.vision.v1p4beta1.Product.product_category>`__, and the ``labels`` column refers to
+            `product_labels <google.cloud.vision.v1p4beta1.Product.product_labels>`__.
 
             The ``image-id`` column is optional but must be unique if
             provided. If it is empty, the system will automatically
             assign a unique id to the image.
 
-            The ``product-display-name`` column is optional. If it is empty, the system
-            sets the `display_name
-            <google.cloud.vision.v1p4beta1.Product.display_name>`__
-            field for the product to a space (" "). You can update the
-            ``display_name`` later by using the API.
+            The ``product-display-name`` column is optional. If it is empty, the
+            system sets the `display_name <google.cloud.vision.v1p4beta1.Product.display_name>`__ field for the product to a
+            space (" "). You can update the ``display_name`` later by using
+            the API.
 
-            If a ``Product`` with the specified ``product-id`` already exists,
-            then the system ignores the ``product-display-name``, ``product-category``, and
-            ``labels`` columns.
+            If a ``Product`` with the specified ``product-id`` already
+            exists, then the system ignores the ``product-display-name``,
+            ``product-category``, and ``labels`` columns.
 
-            The ``labels`` column (optional) is a line containing a list
-            of comma-separated key-value pairs, in the following format:
+            The ``labels`` column (optional) is a line containing a
+            list of comma-separated key-value pairs, in the following
+            format:
 
                  "key_1=value_1,key_2=value_2,...,key_n=value_n"
 
             The ``bounding-poly`` column (optional) identifies one region of
-            interest from the image in the same manner as ``CreateReferenceImage``. If
-            you do not specify the ``bounding-poly`` column, then the system
-            will try to detect regions of interest automatically.
+            interest from the image in the same manner as ``CreateReferenceImage``.
+            If you do not specify the ``bounding-poly`` column, then the
+            system will try to detect regions of interest automatically.
 
             At most one ``bounding-poly`` column is allowed per line. If the
             image contains multiple regions of interest, add a line to
@@ -942,11 +940,8 @@ class ImportProductSetsRequest(proto.Message):
 class ImportProductSetsResponse(proto.Message):
     r"""Response message for the ``ImportProductSets`` method.
 
-    This message is returned by the
-    `google.longrunning.Operations.GetOperation
-    <google.longrunning.Operations.GetOperation>`__ method in the
-    returned `google.longrunning.Operation.response
-    <google.longrunning.Operation.response>`__ field.
+    This message is returned by the `google.longrunning.Operations.GetOperation <google.longrunning.Operations.GetOperation>`__ method in the returned
+    `google.longrunning.Operation.response <google.longrunning.Operation.response>`__ field.
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
@@ -976,8 +971,8 @@ class ImportProductSetsResponse(proto.Message):
 class BatchOperationMetadata(proto.Message):
     r"""Metadata for the batch operations such as the current state.
 
-    This is included in the ``metadata`` field of the ``Operation`` returned by
-    the ``GetOperation`` call of the ``google::longrunning::Operations`` service.
+    This is included in the ``metadata`` field of the ``Operation``
+    returned by the ``GetOperation`` call of the ``google::longrunning::Operations`` service.
 
     Attributes:
         state (google.cloud.vision_v1p4beta1.types.BatchOperationMetadata.State):
@@ -987,8 +982,7 @@ class BatchOperationMetadata(proto.Message):
             to the server.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request is finished and
-            `google.longrunning.Operation.done
-            <google.longrunning.Operation.done>`__ is set to true.
+            `google.longrunning.Operation.done <google.longrunning.Operation.done>`__ is set to true.
     """
 
     class State(proto.Enum):

@@ -47,9 +47,8 @@ class TextAnnotation(proto.Message):
     TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol Each
     structural component, starting from Page, may further have their own
     properties. Properties describe detected languages, breaks etc..
-    Please refer to the `TextAnnotation.TextProperty
-    <google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty>`__
-    message definition below for more detail.
+    Please refer to the `TextAnnotation.TextProperty <google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty>`__ message definition below for more
+    detail.
 
     Attributes:
         pages (MutableSequence[google.cloud.vision_v1p2beta1.types.Page]):
@@ -103,7 +102,8 @@ class TextAnnotation(proto.Message):
                     Line-wrapping break.
                 HYPHEN (4):
                     End-line hyphen that is not present in text; does not
-                    co-occur with ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+                    co-occur with ``SPACE``, ``LEADER_SPACE``, or
+                    ``LINE_BREAK``.
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """

@@ -536,8 +536,8 @@ class ImageAnnotatorAsyncClient:
         images.
 
         Progress and results can be retrieved through the ``google.longrunning.Operations``
-        interface. ``Operation.metadata`` contains ``OperationMetadata`` (metadata). ``Operation.response``
-        contains ``AsyncBatchAnnotateImagesResponse`` (results).
+        interface. ``Operation.metadata`` contains ``OperationMetadata`` (metadata).
+        ``Operation.response`` contains ``AsyncBatchAnnotateImagesResponse`` (results).
 
         This service will write image annotation outputs to json files
         in customer GCS bucket, each json file containing
@@ -676,8 +676,9 @@ class ImageAnnotatorAsyncClient:
         r"""Run asynchronous image detection and annotation for a list of
         generic files, such as PDF files, which may contain multiple
         pages and multiple images per page. Progress and results can be
-        retrieved through the ``google.longrunning.Operations`` interface. ``Operation.metadata`` contains
-        ``OperationMetadata`` (metadata). ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
+        retrieved through the ``google.longrunning.Operations`` interface. ``Operation.metadata``
+        contains ``OperationMetadata`` (metadata). ``Operation.response`` contains
+        ``AsyncBatchAnnotateFilesResponse`` (results).
 
         .. code-block:: python
 

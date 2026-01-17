@@ -361,10 +361,10 @@ class UpdateProductRequest(proto.Message):
             the one on the server. product.name is
             immutable.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
-            specifies which fields to update. If update_mask isn't
-            specified, all mutable fields are to be updated. Valid
-            mask paths include ``product_labels``, ``display_name``, and ``description``.
+            The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+            If update_mask isn't specified, all mutable fields are
+            to be updated. Valid mask paths include ``product_labels``,
+            ``display_name``, and ``description``.
     """
 
     product: "Product" = proto.Field(
@@ -512,10 +512,9 @@ class UpdateProductSetRequest(proto.Message):
             Required. The ProductSet resource which
             replaces the one on the server.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
-            The `FieldMask <google.protobuf.FieldMask>`__ that
-            specifies which fields to update. If update_mask isn't
-            specified, all mutable fields are to be updated. Valid
-            mask path is ``display_name``.
+            The `FieldMask <google.protobuf.FieldMask>`__ that specifies which fields to update.
+            If update_mask isn't specified, all mutable fields are
+            to be updated. Valid mask path is ``display_name``.
     """
 
     product_set: "ProductSet" = proto.Field(
@@ -596,8 +595,8 @@ class ListReferenceImagesRequest(proto.Message):
             Default 10, maximum 100.
         page_token (str):
             A token identifying a page of results to be returned. This
-            is the value of ``nextPageToken`` returned in a previous reference
-            image list request.
+            is the value of ``nextPageToken`` returned in a previous
+            reference image list request.
 
             Defaults to the first page if not specified.
     """
@@ -841,12 +840,9 @@ class ImportProductSetsGcsSource(proto.Message):
             ignored.
 
             If a Product doesn't exist and needs to be created on the
-            fly, the product_display_name field refers to
-            `Product.display_name
-            <google.cloud.vision.v1p3beta1.Product.display_name>`__, the
-            product_category field refers to `Product.product_category
-            <google.cloud.vision.v1p3beta1.Product.product_category>`__,
-            and the labels field refers to [Product.labels][].
+            fly, the product_display_name field refers to `Product.display_name <google.cloud.vision.v1p3beta1.Product.display_name>`__,
+            the product_category field refers to `Product.product_category <google.cloud.vision.v1p3beta1.Product.product_category>`__, and the
+            labels field refers to [Product.labels][].
 
             Labels (optional) should be a line containing a list of
             comma-separated key-value pairs, with the format
@@ -931,11 +927,8 @@ class ImportProductSetsRequest(proto.Message):
 class ImportProductSetsResponse(proto.Message):
     r"""Response message for the ``ImportProductSets`` method.
 
-    This message is returned by the
-    `google.longrunning.Operations.GetOperation
-    <google.longrunning.Operations.GetOperation>`__ method in the
-    returned `google.longrunning.Operation.response
-    <google.longrunning.Operation.response>`__ field.
+    This message is returned by the `google.longrunning.Operations.GetOperation <google.longrunning.Operations.GetOperation>`__ method in the returned
+    `google.longrunning.Operation.response <google.longrunning.Operation.response>`__ field.
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p3beta1.types.ReferenceImage]):
@@ -965,8 +958,8 @@ class ImportProductSetsResponse(proto.Message):
 class BatchOperationMetadata(proto.Message):
     r"""Metadata for the batch operations such as the current state.
 
-    This is included in the ``metadata`` field of the ``Operation`` returned by
-    the ``GetOperation`` call of the ``google::longrunning::Operations`` service.
+    This is included in the ``metadata`` field of the ``Operation``
+    returned by the ``GetOperation`` call of the ``google::longrunning::Operations`` service.
 
     Attributes:
         state (google.cloud.vision_v1p3beta1.types.BatchOperationMetadata.State):
@@ -976,8 +969,7 @@ class BatchOperationMetadata(proto.Message):
             to the server.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the batch request is finished and
-            `google.longrunning.Operation.done
-            <google.longrunning.Operation.done>`__ is set to true.
+            `google.longrunning.Operation.done <google.longrunning.Operation.done>`__ is set to true.
     """
 
     class State(proto.Enum):

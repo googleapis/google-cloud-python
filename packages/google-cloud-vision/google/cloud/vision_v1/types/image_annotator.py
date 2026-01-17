@@ -113,9 +113,9 @@ class Feature(proto.Message):
         model (str):
             Model to use for the feature. Supported values:
             "builtin/stable" (the default if unset) and
-            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` also support
-            "builtin/weekly" for the bleeding edge release updated
-            weekly.
+            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` also
+            support "builtin/weekly" for the bleeding edge release
+            updated weekly.
     """
 
     class Type(proto.Enum):
@@ -192,11 +192,9 @@ class ImageSource(proto.Message):
         gcs_image_uri (str):
             **Use ``image_uri`` instead.**
 
-            The Google Cloud Storage  URI of the form ``gs://bucket_name/object_name``. Object
-            versioning is not supported. See `Google Cloud Storage
-            Request URIs
-            <https://cloud.google.com/storage/docs/reference-uris>`__
-            for more info.
+            The Google Cloud Storage  URI of the form ``gs://bucket_name/object_name``.
+            Object versioning is not supported. See `Google Cloud Storage Request URIs <https://cloud.google.com/storage/docs/reference-uris>`__ for
+            more info.
         image_uri (str):
             The URI of the source image. Can be either:
 
@@ -218,8 +216,8 @@ class ImageSource(proto.Message):
                 throttles requests to the site for abuse prevention. You should not
                 depend on externally-hosted images for production applications.
 
-            When both ``gcs_image_uri`` and ``image_uri`` are specified, ``image_uri``
-            takes precedence.
+            When both ``gcs_image_uri`` and ``image_uri`` are specified,
+            ``image_uri`` takes precedence.
     """
 
     gcs_image_uri: str = proto.Field(
@@ -238,17 +236,18 @@ class Image(proto.Message):
     Attributes:
         content (bytes):
             Image content, represented as a stream of bytes. Note: As
-            with all ``bytes`` fields, protobuffers use a pure binary
-            representation, whereas JSON representations use base64.
+            with all ``bytes`` fields, protobuffers use a pure
+            binary representation, whereas JSON representations use
+            base64.
 
             Currently, this field only works for BatchAnnotateImages
             requests. It does not work for AsyncBatchAnnotateImages
             requests.
         source (google.cloud.vision_v1.types.ImageSource):
             Google Cloud Storage image location, or publicly-accessible
-            image URL. If both ``content`` and ``source`` are provided for
-            an image, ``content`` takes precedence and is used to perform
-            the image annotation request.
+            image URL. If both ``content`` and ``source`` are
+            provided for an image, ``content`` takes precedence and is
+            used to perform the image annotation request.
     """
 
     content: bytes = proto.Field(
@@ -273,8 +272,8 @@ class FaceAnnotation(proto.Message):
             box is computed to "frame" the face in accordance with human
             expectations. It is based on the landmarker results. Note
             that one or more x and/or y coordinates may not be generated
-            in the ``BoundingPoly`` (the polygon will be unbounded) if only a
-            partial face appears in the image to be annotated.
+            in the ``BoundingPoly`` (the polygon will be unbounded) if only
+            a partial face appears in the image to be annotated.
         fd_bounding_poly (google.cloud.vision_v1.types.BoundingPoly):
             The ``fd_bounding_poly`` bounding polygon is tighter than the
             ``boundingPoly``, and encloses only the skin part of the face.
@@ -578,9 +577,8 @@ class EntityAnnotation(proto.Message):
 
     Attributes:
         mid (str):
-            Opaque entity ID. Some IDs may be available in `Google
-            Knowledge Graph Search API
-            <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in
+            `Google Knowledge Graph Search API <https://developers.google.com/knowledge-graph/>`__.
         locale (str):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
@@ -590,9 +588,9 @@ class EntityAnnotation(proto.Message):
         score (float):
             Overall score of the result. Range [0, 1].
         confidence (float):
-            **Deprecated. Use ``score`` instead.** The accuracy of the
-            entity detection in an image. For example, for an image in
-            which the "Eiffel Tower" entity is detected, this field
+            **Deprecated. Use ``score`` instead.** The accuracy of
+            the entity detection in an image. For example, for an image
+            in which the "Eiffel Tower" entity is detected, this field
             represents the confidence that there is a tower in the query
             image. Range [0, 1].
         topicality (float):
@@ -607,11 +605,11 @@ class EntityAnnotation(proto.Message):
             ``LABEL_DETECTION`` features.
         locations (MutableSequence[google.cloud.vision_v1.types.LocationInfo]):
             The location information for the detected entity. Multiple
-            ``LocationInfo`` elements can be present because one location may
-            indicate the location of the scene in the image, and another
-            location may indicate the location of the place where the
-            image was taken. Location information is usually present for
-            landmarks.
+            ``LocationInfo`` elements can be present because one location
+            may indicate the location of the scene in the image, and
+            another location may indicate the location of the place
+            where the image was taken. Location information is usually
+            present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1.types.Property]):
             Some entities may have optional user-supplied ``Property``
             (name/value) fields, such a score or string that qualifies
@@ -938,8 +936,8 @@ class TextDetectionParams(proto.Message):
             A list of advanced OCR options to further fine-tune OCR
             behavior. Current valid values are:
 
-            - ``legacy_layout``: a heuristics layout detection algorithm, which
-              serves as
+            - ``legacy_layout``: a heuristics layout detection algorithm,
+              which serves as
 
             an alternative to the current ML-based layout detection
             algorithm. Customers can choose the best suitable layout
@@ -971,8 +969,7 @@ class ImageContext(proto.Message):
             setting a hint will help get better results (although it
             will be a significant hindrance if the hint is wrong). Text
             detection returns an error if one or more of the specified
-            languages is not one of the `supported languages
-            <https://cloud.google.com/vision/docs/languages>`__.
+            languages is not one of the `supported languages <https://cloud.google.com/vision/docs/languages>`__.
         crop_hints_params (google.cloud.vision_v1.types.CropHintsParams):
             Parameters for crop hints annotation request.
         product_search_params (google.cloud.vision_v1.types.ProductSearchParams):
@@ -1634,8 +1631,9 @@ class InputConfig(proto.Message):
             input from.
         content (bytes):
             File content, represented as a stream of bytes. Note: As
-            with all ``bytes`` fields, protobuffers use a pure binary
-            representation, whereas JSON representations use base64.
+            with all ``bytes`` fields, protobuffers use a pure
+            binary representation, whereas JSON representations use
+            base64.
 
             Currently, this field only works for BatchAnnotateFiles
             requests. It does not work for AsyncBatchAnnotateFiles
