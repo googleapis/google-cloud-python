@@ -115,21 +115,26 @@ class ProductSearchClientMeta(type):
 
 class ProductSearchClient(metaclass=ProductSearchClientMeta):
     """Manages Products and ProductSets of reference images for use in
-    product  search. It uses the following resource model:
+    product search. It uses the following resource model:
 
     - The API has a collection of `ProductSet
-      <google.cloud.vision.v1.ProductSet>`__ resources, named ``projects/*/locations/*/productSets/*``,
-      which acts as a way to put different products into groups to limit
-      identification.
+      <google.cloud.vision.v1.ProductSet>`__
+
+    resources, named ``projects/*/locations/*/productSets/*``, which acts as a way to put different
+    products into groups to limit identification.
 
     In parallel,
 
     - The API has a collection of `Product
-      <google.cloud.vision.v1.Product>`__ resources, named ``projects/*/locations/*/products/*``
+      <google.cloud.vision.v1.Product>`__
+
+    resources, named ``projects/*/locations/*/products/*``
 
     - Each `Product <google.cloud.vision.v1.Product>`__ has a collection
-      of `ReferenceImage <google.cloud.vision.v1.ReferenceImage>`__
-      resources, named ``projects/*/locations/*/products/*/referenceImages/*``
+      of
+
+    `ReferenceImage <google.cloud.vision.v1.ReferenceImage>`__
+    resources, named ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     @staticmethod
@@ -863,10 +868,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 should not be set.
             product_set_id (str):
                 A user-supplied resource id for this ProductSet. If set,
-                the server will  attempt to use this value as the
-                resource id. If it is already in use, an  error is
+                the server will attempt to use this value as the
+                resource id. If it is already in use, an error is
                 returned with code ALREADY_EXISTS. Must be at most 128
-                characters  long. It cannot contain the character
+                characters long. It cannot contain the character
                 ``/``.
 
                 This corresponds to the ``product_set_id`` field
@@ -1118,7 +1123,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. Resource name of the ProductSet to get.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1198,14 +1203,16 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.ProductSet:
-        r"""Makes changes to a ProductSet resource.  Only display_name can
-        be updated currently.
+        r"""Makes changes to a ProductSet resource. Only display_name can be
+        updated currently.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.  * Returns
-          INVALID_ARGUMENT if display_name is present in update_mask but
-          missing from the request or longer than 4096 characters.
+        * Returns NOT_FOUND if the ProductSet does not exist.
+
+        * Returns INVALID_ARGUMENT if display_name is present in
+          update_mask but missing from the request or longer than 4096
+          characters.
 
         .. code-block:: python
 
@@ -1244,8 +1251,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The `FieldMask <google.protobuf.FieldMask>`__ that
-                specifies which fields to  update.  If update_mask isn't
-                specified, all mutable fields are to be updated.  Valid
+                specifies which fields to update. If update_mask isn't
+                specified, all mutable fields are to be updated. Valid
                 mask path is ``display_name``.
 
                 This corresponds to the ``update_mask`` field
@@ -1364,7 +1371,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. Resource name of the ProductSet to delete.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1438,8 +1445,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         Possible errors:
 
         * Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.  * Returns INVALID_ARGUMENT if
-          description is longer than 4096 characters.
+          than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if description is longer than 4096
+          characters.
 
         * Returns INVALID_ARGUMENT if product_category is missing or
           invalid.
@@ -1477,7 +1486,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The project in which the Product should be
                 created.
 
-                Format is  ``projects/PROJECT_ID/locations/LOC_ID``.
+                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1489,10 +1498,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 should not be set.
             product_id (str):
                 A user-supplied resource id for this Product. If set,
-                the server will  attempt to use this value as the
-                resource id. If it is already in use, an  error is
+                the server will attempt to use this value as the
+                resource id. If it is already in use, an error is
                 returned with code ALREADY_EXISTS. Must be at most 128
-                characters  long. It cannot contain the character
+                characters long. It cannot contain the character
                 ``/``.
 
                 This corresponds to the ``product_id`` field
@@ -1612,7 +1621,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The project OR ProductSet from which Products
                 should be listed.
 
-                Format:  ``projects/PROJECT_ID/locations/LOC_ID``
+                Format: ``projects/PROJECT_ID/locations/LOC_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1737,7 +1746,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. Resource name of the Product to get.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1812,21 +1821,24 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> product_search_service.Product:
-        r"""Makes changes to a Product resource.  Only the ``display_name``,
-        ``description``, and ``labels`` fields can be updated  right now.
+        r"""Makes changes to a Product resource. Only the ``display_name``,
+        ``description``, and ``labels`` fields can be updated right now.
 
         If labels are updated, the change will not be reflected in
-        queries until  the next index time.
+        queries until the next index time.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product does not exist.  * Returns
-          INVALID_ARGUMENT if display_name is present in update_mask but
-          is missing from the request or longer than 4096 characters.
+        * Returns NOT_FOUND if the Product does not exist.
+
+        * Returns INVALID_ARGUMENT if display_name is present in
+          update_mask but is missing from the request or longer than
+          4096 characters.
 
         * Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.  * Returns
-          INVALID_ARGUMENT if product_category is present in
+          update_mask but is longer than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if product_category is present in
           update_mask.
 
         .. code-block:: python
@@ -1867,9 +1879,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 The `FieldMask <google.protobuf.FieldMask>`__ that
-                specifies which fields  to update.  If update_mask isn't
-                specified, all mutable fields are to be updated.  Valid
-                mask paths include ``product_labels``, ``display_name``, and  ``description``.
+                specifies which fields to update. If update_mask isn't
+                specified, all mutable fields are to be updated. Valid
+                mask paths include ``product_labels``, ``display_name``, and ``description``.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1983,7 +1995,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. Resource name of product to delete.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2056,23 +2068,26 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         The ``bounding_poly`` field is optional. If ``bounding_poly`` is not specified,
         the system will try to detect regions of interest in the image
-        that are  compatible with the product_category on the parent
-        product. If it is  specified, detection is ALWAYS skipped. The
-        system converts polygons into  non-rotated rectangles.
+        that are compatible with the product_category on the parent
+        product. If it is specified, detection is ALWAYS skipped. The
+        system converts polygons into non-rotated rectangles.
 
         Note that the pipeline will resize the image if the image
-        resolution is too  large to process (above 50MP).
+        resolution is too large to process (above 50MP).
 
         Possible errors:
 
         * Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.  * Returns INVALID_ARGUMENT if the
-          product does not exist.
+          than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if the product does not exist.
 
         * Returns INVALID_ARGUMENT if bounding_poly is not provided, and
           nothing compatible with the parent product's product_category
-          is detected.  * Returns INVALID_ARGUMENT if bounding_poly
-          contains more than 10 polygons.
+          is detected.
+
+        * Returns INVALID_ARGUMENT if bounding_poly contains more than
+          10 polygons.
 
         .. code-block:: python
 
@@ -2109,9 +2124,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 The request object. Request message for the ``CreateReferenceImage`` method.
             parent (str):
                 Required. Resource name of the product in which to
-                create the reference  image.
+                create the reference image.
 
-                Format is  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
+                Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2126,11 +2141,11 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 should not be set.
             reference_image_id (str):
                 A user-supplied resource id for the ReferenceImage to be
-                added. If set,  the server will attempt to use this
-                value as the resource id. If it is  already in use, an
-                error is returned with code ALREADY_EXISTS. Must be at
-                most 128 characters long. It cannot contain the
-                character ``/``.
+                added. If set, the server will attempt to use this value
+                as the resource id. If it is already in use, an error is
+                returned with code ALREADY_EXISTS. Must be at most 128
+                characters long. It cannot contain the character
+                ``/``.
 
                 This corresponds to the ``reference_image_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2146,7 +2161,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         Returns:
             google.cloud.vision_v1.types.ReferenceImage:
                 A ``ReferenceImage`` represents a product image and its
-                associated metadata,  such as bounding boxes.
+                associated metadata, such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2249,7 +2264,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The resource name of the reference image to
                 delete.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2320,8 +2335,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the parent product does not exist.  *
-          Returns INVALID_ARGUMENT if the page_size is greater than 100,
+        * Returns NOT_FOUND if the parent product does not exist.
+
+        * Returns INVALID_ARGUMENT if the page_size is greater than 100,
           or less than 1.
 
         .. code-block:: python
@@ -2358,7 +2374,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the product containing the
                 reference images.
 
-                Format is  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
+                Format is ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2486,7 +2502,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The resource name of the ReferenceImage to
                 get.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2502,7 +2518,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         Returns:
             google.cloud.vision_v1.types.ReferenceImage:
                 A ``ReferenceImage`` represents a product image and its
-                associated metadata,  such as bounding boxes.
+                associated metadata, such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2564,7 +2580,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Adds a Product to the specified ProductSet. If the Product is
-        already  present, no change is made.
+        already present, no change is made.
 
         One Product can be added to at most 100 ProductSets.
 
@@ -2604,7 +2620,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The resource name for the ProductSet to
                 modify.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2613,7 +2629,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The resource name for the Product to be added
                 to this ProductSet.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2720,16 +2736,16 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The resource name for the ProductSet to
                 modify.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             product (str):
                 Required. The resource name for the Product to be
-                removed from this  ProductSet.
+                removed from this ProductSet.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2803,8 +2819,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListProductsInProductSetPager:
         r"""Lists the Products in a ProductSet, in an unspecified order. If
-        the  ProductSet does not exist, the products field of the
-        response will be  empty.
+        the ProductSet does not exist, the products field of the
+        response will be empty.
 
         Possible errors:
 
@@ -2845,7 +2861,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. The ProductSet resource for which to retrieve
                 Products.
 
-                Format is:  ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
+                Format is: ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2942,15 +2958,15 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Asynchronous API that imports a list of reference images to
-        specified  product sets based on a list of image information.
+        specified product sets based on a list of image information.
 
         The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be  used to keep track
-        of the progress and results of the request.  ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress)  ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
+        <google.longrunning.Operation>`__ API can be used to keep track
+        of the progress and results of the request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``. (results)
 
         The input source of this method is a csv file on Google Cloud
-        Storage.  For the format of the csv file please see
+        Storage. For the format of the csv file please see
         `ImportProductSetsGcsSource.csv_file_uri
         <google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri>`__.
 
@@ -3016,14 +3032,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``google.cloud.vision_v1.types.ImportProductSetsResponse`` Response message for the ``ImportProductSets``
+                :class:`google.cloud.vision_v1.types.ImportProductSetsResponse`` Response message for the ``ImportProductSets`
                 method.
 
                 This message is returned by the
                 `google.longrunning.Operations.GetOperation
-                <google.longrunning.Operations.GetOperation>`__  method
-                in the returned  `google.longrunning.Operation.response
-                <google.longrunning.Operation.response>`__  field.
+                <google.longrunning.Operations.GetOperation>`__ method
+                in the returned `google.longrunning.Operation.response
+                <google.longrunning.Operation.response>`__ field.
 
         """
         # Create or coerce a protobuf request object.
@@ -3094,31 +3110,31 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Asynchronous API to delete all Products in a ProductSet or all
-        Products  that are in no ProductSet.
+        Products that are in no ProductSet.
 
         If a Product is a member of the specified ProductSet in addition
-        to other  ProductSets, the Product will still be deleted.
+        to other ProductSets, the Product will still be deleted.
 
         It is recommended to not delete the specified ProductSet until
-        after this  operation has completed. It is also recommended to
-        not add any of the  Products involved in the batch delete to a
-        new ProductSet while this  operation is running because those
+        after this operation has completed. It is also recommended to
+        not add any of the Products involved in the batch delete to a
+        new ProductSet while this operation is running because those
         Products may still end up deleted.
 
         It's not possible to undo the PurgeProducts operation.
-        Therefore, it is  recommended to keep the csv files used in
-        ImportProductSets (if that was  how you originally built the
-        Product Set) before starting PurgeProducts, in  case you need to
+        Therefore, it is recommended to keep the csv files used in
+        ImportProductSets (if that was how you originally built the
+        Product Set) before starting PurgeProducts, in case you need to
         re-import the data after deletion.
 
         If the plan is to purge all of the Products from a ProductSet
-        and then  re-use the empty ProductSet to re-import new Products
-        into the empty  ProductSet, you must wait until the
-        PurgeProducts operation has finished  for that ProductSet.
+        and then re-use the empty ProductSet to re-import new Products
+        into the empty ProductSet, you must wait until the PurgeProducts
+        operation has finished for that ProductSet.
 
         The `google.longrunning.Operation
-        <google.longrunning.Operation>`__ API can be  used to keep track
-        of the progress and results of the request.  ``Operation.metadata`` contains
+        <google.longrunning.Operation>`__ API can be used to keep track
+        of the progress and results of the request. ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
 
         .. code-block:: python
@@ -3176,13 +3192,15 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``google.protobuf.empty_pb2.Empty`` A generic empty message that you can
-                re-use to avoid defining duplicated  empty messages in
-                your APIs. A typical example is to use it as the request
-                or the response type of an API method. For instance:
+                :class:`google.protobuf.empty_pb2.Empty` A generic empty
+                message that you can re-use to avoid defining duplicated
+                empty messages in your APIs. A typical example is to use
+                it as the request or the response type of an API method.
+                For instance:
 
-                service Foo {        rpc Bar(google.protobuf.Empty)
-                returns (google.protobuf.Empty);      }
+                     service Foo {
+                       rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty);
+                     }
 
         """
         # Create or coerce a protobuf request object.

@@ -1007,23 +1007,26 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     """REST backend synchronous transport for ProductSearch.
 
     Manages Products and ProductSets of reference images for use in
-    product  search. It uses the following resource model:
+    product search. It uses the following resource model:
 
-    - The API has a collection of `ProductSet
-      <google.cloud.vision.v1p4beta1.ProductSet>`__ resources, named
-      ``projects/*/locations/*/productSets/*``, which acts as a way to put different products into
-      groups to limit identification.
+    - The API has a collection of
+
+    `ProductSet <google.cloud.vision.v1p4beta1.ProductSet>`__ resources,
+    named ``projects/*/locations/*/productSets/*``, which acts as a way to put different products into
+    groups to limit identification.
 
     In parallel,
 
-    - The API has a collection of `Product
-      <google.cloud.vision.v1p4beta1.Product>`__ resources, named
-      ``projects/*/locations/*/products/*``
+    - The API has a collection of
+
+    `Product <google.cloud.vision.v1p4beta1.Product>`__ resources, named
+    ``projects/*/locations/*/products/*``
 
     - Each `Product <google.cloud.vision.v1p4beta1.Product>`__ has a
-      collection of `ReferenceImage
-      <google.cloud.vision.v1p4beta1.ReferenceImage>`__ resources, named
-      ``projects/*/locations/*/products/*/referenceImages/*``
+      collection of
+
+    `ReferenceImage <google.cloud.vision.v1p4beta1.ReferenceImage>`__
+    resources, named ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1606,7 +1609,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             Returns:
                 ~.product_search_service.ReferenceImage:
                     A ``ReferenceImage`` represents a product image and its
-                associated metadata,  such as bounding boxes.
+                associated metadata, such as bounding boxes.
 
             """
 
@@ -2382,7 +2385,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             Returns:
                 ~.product_search_service.ReferenceImage:
                     A ``ReferenceImage`` represents a product image and its
-                associated metadata,  such as bounding boxes.
+                associated metadata, such as bounding boxes.
 
             """
 

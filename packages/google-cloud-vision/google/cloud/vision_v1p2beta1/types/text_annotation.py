@@ -36,11 +36,18 @@ __protobuf__ = proto.module(
 
 class TextAnnotation(proto.Message):
     r"""TextAnnotation contains a structured representation of OCR extracted
-    text.  The hierarchy of an OCR extracted text structure is like
-    this:      TextAnnotation -> Page -> Block -> Paragraph -> Word ->
-    Symbol  Each structural component, starting from Page, may further
-    have their own  properties. Properties describe detected languages,
-    breaks etc.. Please refer  to the  `TextAnnotation.TextProperty
+    text. The hierarchy of an OCR extracted text structure is like this:
+
+    TextAnnotation contains a structured representation of OCR extracted text.
+    The hierarchy of an OCR extracted text structure is like this:
+         TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
+
+    TextAnnotation contains a structured representation of OCR extracted
+    text. The hierarchy of an OCR extracted text structure is like this:
+    TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol Each
+    structural component, starting from Page, may further have their own
+    properties. Properties describe detected languages, breaks etc..
+    Please refer to the `TextAnnotation.TextProperty
     <google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty>`__
     message definition below for more detail.
 
@@ -57,7 +64,7 @@ class TextAnnotation(proto.Message):
         Attributes:
             language_code (str):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more  information, see
+                more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
@@ -96,7 +103,7 @@ class TextAnnotation(proto.Message):
                     Line-wrapping break.
                 HYPHEN (4):
                     End-line hyphen that is not present in text; does not
-                    co-occur with  ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+                    co-occur with ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """
@@ -209,24 +216,20 @@ class Block(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            -  when the text is horizontal it might look like:
+            * when the text is horizontal it might look like:
 
-               ::
+                     0----1
+                     |    |
+                     3----2
 
-                    0----1
-                    |    |
-                    3----2
+            * when it's rotated 180 degrees around the top-left corner
+              it becomes:
 
-            -  when it's rotated 180 degrees around the top-left corner
-               it becomes:
+                     2----3
+                     |    |
+                     1----0
 
-               ::
-
-                    2----3
-                    |    |
-                    1----0
-
-               and the vertice order will still be (0, 1, 2, 3).
+            and the vertice order will still be (0, 1, 2, 3).
         paragraphs (MutableSequence[google.cloud.vision_v1p2beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
@@ -302,11 +305,24 @@ class Paragraph(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            -  when the text is horizontal it might look like: 0----1 \|
-               \| 3----2
-            -  when it's rotated 180 degrees around the top-left corner
-               it becomes: 2----3 \| \| 1----0 and the vertice order
-               will still be (0, 1, 2, 3).
+            * when the text is horizontal it might look like:
+
+               * when the text is horizontal it might look like:
+                  0----1
+                  |    |
+                  3----2
+
+            * when it's rotated 180 degrees around the top-left corner
+              it becomes:
+
+               * when it's rotated 180 degrees around the top-left corner it becomes:
+                  2----3
+                  |    |
+                  1----0
+
+            * when it's rotated 180 degrees around the top-left corner
+            it becomes: 2----3 |    | 1----0 and the vertice order will
+            still be (0, 1, 2, 3).
         words (MutableSequence[google.cloud.vision_v1p2beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
@@ -348,11 +364,24 @@ class Word(proto.Message):
             represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            -  when the text is horizontal it might look like: 0----1 \|
-               \| 3----2
-            -  when it's rotated 180 degrees around the top-left corner
-               it becomes: 2----3 \| \| 1----0 and the vertice order
-               will still be (0, 1, 2, 3).
+            * when the text is horizontal it might look like:
+
+               * when the text is horizontal it might look like:
+                  0----1
+                  |    |
+                  3----2
+
+            * when it's rotated 180 degrees around the top-left corner
+              it becomes:
+
+               * when it's rotated 180 degrees around the top-left corner it becomes:
+                  2----3
+                  |    |
+                  1----0
+
+            * when it's rotated 180 degrees around the top-left corner
+            it becomes: 2----3 |    | 1----0 and the vertice order will
+            still be (0, 1, 2, 3).
         symbols (MutableSequence[google.cloud.vision_v1p2beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
@@ -396,11 +425,24 @@ class Symbol(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            -  when the text is horizontal it might look like: 0----1 \|
-               \| 3----2
-            -  when it's rotated 180 degrees around the top-left corner
-               it becomes: 2----3 \| \| 1----0 and the vertice order
-               will still be (0, 1, 2, 3).
+            * when the text is horizontal it might look like:
+
+               * when the text is horizontal it might look like:
+                  0----1
+                  |    |
+                  3----2
+
+            * when it's rotated 180 degrees around the top-left corner
+              it becomes:
+
+               * when it's rotated 180 degrees around the top-left corner it becomes:
+                  2----3
+                  |    |
+                  1----0
+
+            * when it's rotated 180 degrees around the top-left corner
+            it becomes: 2----3 |    | 1----0 and the vertice order will
+            still be (0, 1, 2, 3).
         text (str):
             The actual UTF-8 representation of the
             symbol.

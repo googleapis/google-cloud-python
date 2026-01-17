@@ -418,10 +418,10 @@ class ImageAnnotatorAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Run asynchronous image detection and annotation for a list of
-        generic  files, such as PDF files, which may contain multiple
-        pages and multiple  images per page. Progress and results can be
-        retrieved through the  ``google.longrunning.Operations`` interface.  ``Operation.metadata`` contains
-        ``OperationMetadata`` (metadata).  ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
+        generic files, such as PDF files, which may contain multiple
+        pages and multiple images per page. Progress and results can be
+        retrieved through the ``google.longrunning.Operations`` interface. ``Operation.metadata`` contains
+        ``OperationMetadata`` (metadata). ``Operation.response`` contains ``AsyncBatchAnnotateFilesResponse`` (results).
 
         .. code-block:: python
 
@@ -477,8 +477,8 @@ class ImageAnnotatorAsyncClient:
                 An object representing a long-running operation.
 
                 The result type for the operation will be
-                :class:``google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesResponse`` Response to an async batch file
-                annotation request.
+                :class:`google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesResponse`
+                Response to an async batch file annotation request.
 
         """
         # Create or coerce a protobuf request object.
