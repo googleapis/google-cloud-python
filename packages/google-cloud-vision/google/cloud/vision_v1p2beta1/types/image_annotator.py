@@ -1335,13 +1335,15 @@ class GcsDestination(proto.Message):
             Examples:
 
             *    File: gs://bucket-name/filename.json  *    Prefix:
-              gs://bucket-name/prefix/here/  *    File:
-              gs://bucket-name/prefix/here If multiple outputs, each
-              response is still AnnotateFileResponse, each of which
-              contains some subset of the full list of
-              AnnotateImageResponse. Multiple outputs can happen if, for
-              example, the output JSON is too large and overflows into
-              multiple sharded files.
+              gs://bucket-name/prefix/here/
+
+            *    File: gs://bucket-name/prefix/here
+
+            If multiple outputs, each response is still
+            AnnotateFileResponse, each of  which contains some subset of
+            the full list of AnnotateImageResponse.  Multiple outputs
+            can happen if, for example, the output JSON is too large
+            and overflows into multiple sharded files.
     """
 
     uri: str = proto.Field(

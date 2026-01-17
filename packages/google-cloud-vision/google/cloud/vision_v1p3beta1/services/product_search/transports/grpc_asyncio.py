@@ -124,12 +124,18 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
     - The API has a collection of `ProductSet
       <google.cloud.vision.v1p3beta1.ProductSet>`__ resources, named
       ``projects/*/locations/*/productSets/*``, which acts as a way to put different products into
-      groups to limit identification. In parallel,  - The API has a
-      collection of `Product <google.cloud.vision.v1p3beta1.Product>`__
-      resources, named ``projects/*/locations/*/products/*``  - Each `Product
-      <google.cloud.vision.v1p3beta1.Product>`__ has a collection of
-      `ReferenceImage <google.cloud.vision.v1p3beta1.ReferenceImage>`__
-      resources, named ``projects/*/locations/*/products/*/referenceImages/*``
+      groups to limit identification.
+
+    In parallel,
+
+    - The API has a collection of `Product
+      <google.cloud.vision.v1p3beta1.Product>`__ resources, named
+      ``projects/*/locations/*/products/*``
+
+    - Each `Product <google.cloud.vision.v1p3beta1.Product>`__ has a
+      collection of `ReferenceImage
+      <google.cloud.vision.v1p3beta1.ReferenceImage>`__ resources, named
+      ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -547,8 +553,10 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
 
         * Returns INVALID_ARGUMENT if display_name is missing or longer
           than 4096 characters.  * Returns INVALID_ARGUMENT if
-          description is longer than 4096 characters.  * Returns
-          INVALID_ARGUMENT if product_category is missing or invalid.
+          description is longer than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if product_category is missing or
+          invalid.
 
         Returns:
             Callable[[~.CreateProductRequest],
@@ -654,8 +662,9 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
 
         * Returns NOT_FOUND if the Product does not exist.  * Returns
           INVALID_ARGUMENT if display_name is present in update_mask but
-          is missing from the request or longer than 4096 characters.  *
-          Returns INVALID_ARGUMENT if description is present in
+          is missing from the request or longer than 4096 characters.
+
+        * Returns INVALID_ARGUMENT if description is present in
           update_mask but is longer than 4096 characters.  * Returns
           INVALID_ARGUMENT if product_category is present in
           update_mask.
@@ -738,11 +747,12 @@ class ProductSearchGrpcAsyncIOTransport(ProductSearchTransport):
 
         * Returns INVALID_ARGUMENT if the image_uri is missing or longer
           than 4096 characters.  * Returns INVALID_ARGUMENT if the
-          product does not exist.  * Returns INVALID_ARGUMENT if
-          bounding_poly is not provided, and nothing compatible with the
-          parent product's product_category is detected.  * Returns
-          INVALID_ARGUMENT if bounding_poly contains more than 10
-          polygons.
+          product does not exist.
+
+        * Returns INVALID_ARGUMENT if bounding_poly is not provided, and
+          nothing compatible with the parent product's product_category
+          is detected.  * Returns INVALID_ARGUMENT if bounding_poly
+          contains more than 10 polygons.
 
         Returns:
             Callable[[~.CreateReferenceImageRequest],
