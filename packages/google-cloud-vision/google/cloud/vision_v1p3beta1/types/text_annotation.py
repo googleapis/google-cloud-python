@@ -36,15 +36,11 @@ __protobuf__ = proto.module(
 
 class TextAnnotation(proto.Message):
     r"""TextAnnotation contains a structured representation of OCR extracted
-    text.
-    The hierarchy of an OCR extracted text structure is like this:
-    TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
-    Each structural component, starting from Page, may further have
-    their own
-    properties. Properties describe detected languages, breaks etc..
-    Please refer
-    to the
-    `TextAnnotation.TextProperty
+    text.  The hierarchy of an OCR extracted text structure is like
+    this:      TextAnnotation -> Page -> Block -> Paragraph -> Word ->
+    Symbol  Each structural component, starting from Page, may further
+    have their own  properties. Properties describe detected languages,
+    breaks etc.. Please refer  to the  `TextAnnotation.TextProperty
     <google.cloud.vision.v1p3beta1.TextAnnotation.TextProperty>`__
     message definition below for more detail.
 
@@ -61,8 +57,7 @@ class TextAnnotation(proto.Message):
         Attributes:
             language_code (str):
                 The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more
-                information, see
+                more  information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
@@ -101,8 +96,7 @@ class TextAnnotation(proto.Message):
                     Line-wrapping break.
                 HYPHEN (4):
                     End-line hyphen that is not present in text; does not
-                    co-occur with
-                    ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
+                    co-occur with  ``SPACE``, ``LEADER_SPACE``, or ``LINE_BREAK``.
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """

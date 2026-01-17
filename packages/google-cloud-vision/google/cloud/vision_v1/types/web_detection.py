@@ -159,9 +159,8 @@ class WebDetection(proto.Message):
             label (str):
                 Label for extra metadata.
             language_code (str):
-                The BCP-47 language code for ``label``, such as
-                "en-US" or "sr-Latn".
-                For more information, see
+                The BCP-47 language code for ``label``, such as "en-US" or
+                "sr-Latn".  For more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         """
 
