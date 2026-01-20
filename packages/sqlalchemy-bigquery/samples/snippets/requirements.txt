@@ -20,7 +20,7 @@ markupsafe==3.0.3; python_version >= '3.9'
 packaging==25.0
 proto-plus==1.26.1
 protobuf==6.32.1; python_version >= '3.9'
-pyasn1==0.6.1
+pyasn1==0.6.2
 pyasn1-modules==0.4.2
 pyparsing==3.2.5; python_version >= '3.9'
 python-dateutil==2.9.0.post0
