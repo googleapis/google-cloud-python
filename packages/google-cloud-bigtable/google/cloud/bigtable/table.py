@@ -1328,7 +1328,7 @@ def _create_row_request(
         raise ValueError("Row range and row set cannot be set simultaneously")
 
     if filter_ is not None:
-        request_kwargs["filter"] = filter_.to_pb()
+        request_kwargs["filter"] = filter_._to_pb()
     if limit is not None:
         request_kwargs["rows_limit"] = limit
     if app_profile_id is not None:

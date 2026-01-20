@@ -21,281 +21,77 @@ from google.cloud._helpers import (
     _to_bytes,  # type: ignore
 )
 
+<<<<<<< HEAD
 from google.cloud.bigtable_v2.types import data as data_v2_pb2
+=======
+from google.cloud.bigtable.data.row_filters import (  # noqa: F401
+    RowFilter,
+    SinkFilter,
+    _BoolFilter,
+    PassAllFilter,
+    BlockAllFilter,
+    _RegexFilter,
+    RowKeyRegexFilter,
+    RowSampleFilter,
+    FamilyNameRegexFilter,
+    ColumnQualifierRegexFilter,
+    TimestampRange,
+    TimestampRangeFilter as BaseTimestampRangeFilter,
+    ColumnRangeFilter as BaseColumnRangeFilter,
+    ValueRegexFilter,
+    ValueRangeFilter,
+    _CellCountFilter,
+    CellsRowOffsetFilter,
+    CellsRowLimitFilter,
+    CellsColumnLimitFilter,
+    StripValueTransformerFilter,
+    ApplyLabelFilter,
+    _FilterCombination,
+    RowFilterChain,
+    RowFilterUnion,
+    ConditionalRowFilter as BaseConditionalRowFilter,
+)
+>>>>>>> f5d31525fb8 (chore: Rerouted legacy client row filters to data client row filters. (#1255))
 
 _PACK_I64 = struct.Struct(">q").pack
 
 
-class RowFilter(object):
-    """Basic filter to apply to cells in a row.
+class _MappableAttributesMixin:
+    """
+    Mixin for classes that need some of their attribute names remapped.
 
-    These values can be combined via :class:`RowFilterChain`,
-    :class:`RowFilterUnion` and :class:`ConditionalRowFilter`.
+    This is for taking some of the classes from the data client row filters
+    that are 1:1 with their legacy client counterparts but with some of their
+    attributes renamed. To use in a class, override the base class with this mixin
+    class and define a map _attribute_map from legacy client attributes to data client
+    attributes.
 
-    .. note::
-
-        This class is a do-nothing base class for all row filters.
+    Attributes are remapped and redefined in __init__ as well as getattr/setattr.
     """
 
+    def __init__(self, *args, **kwargs):
+        new_kwargs = {self._attribute_map.get(k, k): v for (k, v) in kwargs.items()}
+        super(_MappableAttributesMixin, self).__init__(*args, **new_kwargs)
 
-class _BoolFilter(RowFilter):
-    """Row filter that uses a boolean flag.
+    def __getattr__(self, name):
+        if name not in self._attribute_map:
+            raise AttributeError
+        return getattr(self, self._attribute_map[name])
 
-    :type flag: bool
-    :param flag: An indicator if a setting is turned on or off.
-    """
+    def __setattr__(self, name, value):
+        attribute = self._attribute_map.get(name, name)
+        super(_MappableAttributesMixin, self).__setattr__(attribute, value)
 
-    def __init__(self, flag):
-        self.flag = flag
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other.flag == self.flag
+# The classes defined below are to provide constructors and members
+# that have an interface that does not match the one used by the data
+# client, for backwards compatibility purposes.
 
-    def __ne__(self, other):
-        return not self == other
+# Each underscored class is an ABC. Make them into classes that can be
+# instantiated with a placeholder to_dict method for consistency.
 
 
-class SinkFilter(_BoolFilter):
-    """Advanced row filter to skip parent filters.
-
-    :type flag: bool
-    :param flag: ADVANCED USE ONLY. Hook for introspection into the row filter.
-                 Outputs all cells directly to the output of the read rather
-                 than to any parent filter. Cannot be used within the
-                 ``predicate_filter``, ``true_filter``, or ``false_filter``
-                 of a :class:`ConditionalRowFilter`.
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(sink=self.flag)
-
-
-class PassAllFilter(_BoolFilter):
-    """Row filter equivalent to not filtering at all.
-
-    :type flag: bool
-    :param flag: Matches all cells, regardless of input. Functionally
-                 equivalent to leaving ``filter`` unset, but included for
-                 completeness.
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(pass_all_filter=self.flag)
-
-
-class BlockAllFilter(_BoolFilter):
-    """Row filter that doesn't match any cells.
-
-    :type flag: bool
-    :param flag: Does not match any cells, regardless of input. Useful for
-                 temporarily disabling just part of a filter.
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(block_all_filter=self.flag)
-
-
-class _RegexFilter(RowFilter):
-    """Row filter that uses a regular expression.
-
-    The ``regex`` must be valid RE2 patterns. See Google's
-    `RE2 reference`_ for the accepted syntax.
-
-    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
-
-    :type regex: bytes or str
-    :param regex:
-        A regular expression (RE2) for some row filter.  String values
-        will be encoded as ASCII.
-    """
-
-    def __init__(self, regex):
-        self.regex = _to_bytes(regex)
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other.regex == self.regex
-
-    def __ne__(self, other):
-        return not self == other
-
-
-class RowKeyRegexFilter(_RegexFilter):
-    """Row filter for a row key regular expression.
-
-    The ``regex`` must be valid RE2 patterns. See Google's
-    `RE2 reference`_ for the accepted syntax.
-
-    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
-
-    .. note::
-
-        Special care need be used with the expression used. Since
-        each of these properties can contain arbitrary bytes, the ``\\C``
-        escape sequence must be used if a true wildcard is desired. The ``.``
-        character will not match the new line character ``\\n``, which may be
-        present in a binary value.
-
-    :type regex: bytes
-    :param regex: A regular expression (RE2) to match cells from rows with row
-                  keys that satisfy this regex. For a
-                  ``CheckAndMutateRowRequest``, this filter is unnecessary
-                  since the row key is already specified.
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(row_key_regex_filter=self.regex)
-
-
-class RowSampleFilter(RowFilter):
-    """Matches all cells from a row with probability p.
-
-    :type sample: float
-    :param sample: The probability of matching a cell (must be in the
-                   interval ``(0, 1)``  The end points are excluded).
-    """
-
-    def __init__(self, sample):
-        self.sample = sample
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other.sample == self.sample
-
-    def __ne__(self, other):
-        return not self == other
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(row_sample_filter=self.sample)
-
-
-class FamilyNameRegexFilter(_RegexFilter):
-    """Row filter for a family name regular expression.
-
-    The ``regex`` must be valid RE2 patterns. See Google's
-    `RE2 reference`_ for the accepted syntax.
-
-    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
-
-    :type regex: str
-    :param regex: A regular expression (RE2) to match cells from columns in a
-                  given column family. For technical reasons, the regex must
-                  not contain the ``':'`` character, even if it is not being
-                  used as a literal.
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(family_name_regex_filter=self.regex)
-
-
-class ColumnQualifierRegexFilter(_RegexFilter):
-    """Row filter for a column qualifier regular expression.
-
-    The ``regex`` must be valid RE2 patterns. See Google's
-    `RE2 reference`_ for the accepted syntax.
-
-    .. _RE2 reference: https://github.com/google/re2/wiki/Syntax
-
-    .. note::
-
-        Special care need be used with the expression used. Since
-        each of these properties can contain arbitrary bytes, the ``\\C``
-        escape sequence must be used if a true wildcard is desired. The ``.``
-        character will not match the new line character ``\\n``, which may be
-        present in a binary value.
-
-    :type regex: bytes
-    :param regex: A regular expression (RE2) to match cells from column that
-                  match this regex (irrespective of column family).
-    """
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(column_qualifier_regex_filter=self.regex)
-
-
-class TimestampRange(object):
-    """Range of time with inclusive lower and exclusive upper bounds.
-
-    :type start: :class:`datetime.datetime`
-    :param start: (Optional) The (inclusive) lower bound of the timestamp
-                  range. If omitted, defaults to Unix epoch.
-
-    :type end: :class:`datetime.datetime`
-    :param end: (Optional) The (exclusive) upper bound of the timestamp
-                range. If omitted, no upper bound is used.
-    """
-
-    def __init__(self, start=None, end=None):
-        self.start = start
-        self.end = end
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other.start == self.start and other.end == self.end
-
-    def __ne__(self, other):
-        return not self == other
-
-    def to_pb(self):
-        """Converts the :class:`TimestampRange` to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.TimestampRange`
-        :returns: The converted current object.
-        """
-        timestamp_range_kwargs = {}
-        if self.start is not None:
-            timestamp_range_kwargs["start_timestamp_micros"] = (
-                _microseconds_from_datetime(self.start) // 1000 * 1000
-            )
-        if self.end is not None:
-            end_time = _microseconds_from_datetime(self.end)
-            if end_time % 1000 != 0:
-                end_time = end_time // 1000 * 1000 + 1000
-            timestamp_range_kwargs["end_timestamp_micros"] = end_time
-        return data_v2_pb2.TimestampRange(**timestamp_range_kwargs)
-
-
-class TimestampRangeFilter(RowFilter):
+class TimestampRangeFilter(BaseTimestampRangeFilter):
     """Row filter that limits cells to a range of time.
 
     :type range_: :class:`TimestampRange`
@@ -305,27 +101,24 @@ class TimestampRangeFilter(RowFilter):
     def __init__(self, range_):
         self.range_ = range_
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return other.range_ == self.range_
 
-    def __ne__(self, other):
-        return not self == other
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        First converts the ``range_`` on the current object to a protobuf and
-        then uses it in the ``timestamp_range_filter`` field.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        return data_v2_pb2.RowFilter(timestamp_range_filter=self.range_.to_pb())
+class ExactValueFilter(ValueRegexFilter):
+    """Row filter for an exact value.
 
 
-class ColumnRangeFilter(RowFilter):
+    :type value: bytes or str or int
+    :param value:
+        a literal string encodable as ASCII, or the
+        equivalent bytes, or an integer (which will be packed into 8-bytes).
+    """
+
+    def __init__(self, value):
+        if isinstance(value, int):
+            value = _PACK_I64(value)
+        super(ExactValueFilter, self).__init__(value)
+
+
+class ColumnRangeFilter(_MappableAttributesMixin, BaseColumnRangeFilter):
     """A row filter to restrict to a range of columns.
 
     Both the start and end column can be included or excluded in the range.
@@ -362,16 +155,13 @@ class ColumnRangeFilter(RowFilter):
              is set but no ``end_column`` is given
     """
 
-    def __init__(
-        self,
-        column_family_id,
-        start_column=None,
-        end_column=None,
-        inclusive_start=None,
-        inclusive_end=None,
-    ):
-        self.column_family_id = column_family_id
+    _attribute_map = {
+        "column_family_id": "family_id",
+        "start_column": "start_qualifier",
+        "end_column": "end_qualifier",
+    }
 
+<<<<<<< HEAD
         if inclusive_start is None:
             inclusive_start = True
         elif start_column is None:
@@ -808,6 +598,10 @@ class RowFilterUnion(_FilterCombination):
 
 
 class ConditionalRowFilter(RowFilter):
+=======
+
+class ConditionalRowFilter(_MappableAttributesMixin, BaseConditionalRowFilter):
+>>>>>>> f5d31525fb8 (chore: Rerouted legacy client row filters to data client row filters. (#1255))
     """Conditional row filter which exhibits ternary behavior.
 
     Executes one of two filters based on another filter. If the ``base_filter``
@@ -837,33 +631,30 @@ class ConditionalRowFilter(RowFilter):
                          will be returned in the false case.
     """
 
-    def __init__(self, base_filter, true_filter=None, false_filter=None):
-        self.base_filter = base_filter
-        self.true_filter = true_filter
-        self.false_filter = false_filter
+    _attribute_map = {"base_filter": "predicate_filter"}
 
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return NotImplemented
-        return (
-            other.base_filter == self.base_filter
-            and other.true_filter == self.true_filter
-            and other.false_filter == self.false_filter
-        )
 
-    def __ne__(self, other):
-        return not self == other
-
-    def to_pb(self):
-        """Converts the row filter to a protobuf.
-
-        :rtype: :class:`.data_v2_pb2.RowFilter`
-        :returns: The converted current object.
-        """
-        condition_kwargs = {"predicate_filter": self.base_filter.to_pb()}
-        if self.true_filter is not None:
-            condition_kwargs["true_filter"] = self.true_filter.to_pb()
-        if self.false_filter is not None:
-            condition_kwargs["false_filter"] = self.false_filter.to_pb()
-        condition = data_v2_pb2.RowFilter.Condition(**condition_kwargs)
-        return data_v2_pb2.RowFilter(condition=condition)
+__all__ = (
+    "RowFilter",
+    "SinkFilter",
+    "PassAllFilter",
+    "BlockAllFilter",
+    "RowKeyRegexFilter",
+    "RowSampleFilter",
+    "FamilyNameRegexFilter",
+    "ColumnQualifierRegexFilter",
+    "TimestampRange",
+    "TimestampRangeFilter",
+    "ColumnRangeFilter",
+    "ValueRegexFilter",
+    "ExactValueFilter",
+    "ValueRangeFilter",
+    "CellsRowOffsetFilter",
+    "CellsRowLimitFilter",
+    "CellsColumnLimitFilter",
+    "StripValueTransformerFilter",
+    "ApplyLabelFilter",
+    "RowFilterChain",
+    "RowFilterUnion",
+    "ConditionalRowFilter",
+)

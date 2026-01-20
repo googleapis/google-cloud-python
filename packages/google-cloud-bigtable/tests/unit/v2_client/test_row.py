@@ -283,7 +283,7 @@ def _delete_cells_helper(time_range=None):
         )
     )
     if time_range is not None:
-        expected_pb.delete_from_column.time_range._pb.CopyFrom(time_range.to_pb()._pb)
+        expected_pb.delete_from_column.time_range._pb.CopyFrom(time_range._to_pb()._pb)
     assert row._pb_mutations == [expected_pb]
 
 

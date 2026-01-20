@@ -2141,7 +2141,7 @@ def test__create_row_request_with_filter():
     row_filter = RowSampleFilter(0.33)
     result = _create_row_request(table_name, filter_=row_filter)
     expected_result = _ReadRowsRequestPB(
-        table_name=table_name, filter=row_filter.to_pb()
+        table_name=table_name, filter=row_filter._to_pb()
     )
     assert result == expected_result
 
