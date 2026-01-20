@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.4](https://github.com/googleapis/gapic-generator-python/compare/v1.30.3...v1.30.4) (2026-01-20)
+
+
+### Bug Fixes
+
+* add cryptography to constraints file (#2527) ([595f58f258eb089fc84a3cc1c93d34f950dca77a](https://github.com/googleapis/gapic-generator-python/commit/595f58f258eb089fc84a3cc1c93d34f950dca77a))
+
 ## [1.30.3](https://github.com/googleapis/gapic-generator-python/compare/v1.30.2...v1.30.3) (2026-01-13)
 
 ## [1.30.2](https://github.com/googleapis/gapic-generator-python/compare/v1.30.1...v1.30.2) (2025-12-15)
