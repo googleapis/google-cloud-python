@@ -117,9 +117,9 @@ class Feature(proto.Message):
             ``TEXT_DETECTION``, ``DOCUMENT_TEXT_DETECTION``, or
             ``CROP_HINTS``.
         model (str):
-            Model to use for the feature.
-            Supported values: "builtin/stable" (the default if unset)
-            and "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
+            Model to use for the feature. Supported values:
+            "builtin/stable" (the default if unset) and
+            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
             ``TEXT_DETECTION`` also support "builtin/weekly" for the
             bleeding edge release updated weekly.
     """
@@ -241,10 +241,9 @@ class Image(proto.Message):
 
     Attributes:
         content (bytes):
-            Image content, represented as a stream of bytes.
-            Note: As with all ``bytes`` fields, protobuffers use a pure
-            binary representation, whereas JSON representations use
-            base64.
+            Image content, represented as a stream of bytes. Note: As
+            with all ``bytes`` fields, protobuffers use a pure binary
+            representation, whereas JSON representations use base64.
         source (google.cloud.vision_v1p4beta1.types.ImageSource):
             Google Cloud Storage image location, or publicly-accessible
             image URL. If both ``content`` and ``source`` are provided
@@ -282,8 +281,8 @@ class FaceAnnotation(proto.Message):
             face. Typically, it is used to eliminate the face from any
             image analysis that detects the "amount of skin" visible in
             an image. It is not based on the landmarker results, only on
-            the initial face detection, hence the <code>fd</code> (face
-            detection) prefix.
+            the initial face detection, hence the fd (face detection)
+            prefix.
         landmarks (MutableSequence[google.cloud.vision_v1p4beta1.types.FaceAnnotation.Landmark]):
             Detected face landmarks.
         roll_angle (float):
@@ -339,10 +338,10 @@ class FaceAnnotation(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Face landmark (feature) type.
-            Left and right are defined from the vantage of the viewer of the
-            image without considering mirror projections typical of photos. So,
-            ``LEFT_EYE``, typically, is the person's right eye.
+            r"""Face landmark (feature) type. Left and right are defined from the
+            vantage of the viewer of the image without considering mirror
+            projections typical of photos. So, ``LEFT_EYE``, typically, is the
+            person's right eye.
 
             Values:
                 UNKNOWN_LANDMARK (0):
@@ -614,8 +613,8 @@ class EntityAnnotation(proto.Message):
             building, even though the confidence that there is a tower
             in each image may be the same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p4beta1.types.BoundingPoly):
-            Image region to which this entity belongs. Not produced
-            for ``LABEL_DETECTION`` features.
+            Image region to which this entity belongs. Not produced for
+            ``LABEL_DETECTION`` features.
         locations (MutableSequence[google.cloud.vision_v1p4beta1.types.LocationInfo]):
             The location information for the detected entity. Multiple
             ``LocationInfo`` elements can be present because one
@@ -1125,8 +1124,8 @@ class AnnotateImageResponse(proto.Message):
             If present, product search has completed
             successfully.
         error (google.rpc.status_pb2.Status):
-            If set, represents the error message for the operation.
-            Note that filled-in image annotations are guaranteed to be
+            If set, represents the error message for the operation. Note
+            that filled-in image annotations are guaranteed to be
             correct, even when ``error`` is set.
         context (google.cloud.vision_v1p4beta1.types.ImageAnnotationContext):
             If present, contextual information is needed
@@ -1507,10 +1506,9 @@ class InputConfig(proto.Message):
             The Google Cloud Storage location to read the
             input from.
         content (bytes):
-            File content, represented as a stream of bytes.
-            Note: As with all ``bytes`` fields, protobuffers use a pure
-            binary representation, whereas JSON representations use
-            base64.
+            File content, represented as a stream of bytes. Note: As
+            with all ``bytes`` fields, protobuffers use a pure binary
+            representation, whereas JSON representations use base64.
 
             Currently, this field only works for BatchAnnotateFiles
             requests. It does not work for AsyncBatchAnnotateFiles

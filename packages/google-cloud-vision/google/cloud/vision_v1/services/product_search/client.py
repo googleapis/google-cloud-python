@@ -852,6 +852,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project in which the ProductSet should be
                 created.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -990,6 +991,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project from which ProductSets should be
                 listed.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -1005,7 +1007,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.services.product_search.pagers.ListProductSetsPager:
-                Response message for the ``ListProductSets`` method.
+                Response message for the ListProductSets method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1118,7 +1120,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the ProductSet to get.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -1367,7 +1368,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the ProductSet to delete.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -1480,8 +1480,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project in which the Product should be
                 created.
-                Format is
-                ``projects/PROJECT_ID/locations/LOC_ID``.
+
+                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1614,9 +1614,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project OR ProductSet from which Products
                 should be listed.
-                Format:
 
-                ``projects/PROJECT_ID/locations/LOC_ID``
+                Format: ``projects/PROJECT_ID/locations/LOC_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1631,7 +1630,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.services.product_search.pagers.ListProductsPager:
-                Response message for the ``ListProducts`` method.
+                Response message for the ListProducts method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1742,7 +1741,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of the Product to get.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -1991,7 +1989,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 Required. Resource name of product to delete.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -2155,8 +2152,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.types.ReferenceImage:
-                A ``ReferenceImage`` represents a product image and its
-                associated metadata, such as bounding boxes.
+                A ReferenceImage represents a product image and its associated metadata,
+                   such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2258,8 +2255,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. The resource name of the reference image to
                 delete.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
 
                 This corresponds to the ``name`` field
@@ -2368,6 +2365,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. Resource name of the product containing the
                 reference images.
+
                 Format is
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
@@ -2384,7 +2382,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.services.product_search.pagers.ListReferenceImagesPager:
-                Response message for the ``ListReferenceImages`` method.
+                Response message for the ListReferenceImages method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2496,8 +2494,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. The resource name of the ReferenceImage to
                 get.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
 
                 This corresponds to the ``name`` field
@@ -2513,8 +2511,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.types.ReferenceImage:
-                A ``ReferenceImage`` represents a product image and its
-                associated metadata, such as bounding boxes.
+                A ReferenceImage represents a product image and its associated metadata,
+                   such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2616,8 +2614,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. The resource name for the ProductSet to
                 modify.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2626,8 +2624,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             product (str):
                 Required. The resource name for the Product to be added
                 to this ProductSet.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2735,8 +2733,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. The resource name for the ProductSet to
                 modify.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2747,7 +2745,6 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 removed from this ProductSet.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2864,8 +2861,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             name (str):
                 Required. The ProductSet resource for which to retrieve
                 Products.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2881,8 +2878,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Returns:
             google.cloud.vision_v1.services.product_search.pagers.ListProductsInProductSetPager:
-                Response message for the ``ListProductsInProductSet``
+                Response message for the ListProductsInProductSet
                 method.
+
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
 
@@ -3011,6 +3009,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project in which the ProductSets should be
                 imported.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -3177,6 +3176,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             parent (str):
                 Required. The project and location in which the Products
                 should be deleted.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -3194,16 +3194,16 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
             google.api_core.operation.Operation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.protobuf.empty_pb2.Empty` A generic empty
-                message that you can re-use to avoid defining duplicated
-                empty messages in your APIs. A typical example is to use
-                it as the request or the response type of an API method.
-                For instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns
-                (google.protobuf.Empty);     }
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
 
         """
         # Create or coerce a protobuf request object.

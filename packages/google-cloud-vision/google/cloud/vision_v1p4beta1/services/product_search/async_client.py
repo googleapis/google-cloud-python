@@ -372,6 +372,7 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project in which the ProductSet should be
                 created.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -513,6 +514,7 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project from which ProductSets should be
                 listed.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -528,7 +530,7 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductSetsAsyncPager:
-                Response message for the ``ListProductSets`` method.
+                Response message for the ListProductSets method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -644,7 +646,6 @@ class ProductSearchAsyncClient:
                 Required. Resource name of the ProductSet to get.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -899,7 +900,6 @@ class ProductSearchAsyncClient:
                 Required. Resource name of the ProductSet to delete.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -1015,8 +1015,8 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project in which the Product should be
                 created.
-                Format is
-                ``projects/PROJECT_ID/locations/LOC_ID``.
+
+                Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1152,9 +1152,8 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project OR ProductSet from which Products
                 should be listed.
-                Format:
 
-                ``projects/PROJECT_ID/locations/LOC_ID``
+                Format: ``projects/PROJECT_ID/locations/LOC_ID``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1169,7 +1168,7 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductsAsyncPager:
-                Response message for the ``ListProducts`` method.
+                Response message for the ListProducts method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -1283,7 +1282,6 @@ class ProductSearchAsyncClient:
                 Required. Resource name of the Product to get.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -1538,7 +1536,6 @@ class ProductSearchAsyncClient:
                 Required. Resource name of product to delete.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``name`` field
@@ -1705,8 +1702,8 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.types.ReferenceImage:
-                A ``ReferenceImage`` represents a product image and its
-                associated metadata, such as bounding boxes.
+                A ReferenceImage represents a product image and its associated metadata,
+                   such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -1811,6 +1808,7 @@ class ProductSearchAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the reference image to
                 delete.
+
                 Format is:
 
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
@@ -1924,6 +1922,7 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. Resource name of the product containing the
                 reference images.
+
                 Format is
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``.
 
@@ -1940,7 +1939,7 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListReferenceImagesAsyncPager:
-                Response message for the ``ListReferenceImages`` method.
+                Response message for the ListReferenceImages method.
 
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
@@ -2055,6 +2054,7 @@ class ProductSearchAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the ReferenceImage to
                 get.
+
                 Format is:
 
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
@@ -2072,8 +2072,8 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.types.ReferenceImage:
-                A ``ReferenceImage`` represents a product image and its
-                associated metadata, such as bounding boxes.
+                A ReferenceImage represents a product image and its associated metadata,
+                   such as bounding boxes.
 
         """
         # Create or coerce a protobuf request object.
@@ -2178,8 +2178,8 @@ class ProductSearchAsyncClient:
             name (:class:`str`):
                 Required. The resource name for the ProductSet to
                 modify.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2188,8 +2188,8 @@ class ProductSearchAsyncClient:
             product (:class:`str`):
                 Required. The resource name for the Product to be added
                 to this ProductSet.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2298,8 +2298,8 @@ class ProductSearchAsyncClient:
             name (:class:`str`):
                 Required. The resource name for the ProductSet to
                 modify.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2310,7 +2310,6 @@ class ProductSearchAsyncClient:
                 removed from this ProductSet.
 
                 Format is:
-
                 ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
 
                 This corresponds to the ``product`` field
@@ -2428,8 +2427,8 @@ class ProductSearchAsyncClient:
             name (:class:`str`):
                 Required. The ProductSet resource for which to retrieve
                 Products.
-                Format is:
 
+                Format is:
                 ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
 
                 This corresponds to the ``name`` field
@@ -2445,8 +2444,9 @@ class ProductSearchAsyncClient:
 
         Returns:
             google.cloud.vision_v1p4beta1.services.product_search.pagers.ListProductsInProductSetAsyncPager:
-                Response message for the ``ListProductsInProductSet``
+                Response message for the ListProductsInProductSet
                 method.
+
                 Iterating over this object will yield results and
                 resolve additional pages automatically.
 
@@ -2576,6 +2576,7 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project in which the ProductSets should be
                 imported.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -2745,6 +2746,7 @@ class ProductSearchAsyncClient:
             parent (:class:`str`):
                 Required. The project and location in which the Products
                 should be deleted.
+
                 Format is ``projects/PROJECT_ID/locations/LOC_ID``.
 
                 This corresponds to the ``parent`` field
@@ -2762,16 +2764,16 @@ class ProductSearchAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be
-                :class:`google.protobuf.empty_pb2.Empty` A generic empty
-                message that you can re-use to avoid defining duplicated
-                empty messages in your APIs. A typical example is to use
-                it as the request or the response type of an API method.
-                For instance:
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
 
-                    service Foo {
-                      rpc Bar(google.protobuf.Empty) returns
-                (google.protobuf.Empty);     }
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
 
         """
         # Create or coerce a protobuf request object.
