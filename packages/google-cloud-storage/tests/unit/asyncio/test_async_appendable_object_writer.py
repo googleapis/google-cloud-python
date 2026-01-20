@@ -509,9 +509,7 @@ async def test_append_sends_data_in_chunks(mock_write_object_stream, mock_client
 
     data = b"a" * (_MAX_CHUNK_SIZE_BYTES + 1)
     mock_stream.recv = mock.AsyncMock(
-        return_value=_storage_v2.BidiWriteObjectResponse(
-            persisted_size=100 + len(data)
-        )
+        return_value=_storage_v2.BidiWriteObjectResponse(persisted_size=100 + len(data))
     )
 
     await writer.append(data)
@@ -620,9 +618,7 @@ async def test_append_data_two_times(mock_write_object_stream, mock_client):
 
     data1 = b"a" * (_MAX_CHUNK_SIZE_BYTES + 10)
     mock_stream.recv = mock.AsyncMock(
-        return_value=_storage_v2.BidiWriteObjectResponse(
-            persisted_size= len(data1)
-        )
+        return_value=_storage_v2.BidiWriteObjectResponse(persisted_size=len(data1))
     )
     await writer.append(data1)
 
@@ -634,7 +630,7 @@ async def test_append_data_two_times(mock_write_object_stream, mock_client):
     data2 = b"b" * (_MAX_CHUNK_SIZE_BYTES + 20)
     mock_stream.recv = mock.AsyncMock(
         return_value=_storage_v2.BidiWriteObjectResponse(
-            persisted_size= len(data2) + len(data1)
+            persisted_size=len(data2) + len(data1)
         )
     )
     await writer.append(data2)

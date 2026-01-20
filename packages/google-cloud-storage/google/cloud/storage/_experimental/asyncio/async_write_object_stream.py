@@ -101,8 +101,16 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.object_resource: Optional[_storage_v2.Object] = None
 
     async def open(self) -> None:
-        """Opening an object for write , should do it's state lookup
-        to know what's the persisted size is.
+        """
+        Opens the bidi-gRPC connection to write to the object.
+
+        This method sends an initial request to start the stream and receives
+        the first response containing metadata and a write handle.
+
+        :rtype: None
+        :raises ValueError: If the stream is already open.
+        :raises google.api_core.exceptions.FailedPrecondition: 
+            if `generation_number` is 0 and object already exists.
         """
         if self._is_stream_open:
             raise ValueError("Stream is already open")

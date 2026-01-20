@@ -303,10 +303,18 @@ class AsyncMultiRangeDownloader:
 
         :type read_ranges: List[Tuple[int, int, "BytesIO"]]
         :param read_ranges: A list of tuples, where each tuple represents a
-            combintaion of byte_range and writeable buffer in format -
+            combination of byte_range and writeable buffer in format -
             (`start_byte`, `bytes_to_read`, `writeable_buffer`). Buffer has
             to be provided by the user, and user has to make sure appropriate
             memory is available in the application to avoid out-of-memory crash.
+
+            Special cases:
+            if the value of `bytes_to_read` is 0, it'll be interpreted as
+            download all contents until the end of the file from `start_byte`.
+            Examples:
+                * (0, 0, buffer) : downloads 0 to end , i.e. entire object.
+                * (100, 0, buffer) : downloads from 100 to end.
+
 
         :type lock: asyncio.Lock
         :param lock: (Optional) An asyncio lock to synchronize sends and recvs
