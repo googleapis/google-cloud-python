@@ -115,20 +115,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
     Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of `ProductSet <google.cloud.vision.v1.ProductSet>`__
-
-    resources, named ``projects/*/locations/*/productSets/*``, which acts as a way to put different
-    products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
+       ``projects/*/locations/*/productSets/*``, which acts as a way to
+       put different products into groups to limit identification.
 
     In parallel,
 
-    - The API has a collection of `Product <google.cloud.vision.v1.Product>`__
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    resources, named ``projects/*/locations/*/products/*``
-
-    - Each `Product <google.cloud.vision.v1.Product>`__ has a collection of
-
-    `ReferenceImage <google.cloud.vision.v1.ReferenceImage>`__ resources, named ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1.Product] has a collection
+       of [ReferenceImage][google.cloud.vision.v1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -369,8 +370,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is
+           longer than 4096 characters.
 
         Returns:
             Callable[[~.CreateProductSetRequest],
@@ -403,8 +404,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductSetsRequest],
@@ -436,7 +437,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable[[~.GetProductSetRequest],
@@ -470,11 +471,10 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the ProductSet does not exist.
-
-        * Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but missing from the request or longer than 4096
+           characters.
 
         Returns:
             Callable[[~.UpdateProductSetRequest],
@@ -536,14 +536,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-
-        * Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-
-        * Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer
+           than 4096 characters.
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID_ARGUMENT if product_category is missing or
+           invalid.
 
         Returns:
             Callable[[~.CreateProductRequest],
@@ -576,8 +574,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductsRequest],
@@ -609,7 +607,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         Returns:
             Callable[[~.GetProductRequest],
@@ -638,25 +636,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         r"""Return a callable for the update product method over gRPC.
 
         Makes changes to a Product resource. Only the ``display_name``,
-        ``description``, and ``labels`` fields can be updated right
-        now.
+        ``description``, and ``labels`` fields can be updated right now.
 
         If labels are updated, the change will not be reflected in
         queries until the next index time.
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product does not exist.
-
-        * Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-
-        * Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-
-        * Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but is missing from the request or longer than
+           4096 characters.
+        -  Returns INVALID_ARGUMENT if description is present in
+           update_mask but is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         Returns:
             Callable[[~.UpdateProductRequest],
@@ -718,28 +712,26 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Creates and returns a new ReferenceImage resource.
 
-        The ``bounding_poly`` field is optional. If ``bounding_poly`` is not
-        specified, the system will try to detect regions of interest in
-        the image that are compatible with the product_category on the
-        parent product. If it is specified, detection is ALWAYS skipped.
-        The system converts polygons into non-rotated rectangles.
+        The ``bounding_poly`` field is optional. If ``bounding_poly`` is
+        not specified, the system will try to detect regions of interest
+        in the image that are compatible with the product_category on
+        the parent product. If it is specified, detection is ALWAYS
+        skipped. The system converts polygons into non-rotated
+        rectangles.
 
         Note that the pipeline will resize the image if the image
         resolution is too large to process (above 50MP).
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-
-        * Returns INVALID_ARGUMENT if the product does not exist.
-
-        * Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-
-        * Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or
+           longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
+           and nothing compatible with the parent product's
+           product_category is detected.
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
+           10 polygons.
 
         Returns:
             Callable[[~.CreateReferenceImageRequest],
@@ -807,10 +799,9 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the parent product does not exist.
-
-        * Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than
+           100, or less than 1.
 
         Returns:
             Callable[[~.ListReferenceImagesRequest],
@@ -843,7 +834,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         Returns:
             Callable[[~.GetReferenceImageRequest],
@@ -878,8 +869,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
+           exist.
 
         Returns:
             Callable[[~.AddProductToProductSetRequest],
@@ -947,8 +938,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        * Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductsInProductSetRequest],
@@ -981,14 +972,15 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         Asynchronous API that imports a list of reference images to
         specified product sets based on a list of image information.
 
-        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
-        and results of the request. ``Operation.metadata`` contains
-        ``BatchOperationMetadata``. (progress) ``Operation.response`` contains ``ImportProductSetsResponse``.
-        (results)
+        The [google.longrunning.Operation][google.longrunning.Operation]
+        API can be used to keep track of the progress and results of the
+        request. ``Operation.metadata`` contains
+        ``BatchOperationMetadata``. (progress) ``Operation.response``
+        contains ``ImportProductSetsResponse``. (results)
 
         The input source of this method is a csv file on Google Cloud
         Storage. For the format of the csv file please see
-        `ImportProductSetsGcsSource.csv_file_uri <google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri>`__.
+        [ImportProductSetsGcsSource.csv_file_uri][google.cloud.vision.v1.ImportProductSetsGcsSource.csv_file_uri].
 
         Returns:
             Callable[[~.ImportProductSetsRequest],
@@ -1039,8 +1031,9 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         into the empty ProductSet, you must wait until the PurgeProducts
         operation has finished for that ProductSet.
 
-        The `google.longrunning.Operation <google.longrunning.Operation>`__ API can be used to keep track of the progress
-        and results of the request. ``Operation.metadata`` contains
+        The [google.longrunning.Operation][google.longrunning.Operation]
+        API can be used to keep track of the progress and results of the
+        request. ``Operation.metadata`` contains
         ``BatchOperationMetadata``. (progress)
 
         Returns:

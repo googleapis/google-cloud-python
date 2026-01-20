@@ -99,11 +99,11 @@ class Feature(proto.Message):
         max_results (int):
             Maximum number of results of this type.
         model (str):
-            Model to use for the feature. Supported values:
-            "builtin/stable" (the default if unset) and
-            "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and ``TEXT_DETECTION`` also
-            support "builtin/weekly" for the bleeding edge release
-            updated weekly.
+            Model to use for the feature.
+            Supported values: "builtin/stable" (the default if unset)
+            and "builtin/latest". ``DOCUMENT_TEXT_DETECTION`` and
+            ``TEXT_DETECTION`` also support "builtin/weekly" for the
+            bleeding edge release updated weekly.
     """
 
     class Type(proto.Enum):
@@ -170,16 +170,22 @@ class ImageSource(proto.Message):
         gcs_image_uri (str):
             NOTE: For new code ``image_uri`` below is preferred. Google
             Cloud Storage image URI, which must be in the following
-            form: ``gs://bucket_name/object_name`` (for details, see `Google Cloud Storage Request URIs <https://cloud.google.com/storage/docs/reference-uris>`__). NOTE:
-            Cloud Storage object versioning is not supported.
+            form: ``gs://bucket_name/object_name`` (for details, see
+            `Google Cloud Storage Request
+            URIs <https://cloud.google.com/storage/docs/reference-uris>`__).
+            NOTE: Cloud Storage object versioning is not supported.
         image_uri (str):
-            Image URI which supports: 1) Google Cloud Storage image URI,
-            which must be in the following form: ``gs://bucket_name/object_name`` (for
-            details, see `Google Cloud Storage Request URIs <https://cloud.google.com/storage/docs/reference-uris>`__). NOTE: Cloud Storage object
-            versioning is not supported. 2) Publicly accessible image
-            HTTP/HTTPS URL. This is preferred over the legacy
-            ``gcs_image_uri`` above. When both ``gcs_image_uri`` and
-            ``image_uri`` are specified, ``image_uri`` takes precedence.
+            Image URI which supports:
+
+            1) Google Cloud Storage image URI, which must be in the
+               following form: ``gs://bucket_name/object_name`` (for
+               details, see `Google Cloud Storage Request
+               URIs <https://cloud.google.com/storage/docs/reference-uris>`__).
+               NOTE: Cloud Storage object versioning is not supported.
+            2) Publicly accessible image HTTP/HTTPS URL. This is
+               preferred over the legacy ``gcs_image_uri`` above. When
+               both ``gcs_image_uri`` and ``image_uri`` are specified,
+               ``image_uri`` takes precedence.
     """
 
     gcs_image_uri: str = proto.Field(
@@ -197,14 +203,14 @@ class Image(proto.Message):
 
     Attributes:
         content (bytes):
-            Image content, represented as a stream of bytes. Note: as
-            with all ``bytes`` fields, protobuffers use a pure
+            Image content, represented as a stream of bytes.
+            Note: as with all ``bytes`` fields, protobuffers use a pure
             binary representation, whereas JSON representations use
             base64.
         source (google.cloud.vision_v1p1beta1.types.ImageSource):
-            Google Cloud Storage image location. If both ``content``
-            and ``source`` are provided for an image, ``content``
-            takes precedence and is used to perform the image annotation
+            Google Cloud Storage image location. If both ``content`` and
+            ``source`` are provided for an image, ``content`` takes
+            precedence and is used to perform the image annotation
             request.
     """
 
@@ -230,15 +236,15 @@ class FaceAnnotation(proto.Message):
             in ``ImageParams``. The bounding box is computed to "frame"
             the face in accordance with human expectations. It is based
             on the landmarker results. Note that one or more x and/or y
-            coordinates may not be generated in the ``BoundingPoly`` (the
-            polygon will be unbounded) if only a partial face appears in
-            the image to be annotated.
+            coordinates may not be generated in the ``BoundingPoly``
+            (the polygon will be unbounded) if only a partial face
+            appears in the image to be annotated.
         fd_bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            The ``fd_bounding_poly`` bounding polygon is tighter than the
-            ``boundingPoly``, and encloses only the skin part of the face.
-            Typically, it is used to eliminate the face from any image
-            analysis that detects the "amount of skin" visible in an
-            image. It is not based on the landmarker results, only on
+            The ``fd_bounding_poly`` bounding polygon is tighter than
+            the ``boundingPoly``, and encloses only the skin part of the
+            face. Typically, it is used to eliminate the face from any
+            image analysis that detects the "amount of skin" visible in
+            an image. It is not based on the landmarker results, only on
             the initial face detection, hence the <code>fd</code> (face
             detection) prefix.
         landmarks (MutableSequence[google.cloud.vision_v1p1beta1.types.FaceAnnotation.Landmark]):
@@ -287,10 +293,10 @@ class FaceAnnotation(proto.Message):
         """
 
         class Type(proto.Enum):
-            r"""Face landmark (feature) type. Left and right are defined from the
-            vantage of the viewer of the image without considering mirror
-            projections typical of photos. So, ``LEFT_EYE``, typically, is the
-            person's right eye.
+            r"""Face landmark (feature) type.
+            Left and right are defined from the vantage of the viewer of the
+            image without considering mirror projections typical of photos. So,
+            ``LEFT_EYE``, typically, is the person's right eye.
 
             Values:
                 UNKNOWN_LANDMARK (0):
@@ -530,8 +536,9 @@ class EntityAnnotation(proto.Message):
 
     Attributes:
         mid (str):
-            Opaque entity ID. Some IDs may be available in
-            `Google Knowledge Graph Search API <https://developers.google.com/knowledge-graph/>`__.
+            Opaque entity ID. Some IDs may be available in `Google
+            Knowledge Graph Search
+            API <https://developers.google.com/knowledge-graph/>`__.
         locale (str):
             The language code for the locale in which the entity textual
             ``description`` is expressed.
@@ -553,15 +560,15 @@ class EntityAnnotation(proto.Message):
             building, even though the confidence that there is a tower
             in each image may be the same. Range [0, 1].
         bounding_poly (google.cloud.vision_v1p1beta1.types.BoundingPoly):
-            Image region to which this entity belongs. Not produced for
-            ``LABEL_DETECTION`` features.
+            Image region to which this entity belongs. Not produced
+            for ``LABEL_DETECTION`` features.
         locations (MutableSequence[google.cloud.vision_v1p1beta1.types.LocationInfo]):
             The location information for the detected entity. Multiple
-            ``LocationInfo`` elements can be present because one location
-            may indicate the location of the scene in the image, and
-            another location may indicate the location of the place
-            where the image was taken. Location information is usually
-            present for landmarks.
+            ``LocationInfo`` elements can be present because one
+            location may indicate the location of the scene in the
+            image, and another location may indicate the location of the
+            place where the image was taken. Location information is
+            usually present for landmarks.
         properties (MutableSequence[google.cloud.vision_v1p1beta1.types.Property]):
             Some entities may have optional user-supplied ``Property``
             (name/value) fields, such a score or string that qualifies
@@ -758,7 +765,7 @@ class CropHint(proto.Message):
             the bounding box are in the original image's scale, as
             returned in ``ImageParams``.
         confidence (float):
-            Confidence of this being a salient region.  Range [0, 1].
+            Confidence of this being a salient region. Range [0, 1].
         importance_fraction (float):
             Fraction of importance of this salient region
             with respect to the original image.
@@ -866,12 +873,13 @@ class ImageContext(proto.Message):
             List of languages to use for TEXT_DETECTION. In most cases,
             an empty value yields the best results since it enables
             automatic language detection. For languages based on the
-            Latin alphabet, setting ``language_hints`` is not needed. In rare
-            cases, when the language of the text in the image is known,
-            setting a hint will help get better results (although it
-            will be a significant hindrance if the hint is wrong). Text
-            detection returns an error if one or more of the specified
-            languages is not one of the `supported languages <https://cloud.google.com/vision/docs/languages>`__.
+            Latin alphabet, setting ``language_hints`` is not needed. In
+            rare cases, when the language of the text in the image is
+            known, setting a hint will help get better results (although
+            it will be a significant hindrance if the hint is wrong).
+            Text detection returns an error if one or more of the
+            specified languages is not one of the `supported
+            languages <https://cloud.google.com/vision/docs/languages>`__.
         crop_hints_params (google.cloud.vision_v1p1beta1.types.CropHintsParams):
             Parameters for crop hints annotation request.
         web_detection_params (google.cloud.vision_v1p1beta1.types.WebDetectionParams):
@@ -975,8 +983,8 @@ class AnnotateImageResponse(proto.Message):
             If present, web detection has completed
             successfully.
         error (google.rpc.status_pb2.Status):
-            If set, represents the error message for the operation. Note
-            that filled-in image annotations are guaranteed to be
+            If set, represents the error message for the operation.
+            Note that filled-in image annotations are guaranteed to be
             correct, even when ``error`` is set.
     """
 
