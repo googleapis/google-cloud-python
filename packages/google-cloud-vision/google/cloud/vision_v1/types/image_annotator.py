@@ -666,8 +666,8 @@ class LocalizedObjectAnnotation(proto.Message):
             Object ID that should align with
             EntityAnnotation mid.
         language_code (str):
-            The BCP-47 language code, such as "en-US" or "sr-Latn". For
-            more information, see
+            The BCP-47 language code, such as "en-US" or
+            "sr-Latn". For more information, see
             http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         name (str):
             Object name, expressed in its ``language_code`` language.
@@ -930,9 +930,10 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to further fine-tune OCR
             behavior. Current valid values are:

@@ -870,9 +870,10 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.

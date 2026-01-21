@@ -56,8 +56,8 @@ class TextAnnotation(proto.Message):
 
         Attributes:
             language_code (str):
-                The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more information, see
+                The BCP-47 language code, such as "en-US" or
+                "sr-Latn". For more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             confidence (float):
                 Confidence of detected language. Range [0, 1].
