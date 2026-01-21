@@ -132,19 +132,20 @@ class McpTool(proto.Message):
             spec. These include:
 
             - title: A human-readable title for the tool,
-            useful for UI display.
+              useful for UI display.
             - readOnlyHint: If true, indicates the tool
-            does not modify its   environment.
+              does not modify its environment.
             - destructiveHint: If true, the tool may
-            perform destructive updates   (only meaningful
-            when readOnlyHint is false).
+              perform destructive updates (only meaningful
+              when readOnlyHint is false).
             - idempotentHint: If true, calling the tool
-            repeatedly with the same   arguments has no
-            additional effect (only meaningful when
-            readOnlyHint is   false).
+              repeatedly with the same arguments has no
+              additional effect (only meaningful when
+              readOnlyHint is false).
             - openWorldHint: If true, the tool may
-            interact with an "open world" of   external
-            entities.
+              interact with an "open world" of external
+              entities.
+    
     """
 
     name: str = proto.Field(
