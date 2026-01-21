@@ -15,9 +15,12 @@ pytest --benchmark-json=output.json -vv -s tests/perf/microbenchmarks/reads/test
 
 To run a single test, append `::` followed by the test name to the file path.
 
-Example:
+Examples:
 ```bash
 pytest --benchmark-json=output.json -vv -s tests/perf/microbenchmarks/reads/test_reads.py::test_downloads_single_proc_single_coro
+```
+```bash
+pytest --benchmark-json=output.json -vv -s tests/perf/microbenchmarks/writes/test_writes.py::test_uploads_single_proc_single_coro
 ```
 
 ## Configuration
