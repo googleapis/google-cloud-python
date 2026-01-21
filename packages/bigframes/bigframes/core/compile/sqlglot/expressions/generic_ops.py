@@ -152,13 +152,17 @@ def _(left: TypedExpr, right: TypedExpr) -> sge.Expression:
     return sge.Coalesce(this=left.expr, expressions=[right.expr])
 
 
-@register_unary_op(ops.RemoteFunctionOp, pass_op=True)
-def _(expr: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
+def _get_remote_function_name(op):
     routine_ref = op.function_def.routine_ref
     # Quote project, dataset, and routine IDs to avoid keyword clashes.
-    func_name = (
+    return (
         f"`{routine_ref.project}`.`{routine_ref.dataset_id}`.`{routine_ref.routine_id}`"
     )
+
+
+@register_unary_op(ops.RemoteFunctionOp, pass_op=True)
+def _(expr: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
+    func_name = _get_remote_function_name(op)
     func = sge.func(func_name, expr.expr)
 
     if not op.apply_on_null:
@@ -175,13 +179,14 @@ def _(expr: TypedExpr, op: ops.RemoteFunctionOp) -> sge.Expression:
 def _(
     left: TypedExpr, right: TypedExpr, op: ops.BinaryRemoteFunctionOp
 ) -> sge.Expression:
-    routine_ref = op.function_def.routine_ref
-    # Quote project, dataset, and routine IDs to avoid keyword clashes.
-    func_name = (
-        f"`{routine_ref.project}`.`{routine_ref.dataset_id}`.`{routine_ref.routine_id}`"
-    )
-
+    func_name = _get_remote_function_name(op)
     return sge.func(func_name, left.expr, right.expr)
+
+
+@register_nary_op(ops.NaryRemoteFunctionOp, pass_op=True)
+def _(*operands: TypedExpr, op: ops.NaryRemoteFunctionOp) -> sge.Expression:
+    func_name = _get_remote_function_name(op)
+    return sge.func(func_name, *(operand.expr for operand in operands))
 
 
 @register_nary_op(ops.case_when_op)

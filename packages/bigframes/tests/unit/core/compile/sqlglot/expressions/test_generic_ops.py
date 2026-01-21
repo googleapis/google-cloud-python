@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud import bigquery
 import pandas as pd
 import pytest
 
 from bigframes import dtypes
 from bigframes import operations as ops
 from bigframes.core import expression as ex
+from bigframes.functions import udf_def
 import bigframes.pandas as bpd
 from bigframes.testing import utils
 
@@ -170,10 +172,6 @@ def test_astype_json_invalid(
 
 
 def test_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
-    from google.cloud import bigquery
-
-    from bigframes.functions import udf_def
-
     bf_df = scalar_types_df[["int64_col"]]
     function_def = udf_def.BigqueryUdf(
         routine_ref=bigquery.RoutineReference.from_string(
@@ -206,10 +204,6 @@ def test_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
 
 
 def test_binary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
-    from google.cloud import bigquery
-
-    from bigframes.functions import udf_def
-
     bf_df = scalar_types_df[["int64_col", "float64_col"]]
     op = ops.BinaryRemoteFunctionOp(
         function_def=udf_def.BigqueryUdf(
@@ -239,6 +233,44 @@ def test_binary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
     )
     sql = utils._apply_binary_op(bf_df, op, "int64_col", "float64_col")
 
+    snapshot.assert_match(sql, "out.sql")
+
+
+def test_nary_remote_function_op(scalar_types_df: bpd.DataFrame, snapshot):
+    bf_df = scalar_types_df[["int64_col", "float64_col", "string_col"]]
+    op = ops.NaryRemoteFunctionOp(
+        function_def=udf_def.BigqueryUdf(
+            routine_ref=bigquery.RoutineReference.from_string(
+                "my_project.my_dataset.my_routine"
+            ),
+            signature=udf_def.UdfSignature(
+                input_types=(
+                    udf_def.UdfField(
+                        "x",
+                        bigquery.StandardSqlDataType(
+                            type_kind=bigquery.StandardSqlTypeNames.INT64
+                        ),
+                    ),
+                    udf_def.UdfField(
+                        "y",
+                        bigquery.StandardSqlDataType(
+                            type_kind=bigquery.StandardSqlTypeNames.FLOAT64
+                        ),
+                    ),
+                    udf_def.UdfField(
+                        "z",
+                        bigquery.StandardSqlDataType(
+                            type_kind=bigquery.StandardSqlTypeNames.STRING
+                        ),
+                    ),
+                ),
+                output_bq_type=bigquery.StandardSqlDataType(
+                    type_kind=bigquery.StandardSqlTypeNames.FLOAT64
+                ),
+            ),
+        )
+    )
+    sql = utils._apply_nary_op(bf_df, op, "int64_col", "float64_col", "string_col")
     snapshot.assert_match(sql, "out.sql")
 
 
