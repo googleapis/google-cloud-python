@@ -1650,8 +1650,8 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ReferenceImage:
-                    A ReferenceImage represents a product image and its associated metadata,
-                   such as bounding boxes.
+                    A ``ReferenceImage`` represents a product image and its
+                associated metadata, such as bounding boxes.
 
             """
 
@@ -2426,8 +2426,8 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             Returns:
                 ~.product_search_service.ReferenceImage:
-                    A ReferenceImage represents a product image and its associated metadata,
-                   such as bounding boxes.
+                    A ``ReferenceImage`` represents a product image and its
+                associated metadata, such as bounding boxes.
 
             """
 
