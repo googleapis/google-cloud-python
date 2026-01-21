@@ -1343,7 +1343,7 @@ libraries:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
   - id: google-cloud-databasecenter
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
     apis:
       - path: google/cloud/databasecenter/v1beta
@@ -1594,7 +1594,7 @@ libraries:
       - packages/google-cloud-dialogflow/
     tag_format: '{id}-v{version}'
   - id: google-cloud-dialogflow-cx
-    version: 2.2.0
+    version: 2.3.0
     last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
     apis:
       - path: google/cloud/dialogflow/cx/v3
@@ -2103,7 +2103,7 @@ libraries:
       - packages/google-cloud-ids/
     tag_format: '{id}-v{version}'
   - id: google-cloud-kms
-    version: 3.9.0
+    version: 3.10.0
     last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
     apis:
       - path: google/cloud/kms/v1
@@ -2462,7 +2462,7 @@ libraries:
       - packages/google-cloud-netapp/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-connectivity
-    version: 2.12.0
+    version: 2.13.0
     last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
     apis:
       - path: google/cloud/networkconnectivity/v1
@@ -2992,7 +2992,7 @@ libraries:
       - packages/google-cloud-retail/
     tag_format: '{id}-v{version}'
   - id: google-cloud-run
-    version: 0.14.0
+    version: 0.15.0
     last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
     apis:
       - path: google/cloud/run/v2

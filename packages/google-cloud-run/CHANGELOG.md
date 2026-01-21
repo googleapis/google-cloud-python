@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-run/#history
 
+## [0.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.14.0...google-cloud-run-v0.15.0) (2026-01-21)
+
+
+### Documentation
+
+* add instances description ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
+
+### Features
+
+* add instances client library ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
 ## [0.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.13.0...google-cloud-run-v0.14.0) (2026-01-09)
 
 
