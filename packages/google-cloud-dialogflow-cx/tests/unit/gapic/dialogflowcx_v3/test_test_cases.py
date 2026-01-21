@@ -88,6 +88,7 @@ from google.cloud.dialogflowcx_v3.types import (
 )
 from google.cloud.dialogflowcx_v3.types import test_case
 from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
+from google.cloud.dialogflowcx_v3.types import tool_call
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -8621,9 +8622,15 @@ def test_create_test_case_rest_call_success(request_type):
                             "digits": "digits_value",
                             "finish_digit": "finish_digit_value",
                         },
+                        "tool_call_result": {
+                            "tool": "tool_value",
+                            "action": "action_value",
+                            "error": {"message": "message_value"},
+                            "output_parameters": {"fields": {}},
+                        },
                         "language_code": "language_code_value",
                     },
-                    "injected_parameters": {"fields": {}},
+                    "injected_parameters": {},
                     "is_webhook_enabled": True,
                     "enable_sentiment_analysis": True,
                 },
@@ -8696,6 +8703,11 @@ def test_create_test_case_rest_call_success(request_type):
                                         "phone_number": "phone_number_value"
                                     },
                                     "knowledge_info_card": {},
+                                    "tool_call": {
+                                        "tool": "tool_value",
+                                        "action": "action_value",
+                                        "input_parameters": {},
+                                    },
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -8774,6 +8786,7 @@ def test_create_test_case_rest_call_success(request_type):
                                                 "trigger_fulfillment": {},
                                                 "target_page": "target_page_value",
                                                 "target_flow": "target_flow_value",
+                                                "target_playbook": "target_playbook_value",
                                             }
                                         ],
                                     },
@@ -9090,9 +9103,15 @@ def test_update_test_case_rest_call_success(request_type):
                             "digits": "digits_value",
                             "finish_digit": "finish_digit_value",
                         },
+                        "tool_call_result": {
+                            "tool": "tool_value",
+                            "action": "action_value",
+                            "error": {"message": "message_value"},
+                            "output_parameters": {"fields": {}},
+                        },
                         "language_code": "language_code_value",
                     },
-                    "injected_parameters": {"fields": {}},
+                    "injected_parameters": {},
                     "is_webhook_enabled": True,
                     "enable_sentiment_analysis": True,
                 },
@@ -9165,6 +9184,11 @@ def test_update_test_case_rest_call_success(request_type):
                                         "phone_number": "phone_number_value"
                                     },
                                     "knowledge_info_card": {},
+                                    "tool_call": {
+                                        "tool": "tool_value",
+                                        "action": "action_value",
+                                        "input_parameters": {},
+                                    },
                                     "response_type": 1,
                                     "channel": "channel_value",
                                 }
@@ -9243,6 +9267,7 @@ def test_update_test_case_rest_call_success(request_type):
                                                 "trigger_fulfillment": {},
                                                 "target_page": "target_page_value",
                                                 "target_flow": "target_flow_value",
+                                                "target_playbook": "target_playbook_value",
                                             }
                                         ],
                                     },
@@ -11646,11 +11671,40 @@ def test_parse_page_path():
     assert expected == actual
 
 
-def test_test_case_path():
+def test_playbook_path():
     project = "winkle"
     location = "nautilus"
     agent = "scallop"
-    test_case = "abalone"
+    playbook = "abalone"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = TestCasesClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "playbook": "octopus",
+    }
+    path = TestCasesClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TestCasesClient.parse_playbook_path(path)
+    assert expected == actual
+
+
+def test_test_case_path():
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    test_case = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
         project=project,
         location=location,
@@ -11663,10 +11717,10 @@ def test_test_case_path():
 
 def test_parse_test_case_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "agent": "whelk",
-        "test_case": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "test_case": "abalone",
     }
     path = TestCasesClient.test_case_path(**expected)
 
@@ -11676,11 +11730,11 @@ def test_parse_test_case_path():
 
 
 def test_test_case_result_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    test_case = "mussel"
-    result = "winkle"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    test_case = "octopus"
+    result = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
         project=project,
         location=location,
@@ -11696,11 +11750,11 @@ def test_test_case_result_path():
 
 def test_parse_test_case_result_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "agent": "abalone",
-        "test_case": "squid",
-        "result": "clam",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "test_case": "winkle",
+        "result": "nautilus",
     }
     path = TestCasesClient.test_case_result_path(**expected)
 
@@ -11709,12 +11763,43 @@ def test_parse_test_case_result_path():
     assert expected == actual
 
 
+def test_tool_path():
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    tool = "clam"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = TestCasesClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "tool": "nudibranch",
+    }
+    path = TestCasesClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TestCasesClient.parse_tool_path(path)
+    assert expected == actual
+
+
 def test_transition_route_group_path():
-    project = "whelk"
-    location = "octopus"
-    agent = "oyster"
-    flow = "nudibranch"
-    transition_route_group = "cuttlefish"
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    flow = "nautilus"
+    transition_route_group = "scallop"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -11730,11 +11815,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "agent": "nautilus",
-        "flow": "scallop",
-        "transition_route_group": "abalone",
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "flow": "whelk",
+        "transition_route_group": "octopus",
     }
     path = TestCasesClient.transition_route_group_path(**expected)
 
@@ -11744,10 +11829,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "squid"
-    location = "clam"
-    agent = "whelk"
-    webhook = "octopus"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    webhook = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -11760,10 +11845,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
-        "agent": "cuttlefish",
-        "webhook": "mussel",
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "webhook": "abalone",
     }
     path = TestCasesClient.webhook_path(**expected)
 
@@ -11773,7 +11858,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -11783,7 +11868,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "clam",
     }
     path = TestCasesClient.common_billing_account_path(**expected)
 
@@ -11793,7 +11878,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -11803,7 +11888,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "octopus",
     }
     path = TestCasesClient.common_folder_path(**expected)
 
@@ -11813,7 +11898,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -11823,7 +11908,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "nudibranch",
     }
     path = TestCasesClient.common_organization_path(**expected)
 
@@ -11833,7 +11918,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -11843,7 +11928,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "mussel",
     }
     path = TestCasesClient.common_project_path(**expected)
 
@@ -11853,8 +11938,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -11865,8 +11950,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = TestCasesClient.common_location_path(**expected)
 

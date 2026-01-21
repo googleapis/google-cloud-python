@@ -26,6 +26,10 @@ from google.cloud.kms_v1.services.autokey_admin.async_client import (
 from google.cloud.kms_v1.services.autokey_admin.client import AutokeyAdminClient
 from google.cloud.kms_v1.services.ekm_service.async_client import EkmServiceAsyncClient
 from google.cloud.kms_v1.services.ekm_service.client import EkmServiceClient
+from google.cloud.kms_v1.services.hsm_management.async_client import (
+    HsmManagementAsyncClient,
+)
+from google.cloud.kms_v1.services.hsm_management.client import HsmManagementClient
 from google.cloud.kms_v1.services.key_management_service.async_client import (
     KeyManagementServiceAsyncClient,
 )
@@ -60,6 +64,28 @@ from google.cloud.kms_v1.types.ekm_service import (
     UpdateEkmConnectionRequest,
     VerifyConnectivityRequest,
     VerifyConnectivityResponse,
+)
+from google.cloud.kms_v1.types.hsm_management import (
+    ApproveSingleTenantHsmInstanceProposalRequest,
+    ApproveSingleTenantHsmInstanceProposalResponse,
+    Challenge,
+    ChallengeReply,
+    CreateSingleTenantHsmInstanceMetadata,
+    CreateSingleTenantHsmInstanceProposalMetadata,
+    CreateSingleTenantHsmInstanceProposalRequest,
+    CreateSingleTenantHsmInstanceRequest,
+    DeleteSingleTenantHsmInstanceProposalRequest,
+    ExecuteSingleTenantHsmInstanceProposalMetadata,
+    ExecuteSingleTenantHsmInstanceProposalRequest,
+    ExecuteSingleTenantHsmInstanceProposalResponse,
+    GetSingleTenantHsmInstanceProposalRequest,
+    GetSingleTenantHsmInstanceRequest,
+    ListSingleTenantHsmInstanceProposalsRequest,
+    ListSingleTenantHsmInstanceProposalsResponse,
+    ListSingleTenantHsmInstancesRequest,
+    ListSingleTenantHsmInstancesResponse,
+    SingleTenantHsmInstance,
+    SingleTenantHsmInstanceProposal,
 )
 from google.cloud.kms_v1.types.resources import (
     AccessReason,
@@ -130,6 +156,8 @@ __all__ = (
     "AutokeyAdminAsyncClient",
     "EkmServiceClient",
     "EkmServiceAsyncClient",
+    "HsmManagementClient",
+    "HsmManagementAsyncClient",
     "KeyManagementServiceClient",
     "KeyManagementServiceAsyncClient",
     "CreateKeyHandleMetadata",
@@ -155,6 +183,26 @@ __all__ = (
     "UpdateEkmConnectionRequest",
     "VerifyConnectivityRequest",
     "VerifyConnectivityResponse",
+    "ApproveSingleTenantHsmInstanceProposalRequest",
+    "ApproveSingleTenantHsmInstanceProposalResponse",
+    "Challenge",
+    "ChallengeReply",
+    "CreateSingleTenantHsmInstanceMetadata",
+    "CreateSingleTenantHsmInstanceProposalMetadata",
+    "CreateSingleTenantHsmInstanceProposalRequest",
+    "CreateSingleTenantHsmInstanceRequest",
+    "DeleteSingleTenantHsmInstanceProposalRequest",
+    "ExecuteSingleTenantHsmInstanceProposalMetadata",
+    "ExecuteSingleTenantHsmInstanceProposalRequest",
+    "ExecuteSingleTenantHsmInstanceProposalResponse",
+    "GetSingleTenantHsmInstanceProposalRequest",
+    "GetSingleTenantHsmInstanceRequest",
+    "ListSingleTenantHsmInstanceProposalsRequest",
+    "ListSingleTenantHsmInstanceProposalsResponse",
+    "ListSingleTenantHsmInstancesRequest",
+    "ListSingleTenantHsmInstancesResponse",
+    "SingleTenantHsmInstance",
+    "SingleTenantHsmInstanceProposal",
     "ChecksummedData",
     "CryptoKey",
     "CryptoKeyVersion",

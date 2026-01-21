@@ -61,6 +61,7 @@ from google.cloud.dialogflowcx_v3.services.generators import (
     pagers,
     transports,
 )
+from google.cloud.dialogflowcx_v3.types import generative_settings
 from google.cloud.dialogflowcx_v3.types import generator
 from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 
@@ -4782,6 +4783,10 @@ def test_create_generator_rest_call_success(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
         "model_parameter": {
             "temperature": 0.1198,
             "max_decode_steps": 1687,
@@ -4998,6 +5003,10 @@ def test_update_generator_rest_call_success(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
         "model_parameter": {
             "temperature": 0.1198,
             "max_decode_steps": 1687,

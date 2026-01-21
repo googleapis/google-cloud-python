@@ -30,6 +30,7 @@ else:  # pragma: NO COVER
 
 from .services.builds import BuildsAsyncClient, BuildsClient
 from .services.executions import ExecutionsAsyncClient, ExecutionsClient
+from .services.instances import InstancesAsyncClient, InstancesClient
 from .services.jobs import JobsAsyncClient, JobsClient
 from .services.revisions import RevisionsAsyncClient, RevisionsClient
 from .services.services import ServicesAsyncClient, ServicesClient
@@ -37,6 +38,7 @@ from .services.tasks import TasksAsyncClient, TasksClient
 from .services.worker_pools import WorkerPoolsAsyncClient, WorkerPoolsClient
 from .types.build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .types.condition import Condition
+from .types.container_status import ContainerStatus
 from .types.execution import (
     CancelExecutionRequest,
     DeleteExecutionRequest,
@@ -46,6 +48,16 @@ from .types.execution import (
     ListExecutionsResponse,
 )
 from .types.execution_template import ExecutionTemplate
+from .types.instance import (
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    StartInstanceRequest,
+    StopInstanceRequest,
+)
 from .types.instance_split import (
     InstanceSplit,
     InstanceSplitAllocationType,
@@ -237,6 +249,7 @@ else:  # pragma: NO COVER
 __all__ = (
     "BuildsAsyncClient",
     "ExecutionsAsyncClient",
+    "InstancesAsyncClient",
     "JobsAsyncClient",
     "RevisionsAsyncClient",
     "ServicesAsyncClient",
@@ -251,10 +264,13 @@ __all__ = (
     "Condition",
     "Container",
     "ContainerPort",
+    "ContainerStatus",
+    "CreateInstanceRequest",
     "CreateJobRequest",
     "CreateServiceRequest",
     "CreateWorkerPoolRequest",
     "DeleteExecutionRequest",
+    "DeleteInstanceRequest",
     "DeleteJobRequest",
     "DeleteRevisionRequest",
     "DeleteServiceRequest",
@@ -271,6 +287,7 @@ __all__ = (
     "GCSVolumeSource",
     "GRPCAction",
     "GetExecutionRequest",
+    "GetInstanceRequest",
     "GetJobRequest",
     "GetRevisionRequest",
     "GetServiceRequest",
@@ -279,13 +296,17 @@ __all__ = (
     "HTTPGetAction",
     "HTTPHeader",
     "IngressTraffic",
+    "Instance",
     "InstanceSplit",
     "InstanceSplitAllocationType",
     "InstanceSplitStatus",
+    "InstancesClient",
     "Job",
     "JobsClient",
     "ListExecutionsRequest",
     "ListExecutionsResponse",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
     "ListJobsRequest",
     "ListJobsResponse",
     "ListRevisionsRequest",
@@ -313,6 +334,8 @@ __all__ = (
     "ServiceScaling",
     "ServicesClient",
     "SourceCode",
+    "StartInstanceRequest",
+    "StopInstanceRequest",
     "StorageSource",
     "SubmitBuildRequest",
     "SubmitBuildResponse",

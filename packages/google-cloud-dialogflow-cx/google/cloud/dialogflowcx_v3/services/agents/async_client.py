@@ -111,6 +111,8 @@ class AgentsAsyncClient:
     parse_flow_validation_result_path = staticmethod(
         AgentsClient.parse_flow_validation_result_path
     )
+    playbook_path = staticmethod(AgentsClient.playbook_path)
+    parse_playbook_path = staticmethod(AgentsClient.parse_playbook_path)
     secret_version_path = staticmethod(AgentsClient.secret_version_path)
     parse_secret_version_path = staticmethod(AgentsClient.parse_secret_version_path)
     security_settings_path = staticmethod(AgentsClient.security_settings_path)
@@ -603,6 +605,7 @@ class AgentsAsyncClient:
 
                 # Initialize request argument(s)
                 agent = dialogflowcx_v3.Agent()
+                agent.start_flow = "start_flow_value"
                 agent.display_name = "display_name_value"
                 agent.default_language_code = "default_language_code_value"
                 agent.time_zone = "time_zone_value"
@@ -745,6 +748,7 @@ class AgentsAsyncClient:
 
                 # Initialize request argument(s)
                 agent = dialogflowcx_v3.Agent()
+                agent.start_flow = "start_flow_value"
                 agent.display_name = "display_name_value"
                 agent.default_language_code = "default_language_code_value"
                 agent.time_zone = "time_zone_value"

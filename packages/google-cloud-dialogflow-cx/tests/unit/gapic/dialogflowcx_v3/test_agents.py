@@ -1811,7 +1811,6 @@ def test_get_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -1819,6 +1818,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
         response = client.get_agent(request)
 
@@ -1837,7 +1837,6 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -1975,7 +1974,6 @@ async def test_get_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2002,7 +2000,6 @@ async def test_get_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2184,7 +2181,6 @@ def test_create_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -2192,6 +2188,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
         response = client.create_agent(request)
 
@@ -2210,7 +2207,6 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2350,7 +2346,6 @@ async def test_create_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2377,7 +2372,6 @@ async def test_create_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2569,7 +2563,6 @@ def test_update_agent(request_type, transport: str = "grpc"):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -2577,6 +2570,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
         response = client.update_agent(request)
 
@@ -2595,7 +2589,6 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2731,7 +2724,6 @@ async def test_update_agent_async(
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2758,7 +2750,6 @@ async def test_update_agent_async(
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -7346,7 +7337,6 @@ async def test_get_agent_empty_call_grpc_asyncio():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -7387,7 +7377,6 @@ async def test_create_agent_empty_call_grpc_asyncio():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -7428,7 +7417,6 @@ async def test_update_agent_empty_call_grpc_asyncio():
                 time_zone="time_zone_value",
                 description="description_value",
                 avatar_uri="avatar_uri_value",
-                start_flow="start_flow_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -7815,7 +7803,6 @@ def test_get_agent_rest_call_success(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -7823,6 +7810,7 @@ def test_get_agent_rest_call_success(request_type):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -7846,7 +7834,6 @@ def test_get_agent_rest_call_success(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -7964,6 +7951,7 @@ def test_create_agent_rest_call_success(request_type):
         "avatar_uri": "avatar_uri_value",
         "speech_to_text_settings": {"enable_speech_adaptation": True},
         "start_flow": "start_flow_value",
+        "start_playbook": "start_playbook_value",
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
@@ -8091,7 +8079,6 @@ def test_create_agent_rest_call_success(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -8099,6 +8086,7 @@ def test_create_agent_rest_call_success(request_type):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8122,7 +8110,6 @@ def test_create_agent_rest_call_success(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -8244,6 +8231,7 @@ def test_update_agent_rest_call_success(request_type):
         "avatar_uri": "avatar_uri_value",
         "speech_to_text_settings": {"enable_speech_adaptation": True},
         "start_flow": "start_flow_value",
+        "start_playbook": "start_playbook_value",
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
@@ -8371,7 +8359,6 @@ def test_update_agent_rest_call_success(request_type):
             time_zone="time_zone_value",
             description="description_value",
             avatar_uri="avatar_uri_value",
-            start_flow="start_flow_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -8379,6 +8366,7 @@ def test_update_agent_rest_call_success(request_type):
             locked=True,
             satisfies_pzs=True,
             satisfies_pzi=True,
+            start_flow="start_flow_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -8402,7 +8390,6 @@ def test_update_agent_rest_call_success(request_type):
     assert response.time_zone == "time_zone_value"
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
-    assert response.start_flow == "start_flow_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -9258,9 +9245,13 @@ def test_update_generative_settings_rest_call_success(request_type):
             ],
         },
         "generative_safety_settings": {
+            "default_banned_phrase_match_strategy": 1,
             "banned_phrases": [
                 {"text": "text_value", "language_code": "language_code_value"}
-            ]
+            ],
+            "rai_settings": {"category_filters": [{"category": 1, "filter_level": 1}]},
+            "default_rai_settings": {},
+            "prompt_security_settings": {"enable_prompt_security": True},
         },
         "knowledge_connector_settings": {
             "business": "business_value",
@@ -9271,6 +9262,10 @@ def test_update_generative_settings_rest_call_success(request_type):
             "disable_data_store_fallback": True,
         },
         "language_code": "language_code_value",
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -10665,10 +10660,39 @@ def test_parse_flow_validation_result_path():
     assert expected == actual
 
 
-def test_secret_version_path():
+def test_playbook_path():
     project = "cuttlefish"
-    secret = "mussel"
-    version = "winkle"
+    location = "mussel"
+    agent = "winkle"
+    playbook = "nautilus"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = AgentsClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "playbook": "clam",
+    }
+    path = AgentsClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_playbook_path(path)
+    assert expected == actual
+
+
+def test_secret_version_path():
+    project = "whelk"
+    secret = "octopus"
+    version = "oyster"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
         project=project,
         secret=secret,
@@ -10680,9 +10704,9 @@ def test_secret_version_path():
 
 def test_parse_secret_version_path():
     expected = {
-        "project": "nautilus",
-        "secret": "scallop",
-        "version": "abalone",
+        "project": "nudibranch",
+        "secret": "cuttlefish",
+        "version": "mussel",
     }
     path = AgentsClient.secret_version_path(**expected)
 
@@ -10692,9 +10716,9 @@ def test_parse_secret_version_path():
 
 
 def test_security_settings_path():
-    project = "squid"
-    location = "clam"
-    security_settings = "whelk"
+    project = "winkle"
+    location = "nautilus"
+    security_settings = "scallop"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -10706,9 +10730,9 @@ def test_security_settings_path():
 
 def test_parse_security_settings_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "security_settings": "nudibranch",
+        "project": "abalone",
+        "location": "squid",
+        "security_settings": "clam",
     }
     path = AgentsClient.security_settings_path(**expected)
 
@@ -10718,7 +10742,7 @@ def test_parse_security_settings_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "cuttlefish"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10728,7 +10752,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "mussel",
+        "billing_account": "octopus",
     }
     path = AgentsClient.common_billing_account_path(**expected)
 
@@ -10738,7 +10762,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "winkle"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10748,7 +10772,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nautilus",
+        "folder": "nudibranch",
     }
     path = AgentsClient.common_folder_path(**expected)
 
@@ -10758,7 +10782,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "scallop"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10768,7 +10792,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "abalone",
+        "organization": "mussel",
     }
     path = AgentsClient.common_organization_path(**expected)
 
@@ -10778,7 +10802,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "squid"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10788,7 +10812,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "clam",
+        "project": "nautilus",
     }
     path = AgentsClient.common_project_path(**expected)
 
@@ -10798,8 +10822,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "whelk"
-    location = "octopus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10810,8 +10834,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "oyster",
-        "location": "nudibranch",
+        "project": "squid",
+        "location": "clam",
     }
     path = AgentsClient.common_location_path(**expected)
 

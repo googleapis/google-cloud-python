@@ -118,6 +118,115 @@
         }
       }
     },
+    "Instances": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "InstancesClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "InstancesAsyncClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "InstancesClient",
+          "rpcs": {
+            "CreateInstance": {
+              "methods": [
+                "create_instance"
+              ]
+            },
+            "DeleteInstance": {
+              "methods": [
+                "delete_instance"
+              ]
+            },
+            "GetInstance": {
+              "methods": [
+                "get_instance"
+              ]
+            },
+            "ListInstances": {
+              "methods": [
+                "list_instances"
+              ]
+            },
+            "StartInstance": {
+              "methods": [
+                "start_instance"
+              ]
+            },
+            "StopInstance": {
+              "methods": [
+                "stop_instance"
+              ]
+            }
+          }
+        }
+      }
+    },
     "Jobs": {
       "clients": {
         "grpc": {

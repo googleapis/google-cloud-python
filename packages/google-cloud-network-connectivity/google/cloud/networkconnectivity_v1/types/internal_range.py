@@ -49,9 +49,11 @@ class InternalRange(proto.Message):
             See:
             https://google.aip.dev/122#fields-representing-resource-names
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the internal range was created.
+            Output only. Time when the internal range was
+            created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Time when the internal range was updated.
+            Output only. Time when the internal range was
+            updated.
         labels (MutableMapping[str, str]):
             User-defined labels.
         description (str):
@@ -89,12 +91,13 @@ class InternalRange(proto.Message):
             In other words, with IPv6 this field only works as a
             redundant parameter.
         target_cidr_range (MutableSequence[str]):
-            Optional. Can be set to narrow down or pick a
-            different address space while searching for a
-            free range. If not set, defaults to the
-            "10.0.0.0/8" address space. This can be used to
-            search in other rfc-1918 address spaces like
-            "172.16.0.0/12" and "192.168.0.0/16" or
+            Optional. Can be set to narrow down or pick a different
+            address space while searching for a free range. If not set,
+            defaults to the ["10.0.0.0/8", "172.16.0.0/12",
+            "192.168.0.0/16"] address space (for auto-mode networks, the
+            "10.0.0.0/9" range is used instead of "10.0.0.0/8"). This
+            can be used to target the search in other rfc-1918 address
+            spaces like "172.16.0.0/12" and "192.168.0.0/16" or
             non-rfc-1918 address spaces used in the VPC.
         users (MutableSequence[str]):
             Output only. The list of resources that refer

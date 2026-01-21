@@ -80,7 +80,9 @@ from google.cloud.dialogflowcx_v3.types import (
     gcs,
     import_strategy,
     page,
+    parameter_definition,
     response_message,
+    tool_call,
     validation_message,
 )
 from google.cloud.dialogflowcx_v3.types import flow
@@ -6934,6 +6936,11 @@ def test_create_flow_rest_call_success(request_type):
                                 "phone_number": "phone_number_value"
                             },
                             "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -7007,6 +7014,7 @@ def test_create_flow_rest_call_success(request_type):
                 "trigger_fulfillment": {},
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
+                "target_playbook": "target_playbook_value",
             }
         ],
         "transition_route_groups": [
@@ -7032,6 +7040,21 @@ def test_create_flow_rest_call_success(request_type):
                 }
             ],
         },
+        "input_parameter_definitions": [
+            {
+                "name": "name_value",
+                "type_": 1,
+                "type_schema": {
+                    "inline_schema": {"type_": 1, "items": {}},
+                    "schema_reference": {
+                        "tool": "tool_value",
+                        "schema": "schema_value",
+                    },
+                },
+                "description": "description_value",
+            }
+        ],
+        "output_parameter_definitions": {},
         "multi_language_settings": {
             "enable_multi_language_detection": True,
             "supported_response_language_codes": [
@@ -7649,6 +7672,11 @@ def test_update_flow_rest_call_success(request_type):
                                 "phone_number": "phone_number_value"
                             },
                             "knowledge_info_card": {},
+                            "tool_call": {
+                                "tool": "tool_value",
+                                "action": "action_value",
+                                "input_parameters": {},
+                            },
                             "response_type": 1,
                             "channel": "channel_value",
                         }
@@ -7722,6 +7750,7 @@ def test_update_flow_rest_call_success(request_type):
                 "trigger_fulfillment": {},
                 "target_page": "target_page_value",
                 "target_flow": "target_flow_value",
+                "target_playbook": "target_playbook_value",
             }
         ],
         "transition_route_groups": [
@@ -7747,6 +7776,21 @@ def test_update_flow_rest_call_success(request_type):
                 }
             ],
         },
+        "input_parameter_definitions": [
+            {
+                "name": "name_value",
+                "type_": 1,
+                "type_schema": {
+                    "inline_schema": {"type_": 1, "items": {}},
+                    "schema_reference": {
+                        "tool": "tool_value",
+                        "schema": "schema_value",
+                    },
+                },
+                "description": "description_value",
+            }
+        ],
+        "output_parameter_definitions": {},
         "multi_language_settings": {
             "enable_multi_language_detection": True,
             "supported_response_language_codes": [
@@ -9713,12 +9757,72 @@ def test_parse_page_path():
     assert expected == actual
 
 
-def test_transition_route_group_path():
+def test_playbook_path():
     project = "cuttlefish"
     location = "mussel"
     agent = "winkle"
-    flow = "nautilus"
-    transition_route_group = "scallop"
+    playbook = "nautilus"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = FlowsClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "playbook": "clam",
+    }
+    path = FlowsClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FlowsClient.parse_playbook_path(path)
+    assert expected == actual
+
+
+def test_tool_path():
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    tool = "nudibranch"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = FlowsClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "agent": "winkle",
+        "tool": "nautilus",
+    }
+    path = FlowsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = FlowsClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_transition_route_group_path():
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    flow = "clam"
+    transition_route_group = "whelk"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -9734,11 +9838,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "flow": "whelk",
-        "transition_route_group": "octopus",
+        "project": "octopus",
+        "location": "oyster",
+        "agent": "nudibranch",
+        "flow": "cuttlefish",
+        "transition_route_group": "mussel",
     }
     path = FlowsClient.transition_route_group_path(**expected)
 
@@ -9748,10 +9852,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    webhook = "mussel"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    webhook = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -9764,10 +9868,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "webhook": "abalone",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "webhook": "octopus",
     }
     path = FlowsClient.webhook_path(**expected)
 
@@ -9777,7 +9881,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -9787,7 +9891,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = FlowsClient.common_billing_account_path(**expected)
 
@@ -9797,7 +9901,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -9807,7 +9911,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = FlowsClient.common_folder_path(**expected)
 
@@ -9817,7 +9921,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -9827,7 +9931,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = FlowsClient.common_organization_path(**expected)
 
@@ -9837,7 +9941,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -9847,7 +9951,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = FlowsClient.common_project_path(**expected)
 
@@ -9857,8 +9961,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -9869,8 +9973,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = FlowsClient.common_location_path(**expected)
 

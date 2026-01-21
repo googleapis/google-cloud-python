@@ -377,6 +377,30 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def playbook_path(
+        project: str,
+        location: str,
+        agent: str,
+        playbook: str,
+    ) -> str:
+        """Returns a fully-qualified playbook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            playbook=playbook,
+        )
+
+    @staticmethod
+    def parse_playbook_path(path: str) -> Dict[str, str]:
+        """Parses a playbook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def secret_version_path(
         project: str,
         secret: str,
@@ -1177,6 +1201,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
                 # Initialize request argument(s)
                 agent = dialogflowcx_v3.Agent()
+                agent.start_flow = "start_flow_value"
                 agent.display_name = "display_name_value"
                 agent.default_language_code = "default_language_code_value"
                 agent.time_zone = "time_zone_value"
@@ -1316,6 +1341,7 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
                 # Initialize request argument(s)
                 agent = dialogflowcx_v3.Agent()
+                agent.start_flow = "start_flow_value"
                 agent.display_name = "display_name_value"
                 agent.default_language_code = "default_language_code_value"
                 agent.time_zone = "time_zone_value"

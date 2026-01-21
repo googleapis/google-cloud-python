@@ -2687,6 +2687,12 @@ class LocationMetadata(proto.Message):
             [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
             [EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL] can
             be created in this location.
+        hsm_single_tenant_available (bool):
+            Indicates whether
+            [CryptoKeys][google.cloud.kms.v1.CryptoKey] with
+            [protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level]
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT]
+            can be created in this location.
     """
 
     hsm_available: bool = proto.Field(
@@ -2696,6 +2702,10 @@ class LocationMetadata(proto.Message):
     ekm_available: bool = proto.Field(
         proto.BOOL,
         number=2,
+    )
+    hsm_single_tenant_available: bool = proto.Field(
+        proto.BOOL,
+        number=3,
     )
 
 

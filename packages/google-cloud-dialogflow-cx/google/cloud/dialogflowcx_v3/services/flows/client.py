@@ -71,10 +71,14 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.flows import pagers
+from google.cloud.dialogflowcx_v3.types import (
+    page,
+    parameter_definition,
+    validation_message,
+)
 from google.cloud.dialogflowcx_v3.types import advanced_settings
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3.types import page, validation_message
 
 from .transports.base import DEFAULT_CLIENT_INFO, FlowsTransport
 from .transports.grpc import FlowsGrpcTransport
@@ -352,6 +356,54 @@ class FlowsClient(metaclass=FlowsClientMeta):
         """Parses a page path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/flows/(?P<flow>.+?)/pages/(?P<page>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def playbook_path(
+        project: str,
+        location: str,
+        agent: str,
+        playbook: str,
+    ) -> str:
+        """Returns a fully-qualified playbook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            playbook=playbook,
+        )
+
+    @staticmethod
+    def parse_playbook_path(path: str) -> Dict[str, str]:
+        """Parses a playbook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        agent: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/tools/(?P<tool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

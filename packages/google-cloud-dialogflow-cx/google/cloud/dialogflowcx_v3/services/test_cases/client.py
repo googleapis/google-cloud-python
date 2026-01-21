@@ -402,6 +402,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def playbook_path(
+        project: str,
+        location: str,
+        agent: str,
+        playbook: str,
+    ) -> str:
+        """Returns a fully-qualified playbook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            playbook=playbook,
+        )
+
+    @staticmethod
+    def parse_playbook_path(path: str) -> Dict[str, str]:
+        """Parses a playbook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def test_case_path(
         project: str,
         location: str,
@@ -447,6 +471,30 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         """Parses a test_case_result path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/testCases/(?P<test_case>.+?)/results/(?P<result>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        agent: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/tools/(?P<tool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

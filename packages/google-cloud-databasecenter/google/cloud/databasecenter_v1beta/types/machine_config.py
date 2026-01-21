@@ -30,7 +30,6 @@ __protobuf__ = proto.module(
 class MachineConfig(proto.Message):
     r"""MachineConfig describes the configuration of a machine
     specific to a Database Resource.
-    NextID: 5
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields

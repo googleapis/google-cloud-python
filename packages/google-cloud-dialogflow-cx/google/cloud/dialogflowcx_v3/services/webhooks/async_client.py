@@ -81,6 +81,8 @@ class WebhooksAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = WebhooksClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = WebhooksClient._DEFAULT_UNIVERSE
 
+    secret_version_path = staticmethod(WebhooksClient.secret_version_path)
+    parse_secret_version_path = staticmethod(WebhooksClient.parse_secret_version_path)
     service_path = staticmethod(WebhooksClient.service_path)
     parse_service_path = staticmethod(WebhooksClient.parse_service_path)
     webhook_path = staticmethod(WebhooksClient.webhook_path)

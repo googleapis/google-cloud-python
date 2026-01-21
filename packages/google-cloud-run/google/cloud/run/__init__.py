@@ -22,6 +22,8 @@ from google.cloud.run_v2.services.builds.async_client import BuildsAsyncClient
 from google.cloud.run_v2.services.builds.client import BuildsClient
 from google.cloud.run_v2.services.executions.async_client import ExecutionsAsyncClient
 from google.cloud.run_v2.services.executions.client import ExecutionsClient
+from google.cloud.run_v2.services.instances.async_client import InstancesAsyncClient
+from google.cloud.run_v2.services.instances.client import InstancesClient
 from google.cloud.run_v2.services.jobs.async_client import JobsAsyncClient
 from google.cloud.run_v2.services.jobs.client import JobsClient
 from google.cloud.run_v2.services.revisions.async_client import RevisionsAsyncClient
@@ -40,6 +42,7 @@ from google.cloud.run_v2.types.build import (
     SubmitBuildResponse,
 )
 from google.cloud.run_v2.types.condition import Condition
+from google.cloud.run_v2.types.container_status import ContainerStatus
 from google.cloud.run_v2.types.execution import (
     CancelExecutionRequest,
     DeleteExecutionRequest,
@@ -49,6 +52,16 @@ from google.cloud.run_v2.types.execution import (
     ListExecutionsResponse,
 )
 from google.cloud.run_v2.types.execution_template import ExecutionTemplate
+from google.cloud.run_v2.types.instance import (
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    StartInstanceRequest,
+    StopInstanceRequest,
+)
 from google.cloud.run_v2.types.instance_split import (
     InstanceSplit,
     InstanceSplitAllocationType,
@@ -150,6 +163,8 @@ __all__ = (
     "BuildsAsyncClient",
     "ExecutionsClient",
     "ExecutionsAsyncClient",
+    "InstancesClient",
+    "InstancesAsyncClient",
     "JobsClient",
     "JobsAsyncClient",
     "RevisionsClient",
@@ -164,6 +179,7 @@ __all__ = (
     "SubmitBuildRequest",
     "SubmitBuildResponse",
     "Condition",
+    "ContainerStatus",
     "CancelExecutionRequest",
     "DeleteExecutionRequest",
     "Execution",
@@ -171,6 +187,14 @@ __all__ = (
     "ListExecutionsRequest",
     "ListExecutionsResponse",
     "ExecutionTemplate",
+    "CreateInstanceRequest",
+    "DeleteInstanceRequest",
+    "GetInstanceRequest",
+    "Instance",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
+    "StartInstanceRequest",
+    "StopInstanceRequest",
     "InstanceSplit",
     "InstanceSplitStatus",
     "InstanceSplitAllocationType",

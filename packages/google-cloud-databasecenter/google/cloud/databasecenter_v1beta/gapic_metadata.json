@@ -15,6 +15,11 @@
                 "aggregate_fleet"
               ]
             },
+            "AggregateIssueStats": {
+              "methods": [
+                "aggregate_issue_stats"
+              ]
+            },
             "QueryDatabaseResourceGroups": {
               "methods": [
                 "query_database_resource_groups"
@@ -35,6 +40,11 @@
                 "aggregate_fleet"
               ]
             },
+            "AggregateIssueStats": {
+              "methods": [
+                "aggregate_issue_stats"
+              ]
+            },
             "QueryDatabaseResourceGroups": {
               "methods": [
                 "query_database_resource_groups"
@@ -53,6 +63,11 @@
             "AggregateFleet": {
               "methods": [
                 "aggregate_fleet"
+              ]
+            },
+            "AggregateIssueStats": {
+              "methods": [
+                "aggregate_issue_stats"
               ]
             },
             "QueryDatabaseResourceGroups": {

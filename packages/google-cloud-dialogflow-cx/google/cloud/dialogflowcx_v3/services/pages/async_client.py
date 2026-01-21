@@ -89,6 +89,10 @@ class PagesAsyncClient:
     parse_intent_path = staticmethod(PagesClient.parse_intent_path)
     page_path = staticmethod(PagesClient.page_path)
     parse_page_path = staticmethod(PagesClient.parse_page_path)
+    playbook_path = staticmethod(PagesClient.playbook_path)
+    parse_playbook_path = staticmethod(PagesClient.parse_playbook_path)
+    tool_path = staticmethod(PagesClient.tool_path)
+    parse_tool_path = staticmethod(PagesClient.parse_tool_path)
     transition_route_group_path = staticmethod(PagesClient.transition_route_group_path)
     parse_transition_route_group_path = staticmethod(
         PagesClient.parse_transition_route_group_path

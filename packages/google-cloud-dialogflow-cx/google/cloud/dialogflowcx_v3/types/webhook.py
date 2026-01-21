@@ -99,9 +99,23 @@ class Webhook(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
+            secret_version_for_username_password (str):
+                Optional. The SecretManager secret version resource storing
+                the username:password pair for HTTP Basic authentication.
+                Format:
+                ``projects/{project}/secrets/{secret}/versions/{version}``
             request_headers (MutableMapping[str, str]):
                 The HTTP request headers to send together
                 with webhook requests.
+            secret_versions_for_request_headers (MutableMapping[str, google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.SecretVersionHeaderValue]):
+                Optional. The HTTP request headers to send together with
+                webhook requests. Header values are stored in SecretManager
+                secret versions.
+
+                When the same header name is specified in both
+                ``request_headers`` and
+                ``secret_versions_for_request_headers``, the value in
+                ``secret_versions_for_request_headers`` will be used.
             allowed_ca_certs (MutableSequence[bytes]):
                 Optional. Specifies a list of allowed custom CA certificates
                 (in DER format) for HTTPS verification. This overrides the
@@ -128,6 +142,9 @@ class Webhook(proto.Message):
                 `Diglogflow service
                 agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
                 The generated token is sent in the Authorization header.
+            service_account_auth_config (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.ServiceAccountAuthConfig):
+                Optional. Configuration for service account
+                authentication.
             webhook_type (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.WebhookType):
                 Optional. Type of the webhook.
             http_method (google.cloud.dialogflowcx_v3.types.Webhook.GenericWebService.HttpMethod):
@@ -217,6 +234,22 @@ class Webhook(proto.Message):
             PATCH = 6
             OPTIONS = 7
 
+        class SecretVersionHeaderValue(proto.Message):
+            r"""Represents the value of an HTTP header stored in a
+            SecretManager secret version.
+
+            Attributes:
+                secret_version (str):
+                    Required. The SecretManager secret version resource storing
+                    the header value. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
+            """
+
+            secret_version: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+
         class OAuthConfig(proto.Message):
             r"""Represents configuration of OAuth client credential flow for
             3rd party API authentication.
@@ -228,6 +261,11 @@ class Webhook(proto.Message):
                 client_secret (str):
                     Optional. The client secret provided by the
                     3rd party platform.
+                secret_version_for_client_secret (str):
+                    Optional. The name of the SecretManager secret version
+                    resource storing the client secret. If this field is set,
+                    the ``client_secret`` field will be ignored. Format:
+                    ``projects/{project}/secrets/{secret}/versions/{version}``
                 token_endpoint (str):
                     Required. The token endpoint provided by the
                     3rd party platform to exchange an access token.
@@ -243,6 +281,10 @@ class Webhook(proto.Message):
                 proto.STRING,
                 number=2,
             )
+            secret_version_for_client_secret: str = proto.Field(
+                proto.STRING,
+                number=5,
+            )
             token_endpoint: str = proto.Field(
                 proto.STRING,
                 number=3,
@@ -250,6 +292,28 @@ class Webhook(proto.Message):
             scopes: MutableSequence[str] = proto.RepeatedField(
                 proto.STRING,
                 number=4,
+            )
+
+        class ServiceAccountAuthConfig(proto.Message):
+            r"""Configuration for authentication using a service account.
+
+            Attributes:
+                service_account (str):
+                    Required. The email address of the service account used to
+                    authenticate the webhook call. Dialogflow uses this service
+                    account to exchange an access token and the access token is
+                    then sent in the ``Authorization`` header of the webhook
+                    request.
+
+                    The service account must have the
+                    ``roles/iam.serviceAccountTokenCreator`` role granted to the
+                    `Dialogflow service
+                    agent <https://cloud.google.com/iam/docs/service-agents#dialogflow-service-agent>`__.
+            """
+
+            service_account: str = proto.Field(
+                proto.STRING,
+                number=1,
             )
 
         uri: str = proto.Field(
@@ -264,10 +328,22 @@ class Webhook(proto.Message):
             proto.STRING,
             number=3,
         )
+        secret_version_for_username_password: str = proto.Field(
+            proto.STRING,
+            number=19,
+        )
         request_headers: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
             proto.STRING,
             number=4,
+        )
+        secret_versions_for_request_headers: MutableMapping[
+            str, "Webhook.GenericWebService.SecretVersionHeaderValue"
+        ] = proto.MapField(
+            proto.STRING,
+            proto.MESSAGE,
+            number=20,
+            message="Webhook.GenericWebService.SecretVersionHeaderValue",
         )
         allowed_ca_certs: MutableSequence[bytes] = proto.RepeatedField(
             proto.BYTES,
@@ -282,6 +358,11 @@ class Webhook(proto.Message):
             proto.ENUM,
             number=12,
             enum="Webhook.GenericWebService.ServiceAgentAuth",
+        )
+        service_account_auth_config: "Webhook.GenericWebService.ServiceAccountAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=18,
+            message="Webhook.GenericWebService.ServiceAccountAuthConfig",
         )
         webhook_type: "Webhook.GenericWebService.WebhookType" = proto.Field(
             proto.ENUM,

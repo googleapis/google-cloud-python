@@ -257,6 +257,160 @@
         }
       }
     },
+    "HsmManagement": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "HsmManagementClient",
+          "rpcs": {
+            "ApproveSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "approve_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "CreateSingleTenantHsmInstance": {
+              "methods": [
+                "create_single_tenant_hsm_instance"
+              ]
+            },
+            "CreateSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "create_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "DeleteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "delete_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ExecuteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "execute_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "GetSingleTenantHsmInstance": {
+              "methods": [
+                "get_single_tenant_hsm_instance"
+              ]
+            },
+            "GetSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "get_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ListSingleTenantHsmInstanceProposals": {
+              "methods": [
+                "list_single_tenant_hsm_instance_proposals"
+              ]
+            },
+            "ListSingleTenantHsmInstances": {
+              "methods": [
+                "list_single_tenant_hsm_instances"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "HsmManagementAsyncClient",
+          "rpcs": {
+            "ApproveSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "approve_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "CreateSingleTenantHsmInstance": {
+              "methods": [
+                "create_single_tenant_hsm_instance"
+              ]
+            },
+            "CreateSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "create_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "DeleteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "delete_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ExecuteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "execute_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "GetSingleTenantHsmInstance": {
+              "methods": [
+                "get_single_tenant_hsm_instance"
+              ]
+            },
+            "GetSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "get_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ListSingleTenantHsmInstanceProposals": {
+              "methods": [
+                "list_single_tenant_hsm_instance_proposals"
+              ]
+            },
+            "ListSingleTenantHsmInstances": {
+              "methods": [
+                "list_single_tenant_hsm_instances"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "HsmManagementClient",
+          "rpcs": {
+            "ApproveSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "approve_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "CreateSingleTenantHsmInstance": {
+              "methods": [
+                "create_single_tenant_hsm_instance"
+              ]
+            },
+            "CreateSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "create_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "DeleteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "delete_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ExecuteSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "execute_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "GetSingleTenantHsmInstance": {
+              "methods": [
+                "get_single_tenant_hsm_instance"
+              ]
+            },
+            "GetSingleTenantHsmInstanceProposal": {
+              "methods": [
+                "get_single_tenant_hsm_instance_proposal"
+              ]
+            },
+            "ListSingleTenantHsmInstanceProposals": {
+              "methods": [
+                "list_single_tenant_hsm_instance_proposals"
+              ]
+            },
+            "ListSingleTenantHsmInstances": {
+              "methods": [
+                "list_single_tenant_hsm_instances"
+              ]
+            }
+          }
+        }
+      }
+    },
     "KeyManagementService": {
       "clients": {
         "grpc": {

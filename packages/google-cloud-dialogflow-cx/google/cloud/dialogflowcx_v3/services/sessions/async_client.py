@@ -94,12 +94,16 @@ class SessionsAsyncClient:
     parse_intent_path = staticmethod(SessionsClient.parse_intent_path)
     page_path = staticmethod(SessionsClient.page_path)
     parse_page_path = staticmethod(SessionsClient.parse_page_path)
+    playbook_path = staticmethod(SessionsClient.playbook_path)
+    parse_playbook_path = staticmethod(SessionsClient.parse_playbook_path)
     session_path = staticmethod(SessionsClient.session_path)
     parse_session_path = staticmethod(SessionsClient.parse_session_path)
     session_entity_type_path = staticmethod(SessionsClient.session_entity_type_path)
     parse_session_entity_type_path = staticmethod(
         SessionsClient.parse_session_entity_type_path
     )
+    tool_path = staticmethod(SessionsClient.tool_path)
+    parse_tool_path = staticmethod(SessionsClient.parse_tool_path)
     transition_route_group_path = staticmethod(
         SessionsClient.transition_route_group_path
     )

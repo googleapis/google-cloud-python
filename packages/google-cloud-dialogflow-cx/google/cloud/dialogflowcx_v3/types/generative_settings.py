@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
         "GenerativeSettings",
+        "LlmModelSettings",
     },
 )
 
@@ -44,6 +45,8 @@ class GenerativeSettings(proto.Message):
             Settings for knowledge connector.
         language_code (str):
             Language for this settings.
+        llm_model_settings (google.cloud.dialogflowcx_v3.types.LlmModelSettings):
+            LLM model settings.
     """
 
     class FallbackSettings(proto.Message):
@@ -179,6 +182,31 @@ class GenerativeSettings(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    llm_model_settings: "LlmModelSettings" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="LlmModelSettings",
+    )
+
+
+class LlmModelSettings(proto.Message):
+    r"""Settings for LLM models.
+
+    Attributes:
+        model (str):
+            The selected LLM model.
+        prompt_text (str):
+            The custom prompt to use.
+    """
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    prompt_text: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

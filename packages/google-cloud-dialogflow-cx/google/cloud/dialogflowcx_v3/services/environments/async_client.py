@@ -92,6 +92,10 @@ class EnvironmentsAsyncClient:
     )
     environment_path = staticmethod(EnvironmentsClient.environment_path)
     parse_environment_path = staticmethod(EnvironmentsClient.parse_environment_path)
+    secret_version_path = staticmethod(EnvironmentsClient.secret_version_path)
+    parse_secret_version_path = staticmethod(
+        EnvironmentsClient.parse_secret_version_path
+    )
     service_path = staticmethod(EnvironmentsClient.service_path)
     parse_service_path = staticmethod(EnvironmentsClient.parse_service_path)
     test_case_path = staticmethod(EnvironmentsClient.test_case_path)

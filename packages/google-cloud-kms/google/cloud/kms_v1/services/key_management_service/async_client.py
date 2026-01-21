@@ -2042,7 +2042,7 @@ class KeyManagementServiceAsyncClient:
                 # Initialize request argument(s)
                 import_job = kms_v1.ImportJob()
                 import_job.import_method = "RSA_OAEP_4096_SHA256"
-                import_job.protection_level = "EXTERNAL_VPC"
+                import_job.protection_level = "HSM_SINGLE_TENANT"
 
                 request = kms_v1.CreateImportJobRequest(
                     parent="parent_value",
