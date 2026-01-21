@@ -6,9 +6,11 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
+      WHEN ABS(`float64_col`) < 1
+      THEN ATANH(`float64_col`)
       WHEN ABS(`float64_col`) > 1
       THEN CAST('NaN' AS FLOAT64)
-      ELSE ATANH(`float64_col`)
+      ELSE CAST('Infinity' AS FLOAT64) * `float64_col`
     END AS `bfcol_1`
   FROM `bfcte_0`
 )

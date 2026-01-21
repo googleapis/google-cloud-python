@@ -6,9 +6,13 @@ WITH `bfcte_0` AS (
   SELECT
     *,
     CASE
-      WHEN `float64_col` <= -1
+      WHEN `float64_col` IS NULL
+      THEN NULL
+      WHEN `float64_col` > -1
+      THEN LN(1 + `float64_col`)
+      WHEN `float64_col` < -1
       THEN CAST('NaN' AS FLOAT64)
-      ELSE LN(1 + `float64_col`)
+      ELSE CAST('-Infinity' AS FLOAT64)
     END AS `bfcol_1`
   FROM `bfcte_0`
 )
