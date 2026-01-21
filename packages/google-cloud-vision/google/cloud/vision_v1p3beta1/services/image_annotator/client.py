@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from collections import OrderedDict
+from http import HTTPStatus
 import json
 import logging as std_logging
 import os
 import re
-import warnings
-from collections import OrderedDict
-from http import HTTPStatus
 from typing import (
     Callable,
     Dict,
@@ -33,18 +32,21 @@ from typing import (
     Union,
     cast,
 )
+import warnings
 
-import google.protobuf
-from google.api_core import client_options as client_options_lib
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry as retries
+from google.api_core import (
+    client_options as client_options_lib,
+    exceptions as core_exceptions,
+    gapic_v1,
+    retry as retries,
+)
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.vision_v1p3beta1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]

@@ -16,20 +16,20 @@
 import json
 import logging as std_logging
 import pickle
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
 import grpc  # type: ignore
 import proto  # type: ignore
 
-import google.auth  # type: ignore
-import google.protobuf.message
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.vision_v1p4beta1.types import image_annotator
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
+import google.protobuf.message
 
 from .base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
 

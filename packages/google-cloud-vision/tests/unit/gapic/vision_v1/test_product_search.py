@@ -22,15 +22,15 @@ try:
 except ImportError:  # pragma: NO COVER
     import mock
 
+from collections.abc import AsyncIterable, Iterable
 import json
 import math
-from collections.abc import AsyncIterable, Iterable
 
 import grpc
-import pytest
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
 from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
@@ -44,9 +44,9 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-import google.auth
 from google.api_core import (
     client_options,
+    exceptions as core_exceptions,
     future,
     gapic_v1,
     grpc_helpers,
@@ -55,9 +55,9 @@ from google.api_core import (
     operation_async,  # type: ignore
     operations_v1,
     path_template,
+    retry as retries,
 )
-from google.api_core import exceptions as core_exceptions
-from google.api_core import retry as retries
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.cloud.vision_v1.services.product_search import (

@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from collections import OrderedDict
 import logging as std_logging
 import re
-import uuid
-from collections import OrderedDict
 from typing import (
     Callable,
     Dict,
@@ -29,15 +28,18 @@ from typing import (
     Type,
     Union,
 )
+import uuid
 
-import google.protobuf
-from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import retry_async as retries
+from google.api_core import (
+    exceptions as core_exceptions,
+    gapic_v1,
+    retry_async as retries,
+)
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.vision_v1p2beta1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]

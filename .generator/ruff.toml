@@ -1,16 +1,20 @@
 # .generator/ruff.toml
-
-# Match Black's line length
 line-length = 88
 
 [lint]
-# Enable Import sorting (isort)
 select = ["I"]
 
 [lint.isort]
-# Force 'google' to be recognized as a first-party import
+# 1. Force 'google' to be first-party (keeps google.* imports together)
 known-first-party = ["google"]
 
+# 2. Combine imports from the same module (Standard isort behavior)
+#    Prevents splitting "from x import a, b" into multiple lines.
+combine-as-imports = true
+
+# 3. Sort imports by module name, ignoring "from" vs "import" (Standard isort behavior)
+#    This minimizes diffs where isort mixed them but Ruff separated them.
+force-sort-within-sections = true
+
 [format]
-# Strictly enforce double quotes (Black style)
 quote-style = "double"

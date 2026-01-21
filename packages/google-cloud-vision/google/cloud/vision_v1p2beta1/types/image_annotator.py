@@ -19,8 +19,11 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.vision_v1p2beta1.types import geometry, text_annotation
-from google.cloud.vision_v1p2beta1.types import web_detection as gcv_web_detection
+from google.cloud.vision_v1p2beta1.types import (
+    geometry,
+    text_annotation,
+    web_detection as gcv_web_detection,
+)
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import (
