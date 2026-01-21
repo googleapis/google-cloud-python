@@ -20,10 +20,6 @@ import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
-
 from google.api_core import (
     exceptions as core_exceptions,
     gapic_v1,
@@ -35,6 +31,9 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.vision_v1p1beta1.types import image_annotator
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from .base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
 from .grpc import ImageAnnotatorGrpcTransport

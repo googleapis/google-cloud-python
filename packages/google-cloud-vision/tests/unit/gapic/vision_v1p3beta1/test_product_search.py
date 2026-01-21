@@ -26,6 +26,8 @@ from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -33,9 +35,6 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
-
-from google.api_core import api_core_version
-from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async
@@ -8450,12 +8449,10 @@ def test_create_product_set_rest_unset_required_fields():
     unset_fields = transport.create_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("productSetId",))
-        & set(
-            (
-                "parent",
-                "productSet",
-            )
-        )
+        & set((
+            "parent",
+            "productSet",
+        ))
     )
 
 
@@ -8587,12 +8584,10 @@ def test_list_product_sets_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_product_sets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8650,12 +8645,10 @@ def test_list_product_sets_rest_unset_required_fields():
 
     unset_fields = transport.list_product_sets._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -9448,12 +9441,10 @@ def test_create_product_rest_unset_required_fields():
     unset_fields = transport.create_product._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("productId",))
-        & set(
-            (
-                "parent",
-                "product",
-            )
-        )
+        & set((
+            "parent",
+            "product",
+        ))
     )
 
 
@@ -9583,12 +9574,10 @@ def test_list_products_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_products._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9644,12 +9633,10 @@ def test_list_products_rest_unset_required_fields():
 
     unset_fields = transport.list_products._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -10433,12 +10420,10 @@ def test_create_reference_image_rest_unset_required_fields():
     unset_fields = transport.create_reference_image._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("referenceImageId",))
-        & set(
-            (
-                "parent",
-                "referenceImage",
-            )
-        )
+        & set((
+            "parent",
+            "referenceImage",
+        ))
     )
 
 
@@ -10755,12 +10740,10 @@ def test_list_reference_images_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_reference_images._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10818,12 +10801,10 @@ def test_list_reference_images_rest_unset_required_fields():
 
     unset_fields = transport.list_reference_images._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -11268,12 +11249,10 @@ def test_add_product_to_product_set_rest_unset_required_fields():
     unset_fields = transport.add_product_to_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "name",
-                "product",
-            )
-        )
+        & set((
+            "name",
+            "product",
+        ))
     )
 
 
@@ -11460,17 +11439,15 @@ def test_remove_product_from_product_set_rest_unset_required_fields():
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.remove_product_from_product_set._get_unset_required_fields(
-        {}
+    unset_fields = (
+        transport.remove_product_from_product_set._get_unset_required_fields({})
     )
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "name",
-                "product",
-            )
-        )
+        & set((
+            "name",
+            "product",
+        ))
     )
 
 
@@ -11603,12 +11580,10 @@ def test_list_products_in_product_set_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_products_in_product_set._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11666,12 +11641,10 @@ def test_list_products_in_product_set_rest_unset_required_fields():
 
     unset_fields = transport.list_products_in_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("name",))
     )
 
@@ -11929,12 +11902,10 @@ def test_import_product_sets_rest_unset_required_fields():
     unset_fields = transport.import_product_sets._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "parent",
-                "inputConfig",
-            )
-        )
+        & set((
+            "parent",
+            "inputConfig",
+        ))
     )
 
 
@@ -13140,13 +13111,11 @@ def test_create_product_set_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -13638,13 +13607,11 @@ def test_update_product_set_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -13957,13 +13924,11 @@ def test_create_product_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -14446,13 +14411,11 @@ def test_update_product_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -14773,13 +14736,11 @@ def test_create_reference_image_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime

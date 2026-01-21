@@ -1,12 +1,14 @@
 # .generator/ruff.toml
 line-length = 88
+# Enable preview to get the strictest Black compatibility
+preview = true
 
 [lint]
 select = ["I"]
 
 [lint.isort]
 # 1. Force 'google' to be first-party (keeps google.* imports together)
-known-first-party = ["google"]
+# known-first-party = ["google"]
 
 # 2. Combine imports from the same module (Standard isort behavior)
 #    Prevents splitting "from x import a, b" into multiple lines.

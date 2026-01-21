@@ -842,9 +842,9 @@ class ProductSearchAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product_set.name", request.product_set.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product_set.name", request.product_set.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1477,9 +1477,9 @@ class ProductSearchAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product.name", request.product.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product.name", request.product.name),
+            )),
         )
 
         # Validate the universe domain.

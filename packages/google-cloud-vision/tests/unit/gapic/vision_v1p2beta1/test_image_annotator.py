@@ -27,6 +27,8 @@ from collections.abc import AsyncIterable, Iterable
 import json
 import math
 
+from google.api_core import api_core_version
+from google.protobuf import json_format
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -34,9 +36,6 @@ from proto.marshal.rules.dates import DurationRule, TimestampRule
 import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
-
-from google.api_core import api_core_version
-from google.protobuf import json_format
 
 try:
     from google.auth.aio import credentials as ga_credentials_async

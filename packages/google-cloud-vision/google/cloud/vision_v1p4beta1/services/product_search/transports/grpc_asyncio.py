@@ -20,10 +20,6 @@ import pickle
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-import proto  # type: ignore
-
 from google.api_core import (
     exceptions as core_exceptions,
     gapic_v1,
@@ -38,6 +34,9 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+import proto  # type: ignore
 
 from .base import DEFAULT_CLIENT_INFO, ProductSearchTransport
 from .grpc import ProductSearchGrpcTransport

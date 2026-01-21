@@ -19,8 +19,6 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from requests import __version__ as requests_version
-
 from google.api_core import (
     exceptions as core_exceptions,
     gapic_v1,
@@ -38,6 +36,7 @@ from google.protobuf import (
     empty_pb2,  # type: ignore
     json_format,
 )
+from requests import __version__ as requests_version
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseProductSearchRestTransport
@@ -1097,6 +1096,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1211,6 +1211,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1361,6 +1362,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1518,6 +1520,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1672,6 +1675,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1778,6 +1782,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1884,6 +1889,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1990,6 +1996,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2138,6 +2145,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2289,6 +2297,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2437,6 +2446,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2588,6 +2598,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2734,6 +2745,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2883,6 +2895,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3037,6 +3050,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3186,6 +3200,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3302,6 +3317,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3452,6 +3468,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)

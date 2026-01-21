@@ -17,9 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.cloud.vision_v1.types import geometry
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1",
