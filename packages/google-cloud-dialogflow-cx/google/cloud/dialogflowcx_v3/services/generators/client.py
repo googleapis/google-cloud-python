@@ -66,6 +66,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.generators import pagers
+from google.cloud.dialogflowcx_v3.types import generative_settings
 from google.cloud.dialogflowcx_v3.types import generator
 from google.cloud.dialogflowcx_v3.types import generator as gcdc_generator
 

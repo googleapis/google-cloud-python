@@ -6221,6 +6221,7 @@ def test_create_worker_pool_rest_call_success(request_type):
                         "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
+                    "readiness_probe": {},
                     "depends_on": ["depends_on_value1", "depends_on_value2"],
                     "base_image_uri": "base_image_uri_value",
                     "build_info": {
@@ -6875,6 +6876,7 @@ def test_update_worker_pool_rest_call_success(request_type):
                         "grpc": {"port": 453, "service": "service_value"},
                     },
                     "startup_probe": {},
+                    "readiness_probe": {},
                     "depends_on": ["depends_on_value1", "depends_on_value2"],
                     "base_image_uri": "base_image_uri_value",
                     "build_info": {

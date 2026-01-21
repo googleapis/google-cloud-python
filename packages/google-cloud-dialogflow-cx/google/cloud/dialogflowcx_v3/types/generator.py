@@ -20,6 +20,8 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import generative_settings
+
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
@@ -61,6 +63,8 @@ class Generator(proto.Message):
         placeholders (MutableSequence[google.cloud.dialogflowcx_v3.types.Generator.Placeholder]):
             Optional. List of custom placeholders in the
             prompt text.
+        llm_model_settings (google.cloud.dialogflowcx_v3.types.LlmModelSettings):
+            The LLM model settings.
         model_parameter (google.cloud.dialogflowcx_v3.types.Generator.ModelParameter):
             Parameters passed to the LLM to configure its
             behavior.
@@ -160,6 +164,11 @@ class Generator(proto.Message):
         proto.MESSAGE,
         number=5,
         message=Placeholder,
+    )
+    llm_model_settings: generative_settings.LlmModelSettings = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=generative_settings.LlmModelSettings,
     )
     model_parameter: ModelParameter = proto.Field(
         proto.MESSAGE,

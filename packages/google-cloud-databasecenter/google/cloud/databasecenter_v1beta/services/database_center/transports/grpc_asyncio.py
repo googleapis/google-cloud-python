@@ -420,6 +420,36 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             )
         return self._stubs["query_database_resource_groups"]
 
+    @property
+    def aggregate_issue_stats(
+        self,
+    ) -> Callable[
+        [service.AggregateIssueStatsRequest],
+        Awaitable[service.AggregateIssueStatsResponse],
+    ]:
+        r"""Return a callable for the aggregate issue stats method over gRPC.
+
+        AggregateIssueStats provides database resource issues
+        statistics.
+
+        Returns:
+            Callable[[~.AggregateIssueStatsRequest],
+                    Awaitable[~.AggregateIssueStatsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "aggregate_issue_stats" not in self._stubs:
+            self._stubs["aggregate_issue_stats"] = self._logged_channel.unary_unary(
+                "/google.cloud.databasecenter.v1beta.DatabaseCenter/AggregateIssueStats",
+                request_serializer=service.AggregateIssueStatsRequest.serialize,
+                response_deserializer=service.AggregateIssueStatsResponse.deserialize,
+            )
+        return self._stubs["aggregate_issue_stats"]
+
     def _prep_wrapped_messages(self, client_info):
         """Precompute the wrapped methods, overriding the base class method to use async wrappers."""
         self._wrapped_methods = {
@@ -435,6 +465,11 @@ class DatabaseCenterGrpcAsyncIOTransport(DatabaseCenterTransport):
             ),
             self.query_database_resource_groups: self._wrap_method(
                 self.query_database_resource_groups,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.aggregate_issue_stats: self._wrap_method(
+                self.aggregate_issue_stats,
                 default_timeout=None,
                 client_info=client_info,
             ),

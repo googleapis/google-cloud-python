@@ -5,6 +5,7 @@ Services for Google Cloud Run v2 API
 
     builds
     executions
+    instances
     jobs
     revisions
     services

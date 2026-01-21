@@ -4927,6 +4927,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            crypto_key_backend="crypto_key_backend_value",
         )
         response = client.get_import_job(request)
 
@@ -4945,6 +4946,7 @@ def test_get_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_get_import_job_non_empty_request_with_auto_populated_field():
@@ -5074,6 +5076,7 @@ async def test_get_import_job_async(
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.get_import_job(request)
@@ -5093,6 +5096,7 @@ async def test_get_import_job_async(
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio
@@ -6688,6 +6692,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            crypto_key_backend="crypto_key_backend_value",
         )
         response = client.create_import_job(request)
 
@@ -6706,6 +6711,7 @@ def test_create_import_job(request_type, transport: str = "grpc"):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 def test_create_import_job_non_empty_request_with_auto_populated_field():
@@ -6843,6 +6849,7 @@ async def test_create_import_job_async(
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         response = await client.create_import_job(request)
@@ -6862,6 +6869,7 @@ async def test_create_import_job_async(
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.asyncio
@@ -18739,6 +18747,7 @@ async def test_get_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         await client.get_import_job(request=None)
@@ -18904,6 +18913,7 @@ async def test_create_import_job_empty_call_grpc_asyncio():
                 import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
                 protection_level=resources.ProtectionLevel.SOFTWARE,
                 state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+                crypto_key_backend="crypto_key_backend_value",
             )
         )
         await client.create_import_job(request=None)
@@ -20535,6 +20545,7 @@ def test_get_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            crypto_key_backend="crypto_key_backend_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -20558,6 +20569,7 @@ def test_get_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -21543,6 +21555,7 @@ def test_create_import_job_rest_call_success(request_type):
                 ],
             },
         },
+        "crypto_key_backend": "crypto_key_backend_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -21621,6 +21634,7 @@ def test_create_import_job_rest_call_success(request_type):
             import_method=resources.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256,
             protection_level=resources.ProtectionLevel.SOFTWARE,
             state=resources.ImportJob.ImportJobState.PENDING_GENERATION,
+            crypto_key_backend="crypto_key_backend_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -21644,6 +21658,7 @@ def test_create_import_job_rest_call_success(request_type):
     )
     assert response.protection_level == resources.ProtectionLevel.SOFTWARE
     assert response.state == resources.ImportJob.ImportJobState.PENDING_GENERATION
+    assert response.crypto_key_backend == "crypto_key_backend_value"
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])

@@ -36,6 +36,10 @@ from google.cloud.dialogflowcx_v3.services.environments.async_client import (
     EnvironmentsAsyncClient,
 )
 from google.cloud.dialogflowcx_v3.services.environments.client import EnvironmentsClient
+from google.cloud.dialogflowcx_v3.services.examples.async_client import (
+    ExamplesAsyncClient,
+)
+from google.cloud.dialogflowcx_v3.services.examples.client import ExamplesClient
 from google.cloud.dialogflowcx_v3.services.experiments.async_client import (
     ExperimentsAsyncClient,
 )
@@ -52,6 +56,10 @@ from google.cloud.dialogflowcx_v3.services.intents.async_client import (
 from google.cloud.dialogflowcx_v3.services.intents.client import IntentsClient
 from google.cloud.dialogflowcx_v3.services.pages.async_client import PagesAsyncClient
 from google.cloud.dialogflowcx_v3.services.pages.client import PagesClient
+from google.cloud.dialogflowcx_v3.services.playbooks.async_client import (
+    PlaybooksAsyncClient,
+)
+from google.cloud.dialogflowcx_v3.services.playbooks.client import PlaybooksClient
 from google.cloud.dialogflowcx_v3.services.security_settings_service.async_client import (
     SecuritySettingsServiceAsyncClient,
 )
@@ -72,6 +80,8 @@ from google.cloud.dialogflowcx_v3.services.test_cases.async_client import (
     TestCasesAsyncClient,
 )
 from google.cloud.dialogflowcx_v3.services.test_cases.client import TestCasesClient
+from google.cloud.dialogflowcx_v3.services.tools.async_client import ToolsAsyncClient
+from google.cloud.dialogflowcx_v3.services.tools.client import ToolsClient
 from google.cloud.dialogflowcx_v3.services.transition_route_groups.async_client import (
     TransitionRouteGroupsAsyncClient,
 )
@@ -124,6 +134,7 @@ from google.cloud.dialogflowcx_v3.types.changelog import (
     ListChangelogsRequest,
     ListChangelogsResponse,
 )
+from google.cloud.dialogflowcx_v3.types.code_block import CodeBlock
 from google.cloud.dialogflowcx_v3.types.data_store_connection import (
     DataStoreConnection,
     DataStoreConnectionSignals,
@@ -171,6 +182,15 @@ from google.cloud.dialogflowcx_v3.types.environment import (
     RunContinuousTestResponse,
     UpdateEnvironmentRequest,
 )
+from google.cloud.dialogflowcx_v3.types.example import (
+    CreateExampleRequest,
+    DeleteExampleRequest,
+    Example,
+    GetExampleRequest,
+    ListExamplesRequest,
+    ListExamplesResponse,
+    UpdateExampleRequest,
+)
 from google.cloud.dialogflowcx_v3.types.experiment import (
     CreateExperimentRequest,
     DeleteExperimentRequest,
@@ -207,7 +227,10 @@ from google.cloud.dialogflowcx_v3.types.flow import (
 )
 from google.cloud.dialogflowcx_v3.types.fulfillment import Fulfillment
 from google.cloud.dialogflowcx_v3.types.gcs import GcsDestination
-from google.cloud.dialogflowcx_v3.types.generative_settings import GenerativeSettings
+from google.cloud.dialogflowcx_v3.types.generative_settings import (
+    GenerativeSettings,
+    LlmModelSettings,
+)
 from google.cloud.dialogflowcx_v3.types.generator import (
     CreateGeneratorRequest,
     DeleteGeneratorRequest,
@@ -249,6 +272,35 @@ from google.cloud.dialogflowcx_v3.types.page import (
     TransitionRoute,
     UpdatePageRequest,
 )
+from google.cloud.dialogflowcx_v3.types.parameter_definition import (
+    DataType,
+    InlineSchema,
+    ParameterDefinition,
+    TypeSchema,
+)
+from google.cloud.dialogflowcx_v3.types.playbook import (
+    CreatePlaybookRequest,
+    CreatePlaybookVersionRequest,
+    DeletePlaybookRequest,
+    DeletePlaybookVersionRequest,
+    ExportPlaybookRequest,
+    ExportPlaybookResponse,
+    GetPlaybookRequest,
+    GetPlaybookVersionRequest,
+    Handler,
+    ImportPlaybookRequest,
+    ImportPlaybookResponse,
+    ListPlaybooksRequest,
+    ListPlaybooksResponse,
+    ListPlaybookVersionsRequest,
+    ListPlaybookVersionsResponse,
+    Playbook,
+    PlaybookImportStrategy,
+    PlaybookVersion,
+    RestorePlaybookVersionRequest,
+    RestorePlaybookVersionResponse,
+    UpdatePlaybookRequest,
+)
 from google.cloud.dialogflowcx_v3.types.response_message import ResponseMessage
 from google.cloud.dialogflowcx_v3.types.safety_settings import SafetySettings
 from google.cloud.dialogflowcx_v3.types.security_settings import (
@@ -268,6 +320,7 @@ from google.cloud.dialogflowcx_v3.types.session import (
     CloudConversationDebuggingInfo,
     DetectIntentRequest,
     DetectIntentResponse,
+    DetectIntentResponseView,
     DtmfInput,
     EventInput,
     FilterSpecs,
@@ -333,6 +386,37 @@ from google.cloud.dialogflowcx_v3.types.test_case import (
     TransitionRouteGroupCoverage,
     UpdateTestCaseRequest,
 )
+from google.cloud.dialogflowcx_v3.types.tool import (
+    CreateToolRequest,
+    CreateToolVersionRequest,
+    DeleteToolRequest,
+    DeleteToolVersionRequest,
+    GetToolRequest,
+    GetToolVersionRequest,
+    ListToolsRequest,
+    ListToolsResponse,
+    ListToolVersionsRequest,
+    ListToolVersionsResponse,
+    RestoreToolVersionRequest,
+    RestoreToolVersionResponse,
+    Tool,
+    ToolVersion,
+    UpdateToolRequest,
+)
+from google.cloud.dialogflowcx_v3.types.tool_call import ToolCall, ToolCallResult
+from google.cloud.dialogflowcx_v3.types.trace import (
+    Action,
+    AgentUtterance,
+    FlowInvocation,
+    FlowTransition,
+    OutputState,
+    PlaybookInput,
+    PlaybookInvocation,
+    PlaybookOutput,
+    PlaybookTransition,
+    ToolUse,
+    UserUtterance,
+)
 from google.cloud.dialogflowcx_v3.types.transition_route_group import (
     CreateTransitionRouteGroupRequest,
     DeleteTransitionRouteGroupRequest,
@@ -385,6 +469,8 @@ __all__ = (
     "EntityTypesAsyncClient",
     "EnvironmentsClient",
     "EnvironmentsAsyncClient",
+    "ExamplesClient",
+    "ExamplesAsyncClient",
     "ExperimentsClient",
     "ExperimentsAsyncClient",
     "FlowsClient",
@@ -395,6 +481,8 @@ __all__ = (
     "IntentsAsyncClient",
     "PagesClient",
     "PagesAsyncClient",
+    "PlaybooksClient",
+    "PlaybooksAsyncClient",
     "SecuritySettingsServiceClient",
     "SecuritySettingsServiceAsyncClient",
     "SessionEntityTypesClient",
@@ -403,6 +491,8 @@ __all__ = (
     "SessionsAsyncClient",
     "TestCasesClient",
     "TestCasesAsyncClient",
+    "ToolsClient",
+    "ToolsAsyncClient",
     "TransitionRouteGroupsClient",
     "TransitionRouteGroupsAsyncClient",
     "VersionsClient",
@@ -441,6 +531,7 @@ __all__ = (
     "GetChangelogRequest",
     "ListChangelogsRequest",
     "ListChangelogsResponse",
+    "CodeBlock",
     "DataStoreConnection",
     "DataStoreConnectionSignals",
     "DataStoreType",
@@ -480,6 +571,13 @@ __all__ = (
     "RunContinuousTestRequest",
     "RunContinuousTestResponse",
     "UpdateEnvironmentRequest",
+    "CreateExampleRequest",
+    "DeleteExampleRequest",
+    "Example",
+    "GetExampleRequest",
+    "ListExamplesRequest",
+    "ListExamplesResponse",
+    "UpdateExampleRequest",
     "CreateExperimentRequest",
     "DeleteExperimentRequest",
     "Experiment",
@@ -513,6 +611,7 @@ __all__ = (
     "Fulfillment",
     "GcsDestination",
     "GenerativeSettings",
+    "LlmModelSettings",
     "CreateGeneratorRequest",
     "DeleteGeneratorRequest",
     "Generator",
@@ -549,6 +648,31 @@ __all__ = (
     "Page",
     "TransitionRoute",
     "UpdatePageRequest",
+    "InlineSchema",
+    "ParameterDefinition",
+    "TypeSchema",
+    "DataType",
+    "CreatePlaybookRequest",
+    "CreatePlaybookVersionRequest",
+    "DeletePlaybookRequest",
+    "DeletePlaybookVersionRequest",
+    "ExportPlaybookRequest",
+    "ExportPlaybookResponse",
+    "GetPlaybookRequest",
+    "GetPlaybookVersionRequest",
+    "Handler",
+    "ImportPlaybookRequest",
+    "ImportPlaybookResponse",
+    "ListPlaybooksRequest",
+    "ListPlaybooksResponse",
+    "ListPlaybookVersionsRequest",
+    "ListPlaybookVersionsResponse",
+    "Playbook",
+    "PlaybookImportStrategy",
+    "PlaybookVersion",
+    "RestorePlaybookVersionRequest",
+    "RestorePlaybookVersionResponse",
+    "UpdatePlaybookRequest",
     "ResponseMessage",
     "SafetySettings",
     "CreateSecuritySettingsRequest",
@@ -584,6 +708,7 @@ __all__ = (
     "StreamingRecognitionResult",
     "SubmitAnswerFeedbackRequest",
     "TextInput",
+    "DetectIntentResponseView",
     "CreateSessionEntityTypeRequest",
     "DeleteSessionEntityTypeRequest",
     "GetSessionEntityTypeRequest",
@@ -625,6 +750,34 @@ __all__ = (
     "TransitionRouteGroupCoverage",
     "UpdateTestCaseRequest",
     "TestResult",
+    "CreateToolRequest",
+    "CreateToolVersionRequest",
+    "DeleteToolRequest",
+    "DeleteToolVersionRequest",
+    "GetToolRequest",
+    "GetToolVersionRequest",
+    "ListToolsRequest",
+    "ListToolsResponse",
+    "ListToolVersionsRequest",
+    "ListToolVersionsResponse",
+    "RestoreToolVersionRequest",
+    "RestoreToolVersionResponse",
+    "Tool",
+    "ToolVersion",
+    "UpdateToolRequest",
+    "ToolCall",
+    "ToolCallResult",
+    "Action",
+    "AgentUtterance",
+    "FlowInvocation",
+    "FlowTransition",
+    "PlaybookInput",
+    "PlaybookInvocation",
+    "PlaybookOutput",
+    "PlaybookTransition",
+    "ToolUse",
+    "UserUtterance",
+    "OutputState",
     "CreateTransitionRouteGroupRequest",
     "DeleteTransitionRouteGroupRequest",
     "GetTransitionRouteGroupRequest",

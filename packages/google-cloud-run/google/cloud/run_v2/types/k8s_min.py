@@ -106,6 +106,8 @@ class Container(proto.Message):
             startup probe is provided, until it succeeds.
             Container will not be added to service endpoints
             if the probe fails.
+        readiness_probe (google.cloud.run_v2.types.Probe):
+            Readiness probe to be used for health checks.
         depends_on (MutableSequence[str]):
             Names of the containers that must start
             before this container.
@@ -172,6 +174,11 @@ class Container(proto.Message):
     startup_probe: "Probe" = proto.Field(
         proto.MESSAGE,
         number=11,
+        message="Probe",
+    )
+    readiness_probe: "Probe" = proto.Field(
+        proto.MESSAGE,
+        number=14,
         message="Probe",
     )
     depends_on: MutableSequence[str] = proto.RepeatedField(

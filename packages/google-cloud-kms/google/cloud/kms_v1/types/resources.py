@@ -61,12 +61,16 @@ class ProtectionLevel(proto.Enum):
         EXTERNAL_VPC (4):
             Crypto operations are performed in an
             EKM-over-VPC backend.
+        HSM_SINGLE_TENANT (5):
+            Crypto operations are performed in a
+            single-tenant HSM.
     """
     PROTECTION_LEVEL_UNSPECIFIED = 0
     SOFTWARE = 1
     HSM = 2
     EXTERNAL = 3
     EXTERNAL_VPC = 4
+    HSM_SINGLE_TENANT = 5
 
 
 class AccessReason(proto.Enum):
@@ -301,8 +305,14 @@ class CryptoKey(proto.Message):
             [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
             [EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC],
             with the resource name in the format
-            ``projects/*/locations/*/ekmConnections/*``. Note, this list
-            is non-exhaustive and may apply to additional
+            ``projects/*/locations/*/ekmConnections/*``. Only applicable
+            if [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion]
+            have a
+            [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] of
+            [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT],
+            with the resource name in the format
+            ``projects/*/locations/*/singleTenantHsmInstances/*``. Note,
+            this list is non-exhaustive and may apply to additional
             [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in
             the future.
         key_access_justifications_policy (google.cloud.kms_v1.types.KeyAccessJustificationsPolicy):
@@ -1305,6 +1315,17 @@ class ImportJob(proto.Message):
             [ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod]
             is one with a protection level of
             [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
+        crypto_key_backend (str):
+            Immutable. The resource name of the backend environment
+            where the key material for the wrapping key resides and
+            where all related cryptographic operations are performed.
+            Currently, this field is only populated for keys stored in
+            HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may
+            apply to additional
+            [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel] in
+            the future. Supported resources:
+
+            - ``"projects/*/locations/*/singleTenantHsmInstances/*"``
     """
 
     class ImportMethod(proto.Enum):
@@ -1462,6 +1483,10 @@ class ImportJob(proto.Message):
         proto.MESSAGE,
         number=8,
         message="KeyOperationAttestation",
+    )
+    crypto_key_backend: str = proto.Field(
+        proto.STRING,
+        number=11,
     )
 
 

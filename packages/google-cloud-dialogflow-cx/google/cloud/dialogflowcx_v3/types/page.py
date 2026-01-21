@@ -402,6 +402,11 @@ class EventHandler(proto.Message):
             ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/flows/<FlowID>``.
 
             This field is a member of `oneof`_ ``target``.
+        target_playbook (str):
+            The target playbook to transition to. Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+
+            This field is a member of `oneof`_ ``target``.
     """
 
     name: str = proto.Field(
@@ -425,6 +430,11 @@ class EventHandler(proto.Message):
     target_flow: str = proto.Field(
         proto.STRING,
         number=3,
+        oneof="target",
+    )
+    target_playbook: str = proto.Field(
+        proto.STRING,
+        number=7,
         oneof="target",
     )
 

@@ -54,10 +54,14 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3.services.flows import pagers
+from google.cloud.dialogflowcx_v3.types import (
+    page,
+    parameter_definition,
+    validation_message,
+)
 from google.cloud.dialogflowcx_v3.types import advanced_settings
 from google.cloud.dialogflowcx_v3.types import flow
 from google.cloud.dialogflowcx_v3.types import flow as gcdc_flow
-from google.cloud.dialogflowcx_v3.types import page, validation_message
 
 from .client import FlowsClient
 from .transports.base import DEFAULT_CLIENT_INFO, FlowsTransport
@@ -97,6 +101,10 @@ class FlowsAsyncClient:
     parse_intent_path = staticmethod(FlowsClient.parse_intent_path)
     page_path = staticmethod(FlowsClient.page_path)
     parse_page_path = staticmethod(FlowsClient.parse_page_path)
+    playbook_path = staticmethod(FlowsClient.playbook_path)
+    parse_playbook_path = staticmethod(FlowsClient.parse_playbook_path)
+    tool_path = staticmethod(FlowsClient.tool_path)
+    parse_tool_path = staticmethod(FlowsClient.parse_tool_path)
     transition_route_group_path = staticmethod(FlowsClient.transition_route_group_path)
     parse_transition_route_group_path = staticmethod(
         FlowsClient.parse_transition_route_group_path

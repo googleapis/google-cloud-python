@@ -24,11 +24,17 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import audio_config, data_store_connection, flow
+from google.cloud.dialogflowcx_v3.types import (
+    audio_config,
+    data_store_connection,
+    flow,
+    generative_settings,
+)
 from google.cloud.dialogflowcx_v3.types import (
     page,
     response_message,
     session_entity_type,
+    tool_call,
 )
 from google.cloud.dialogflowcx_v3.types import (
     advanced_settings as gcdc_advanced_settings,
@@ -38,6 +44,7 @@ from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
+        "DetectIntentResponseView",
         "AnswerFeedback",
         "SubmitAnswerFeedbackRequest",
         "DetectIntentRequest",
@@ -66,6 +73,33 @@ __protobuf__ = proto.module(
         "SentimentAnalysisResult",
     },
 )
+
+
+class DetectIntentResponseView(proto.Enum):
+    r"""The response view specifies which fields in the
+    [QueryResult][google.cloud.dialogflow.cx.v3.QueryResult] to return.
+
+    Values:
+        DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED (0):
+            Not specified. ``DETECT_INTENT_RESPONSE_VIEW_DEFAULT`` will
+            be used.
+        DETECT_INTENT_RESPONSE_VIEW_FULL (1):
+            Full response view includes all fields.
+        DETECT_INTENT_RESPONSE_VIEW_BASIC (2):
+            Basic response view omits the following fields:
+            -----------------------------------------------
+
+            [QueryResult.diagnostic_info][google.cloud.dialogflow.cx.v3.QueryResult.diagnostic_info]
+        DETECT_INTENT_RESPONSE_VIEW_DEFAULT (3):
+            Default response view omits the following fields:
+            -------------------------------------------------
+
+            [QueryResult.trace_blocks][google.cloud.dialogflow.cx.v3.QueryResult.trace_blocks]
+    """
+    DETECT_INTENT_RESPONSE_VIEW_UNSPECIFIED = 0
+    DETECT_INTENT_RESPONSE_VIEW_FULL = 1
+    DETECT_INTENT_RESPONSE_VIEW_BASIC = 2
+    DETECT_INTENT_RESPONSE_VIEW_DEFAULT = 3
 
 
 class AnswerFeedback(proto.Message):
@@ -210,6 +244,11 @@ class DetectIntentRequest(proto.Message):
         output_audio_config (google.cloud.dialogflowcx_v3.types.OutputAudioConfig):
             Instructs the speech synthesizer how to
             generate the output audio.
+        response_view (google.cloud.dialogflowcx_v3.types.DetectIntentResponseView):
+            Optional. Specifies which fields in the
+            [QueryResult][google.cloud.dialogflow.cx.v3.QueryResult] to
+            return. If not set, the default is
+            DETECT_INTENT_RESPONSE_VIEW_FULL.
     """
 
     session: str = proto.Field(
@@ -230,6 +269,11 @@ class DetectIntentRequest(proto.Message):
         proto.MESSAGE,
         number=4,
         message=audio_config.OutputAudioConfig,
+    )
+    response_view: "DetectIntentResponseView" = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="DetectIntentResponseView",
     )
 
 
@@ -387,6 +431,11 @@ class StreamingDetectIntentRequest(proto.Message):
         enable_debugging_info (bool):
             If true, ``StreamingDetectIntentResponse.debugging_info``
             will get populated.
+        response_view (google.cloud.dialogflowcx_v3.types.DetectIntentResponseView):
+            Optional. Specifies which fields in the
+            [QueryResult][google.cloud.dialogflow.cx.v3.QueryResult] to
+            return. If not set, the default is
+            DETECT_INTENT_RESPONSE_VIEW_FULL.
     """
 
     session: str = proto.Field(
@@ -415,6 +464,11 @@ class StreamingDetectIntentRequest(proto.Message):
     enable_debugging_info: bool = proto.Field(
         proto.BOOL,
         number=8,
+    )
+    response_view: "DetectIntentResponseView" = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum="DetectIntentResponseView",
     )
 
 
@@ -846,6 +900,15 @@ class QueryParameters(proto.Message):
             - MapValue value: If parameter's entity type is a composite
               entity then use map from composite entity property names
               to property values, otherwise, use parameter value.
+        parameter_scope (str):
+            Scope for the parameters. If not specified, parameters will
+            be treated as session parameters. Parameters with custom
+            scope will not be put into [session
+            parameters][google.cloud.dialogflow.cx.v3.SessionInfo.parameters].
+
+            You can reference the parameters with custom scope in the
+            agent with the following format:
+            $parameter-scope.params.parameter-id.
         current_page (str):
             The unique identifier of the
             [page][google.cloud.dialogflow.cx.v3.Page] to override the
@@ -891,6 +954,18 @@ class QueryParameters(proto.Message):
             of flow X will go through version 1 regardless of the
             version configuration in the environment. Each flow can have
             at most one version specified in this list.
+        current_playbook (str):
+            Optional. The unique identifier of the
+            [playbook][google.cloud.dialogflow.cx.v3.Playbook] to start
+            or continue the session with. If ``current_playbook`` is
+            specified, the previous state of the session will be ignored
+            by Dialogflow.
+
+            Format:
+            ``projects/<ProjectID>/locations/<LocationID>/agents/<AgentID>/playbooks/<PlaybookID>``.
+        llm_model_settings (google.cloud.dialogflowcx_v3.types.LlmModelSettings):
+            Optional. Use the specified LLM model
+            settings for processing the request.
         channel (str):
             The channel which this query is for.
 
@@ -967,6 +1042,10 @@ class QueryParameters(proto.Message):
         number=5,
         message=struct_pb2.Struct,
     )
+    parameter_scope: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     current_page: str = proto.Field(
         proto.STRING,
         number=6,
@@ -987,6 +1066,15 @@ class QueryParameters(proto.Message):
     flow_versions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+    current_playbook: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    llm_model_settings: generative_settings.LlmModelSettings = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=generative_settings.LlmModelSettings,
     )
     channel: str = proto.Field(
         proto.STRING,
@@ -1339,6 +1427,10 @@ class QueryInput(proto.Message):
             The DTMF event to be handled.
 
             This field is a member of `oneof`_ ``input``.
+        tool_call_result (google.cloud.dialogflowcx_v3.types.ToolCallResult):
+            The results of a tool executed by the client.
+
+            This field is a member of `oneof`_ ``input``.
         language_code (str):
             Required. The language of the input. See `Language
             Support <https://cloud.google.com/dialogflow/cx/docs/reference/language>`__
@@ -1376,6 +1468,12 @@ class QueryInput(proto.Message):
         number=7,
         oneof="input",
         message="DtmfInput",
+    )
+    tool_call_result: tool_call.ToolCallResult = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="input",
+        message=tool_call.ToolCallResult,
     )
     language_code: str = proto.Field(
         proto.STRING,
@@ -1454,18 +1552,6 @@ class QueryResult(proto.Message):
             client. Responses vary from simple text messages
             to more sophisticated, structured payloads used
             to drive complex logic.
-        webhook_ids (MutableSequence[str]):
-            The list of webhook ids in the order of call
-            sequence.
-        webhook_display_names (MutableSequence[str]):
-            The list of webhook display names in the
-            order of call sequence.
-        webhook_latencies (MutableSequence[google.protobuf.duration_pb2.Duration]):
-            The list of webhook latencies in the order of
-            call sequence.
-        webhook_tags (MutableSequence[str]):
-            The list of webhook tags in the order of call
-            sequence.
         webhook_statuses (MutableSequence[google.rpc.status_pb2.Status]):
             The list of webhook call status in the order
             of call sequence.
@@ -1592,23 +1678,6 @@ class QueryResult(proto.Message):
         proto.MESSAGE,
         number=4,
         message=response_message.ResponseMessage,
-    )
-    webhook_ids: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=25,
-    )
-    webhook_display_names: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=26,
-    )
-    webhook_latencies: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=27,
-        message=duration_pb2.Duration,
-    )
-    webhook_tags: MutableSequence[str] = proto.RepeatedField(
-        proto.STRING,
-        number=29,
     )
     webhook_statuses: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
@@ -1844,7 +1913,8 @@ class Match(proto.Message):
                 The query was matched to a Knowledge
                 Connector answer.
             PLAYBOOK (9):
-                The query was handled by a [``Playbook``][Playbook].
+                The query was handled by a
+                [``Playbook``][google.cloud.dialogflow.cx.v3.Playbook].
         """
         MATCH_TYPE_UNSPECIFIED = 0
         INTENT = 1

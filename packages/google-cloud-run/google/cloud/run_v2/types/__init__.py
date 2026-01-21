@@ -15,6 +15,7 @@
 #
 from .build import StorageSource, SubmitBuildRequest, SubmitBuildResponse
 from .condition import Condition
+from .container_status import ContainerStatus
 from .execution import (
     CancelExecutionRequest,
     DeleteExecutionRequest,
@@ -24,6 +25,16 @@ from .execution import (
     ListExecutionsResponse,
 )
 from .execution_template import ExecutionTemplate
+from .instance import (
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    StartInstanceRequest,
+    StopInstanceRequest,
+)
 from .instance_split import (
     InstanceSplit,
     InstanceSplitAllocationType,
@@ -123,6 +134,7 @@ __all__ = (
     "SubmitBuildRequest",
     "SubmitBuildResponse",
     "Condition",
+    "ContainerStatus",
     "CancelExecutionRequest",
     "DeleteExecutionRequest",
     "Execution",
@@ -130,6 +142,14 @@ __all__ = (
     "ListExecutionsRequest",
     "ListExecutionsResponse",
     "ExecutionTemplate",
+    "CreateInstanceRequest",
+    "DeleteInstanceRequest",
+    "GetInstanceRequest",
+    "Instance",
+    "ListInstancesRequest",
+    "ListInstancesResponse",
+    "StartInstanceRequest",
+    "StopInstanceRequest",
     "InstanceSplit",
     "InstanceSplitStatus",
     "InstanceSplitAllocationType",

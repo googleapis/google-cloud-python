@@ -40,6 +40,10 @@ __protobuf__ = proto.module(
         "QueryDatabaseResourceGroupsResponse",
         "DatabaseResourceGroup",
         "DatabaseResource",
+        "AggregateIssueStatsRequest",
+        "AggregateIssueStatsResponse",
+        "IssueGroupStats",
+        "IssueStats",
         "Label",
         "AggregateFleetRequest",
         "AggregateFleetResponse",
@@ -592,6 +596,221 @@ class DatabaseResource(proto.Message):
         proto.MESSAGE,
         number=19,
         message=maintenance.MaintenanceInfo,
+    )
+
+
+class AggregateIssueStatsRequest(proto.Message):
+    r"""AggregateIssueStatsRequest represents the input to the
+    AggregateIssueStats method.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. Parent can be a project, a folder, or an
+            organization. The search is limited to the resources within
+            the ``scope``.
+
+            The allowed values are:
+
+            - projects/{PROJECT_ID} (e.g., "projects/foo-bar")
+            - projects/{PROJECT_NUMBER} (e.g., "projects/12345678")
+            - folders/{FOLDER_NUMBER} (e.g., "folders/1234567")
+            - organizations/{ORGANIZATION_NUMBER} (e.g.,
+              "organizations/123456")
+        filter (str):
+            Optional. The expression to filter resources.
+
+            Supported fields are: ``full_resource_name``,
+            ``resource_type``, ``container``, ``product.type``,
+            ``product.engine``, ``product.version``, ``location``,
+            ``labels``, ``issues``, fields of availability_info,
+            data_protection_info,'resource_name', etc.
+
+            The expression is a list of zero or more restrictions
+            combined via logical operators ``AND`` and ``OR``. When
+            ``AND`` and ``OR`` are both used in the expression,
+            parentheses must be appropriately used to group the
+            combinations.
+
+            Example: location="us-east1" Example:
+            container="projects/123" OR container="projects/456"
+            Example: (container="projects/123" OR
+            container="projects/456") AND location="us-east1".
+        signal_type_groups (MutableSequence[google.cloud.databasecenter_v1beta.types.SignalTypeGroup]):
+            Optional. Lists of signal types that are
+            issues.
+        baseline_date (google.type.date_pb2.Date):
+            Optional. The baseline date w.r.t. which the
+            delta counts are calculated. If not set, delta
+            counts are not included in the response and the
+            response indicates the current state of the
+            fleet.
+
+            This field is a member of `oneof`_ ``_baseline_date``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    signal_type_groups: MutableSequence[signals.SignalTypeGroup] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=signals.SignalTypeGroup,
+    )
+    baseline_date: date_pb2.Date = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=date_pb2.Date,
+    )
+
+
+class AggregateIssueStatsResponse(proto.Message):
+    r"""The response message containing one of more group of relevant
+    health issues for database resources.
+
+    Attributes:
+        issue_group_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.IssueGroupStats]):
+            List of issue group stats where each group
+            contains stats for resources having a particular
+            combination of relevant issues.
+        total_resources_count (int):
+            Total count of the resources filtered in
+            based on the user given filter.
+        total_resource_groups_count (int):
+            Total count of the resource filtered in based
+            on the user given filter.
+        unreachable (MutableSequence[str]):
+            Unordered list. List of unreachable regions
+            from where data could not be retrieved.
+    """
+
+    issue_group_stats: MutableSequence["IssueGroupStats"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="IssueGroupStats",
+    )
+    total_resources_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    total_resource_groups_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+
+
+class IssueGroupStats(proto.Message):
+    r"""IssueGroupStats refers to stats for a particulare combination
+    of relevant health issues of database resources.
+
+    Attributes:
+        display_name (str):
+            Database resource level health card name.
+            This will corresponds to one of the requested
+            input group names.
+        resource_groups_count (int):
+            Total count of the groups of resources
+            returned by the filter that also have one or
+            more resources for which any of the specified
+            issues are applicable.
+        resources_count (int):
+            Total count of resources returned by the
+            filter for which any of the specified issues are
+            applicable.
+        healthy_resource_groups_count (int):
+            The number of resource groups from the total
+            groups as defined above that are healthy with
+            respect to all of the specified issues.
+        healthy_resources_count (int):
+            The number of resources from the total defined above in
+            field total_resources_count that are healthy with respect to
+            all of the specified issues.
+        issue_stats (MutableSequence[google.cloud.databasecenter_v1beta.types.IssueStats]):
+            List of issues stats containing count of
+            resources having particular issue category.
+    """
+
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    resource_groups_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    resources_count: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    healthy_resource_groups_count: int = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    healthy_resources_count: int = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    issue_stats: MutableSequence["IssueStats"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="IssueStats",
+    )
+
+
+class IssueStats(proto.Message):
+    r"""IssueStats holds stats for a particular signal category.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        signal_type (google.cloud.databasecenter_v1beta.types.SignalType):
+            Type of signal which is an issue.
+        resource_count (int):
+            Number of resources having issues of a given
+            type.
+        delta_details (google.cloud.databasecenter_v1beta.types.DeltaDetails):
+            Optional. Delta counts and details of
+            resources for which issue was raised or fixed.
+
+            This field is a member of `oneof`_ ``_delta_details``.
+        issue_severity (google.cloud.databasecenter_v1beta.types.IssueSeverity):
+            Severity of the issue.
+
+            This field is a member of `oneof`_ ``_issue_severity``.
+    """
+
+    signal_type: signals.SignalType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=signals.SignalType,
+    )
+    resource_count: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    delta_details: "DeltaDetails" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message="DeltaDetails",
+    )
+    issue_severity: signals.IssueSeverity = proto.Field(
+        proto.ENUM,
+        number=4,
+        optional=True,
+        enum=signals.IssueSeverity,
     )
 
 
