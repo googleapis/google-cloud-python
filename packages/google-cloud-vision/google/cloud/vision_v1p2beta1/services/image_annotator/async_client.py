@@ -30,11 +30,9 @@ from typing import (
 )
 import uuid
 
-from google.api_core import (
-    exceptions as core_exceptions,
-    gapic_v1,
-    retry_async as retries,
-)
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.cloud.vision_v1p2beta1 import gapic_version as package_version

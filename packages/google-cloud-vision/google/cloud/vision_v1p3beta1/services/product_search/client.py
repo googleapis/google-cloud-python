@@ -34,12 +34,10 @@ from typing import (
 )
 import warnings
 
-from google.api_core import (
-    client_options as client_options_lib,
-    exceptions as core_exceptions,
-    gapic_v1,
-    retry as retries,
-)
+from google.api_core import client_options as client_options_lib
+from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore

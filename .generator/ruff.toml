@@ -12,7 +12,7 @@ select = ["I"]
 
 # 2. Combine imports from the same module (Standard isort behavior)
 #    Prevents splitting "from x import a, b" into multiple lines.
-combine-as-imports = true
+# combine-as-imports = true
 
 # 3. Sort imports by module name, ignoring "from" vs "import" (Standard isort behavior)
 #    This minimizes diffs where isort mixed them but Ruff separated them.

@@ -46,7 +46,6 @@ except ImportError:  # pragma: NO COVER
 
 from google.api_core import (
     client_options,
-    exceptions as core_exceptions,
     future,
     gapic_v1,
     grpc_helpers,
@@ -55,8 +54,9 @@ from google.api_core import (
     operation_async,  # type: ignore
     operations_v1,
     path_template,
-    retry as retries,
 )
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError

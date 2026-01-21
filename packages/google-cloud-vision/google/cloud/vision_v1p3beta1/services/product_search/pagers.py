@@ -25,7 +25,9 @@ from typing import (
     Union,
 )
 
-from google.api_core import gapic_v1, retry as retries, retry_async as retries_async
+from google.api_core import gapic_v1
+from google.api_core import retry as retries
+from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
