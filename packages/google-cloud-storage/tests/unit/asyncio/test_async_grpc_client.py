@@ -16,6 +16,11 @@ import unittest
 from unittest import mock
 from google.auth import credentials as auth_credentials
 from google.auth.credentials import AnonymousCredentials
+from google.api_core import client_info as client_info_lib
+from google.cloud.storage._experimental.asyncio import async_grpc_client
+from google.cloud.storage._experimental.asyncio.async_grpc_client import (
+    DEFAULT_CLIENT_INFO,
+)
 
 
 def _make_credentials(spec=None):
@@ -27,19 +32,25 @@ def _make_credentials(spec=None):
 class TestAsyncGrpcClient(unittest.TestCase):
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_constructor_default_options(self, mock_async_storage_client):
-        from google.cloud.storage._experimental.asyncio import async_grpc_client
-
+        # Arrange
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_creds = _make_credentials()
 
+        primary_user_agent = DEFAULT_CLIENT_INFO.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
+        # Act
         async_grpc_client.AsyncGrpcClient(credentials=mock_creds)
 
+        # Assert
         mock_async_storage_client.get_transport_class.assert_called_once_with(
             "grpc_asyncio"
         )
         mock_transport_cls.create_channel.assert_called_once_with(
-            attempt_direct_path=True, credentials=mock_creds
+            attempt_direct_path=True,
+            credentials=mock_creds,
+            options=expected_options,
         )
         mock_channel = mock_transport_cls.create_channel.return_value
         mock_transport_cls.assert_called_once_with(channel=mock_channel)
@@ -47,12 +58,34 @@ class TestAsyncGrpcClient(unittest.TestCase):
         mock_async_storage_client.assert_called_once_with(
             transport=mock_transport,
             client_options=None,
-            client_info=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+    @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
+    def test_constructor_with_client_info(self, mock_async_storage_client):
+
+        mock_transport_cls = mock.MagicMock()
+        mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
+        mock_creds = _make_credentials()
+        client_info = client_info_lib.ClientInfo(
+            client_library_version="1.2.3",
+        )
+
+        async_grpc_client.AsyncGrpcClient(
+            credentials=mock_creds, client_info=client_info
+        )
+
+        primary_user_agent = client_info.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
+        mock_transport_cls.create_channel.assert_called_once_with(
+            attempt_direct_path=True,
+            credentials=mock_creds,
+            options=expected_options,
         )
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_constructor_disables_directpath(self, mock_async_storage_client):
-        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_async_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -62,15 +95,19 @@ class TestAsyncGrpcClient(unittest.TestCase):
             credentials=mock_creds, attempt_direct_path=False
         )
 
+        primary_user_agent = DEFAULT_CLIENT_INFO.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
         mock_transport_cls.create_channel.assert_called_once_with(
-            attempt_direct_path=False, credentials=mock_creds
+            attempt_direct_path=False,
+            credentials=mock_creds,
+            options=expected_options,
         )
         mock_channel = mock_transport_cls.create_channel.return_value
         mock_transport_cls.assert_called_once_with(channel=mock_channel)
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_grpc_client_property(self, mock_grpc_gapic_client):
-        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         # Arrange
         mock_transport_cls = mock.MagicMock()
@@ -81,7 +118,8 @@ class TestAsyncGrpcClient(unittest.TestCase):
         mock_transport_cls.return_value = mock.sentinel.transport
 
         mock_creds = _make_credentials()
-        mock_client_info = mock.sentinel.client_info
+        mock_client_info = mock.MagicMock(spec=client_info_lib.ClientInfo)
+        mock_client_info.to_user_agent.return_value = "test-user-agent"
         mock_client_options = mock.sentinel.client_options
         mock_attempt_direct_path = mock.sentinel.attempt_direct_path
 
@@ -102,8 +140,11 @@ class TestAsyncGrpcClient(unittest.TestCase):
         retrieved_client = client.grpc_client
 
         # Assert
+        expected_options = (("grpc.primary_user_agent", "test-user-agent"),)
         mock_transport_cls.create_channel.assert_called_once_with(
-            attempt_direct_path=mock_attempt_direct_path, credentials=mock_creds
+            attempt_direct_path=mock_attempt_direct_path,
+            credentials=mock_creds,
+            options=expected_options,
         )
         mock_transport_cls.assere_with(channel=channel_sentinel)
         mock_grpc_gapic_client.assert_called_once_with(
@@ -115,7 +156,6 @@ class TestAsyncGrpcClient(unittest.TestCase):
 
     @mock.patch("google.cloud._storage_v2.StorageAsyncClient")
     def test_grpc_client_with_anon_creds(self, mock_grpc_gapic_client):
-        from google.cloud.storage._experimental.asyncio import async_grpc_client
 
         # Arrange
         mock_transport_cls = mock.MagicMock()
@@ -133,7 +173,12 @@ class TestAsyncGrpcClient(unittest.TestCase):
         # Assert
         self.assertIs(retrieved_client, mock_grpc_gapic_client.return_value)
 
+        primary_user_agent = DEFAULT_CLIENT_INFO.to_user_agent()
+        expected_options = (("grpc.primary_user_agent", primary_user_agent),)
+
         mock_transport_cls.create_channel.assert_called_once_with(
-            attempt_direct_path=True, credentials=anonymous_creds
+            attempt_direct_path=True,
+            credentials=anonymous_creds,
+            options=expected_options,
         )
         mock_transport_cls.assert_called_once_with(channel=channel_sentinel)

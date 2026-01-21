@@ -15,6 +15,9 @@
 """An async client for interacting with Google Cloud Storage using the gRPC API."""
 
 from google.cloud import _storage_v2 as storage_v2
+from google.cloud._storage_v2.services.storage.transports.base import (
+    DEFAULT_CLIENT_INFO,
+)
 
 
 class AsyncGrpcClient:
@@ -30,7 +33,7 @@ class AsyncGrpcClient:
         The client info used to send a user-agent string along with API
         requests. If ``None``, then default info will be used.
 
-    :type client_options: :class:`~google.api_core.client_options.ClientOptions` or :class:`dict`
+    :type client_options: :class:`~google.api_core.client_options.ClientOptions`
     :param client_options: (Optional) Client options used to set user options
         on the client.
 
@@ -39,7 +42,6 @@ class AsyncGrpcClient:
         (Optional) Whether to attempt to use DirectPath for gRPC connections.
         Defaults to ``True``.
     """
-
     def __init__(
         self,
         credentials=None,
@@ -65,8 +67,15 @@ class AsyncGrpcClient:
         transport_cls = storage_v2.StorageAsyncClient.get_transport_class(
             "grpc_asyncio"
         )
+
+        if client_info is None:
+            client_info = DEFAULT_CLIENT_INFO
+        primary_user_agent = client_info.to_user_agent()
+
         channel = transport_cls.create_channel(
-            attempt_direct_path=attempt_direct_path, credentials=credentials
+            attempt_direct_path=attempt_direct_path,
+            credentials=credentials,
+            options=(("grpc.primary_user_agent", primary_user_agent),),
         )
         transport = transport_cls(channel=channel)
 
