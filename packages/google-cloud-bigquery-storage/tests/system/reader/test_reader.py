@@ -22,7 +22,6 @@ import re
 import uuid
 
 import pytest
-import pytz
 
 from google.cloud import bigquery
 
@@ -451,7 +450,7 @@ def test_decoding_data_types(
         "bool_field": True,
         "geography_field": "POINT(-49.3028 69.0622)",
         "person_struct_field": {"name": "John", "age": 42},
-        "timestamp_field": dt.datetime(2019, 8, 9, 13, 38, 22, 17896, tzinfo=pytz.UTC),
+        "timestamp_field": dt.datetime(2019, 8, 9, 13, 38, 22, 17896, tzinfo=dt.timezone.utc),
         "date_field": dt.date(1995, 3, 17),
         "time_field": dt.time(16, 24, 51),
         "string_array_field": ["foo", "bar", "baz"],
