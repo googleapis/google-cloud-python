@@ -1374,7 +1374,7 @@ def _compile_mutation_entries(table_name, rows):
     for row in rows:
         _check_row_table_name(table_name, row)
         _check_row_type(row)
-        mutations = row._get_mutations()
+        mutations = row._get_mutation_pbs()
         entries.append(entry_klass(row_key=row.row_key, mutations=mutations))
         mutations_count += len(mutations)
 

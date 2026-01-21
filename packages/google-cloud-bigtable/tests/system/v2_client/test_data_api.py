@@ -13,8 +13,11 @@
 # limitations under the License.
 
 import operator
+<<<<<<< HEAD
 import struct
 from datetime import datetime, timedelta, timezone
+=======
+>>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
 
 import pytest
 from grpc import RpcError, StatusCode, UnaryStreamClientInterceptor, intercept_channel
@@ -45,6 +48,8 @@ FLOAT_CELL_VAL2 = -1.4
 
 INITIAL_ROW_SPLITS = [b"row_split_1", b"row_split_2", b"row_split_3"]
 JOY_EMOJI = "\N{FACE WITH TEARS OF JOY}"
+
+GAP_MARGIN_OF_ERROR = 0.05
 
 PASS_ALL_FILTER = row_filters.PassAllFilter(True)
 BLOCK_ALL_FILTER = row_filters.BlockAllFilter(True)
@@ -262,8 +267,12 @@ def _add_test_error_handler(retry):
                 retry._initial * retry._multiplier**times_triggered,
                 retry._maximum,
             )
+<<<<<<< HEAD
             # Allow a small tolerance margin (1.0s) for OS sleep scheduling latency
             assert gap <= max_gap + 1.0
+=======
+            assert gap <= max_gap + GAP_MARGIN_OF_ERROR
+>>>>>>> af49a628442 (feat: Rerouted CheckAndMutateRows and ReadModifyWriteRows (#1257))
         times_triggered += 1
         curr_time = next_time
 
@@ -1047,22 +1056,11 @@ def test_table_direct_row_input_errors(data_table, rows_to_delete):
     with pytest.raises(TypeError):
         row.delete_cell(COLUMN_FAMILY_ID1, INT_COL_NAME)
 
-    # Unicode for column name and value does not get converted to bytes because
-    # internally we use to_bytes in ascii mode.
-    with pytest.raises(UnicodeEncodeError):
-        row.set_cell(COLUMN_FAMILY_ID1, JOY_EMOJI, CELL_VAL1)
-
-    with pytest.raises(UnicodeEncodeError):
-        row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, JOY_EMOJI)
-
-    with pytest.raises(UnicodeEncodeError):
-        row.delete_cell(COLUMN_FAMILY_ID1, JOY_EMOJI)
-
-    # Various non int64s, we use struct to pack a Python int to bytes.
-    with pytest.raises(struct.error):
+    # Various non int64s
+    with pytest.raises(ValueError):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, OVERFLOW_INT_CELL_VAL)
 
-    with pytest.raises(struct.error):
+    with pytest.raises(ValueError):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, OVERFLOW_INT_CELL_VAL2)
 
     # Since floats aren't ints, they aren't converted to bytes via struct.pack,
@@ -1107,22 +1105,11 @@ def test_table_conditional_row_input_errors(data_table, rows_to_delete):
     with pytest.raises(TypeError):
         true_row.delete_cell(COLUMN_FAMILY_ID1, INT_COL_NAME)
 
-    # Unicode for column name and value does not get converted to bytes because
-    # internally we use to_bytes in ascii mode.
-    with pytest.raises(UnicodeEncodeError):
-        true_row.set_cell(COLUMN_FAMILY_ID1, JOY_EMOJI, CELL_VAL1)
-
-    with pytest.raises(UnicodeEncodeError):
-        true_row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, JOY_EMOJI)
-
-    with pytest.raises(UnicodeEncodeError):
-        true_row.delete_cell(COLUMN_FAMILY_ID1, JOY_EMOJI)
-
-    # Various non int64s, we use struct to pack a Python int to bytes.
-    with pytest.raises(struct.error):
+    # Various non int64s
+    with pytest.raises(ValueError):
         true_row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, OVERFLOW_INT_CELL_VAL)
 
-    with pytest.raises(struct.error):
+    with pytest.raises(ValueError):
         true_row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, OVERFLOW_INT_CELL_VAL2)
 
     # Since floats aren't ints, they aren't converted to bytes via struct.pack,
@@ -1171,39 +1158,17 @@ def test_table_append_row_input_errors(data_table, rows_to_delete):
     rows_to_delete.append(data_table.direct_row(ROW_KEY))
 
     # Column names should be convertible to bytes (str or bytes)
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         row.append_cell_value(COLUMN_FAMILY_ID1, INT_COL_NAME, CELL_VAL1)
 
-    with pytest.raises(TypeError):
+    with pytest.raises(AttributeError):
         row.increment_cell_value(COLUMN_FAMILY_ID1, INT_COL_NAME, 1)
 
-    # Unicode for column name and value
-    with pytest.raises(UnicodeEncodeError):
-        row.append_cell_value(COLUMN_FAMILY_ID1, JOY_EMOJI, CELL_VAL1)
-
-    with pytest.raises(UnicodeEncodeError):
-        row.append_cell_value(COLUMN_FAMILY_ID1, COL_NAME1, JOY_EMOJI)
-
-    with pytest.raises(UnicodeEncodeError):
-        row.increment_cell_value(COLUMN_FAMILY_ID1, JOY_EMOJI, 1)
-
-    # Non-integer cell values for increment_cell_value
     with pytest.raises(ValueError):
         row.increment_cell_value(COLUMN_FAMILY_ID1, COL_NAME1, OVERFLOW_INT_CELL_VAL)
 
-    # increment_cell_value does not do input validation on the int_value, instead using
-    # proto-plus to do validation.
-    row.increment_cell_value(COLUMN_FAMILY_ID1, COL_NAME1, FLOAT_CELL_VAL)
-    row.increment_cell_value(COLUMN_FAMILY_ID1, COL_NAME2, FLOAT_CELL_VAL2)
-    row.commit()
-
-    row_data = data_table.read_row(ROW_KEY)
-    assert row_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value == int(
-        FLOAT_CELL_VAL
-    ).to_bytes(8, byteorder="big", signed=True)
-    assert row_data.cells[COLUMN_FAMILY_ID1][COL_NAME2][0].value == int(
-        FLOAT_CELL_VAL2
-    ).to_bytes(8, byteorder="big", signed=True)
+    with pytest.raises(TypeError):
+        row.increment_cell_value(COLUMN_FAMILY_ID1, COL_NAME1, FLOAT_CELL_VAL)
 
     # Can't have more than MAX_MUTATIONS mutations, but only enforced after
     # a row.commit
