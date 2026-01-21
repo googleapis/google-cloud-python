@@ -88,7 +88,7 @@ class Likelihood(proto.Enum):
 
 class Feature(proto.Message):
     r"""Users describe the type of Google Cloud Vision API tasks to perform
-    over images by using *Feature*\ s. Each Feature indicates a type of
+    over images by using *Feature*s. Each Feature indicates a type of
     image detection task to perform. Features encode the Cloud Vision
     API vertical to operate on and the number of top-scoring results to
     return.
