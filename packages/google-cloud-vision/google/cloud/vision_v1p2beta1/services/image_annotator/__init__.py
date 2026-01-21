@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ImageAnnotatorClient
 from .async_client import ImageAnnotatorAsyncClient
+from .client import ImageAnnotatorClient
 
 __all__ = (
-    'ImageAnnotatorClient',
-    'ImageAnnotatorAsyncClient',
+    "ImageAnnotatorClient",
+    "ImageAnnotatorAsyncClient",
 )

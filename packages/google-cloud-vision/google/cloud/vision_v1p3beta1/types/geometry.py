@@ -19,14 +19,13 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.vision.v1p3beta1',
+    package="google.cloud.vision.v1p3beta1",
     manifest={
-        'Vertex',
-        'NormalizedVertex',
-        'BoundingPoly',
-        'Position',
+        "Vertex",
+        "NormalizedVertex",
+        "BoundingPoly",
+        "Position",
     },
 )
 
@@ -85,15 +84,15 @@ class BoundingPoly(proto.Message):
             The bounding polygon normalized vertices.
     """
 
-    vertices: MutableSequence['Vertex'] = proto.RepeatedField(
+    vertices: MutableSequence["Vertex"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='Vertex',
+        message="Vertex",
     )
-    normalized_vertices: MutableSequence['NormalizedVertex'] = proto.RepeatedField(
+    normalized_vertices: MutableSequence["NormalizedVertex"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='NormalizedVertex',
+        message="NormalizedVertex",
     )
 
 

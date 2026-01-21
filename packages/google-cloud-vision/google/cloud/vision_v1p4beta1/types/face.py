@@ -19,13 +19,12 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.vision.v1p4beta1',
+    package="google.cloud.vision.v1p4beta1",
     manifest={
-        'FaceRecognitionParams',
-        'Celebrity',
-        'FaceRecognitionResult',
+        "FaceRecognitionParams",
+        "Celebrity",
+        "FaceRecognitionResult",
     },
 )
 
@@ -87,10 +86,10 @@ class FaceRecognitionResult(proto.Message):
             Recognition confidence. Range [0, 1].
     """
 
-    celebrity: 'Celebrity' = proto.Field(
+    celebrity: "Celebrity" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='Celebrity',
+        message="Celebrity",
     )
     confidence: float = proto.Field(
         proto.FLOAT,

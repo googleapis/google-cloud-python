@@ -19,60 +19,63 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.vision_v1p4beta1.types import face
-from google.cloud.vision_v1p4beta1.types import geometry
-from google.cloud.vision_v1p4beta1.types import product_search
-from google.cloud.vision_v1p4beta1.types import text_annotation
+from google.cloud.vision_v1p4beta1.types import (
+    face,
+    geometry,
+    product_search,
+    text_annotation,
+)
 from google.cloud.vision_v1p4beta1.types import web_detection as gcv_web_detection
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
-
+from google.type import (
+    color_pb2,  # type: ignore
+    latlng_pb2,  # type: ignore
+)
 
 __protobuf__ = proto.module(
-    package='google.cloud.vision.v1p4beta1',
+    package="google.cloud.vision.v1p4beta1",
     manifest={
-        'Likelihood',
-        'Feature',
-        'ImageSource',
-        'Image',
-        'FaceAnnotation',
-        'LocationInfo',
-        'Property',
-        'EntityAnnotation',
-        'LocalizedObjectAnnotation',
-        'SafeSearchAnnotation',
-        'LatLongRect',
-        'ColorInfo',
-        'DominantColorsAnnotation',
-        'ImageProperties',
-        'CropHint',
-        'CropHintsAnnotation',
-        'CropHintsParams',
-        'WebDetectionParams',
-        'TextDetectionParams',
-        'ImageContext',
-        'AnnotateImageRequest',
-        'ImageAnnotationContext',
-        'AnnotateImageResponse',
-        'BatchAnnotateImagesRequest',
-        'BatchAnnotateImagesResponse',
-        'AnnotateFileRequest',
-        'AnnotateFileResponse',
-        'BatchAnnotateFilesRequest',
-        'BatchAnnotateFilesResponse',
-        'AsyncAnnotateFileRequest',
-        'AsyncAnnotateFileResponse',
-        'AsyncBatchAnnotateImagesRequest',
-        'AsyncBatchAnnotateImagesResponse',
-        'AsyncBatchAnnotateFilesRequest',
-        'AsyncBatchAnnotateFilesResponse',
-        'InputConfig',
-        'OutputConfig',
-        'GcsSource',
-        'GcsDestination',
-        'OperationMetadata',
+        "Likelihood",
+        "Feature",
+        "ImageSource",
+        "Image",
+        "FaceAnnotation",
+        "LocationInfo",
+        "Property",
+        "EntityAnnotation",
+        "LocalizedObjectAnnotation",
+        "SafeSearchAnnotation",
+        "LatLongRect",
+        "ColorInfo",
+        "DominantColorsAnnotation",
+        "ImageProperties",
+        "CropHint",
+        "CropHintsAnnotation",
+        "CropHintsParams",
+        "WebDetectionParams",
+        "TextDetectionParams",
+        "ImageContext",
+        "AnnotateImageRequest",
+        "ImageAnnotationContext",
+        "AnnotateImageResponse",
+        "BatchAnnotateImagesRequest",
+        "BatchAnnotateImagesResponse",
+        "AnnotateFileRequest",
+        "AnnotateFileResponse",
+        "BatchAnnotateFilesRequest",
+        "BatchAnnotateFilesResponse",
+        "AsyncAnnotateFileRequest",
+        "AsyncAnnotateFileResponse",
+        "AsyncBatchAnnotateImagesRequest",
+        "AsyncBatchAnnotateImagesResponse",
+        "AsyncBatchAnnotateFilesRequest",
+        "AsyncBatchAnnotateFilesResponse",
+        "InputConfig",
+        "OutputConfig",
+        "GcsSource",
+        "GcsDestination",
+        "OperationMetadata",
     },
 )
 
@@ -95,6 +98,7 @@ class Likelihood(proto.Enum):
         VERY_LIKELY (5):
             It is very likely.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -122,6 +126,7 @@ class Feature(proto.Message):
             ``TEXT_DETECTION`` also support "builtin/weekly" for the
             bleeding edge release updated weekly.
     """
+
     class Type(proto.Enum):
         r"""Type of Google Cloud Vision API feature to be extracted.
 
@@ -160,6 +165,7 @@ class Feature(proto.Message):
             OBJECT_LOCALIZATION (19):
                 Run localizer for object detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -253,10 +259,10 @@ class Image(proto.Message):
         proto.BYTES,
         number=1,
     )
-    source: 'ImageSource' = proto.Field(
+    source: "ImageSource" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='ImageSource',
+        message="ImageSource",
     )
 
 
@@ -334,6 +340,7 @@ class FaceAnnotation(proto.Message):
             position (google.cloud.vision_v1p4beta1.types.Position):
                 Face landmark position.
         """
+
         class Type(proto.Enum):
             r"""Face landmark (feature) type. Left and right are defined from the
             vantage of the viewer of the image without considering mirror
@@ -413,6 +420,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2
@@ -449,10 +457,10 @@ class FaceAnnotation(proto.Message):
             CHIN_LEFT_GONION = 33
             CHIN_RIGHT_GONION = 34
 
-        type_: 'FaceAnnotation.Landmark.Type' = proto.Field(
+        type_: "FaceAnnotation.Landmark.Type" = proto.Field(
             proto.ENUM,
             number=3,
-            enum='FaceAnnotation.Landmark.Type',
+            enum="FaceAnnotation.Landmark.Type",
         )
         position: geometry.Position = proto.Field(
             proto.MESSAGE,
@@ -495,45 +503,47 @@ class FaceAnnotation(proto.Message):
         proto.FLOAT,
         number=8,
     )
-    joy_likelihood: 'Likelihood' = proto.Field(
+    joy_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=9,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    sorrow_likelihood: 'Likelihood' = proto.Field(
+    sorrow_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=10,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    anger_likelihood: 'Likelihood' = proto.Field(
+    anger_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=11,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    surprise_likelihood: 'Likelihood' = proto.Field(
+    surprise_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=12,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    under_exposed_likelihood: 'Likelihood' = proto.Field(
+    under_exposed_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=13,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    blurred_likelihood: 'Likelihood' = proto.Field(
+    blurred_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=14,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    headwear_likelihood: 'Likelihood' = proto.Field(
+    headwear_likelihood: "Likelihood" = proto.Field(
         proto.ENUM,
         number=15,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    recognition_result: MutableSequence[face.FaceRecognitionResult] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=16,
-        message=face.FaceRecognitionResult,
+    recognition_result: MutableSequence[face.FaceRecognitionResult] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=16,
+            message=face.FaceRecognitionResult,
+        )
     )
 
 
@@ -652,15 +662,15 @@ class EntityAnnotation(proto.Message):
         number=7,
         message=geometry.BoundingPoly,
     )
-    locations: MutableSequence['LocationInfo'] = proto.RepeatedField(
+    locations: MutableSequence["LocationInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
-        message='LocationInfo',
+        message="LocationInfo",
     )
-    properties: MutableSequence['Property'] = proto.RepeatedField(
+    properties: MutableSequence["Property"] = proto.RepeatedField(
         proto.MESSAGE,
         number=9,
-        message='Property',
+        message="Property",
     )
 
 
@@ -736,30 +746,30 @@ class SafeSearchAnnotation(proto.Message):
             body areas.
     """
 
-    adult: 'Likelihood' = proto.Field(
+    adult: "Likelihood" = proto.Field(
         proto.ENUM,
         number=1,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    spoof: 'Likelihood' = proto.Field(
+    spoof: "Likelihood" = proto.Field(
         proto.ENUM,
         number=2,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    medical: 'Likelihood' = proto.Field(
+    medical: "Likelihood" = proto.Field(
         proto.ENUM,
         number=3,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    violence: 'Likelihood' = proto.Field(
+    violence: "Likelihood" = proto.Field(
         proto.ENUM,
         number=4,
-        enum='Likelihood',
+        enum="Likelihood",
     )
-    racy: 'Likelihood' = proto.Field(
+    racy: "Likelihood" = proto.Field(
         proto.ENUM,
         number=9,
-        enum='Likelihood',
+        enum="Likelihood",
     )
 
 
@@ -823,10 +833,10 @@ class DominantColorsAnnotation(proto.Message):
             fraction.
     """
 
-    colors: MutableSequence['ColorInfo'] = proto.RepeatedField(
+    colors: MutableSequence["ColorInfo"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='ColorInfo',
+        message="ColorInfo",
     )
 
 
@@ -839,10 +849,10 @@ class ImageProperties(proto.Message):
             successfully.
     """
 
-    dominant_colors: 'DominantColorsAnnotation' = proto.Field(
+    dominant_colors: "DominantColorsAnnotation" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='DominantColorsAnnotation',
+        message="DominantColorsAnnotation",
     )
 
 
@@ -886,10 +896,10 @@ class CropHintsAnnotation(proto.Message):
             Crop hint results.
     """
 
-    crop_hints: MutableSequence['CropHint'] = proto.RepeatedField(
+    crop_hints: MutableSequence["CropHint"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='CropHint',
+        message="CropHint",
     )
 
 
@@ -983,19 +993,19 @@ class ImageContext(proto.Message):
             text detection.
     """
 
-    lat_long_rect: 'LatLongRect' = proto.Field(
+    lat_long_rect: "LatLongRect" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='LatLongRect',
+        message="LatLongRect",
     )
     language_hints: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
     )
-    crop_hints_params: 'CropHintsParams' = proto.Field(
+    crop_hints_params: "CropHintsParams" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='CropHintsParams',
+        message="CropHintsParams",
     )
     face_recognition_params: face.FaceRecognitionParams = proto.Field(
         proto.MESSAGE,
@@ -1007,15 +1017,15 @@ class ImageContext(proto.Message):
         number=5,
         message=product_search.ProductSearchParams,
     )
-    web_detection_params: 'WebDetectionParams' = proto.Field(
+    web_detection_params: "WebDetectionParams" = proto.Field(
         proto.MESSAGE,
         number=6,
-        message='WebDetectionParams',
+        message="WebDetectionParams",
     )
-    text_detection_params: 'TextDetectionParams' = proto.Field(
+    text_detection_params: "TextDetectionParams" = proto.Field(
         proto.MESSAGE,
         number=12,
-        message='TextDetectionParams',
+        message="TextDetectionParams",
     )
 
 
@@ -1034,20 +1044,20 @@ class AnnotateImageRequest(proto.Message):
             image.
     """
 
-    image: 'Image' = proto.Field(
+    image: "Image" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='Image',
+        message="Image",
     )
-    features: MutableSequence['Feature'] = proto.RepeatedField(
+    features: MutableSequence["Feature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='Feature',
+        message="Feature",
     )
-    image_context: 'ImageContext' = proto.Field(
+    image_context: "ImageContext" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='ImageContext',
+        message="ImageContext",
     )
 
 
@@ -1127,55 +1137,57 @@ class AnnotateImageResponse(proto.Message):
             to understand where this image comes from.
     """
 
-    face_annotations: MutableSequence['FaceAnnotation'] = proto.RepeatedField(
+    face_annotations: MutableSequence["FaceAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='FaceAnnotation',
+        message="FaceAnnotation",
     )
-    landmark_annotations: MutableSequence['EntityAnnotation'] = proto.RepeatedField(
+    landmark_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='EntityAnnotation',
+        message="EntityAnnotation",
     )
-    logo_annotations: MutableSequence['EntityAnnotation'] = proto.RepeatedField(
+    logo_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
-        message='EntityAnnotation',
+        message="EntityAnnotation",
     )
-    label_annotations: MutableSequence['EntityAnnotation'] = proto.RepeatedField(
+    label_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
-        message='EntityAnnotation',
+        message="EntityAnnotation",
     )
-    localized_object_annotations: MutableSequence['LocalizedObjectAnnotation'] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=22,
-        message='LocalizedObjectAnnotation',
+    localized_object_annotations: MutableSequence["LocalizedObjectAnnotation"] = (
+        proto.RepeatedField(
+            proto.MESSAGE,
+            number=22,
+            message="LocalizedObjectAnnotation",
+        )
     )
-    text_annotations: MutableSequence['EntityAnnotation'] = proto.RepeatedField(
+    text_annotations: MutableSequence["EntityAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
-        message='EntityAnnotation',
+        message="EntityAnnotation",
     )
     full_text_annotation: text_annotation.TextAnnotation = proto.Field(
         proto.MESSAGE,
         number=12,
         message=text_annotation.TextAnnotation,
     )
-    safe_search_annotation: 'SafeSearchAnnotation' = proto.Field(
+    safe_search_annotation: "SafeSearchAnnotation" = proto.Field(
         proto.MESSAGE,
         number=6,
-        message='SafeSearchAnnotation',
+        message="SafeSearchAnnotation",
     )
-    image_properties_annotation: 'ImageProperties' = proto.Field(
+    image_properties_annotation: "ImageProperties" = proto.Field(
         proto.MESSAGE,
         number=8,
-        message='ImageProperties',
+        message="ImageProperties",
     )
-    crop_hints_annotation: 'CropHintsAnnotation' = proto.Field(
+    crop_hints_annotation: "CropHintsAnnotation" = proto.Field(
         proto.MESSAGE,
         number=11,
-        message='CropHintsAnnotation',
+        message="CropHintsAnnotation",
     )
     web_detection: gcv_web_detection.WebDetection = proto.Field(
         proto.MESSAGE,
@@ -1192,10 +1204,10 @@ class AnnotateImageResponse(proto.Message):
         number=9,
         message=status_pb2.Status,
     )
-    context: 'ImageAnnotationContext' = proto.Field(
+    context: "ImageAnnotationContext" = proto.Field(
         proto.MESSAGE,
         number=21,
-        message='ImageAnnotationContext',
+        message="ImageAnnotationContext",
     )
 
 
@@ -1209,10 +1221,10 @@ class BatchAnnotateImagesRequest(proto.Message):
             requests for this batch.
     """
 
-    requests: MutableSequence['AnnotateImageRequest'] = proto.RepeatedField(
+    requests: MutableSequence["AnnotateImageRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AnnotateImageRequest',
+        message="AnnotateImageRequest",
     )
 
 
@@ -1225,10 +1237,10 @@ class BatchAnnotateImagesResponse(proto.Message):
             requests within the batch.
     """
 
-    responses: MutableSequence['AnnotateImageResponse'] = proto.RepeatedField(
+    responses: MutableSequence["AnnotateImageResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AnnotateImageResponse',
+        message="AnnotateImageResponse",
     )
 
 
@@ -1264,20 +1276,20 @@ class AnnotateFileRequest(proto.Message):
             of the file.
     """
 
-    input_config: 'InputConfig' = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='InputConfig',
+        message="InputConfig",
     )
-    features: MutableSequence['Feature'] = proto.RepeatedField(
+    features: MutableSequence["Feature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='Feature',
+        message="Feature",
     )
-    image_context: 'ImageContext' = proto.Field(
+    image_context: "ImageContext" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='ImageContext',
+        message="ImageContext",
     )
     pages: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
@@ -1305,15 +1317,15 @@ class AnnotateFileResponse(proto.Message):
             The ``responses`` field will not be set in this case.
     """
 
-    input_config: 'InputConfig' = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='InputConfig',
+        message="InputConfig",
     )
-    responses: MutableSequence['AnnotateImageResponse'] = proto.RepeatedField(
+    responses: MutableSequence["AnnotateImageResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='AnnotateImageResponse',
+        message="AnnotateImageResponse",
     )
     total_pages: int = proto.Field(
         proto.INT32,
@@ -1338,10 +1350,10 @@ class BatchAnnotateFilesRequest(proto.Message):
             BatchAnnotateFilesRequest.
     """
 
-    requests: MutableSequence['AnnotateFileRequest'] = proto.RepeatedField(
+    requests: MutableSequence["AnnotateFileRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AnnotateFileRequest',
+        message="AnnotateFileRequest",
     )
 
 
@@ -1356,10 +1368,10 @@ class BatchAnnotateFilesResponse(proto.Message):
             BatchAnnotateFilesRequest.
     """
 
-    responses: MutableSequence['AnnotateFileResponse'] = proto.RepeatedField(
+    responses: MutableSequence["AnnotateFileResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AnnotateFileResponse',
+        message="AnnotateFileResponse",
     )
 
 
@@ -1379,25 +1391,25 @@ class AsyncAnnotateFileRequest(proto.Message):
             metadata (e.g. format).
     """
 
-    input_config: 'InputConfig' = proto.Field(
+    input_config: "InputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='InputConfig',
+        message="InputConfig",
     )
-    features: MutableSequence['Feature'] = proto.RepeatedField(
+    features: MutableSequence["Feature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
-        message='Feature',
+        message="Feature",
     )
-    image_context: 'ImageContext' = proto.Field(
+    image_context: "ImageContext" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='ImageContext',
+        message="ImageContext",
     )
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='OutputConfig',
+        message="OutputConfig",
     )
 
 
@@ -1410,10 +1422,10 @@ class AsyncAnnotateFileResponse(proto.Message):
             AsyncAnnotateFileRequest.
     """
 
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='OutputConfig',
+        message="OutputConfig",
     )
 
 
@@ -1429,15 +1441,15 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
             metadata (e.g. format).
     """
 
-    requests: MutableSequence['AnnotateImageRequest'] = proto.RepeatedField(
+    requests: MutableSequence["AnnotateImageRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AnnotateImageRequest',
+        message="AnnotateImageRequest",
     )
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
-        message='OutputConfig',
+        message="OutputConfig",
     )
 
 
@@ -1450,10 +1462,10 @@ class AsyncBatchAnnotateImagesResponse(proto.Message):
             AsyncBatchAnnotateImagesRequest.
     """
 
-    output_config: 'OutputConfig' = proto.Field(
+    output_config: "OutputConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='OutputConfig',
+        message="OutputConfig",
     )
 
 
@@ -1467,10 +1479,10 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
             requests for this batch.
     """
 
-    requests: MutableSequence['AsyncAnnotateFileRequest'] = proto.RepeatedField(
+    requests: MutableSequence["AsyncAnnotateFileRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AsyncAnnotateFileRequest',
+        message="AsyncAnnotateFileRequest",
     )
 
 
@@ -1484,10 +1496,10 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
             AsyncBatchAnnotateFilesRequest.
     """
 
-    responses: MutableSequence['AsyncAnnotateFileResponse'] = proto.RepeatedField(
+    responses: MutableSequence["AsyncAnnotateFileResponse"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='AsyncAnnotateFileResponse',
+        message="AsyncAnnotateFileResponse",
     )
 
 
@@ -1512,10 +1524,10 @@ class InputConfig(proto.Message):
             are supported. Wildcards are not supported.
     """
 
-    gcs_source: 'GcsSource' = proto.Field(
+    gcs_source: "GcsSource" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='GcsSource',
+        message="GcsSource",
     )
     content: bytes = proto.Field(
         proto.BYTES,
@@ -1548,10 +1560,10 @@ class OutputConfig(proto.Message):
             potential future support for other output configurations.
     """
 
-    gcs_destination: 'GcsDestination' = proto.Field(
+    gcs_destination: "GcsDestination" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='GcsDestination',
+        message="GcsDestination",
     )
     batch_size: int = proto.Field(
         proto.INT32,
@@ -1628,6 +1640,7 @@ class OperationMetadata(proto.Message):
             The time when the operation result was last
             updated.
     """
+
     class State(proto.Enum):
         r"""Batch operation states.
 
@@ -1643,6 +1656,7 @@ class OperationMetadata(proto.Message):
             CANCELLED (4):
                 The batch processing was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2

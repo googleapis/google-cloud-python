@@ -1,0 +1,16 @@
+# .generator/ruff.toml
+
+# Match Black's line length
+line-length = 88
+
+[lint]
+# Enable Import sorting (isort)
+select = ["I"]
+
+[lint.isort]
+# Force 'google' to be recognized as a first-party import
+known-first-party = ["google"]
+
+[format]
+# Strictly enforce double quotes (Black style)
+quote-style = "double"

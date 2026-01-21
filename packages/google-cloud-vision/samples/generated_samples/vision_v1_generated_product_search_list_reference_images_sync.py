@@ -50,4 +50,5 @@ def sample_list_reference_images():
     for response in page_result:
         print(response)
 
+
 # [END vision_v1_generated_ProductSearch_ListReferenceImages_sync]

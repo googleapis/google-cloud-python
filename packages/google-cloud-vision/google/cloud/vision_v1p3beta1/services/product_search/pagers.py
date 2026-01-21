@@ -13,13 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from typing import (
+    Any,
+    AsyncIterator,
+    Awaitable,
+    Callable,
+    Iterator,
+    Optional,
+    Sequence,
+    Tuple,
+    Union,
+)
+
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.api_core import retry_async as retries_async
-from typing import Any, AsyncIterator, Awaitable, Callable, Sequence, Tuple, Optional, Iterator, Union
+
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
+    OptionalAsyncRetry = Union[
+        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
+    ]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -44,14 +58,17 @@ class ListProductSetsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., product_search_service.ListProductSetsResponse],
-            request: product_search_service.ListProductSetsRequest,
-            response: product_search_service.ListProductSetsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., product_search_service.ListProductSetsResponse],
+        request: product_search_service.ListProductSetsRequest,
+        response: product_search_service.ListProductSetsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -84,7 +101,12 @@ class ListProductSetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[product_search_service.ProductSet]:
@@ -92,7 +114,7 @@ class ListProductSetsPager:
             yield from page.product_sets
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProductSetsAsyncPager:
@@ -112,14 +134,19 @@ class ListProductSetsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[product_search_service.ListProductSetsResponse]],
-            request: product_search_service.ListProductSetsRequest,
-            response: product_search_service.ListProductSetsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[product_search_service.ListProductSetsResponse]
+        ],
+        request: product_search_service.ListProductSetsRequest,
+        response: product_search_service.ListProductSetsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -148,12 +175,20 @@ class ListProductSetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[product_search_service.ListProductSetsResponse]:
+    async def pages(
+        self,
+    ) -> AsyncIterator[product_search_service.ListProductSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[product_search_service.ProductSet]:
         async def async_generator():
             async for page in self.pages:
@@ -163,7 +198,7 @@ class ListProductSetsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProductsPager:
@@ -183,14 +218,17 @@ class ListProductsPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., product_search_service.ListProductsResponse],
-            request: product_search_service.ListProductsRequest,
-            response: product_search_service.ListProductsResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., product_search_service.ListProductsResponse],
+        request: product_search_service.ListProductsRequest,
+        response: product_search_service.ListProductsResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -223,7 +261,12 @@ class ListProductsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[product_search_service.Product]:
@@ -231,7 +274,7 @@ class ListProductsPager:
             yield from page.products
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProductsAsyncPager:
@@ -251,14 +294,17 @@ class ListProductsAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[product_search_service.ListProductsResponse]],
-            request: product_search_service.ListProductsRequest,
-            response: product_search_service.ListProductsResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[product_search_service.ListProductsResponse]],
+        request: product_search_service.ListProductsRequest,
+        response: product_search_service.ListProductsResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -291,8 +337,14 @@ class ListProductsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[product_search_service.Product]:
         async def async_generator():
             async for page in self.pages:
@@ -302,7 +354,7 @@ class ListProductsAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListReferenceImagesPager:
@@ -322,14 +374,17 @@ class ListReferenceImagesPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., product_search_service.ListReferenceImagesResponse],
-            request: product_search_service.ListReferenceImagesRequest,
-            response: product_search_service.ListReferenceImagesResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., product_search_service.ListReferenceImagesResponse],
+        request: product_search_service.ListReferenceImagesRequest,
+        response: product_search_service.ListReferenceImagesResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -362,7 +417,12 @@ class ListReferenceImagesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[product_search_service.ReferenceImage]:
@@ -370,7 +430,7 @@ class ListReferenceImagesPager:
             yield from page.reference_images
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListReferenceImagesAsyncPager:
@@ -390,14 +450,19 @@ class ListReferenceImagesAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[product_search_service.ListReferenceImagesResponse]],
-            request: product_search_service.ListReferenceImagesRequest,
-            response: product_search_service.ListReferenceImagesResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[product_search_service.ListReferenceImagesResponse]
+        ],
+        request: product_search_service.ListReferenceImagesRequest,
+        response: product_search_service.ListReferenceImagesResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -426,12 +491,20 @@ class ListReferenceImagesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[product_search_service.ListReferenceImagesResponse]:
+    async def pages(
+        self,
+    ) -> AsyncIterator[product_search_service.ListReferenceImagesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[product_search_service.ReferenceImage]:
         async def async_generator():
             async for page in self.pages:
@@ -441,7 +514,7 @@ class ListReferenceImagesAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProductsInProductSetPager:
@@ -461,14 +534,17 @@ class ListProductsInProductSetPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., product_search_service.ListProductsInProductSetResponse],
-            request: product_search_service.ListProductsInProductSetRequest,
-            response: product_search_service.ListProductsInProductSetResponse,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[..., product_search_service.ListProductsInProductSetResponse],
+        request: product_search_service.ListProductsInProductSetRequest,
+        response: product_search_service.ListProductsInProductSetResponse,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiate the pager.
 
         Args:
@@ -497,11 +573,18 @@ class ListProductsInProductSetPager:
         return getattr(self._response, name)
 
     @property
-    def pages(self) -> Iterator[product_search_service.ListProductsInProductSetResponse]:
+    def pages(
+        self,
+    ) -> Iterator[product_search_service.ListProductsInProductSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
 
     def __iter__(self) -> Iterator[product_search_service.Product]:
@@ -509,7 +592,7 @@ class ListProductsInProductSetPager:
             yield from page.products
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
 class ListProductsInProductSetAsyncPager:
@@ -529,14 +612,19 @@ class ListProductsInProductSetAsyncPager:
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
-    def __init__(self,
-            method: Callable[..., Awaitable[product_search_service.ListProductsInProductSetResponse]],
-            request: product_search_service.ListProductsInProductSetRequest,
-            response: product_search_service.ListProductsInProductSetResponse,
-            *,
-            retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
-            timeout: Union[float, object] = gapic_v1.method.DEFAULT,
-            metadata: Sequence[Tuple[str, Union[str, bytes]]] = ()):
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[product_search_service.ListProductsInProductSetResponse]
+        ],
+        request: product_search_service.ListProductsInProductSetRequest,
+        response: product_search_service.ListProductsInProductSetResponse,
+        *,
+        retry: OptionalAsyncRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ):
         """Instantiates the pager.
 
         Args:
@@ -565,12 +653,20 @@ class ListProductsInProductSetAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(self) -> AsyncIterator[product_search_service.ListProductsInProductSetResponse]:
+    async def pages(
+        self,
+    ) -> AsyncIterator[product_search_service.ListProductsInProductSetResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
+            self._response = await self._method(
+                self._request,
+                retry=self._retry,
+                timeout=self._timeout,
+                metadata=self._metadata,
+            )
             yield self._response
+
     def __aiter__(self) -> AsyncIterator[product_search_service.Product]:
         async def async_generator():
             async for page in self.pages:
@@ -580,4 +676,4 @@ class ListProductsInProductSetAsyncPager:
         return async_generator()
 
     def __repr__(self) -> str:
-        return '{0}<{1!r}>'.format(self.__class__.__name__, self._response)
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

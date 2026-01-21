@@ -19,25 +19,24 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
-import google.auth                         # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
 
+import google.auth  # type: ignore
+import google.protobuf.message
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.vision_v1.types import product_search_service
-from google.longrunning import operations_pb2 # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-from .base import ProductSearchTransport, DEFAULT_CLIENT_INFO
+from google.protobuf.json_format import MessageToJson
+
+from .base import DEFAULT_CLIENT_INFO, ProductSearchTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -47,7 +46,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,7 +69,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.vision.v1.ProductSearch",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -79,7 +80,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -94,7 +99,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.vision.v1.ProductSearch",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
@@ -133,23 +138,26 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'vision.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "vision.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -273,19 +281,23 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'vision.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "vision.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -321,13 +333,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
-        """
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
@@ -347,9 +358,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         return self._operations_client
 
     @property
-    def create_product_set(self) -> Callable[
-            [product_search_service.CreateProductSetRequest],
-            product_search_service.ProductSet]:
+    def create_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.CreateProductSetRequest],
+        product_search_service.ProductSet,
+    ]:
         r"""Return a callable for the create product set method over gRPC.
 
         Creates and returns a new ProductSet resource.
@@ -369,18 +383,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_product_set' not in self._stubs:
-            self._stubs['create_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/CreateProductSet',
+        if "create_product_set" not in self._stubs:
+            self._stubs["create_product_set"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/CreateProductSet",
                 request_serializer=product_search_service.CreateProductSetRequest.serialize,
                 response_deserializer=product_search_service.ProductSet.deserialize,
             )
-        return self._stubs['create_product_set']
+        return self._stubs["create_product_set"]
 
     @property
-    def list_product_sets(self) -> Callable[
-            [product_search_service.ListProductSetsRequest],
-            product_search_service.ListProductSetsResponse]:
+    def list_product_sets(
+        self,
+    ) -> Callable[
+        [product_search_service.ListProductSetsRequest],
+        product_search_service.ListProductSetsResponse,
+    ]:
         r"""Return a callable for the list product sets method over gRPC.
 
         Lists ProductSets in an unspecified order.
@@ -400,18 +417,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_product_sets' not in self._stubs:
-            self._stubs['list_product_sets'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/ListProductSets',
+        if "list_product_sets" not in self._stubs:
+            self._stubs["list_product_sets"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/ListProductSets",
                 request_serializer=product_search_service.ListProductSetsRequest.serialize,
                 response_deserializer=product_search_service.ListProductSetsResponse.deserialize,
             )
-        return self._stubs['list_product_sets']
+        return self._stubs["list_product_sets"]
 
     @property
-    def get_product_set(self) -> Callable[
-            [product_search_service.GetProductSetRequest],
-            product_search_service.ProductSet]:
+    def get_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.GetProductSetRequest], product_search_service.ProductSet
+    ]:
         r"""Return a callable for the get product set method over gRPC.
 
         Gets information associated with a ProductSet.
@@ -430,18 +449,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_product_set' not in self._stubs:
-            self._stubs['get_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/GetProductSet',
+        if "get_product_set" not in self._stubs:
+            self._stubs["get_product_set"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/GetProductSet",
                 request_serializer=product_search_service.GetProductSetRequest.serialize,
                 response_deserializer=product_search_service.ProductSet.deserialize,
             )
-        return self._stubs['get_product_set']
+        return self._stubs["get_product_set"]
 
     @property
-    def update_product_set(self) -> Callable[
-            [product_search_service.UpdateProductSetRequest],
-            product_search_service.ProductSet]:
+    def update_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.UpdateProductSetRequest],
+        product_search_service.ProductSet,
+    ]:
         r"""Return a callable for the update product set method over gRPC.
 
         Makes changes to a ProductSet resource. Only display_name can be
@@ -464,18 +486,18 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_product_set' not in self._stubs:
-            self._stubs['update_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/UpdateProductSet',
+        if "update_product_set" not in self._stubs:
+            self._stubs["update_product_set"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/UpdateProductSet",
                 request_serializer=product_search_service.UpdateProductSetRequest.serialize,
                 response_deserializer=product_search_service.ProductSet.deserialize,
             )
-        return self._stubs['update_product_set']
+        return self._stubs["update_product_set"]
 
     @property
-    def delete_product_set(self) -> Callable[
-            [product_search_service.DeleteProductSetRequest],
-            empty_pb2.Empty]:
+    def delete_product_set(
+        self,
+    ) -> Callable[[product_search_service.DeleteProductSetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete product set method over gRPC.
 
         Permanently deletes a ProductSet. Products and
@@ -494,18 +516,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_product_set' not in self._stubs:
-            self._stubs['delete_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/DeleteProductSet',
+        if "delete_product_set" not in self._stubs:
+            self._stubs["delete_product_set"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/DeleteProductSet",
                 request_serializer=product_search_service.DeleteProductSetRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['delete_product_set']
+        return self._stubs["delete_product_set"]
 
     @property
-    def create_product(self) -> Callable[
-            [product_search_service.CreateProductRequest],
-            product_search_service.Product]:
+    def create_product(
+        self,
+    ) -> Callable[
+        [product_search_service.CreateProductRequest], product_search_service.Product
+    ]:
         r"""Return a callable for the create product method over gRPC.
 
         Creates and returns a new product resource.
@@ -529,18 +553,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_product' not in self._stubs:
-            self._stubs['create_product'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/CreateProduct',
+        if "create_product" not in self._stubs:
+            self._stubs["create_product"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/CreateProduct",
                 request_serializer=product_search_service.CreateProductRequest.serialize,
                 response_deserializer=product_search_service.Product.deserialize,
             )
-        return self._stubs['create_product']
+        return self._stubs["create_product"]
 
     @property
-    def list_products(self) -> Callable[
-            [product_search_service.ListProductsRequest],
-            product_search_service.ListProductsResponse]:
+    def list_products(
+        self,
+    ) -> Callable[
+        [product_search_service.ListProductsRequest],
+        product_search_service.ListProductsResponse,
+    ]:
         r"""Return a callable for the list products method over gRPC.
 
         Lists products in an unspecified order.
@@ -560,18 +587,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_products' not in self._stubs:
-            self._stubs['list_products'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/ListProducts',
+        if "list_products" not in self._stubs:
+            self._stubs["list_products"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/ListProducts",
                 request_serializer=product_search_service.ListProductsRequest.serialize,
                 response_deserializer=product_search_service.ListProductsResponse.deserialize,
             )
-        return self._stubs['list_products']
+        return self._stubs["list_products"]
 
     @property
-    def get_product(self) -> Callable[
-            [product_search_service.GetProductRequest],
-            product_search_service.Product]:
+    def get_product(
+        self,
+    ) -> Callable[
+        [product_search_service.GetProductRequest], product_search_service.Product
+    ]:
         r"""Return a callable for the get product method over gRPC.
 
         Gets information associated with a Product.
@@ -590,18 +619,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_product' not in self._stubs:
-            self._stubs['get_product'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/GetProduct',
+        if "get_product" not in self._stubs:
+            self._stubs["get_product"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/GetProduct",
                 request_serializer=product_search_service.GetProductRequest.serialize,
                 response_deserializer=product_search_service.Product.deserialize,
             )
-        return self._stubs['get_product']
+        return self._stubs["get_product"]
 
     @property
-    def update_product(self) -> Callable[
-            [product_search_service.UpdateProductRequest],
-            product_search_service.Product]:
+    def update_product(
+        self,
+    ) -> Callable[
+        [product_search_service.UpdateProductRequest], product_search_service.Product
+    ]:
         r"""Return a callable for the update product method over gRPC.
 
         Makes changes to a Product resource. Only the ``display_name``,
@@ -631,18 +662,18 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'update_product' not in self._stubs:
-            self._stubs['update_product'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/UpdateProduct',
+        if "update_product" not in self._stubs:
+            self._stubs["update_product"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/UpdateProduct",
                 request_serializer=product_search_service.UpdateProductRequest.serialize,
                 response_deserializer=product_search_service.Product.deserialize,
             )
-        return self._stubs['update_product']
+        return self._stubs["update_product"]
 
     @property
-    def delete_product(self) -> Callable[
-            [product_search_service.DeleteProductRequest],
-            empty_pb2.Empty]:
+    def delete_product(
+        self,
+    ) -> Callable[[product_search_service.DeleteProductRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete product method over gRPC.
 
         Permanently deletes a product and its reference
@@ -662,18 +693,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_product' not in self._stubs:
-            self._stubs['delete_product'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/DeleteProduct',
+        if "delete_product" not in self._stubs:
+            self._stubs["delete_product"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/DeleteProduct",
                 request_serializer=product_search_service.DeleteProductRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['delete_product']
+        return self._stubs["delete_product"]
 
     @property
-    def create_reference_image(self) -> Callable[
-            [product_search_service.CreateReferenceImageRequest],
-            product_search_service.ReferenceImage]:
+    def create_reference_image(
+        self,
+    ) -> Callable[
+        [product_search_service.CreateReferenceImageRequest],
+        product_search_service.ReferenceImage,
+    ]:
         r"""Return a callable for the create reference image method over gRPC.
 
         Creates and returns a new ReferenceImage resource.
@@ -709,18 +743,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'create_reference_image' not in self._stubs:
-            self._stubs['create_reference_image'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/CreateReferenceImage',
+        if "create_reference_image" not in self._stubs:
+            self._stubs["create_reference_image"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/CreateReferenceImage",
                 request_serializer=product_search_service.CreateReferenceImageRequest.serialize,
                 response_deserializer=product_search_service.ReferenceImage.deserialize,
             )
-        return self._stubs['create_reference_image']
+        return self._stubs["create_reference_image"]
 
     @property
-    def delete_reference_image(self) -> Callable[
-            [product_search_service.DeleteReferenceImageRequest],
-            empty_pb2.Empty]:
+    def delete_reference_image(
+        self,
+    ) -> Callable[
+        [product_search_service.DeleteReferenceImageRequest], empty_pb2.Empty
+    ]:
         r"""Return a callable for the delete reference image method over gRPC.
 
         Permanently deletes a reference image.
@@ -742,18 +778,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'delete_reference_image' not in self._stubs:
-            self._stubs['delete_reference_image'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/DeleteReferenceImage',
+        if "delete_reference_image" not in self._stubs:
+            self._stubs["delete_reference_image"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/DeleteReferenceImage",
                 request_serializer=product_search_service.DeleteReferenceImageRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
             )
-        return self._stubs['delete_reference_image']
+        return self._stubs["delete_reference_image"]
 
     @property
-    def list_reference_images(self) -> Callable[
-            [product_search_service.ListReferenceImagesRequest],
-            product_search_service.ListReferenceImagesResponse]:
+    def list_reference_images(
+        self,
+    ) -> Callable[
+        [product_search_service.ListReferenceImagesRequest],
+        product_search_service.ListReferenceImagesResponse,
+    ]:
         r"""Return a callable for the list reference images method over gRPC.
 
         Lists reference images.
@@ -774,18 +813,21 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_reference_images' not in self._stubs:
-            self._stubs['list_reference_images'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/ListReferenceImages',
+        if "list_reference_images" not in self._stubs:
+            self._stubs["list_reference_images"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/ListReferenceImages",
                 request_serializer=product_search_service.ListReferenceImagesRequest.serialize,
                 response_deserializer=product_search_service.ListReferenceImagesResponse.deserialize,
             )
-        return self._stubs['list_reference_images']
+        return self._stubs["list_reference_images"]
 
     @property
-    def get_reference_image(self) -> Callable[
-            [product_search_service.GetReferenceImageRequest],
-            product_search_service.ReferenceImage]:
+    def get_reference_image(
+        self,
+    ) -> Callable[
+        [product_search_service.GetReferenceImageRequest],
+        product_search_service.ReferenceImage,
+    ]:
         r"""Return a callable for the get reference image method over gRPC.
 
         Gets information associated with a ReferenceImage.
@@ -804,18 +846,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'get_reference_image' not in self._stubs:
-            self._stubs['get_reference_image'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/GetReferenceImage',
+        if "get_reference_image" not in self._stubs:
+            self._stubs["get_reference_image"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/GetReferenceImage",
                 request_serializer=product_search_service.GetReferenceImageRequest.serialize,
                 response_deserializer=product_search_service.ReferenceImage.deserialize,
             )
-        return self._stubs['get_reference_image']
+        return self._stubs["get_reference_image"]
 
     @property
-    def add_product_to_product_set(self) -> Callable[
-            [product_search_service.AddProductToProductSetRequest],
-            empty_pb2.Empty]:
+    def add_product_to_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.AddProductToProductSetRequest], empty_pb2.Empty
+    ]:
         r"""Return a callable for the add product to product set method over gRPC.
 
         Adds a Product to the specified ProductSet. If the Product is
@@ -838,18 +882,22 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'add_product_to_product_set' not in self._stubs:
-            self._stubs['add_product_to_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/AddProductToProductSet',
-                request_serializer=product_search_service.AddProductToProductSetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+        if "add_product_to_product_set" not in self._stubs:
+            self._stubs["add_product_to_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1.ProductSearch/AddProductToProductSet",
+                    request_serializer=product_search_service.AddProductToProductSetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
-        return self._stubs['add_product_to_product_set']
+        return self._stubs["add_product_to_product_set"]
 
     @property
-    def remove_product_from_product_set(self) -> Callable[
-            [product_search_service.RemoveProductFromProductSetRequest],
-            empty_pb2.Empty]:
+    def remove_product_from_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.RemoveProductFromProductSetRequest], empty_pb2.Empty
+    ]:
         r"""Return a callable for the remove product from product
         set method over gRPC.
 
@@ -865,18 +913,23 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'remove_product_from_product_set' not in self._stubs:
-            self._stubs['remove_product_from_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/RemoveProductFromProductSet',
-                request_serializer=product_search_service.RemoveProductFromProductSetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+        if "remove_product_from_product_set" not in self._stubs:
+            self._stubs["remove_product_from_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1.ProductSearch/RemoveProductFromProductSet",
+                    request_serializer=product_search_service.RemoveProductFromProductSetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
-        return self._stubs['remove_product_from_product_set']
+        return self._stubs["remove_product_from_product_set"]
 
     @property
-    def list_products_in_product_set(self) -> Callable[
-            [product_search_service.ListProductsInProductSetRequest],
-            product_search_service.ListProductsInProductSetResponse]:
+    def list_products_in_product_set(
+        self,
+    ) -> Callable[
+        [product_search_service.ListProductsInProductSetRequest],
+        product_search_service.ListProductsInProductSetResponse,
+    ]:
         r"""Return a callable for the list products in product set method over gRPC.
 
         Lists the Products in a ProductSet, in an unspecified order. If
@@ -898,18 +951,22 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'list_products_in_product_set' not in self._stubs:
-            self._stubs['list_products_in_product_set'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/ListProductsInProductSet',
-                request_serializer=product_search_service.ListProductsInProductSetRequest.serialize,
-                response_deserializer=product_search_service.ListProductsInProductSetResponse.deserialize,
+        if "list_products_in_product_set" not in self._stubs:
+            self._stubs["list_products_in_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1.ProductSearch/ListProductsInProductSet",
+                    request_serializer=product_search_service.ListProductsInProductSetRequest.serialize,
+                    response_deserializer=product_search_service.ListProductsInProductSetResponse.deserialize,
+                )
             )
-        return self._stubs['list_products_in_product_set']
+        return self._stubs["list_products_in_product_set"]
 
     @property
-    def import_product_sets(self) -> Callable[
-            [product_search_service.ImportProductSetsRequest],
-            operations_pb2.Operation]:
+    def import_product_sets(
+        self,
+    ) -> Callable[
+        [product_search_service.ImportProductSetsRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the import product sets method over gRPC.
 
         Asynchronous API that imports a list of reference images to
@@ -935,18 +992,20 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'import_product_sets' not in self._stubs:
-            self._stubs['import_product_sets'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/ImportProductSets',
+        if "import_product_sets" not in self._stubs:
+            self._stubs["import_product_sets"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/ImportProductSets",
                 request_serializer=product_search_service.ImportProductSetsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['import_product_sets']
+        return self._stubs["import_product_sets"]
 
     @property
-    def purge_products(self) -> Callable[
-            [product_search_service.PurgeProductsRequest],
-            operations_pb2.Operation]:
+    def purge_products(
+        self,
+    ) -> Callable[
+        [product_search_service.PurgeProductsRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the purge products method over gRPC.
 
         Asynchronous API to delete all Products in a ProductSet or all
@@ -987,13 +1046,13 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'purge_products' not in self._stubs:
-            self._stubs['purge_products'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1.ProductSearch/PurgeProducts',
+        if "purge_products" not in self._stubs:
+            self._stubs["purge_products"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1.ProductSearch/PurgeProducts",
                 request_serializer=product_search_service.PurgeProductsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs['purge_products']
+        return self._stubs["purge_products"]
 
     def close(self):
         self._logged_channel.close()
@@ -1002,8 +1061,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
     def get_operation(
         self,
     ) -> Callable[[operations_pb2.GetOperationRequest], operations_pb2.Operation]:
-        r"""Return a callable for the get_operation method over gRPC.
-        """
+        r"""Return a callable for the get_operation method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
         # gRPC handles serialization and deserialization, so we just need
@@ -1021,6 +1079,4 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         return "grpc"
 
 
-__all__ = (
-    'ProductSearchGrpcTransport',
-)
+__all__ = ("ProductSearchGrpcTransport",)

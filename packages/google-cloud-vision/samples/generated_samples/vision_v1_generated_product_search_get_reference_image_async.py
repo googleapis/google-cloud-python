@@ -49,4 +49,5 @@ async def sample_get_reference_image():
     # Handle the response
     print(response)
 
+
 # [END vision_v1_generated_ProductSearch_GetReferenceImage_async]

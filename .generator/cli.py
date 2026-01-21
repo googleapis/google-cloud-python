@@ -392,36 +392,35 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     # This replaces both 'isort' and 'black' and runs in < 1 second.
     # We hardcode flags here to match Black defaults so you don't need config files.
     # logger.info("🚀 Running Ruff (Fast Formatter)...")
+    ruff_config_path = Path("/usr/local/google/home/omairn/git/googleapis/google-cloud-python/.generator/ruff.toml").resolve()
+
+    if not ruff_config_path.exists():
+         logger.warning(f"⚠️ Could not find Ruff config at {ruff_config_path}. Using defaults.")
+
     try:
+
+        subprocess.run(["ruff", "--version"], check=False)
+        logger.info("Running Ruff Check (Imports)...")
+        base_args = ["ruff", "--config", str(ruff_config_path)]
+
         # STEP A: Fix Imports (like isort)
         subprocess.run(
-            [
-                "ruff", "check", 
-                "--select", "I",               # Only run Import sorting rules
-                "--fix",                       # Auto-fix them
-                "--line-length=88",            # Match Black default
-                "--known-first-party=google",  # Prevent 'google' moving to 3rd party block
-                output
-            ],
-            check=False, 
-            stdout=subprocess.DEVNULL, 
-            stderr=subprocess.DEVNULL
+            base_args + ["check", "--fix", "."],
+            check=True,
         )
 
         # STEP B: Format Code (like black)
         subprocess.run(
-            [
-                "ruff", "format", 
-                "--line-length=88",            # Match Black default
-                output
-            ],
-            check=False, 
-            stdout=subprocess.DEVNULL, 
-            stderr=subprocess.DEVNULL
+            base_args + ["format", "."],
+            check=True,
         )
+        logger.info("Ruff formatting completed successfully.")
+
     except FileNotFoundError:
         logger.warning("⚠️ Ruff binary not found. Code will be unformatted.")
         logger.warning("   Please run: pip install ruff")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"❌ Ruff failed with exit code {e.returncode}.")
 
     logger.info("Python post-processor ran successfully.")
 

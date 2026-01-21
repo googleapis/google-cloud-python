@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ProductSearchClient
 from .async_client import ProductSearchAsyncClient
+from .client import ProductSearchClient
 
 __all__ = (
-    'ProductSearchClient',
-    'ProductSearchAsyncClient',
+    "ProductSearchClient",
+    "ProductSearchAsyncClient",
 )

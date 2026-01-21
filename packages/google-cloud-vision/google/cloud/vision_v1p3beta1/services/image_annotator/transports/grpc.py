@@ -19,24 +19,23 @@ import pickle
 import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
-import google.auth                         # type: ignore
-from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.protobuf.json_format import MessageToJson
-import google.protobuf.message
-
 import grpc  # type: ignore
 import proto  # type: ignore
 
+import google.auth  # type: ignore
+import google.protobuf.message
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.vision_v1p3beta1.types import image_annotator
-from google.longrunning import operations_pb2 # type: ignore
-from .base import ImageAnnotatorTransport, DEFAULT_CLIENT_INFO
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf.json_format import MessageToJson
+
+from .base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
+
     CLIENT_LOGGING_SUPPORTED = True  # pragma: NO COVER
 except ImportError:  # pragma: NO COVER
     CLIENT_LOGGING_SUPPORTED = False
@@ -46,7 +45,9 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
+            std_logging.DEBUG
+        )
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,7 +68,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Sending request for {client_call_details.method}",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
                     "rpcName": str(client_call_details.method),
                     "request": grpc_request,
@@ -78,7 +79,11 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
+            metadata = (
+                dict([(k, str(v)) for k, v in response_metadata])
+                if response_metadata
+                else None
+            )
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -93,7 +98,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             }
             _LOGGER.debug(
                 f"Received response for {client_call_details.method}.",
-                extra = {
+                extra={
                     "serviceName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
                     "rpcName": client_call_details.method,
                     "response": grpc_response,
@@ -118,23 +123,26 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
     It sends protocol buffers over the wire using gRPC (which is built on
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
+
     _stubs: Dict[str, Callable]
 
-    def __init__(self, *,
-            host: str = 'vision.googleapis.com',
-            credentials: Optional[ga_credentials.Credentials] = None,
-            credentials_file: Optional[str] = None,
-            scopes: Optional[Sequence[str]] = None,
-            channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
-            api_mtls_endpoint: Optional[str] = None,
-            client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
-            client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
-            quota_project_id: Optional[str] = None,
-            client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
-            always_use_jwt_access: Optional[bool] = False,
-            api_audience: Optional[str] = None,
-            ) -> None:
+    def __init__(
+        self,
+        *,
+        host: str = "vision.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[Union[grpc.Channel, Callable[..., grpc.Channel]]] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        ssl_channel_credentials: Optional[grpc.ChannelCredentials] = None,
+        client_cert_source_for_mtls: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
+        quota_project_id: Optional[str] = None,
+        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        always_use_jwt_access: Optional[bool] = False,
+        api_audience: Optional[str] = None,
+    ) -> None:
         """Instantiate the transport.
 
         Args:
@@ -258,19 +266,23 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel =  grpc.intercept_channel(self._grpc_channel, self._interceptor)
+        self._logged_channel = grpc.intercept_channel(
+            self._grpc_channel, self._interceptor
+        )
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
     @classmethod
-    def create_channel(cls,
-                       host: str = 'vision.googleapis.com',
-                       credentials: Optional[ga_credentials.Credentials] = None,
-                       credentials_file: Optional[str] = None,
-                       scopes: Optional[Sequence[str]] = None,
-                       quota_project_id: Optional[str] = None,
-                       **kwargs) -> grpc.Channel:
+    def create_channel(
+        cls,
+        host: str = "vision.googleapis.com",
+        credentials: Optional[ga_credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
             host (Optional[str]): The host for the channel to use.
@@ -306,13 +318,12 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
             default_scopes=cls.AUTH_SCOPES,
             scopes=scopes,
             default_host=cls.DEFAULT_HOST,
-            **kwargs
+            **kwargs,
         )
 
     @property
     def grpc_channel(self) -> grpc.Channel:
-        """Return the channel designed to connect to this service.
-        """
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
@@ -332,9 +343,12 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
         return self._operations_client
 
     @property
-    def batch_annotate_images(self) -> Callable[
-            [image_annotator.BatchAnnotateImagesRequest],
-            image_annotator.BatchAnnotateImagesResponse]:
+    def batch_annotate_images(
+        self,
+    ) -> Callable[
+        [image_annotator.BatchAnnotateImagesRequest],
+        image_annotator.BatchAnnotateImagesResponse,
+    ]:
         r"""Return a callable for the batch annotate images method over gRPC.
 
         Run image detection and annotation for a batch of
@@ -350,18 +364,20 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'batch_annotate_images' not in self._stubs:
-            self._stubs['batch_annotate_images'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1p3beta1.ImageAnnotator/BatchAnnotateImages',
+        if "batch_annotate_images" not in self._stubs:
+            self._stubs["batch_annotate_images"] = self._logged_channel.unary_unary(
+                "/google.cloud.vision.v1p3beta1.ImageAnnotator/BatchAnnotateImages",
                 request_serializer=image_annotator.BatchAnnotateImagesRequest.serialize,
                 response_deserializer=image_annotator.BatchAnnotateImagesResponse.deserialize,
             )
-        return self._stubs['batch_annotate_images']
+        return self._stubs["batch_annotate_images"]
 
     @property
-    def async_batch_annotate_files(self) -> Callable[
-            [image_annotator.AsyncBatchAnnotateFilesRequest],
-            operations_pb2.Operation]:
+    def async_batch_annotate_files(
+        self,
+    ) -> Callable[
+        [image_annotator.AsyncBatchAnnotateFilesRequest], operations_pb2.Operation
+    ]:
         r"""Return a callable for the async batch annotate files method over gRPC.
 
         Run asynchronous image detection and annotation for a list of
@@ -382,13 +398,15 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if 'async_batch_annotate_files' not in self._stubs:
-            self._stubs['async_batch_annotate_files'] = self._logged_channel.unary_unary(
-                '/google.cloud.vision.v1p3beta1.ImageAnnotator/AsyncBatchAnnotateFiles',
-                request_serializer=image_annotator.AsyncBatchAnnotateFilesRequest.serialize,
-                response_deserializer=operations_pb2.Operation.FromString,
+        if "async_batch_annotate_files" not in self._stubs:
+            self._stubs["async_batch_annotate_files"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1p3beta1.ImageAnnotator/AsyncBatchAnnotateFiles",
+                    request_serializer=image_annotator.AsyncBatchAnnotateFilesRequest.serialize,
+                    response_deserializer=operations_pb2.Operation.FromString,
+                )
             )
-        return self._stubs['async_batch_annotate_files']
+        return self._stubs["async_batch_annotate_files"]
 
     def close(self):
         self._logged_channel.close()
@@ -398,6 +416,4 @@ class ImageAnnotatorGrpcTransport(ImageAnnotatorTransport):
         return "grpc"
 
 
-__all__ = (
-    'ImageAnnotatorGrpcTransport',
-)
+__all__ = ("ImageAnnotatorGrpcTransport",)
