@@ -145,7 +145,6 @@ class McpTool(proto.Message):
             - openWorldHint: If true, the tool may
               interact with an "open world" of external
               entities.
-    
     """
 
     name: str = proto.Field(
