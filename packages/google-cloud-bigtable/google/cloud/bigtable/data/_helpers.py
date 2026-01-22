@@ -23,6 +23,7 @@ from collections import namedtuple
 from google.cloud.bigtable.data.read_rows_query import ReadRowsQuery
 
 from google.api_core import exceptions as core_exceptions
+from google.api_core.retry import exponential_sleep_generator
 from google.api_core.retry import RetryFailureReason
 from google.cloud.bigtable.data.exceptions import RetryExceptionGroup
 
@@ -248,3 +249,61 @@ def _get_retryable_errors(
         call_codes = table.default_mutate_rows_retryable_errors
 
     return [_get_error_type(e) for e in call_codes]
+
+
+class TrackedBackoffGenerator:
+    """
+    Generator class for exponential backoff sleep times.
+    This implementation builds on top of api_core.retries.exponential_sleep_generator,
+    adding the ability to retrieve previous values using get_attempt_backoff(idx).
+    This is used by the Metrics class to track the sleep times used for each attempt.
+    """
+
+    def __init__(self, initial=0.01, maximum=60, multiplier=2):
+        self.history = []
+        self.subgenerator = exponential_sleep_generator(
+            initial=initial, maximum=maximum, multiplier=multiplier
+        )
+        self._next_override: float | None = None
+
+    def __iter__(self):
+        return self
+
+    def set_next(self, next_value: float):
+        """
+        Set the next backoff value, instead of generating one from subgenerator.
+        After the value is yielded, it will go back to using self.subgenerator.
+
+        If set_next is called twice before the next() is called, only the latest
+        value will be used and others discarded
+
+        Args:
+            next_value: the upcomming value to yield when next() is called
+        Raises:
+            ValueError: if next_value is negative
+        """
+        if next_value < 0:
+            raise ValueError("backoff value cannot be less than 0")
+        self._next_override = next_value
+
+    def __next__(self) -> float:
+        if self._next_override is not None:
+            next_backoff = self._next_override
+            self._next_override = None
+        else:
+            next_backoff = next(self.subgenerator)
+        self.history.append(next_backoff)
+        return next_backoff
+
+    def get_attempt_backoff(self, attempt_idx) -> float:
+        """
+        returns the backoff time for a specific attempt index, starting at 0.
+
+        Args:
+            attempt_idx: the index of the attempt to return backoff for
+        Raises:
+            IndexError: if attempt_idx is negative, or not in history
+        """
+        if attempt_idx < 0:
+            raise IndexError("received negative attempt number")
+        return self.history[attempt_idx]

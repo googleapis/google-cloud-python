@@ -517,6 +517,7 @@ def prerelease_deps(session, protobuf_implementation):
     # Remaining dependencies
     other_deps = [
         "requests",
+        "cryptography",
     ]
     session.install(*other_deps)
 

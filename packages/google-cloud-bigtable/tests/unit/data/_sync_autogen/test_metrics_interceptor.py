@@ -17,6 +17,9 @@
 
 import pytest
 from grpc import RpcError
+from grpc import ClientCallDetails
+from google.cloud.bigtable.data._metrics.data_model import ActiveOperationMetric
+from google.cloud.bigtable.data._metrics.data_model import OperationState
 from google.cloud.bigtable.data._cross_sync import CrossSync
 
 try:
@@ -50,91 +53,255 @@ class TestMetricsInterceptor:
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
 
+    def test_unary_unary_interceptor_op_not_found(self):
+        """Test that interceptor call continuation if op is not found"""
+        instance = self._make_one()
+        continuation = CrossSync._Sync_Impl.Mock()
+        details = ClientCallDetails()
+        details.metadata = []
+        request = mock.Mock()
+        instance.intercept_unary_unary(continuation, details, request)
+        continuation.assert_called_once_with(details, request)
+
     def test_unary_unary_interceptor_success(self):
         """Test that interceptor handles successful unary-unary calls"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        ActiveOperationMetric._active_operation_context.set(op)
         continuation = CrossSync._Sync_Impl.Mock()
         call = continuation.return_value
-        details = mock.Mock()
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
+        details = ClientCallDetails()
         request = mock.Mock()
         result = instance.intercept_unary_unary(continuation, details, request)
         assert result == call
         continuation.assert_called_once_with(details, request)
+        op.add_response_metadata.assert_called_once_with({"a": "b", "c": "d"})
+        op.end_attempt_with_status.assert_not_called()
 
     def test_unary_unary_interceptor_failure(self):
-        """Test a failed RpcError with metadata"""
+        """test a failed RpcError with metadata"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        ActiveOperationMetric._active_operation_context.set(op)
         exc = RpcError("test")
+        exc.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        exc.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
         continuation = CrossSync._Sync_Impl.Mock(side_effect=exc)
-        details = mock.Mock()
+        details = ClientCallDetails()
         request = mock.Mock()
         with pytest.raises(RpcError) as e:
             instance.intercept_unary_unary(continuation, details, request)
         assert e.value == exc
         continuation.assert_called_once_with(details, request)
+        op.add_response_metadata.assert_called_once_with({"a": "b", "c": "d"})
+
+    def test_unary_unary_interceptor_failure_no_metadata(self):
+        """test with RpcError without without metadata attached"""
+        instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        ActiveOperationMetric._active_operation_context.set(op)
+        exc = RpcError("test")
+        continuation = CrossSync._Sync_Impl.Mock(side_effect=exc)
+        call = continuation.return_value
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
+        details = ClientCallDetails()
+        request = mock.Mock()
+        with pytest.raises(RpcError) as e:
+            instance.intercept_unary_unary(continuation, details, request)
+        assert e.value == exc
+        continuation.assert_called_once_with(details, request)
+        op.add_response_metadata.assert_not_called()
 
     def test_unary_unary_interceptor_failure_generic(self):
-        """Test generic exception"""
+        """test generic exception"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        ActiveOperationMetric._active_operation_context.set(op)
         exc = ValueError("test")
         continuation = CrossSync._Sync_Impl.Mock(side_effect=exc)
-        details = mock.Mock()
+        call = continuation.return_value
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
+        details = ClientCallDetails()
         request = mock.Mock()
         with pytest.raises(ValueError) as e:
             instance.intercept_unary_unary(continuation, details, request)
         assert e.value == exc
+        continuation.assert_called_once_with(details, request)
+        op.add_response_metadata.assert_not_called()
+
+    def test_unary_stream_interceptor_op_not_found(self):
+        """Test that interceptor calls continuation if op is not found"""
+        instance = self._make_one()
+        continuation = CrossSync._Sync_Impl.Mock()
+        details = ClientCallDetails()
+        details.metadata = []
+        request = mock.Mock()
+        instance.intercept_unary_stream(continuation, details, request)
         continuation.assert_called_once_with(details, request)
 
     def test_unary_stream_interceptor_success(self):
         """Test that interceptor handles successful unary-stream calls"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        op.start_time_ns = 0
+        op.first_response_latency = None
+        ActiveOperationMetric._active_operation_context.set(op)
         continuation = CrossSync._Sync_Impl.Mock(
             return_value=_make_mock_stream_call([1, 2])
         )
-        details = mock.Mock()
+        call = continuation.return_value
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
+        details = ClientCallDetails()
         request = mock.Mock()
         wrapper = instance.intercept_unary_stream(continuation, details, request)
         results = [val for val in wrapper]
         assert results == [1, 2]
         continuation.assert_called_once_with(details, request)
+        assert op.first_response_latency_ns is not None
+        op.add_response_metadata.assert_called_once_with({"a": "b", "c": "d"})
+        op.end_attempt_with_status.assert_not_called()
 
     def test_unary_stream_interceptor_failure_mid_stream(self):
         """Test that interceptor handles failures mid-stream"""
+        from grpc.aio import AioRpcError, Metadata
+
         instance = self._make_one()
-        exc = ValueError("test")
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        op.start_time_ns = 0
+        op.first_response_latency = None
+        ActiveOperationMetric._active_operation_context.set(op)
+        exc = AioRpcError(0, Metadata(), Metadata(("a", "b"), ("c", "d")))
         continuation = CrossSync._Sync_Impl.Mock(
             return_value=_make_mock_stream_call([1], exc=exc)
         )
-        details = mock.Mock()
+        details = ClientCallDetails()
         request = mock.Mock()
         wrapper = instance.intercept_unary_stream(continuation, details, request)
-        with pytest.raises(ValueError) as e:
+        with pytest.raises(AioRpcError) as e:
             [val for val in wrapper]
         assert e.value == exc
         continuation.assert_called_once_with(details, request)
+        assert op.first_response_latency_ns is not None
+        op.add_response_metadata.assert_called_once_with({"a": "b", "c": "d"})
 
     def test_unary_stream_interceptor_failure_start_stream(self):
         """Test that interceptor handles failures at start of stream with RpcError with metadata"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        op.start_time_ns = 0
+        op.first_response_latency = None
+        ActiveOperationMetric._active_operation_context.set(op)
         exc = RpcError("test")
+        exc.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[("a", "b")])
+        exc.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[("c", "d")])
         continuation = CrossSync._Sync_Impl.Mock()
         continuation.side_effect = exc
-        details = mock.Mock()
+        details = ClientCallDetails()
         request = mock.Mock()
         with pytest.raises(RpcError) as e:
             instance.intercept_unary_stream(continuation, details, request)
         assert e.value == exc
         continuation.assert_called_once_with(details, request)
+        assert op.first_response_latency_ns is not None
+        op.add_response_metadata.assert_called_once_with({"a": "b", "c": "d"})
+
+    def test_unary_stream_interceptor_failure_start_stream_no_metadata(self):
+        """Test that interceptor handles failures at start of stream with RpcError with no metadata"""
+        instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        op.start_time_ns = 0
+        op.first_response_latency = None
+        ActiveOperationMetric._active_operation_context.set(op)
+        exc = RpcError("test")
+        continuation = CrossSync._Sync_Impl.Mock()
+        continuation.side_effect = exc
+        details = ClientCallDetails()
+        request = mock.Mock()
+        with pytest.raises(RpcError) as e:
+            instance.intercept_unary_stream(continuation, details, request)
+        assert e.value == exc
+        continuation.assert_called_once_with(details, request)
+        assert op.first_response_latency_ns is not None
+        op.add_response_metadata.assert_not_called()
 
     def test_unary_stream_interceptor_failure_start_stream_generic(self):
         """Test that interceptor handles failures at start of stream with generic exception"""
         instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = OperationState.ACTIVE_ATTEMPT
+        op.start_time_ns = 0
+        op.first_response_latency = None
+        ActiveOperationMetric._active_operation_context.set(op)
         exc = ValueError("test")
         continuation = CrossSync._Sync_Impl.Mock()
         continuation.side_effect = exc
-        details = mock.Mock()
+        details = ClientCallDetails()
         request = mock.Mock()
         with pytest.raises(ValueError) as e:
             instance.intercept_unary_stream(continuation, details, request)
         assert e.value == exc
         continuation.assert_called_once_with(details, request)
+        assert op.first_response_latency_ns is not None
+        op.add_response_metadata.assert_not_called()
+
+    @pytest.mark.parametrize(
+        "initial_state", [OperationState.CREATED, OperationState.BETWEEN_ATTEMPTS]
+    )
+    def test_unary_unary_interceptor_start_operation(self, initial_state):
+        """if called with a newly created operation, it should be started"""
+        instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = initial_state
+        ActiveOperationMetric._active_operation_context.set(op)
+        continuation = CrossSync._Sync_Impl.Mock()
+        call = continuation.return_value
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[])
+        details = ClientCallDetails()
+        request = mock.Mock()
+        instance.intercept_unary_unary(continuation, details, request)
+        op.start_attempt.assert_called_once()
+
+    @pytest.mark.parametrize(
+        "initial_state", [OperationState.CREATED, OperationState.BETWEEN_ATTEMPTS]
+    )
+    def test_unary_stream_interceptor_start_operation(self, initial_state):
+        """if called with a newly created operation, it should be started"""
+        instance = self._make_one()
+        op = mock.Mock()
+        op.uuid = "test-uuid"
+        op.state = initial_state
+        ActiveOperationMetric._active_operation_context.set(op)
+        continuation = CrossSync._Sync_Impl.Mock(
+            return_value=_make_mock_stream_call([1, 2])
+        )
+        call = continuation.return_value
+        call.trailing_metadata = CrossSync._Sync_Impl.Mock(return_value=[])
+        call.initial_metadata = CrossSync._Sync_Impl.Mock(return_value=[])
+        details = ClientCallDetails()
+        request = mock.Mock()
+        instance.intercept_unary_stream(continuation, details, request)
+        op.start_attempt.assert_called_once()

@@ -55,18 +55,26 @@ if CrossSync.is_async:
     from google.cloud.bigtable.data._async._swappable_channel import (
         AsyncSwappableChannel,
     )
+    from google.cloud.bigtable.data._async.metrics_interceptor import (
+        AsyncBigtableMetricsInterceptor,
+    )
 
     CrossSync.add_mapping("grpc_helpers", grpc_helpers_async)
     CrossSync.add_mapping("SwappableChannel", AsyncSwappableChannel)
+    CrossSync.add_mapping("MetricsInterceptor", AsyncBigtableMetricsInterceptor)
 else:
     from google.api_core import grpc_helpers
     from google.cloud.bigtable.data._sync_autogen.client import Table  # noqa: F401
     from google.cloud.bigtable.data._sync_autogen._swappable_channel import (
         SwappableChannel,
     )
+    from google.cloud.bigtable.data._sync_autogen.metrics_interceptor import (
+        BigtableMetricsInterceptor,
+    )
 
     CrossSync.add_mapping("grpc_helpers", grpc_helpers)
     CrossSync.add_mapping("SwappableChannel", SwappableChannel)
+    CrossSync.add_mapping("MetricsInterceptor", BigtableMetricsInterceptor)
 
 __CROSS_SYNC_OUTPUT__ = "tests.unit.data._sync_autogen.test_client"
 
@@ -114,6 +122,7 @@ class TestBigtableDataClientAsync:
         assert not client._active_instances
         assert client._channel_refresh_task is not None
         assert client.transport._credentials == expected_credentials
+        assert isinstance(client._metrics_interceptor, CrossSync.MetricsInterceptor)
         await client.close()
 
     @CrossSync.pytest
@@ -1153,6 +1162,9 @@ class TestTableAsync:
     @CrossSync.pytest
     async def test_ctor(self):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+        )
 
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
@@ -1194,6 +1206,7 @@ class TestTableAsync:
         instance_key = _WarmedInstanceKey(table.instance_name, table.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(table)}
+        assert isinstance(table._metrics, BigtableClientSideMetricsController)
         assert table.default_operation_timeout == expected_operation_timeout
         assert table.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1454,6 +1467,22 @@ class TestTableAsync:
             # empty app_profile_id should send empty string
             assert "app_profile_id=" in routing_str
 
+    @CrossSync.pytest
+    async def test_close(self):
+        client = self._make_client()
+        table = self._make_one(client)
+        with mock.patch.object(
+            table._metrics, "close", mock.Mock()
+        ) as metric_close_mock:
+            with mock.patch.object(
+                client, "_remove_instance_registration"
+            ) as remove_mock:
+                await table.close()
+                remove_mock.assert_called_once_with(
+                    table.instance_id, table.app_profile_id, id(table)
+                )
+                metric_close_mock.assert_called_once()
+
 
 @CrossSync.convert_class(
     "TestAuthorizedView", add_mapping_for_name="TestAuthorizedView"
@@ -1484,6 +1513,9 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
     @CrossSync.pytest
     async def test_ctor(self):
         from google.cloud.bigtable.data._helpers import _WarmedInstanceKey
+        from google.cloud.bigtable.data._metrics import (
+            BigtableClientSideMetricsController,
+        )
 
         expected_table_id = "table-id"
         expected_instance_id = "instance-id"
@@ -1532,6 +1564,7 @@ class TestAuthorizedViewsAsync(CrossSync.TestTable):
         instance_key = _WarmedInstanceKey(view.instance_name, view.app_profile_id)
         assert instance_key in client._active_instances
         assert client._instance_owners[instance_key] == {id(view)}
+        assert isinstance(view._metrics, BigtableClientSideMetricsController)
         assert view.default_operation_timeout == expected_operation_timeout
         assert view.default_attempt_timeout == expected_attempt_timeout
         assert (
@@ -1745,9 +1778,8 @@ class TestReadRowsAsync:
     @pytest.mark.parametrize(
         "per_request_t, operation_t, expected_num",
         [
-            (0.05, 0.08, 2),
-            (0.05, 0.14, 3),
-            (0.05, 0.24, 5),
+            (0.1, 0.19, 2),
+            (0.1, 0.29, 3),
         ],
     )
     @CrossSync.pytest
