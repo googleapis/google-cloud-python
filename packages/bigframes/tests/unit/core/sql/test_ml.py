@@ -169,3 +169,11 @@ def test_global_explain_model_with_options(snapshot):
         class_level_explain=True,
     )
     snapshot.assert_match(sql, "global_explain_model_with_options.sql")
+
+
+def test_transform_model_basic(snapshot):
+    sql = bigframes.core.sql.ml.transform(
+        model_name="my_project.my_dataset.my_model",
+        table="SELECT * FROM new_data",
+    )
+    snapshot.assert_match(sql, "transform_model_basic.sql")

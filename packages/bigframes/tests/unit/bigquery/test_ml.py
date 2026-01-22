@@ -145,3 +145,21 @@ def test_global_explain_with_pandas_series_model(read_gbq_query_mock):
     generated_sql = read_gbq_query_mock.call_args[0][0]
     assert "ML.GLOBAL_EXPLAIN" in generated_sql
     assert f"MODEL `{MODEL_NAME}`" in generated_sql
+
+
+@mock.patch("bigframes.pandas.read_gbq_query")
+@mock.patch("bigframes.pandas.read_pandas")
+def test_transform_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mock):
+    df = pd.DataFrame({"col1": [1, 2, 3]})
+    read_pandas_mock.return_value._to_sql_query.return_value = (
+        "SELECT * FROM `pandas_df`",
+        [],
+        [],
+    )
+    ml_ops.transform(MODEL_SERIES, input_=df)
+    read_pandas_mock.assert_called_once()
+    read_gbq_query_mock.assert_called_once()
+    generated_sql = read_gbq_query_mock.call_args[0][0]
+    assert "ML.TRANSFORM" in generated_sql
+    assert f"MODEL `{MODEL_NAME}`" in generated_sql
+    assert "(SELECT * FROM `pandas_df`)" in generated_sql

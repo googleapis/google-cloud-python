@@ -213,3 +213,14 @@ def global_explain(
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
+
+
+def transform(
+    model_name: str,
+    table: str,
+) -> str:
+    """Encode the ML.TRANSFORM statement.
+    See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-transform for reference.
+    """
+    sql = f"SELECT * FROM ML.TRANSFORM(MODEL {googlesql.identifier(model_name)}, ({table}))\n"
+    return sql

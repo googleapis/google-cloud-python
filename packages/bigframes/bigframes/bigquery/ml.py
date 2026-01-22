@@ -25,6 +25,7 @@ from bigframes.bigquery._operations.ml import (
     explain_predict,
     global_explain,
     predict,
+    transform,
 )
 
 __all__ = [
@@ -33,4 +34,5 @@ __all__ = [
     "predict",
     "explain_predict",
     "global_explain",
+    "transform",
 ]

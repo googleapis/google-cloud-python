@@ -393,3 +393,41 @@ def global_explain(
         return bpd.read_gbq_query(sql)
     else:
         return session.read_gbq_query(sql)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ml")
+def transform(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    input_: Union[pd.DataFrame, dataframe.DataFrame, str],
+) -> dataframe.DataFrame:
+    """
+    Transforms input data using a BigQuery ML model.
+
+    See the `BigQuery ML TRANSFORM function syntax
+    <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-transform>`_
+    for additional reference.
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for transformation.
+        input_ (Union[bigframes.pandas.DataFrame, str]):
+            The DataFrame or query to use for transformation.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The transformed data.
+    """
+    import bigframes.pandas as bpd
+
+    model_name, session = _get_model_name_and_session(model, input_)
+    table_sql = _to_sql(input_)
+
+    sql = bigframes.core.sql.ml.transform(
+        model_name=model_name,
+        table=table_sql,
+    )
+
+    if session is None:
+        return bpd.read_gbq_query(sql)
+    else:
+        return session.read_gbq_query(sql)
