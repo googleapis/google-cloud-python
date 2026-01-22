@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [2.33.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v2.32.0...v2.33.0) (2026-01-22)
+
+
+### Features
+
+* add bigquery.ml.transform function (#2394) ([1f9ee373c1f1d0cd08b80169c3063b862ea46465](https://github.com/googleapis/python-bigquery-dataframes/commit/1f9ee373c1f1d0cd08b80169c3063b862ea46465))
+* Add BigQuery ObjectRef functions to `bigframes.bigquery.obj` (#2380) ([9c3bbc36983dffb265454f27b37450df8c5fbc71](https://github.com/googleapis/python-bigquery-dataframes/commit/9c3bbc36983dffb265454f27b37450df8c5fbc71))
+* Stabilize interactive table height to prevent notebook layout shifts (#2378) ([a634e976c0f44087ca2a65f68cf2775ae6f04024](https://github.com/googleapis/python-bigquery-dataframes/commit/a634e976c0f44087ca2a65f68cf2775ae6f04024))
+* Add max_columns control for anywidget mode (#2374) ([34b5975f6911c5aa5ffc64a2fe6967a9f3d86f78](https://github.com/googleapis/python-bigquery-dataframes/commit/34b5975f6911c5aa5ffc64a2fe6967a9f3d86f78))
+* Add dark mode to anywidget mode (#2365) ([2763b41d4b86939e389f76789f5b2acd44f18169](https://github.com/googleapis/python-bigquery-dataframes/commit/2763b41d4b86939e389f76789f5b2acd44f18169))
+* Configure Biome for Consistent Code Style (#2364) ([81e27b3d81da9b1684eae0b7f0b9abfd7badcc4f](https://github.com/googleapis/python-bigquery-dataframes/commit/81e27b3d81da9b1684eae0b7f0b9abfd7badcc4f))
+
+
+### Bug Fixes
+
+* Throw if write api commit op has stream_errors (#2385) ([7abfef0598d476ef233364a01f72d73291983c30](https://github.com/googleapis/python-bigquery-dataframes/commit/7abfef0598d476ef233364a01f72d73291983c30))
+* implement retry logic for cloud function endpoint fetching (#2369) ([0f593c27bfee89fe1bdfc880504f9ab0ac28a24e](https://github.com/googleapis/python-bigquery-dataframes/commit/0f593c27bfee89fe1bdfc880504f9ab0ac28a24e))
+
 ## [2.32.0](https://github.com/googleapis/google-cloud-python/compare/bigframes-v2.31.0...bigframes-v2.32.0) (2026-01-05)
 
 
