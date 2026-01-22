@@ -25,6 +25,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import logging
 import os
 import shlex
 import sys
@@ -383,3 +384,22 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+
+# --- Specific Warning Filters not covered by SuppressedWarnings ---
+class UnexpectedUnindentFilter(logging.Filter):
+    """Filter out warnings about unexpected unindentation."""
+
+    def filter(self, record):
+        # Return False to suppress the warning, True to allow it
+        msg = record.getMessage()
+        if "Bullet list ends without a blank line" in msg:
+            return False
+        return True
+
+
+def setup(app):
+    # Sphinx's logger is hierarchical. Adding the filter to the
+    # root 'sphinx' logger will catch warnings from all sub-loggers.
+    logger = logging.getLogger("sphinx")
+    logger.addFilter(UnexpectedUnindentFilter())
