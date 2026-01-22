@@ -33,3 +33,9 @@ def raise_if_no_fast_crc32c():
             "C extension is required for faster data integrity checks."
             "For more information, see https://github.com/googleapis/python-crc32c."
         )
+
+
+def update_write_handle_if_exists(obj, response):
+    """Update the write_handle attribute of an object if it exists in the response."""
+    if hasattr(response, "write_handle") and response.write_handle is not None:
+        obj.write_handle = response.write_handle

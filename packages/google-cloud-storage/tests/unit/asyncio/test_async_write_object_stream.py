@@ -24,8 +24,10 @@ from google.cloud import _storage_v2
 BUCKET = "my-bucket"
 OBJECT = "my-object"
 GENERATION = 12345
-WRITE_HANDLE = b"test-handle"
-WRITE_HANDLE_PROTO = _storage_v2.BidiWriteHandle(handle=WRITE_HANDLE)
+WRITE_HANDLE_BYTES = b"test-handle"
+NEW_WRITE_HANDLE_BYTES = b"new-test-handle"
+WRITE_HANDLE_PROTO = _storage_v2.BidiWriteHandle(handle=WRITE_HANDLE_BYTES)
+NEW_WRITE_HANDLE_PROTO = _storage_v2.BidiWriteHandle(handle=NEW_WRITE_HANDLE_BYTES)
 
 
 @pytest.fixture
@@ -151,7 +153,9 @@ async def test_open_for_new_object(mock_async_bidi_rpc, mock_client):
 @mock.patch(
     "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
 )
-async def test_open_for_new_object_with_generation_zero(mock_async_bidi_rpc, mock_client):
+async def test_open_for_new_object_with_generation_zero(
+    mock_async_bidi_rpc, mock_client
+):
     """Test opening a stream for a new object."""
     # Arrange
     socket_like_rpc = mock.AsyncMock()
@@ -487,3 +491,95 @@ async def test_requests_done(mock_cls_async_bidi_rpc, mock_client):
     # Assert
     write_obj_stream.socket_like_rpc.send.assert_called_once_with(None)
     write_obj_stream.socket_like_rpc.recv.assert_called_once()
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+)
+async def test_open_for_existing_object_with_none_size(
+    mock_async_bidi_rpc, mock_client
+):
+    """Test opening a stream for an existing object where size is None."""
+    # Arrange
+    socket_like_rpc = mock.AsyncMock()
+    mock_async_bidi_rpc.return_value = socket_like_rpc
+    socket_like_rpc.open = mock.AsyncMock()
+
+    mock_response = mock.MagicMock(spec=_storage_v2.BidiWriteObjectResponse)
+    mock_response.resource = mock.MagicMock(spec=_storage_v2.Object)
+    mock_response.resource.size = None
+    mock_response.resource.generation = GENERATION
+    mock_response.write_handle = WRITE_HANDLE_PROTO
+    socket_like_rpc.recv = mock.AsyncMock(return_value=mock_response)
+
+    stream = _AsyncWriteObjectStream(
+        mock_client, BUCKET, OBJECT, generation_number=GENERATION
+    )
+
+    # Act
+    await stream.open()
+
+    # Assert
+    assert stream.persisted_size == 0
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+)
+async def test_recv_updates_write_handle(mock_cls_async_bidi_rpc, mock_client):
+    """Test that recv updates the write_handle if present in the response."""
+    # Arrange
+    write_obj_stream = await instantiate_write_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+
+    assert write_obj_stream.write_handle == WRITE_HANDLE_PROTO  # Initial handle
+
+    # GCS can periodicallly update write handle in their responses.
+    bidi_write_object_response = _storage_v2.BidiWriteObjectResponse(
+        write_handle=NEW_WRITE_HANDLE_PROTO
+    )
+    write_obj_stream.socket_like_rpc.recv = AsyncMock(
+        return_value=bidi_write_object_response
+    )
+
+    # Act
+    response = await write_obj_stream.recv()
+
+    # Assert
+    write_obj_stream.socket_like_rpc.recv.assert_called_once()
+    assert response == bidi_write_object_response
+    # asserts that new write handle has been updated.
+    assert write_obj_stream.write_handle == NEW_WRITE_HANDLE_PROTO
+
+
+@pytest.mark.asyncio
+@mock.patch(
+    "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+)
+async def test_requests_done_updates_write_handle(mock_cls_async_bidi_rpc, mock_client):
+    """Test that requests_done updates the write_handle if present in the response."""
+    # Arrange
+    write_obj_stream = await instantiate_write_obj_stream(
+        mock_client, mock_cls_async_bidi_rpc, open=True
+    )
+    assert write_obj_stream.write_handle == WRITE_HANDLE_PROTO  # Initial handle
+
+    # new_write_handle = b"new-test-handle"
+    bidi_write_object_response = _storage_v2.BidiWriteObjectResponse(
+        write_handle=NEW_WRITE_HANDLE_PROTO
+    )
+    write_obj_stream.socket_like_rpc.send = AsyncMock()
+    write_obj_stream.socket_like_rpc.recv = AsyncMock(
+        return_value=bidi_write_object_response
+    )
+
+    # Act
+    await write_obj_stream.requests_done()
+
+    # Assert
+    write_obj_stream.socket_like_rpc.send.assert_called_once_with(None)
+    write_obj_stream.socket_like_rpc.recv.assert_called_once()
+    assert write_obj_stream.write_handle == NEW_WRITE_HANDLE_PROTO

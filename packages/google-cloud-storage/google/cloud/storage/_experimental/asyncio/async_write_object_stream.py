@@ -22,6 +22,7 @@ if you want to use these Rapid Storage APIs.
 
 """
 from typing import Optional
+from . import _utils
 from google.cloud import _storage_v2
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
@@ -190,7 +191,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         """Signals that all requests have been sent."""
 
         await self.socket_like_rpc.send(None)
-        await self.socket_like_rpc.recv()
+        _utils.update_write_handle_if_exists(self, await self.socket_like_rpc.recv())
 
     async def send(
         self, bidi_write_object_request: _storage_v2.BidiWriteObjectRequest
@@ -218,7 +219,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         """
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
-        return await self.socket_like_rpc.recv()
+        response = await self.socket_like_rpc.recv()
+        _utils.update_write_handle_if_exists(self, response)
+        return response
 
     @property
     def is_stream_open(self) -> bool:

@@ -27,7 +27,7 @@ from typing import Optional, Union
 from google_crc32c import Checksum
 from google.api_core import exceptions
 
-from ._utils import raise_if_no_fast_crc32c
+from . import _utils
 from google.cloud import _storage_v2
 from google.cloud.storage._experimental.asyncio.async_grpc_client import (
     AsyncGrpcClient,
@@ -121,7 +121,7 @@ class AsyncAppendableObjectWriter:
                 servers. Default is `_DEFAULT_FLUSH_INTERVAL_BYTES`.
                 Must be a multiple of `_MAX_CHUNK_SIZE_BYTES`.
         """
-        raise_if_no_fast_crc32c()
+        _utils.raise_if_no_fast_crc32c()
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
@@ -175,6 +175,7 @@ class AsyncAppendableObjectWriter:
             )
         )
         response = await self.write_obj_stream.recv()
+        _utils.update_write_handle_if_exists(self, response)
         self.persisted_size = response.persisted_size
         return self.persisted_size
 
@@ -253,6 +254,7 @@ class AsyncAppendableObjectWriter:
 
             if is_last_chunk:
                 response = await self.write_obj_stream.recv()
+                _utils.update_write_handle_if_exists(self, response)
                 self.persisted_size = response.persisted_size
                 self.offset = self.persisted_size
                 self.bytes_appended_since_last_flush = 0
@@ -295,6 +297,7 @@ class AsyncAppendableObjectWriter:
             )
         )
         response = await self.write_obj_stream.recv()
+        _utils.update_write_handle_if_exists(self, response)
         self.persisted_size = response.persisted_size
         self.offset = self.persisted_size
         return self.persisted_size
@@ -351,6 +354,7 @@ class AsyncAppendableObjectWriter:
             _storage_v2.BidiWriteObjectRequest(finish_write=True)
         )
         response = await self.write_obj_stream.recv()
+        _utils.update_write_handle_if_exists(self, response)
         self.object_resource = response.resource
         self.persisted_size = self.object_resource.size
         await self.write_obj_stream.close()
