@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-databasecenter/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.3.0...google-cloud-databasecenter-v0.4.0) (2026-01-22)
+
+
+### Features
+
+* Adding Method AggregateIssueStats of Database Center API v1beta This release includes: -   `DatabaseCenter` service with `AggregateIssueStats` method. -   All related enums. ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-databasecenter-v0.2.0...google-cloud-databasecenter-v0.3.0) (2026-01-15)
 
 
