@@ -17,8 +17,6 @@
 import datetime
 import decimal
 
-import pytz
-
 SCALAR_COLUMNS = [
     {"name": "int_col", "type": "int64"},
     {"name": "float_col", "type": "float64"},
@@ -42,7 +40,7 @@ SCALAR_BLOCKS = [
             "bytes_col": b"ascii bytes",
             "date_col": datetime.date(1998, 9, 4),
             "time_col": datetime.time(12, 0),
-            "ts_col": datetime.datetime(2000, 1, 1, 5, 0, tzinfo=pytz.utc),
+            "ts_col": datetime.datetime(2000, 1, 1, 5, 0, tzinfo=datetime.timezone.utc),
         },
         {
             "int_col": 456,
@@ -53,7 +51,7 @@ SCALAR_BLOCKS = [
             "bytes_col": b"\xbb\xee\xff",
             "date_col": datetime.date(1995, 3, 2),
             "time_col": datetime.time(13, 37),
-            "ts_col": datetime.datetime(1965, 4, 3, 2, 1, tzinfo=pytz.utc),
+            "ts_col": datetime.datetime(1965, 4, 3, 2, 1, tzinfo=datetime.timezone.utc),
         },
     ],
     [
@@ -66,7 +64,9 @@ SCALAR_BLOCKS = [
             "bytes_col": b"\x54\x69\x6d",
             "date_col": datetime.date(1970, 1, 1),
             "time_col": datetime.time(16, 20),
-            "ts_col": datetime.datetime(1991, 8, 25, 20, 57, 8, tzinfo=pytz.utc),
+            "ts_col": datetime.datetime(
+                1991, 8, 25, 20, 57, 8, tzinfo=datetime.timezone.utc
+            ),
         }
     ],
 ]
