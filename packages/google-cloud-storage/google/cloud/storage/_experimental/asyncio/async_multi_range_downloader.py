@@ -129,7 +129,7 @@ class AsyncMultiRangeDownloader:
         bucket_name: str,
         object_name: str,
         generation_number: Optional[int] = None,
-        read_handle: Optional[bytes] = None,
+        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
     ) -> AsyncMultiRangeDownloader:
@@ -149,7 +149,7 @@ class AsyncMultiRangeDownloader:
         :param generation_number: (Optional) If present, selects a specific
                                   revision of this object.
 
-        :type read_handle: bytes
+        :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing handle for reading the object.
                             If provided, opening the bidi-gRPC connection will be faster.
 
@@ -172,7 +172,7 @@ class AsyncMultiRangeDownloader:
         bucket_name: str,
         object_name: str,
         generation_number: Optional[int] = None,
-        read_handle: Optional[bytes] = None,
+        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
     ) -> None:
         """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
          use it directly. Instead it's adviced to use the classmethod `create_mrd`.
@@ -190,7 +190,7 @@ class AsyncMultiRangeDownloader:
         :param generation_number: (Optional) If present, selects a specific revision of
                                   this object.
 
-        :type read_handle: bytes
+        :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing read handle.
         """
 
@@ -200,7 +200,7 @@ class AsyncMultiRangeDownloader:
         self.bucket_name = bucket_name
         self.object_name = object_name
         self.generation_number = generation_number
-        self.read_handle = read_handle
+        self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
         self.read_obj_str: Optional[_AsyncReadObjectStream] = None
         self._is_stream_open: bool = False
         self._routing_token: Optional[str] = None

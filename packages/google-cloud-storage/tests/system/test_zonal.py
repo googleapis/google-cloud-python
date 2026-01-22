@@ -333,6 +333,56 @@ def test_mrd_open_with_read_handle_over_cloud_path(event_loop, grpc_client):
     event_loop.run_until_complete(_run())
 
 
+def test_wrd_open_with_write_handle(
+    event_loop, grpc_client_direct, storage_client, blobs_to_delete
+):
+    object_name = f"test_write_handl-{str(uuid.uuid4())[:4]}"
+
+    async def _run():
+        # 1. Create an object and get its write_handle
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name
+        )
+        await writer.open()
+        write_handle = writer.write_handle
+        await writer.close()
+
+        # 2. Open a new writer using the obtained `write_handle` and generation
+        new_writer = AsyncAppendableObjectWriter(
+            grpc_client_direct,
+            _ZONAL_BUCKET,
+            object_name,
+            write_handle=write_handle,
+            generation=writer.generation,
+        )
+        await new_writer.open()
+        # Verify that the new writer is open and has the same write_handle
+        assert new_writer.is_stream_open
+        assert new_writer.generation == writer.generation
+
+        # 3. Append some data using the new writer
+        test_data = b"data_from_new_writer"
+        await new_writer.append(test_data)
+        await new_writer.close()
+
+        # 4. Verify the data was written correctly by reading it back
+        mrd = AsyncMultiRangeDownloader(grpc_client_direct, _ZONAL_BUCKET, object_name)
+        buffer = BytesIO()
+        await mrd.open()
+        await mrd.download_ranges([(0, 0, buffer)])
+        await mrd.close()
+        assert buffer.getvalue() == test_data
+
+        # Clean up
+        blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+        del writer
+        del new_writer
+        del mrd
+        gc.collect()
+
+    event_loop.run_until_complete(_run())
+
+
 def test_read_unfinalized_appendable_object_with_generation(
     storage_client, blobs_to_delete, event_loop, grpc_client_direct
 ):

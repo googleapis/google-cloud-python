@@ -49,8 +49,8 @@ class AsyncAppendableObjectWriter:
         client: AsyncGrpcClient.grpc_client,
         bucket_name: str,
         object_name: str,
-        generation=None,
-        write_handle=None,
+        generation: Optional[int] = None,
+        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
         writer_options: Optional[dict] = None,
     ):
         """
@@ -96,7 +96,7 @@ class AsyncAppendableObjectWriter:
         :type object_name: str
         :param object_name: The name of the GCS Appendable Object to be written.
 
-        :type generation: int
+        :type generation: Optional[int]
         :param generation: (Optional) If present, creates writer for that
             specific revision of that object. Use this to append data to an
             existing Appendable Object.
@@ -106,10 +106,10 @@ class AsyncAppendableObjectWriter:
             overwriting existing objects).
 
             Warning: If `None`, a new object is created. If an object with the
-            same name already exists, it will be overwritten the moment 
+            same name already exists, it will be overwritten the moment
             `writer.open()` is called.
 
-        :type write_handle: bytes
+        :type write_handle: _storage_v2.BidiWriteHandle
         :param write_handle: (Optional) An handle for writing the object.
             If provided, opening the bidi-gRPC connection will be faster.
 
@@ -362,7 +362,6 @@ class AsyncAppendableObjectWriter:
     @property
     def is_stream_open(self) -> bool:
         return self._is_stream_open
-
 
     # helper methods.
     async def append_from_string(self, data: str):

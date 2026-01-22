@@ -32,7 +32,7 @@ class _AsyncAbstractObjectStream(abc.ABC):
     :param generation_number: (Optional) If present, selects a specific revision of
                               this object.
 
-    :type handle: bytes
+    :type handle: Any
     :param handle: (Optional) The handle for the object, could be read_handle or
                    write_handle, based on how the stream is used.
     """
@@ -42,13 +42,13 @@ class _AsyncAbstractObjectStream(abc.ABC):
         bucket_name: str,
         object_name: str,
         generation_number: Optional[int] = None,
-        handle: Optional[bytes] = None,
+        handle: Optional[Any] = None,
     ) -> None:
         super().__init__()
         self.bucket_name: str = bucket_name
         self.object_name: str = object_name
         self.generation_number: Optional[int] = generation_number
-        self.handle: Optional[bytes] = handle
+        self.handle: Optional[Any] = handle
 
     @abc.abstractmethod
     async def open(self) -> None:

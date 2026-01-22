@@ -59,7 +59,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         same name already exists, it will be overwritten the moment
         `writer.open()` is called.
 
-    :type write_handle: bytes
+    :type write_handle: _storage_v2.BidiWriteHandle
     :param write_handle: (Optional) An existing handle for writing the object.
                         If provided, opening the bidi-gRPC connection will be faster.
     """
@@ -70,7 +70,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         bucket_name: str,
         object_name: str,
         generation_number: Optional[int] = None,  # None means new object
-        write_handle: Optional[bytes] = None,
+        write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -85,7 +85,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
             generation_number=generation_number,
         )
         self.client: AsyncGrpcClient.grpc_client = client
-        self.write_handle: Optional[bytes] = write_handle
+        self.write_handle: Optional[_storage_v2.BidiWriteHandle] = write_handle
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
@@ -120,6 +120,9 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         # Created object type would be Appendable Object.
         # if `generation_number` == 0 new object will be created only if there
         # isn't any existing object.
+        is_open_via_write_handle = (
+            self.write_handle is not None and self.generation_number
+        )
         if self.generation_number is None or self.generation_number == 0:
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
@@ -136,6 +139,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                     bucket=self._full_bucket_name,
                     object=self.object_name,
                     generation=self.generation_number,
+                    write_handle=self.write_handle,
                 ),
             )
         self.socket_like_rpc = AsyncBidiRpc(
@@ -145,24 +149,31 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         await self.socket_like_rpc.open()  # this is actually 1 send
         response = await self.socket_like_rpc.recv()
         self._is_stream_open = True
-
-        if not response.resource:
-            raise ValueError(
-                "Failed to obtain object resource after opening the stream"
-            )
-        if not response.resource.generation:
-            raise ValueError(
-                "Failed to obtain object generation after opening the stream"
-            )
+        if is_open_via_write_handle:
+            # Don't use if not response.persisted_size because this will be true
+            # if persisted_size==0 (0 is considered "Falsy" in Python)
+            if response.persisted_size is None:
+                raise ValueError(
+                    "Failed to obtain persisted_size after opening the stream via write_handle"
+                )
+            self.persisted_size = response.persisted_size
+        else:
+            if not response.resource:
+                raise ValueError(
+                    "Failed to obtain object resource after opening the stream"
+                )
+            if not response.resource.generation:
+                raise ValueError(
+                    "Failed to obtain object generation after opening the stream"
+                )
+            if not response.resource.size:
+                # Appending to a 0 byte appendable object.
+                self.persisted_size = 0
+            else:
+                self.persisted_size = response.resource.size
 
         if not response.write_handle:
             raise ValueError("Failed to obtain write_handle after opening the stream")
-
-        if not response.resource.size:
-            # Appending to a 0 byte appendable object.
-            self.persisted_size = 0
-        else:
-            self.persisted_size = response.resource.size
 
         self.generation_number = response.resource.generation
         self.write_handle = response.write_handle
@@ -212,4 +223,3 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
     @property
     def is_stream_open(self) -> bool:
         return self._is_stream_open
-

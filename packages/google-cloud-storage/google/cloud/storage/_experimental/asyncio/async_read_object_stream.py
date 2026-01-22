@@ -51,7 +51,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
     :param generation_number: (Optional) If present, selects a specific revision of
                               this object.
 
-    :type read_handle: bytes
+    :type read_handle: _storage_v2.BidiReadHandle
     :param read_handle: (Optional) An existing handle for reading the object.
                         If provided, opening the bidi-gRPC connection will be faster.
     """
@@ -62,7 +62,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
         bucket_name: str,
         object_name: str,
         generation_number: Optional[int] = None,
-        read_handle: Optional[bytes] = None,
+        read_handle: Optional[_storage_v2.BidiReadHandle] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -77,7 +77,7 @@ class _AsyncReadObjectStream(_AsyncAbstractObjectStream):
             generation_number=generation_number,
         )
         self.client: AsyncGrpcClient.grpc_client = client
-        self.read_handle: Optional[bytes] = read_handle
+        self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
