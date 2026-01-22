@@ -12,6 +12,8 @@ pytz
 pandas==1.0.5
 pyarrow==0.15.0
 google-auth==2.14.1
+# cryptography is a direct dependency of google-auth
+cryptography==38.0.3
 # TODO(https://github.com/googleapis/gapic-generator-python/issues/2453)
 # Add the minimum supported version of grpcio to constraints files
 proto-plus==1.22.3
