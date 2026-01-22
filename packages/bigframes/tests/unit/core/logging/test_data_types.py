@@ -29,6 +29,7 @@ PA_LIST_TYPE = pa.list_(pa.int64())
 @pytest.mark.parametrize(
     ("dtype", "expected_mask"),
     [
+        (None, 0),
         (UNKNOWN_TYPE, 1 << 0),
         (dtypes.INT_DTYPE, 1 << 1),
         (dtypes.FLOAT_DTYPE, 1 << 2),
@@ -51,19 +52,3 @@ PA_LIST_TYPE = pa.list_(pa.int64())
 )
 def test_get_dtype_mask(dtype, expected_mask):
     assert data_types._get_dtype_mask(dtype) == expected_mask
-
-
-def test_add_data_type__type_overlap_no_op():
-    curr_type = dtypes.STRING_DTYPE
-    existing_types = data_types._get_dtype_mask(curr_type)
-
-    assert data_types._add_data_type(existing_types, curr_type) == existing_types
-
-
-def test_add_data_type__new_type_updated():
-    curr_type = dtypes.STRING_DTYPE
-    existing_types = data_types._get_dtype_mask(dtypes.INT_DTYPE)
-
-    assert data_types._add_data_type(
-        existing_types, curr_type
-    ) == existing_types | data_types._get_dtype_mask(curr_type)

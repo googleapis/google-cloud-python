@@ -12,15 +12,115 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import annotations
+
+import functools
 
 from bigframes import dtypes
+from bigframes.core import agg_expressions, bigframe_node, expression, nodes
+from bigframes.core.rewrite import schema_binding
+
+IGNORED_NODES = (
+    nodes.SelectionNode,
+    nodes.ReadLocalNode,
+    nodes.ReadTableNode,
+    nodes.ConcatNode,
+    nodes.RandomSampleNode,
+    nodes.FromRangeNode,
+    nodes.PromoteOffsetsNode,
+    nodes.ReversedNode,
+    nodes.SliceNode,
+    nodes.ResultNode,
+)
 
 
-def _add_data_type(existing_types: int, curr_type: dtypes.Dtype) -> int:
-    return existing_types | _get_dtype_mask(curr_type)
+def encode_type_refs(root: bigframe_node.BigFrameNode) -> str:
+    return f"{root.reduce_up(_encode_type_refs_from_node):x}"
 
 
-def _get_dtype_mask(dtype: dtypes.Dtype) -> int:
+def _encode_type_refs_from_node(
+    node: bigframe_node.BigFrameNode, child_results: tuple[int, ...]
+) -> int:
+    child_result = functools.reduce(lambda x, y: x | y, child_results, 0)
+
+    curr_result = 0
+    if isinstance(node, nodes.FilterNode):
+        curr_result = _encode_type_refs_from_expr(node.predicate, node.child)
+    elif isinstance(node, nodes.ProjectionNode):
+        for assignment in node.assignments:
+            expr = assignment[0]
+            if isinstance(expr, (expression.DerefOp)):
+                # Ignore direct assignments in projection nodes.
+                continue
+            curr_result = curr_result | _encode_type_refs_from_expr(
+                assignment[0], node.child
+            )
+    elif isinstance(node, nodes.OrderByNode):
+        for by in node.by:
+            curr_result = curr_result | _encode_type_refs_from_expr(
+                by.scalar_expression, node.child
+            )
+    elif isinstance(node, nodes.JoinNode):
+        for left, right in node.conditions:
+            curr_result = (
+                curr_result
+                | _encode_type_refs_from_expr(left, node.left_child)
+                | _encode_type_refs_from_expr(right, node.right_child)
+            )
+    elif isinstance(node, nodes.InNode):
+        curr_result = _encode_type_refs_from_expr(node.left_col, node.left_child)
+    elif isinstance(node, nodes.AggregateNode):
+        for agg, _ in node.aggregations:
+            curr_result = curr_result | _encode_type_refs_from_expr(agg, node.child)
+    elif isinstance(node, nodes.WindowOpNode):
+        for grouping_key in node.window_spec.grouping_keys:
+            curr_result = curr_result | _encode_type_refs_from_expr(
+                grouping_key, node.child
+            )
+        for ordering_expr in node.window_spec.ordering:
+            curr_result = curr_result | _encode_type_refs_from_expr(
+                ordering_expr.scalar_expression, node.child
+            )
+        for col_def in node.agg_exprs:
+            curr_result = curr_result | _encode_type_refs_from_expr(
+                col_def.expression, node.child
+            )
+    elif isinstance(node, nodes.ExplodeNode):
+        for col_id in node.column_ids:
+            curr_result = curr_result | _encode_type_refs_from_expr(col_id, node.child)
+    elif isinstance(node, IGNORED_NODES):
+        # Do nothing
+        pass
+    else:
+        # For unseen nodes, do not raise errors as this is the logging path, but
+        # we should cover those nodes either in the branches above, or place them
+        # in the IGNORED_NODES collection.
+        pass
+
+    return child_result | curr_result
+
+
+def _encode_type_refs_from_expr(
+    expr: expression.Expression, child_node: bigframe_node.BigFrameNode
+) -> int:
+    # TODO(b/409387790): Remove this branch once SQLGlot compiler fully replaces Ibis compiler
+    if not expr.is_resolved:
+        if isinstance(expr, agg_expressions.Aggregation):
+            expr = schema_binding._bind_schema_to_aggregation_expr(expr, child_node)
+        else:
+            expr = expression.bind_schema_fields(expr, child_node.field_by_id)
+
+    result = _get_dtype_mask(expr.output_type)
+    for child_expr in expr.children:
+        result = result | _encode_type_refs_from_expr(child_expr, child_node)
+
+    return result
+
+
+def _get_dtype_mask(dtype: dtypes.Dtype | None) -> int:
+    if dtype is None:
+        # If the dtype is not given, ignore
+        return 0
     if dtype == dtypes.INT_DTYPE:
         return 1 << 1
     if dtype == dtypes.FLOAT_DTYPE:
