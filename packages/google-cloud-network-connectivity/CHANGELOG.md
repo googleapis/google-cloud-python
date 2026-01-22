@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-connectivity/#history
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.12.0...google-cloud-network-connectivity-v2.13.0) (2026-01-22)
+
+
+### Features
+
+* Added OUTPUT_ONLY annotations to create_time and update_time in InternalRange to reflect existing service behavior ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
 ## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.11.0...google-cloud-network-connectivity-v2.12.0) (2026-01-09)
 
 

@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [3.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.9.0...google-cloud-kms-v3.10.0) (2026-01-22)
+
+
+### Documentation
+
+* A comment for field `crypto_key_backend` in message `.google.cloud.kms.v1.CryptoKey` is expanded to include SingleTenantHsmInstances ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+* A comment for enum value `MODIFIED_GOOGLE_INITIATED_SYSTEM_OPERATION` in enum `AccessReason` is changed ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+* A comment for enum value `MODIFIED_CUSTOMER_INITIATED_ACCESS` in enum `AccessReason` is changed ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
+
+### Features
+
+* add the SingleTenantHsm functionality including the management API and resource types ([13f6df001f44f652e84e787f2d67d0f894ed57c4](https://github.com/googleapis/google-cloud-python/commit/13f6df001f44f652e84e787f2d67d0f894ed57c4))
+
 ## [3.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v3.8.0...google-cloud-kms-v3.9.0) (2026-01-15)
 
 
