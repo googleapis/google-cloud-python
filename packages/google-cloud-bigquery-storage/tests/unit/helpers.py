@@ -64,7 +64,9 @@ SCALAR_BLOCKS = [
             "bytes_col": b"\x54\x69\x6d",
             "date_col": datetime.date(1970, 1, 1),
             "time_col": datetime.time(16, 20),
-            "ts_col": datetime.datetime(1991, 8, 25, 20, 57, 8, tzinfo=datetime.timezone.utc),
+            "ts_col": datetime.datetime(
+                1991, 8, 25, 20, 57, 8, tzinfo=datetime.timezone.utc
+            ),
         }
     ],
 ]
