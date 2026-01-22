@@ -36,6 +36,8 @@ from google.api_core import gapic_v1
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
 )
 from google.cloud.spanner_v1.batch import _make_write_pb
 from google.cloud.spanner_v1.database import Database
@@ -1422,6 +1424,19 @@ class _Database(object):
             prior_metadata,
             span,
         )
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
     @property
     def _channel_id(self):

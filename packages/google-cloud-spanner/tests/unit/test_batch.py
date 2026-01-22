@@ -42,6 +42,8 @@ from google.rpc.status_pb2 import Status
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _metadata_with_request_id,
+    _augment_errors_with_request_id,
+    _metadata_with_request_id_and_req_id,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 
@@ -215,8 +217,12 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         batch = self._make_one(session)
         batch.delete(TABLE_NAME, keyset=keyset)
 
-        with self.assertRaises(Unknown):
+        # Exception has request_id attribute added
+        with self.assertRaises(Unknown) as context:
             batch.commit()
+
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(context.exception, "request_id"))
 
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
@@ -283,7 +289,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
     def test_aborted_exception_on_commit_with_retries(self):
         # Test case to verify that an Aborted exception is raised when
         # batch.commit() is called and the transaction is aborted internally.
-
+        # The exception has request_id attribute added.
         database = _Database()
         # Setup the spanner API which throws Aborted exception when calling commit API.
         api = database.spanner_api = _FauxSpannerAPI(_aborted_error=True)
@@ -296,12 +302,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         batch = self._make_one(session)
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        # Assertion: Ensure that calling batch.commit() raises the Aborted exception
+        # Assertion: Ensure that calling batch.commit() raises Aborted
         with self.assertRaises(Aborted) as context:
             batch.commit(timeout_secs=0.1, default_retry_delay=0)
 
-        # Verify additional details about the exception
-        self.assertEqual(str(context.exception), "409 Transaction was aborted")
+        # Verify exception includes request_id attribute
+        self.assertIn("409 Transaction was aborted", str(context.exception))
+        self.assertTrue(hasattr(context.exception, "request_id"))
         self.assertGreater(
             api.commit.call_count, 1, "commit should be called more than once"
         )
@@ -822,6 +829,19 @@ class _Database(object):
             prior_metadata,
             span,
         )
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
     @property
     def _channel_id(self):

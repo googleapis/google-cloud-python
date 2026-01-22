@@ -65,6 +65,7 @@ from .types.type import TypeAnnotationCode
 from .types.type import TypeCode
 from .data_types import JsonObject, Interval
 from .transaction import BatchTransactionId, DefaultTransactionOptions
+from .exceptions import wrap_with_request_id
 
 from google.cloud.spanner_v1 import param_types
 from google.cloud.spanner_v1.client import Client
@@ -88,6 +89,8 @@ __all__ = (
     # google.cloud.spanner_v1
     "__version__",
     "param_types",
+    # google.cloud.spanner_v1.exceptions
+    "wrap_with_request_id",
     # google.cloud.spanner_v1.client
     "Client",
     # google.cloud.spanner_v1.keyset

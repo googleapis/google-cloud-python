@@ -46,6 +46,16 @@ def with_request_id(
     if span:
         span.set_attribute(X_GOOG_SPANNER_REQUEST_ID_SPAN_ATTR, req_id)
 
+    return all_metadata, req_id
+
+
+def with_request_id_metadata_only(
+    client_id, channel_id, nth_request, attempt, other_metadata=[], span=None
+):
+    """Return metadata with request ID header, discarding the request ID value."""
+    all_metadata, _ = with_request_id(
+        client_id, channel_id, nth_request, attempt, other_metadata, span
+    )
     return all_metadata
 
 

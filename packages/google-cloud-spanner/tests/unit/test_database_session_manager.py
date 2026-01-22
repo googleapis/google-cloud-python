@@ -208,16 +208,22 @@ class TestDatabaseSessionManager(TestCase):
         api = manager._database.spanner_api
         api.create_session.side_effect = BadRequest("")
 
-        with self.assertRaises(BadRequest):
+        # Exception has request_id attribute added
+        with self.assertRaises(BadRequest) as cm:
             manager.get_session(TransactionType.READ_ONLY)
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(cm.exception, "request_id"))
 
     def test_exception_failed_precondition(self):
         manager = self._manager
         api = manager._database.spanner_api
         api.create_session.side_effect = FailedPrecondition("")
 
-        with self.assertRaises(FailedPrecondition):
+        # Exception has request_id attribute added
+        with self.assertRaises(FailedPrecondition) as cm:
             manager.get_session(TransactionType.READ_ONLY)
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(cm.exception, "request_id"))
 
     def test__use_multiplexed_read_only(self):
         transaction_type = TransactionType.READ_ONLY

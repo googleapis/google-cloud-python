@@ -25,13 +25,13 @@ from google.api_core.exceptions import NotFound
 from google.api_core.gapic_v1 import method
 from google.cloud.spanner_v1._helpers import _delay_until_retry
 from google.cloud.spanner_v1._helpers import _get_retry_delay
-
-from google.cloud.spanner_v1 import ExecuteSqlRequest
-from google.cloud.spanner_v1 import CreateSessionRequest
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
 )
+
+from google.cloud.spanner_v1 import ExecuteSqlRequest
+from google.cloud.spanner_v1 import CreateSessionRequest
 from google.cloud.spanner_v1._opentelemetry_tracing import (
     add_span_event,
     get_current_span,
@@ -185,6 +185,7 @@ class Session(object):
             if self._is_multiplexed
             else "CloudSpanner.CreateSession"
         )
+        nth_request = database._next_nth_request
         with trace_call(
             span_name,
             self,
@@ -192,15 +193,14 @@ class Session(object):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture():
-            session_pb = api.create_session(
-                request=create_session_request,
-                metadata=database.metadata_with_request_id(
-                    database._next_nth_request,
-                    1,
-                    metadata,
-                    span,
-                ),
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, 1, metadata, span
             )
+            with error_augmenter:
+                session_pb = api.create_session(
+                    request=create_session_request,
+                    metadata=call_metadata,
+                )
         self._session_id = session_pb.name.split("/")[-1]
 
     def exists(self):
@@ -235,26 +235,26 @@ class Session(object):
             )
 
         observability_options = getattr(self._database, "observability_options", None)
+        nth_request = database._next_nth_request
         with trace_call(
             "CloudSpanner.GetSession",
             self,
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture():
-            try:
-                api.get_session(
-                    name=self.name,
-                    metadata=database.metadata_with_request_id(
-                        database._next_nth_request,
-                        1,
-                        metadata,
-                        span,
-                    ),
-                )
-                span.set_attribute("session_found", True)
-            except NotFound:
-                span.set_attribute("session_found", False)
-                return False
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, 1, metadata, span
+            )
+            with error_augmenter:
+                try:
+                    api.get_session(
+                        name=self.name,
+                        metadata=call_metadata,
+                    )
+                    span.set_attribute("session_found", True)
+                except NotFound:
+                    span.set_attribute("session_found", False)
+                    return False
 
         return True
 
@@ -288,6 +288,7 @@ class Session(object):
         api = database.spanner_api
         metadata = _metadata_with_prefix(database.name)
         observability_options = getattr(self._database, "observability_options", None)
+        nth_request = database._next_nth_request
         with trace_call(
             "CloudSpanner.DeleteSession",
             self,
@@ -298,15 +299,14 @@ class Session(object):
             observability_options=observability_options,
             metadata=metadata,
         ) as span, MetricsCapture():
-            api.delete_session(
-                name=self.name,
-                metadata=database.metadata_with_request_id(
-                    database._next_nth_request,
-                    1,
-                    metadata,
-                    span,
-                ),
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, 1, metadata, span
             )
+            with error_augmenter:
+                api.delete_session(
+                    name=self.name,
+                    metadata=call_metadata,
+                )
 
     def ping(self):
         """Ping the session to keep it alive by executing "SELECT 1".
@@ -318,18 +318,19 @@ class Session(object):
 
         database = self._database
         api = database.spanner_api
+        metadata = _metadata_with_prefix(database.name)
+        nth_request = database._next_nth_request
 
         with trace_call("CloudSpanner.Session.ping", self) as span:
-            request = ExecuteSqlRequest(session=self.name, sql="SELECT 1")
-            api.execute_sql(
-                request=request,
-                metadata=database.metadata_with_request_id(
-                    database._next_nth_request,
-                    1,
-                    _metadata_with_prefix(database.name),
-                    span,
-                ),
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, 1, metadata, span
             )
+            with error_augmenter:
+                request = ExecuteSqlRequest(session=self.name, sql="SELECT 1")
+                api.execute_sql(
+                    request=request,
+                    metadata=call_metadata,
+                )
 
     def snapshot(self, **kw):
         """Create a snapshot to perform a set of reads with shared staleness.
@@ -585,7 +586,10 @@ class Session(object):
                         attributes,
                     )
                     _delay_until_retry(
-                        exc, deadline, attempts, default_retry_delay=default_retry_delay
+                        exc,
+                        deadline,
+                        attempts,
+                        default_retry_delay=default_retry_delay,
                     )
                     continue
 
@@ -628,7 +632,10 @@ class Session(object):
                         attributes,
                     )
                     _delay_until_retry(
-                        exc, deadline, attempts, default_retry_delay=default_retry_delay
+                        exc,
+                        deadline,
+                        attempts,
+                        default_retry_delay=default_retry_delay,
                     )
 
                 except GoogleAPICallError:

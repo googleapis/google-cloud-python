@@ -146,5 +146,6 @@ class TestDbapiIsolationLevel(MockServerTestBase):
     def test_begin_invalid_isolation_level(self):
         connection = Connection(self.instance, self.database)
         with connection.cursor() as cursor:
+            # The Unknown exception has request_id attribute added
             with self.assertRaises(Unknown):
                 cursor.execute("begin isolation level does_not_exist")

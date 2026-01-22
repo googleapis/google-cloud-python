@@ -95,7 +95,11 @@ def inject_into_mock_database(mockdb):
     def metadata_with_request_id(
         nth_request, nth_attempt, prior_metadata=[], span=None
     ):
-        nth_req = nth_request.fget(mockdb)
+        # Handle both cases: nth_request as an integer or as a property descriptor
+        if isinstance(nth_request, int):
+            nth_req = nth_request
+        else:
+            nth_req = nth_request.fget(mockdb)
         return _metadata_with_request_id(
             nth_client_id,
             channel_id,
@@ -107,11 +111,45 @@ def inject_into_mock_database(mockdb):
 
     setattr(mockdb, "metadata_with_request_id", metadata_with_request_id)
 
-    @property
-    def _next_nth_request(self):
-        return self._nth_request.increment()
+    # Create a property-like object using type() to make it work with mock
+    type(mockdb)._next_nth_request = property(
+        lambda self: self._nth_request.increment()
+    )
 
-    setattr(mockdb, "_next_nth_request", _next_nth_request)
+    # Use a closure to capture nth_client_id and channel_id
+    def make_with_error_augmentation(db_nth_client_id, db_channel_id):
+        def with_error_augmentation(
+            nth_request, nth_attempt, prior_metadata=[], span=None
+        ):
+            """Context manager for gRPC calls with error augmentation."""
+            from google.cloud.spanner_v1._helpers import (
+                _metadata_with_request_id_and_req_id,
+                _augment_errors_with_request_id,
+            )
+
+            if span is None:
+                from google.cloud.spanner_v1._opentelemetry_tracing import (
+                    get_current_span,
+                )
+
+                span = get_current_span()
+
+            metadata, request_id = _metadata_with_request_id_and_req_id(
+                db_nth_client_id,
+                db_channel_id,
+                nth_request,
+                nth_attempt,
+                prior_metadata,
+                span,
+            )
+
+            return metadata, _augment_errors_with_request_id(request_id)
+
+        return with_error_augmentation
+
+    mockdb.with_error_augmentation = make_with_error_augmentation(
+        nth_client_id, channel_id
+    )
 
     return mockdb
 
@@ -447,8 +485,11 @@ class TestSession(OpenTelemetryBase):
         database.spanner_api = gax_api
         session = self._make_one(database)
 
-        with self.assertRaises(Unknown):
+        # Exception has request_id attribute added
+        with self.assertRaises(Unknown) as cm:
             session.create()
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(cm.exception, "request_id"))
 
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         self.assertSpanAttributes(
@@ -551,8 +592,11 @@ class TestSession(OpenTelemetryBase):
         session = self._make_one(database)
         session._session_id = self.SESSION_ID
 
-        with self.assertRaises(Unknown):
+        # Exception has request_id attribute added
+        with self.assertRaises(Unknown) as cm:
             session.exists()
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(cm.exception, "request_id"))
 
         req_id = f"1.{REQ_RAND_PROCESS_ID}.{database._nth_client_id}.{database._channel_id}.1.1"
         gax_api.get_session.assert_called_once_with(
@@ -1296,8 +1340,10 @@ class TestSession(OpenTelemetryBase):
             called_with.append((txn, args, kw))
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
 
-        with self.assertRaises(Unknown):
+        # Exception has request_id attribute added
+        with self.assertRaises(Unknown) as context:
             session.run_in_transaction(unit_of_work)
+        self.assertTrue(hasattr(context.exception, "request_id"))
 
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]
@@ -1665,8 +1711,10 @@ class TestSession(OpenTelemetryBase):
 
         with mock.patch("time.time", _time):
             with mock.patch("time.sleep") as sleep_mock:
-                with self.assertRaises(Aborted):
+                # Exception has request_id attribute added
+                with self.assertRaises(Aborted) as context:
                     session.run_in_transaction(unit_of_work, "abc", timeout_secs=1)
+                self.assertTrue(hasattr(context.exception, "request_id"))
 
         sleep_mock.assert_not_called()
 
@@ -1733,8 +1781,10 @@ class TestSession(OpenTelemetryBase):
         with mock.patch("time.time", _time), mock.patch(
             "google.cloud.spanner_v1._helpers.random.random", return_value=0
         ), mock.patch("time.sleep") as sleep_mock:
-            with self.assertRaises(Aborted):
+            # Exception has request_id attribute added
+            with self.assertRaises(Aborted) as context:
                 session.run_in_transaction(unit_of_work, timeout_secs=8)
+            self.assertTrue(hasattr(context.exception, "request_id"))
 
         # unpacking call args into list
         call_args = [call_[0][0] for call_ in sleep_mock.call_args_list]
@@ -1932,8 +1982,10 @@ class TestSession(OpenTelemetryBase):
             txn.insert(TABLE_NAME, COLUMNS, VALUES)
             return 42
 
-        with self.assertRaises(Unknown):
+        # Exception has request_id attribute added
+        with self.assertRaises(Unknown) as context:
             session.run_in_transaction(unit_of_work, "abc", some_arg="def")
+        self.assertTrue(hasattr(context.exception, "request_id"))
 
         self.assertEqual(len(called_with), 1)
         txn, args, kw = called_with[0]

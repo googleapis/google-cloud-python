@@ -45,6 +45,8 @@ from tests._helpers import (
 )
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
     AtomicCounter,
 )
 from google.cloud.spanner_v1.param_types import INT64
@@ -299,8 +301,10 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session = _Session(database)
         derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
-        with self.assertRaises(InternalServerError):
+        # Exception has request_id attribute added
+        with self.assertRaises(InternalServerError) as context:
             list(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
         restart.assert_called_once_with(
             request=request,
             metadata=[
@@ -373,8 +377,10 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session = _Session(database)
         derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
-        with self.assertRaises(InternalServerError):
+        # Exception has request_id attribute added
+        with self.assertRaises(InternalServerError) as context:
             list(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
         restart.assert_called_once_with(
             request=request,
             metadata=[
@@ -598,8 +604,10 @@ class Test_restart_on_unavailable(OpenTelemetryBase):
         session = _Session(database)
         derived = _build_snapshot_derived(session)
         resumable = self._call_fut(derived, restart, request, session=session)
-        with self.assertRaises(InternalServerError):
+        # Exception has request_id attribute added
+        with self.assertRaises(InternalServerError) as context:
             list(resumable)
+        self.assertTrue(hasattr(context.exception, "request_id"))
         restart.assert_called_once_with(
             request=request,
             metadata=[
@@ -2219,6 +2227,31 @@ class _Database(object):
             prior_metadata,
             span,
         )
+
+    def metadata_and_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        return _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
     @property
     def _channel_id(self):

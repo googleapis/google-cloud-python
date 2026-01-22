@@ -25,7 +25,6 @@ import threading
 
 import google.auth.credentials
 from google.api_core.retry import Retry
-from google.api_core.retry import if_exception_type
 from google.cloud.exceptions import NotFound
 from google.api_core.exceptions import Aborted
 from google.api_core import gapic_v1
@@ -55,6 +54,8 @@ from google.cloud.spanner_v1._helpers import (
     _metadata_with_prefix,
     _metadata_with_leader_aware_routing,
     _metadata_with_request_id,
+    _augment_errors_with_request_id,
+    _metadata_with_request_id_and_req_id,
 )
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.batch import MutationGroups
@@ -496,6 +497,66 @@ class Database(object):
             span,
         )
 
+    def metadata_and_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        """Return metadata and request ID string.
+
+        This method returns both the gRPC metadata with request ID header
+        and the request ID string itself, which can be used to augment errors.
+
+        Args:
+            nth_request: The request sequence number
+            nth_attempt: The attempt number (for retries)
+            prior_metadata: Prior metadata to include
+            span: Optional span for tracing
+
+        Returns:
+            tuple: (metadata_list, request_id_string)
+        """
+        if span is None:
+            span = get_current_span()
+
+        return _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        """Context manager for gRPC calls with error augmentation.
+
+        This context manager provides both metadata with request ID and
+        automatically augments any exceptions with the request ID.
+
+        Args:
+            nth_request: The request sequence number
+            nth_attempt: The attempt number (for retries)
+            prior_metadata: Prior metadata to include
+            span: Optional span for tracing
+
+        Yields:
+            tuple: (metadata_list, context_manager)
+        """
+        if span is None:
+            span = get_current_span()
+
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+
+        return metadata, _augment_errors_with_request_id(request_id)
+
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return NotImplemented
@@ -783,16 +844,18 @@ class Database(object):
 
                 try:
                     add_span_event(span, "Starting BeginTransaction")
-                    txn = api.begin_transaction(
-                        session=session.name,
-                        options=txn_options,
-                        metadata=self.metadata_with_request_id(
-                            self._next_nth_request,
-                            1,
-                            metadata,
-                            span,
-                        ),
+                    call_metadata, error_augmenter = self.with_error_augmentation(
+                        self._next_nth_request,
+                        1,
+                        metadata,
+                        span,
                     )
+                    with error_augmenter:
+                        txn = api.begin_transaction(
+                            session=session.name,
+                            options=txn_options,
+                            metadata=call_metadata,
+                        )
 
                     txn_selector = TransactionSelector(id=txn.id)
 
@@ -2060,5 +2123,10 @@ def _retry_on_aborted(func, retry_config):
     :type retry_config: Retry
     :param retry_config: retry object with the settings to be used
     """
-    retry = retry_config.with_predicate(if_exception_type(Aborted))
+
+    def _is_aborted(exc):
+        """Check if exception is Aborted."""
+        return isinstance(exc, Aborted)
+
+    retry = retry_config.with_predicate(_is_aborted)
     return retry(func)

@@ -185,18 +185,20 @@ class Transaction(_SnapshotBase, _BatchBase):
 
                 def wrapped_method(*args, **kwargs):
                     attempt.increment()
+                    call_metadata, error_augmenter = database.with_error_augmentation(
+                        nth_request,
+                        attempt.value,
+                        metadata,
+                        span,
+                    )
                     rollback_method = functools.partial(
                         api.rollback,
                         session=session.name,
                         transaction_id=self._transaction_id,
-                        metadata=database.metadata_with_request_id(
-                            nth_request,
-                            attempt.value,
-                            metadata,
-                            span,
-                        ),
+                        metadata=call_metadata,
                     )
-                    return rollback_method(*args, **kwargs)
+                    with error_augmenter:
+                        return rollback_method(*args, **kwargs)
 
                 _retry(
                     wrapped_method,
@@ -298,17 +300,19 @@ class Transaction(_SnapshotBase, _BatchBase):
                 if is_multiplexed and self._precommit_token is not None:
                     commit_request_args["precommit_token"] = self._precommit_token
 
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request,
+                    attempt.value,
+                    metadata,
+                    span,
+                )
                 commit_method = functools.partial(
                     api.commit,
                     request=CommitRequest(**commit_request_args),
-                    metadata=database.metadata_with_request_id(
-                        nth_request,
-                        attempt.value,
-                        metadata,
-                        span,
-                    ),
+                    metadata=call_metadata,
                 )
-                return commit_method(*args, **kwargs)
+                with error_augmenter:
+                    return commit_method(*args, **kwargs)
 
             commit_retry_event_name = "Transaction Commit Attempt Failed. Retrying"
 
@@ -335,18 +339,20 @@ class Transaction(_SnapshotBase, _BatchBase):
             if commit_response_pb._pb.HasField("precommit_token"):
                 add_span_event(span, commit_retry_event_name)
                 nth_request = database._next_nth_request
-                commit_response_pb = api.commit(
-                    request=CommitRequest(
-                        precommit_token=commit_response_pb.precommit_token,
-                        **common_commit_request_args,
-                    ),
-                    metadata=database.metadata_with_request_id(
-                        nth_request,
-                        1,
-                        metadata,
-                        span,
-                    ),
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request,
+                    1,
+                    metadata,
+                    span,
                 )
+                with error_augmenter:
+                    commit_response_pb = api.commit(
+                        request=CommitRequest(
+                            precommit_token=commit_response_pb.precommit_token,
+                            **common_commit_request_args,
+                        ),
+                        metadata=call_metadata,
+                    )
 
             add_span_event(span, "Commit Done")
 
@@ -510,16 +516,18 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         def wrapped_method(*args, **kwargs):
             attempt.increment()
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, attempt.value, metadata
+            )
             execute_sql_method = functools.partial(
                 api.execute_sql,
                 request=execute_sql_request,
-                metadata=database.metadata_with_request_id(
-                    nth_request, attempt.value, metadata
-                ),
+                metadata=call_metadata,
                 retry=retry,
                 timeout=timeout,
             )
-            return execute_sql_method(*args, **kwargs)
+            with error_augmenter:
+                return execute_sql_method(*args, **kwargs)
 
         result_set_pb: ResultSet = self._execute_request(
             wrapped_method,
@@ -658,16 +666,18 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         def wrapped_method(*args, **kwargs):
             attempt.increment()
+            call_metadata, error_augmenter = database.with_error_augmentation(
+                nth_request, attempt.value, metadata
+            )
             execute_batch_dml_method = functools.partial(
                 api.execute_batch_dml,
                 request=execute_batch_dml_request,
-                metadata=database.metadata_with_request_id(
-                    nth_request, attempt.value, metadata
-                ),
+                metadata=call_metadata,
                 retry=retry,
                 timeout=timeout,
             )
-            return execute_batch_dml_method(*args, **kwargs)
+            with error_augmenter:
+                return execute_batch_dml_method(*args, **kwargs)
 
         response_pb: ExecuteBatchDmlResponse = self._execute_request(
             wrapped_method,

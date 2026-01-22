@@ -42,6 +42,8 @@ from google.cloud.spanner_v1._helpers import (
     _make_value_pb,
     _merge_query_options,
     _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 import mock
@@ -1319,9 +1321,34 @@ class _Database(object):
             span,
         )
 
+    def metadata_and_request_id(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        return _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+
     @property
     def _channel_id(self):
         return 1
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
 
 class _Session(object):

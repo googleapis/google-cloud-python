@@ -47,6 +47,7 @@ from google.cloud.spanner_v1._helpers import (
     _check_rst_stream_error,
     _SessionWrapper,
     AtomicCounter,
+    _augment_error_with_request_id,
 )
 from google.cloud.spanner_v1._opentelemetry_tracing import trace_call, add_span_event
 from google.cloud.spanner_v1.streamed import StreamedResultSet
@@ -103,6 +104,7 @@ def _restart_on_unavailable(
     iterator = None
     attempt = 1
     nth_request = getattr(request_id_manager, "_next_nth_request", 0)
+    current_request_id = None
 
     while True:
         try:
@@ -115,14 +117,18 @@ def _restart_on_unavailable(
                     observability_options=observability_options,
                     metadata=metadata,
                 ) as span, MetricsCapture():
+                    (
+                        call_metadata,
+                        current_request_id,
+                    ) = request_id_manager.metadata_and_request_id(
+                        nth_request,
+                        attempt,
+                        metadata,
+                        span,
+                    )
                     iterator = method(
                         request=request,
-                        metadata=request_id_manager.metadata_with_request_id(
-                            nth_request,
-                            attempt,
-                            metadata,
-                            span,
-                        ),
+                        metadata=call_metadata,
                     )
 
             # Add items from iterator to buffer.
@@ -160,7 +166,7 @@ def _restart_on_unavailable(
                 for resumable_message in _STREAM_RESUMPTION_INTERNAL_ERROR_MESSAGES
             )
             if not resumable_error:
-                raise
+                raise _augment_error_with_request_id(exc, current_request_id)
             del item_buffer[:]
             request.resume_token = resume_token
             if transaction is not None:
@@ -169,6 +175,10 @@ def _restart_on_unavailable(
             request.transaction = transaction_selector
             iterator = None
             continue
+
+        except Exception as exc:
+            # Augment any other exception with the request ID
+            raise _augment_error_with_request_id(exc, current_request_id)
 
         if len(item_buffer) == 0:
             break
@@ -931,17 +941,19 @@ class _SnapshotBase(_SessionWrapper):
                 begin_transaction_request = BeginTransactionRequest(
                     **begin_request_kwargs
                 )
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    nth_request,
+                    attempt.increment(),
+                    metadata,
+                    span,
+                )
                 begin_transaction_method = functools.partial(
                     api.begin_transaction,
                     request=begin_transaction_request,
-                    metadata=database.metadata_with_request_id(
-                        nth_request,
-                        attempt.increment(),
-                        metadata,
-                        span,
-                    ),
+                    metadata=call_metadata,
                 )
-                return begin_transaction_method()
+                with error_augmenter:
+                    return begin_transaction_method()
 
             def before_next_retry(nth_retry, delay_in_seconds):
                 add_span_event(

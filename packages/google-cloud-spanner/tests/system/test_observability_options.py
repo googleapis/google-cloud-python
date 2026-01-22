@@ -530,20 +530,23 @@ def test_database_partitioned_error():
         if multiplexed_enabled
         else "CloudSpanner.CreateSession"
     )
-    want_statuses = [
-        (
-            "CloudSpanner.Database.execute_partitioned_pdml",
-            codes.ERROR,
-            "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
-        ),
-        (expected_session_span_name, codes.OK, None),
-        (
-            "CloudSpanner.ExecuteStreamingSql",
-            codes.ERROR,
-            "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^",
-        ),
-    ]
-    assert got_statuses == want_statuses
+    expected_error_prefix = "InvalidArgument: 400 Table not found: NonExistent [at 1:8]\nUPDATE NonExistent SET name = 'foo' WHERE id > 1\n       ^"
+
+    # Check the statuses - error messages may include request_id suffix
+    assert len(got_statuses) == 3
+
+    # First status: execute_partitioned_pdml with error
+    assert got_statuses[0][0] == "CloudSpanner.Database.execute_partitioned_pdml"
+    assert got_statuses[0][1] == codes.ERROR
+    assert got_statuses[0][2].startswith(expected_error_prefix)
+
+    # Second status: session creation OK
+    assert got_statuses[1] == (expected_session_span_name, codes.OK, None)
+
+    # Third status: ExecuteStreamingSql with error
+    assert got_statuses[2][0] == "CloudSpanner.ExecuteStreamingSql"
+    assert got_statuses[2][1] == codes.ERROR
+    assert got_statuses[2][2].startswith(expected_error_prefix)
 
 
 def _make_credentials():

@@ -22,6 +22,8 @@ import mock
 from google.cloud.spanner_v1 import _opentelemetry_tracing
 from google.cloud.spanner_v1._helpers import (
     _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
     AtomicCounter,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
@@ -1453,6 +1455,19 @@ class _Database(object):
     @property
     def _channel_id(self):
         return 1
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
 
 class _Queue(object):

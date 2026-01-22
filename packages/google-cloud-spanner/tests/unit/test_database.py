@@ -34,6 +34,8 @@ from google.cloud.spanner_v1 import (
 from google.cloud.spanner_v1._helpers import (
     AtomicCounter,
     _metadata_with_request_id,
+    _metadata_with_request_id_and_req_id,
+    _augment_errors_with_request_id,
 )
 from google.cloud.spanner_v1.request_id_header import REQ_RAND_PROCESS_ID
 from google.cloud.spanner_v1.session import Session
@@ -2265,11 +2267,15 @@ class TestBatchCheckout(_BaseTest):
         pool.put(session)
         checkout = self._make_one(database, timeout_secs=0.1, default_retry_delay=0)
 
-        with self.assertRaises(Aborted):
+        # Exception has request_id attribute added
+        with self.assertRaises(Aborted) as context:
             with checkout as batch:
                 self.assertIsNone(pool._session)
                 self.assertIsInstance(batch, Batch)
                 self.assertIs(batch._session, session)
+
+        # Verify the exception has request_id attribute
+        self.assertTrue(hasattr(context.exception, "request_id"))
 
         self.assertIs(pool._session, session)
 
@@ -3634,6 +3640,19 @@ class _Database(object):
     @property
     def _channel_id(self):
         return 1
+
+    def with_error_augmentation(
+        self, nth_request, nth_attempt, prior_metadata=[], span=None
+    ):
+        metadata, request_id = _metadata_with_request_id_and_req_id(
+            self._nth_client_id,
+            self._channel_id,
+            nth_request,
+            nth_attempt,
+            prior_metadata,
+            span,
+        )
+        return metadata, _augment_errors_with_request_id(request_id)
 
 
 class _Pool(object):

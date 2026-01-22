@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import random
-
 from google.cloud.spanner_v1 import (
     BeginTransactionRequest,
     CommitRequest,
@@ -33,8 +31,19 @@ from google.api_core import exceptions
 from test_utils import retry
 from google.cloud.spanner_v1.database_sessions_manager import TransactionType
 
+
+def _is_aborted_error(exc):
+    """Check if exception is Aborted."""
+    return isinstance(exc, exceptions.Aborted)
+
+
+# Retry on Aborted exceptions
 retry_maybe_aborted_txn = retry.RetryErrors(
-    exceptions.Aborted, max_tries=5, delay=0, backoff=1
+    exceptions.Aborted,
+    error_predicate=_is_aborted_error,
+    max_tries=5,
+    delay=0,
+    backoff=1,
 )
 
 
@@ -119,17 +128,21 @@ class TestAbortedTransaction(MockServerTestBase):
             TransactionType.READ_WRITE,
         )
 
-    @retry_maybe_aborted_txn
     def test_retry_helper(self):
-        # Randomly add an Aborted error for the Commit method on the mock server.
-        if random.random() < 0.5:
-            add_error(SpannerServicer.Commit.__name__, aborted_status())
-        session = self.database.session()
-        session.create()
-        transaction = session.transaction()
-        transaction.begin()
-        transaction.insert("my_table", ["col1, col2"], [{"col1": 1, "col2": "One"}])
-        transaction.commit()
+        # Add an Aborted error for the Commit method on the mock server.
+        # The error is popped after the first use, so the retry will succeed.
+        add_error(SpannerServicer.Commit.__name__, aborted_status())
+
+        @retry_maybe_aborted_txn
+        def do_commit():
+            session = self.database.session()
+            session.create()
+            transaction = session.transaction()
+            transaction.begin()
+            transaction.insert("my_table", ["col1, col2"], [{"col1": 1, "col2": "One"}])
+            transaction.commit()
+
+        do_commit()
 
 
 def _insert_mutations(transaction: Transaction):

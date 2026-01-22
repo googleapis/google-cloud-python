@@ -22,6 +22,7 @@ import base64
 import threading
 import logging
 import uuid
+from contextlib import contextmanager
 
 from google.protobuf.struct_pb2 import ListValue
 from google.protobuf.struct_pb2 import Value
@@ -34,8 +35,12 @@ from google.cloud._helpers import _date_from_iso8601_date
 from google.cloud.spanner_v1.types import ExecuteSqlRequest
 from google.cloud.spanner_v1.types import TransactionOptions
 from google.cloud.spanner_v1.data_types import JsonObject, Interval
-from google.cloud.spanner_v1.request_id_header import with_request_id
+from google.cloud.spanner_v1.request_id_header import (
+    with_request_id,
+    with_request_id_metadata_only,
+)
 from google.cloud.spanner_v1.types import TypeCode
+from google.cloud.spanner_v1.exceptions import wrap_with_request_id
 
 from google.rpc.error_details_pb2 import RetryInfo
 
@@ -612,9 +617,11 @@ def _retry(
         try:
             return func()
         except Exception as exc:
-            if (
+            is_allowed = (
                 allowed_exceptions is None or exc.__class__ in allowed_exceptions
-            ) and retries < retry_count:
+            )
+
+            if is_allowed and retries < retry_count:
                 if (
                     allowed_exceptions is not None
                     and allowed_exceptions[exc.__class__] is not None
@@ -767,7 +774,65 @@ class AtomicCounter:
 
 
 def _metadata_with_request_id(*args, **kwargs):
+    """Return metadata with request ID header.
+
+    This function returns only the metadata list (not a tuple),
+    maintaining backward compatibility with existing code.
+
+    Args:
+        *args: Arguments to pass to with_request_id
+        **kwargs: Keyword arguments to pass to with_request_id
+
+    Returns:
+        list: gRPC metadata with request ID header
+    """
+    return with_request_id_metadata_only(*args, **kwargs)
+
+
+def _metadata_with_request_id_and_req_id(*args, **kwargs):
+    """Return both metadata and request ID string.
+
+    This is used when we need to augment errors with the request ID.
+
+    Args:
+        *args: Arguments to pass to with_request_id
+        **kwargs: Keyword arguments to pass to with_request_id
+
+    Returns:
+        tuple: (metadata, request_id)
+    """
     return with_request_id(*args, **kwargs)
+
+
+def _augment_error_with_request_id(error, request_id=None):
+    """Augment an error with request ID information.
+
+    Args:
+        error: The error to augment (typically GoogleAPICallError)
+        request_id (str): The request ID to include
+
+    Returns:
+        The augmented error with request ID information
+    """
+    return wrap_with_request_id(error, request_id)
+
+
+@contextmanager
+def _augment_errors_with_request_id(request_id):
+    """Context manager to augment exceptions with request ID.
+
+    Args:
+        request_id (str): The request ID to include in exceptions
+
+    Yields:
+        None
+    """
+    try:
+        yield
+    except Exception as exc:
+        augmented = _augment_error_with_request_id(exc, request_id)
+        # Use exception chaining to preserve the original exception
+        raise augmented from exc
 
 
 def _merge_Transaction_Options(

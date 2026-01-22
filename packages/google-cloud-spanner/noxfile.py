@@ -558,6 +558,7 @@ def prerelease_deps(session, protobuf_implementation, database_dialect):
         # dependency of google-auth
         "cffi",
         "cryptography",
+        "cachetools",
     ]
 
     for dep in prerel_deps:

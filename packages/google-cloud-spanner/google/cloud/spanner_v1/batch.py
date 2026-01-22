@@ -252,20 +252,22 @@ class Batch(_BatchBase):
                     max_commit_delay=max_commit_delay,
                     request_options=request_options,
                 )
+                # This code is retried due to ABORTED, hence nth_request
+                # should be increased. attempt can only be increased if
+                # we encounter UNAVAILABLE or INTERNAL.
+                call_metadata, error_augmenter = database.with_error_augmentation(
+                    getattr(database, "_next_nth_request", 0),
+                    1,
+                    metadata,
+                    span,
+                )
                 commit_method = functools.partial(
                     api.commit,
                     request=commit_request,
-                    metadata=database.metadata_with_request_id(
-                        # This code is retried due to ABORTED, hence nth_request
-                        # should be increased. attempt can only be increased if
-                        # we encounter UNAVAILABLE or INTERNAL.
-                        getattr(database, "_next_nth_request", 0),
-                        1,
-                        metadata,
-                        span,
-                    ),
+                    metadata=call_metadata,
                 )
-                return commit_method()
+                with error_augmenter:
+                    return commit_method()
 
             response = _retry_on_aborted_exception(
                 wrapped_method,
