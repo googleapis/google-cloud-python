@@ -2116,19 +2116,94 @@ def test__query_pipeline_order_sorts():
     assert sort_stage.orders[1].order_dir == expr.Ordering.Direction.DESCENDING
 
 
-def test__query_pipeline_unsupported():
+def test__query_pipeline_cursors():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
     client = make_client()
-    query_start = client.collection("my_col").start_at({"field_a": "value"})
-    with pytest.raises(NotImplementedError, match="cursors"):
-        query_start._build_pipeline(client.pipeline())
+    query_start = (
+        client.collection("my_col").order_by("field_a").start_at({"field_a": 10})
+    )
+    pipeline = query_start._build_pipeline(client.pipeline())
 
-    query_end = client.collection("my_col").end_at({"field_a": "value"})
-    with pytest.raises(NotImplementedError, match="cursors"):
-        query_end._build_pipeline(client.pipeline())
+    # Stages:
+    # 0: Collection
+    # 1: Where (exists field_a) - Generated because field_a is explicitly ordered
+    # 2: Where (cursor condition)
+    # 3: Sort (field_a)
+    assert len(pipeline.stages) == 4
 
-    query_limit_last = client.collection("my_col").limit_to_last(10)
-    with pytest.raises(NotImplementedError, match="limit_to_last"):
-        query_limit_last._build_pipeline(client.pipeline())
+    where_stage = pipeline.stages[2]
+    assert isinstance(where_stage, stages.Where)
+    # Expected: (field_a > 10) OR (field_a == 10)
+    assert isinstance(where_stage.condition, expr.Or)
+    params = where_stage.condition.params
+    assert len(params) == 2
+    assert params[0].name == "greater_than"
+    assert params[1].name == "equal"
+
+
+def test__query_pipeline_limit_to_last():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    client = make_client()
+    query = client.collection("my_col").order_by("field_a").limit_to_last(5)
+    pipeline = query._build_pipeline(client.pipeline())
+
+    # Stages:
+    # 0: Collection
+    # 1: Where (exists field_a)
+    # 2: Sort (field_a DESC) - Reversed
+    # 3: Limit (5)
+    # 4: Sort (field_a ASC) - Restored
+    assert len(pipeline.stages) == 5
+
+    sort_reversed = pipeline.stages[2]
+    assert isinstance(sort_reversed, stages.Sort)
+    assert sort_reversed.orders[0].order_dir == expr.Ordering.Direction.DESCENDING
+
+    limit_stage = pipeline.stages[3]
+    assert isinstance(limit_stage, stages.Limit)
+    assert limit_stage.limit == 5
+
+    sort_restored = pipeline.stages[4]
+    assert isinstance(sort_restored, stages.Sort)
+    assert sort_restored.orders[0].order_dir == expr.Ordering.Direction.ASCENDING
+
+
+def test__query_pipeline_limit_to_last_descending():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+    from google.cloud.firestore_v1.base_query import BaseQuery
+
+    client = make_client()
+    # User orders by field_a DESCENDING
+    query = (
+        client.collection("my_col")
+        .order_by("field_a", direction=BaseQuery.DESCENDING)
+        .limit_to_last(5)
+    )
+    pipeline = query._build_pipeline(client.pipeline())
+
+    # Stages:
+    # 0: Collection
+    # 1: Where (exists field_a)
+    # 2: Sort (field_a ASCENDING) - Reversed from DESCENDING
+    # 3: Limit (5)
+    # 4: Sort (field_a DESCENDING) - Restored to original
+    assert len(pipeline.stages) == 5
+
+    sort_reversed = pipeline.stages[2]
+    assert isinstance(sort_reversed, stages.Sort)
+    # Should be ASCENDING because original was DESCENDING
+    assert sort_reversed.orders[0].order_dir == expr.Ordering.Direction.ASCENDING
+
+    limit_stage = pipeline.stages[3]
+    assert isinstance(limit_stage, stages.Limit)
+    assert limit_stage.limit == 5
+
+    sort_restored = pipeline.stages[4]
+    assert isinstance(sort_restored, stages.Sort)
+    # Should be DESCENDING (original)
+    assert sort_restored.orders[0].order_dir == expr.Ordering.Direction.DESCENDING
 
 
 def test__query_pipeline_limit():
@@ -2298,3 +2373,140 @@ def _make_snapshot(docref, values):
     from google.cloud.firestore_v1 import document
 
     return document.DocumentSnapshot(docref, values, True, None, None, None)
+
+
+def test__where_conditions_from_cursor_descending():
+    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
+    from google.cloud.firestore_v1 import pipeline_expressions
+
+    # Create ordering: field DESC
+    field_expr = pipeline_expressions.Field.of("field")
+    ordering = pipeline_expressions.Ordering(field_expr, "descending")
+
+    # Case 1: StartAt (inclusive) -> <= 10
+    cursor = ([10], True)
+    condition = _where_conditions_from_cursor(cursor, [ordering], is_start_cursor=True)
+    # Expected: field < 10 OR field == 10
+    expected = pipeline_expressions.Or(field_expr.less_than(10), field_expr.equal(10))
+    assert condition == expected
+
+    # Case 2: StartAfter (exclusive) -> < 10
+    cursor = ([10], False)
+    condition = _where_conditions_from_cursor(cursor, [ordering], is_start_cursor=True)
+    # Expected: field < 10
+    expected = field_expr.less_than(10)
+    assert condition == expected
+
+    # Case 3: EndAt (inclusive) -> >= 10
+    cursor = ([10], False)
+    condition = _where_conditions_from_cursor(cursor, [ordering], is_start_cursor=False)
+    # Expected: field > 10 OR field == 10
+    expected = pipeline_expressions.Or(
+        field_expr.greater_than(10), field_expr.equal(10)
+    )
+    assert condition == expected
+
+    # Case 4: EndBefore (exclusive) -> > 10
+    cursor = ([10], True)
+    condition = _where_conditions_from_cursor(cursor, [ordering], is_start_cursor=False)
+    # Expected: field > 10
+    expected = field_expr.greater_than(10)
+    assert condition == expected
+
+
+def test__query_pipeline_end_at():
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    client = make_client()
+    query_end = client.collection("my_col").order_by("field_a").end_at({"field_a": 10})
+    pipeline = query_end._build_pipeline(client.pipeline())
+
+    # Stages:
+    # 0: Collection
+    # 1: Where (exists field_a)
+    # 2: Where (cursor condition)
+    # 3: Sort (field_a)
+    assert len(pipeline.stages) == 4
+
+    where_stage = pipeline.stages[2]
+    assert isinstance(where_stage, stages.Where)
+    # Expected: (field_a < 10) OR (field_a == 10)
+    assert isinstance(where_stage.condition, expr.Or)
+    params = where_stage.condition.params
+    assert len(params) == 2
+    assert params[0].name == "less_than"
+    assert params[1].name == "equal"
+
+
+def test__where_conditions_from_cursor_multi_field():
+    from google.cloud.firestore_v1.base_query import _where_conditions_from_cursor
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    # Order by: A ASC, B DESC
+    field_a = expr.Field.of("A")
+    field_b = expr.Field.of("B")
+    ordering_a = expr.Ordering(field_a, "ascending")
+    ordering_b = expr.Ordering(field_b, "descending")
+    orderings = [ordering_a, ordering_b]
+
+    # Cursor: A=1, B=2. StartAt (inclusive)
+    # Logic: (A > 1) OR (A == 1 AND (B < 2 OR B == 2))
+    # Note: B is DESC, so start_at means <= 2
+    cursor = ([1, 2], True)
+
+    condition = _where_conditions_from_cursor(cursor, orderings, is_start_cursor=True)
+
+    # Verify structure: Or(A > 1, And(A == 1, Or(B < 2, B == 2)))
+    assert isinstance(condition, expr.Or)
+    # First term: A > 1
+    term1 = condition.params[0]
+    assert term1.name == "greater_than"
+    assert term1.params[0] == field_a
+    assert term1.params[1] == expr.Constant(1)
+
+    # Second term: And(...)
+    term2 = condition.params[1]
+    assert isinstance(term2, expr.And)
+
+    # Inside And: A == 1
+    sub_term1 = term2.params[0]
+    assert sub_term1.name == "equal"
+    assert sub_term1.params[0] == field_a
+    assert sub_term1.params[1] == expr.Constant(1)
+
+    # Inside And: Or(B < 2, B == 2)  <-- DESCENDING logic check
+    sub_term2 = term2.params[1]
+    assert isinstance(sub_term2, expr.Or)
+
+    # B < 2 (because DESC start_at)
+    sub_sub_term1 = sub_term2.params[0]
+    assert sub_sub_term1.name == "less_than"
+    assert sub_sub_term1.params[0] == field_b
+    assert sub_sub_term1.params[1] == expr.Constant(2)
+
+    # B == 2
+    sub_sub_term2 = sub_term2.params[1]
+    assert sub_sub_term2.name == "equal"
+    assert sub_sub_term2.params[0] == field_b
+    assert sub_sub_term2.params[1] == expr.Constant(2)
+
+
+def test__reverse_orderings_descending():
+    from google.cloud.firestore_v1.base_query import _reverse_orderings
+    from google.cloud.firestore_v1 import pipeline_expressions as expr
+
+    # Input: A ASC, B DESC
+    field_a = expr.Field.of("A")
+    field_b = expr.Field.of("B")
+    ord_a = expr.Ordering(field_a, "ascending")
+    ord_b = expr.Ordering(field_b, "descending")
+
+    reversed_ords = _reverse_orderings([ord_a, ord_b])
+
+    assert len(reversed_ords) == 2
+    # Expect: A DESC, B ASC
+    assert reversed_ords[0].expr == field_a
+    assert reversed_ords[0].order_dir == expr.Ordering.Direction.DESCENDING
+
+    assert reversed_ords[1].expr == field_b
+    assert reversed_ords[1].order_dir == expr.Ordering.Direction.ASCENDING

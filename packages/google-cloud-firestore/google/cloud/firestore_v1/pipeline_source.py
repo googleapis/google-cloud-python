@@ -57,12 +57,8 @@ class PipelineSource(Generic[PipelineType]):
         """
         Create a pipeline from an existing query
 
-        Queries containing a `cursor` or `limit_to_last` are not currently supported
-
         Args:
             query: the query to build the pipeline off of
-        Raises:
-            - NotImplementedError: raised if the query contains a `cursor` or `limit_to_last`
         Returns:
             a new pipeline instance representing the query
         """

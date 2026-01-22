@@ -608,12 +608,8 @@ class BaseCollectionReference(Generic[QueryType]):
         """
         Convert this query into a Pipeline
 
-        Queries containing a `cursor` or `limit_to_last` are not currently supported
-
         Args:
             source: the PipelineSource to build the pipeline off o
-        Raises:
-            - NotImplementedError: raised if the query contains a `cursor` or `limit_to_last`
         Returns:
             a Pipeline representing the query
         """

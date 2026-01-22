@@ -1833,7 +1833,10 @@ class BooleanExpression(FunctionExpression):
             elif filter_pb.op == Query_pb.FieldFilter.Operator.EQUAL:
                 return And(field.exists(), field.equal(value))
             elif filter_pb.op == Query_pb.FieldFilter.Operator.NOT_EQUAL:
-                return And(field.exists(), field.not_equal(value))
+                # In Enterprise DBs NOT_EQUAL will match a field that does not exist,
+                # therefore we do not want an existence filter for the NOT_EQUAL conversion
+                # so the Query and Pipeline behavior are consistent in Enterprise.
+                return field.not_equal(value)
             if filter_pb.op == Query_pb.FieldFilter.Operator.ARRAY_CONTAINS:
                 return And(field.exists(), field.array_contains(value))
             elif filter_pb.op == Query_pb.FieldFilter.Operator.ARRAY_CONTAINS_ANY:
@@ -1841,7 +1844,10 @@ class BooleanExpression(FunctionExpression):
             elif filter_pb.op == Query_pb.FieldFilter.Operator.IN:
                 return And(field.exists(), field.equal_any(value))
             elif filter_pb.op == Query_pb.FieldFilter.Operator.NOT_IN:
-                return And(field.exists(), field.not_equal_any(value))
+                # In Enterprise DBs NOT_IN will match a field that does not exist,
+                # therefore we do not want an existence filter for the NOT_IN conversion
+                # so the Query and Pipeline behavior are consistent in Enterprise.
+                return field.not_equal_any(value)
             else:
                 raise TypeError(f"Unexpected FieldFilter operator type: {filter_pb.op}")
         elif isinstance(filter_pb, Query_pb.Filter):
