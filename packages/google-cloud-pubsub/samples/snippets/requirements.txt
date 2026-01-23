@@ -1,13 +1,7 @@
 google-cloud-pubsub==2.31.1
 avro==1.12.0
-protobuf===4.24.4; python_version == '3.7'
-protobuf===5.29.4; python_version == '3.8'
-protobuf==6.32.1; python_version >= '3.9'
+protobuf==6.32.1
 avro==1.12.0
-opentelemetry-api===1.22.0; python_version == '3.7'
-opentelemetry-sdk===1.22.0; python_version == '3.7'
-opentelemetry-api===1.33.1; python_version == '3.8'
-opentelemetry-sdk===1.33.1; python_version == '3.8'
-opentelemetry-api==1.37.0; python_version >= '3.9'
-opentelemetry-sdk==1.37.0; python_version >= '3.9'
+opentelemetry-api==1.37.0
+opentelemetry-sdk==1.37.0
 opentelemetry-exporter-gcp-trace==1.9.0

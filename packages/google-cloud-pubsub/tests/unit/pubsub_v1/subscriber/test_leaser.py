@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import logging
-import sys
 import threading
 
 from google.cloud.pubsub_v1 import types
@@ -27,11 +26,7 @@ from google.cloud.pubsub_v1.open_telemetry.subscribe_opentelemetry import (
 )
 from google.cloud.pubsub_v1.subscriber import message
 
-# special case python < 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    import mock
-else:
-    from unittest import mock
+from unittest import mock
 
 import pytest
 

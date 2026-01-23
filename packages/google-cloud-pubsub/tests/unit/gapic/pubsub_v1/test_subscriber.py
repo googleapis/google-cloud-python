@@ -16,12 +16,7 @@
 import os
 import warnings
 
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
+import mock
 
 import grpc
 from grpc.experimental import aio

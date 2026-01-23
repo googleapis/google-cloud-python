@@ -47,10 +47,8 @@ dependencies = [
     "protobuf>=3.20.2,<7.0.0,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "grpc-google-iam-v1 >= 0.12.4, < 1.0.0",
     "grpcio-status >= 1.33.2",
-    "opentelemetry-api <= 1.22.0; python_version<='3.7'",
-    "opentelemetry-api >= 1.27.0; python_version>='3.8'",
-    "opentelemetry-sdk <= 1.22.0; python_version<='3.7'",
-    "opentelemetry-sdk >= 1.27.0; python_version>='3.8'",
+    "opentelemetry-api >= 1.27.0",
+    "opentelemetry-sdk >= 1.27.0",
 ]
 extras = {"libcst": "libcst >= 0.3.10"}
 url = "https://github.com/googleapis/python-pubsub"
@@ -82,8 +80,6 @@ setuptools.setup(
         "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
@@ -97,7 +93,7 @@ setuptools.setup(
     packages=packages,
     install_requires=dependencies,
     extras_require=extras,
-    python_requires=">=3.7",
+    python_requires=">=3.9",
     include_package_data=True,
     zip_safe=False,
 )

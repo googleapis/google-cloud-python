@@ -1,7 +1,7 @@
 Python Client for Google Cloud Pub / Sub
 ========================================
 
-|GA| |pypi| |versions| 
+|GA| |pypi| |versions|
 
 `Google Cloud Pub / Sub`_ is a fully-managed real-time messaging service that
 allows you to send and receive messages between independent applications. You
@@ -60,11 +60,13 @@ dependencies.
 
 Supported Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Python >= 3.7
+Python >= 3.9
 
 Deprecated Python Versions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-Python <= 3.6.
+Python < 3.9
+
+The last version of this library compatible with Python 3.7 and 3.8 is google-cloud-pubsub==2.34.0.
 
 The last version of this library compatible with Python 2.7 is google-cloud-pubsub==1.7.0.
 
@@ -146,7 +148,7 @@ the topic, and subscribe to that, passing a callback function.
 
     with pubsub_v1.SubscriberClient() as subscriber:
         subscriber.create_subscription(
-            name=subscription_name, topic=topic_name)  
+            name=subscription_name, topic=topic_name)
         future = subscriber.subscribe(subscription_name, callback)
 
 The future returned by the call to ``subscriber.subscribe`` can be used to
@@ -190,7 +192,7 @@ For example, to use JSON Web Tokens, provide a `google.auth.jwt.Credentials`_ in
 
     # The same for the publisher, except that the "audience" claim needs to be adjusted
     publisher_audience = "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
-    credentials_pub = credentials.with_claims(audience=publisher_audience) 
+    credentials_pub = credentials.with_claims(audience=publisher_audience)
     publisher = pubsub_v1.PublisherClient(credentials=credentials_pub)
 
 .. _Credentials: https://google-auth.readthedocs.io/en/latest/reference/google.auth.credentials.html#google.auth.credentials.Credentials

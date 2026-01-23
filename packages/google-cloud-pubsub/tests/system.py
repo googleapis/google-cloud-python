@@ -20,16 +20,11 @@ import itertools
 import operator as op
 import os
 import psutil
-import sys
 import threading
 import time
 from typing import Any, Callable, cast, TypeVar
 
-# special case python < 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    import mock
-else:
-    from unittest import mock
+from unittest import mock
 
 from flaky import flaky
 import pytest

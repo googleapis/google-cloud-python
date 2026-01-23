@@ -41,8 +41,6 @@ MYPY_VERSION = "mypy==1.10.0"
 DEFAULT_PYTHON_VERSION = "3.14"
 
 UNIT_TEST_PYTHON_VERSIONS: List[str] = [
-    "3.7",
-    "3.8",
     "3.9",
     "3.10",
     "3.11",
