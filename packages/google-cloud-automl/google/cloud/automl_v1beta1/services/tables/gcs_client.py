@@ -24,12 +24,14 @@ from google.api_core import exceptions
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
-    pandas = None
+    pandas = None  # type: ignore
 
 try:
-    from google.cloud import storage
+    # TODO(https://github.com/googleapis/python-storage/issues/318):
+    # Remove `type: ignore` once this bug is fixed
+    from google.cloud import storage  # type: ignore
 except ImportError:  # pragma: NO COVER
-    storage = None
+    storage = None  # type: ignore
 
 _LOGGER = logging.getLogger(__name__)
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
