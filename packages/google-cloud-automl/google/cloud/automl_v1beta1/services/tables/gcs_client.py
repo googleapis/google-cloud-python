@@ -29,9 +29,9 @@ except ImportError:  # pragma: NO COVER
 try:
     # TODO(https://github.com/googleapis/python-storage/issues/318):
     # Remove `type: ignore` once this bug is fixed
-    from google.cloud import storage  # type: ignore
+    from google.cloud import storage  # type: ignore[attr-defined]
 except ImportError:  # pragma: NO COVER
-    storage = None  # type: ignore
+    storage = None  # type: ignore[assignment]
 
 _LOGGER = logging.getLogger(__name__)
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
