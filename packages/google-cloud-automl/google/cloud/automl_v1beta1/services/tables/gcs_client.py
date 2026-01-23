@@ -24,7 +24,7 @@ from google.api_core import exceptions
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
-    pandas = None  # type: ignore
+    pandas = None  # type: ignore[assignment]
 
 try:
     # TODO(https://github.com/googleapis/python-storage/issues/318):
