@@ -290,3 +290,14 @@ replacements:
     after: |
       UNIT_TEST_EXTRAS: List[str] = ["pandas", "storage"]
     count: 1
+  - paths: [
+      packages/google-cloud-automl/noxfile.py,
+    ]
+    before: |
+      "types-protobuf",
+      \    \)
+    after: |
+      "types-protobuf",
+              "pandas-stubs",
+          )
+    count: 1
