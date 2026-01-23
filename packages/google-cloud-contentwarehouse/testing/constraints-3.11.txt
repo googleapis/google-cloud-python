@@ -6,5 +6,7 @@ google-auth
 grpcio
 proto-plus
 protobuf
+# cryptography is a direct dependency of google-auth
+cryptography
 google-cloud-documentai
 grpc-google-iam-v1
