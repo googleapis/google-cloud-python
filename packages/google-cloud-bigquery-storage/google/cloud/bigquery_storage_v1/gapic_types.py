@@ -22,7 +22,10 @@ import sys
 
 from google.protobuf import message as protobuf_message
 from google.protobuf import timestamp_pb2
-import proto
+
+# TODO(https://github.com/googleapis/google-cloud-python/issues/15104):
+# Remove `type: ignore` below once this bug is fixed
+import proto  # type: ignore
 
 from google.cloud.bigquery_storage_v1.types import arrow, avro, storage, stream
 

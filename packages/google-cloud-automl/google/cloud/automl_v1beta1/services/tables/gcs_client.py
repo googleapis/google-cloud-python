@@ -23,13 +23,17 @@ from google.api_core import exceptions
 
 try:
     import pandas
+    _PANDAS_INSTALLED = True
 except ImportError:  # pragma: NO COVER
-    pandas = None
+    _PANDAS_INSTALLED = False
 
 try:
-    from google.cloud import storage
+    # TODO(https://github.com/googleapis/python-storage/issues/318):
+    # Remove `type: ignore` once this bug is fixed
+    from google.cloud import storage  # type: ignore
+    _STORAGE_INSTALLED = True
 except ImportError:  # pragma: NO COVER
-    storage = None
+    _STORAGE_INSTALLED = False
 
 _LOGGER = logging.getLogger(__name__)
 _PANDAS_REQUIRED = "pandas is required to verify type DataFrame."
@@ -59,7 +63,7 @@ class GcsClient(object):
                 the client will attempt to ascertain the credentials from the
                 environment.
         """
-        if storage is None:
+        if not _STORAGE_INSTALLED:
             raise ImportError(_STORAGE_REQUIRED)
 
         if client is not None:
@@ -119,7 +123,7 @@ class GcsClient(object):
         Returns:
             A string representing the GCS URI of the uploaded CSV.
         """
-        if pandas is None:
+        if not _PANDAS_INSTALLED:
             raise ImportError(_PANDAS_REQUIRED)
 
         if not isinstance(dataframe, pandas.DataFrame):
