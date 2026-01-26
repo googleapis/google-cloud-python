@@ -11,7 +11,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-admanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-ads-admanager/
     tag_format: '{id}-v{version}'
@@ -26,7 +25,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-datamanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-ads-datamanager
     tag_format: '{id}-v{version}'
@@ -41,7 +39,6 @@ libraries:
     preserve_regex:
       - packages/google-ads-marketingplatform-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-ads-marketingplatform-admin/
     tag_format: '{id}-v{version}'
@@ -64,7 +61,6 @@ libraries:
     preserve_regex:
       - packages/google-ai-generativelanguage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-ai-generativelanguage/
     tag_format: '{id}-v{version}'
@@ -81,7 +77,6 @@ libraries:
     preserve_regex:
       - packages/google-analytics-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-analytics-admin/
     tag_format: '{id}-v{version}'
@@ -98,7 +93,6 @@ libraries:
     preserve_regex:
       - packages/google-analytics-data/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-analytics-data/
     tag_format: '{id}-v{version}'
@@ -113,7 +107,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-card/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/card_v1/test_card.py
     remove_regex:
       - packages/google-apps-card/
@@ -129,7 +122,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-chat/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-apps-chat/
     tag_format: '{id}-v{version}'
@@ -146,7 +138,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-events-subscriptions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-apps-events-subscriptions/
     tag_format: '{id}-v{version}'
@@ -163,7 +154,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-meet/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-apps-meet/
     tag_format: '{id}-v{version}'
@@ -190,7 +180,6 @@ libraries:
     preserve_regex:
       - packages/google-apps-script-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/calendar/test_calendar.py
       - tests/unit/gapic/docs/test_docs.py
       - tests/unit/gapic/drive/test_drive.py
@@ -212,7 +201,6 @@ libraries:
     preserve_regex:
       - packages/google-area120-tables/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-area120-tables/
     tag_format: '{id}-v{version}'
@@ -258,7 +246,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-advisorynotifications/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-advisorynotifications/
     tag_format: '{id}-v{version}'
@@ -277,7 +264,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-alloydb/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-alloydb/
     tag_format: '{id}-v{version}'
@@ -296,7 +282,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-alloydb-connectors/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/connectors_v1/test_connectors.py
     remove_regex:
       - packages/google-cloud-alloydb-connectors/
@@ -312,7 +297,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-api-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-api-gateway/
     tag_format: '{id}-v{version}'
@@ -327,7 +311,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-api-keys/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-api-keys/
     tag_format: '{id}-v{version}'
@@ -342,7 +325,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apigee-connect/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-apigee-connect/
     tag_format: '{id}-v{version}'
@@ -357,7 +339,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apigee-registry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-apigee-registry/
     tag_format: '{id}-v{version}'
@@ -372,7 +353,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apihub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-apihub/
     tag_format: '{id}-v{version}'
@@ -387,7 +367,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-appengine-admin/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-appengine-admin/
     tag_format: '{id}-v{version}'
@@ -402,7 +381,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-appengine-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/appengine_logging_v1/test_appengine_logging_v1.py
     remove_regex:
       - packages/google-cloud-appengine-logging/
@@ -418,7 +396,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-apphub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-apphub/
     tag_format: '{id}-v{version}'
@@ -435,7 +412,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-artifact-registry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-artifact-registry/
     tag_format: '{id}-v{version}'
@@ -456,7 +432,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-asset/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-asset/
     tag_format: '{id}-v{version}'
@@ -473,7 +448,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-assured-workloads/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-assured-workloads/
     tag_format: '{id}-v{version}'
@@ -504,10 +478,10 @@ libraries:
     preserve_regex:
       - packages/google-cloud-automl/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - docs/automl_v1beta1/tables.rst
       - google/cloud/automl_v1beta1/services/tables
       - samples/README
+      - tests/system
       - tests/unit/test_gcs_client_v1beta1.py
       - tests/unit/test_tables_client_v1beta1.py
     remove_regex:
@@ -524,7 +498,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-backupdr/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-backupdr/
     tag_format: '{id}-v{version}'
@@ -539,7 +512,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bare-metal-solution/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bare-metal-solution/
     tag_format: '{id}-v{version}'
@@ -556,7 +528,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-batch/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-batch/
     tag_format: '{id}-v{version}'
@@ -571,7 +542,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appconnections/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-beyondcorp-appconnections/
     tag_format: '{id}-v{version}'
@@ -586,7 +556,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appconnectors/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-beyondcorp-appconnectors/
     tag_format: '{id}-v{version}'
@@ -601,7 +570,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-appgateways/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-beyondcorp-appgateways/
     tag_format: '{id}-v{version}'
@@ -616,7 +584,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-clientconnectorservices/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-beyondcorp-clientconnectorservices/
     tag_format: '{id}-v{version}'
@@ -631,7 +598,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-beyondcorp-clientgateways/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-beyondcorp-clientgateways/
     tag_format: '{id}-v{version}'
@@ -646,7 +612,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-biglake
     tag_format: '{id}-v{version}'
@@ -661,7 +626,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-analyticshub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-analyticshub/
     tag_format: '{id}-v{version}'
@@ -678,7 +642,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-biglake/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-biglake/
     tag_format: '{id}-v{version}'
@@ -708,7 +671,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-data-exchange/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-data-exchange/
     tag_format: '{id}-v{version}'
@@ -729,7 +691,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-datapolicies/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-datapolicies/
     tag_format: '{id}-v{version}'
@@ -759,7 +720,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/bigquery_logging_v1/test_bigquery_logging_v1.py
     remove_regex:
       - packages/google-cloud-bigquery-logging/
@@ -777,7 +737,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-bigquery-migration/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-bigquery-migration/
     tag_format: '{id}-v{version}'
@@ -849,7 +808,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-billing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-billing/
     tag_format: '{id}-v{version}'
@@ -866,7 +824,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-billing-budgets/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-billing-budgets/
     tag_format: '{id}-v{version}'
@@ -883,7 +840,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-binary-authorization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-binary-authorization/
     tag_format: '{id}-v{version}'
@@ -900,7 +856,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-build/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-build/
     tag_format: '{id}-v{version}'
@@ -915,7 +870,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-capacityplanner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-capacityplanner/
     tag_format: '{id}-v{version}'
@@ -930,7 +884,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-certificate-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-certificate-manager/
     tag_format: '{id}-v{version}'
@@ -945,7 +898,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-channel/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-channel/
     tag_format: '{id}-v{version}'
@@ -960,7 +912,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-chronicle/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-chronicle/
     tag_format: '{id}-v{version}'
@@ -977,7 +928,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-cloudcontrolspartner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-cloudcontrolspartner/
     tag_format: '{id}-v{version}'
@@ -992,7 +942,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-cloudsecuritycompliance/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-cloudsecuritycompliance/
     tag_format: '{id}-v{version}'
@@ -1009,7 +958,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-commerce-consumer-procurement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-commerce-consumer-procurement/
     tag_format: '{id}-v{version}'
@@ -1024,7 +972,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-common/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/common/test_common.py
     remove_regex:
       - packages/google-cloud-common/
@@ -1055,7 +1002,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-compute-v1beta/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-compute-v1beta/
     tag_format: '{id}-v{version}'
@@ -1070,7 +1016,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-confidentialcomputing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-confidentialcomputing/
     tag_format: '{id}-v{version}'
@@ -1085,7 +1030,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-config/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-config/
     tag_format: '{id}-v{version}'
@@ -1104,7 +1048,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-configdelivery/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-configdelivery/
     tag_format: '{id}-v{version}'
@@ -1119,7 +1062,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-contact-center-insights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-contact-center-insights/
     tag_format: '{id}-v{version}'
@@ -1151,7 +1093,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-containeranalysis/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/test_get_grafeas_client.py
     remove_regex:
       - packages/google-cloud-containeranalysis/
@@ -1167,7 +1108,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-contentwarehouse/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-contentwarehouse/
     tag_format: '{id}-v{version}'
@@ -1182,7 +1122,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-data-fusion/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-data-fusion/
     tag_format: '{id}-v{version}'
@@ -1197,7 +1136,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-data-qna/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-data-qna/
     tag_format: '{id}-v{version}'
@@ -1213,7 +1151,6 @@ libraries:
       - packages/google-cloud-databasecenter/CHANGELOG.md
       - docs/CHANGELOG.md
       - scripts/client-post-processing
-      - tests/system
     remove_regex:
       - packages/google-cloud-databasecenter
     tag_format: '{id}-v{version}'
@@ -1230,7 +1167,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datacatalog/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-datacatalog/
     tag_format: '{id}-v{version}'
@@ -1245,7 +1181,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datacatalog-lineage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-datacatalog-lineage/
     tag_format: '{id}-v{version}'
@@ -1260,7 +1195,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataflow-client/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dataflow-client/
     tag_format: '{id}-v{version}'
@@ -1277,7 +1211,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataform/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dataform/
     tag_format: '{id}-v{version}'
@@ -1292,7 +1225,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datalabeling/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-datalabeling/
     tag_format: '{id}-v{version}'
@@ -1307,7 +1239,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataplex/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dataplex/
     tag_format: '{id}-v{version}'
@@ -1341,7 +1272,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dataproc-metastore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dataproc-metastore/
     tag_format: '{id}-v{version}'
@@ -1358,7 +1288,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-datastream/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-datastream/
     tag_format: '{id}-v{version}'
@@ -1373,7 +1302,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-deploy/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-deploy/
     tag_format: '{id}-v{version}'
@@ -1388,7 +1316,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-developerconnect/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-developerconnect/
     tag_format: '{id}-v{version}'
@@ -1403,7 +1330,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-devicestreaming/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-devicestreaming/
     tag_format: '{id}-v{version}'
@@ -1420,7 +1346,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dialogflow/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dialogflow/
     tag_format: '{id}-v{version}'
@@ -1437,7 +1362,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dialogflow-cx/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dialogflow-cx
     tag_format: '{id}-v{version}'
@@ -1456,7 +1380,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-discoveryengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-discoveryengine/
     tag_format: '{id}-v{version}'
@@ -1486,7 +1409,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-dms/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-dms/
     tag_format: '{id}-v{version}'
@@ -1503,7 +1425,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-documentai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-documentai/
     tag_format: '{id}-v{version}'
@@ -1520,7 +1441,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-domains/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-domains/
     tag_format: '{id}-v{version}'
@@ -1535,7 +1455,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-edgecontainer/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-edgecontainer/
     tag_format: '{id}-v{version}'
@@ -1550,7 +1469,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-edgenetwork/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-edgenetwork/
     tag_format: '{id}-v{version}'
@@ -1565,7 +1483,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-enterpriseknowledgegraph/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-enterpriseknowledgegraph/
     tag_format: '{id}-v{version}'
@@ -1580,7 +1497,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-essential-contacts/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-essential-contacts/
     tag_format: '{id}-v{version}'
@@ -1595,7 +1511,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-eventarc/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-eventarc/
     tag_format: '{id}-v{version}'
@@ -1610,7 +1525,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-eventarc-publishing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-eventarc-publishing/
     tag_format: '{id}-v{version}'
@@ -1625,7 +1539,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-filestore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-filestore/
     tag_format: '{id}-v{version}'
@@ -1640,7 +1553,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-financialservices/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-financialservices/
     tag_format: '{id}-v{version}'
@@ -1657,7 +1569,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-functions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-functions/
     tag_format: '{id}-v{version}'
@@ -1672,7 +1583,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gdchardwaremanagement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gdchardwaremanagement/
     tag_format: '{id}-v{version}'
@@ -1689,7 +1599,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-geminidataanalytics/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-geminidataanalytics/
     tag_format: '{id}-v{version}'
@@ -1704,7 +1613,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-backup/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gke-backup/
     tag_format: '{id}-v{version}'
@@ -1721,7 +1629,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-connect-gateway/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gke-connect-gateway/
     tag_format: '{id}-v{version}'
@@ -1738,7 +1645,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-hub/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - docs/gkehub_v1/configmanagement_v1
       - docs/gkehub_v1/multiclusteringress_v1
       - google/cloud/gkehub_v1/configmanagement_v1
@@ -1757,7 +1663,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gke-multicloud/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gke-multicloud
     tag_format: '{id}-v{version}'
@@ -1772,7 +1677,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gkerecommender/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gkerecommender
     tag_format: '{id}-v{version}'
@@ -1787,7 +1691,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-gsuiteaddons/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-gsuiteaddons
     tag_format: '{id}-v{version}'
@@ -1802,7 +1705,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-hypercomputecluster/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-hypercomputecluster
     tag_format: '{id}-v{version}'
@@ -1827,7 +1729,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iam/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-iam
     tag_format: '{id}-v{version}'
@@ -1842,7 +1743,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iam-logging/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/iam_logging_v1/test_iam_logging.py
     remove_regex:
       - packages/google-cloud-iam-logging/
@@ -1858,7 +1758,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-iap/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-iap/
     tag_format: '{id}-v{version}'
@@ -1873,7 +1772,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-ids/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-ids/
     tag_format: '{id}-v{version}'
@@ -1903,7 +1801,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-kms-inventory/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-kms-inventory/
     tag_format: '{id}-v{version}'
@@ -1923,7 +1820,6 @@ libraries:
       - packages/google-cloud-language/CHANGELOG.md
       - docs/CHANGELOG.md
       - samples/README.txt
-      - tests/system
     remove_regex:
       - packages/google-cloud-language/
     tag_format: '{id}-v{version}'
@@ -1938,7 +1834,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-licensemanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-licensemanager/
     tag_format: '{id}-v{version}'
@@ -1953,7 +1848,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-life-sciences/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-life-sciences/
     tag_format: '{id}-v{version}'
@@ -1968,7 +1862,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-locationfinder/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-locationfinder/
     tag_format: '{id}-v{version}'
@@ -1983,7 +1876,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-lustre/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-lustre/
     tag_format: '{id}-v{version}'
@@ -2000,7 +1892,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-maintenance-api/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-maintenance-api/
     tag_format: '{id}-v{version}'
@@ -2015,7 +1906,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managed-identities/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-managed-identities/
     tag_format: '{id}-v{version}'
@@ -2030,7 +1920,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managedkafka/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-managedkafka/
     tag_format: '{id}-v{version}'
@@ -2045,7 +1934,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-managedkafka-schemaregistry/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-managedkafka-schemaregistry/
     tag_format: '{id}-v{version}'
@@ -2060,7 +1948,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-media-translation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-media-translation/
     tag_format: '{id}-v{version}'
@@ -2077,7 +1964,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-memcache/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-memcache/
     tag_format: '{id}-v{version}'
@@ -2094,7 +1980,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-memorystore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-memorystore/
     tag_format: '{id}-v{version}'
@@ -2109,7 +1994,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-migrationcenter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-migrationcenter/
     tag_format: '{id}-v{version}'
@@ -2126,7 +2010,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-modelarmor/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-modelarmor/
     tag_format: '{id}-v{version}'
@@ -2161,7 +2044,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-monitoring-dashboards/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - packages/google-cloud-monitoring-dashboards/google/monitoring
       - tests/unit/gapic/dashboard_v1
     remove_regex:
@@ -2178,7 +2060,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-monitoring-metrics-scopes/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-monitoring-metrics-scopes/
     tag_format: '{id}-v{version}'
@@ -2193,7 +2074,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-netapp/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-netapp/
     tag_format: '{id}-v{version}'
@@ -2210,7 +2090,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-connectivity/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-network-connectivity/
     tag_format: '{id}-v{version}'
@@ -2225,7 +2104,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-management/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-network-management/
     tag_format: '{id}-v{version}'
@@ -2244,7 +2122,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-security/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-network-security
     tag_format: '{id}-v{version}'
@@ -2259,7 +2136,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-network-services/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-network-services/
     tag_format: '{id}-v{version}'
@@ -2278,7 +2154,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-notebooks/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-notebooks/
     tag_format: '{id}-v{version}'
@@ -2293,7 +2168,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-optimization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-optimization/
     tag_format: '{id}-v{version}'
@@ -2308,7 +2182,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-oracledatabase/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-oracledatabase/
     tag_format: '{id}-v{version}'
@@ -2325,7 +2198,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-orchestration-airflow/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-orchestration-airflow/
     tag_format: '{id}-v{version}'
@@ -2344,7 +2216,6 @@ libraries:
       - packages/google-cloud-org-policy/CHANGELOG.md
       - google/cloud/orgpolicy/v1/__init__.py
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/test_packaging.py
     remove_regex:
       - packages/google-cloud-org-policy
@@ -2377,7 +2248,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-os-login/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - google/cloud/oslogin_v1/common
       - docs/oslogin_v1/common/types.rst
     remove_regex:
@@ -2396,7 +2266,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-parallelstore/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-parallelstore/
     tag_format: '{id}-v{version}'
@@ -2411,7 +2280,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-parametermanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-parametermanager/
     tag_format: '{id}-v{version}'
@@ -2426,7 +2294,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-phishing-protection/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-phishing-protection/
     tag_format: '{id}-v{version}'
@@ -2441,7 +2308,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policy-troubleshooter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-policy-troubleshooter/
     tag_format: '{id}-v{version}'
@@ -2456,7 +2322,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policysimulator/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-policysimulator/
     tag_format: '{id}-v{version}'
@@ -2471,7 +2336,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-policytroubleshooter-iam/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-policytroubleshooter-iam/
     tag_format: '{id}-v{version}'
@@ -2488,7 +2352,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-private-ca/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-private-ca/
     tag_format: '{id}-v{version}'
@@ -2503,7 +2366,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-private-catalog/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-private-catalog/
     tag_format: '{id}-v{version}'
@@ -2518,7 +2380,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-privilegedaccessmanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-privilegedaccessmanager/
     tag_format: '{id}-v{version}'
@@ -2535,7 +2396,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-quotas/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-quotas/
     tag_format: '{id}-v{version}'
@@ -2550,7 +2410,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-rapidmigrationassessment/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-rapidmigrationassessment/
     tag_format: '{id}-v{version}'
@@ -2565,7 +2424,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recaptcha-enterprise/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-recaptcha-enterprise/
     tag_format: '{id}-v{version}'
@@ -2580,7 +2438,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recommendations-ai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-recommendations-ai/
     tag_format: '{id}-v{version}'
@@ -2597,7 +2454,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-recommender/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-recommender/
     tag_format: '{id}-v{version}'
@@ -2614,7 +2470,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-redis/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-redis/
     tag_format: '{id}-v{version}'
@@ -2631,7 +2486,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-redis-cluster/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-redis-cluster/
     tag_format: '{id}-v{version}'
@@ -2646,7 +2500,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-resource-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-resource-manager/
     tag_format: '{id}-v{version}'
@@ -2665,7 +2518,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-retail/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-retail/
     tag_format: '{id}-v{version}'
@@ -2680,7 +2532,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-run/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-run/
     tag_format: '{id}-v{version}'
@@ -2695,7 +2546,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-saasplatform-saasservicemgmt/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-saasplatform-saasservicemgmt/
     tag_format: '{id}-v{version}'
@@ -2731,7 +2581,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-secret-manager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-secret-manager
     tag_format: '{id}-v{version}'
@@ -2746,7 +2595,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securesourcemanager/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-securesourcemanager/
     tag_format: '{id}-v{version}'
@@ -2763,7 +2611,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-security-publicca/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-security-publicca/
     tag_format: '{id}-v{version}'
@@ -2784,7 +2631,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securitycenter/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-securitycenter/
     tag_format: '{id}-v{version}'
@@ -2799,7 +2645,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-securitycentermanagement/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-securitycentermanagement/
     tag_format: '{id}-v{version}'
@@ -2816,7 +2661,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-control/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-service-control/
     tag_format: '{id}-v{version}'
@@ -2833,7 +2677,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-directory/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-service-directory/
     tag_format: '{id}-v{version}'
@@ -2848,7 +2691,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-management/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-service-management/
     tag_format: '{id}-v{version}'
@@ -2863,7 +2705,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-service-usage/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-service-usage/
     tag_format: '{id}-v{version}'
@@ -2878,7 +2719,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-servicehealth/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-servicehealth/
     tag_format: '{id}-v{version}'
@@ -2893,7 +2733,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-shell/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-shell/
     tag_format: '{id}-v{version}'
@@ -2908,7 +2747,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-source-context/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/source_context_v1/test_source_context_v1.py
     remove_regex:
       - packages/google-cloud-source-context/
@@ -2945,7 +2783,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storage-control/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-storage-control/
     tag_format: '{id}-v{version}'
@@ -2960,7 +2797,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storage-transfer/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-storage-transfer/
     tag_format: '{id}-v{version}'
@@ -2975,7 +2811,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storagebatchoperations/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-storagebatchoperations/
     tag_format: '{id}-v{version}'
@@ -2990,7 +2825,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-storageinsights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-storageinsights/
     tag_format: '{id}-v{version}'
@@ -3007,7 +2841,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-support/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-support/
     tag_format: '{id}-v{version}'
@@ -3024,7 +2857,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-talent/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-talent/
     tag_format: '{id}-v{version}'
@@ -3062,7 +2894,6 @@ libraries:
       - packages/google-cloud-telcoautomation/CHANGELOG.md
       - docs/CHANGELOG.md
       - snippets/README.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-telcoautomation/
     tag_format: '{id}-v{version}'
@@ -3098,7 +2929,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-tpu/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-tpu/
     tag_format: '{id}-v{version}'
@@ -3115,7 +2945,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-trace/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-trace/
     tag_format: '{id}-v{version}'
@@ -3151,7 +2980,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vectorsearch/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-vectorsearch
     tag_format: '{id}-v{version}'
@@ -3166,7 +2994,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-live-stream/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-video-live-stream/
     tag_format: '{id}-v{version}'
@@ -3181,7 +3008,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-stitcher/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-video-stitcher/
     tag_format: '{id}-v{version}'
@@ -3196,7 +3022,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-video-transcoder/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-video-transcoder/
     tag_format: '{id}-v{version}'
@@ -3262,7 +3087,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-visionai/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-visionai/
     tag_format: '{id}-v{version}'
@@ -3277,7 +3101,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vm-migration/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-vm-migration/
     tag_format: '{id}-v{version}'
@@ -3292,7 +3115,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vmwareengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-vmwareengine/
     tag_format: '{id}-v{version}'
@@ -3307,7 +3129,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-vpc-access/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-vpc-access/
     tag_format: '{id}-v{version}'
@@ -3324,7 +3145,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-webrisk/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-webrisk/
     tag_format: '{id}-v{version}'
@@ -3343,7 +3163,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-websecurityscanner/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-websecurityscanner/
     tag_format: '{id}-v{version}'
@@ -3364,7 +3183,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-workflows/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-workflows/
     tag_format: '{id}-v{version}'
@@ -3381,7 +3199,6 @@ libraries:
     preserve_regex:
       - packages/google-cloud-workstations/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-cloud-workstations/
     tag_format: '{id}-v{version}'
@@ -3396,7 +3213,6 @@ libraries:
     preserve_regex:
       - packages/google-geo-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/type/test_type.py
     remove_regex:
       - packages/google-geo-type
@@ -3412,7 +3228,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-addressvalidation/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-addressvalidation
     tag_format: '{id}-v{version}'
@@ -3427,7 +3242,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-areainsights/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-areainsights
     tag_format: '{id}-v{version}'
@@ -3442,7 +3256,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-fleetengine/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-fleetengine
     tag_format: '{id}-v{version}'
@@ -3457,7 +3270,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-fleetengine-delivery/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-fleetengine-delivery
     tag_format: '{id}-v{version}'
@@ -3472,7 +3284,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-mapsplatformdatasets/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-mapsplatformdatasets
     tag_format: '{id}-v{version}'
@@ -3487,7 +3298,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-places/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-places
     tag_format: '{id}-v{version}'
@@ -3502,7 +3312,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-routeoptimization/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-routeoptimization
     tag_format: '{id}-v{version}'
@@ -3517,7 +3326,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-routing/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-routing
     tag_format: '{id}-v{version}'
@@ -3532,7 +3340,6 @@ libraries:
     preserve_regex:
       - packages/google-maps-solar/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-maps-solar
     tag_format: '{id}-v{version}'
@@ -3547,7 +3354,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-css/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-css/
     tag_format: '{id}-v{version}'
@@ -3564,7 +3370,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-accounts/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-accounts/
     tag_format: '{id}-v{version}'
@@ -3581,7 +3386,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-conversions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-conversions/
     tag_format: '{id}-v{version}'
@@ -3598,7 +3402,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-datasources/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-datasources/
     tag_format: '{id}-v{version}'
@@ -3615,7 +3418,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-inventories/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-inventories/
     tag_format: '{id}-v{version}'
@@ -3632,7 +3434,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-issueresolution/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-issueresolution/
     tag_format: '{id}-v{version}'
@@ -3649,7 +3450,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-lfp/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-lfp/
     tag_format: '{id}-v{version}'
@@ -3666,7 +3466,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-notifications/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-notifications/
     tag_format: '{id}-v{version}'
@@ -3683,7 +3482,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-ordertracking/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-ordertracking/
     tag_format: '{id}-v{version}'
@@ -3700,7 +3498,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-products/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-products/
     tag_format: '{id}-v{version}'
@@ -3715,7 +3512,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-productstudio/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-productstudio/
     tag_format: '{id}-v{version}'
@@ -3732,7 +3528,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-promotions/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-promotions/
     tag_format: '{id}-v{version}'
@@ -3749,7 +3544,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-quota/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-quota/
     tag_format: '{id}-v{version}'
@@ -3768,7 +3562,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-reports/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-reports/
     tag_format: '{id}-v{version}'
@@ -3783,7 +3576,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-merchant-reviews/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
     remove_regex:
       - packages/google-shopping-merchant-reviews/
     tag_format: '{id}-v{version}'
@@ -3798,7 +3590,6 @@ libraries:
     preserve_regex:
       - packages/google-shopping-type/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - tests/unit/gapic/type/test_type.py
     remove_regex:
       - packages/google-shopping-type/
@@ -3840,7 +3631,6 @@ libraries:
     preserve_regex:
       - packages/grafeas/CHANGELOG.md
       - docs/CHANGELOG.md
-      - tests/system
       - grafeas/grafeas\.py
       - ^packages/grafeas/grafeas/__init__.py
       - grafeas/grafeas/grafeas_v1/types.py
