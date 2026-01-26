@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/gapic-generator/#history
 
+## [1.30.5](https://github.com/googleapis/gapic-generator-python/compare/v1.30.4...v1.30.5) (2026-01-26)
+
+
+### Bug Fixes
+
+* fix mypy for services with extended operations methods (#2536) ([84667d1b55a5dd895585ae40cbd32b2925ecf8e8](https://github.com/googleapis/gapic-generator-python/commit/84667d1b55a5dd895585ae40cbd32b2925ecf8e8))
+
 ## [1.30.4](https://github.com/googleapis/gapic-generator-python/compare/v1.30.3...v1.30.4) (2026-01-20)
 
 
