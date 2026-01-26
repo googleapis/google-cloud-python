@@ -163,3 +163,40 @@ def test_transform_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mock):
     assert "ML.TRANSFORM" in generated_sql
     assert f"MODEL `{MODEL_NAME}`" in generated_sql
     assert "(SELECT * FROM `pandas_df`)" in generated_sql
+
+
+@mock.patch("bigframes.pandas.read_gbq_query")
+@mock.patch("bigframes.pandas.read_pandas")
+def test_generate_text_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mock):
+    df = pd.DataFrame({"col1": [1, 2, 3]})
+    read_pandas_mock.return_value._to_sql_query.return_value = (
+        "SELECT * FROM `pandas_df`",
+        [],
+        [],
+    )
+    ml_ops.generate_text(
+        MODEL_SERIES,
+        input_=df,
+        temperature=0.5,
+        max_output_tokens=128,
+        top_k=20,
+        top_p=0.9,
+        flatten_json_output=True,
+        stop_sequences=["a", "b"],
+        ground_with_google_search=True,
+        request_type="TYPE",
+    )
+    read_pandas_mock.assert_called_once()
+    read_gbq_query_mock.assert_called_once()
+    generated_sql = read_gbq_query_mock.call_args[0][0]
+    assert "ML.GENERATE_TEXT" in generated_sql
+    assert f"MODEL `{MODEL_NAME}`" in generated_sql
+    assert "(SELECT * FROM `pandas_df`)" in generated_sql
+    assert "STRUCT(0.5 AS temperature" in generated_sql
+    assert "128 AS max_output_tokens" in generated_sql
+    assert "20 AS top_k" in generated_sql
+    assert "0.9 AS top_p" in generated_sql
+    assert "true AS flatten_json_output" in generated_sql
+    assert "['a', 'b'] AS stop_sequences" in generated_sql
+    assert "true AS ground_with_google_search" in generated_sql
+    assert "'TYPE' AS request_type" in generated_sql

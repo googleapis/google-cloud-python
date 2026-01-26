@@ -14,7 +14,7 @@
 
 from __future__ import annotations
 
-from typing import cast, Mapping, Optional, Union
+from typing import cast, List, Mapping, Optional, Union
 
 import bigframes_vendored.constants
 import google.cloud.bigquery
@@ -425,6 +425,95 @@ def transform(
     sql = bigframes.core.sql.ml.transform(
         model_name=model_name,
         table=table_sql,
+    )
+
+    if session is None:
+        return bpd.read_gbq_query(sql)
+    else:
+        return session.read_gbq_query(sql)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ml")
+def generate_text(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    input_: Union[pd.DataFrame, dataframe.DataFrame, str],
+    *,
+    temperature: Optional[float] = None,
+    max_output_tokens: Optional[int] = None,
+    top_k: Optional[int] = None,
+    top_p: Optional[float] = None,
+    flatten_json_output: Optional[bool] = None,
+    stop_sequences: Optional[List[str]] = None,
+    ground_with_google_search: Optional[bool] = None,
+    request_type: Optional[str] = None,
+) -> dataframe.DataFrame:
+    """
+    Generates text using a BigQuery ML model.
+
+    See the `BigQuery ML GENERATE_TEXT function syntax
+    <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text>`_
+    for additional reference.
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for text generation.
+        input_ (Union[bigframes.pandas.DataFrame, str]):
+            The DataFrame or query to use for text generation.
+        temperature (float, optional):
+            A FLOAT64 value that is used for sampling promiscuity. The value
+            must be in the range ``[0.0, 1.0]``. A lower temperature works well
+            for prompts that expect a more deterministic and less open-ended
+            or creative response, while a higher temperature can lead to more
+            diverse or creative results. A temperature of ``0`` is
+            deterministic, meaning that the highest probability response is
+            always selected.
+        max_output_tokens (int, optional):
+            An INT64 value that sets the maximum number of tokens in the
+            generated text.
+        top_k (int, optional):
+            An INT64 value that changes how the model selects tokens for
+            output. A ``top_k`` of ``1`` means the next selected token is the
+            most probable among all tokens in the model's vocabulary. A
+            ``top_k`` of ``3`` means that the next token is selected from
+            among the three most probable tokens by using temperature. The
+            default value is ``40``.
+        top_p (float, optional):
+            A FLOAT64 value that changes how the model selects tokens for
+            output. Tokens are selected from most probable to least probable
+            until the sum of their probabilities equals the ``top_p`` value.
+            For example, if tokens A, B, and C have a probability of 0.3, 0.2,
+            and 0.1 and the ``top_p`` value is ``0.5``, then the model will
+            select either A or B as the next token by using temperature. The
+            default value is ``0.95``.
+        flatten_json_output (bool, optional):
+            A BOOL value that determines the content of the generated JSON column.
+        stop_sequences (List[str], optional):
+            An ARRAY<STRING> value that contains the stop sequences for the model.
+        ground_with_google_search (bool, optional):
+            A BOOL value that determines whether to ground the model with Google Search.
+        request_type (str, optional):
+            A STRING value that contains the request type for the model.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The generated text.
+    """
+    import bigframes.pandas as bpd
+
+    model_name, session = _get_model_name_and_session(model, input_)
+    table_sql = _to_sql(input_)
+
+    sql = bigframes.core.sql.ml.generate_text(
+        model_name=model_name,
+        table=table_sql,
+        temperature=temperature,
+        max_output_tokens=max_output_tokens,
+        top_k=top_k,
+        top_p=top_p,
+        flatten_json_output=flatten_json_output,
+        stop_sequences=stop_sequences,
+        ground_with_google_search=ground_with_google_search,
+        request_type=request_type,
     )
 
     if session is None:

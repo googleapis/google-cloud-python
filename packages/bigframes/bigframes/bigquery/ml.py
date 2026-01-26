@@ -23,6 +23,7 @@ from bigframes.bigquery._operations.ml import (
     create_model,
     evaluate,
     explain_predict,
+    generate_text,
     global_explain,
     predict,
     transform,
@@ -35,4 +36,5 @@ __all__ = [
     "explain_predict",
     "global_explain",
     "transform",
+    "generate_text",
 ]

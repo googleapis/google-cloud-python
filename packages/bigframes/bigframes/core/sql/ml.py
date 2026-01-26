@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from typing import Dict, Mapping, Optional, Union
+import collections.abc
+import json
+from typing import Any, Dict, List, Mapping, Optional, Union
 
 import bigframes.core.compile.googlesql as googlesql
 import bigframes.core.sql
@@ -100,14 +102,41 @@ def create_model_ddl(
 
 
 def _build_struct_sql(
-    struct_options: Mapping[str, Union[str, int, float, bool]]
+    struct_options: Mapping[
+        str,
+        Union[str, int, float, bool, Mapping[str, str], List[str], Mapping[str, Any]],
+    ]
 ) -> str:
     if not struct_options:
         return ""
 
     rendered_options = []
     for option_name, option_value in struct_options.items():
-        rendered_val = bigframes.core.sql.simple_literal(option_value)
+        if option_name == "model_params":
+            json_str = json.dumps(option_value)
+            # Escape single quotes for SQL string literal
+            sql_json_str = json_str.replace("'", "''")
+            rendered_val = f"JSON'{sql_json_str}'"
+        elif isinstance(option_value, collections.abc.Mapping):
+            struct_body = ", ".join(
+                [
+                    f"{bigframes.core.sql.simple_literal(v)} AS {k}"
+                    for k, v in option_value.items()
+                ]
+            )
+            rendered_val = f"STRUCT({struct_body})"
+        elif isinstance(option_value, list):
+            rendered_val = (
+                "["
+                + ", ".join(
+                    [bigframes.core.sql.simple_literal(v) for v in option_value]
+                )
+                + "]"
+            )
+        elif isinstance(option_value, bool):
+            rendered_val = str(option_value).lower()
+        else:
+            rendered_val = bigframes.core.sql.simple_literal(option_value)
         rendered_options.append(f"{rendered_val} AS {option_name}")
     return f", STRUCT({', '.join(rendered_options)})"
 
@@ -151,7 +180,7 @@ def predict(
     """Encode the ML.PREDICT statement.
     See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-predict for reference.
     """
-    struct_options = {}
+    struct_options: Dict[str, Union[str, int, float, bool]] = {}
     if threshold is not None:
         struct_options["threshold"] = threshold
     if keep_original_columns is not None:
@@ -205,7 +234,7 @@ def global_explain(
     """Encode the ML.GLOBAL_EXPLAIN statement.
     See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-global-explain for reference.
     """
-    struct_options = {}
+    struct_options: Dict[str, Union[str, int, float, bool]] = {}
     if class_level_explain is not None:
         struct_options["class_level_explain"] = class_level_explain
 
@@ -223,4 +252,47 @@ def transform(
     See https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-transform for reference.
     """
     sql = f"SELECT * FROM ML.TRANSFORM(MODEL {googlesql.identifier(model_name)}, ({table}))\n"
+    return sql
+
+
+def generate_text(
+    model_name: str,
+    table: str,
+    *,
+    temperature: Optional[float] = None,
+    max_output_tokens: Optional[int] = None,
+    top_k: Optional[int] = None,
+    top_p: Optional[float] = None,
+    flatten_json_output: Optional[bool] = None,
+    stop_sequences: Optional[List[str]] = None,
+    ground_with_google_search: Optional[bool] = None,
+    request_type: Optional[str] = None,
+) -> str:
+    """Encode the ML.GENERATE_TEXT statement.
+    See https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-text for reference.
+    """
+    struct_options: Dict[
+        str,
+        Union[str, int, float, bool, Mapping[str, str], List[str], Mapping[str, Any]],
+    ] = {}
+    if temperature is not None:
+        struct_options["temperature"] = temperature
+    if max_output_tokens is not None:
+        struct_options["max_output_tokens"] = max_output_tokens
+    if top_k is not None:
+        struct_options["top_k"] = top_k
+    if top_p is not None:
+        struct_options["top_p"] = top_p
+    if flatten_json_output is not None:
+        struct_options["flatten_json_output"] = flatten_json_output
+    if stop_sequences is not None:
+        struct_options["stop_sequences"] = stop_sequences
+    if ground_with_google_search is not None:
+        struct_options["ground_with_google_search"] = ground_with_google_search
+    if request_type is not None:
+        struct_options["request_type"] = request_type
+
+    sql = f"SELECT * FROM ML.GENERATE_TEXT(MODEL {googlesql.identifier(model_name)}, ({table})"
+    sql += _build_struct_sql(struct_options)
+    sql += ")\n"
     return sql
