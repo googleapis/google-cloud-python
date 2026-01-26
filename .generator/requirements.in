@@ -1,5 +1,5 @@
 click
-gapic-generator==1.30.4 # Add cryptography to constraints file https://github.com/googleapis/gapic-generator-python/pull/2527
+gapic-generator==1.30.5 # Fix mypy issue https://github.com/googleapis/gapic-generator-python/pull/2536
 nox
 starlark-pyo3>=2025.1
 build
