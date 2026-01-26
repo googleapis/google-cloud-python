@@ -3,7 +3,7 @@
 {% block content %}
 
 import abc
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import {% if service.any_extended_operations_methods %}Any, {% endif %}Awaitable, Callable, Dict, Optional, Sequence, Union
 
 {% set package_path = api.naming.module_namespace|join('.') + "." + api.naming.versioned_module_name %}
 from {{package_path}} import gapic_version as package_version
