@@ -233,6 +233,7 @@ libraries:
     remove_regex:
       - ^packages/google-cloud-access-context-manager/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
+      - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-advisorynotifications
@@ -463,6 +464,7 @@ libraries:
     remove_regex:
       - ^packages/google-cloud-audit-log/google/.*/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
+      - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-automl
@@ -3618,6 +3620,7 @@ libraries:
     remove_regex:
       - ^packages/googleapis-common-protos/google/(?:api|cloud|logging|rpc|type)/.*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
+      - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
@@ -3649,5 +3652,6 @@ libraries:
     remove_regex:
       - ^packages/grpc-google-iam-v1/google/iam/v1/[^/]*(?:\.proto|_pb2\.(?:py|pyi))$
       - .repo-metadata.json
+      - README.rst
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
