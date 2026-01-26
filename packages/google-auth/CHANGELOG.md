@@ -4,6 +4,25 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.48.0](https://github.com/googleapis/google-auth-library-python/compare/v2.47.0...v2.48.0) (2026-01-22)
+
+
+### Features
+
+* add cryptography as required dependency (#1929) ([52558ae2881b1e6555f6f5c0d76365c15807ead9](https://github.com/googleapis/google-auth-library-python/commit/52558ae2881b1e6555f6f5c0d76365c15807ead9))
+* Support the mTLS IAM domain for Certificate based Access (#1938) ([8dcf91a1b05c85fbbd0bcee78d66e498099102ab](https://github.com/googleapis/google-auth-library-python/commit/8dcf91a1b05c85fbbd0bcee78d66e498099102ab))
+* add configurable GCE Metadata Server retries (#1488) ([454b441b478ec62bbf1a6ad5bceb6c7cbbfd0c37](https://github.com/googleapis/google-auth-library-python/commit/454b441b478ec62bbf1a6ad5bceb6c7cbbfd0c37))
+* honor `NO_GCE_CHECK` environment variable (#1610) ([383c9827536d9376e8248370ce4c2b83e468d027](https://github.com/googleapis/google-auth-library-python/commit/383c9827536d9376e8248370ce4c2b83e468d027))
+
+
+### Bug Fixes
+
+* resolve circular imports (#1942) ([25c1b064545702cbef087cfcd15fbbb6ef1af74f](https://github.com/googleapis/google-auth-library-python/commit/25c1b064545702cbef087cfcd15fbbb6ef1af74f))
+* removes `content-header` from AWS IMDS get request (#1934) ([97bfea9e02ede953fc8ee154e0deed3a3cfc6dcc](https://github.com/googleapis/google-auth-library-python/commit/97bfea9e02ede953fc8ee154e0deed3a3cfc6dcc))
+* detect correct auth when ADC env var is set but empty (#1374) ([bfc07e1050bd0aa86fa3b08cdf70c9b68b5fe6a2](https://github.com/googleapis/google-auth-library-python/commit/bfc07e1050bd0aa86fa3b08cdf70c9b68b5fe6a2))
+* replace deprecated utcfromtimestamp (#1799) ([e431f20cf73ccac71926a23ec454468cea92e053](https://github.com/googleapis/google-auth-library-python/commit/e431f20cf73ccac71926a23ec454468cea92e053))
+* Use `user_verification=preferred` for ReAuth WebAuthn challenge (#1798) ([3f88a24089c4ee6822d510de0db210b54260d873](https://github.com/googleapis/google-auth-library-python/commit/3f88a24089c4ee6822d510de0db210b54260d873))
+
 ## [2.47.0](https://github.com/googleapis/google-auth-library-python/compare/v2.46.0...v2.47.0) (2026-01-06)
 
 
