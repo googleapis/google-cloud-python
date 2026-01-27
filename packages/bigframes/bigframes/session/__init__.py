@@ -2291,6 +2291,11 @@ class Session(
             bigframes.pandas.DataFrame:
                 Result BigFrames DataFrame.
         """
+        warnings.warn(
+            "read_gbq_object_table is deprecated and will be removed in a future release. Use read_gbq with 'ref' column instead.",
+            category=bfe.ApiDeprecationWarning,
+            stacklevel=2,
+        )
         # TODO(garrettwu): switch to pseudocolumn when b/374988109 is done.
         table = self.bqclient.get_table(object_table)
         connection = table._properties["externalDataConfiguration"]["connectionId"]
