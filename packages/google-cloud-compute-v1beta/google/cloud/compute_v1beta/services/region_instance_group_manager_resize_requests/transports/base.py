@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 import abc
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
+from typing import Any, Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
