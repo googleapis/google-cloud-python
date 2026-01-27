@@ -161,6 +161,11 @@ class RegionNotificationEndpointsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.test_iam_permissions: gapic_v1.method.wrap_method(
+                self.test_iam_permissions,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -207,6 +212,17 @@ class RegionNotificationEndpointsTransport(abc.ABC):
         Union[
             compute.NotificationEndpointList,
             Awaitable[compute.NotificationEndpointList],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def test_iam_permissions(
+        self,
+    ) -> Callable[
+        [compute.TestIamPermissionsRegionNotificationEndpointRequest],
+        Union[
+            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
         ],
     ]:
         raise NotImplementedError()
