@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -36,7 +34,6 @@ def test_compile_readlocal_w_structs_df(
     compiler_session_w_nested_structs_types: bigframes.Session,
     snapshot,
 ):
-    # TODO(b/427306734): Check why the output is different from the expected output.
     bf_df = bpd.DataFrame(
         nested_structs_pandas_df, session=compiler_session_w_nested_structs_types
     )
@@ -66,8 +63,6 @@ def test_compile_readlocal_w_json_df(
 def test_compile_readlocal_w_special_values(
     compiler_session: bigframes.Session, snapshot
 ):
-    if sys.version_info < (3, 12):
-        pytest.skip("Skipping test due to inconsistent SQL formatting")
     df = pd.DataFrame(
         {
             "col_none": [None, 1, 2],

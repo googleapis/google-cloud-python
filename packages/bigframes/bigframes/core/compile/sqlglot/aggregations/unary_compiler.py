@@ -527,7 +527,7 @@ def _(
     else:
         result = apply_window_if_present(result, window)
 
-    if op.should_floor_result:
+    if op.should_floor_result or column.dtype == dtypes.TIMEDELTA_DTYPE:
         result = sge.Cast(this=sge.func("FLOOR", result), to="INT64")
     return result
 

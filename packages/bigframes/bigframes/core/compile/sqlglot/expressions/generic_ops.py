@@ -252,7 +252,7 @@ def _cast_to_json(expr: TypedExpr, op: ops.AsTypeOp) -> sge.Expression:
     sg_expr = expr.expr
 
     if from_type == dtypes.STRING_DTYPE:
-        func_name = "PARSE_JSON_IN_SAFE" if op.safe else "PARSE_JSON"
+        func_name = "SAFE.PARSE_JSON" if op.safe else "PARSE_JSON"
         return sge.func(func_name, sg_expr)
     if from_type in (dtypes.INT_DTYPE, dtypes.BOOL_DTYPE, dtypes.FLOAT_DTYPE):
         sg_expr = sge.Cast(this=sg_expr, to="STRING")

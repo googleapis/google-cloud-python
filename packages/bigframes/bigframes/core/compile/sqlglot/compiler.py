@@ -266,10 +266,16 @@ def compile_concat(node: nodes.ConcatNode, *children: ir.SQLGlotIR) -> ir.SQLGlo
     assert len(children) >= 1
     uid_gen = children[0].uid_gen
 
-    output_ids = [id.sql for id in node.output_ids]
+    # BigQuery `UNION` query takes the column names from the first `SELECT` clause.
+    default_output_ids = [field.id.sql for field in node.child_nodes[0].fields]
+    output_aliases = [
+        (default_output_id, output_id.sql)
+        for default_output_id, output_id in zip(default_output_ids, node.output_ids)
+    ]
+
     return ir.SQLGlotIR.from_union(
         [child.expr for child in children],
-        output_ids=output_ids,
+        output_aliases=output_aliases,
         uid_gen=uid_gen,
     )
 

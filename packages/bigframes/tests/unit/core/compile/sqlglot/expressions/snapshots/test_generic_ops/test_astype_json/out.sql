@@ -13,7 +13,7 @@ WITH `bfcte_0` AS (
     PARSE_JSON(CAST(`bool_col` AS STRING)) AS `bfcol_6`,
     PARSE_JSON(`string_col`) AS `bfcol_7`,
     PARSE_JSON(CAST(`bool_col` AS STRING)) AS `bfcol_8`,
-    PARSE_JSON_IN_SAFE(`string_col`) AS `bfcol_9`
+    SAFE.PARSE_JSON(`string_col`) AS `bfcol_9`
   FROM `bfcte_0`
 )
 SELECT

@@ -170,7 +170,9 @@ class SQLGlotIR:
         cls,
         query_string: str,
     ) -> SQLGlotIR:
-        """Builds a SQLGlot expression from a query string"""
+        """Builds a SQLGlot expression from a query string. Wrapping the query
+        in a CTE can avoid the query parsing issue for unsupported syntax in
+        SQLGlot."""
         uid_gen: guid.SequentialUIDGenerator = guid.SequentialUIDGenerator()
         cte_name = sge.to_identifier(
             next(uid_gen.get_uid_stream("bfcte_")), quoted=cls.quoted
@@ -187,7 +189,7 @@ class SQLGlotIR:
     def from_union(
         cls,
         selects: typing.Sequence[sge.Select],
-        output_ids: typing.Sequence[str],
+        output_aliases: typing.Sequence[typing.Tuple[str, str]],
         uid_gen: guid.SequentialUIDGenerator,
     ) -> SQLGlotIR:
         """Builds a SQLGlot expression by unioning of multiple select expressions."""
@@ -196,7 +198,7 @@ class SQLGlotIR:
         ), f"At least two select expressions must be provided, but got {selects}."
 
         existing_ctes: list[sge.CTE] = []
-        union_selects: list[sge.Expression] = []
+        union_selects: list[sge.Select] = []
         for select in selects:
             assert isinstance(
                 select, sge.Select
@@ -205,37 +207,27 @@ class SQLGlotIR:
             select_expr = select.copy()
             select_expr, select_ctes = _pop_query_ctes(select_expr)
             existing_ctes = [*existing_ctes, *select_ctes]
+            union_selects.append(select_expr)
 
-            new_cte_name = sge.to_identifier(
-                next(uid_gen.get_uid_stream("bfcte_")), quoted=cls.quoted
-            )
-            new_cte = sge.CTE(
-                this=select_expr,
-                alias=new_cte_name,
-            )
-            existing_ctes = [*existing_ctes, new_cte]
-
-            selections = [
-                sge.Alias(
-                    this=sge.to_identifier(expr.alias_or_name, quoted=cls.quoted),
-                    alias=sge.to_identifier(output_id, quoted=cls.quoted),
-                )
-                for expr, output_id in zip(select_expr.expressions, output_ids)
-            ]
-            union_selects.append(
-                sge.Select().select(*selections).from_(sge.Table(this=new_cte_name))
+        union_expr: sge.Query = union_selects[0].subquery()
+        for select in union_selects[1:]:
+            union_expr = sge.Union(
+                this=union_expr,
+                expression=select.subquery(),
+                distinct=False,
+                copy=False,
             )
 
-        union_expr = typing.cast(
-            sge.Select,
-            functools.reduce(
-                lambda x, y: sge.Union(
-                    this=x, expression=y, distinct=False, copy=False
-                ),
-                union_selects,
-            ),
+        selections = [
+            sge.Alias(
+                this=sge.to_identifier(old_name, quoted=cls.quoted),
+                alias=sge.to_identifier(new_name, quoted=cls.quoted),
+            )
+            for old_name, new_name in output_aliases
+        ]
+        final_select_expr = (
+            sge.Select().select(*selections).from_(union_expr.subquery())
         )
-        final_select_expr = sge.Select().select(sge.Star()).from_(union_expr.subquery())
         final_select_expr = _set_query_ctes(final_select_expr, existing_ctes)
         return cls(expr=final_select_expr, uid_gen=uid_gen)
 

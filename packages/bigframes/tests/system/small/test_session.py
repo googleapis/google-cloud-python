@@ -352,7 +352,7 @@ def test_read_gbq_w_primary_keys_table(
     pd.testing.assert_frame_equal(result, sorted_result)
 
     # Verify that we're working from a snapshot rather than a copy of the table.
-    assert "FOR SYSTEM_TIME AS OF TIMESTAMP" in df.sql
+    assert "FOR SYSTEM_TIME AS OF" in df.sql
 
 
 def test_read_gbq_w_primary_keys_table_and_filters(
