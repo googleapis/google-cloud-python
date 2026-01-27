@@ -995,7 +995,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
     version: 0.5.0
-    last_generated_commit: 136a2c43b38a67cfe07317031764dd1ca1043fc6
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/compute/v1beta
         service_config: compute_v1beta.yaml

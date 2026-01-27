@@ -2937,7 +2937,8 @@ def test_insert_rest_call_success(request_type):
                         "timestamp": "timestamp_value",
                     },
                 }
-            ]
+            ],
+            "members_count": 1395,
         },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.

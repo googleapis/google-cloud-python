@@ -2167,11 +2167,7 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            vpn_tunnel_resource=compute.VpnTunnel(
-                cipher_suite=compute.VpnTunnelCipherSuite(
-                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
-                )
-            ),
+            vpn_tunnel_resource=compute.VpnTunnel(capacity_tier="capacity_tier_value"),
         )
         mock_args.update(sample_request)
 
@@ -2211,11 +2207,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertVpnTunnelRequest(),
             project="project_value",
             region="region_value",
-            vpn_tunnel_resource=compute.VpnTunnel(
-                cipher_suite=compute.VpnTunnelCipherSuite(
-                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
-                )
-            ),
+            vpn_tunnel_resource=compute.VpnTunnel(capacity_tier="capacity_tier_value"),
         )
 
 
@@ -2375,11 +2367,7 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             region="region_value",
-            vpn_tunnel_resource=compute.VpnTunnel(
-                cipher_suite=compute.VpnTunnelCipherSuite(
-                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
-                )
-            ),
+            vpn_tunnel_resource=compute.VpnTunnel(capacity_tier="capacity_tier_value"),
         )
         mock_args.update(sample_request)
 
@@ -2419,11 +2407,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertVpnTunnelRequest(),
             project="project_value",
             region="region_value",
-            vpn_tunnel_resource=compute.VpnTunnel(
-                cipher_suite=compute.VpnTunnelCipherSuite(
-                    phase1=compute.VpnTunnelPhase1Algorithms(dh=["dh_value"])
-                )
-            ),
+            vpn_tunnel_resource=compute.VpnTunnel(capacity_tier="capacity_tier_value"),
         )
 
 
@@ -3772,6 +3756,7 @@ def test_get_rest_call_success(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.VpnTunnel(
+            capacity_tier="capacity_tier_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             detailed_status="detailed_status_value",
@@ -3811,6 +3796,7 @@ def test_get_rest_call_success(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.VpnTunnel)
+    assert response.capacity_tier == "capacity_tier_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.detailed_status == "detailed_status_value"
@@ -3934,6 +3920,7 @@ def test_insert_rest_call_success(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["vpn_tunnel_resource"] = {
+        "capacity_tier": "capacity_tier_value",
         "cipher_suite": {
             "phase1": {
                 "dh": ["dh_value1", "dh_value2"],
