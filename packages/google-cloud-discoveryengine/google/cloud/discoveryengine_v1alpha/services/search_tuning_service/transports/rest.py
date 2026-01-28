@@ -573,7 +573,8 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             Args:
                 request (~.search_tuning_service.ListCustomModelsRequest):
                     The request object. Request message for
-                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels]
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -586,7 +587,8 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             Returns:
                 ~.search_tuning_service.ListCustomModelsResponse:
                     Response message for
-                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels]
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1alpha.SearchTuningService.ListCustomModels>`__
                 method.
 
             """
@@ -728,7 +730,8 @@ class SearchTuningServiceRestTransport(_BaseSearchTuningServiceRestTransport):
             Args:
                 request (~.search_tuning_service.TrainCustomModelRequest):
                     The request object. Request message for
-                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1alpha.SearchTuningService.TrainCustomModel]
+                `SearchTuningService.TrainCustomModel
+                <google.cloud.discoveryengine.v1alpha.SearchTuningService.TrainCustomModel>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

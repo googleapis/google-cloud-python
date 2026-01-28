@@ -455,52 +455,61 @@ class UserEventServiceAsyncClient:
 
         Returns:
             google.api.httpbody_pb2.HttpBody:
-                Message that represents an arbitrary HTTP body. It should only be used for
-                   payload formats that can't be represented as JSON,
-                   such as raw binary or an HTML page.
+                Message that represents an arbitrary
+                HTTP body. It should only be used for
+                payload formats that can't be
+                represented as JSON, such as raw binary
+                or an HTML page.
 
-                   This message can be used both in streaming and
-                   non-streaming API methods in the request as well as
-                   the response.
+                This message can be used both in
+                streaming and non-streaming API methods
+                in the request as well as the response.
 
-                   It can be used as a top-level request field, which is
-                   convenient if one wants to extract parameters from
-                   either the URL or HTTP template into the request
-                   fields and also want access to the raw HTTP body.
+                It can be used as a top-level request
+                field, which is convenient if one wants
+                to extract parameters from either the
+                URL or HTTP template into the request
+                fields and also want access to the raw
+                HTTP body.
 
-                   Example:
+                Example:
 
-                      message GetResourceRequest {
-                         // A unique request id. string request_id = 1;
+                    message GetResourceRequest {
+                      // A unique request id.
+                      string request_id = 1;
 
-                         // The raw HTTP body is bound to this field.
-                         google.api.HttpBody http_body = 2;
+                      // The raw HTTP body is bound to
+                this field.       google.api.HttpBody
+                http_body = 2;
 
-                      }
+                    }
 
-                      service ResourceService {
-                         rpc GetResource(GetResourceRequest)
-                            returns (google.api.HttpBody);
+                    service ResourceService {
+                      rpc
+                GetResource(GetResourceRequest)
+                        returns (google.api.HttpBody);
+                      rpc
+                UpdateResource(google.api.HttpBody)
+                returns (google.protobuf.Empty);
 
-                         rpc UpdateResource(google.api.HttpBody)
-                            returns (google.protobuf.Empty);
+                    }
 
-                      }
+                Example with streaming methods:
 
-                   Example with streaming methods:
+                    service CaldavService {
+                      rpc GetCalendar(stream
+                google.api.HttpBody)         returns
+                (stream google.api.HttpBody);       rpc
+                UpdateCalendar(stream
+                google.api.HttpBody)         returns
+                (stream google.api.HttpBody);
 
-                      service CaldavService {
-                         rpc GetCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
+                    }
 
-                         rpc UpdateCalendar(stream google.api.HttpBody)
-                            returns (stream google.api.HttpBody);
-
-                      }
-
-                   Use of this type only changes how the request and
-                   response bodies are handled, all other features will
-                   continue to work unchanged.
+                Use of this type only changes how the
+                request and response bodies are handled,
+                all other features will continue to work
+                unchanged.
 
         """
         # Create or coerce a protobuf request object.
@@ -594,11 +603,17 @@ class UserEventServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeUserEventsResponse` Response of the PurgeUserEventsRequest. If the long running operation is
-                   successfully done, then this message is returned by
-                   the google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.PurgeUserEventsResponse`
+                Response of the PurgeUserEventsRequest.
+                If the long running operation is
+                successfully done, then this message is
+                returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -707,13 +722,17 @@ class UserEventServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportUserEventsResponse` Response of the ImportUserEventsRequest. If the long running
-                   operation was successful, then this message is
-                   returned by the
-                   google.longrunning.Operations.response field if the
-                   operation was successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.ImportUserEventsResponse`
+                Response of the ImportUserEventsRequest.
+                If the long running operation was
+                successful, then this message is
+                returned by the
+                google.longrunning.Operations.response
+                field if the operation was successful.
 
         """
         # Create or coerce a protobuf request object.

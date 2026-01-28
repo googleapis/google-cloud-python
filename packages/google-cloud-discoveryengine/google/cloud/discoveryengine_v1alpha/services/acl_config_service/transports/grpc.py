@@ -358,8 +358,8 @@ class AclConfigServiceGrpcTransport(AclConfigServiceTransport):
     ) -> Callable[[acl_config_service.GetAclConfigRequest], acl_config.AclConfig]:
         r"""Return a callable for the get acl config method over gRPC.
 
-        Gets the
-        [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig].
+        Gets the `AclConfig
+        <google.cloud.discoveryengine.v1alpha.AclConfig>`__.
 
         Returns:
             Callable[[~.GetAclConfigRequest],

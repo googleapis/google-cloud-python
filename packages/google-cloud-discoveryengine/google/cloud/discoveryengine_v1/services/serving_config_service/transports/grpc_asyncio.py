@@ -120,7 +120,8 @@ class ServingConfigServiceGrpcAsyncIOTransport(ServingConfigServiceTransport):
     """gRPC AsyncIO backend transport for ServingConfigService.
 
     Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1.ServingConfig].
+    `ServingConfig
+    <google.cloud.discoveryengine.v1.ServingConfig>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -344,7 +345,8 @@ class ServingConfigServiceGrpcAsyncIOTransport(ServingConfigServiceTransport):
 
         Updates a ServingConfig.
 
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
+        Returns a NOT_FOUND error if the ServingConfig does not
+        exist.
 
         Returns:
             Callable[[~.UpdateServingConfigRequest],

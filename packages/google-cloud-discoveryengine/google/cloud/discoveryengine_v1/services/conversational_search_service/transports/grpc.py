@@ -369,9 +369,10 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Creates a Conversation.
 
-        If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the `Conversation
+        <google.cloud.discoveryengine.v1.Conversation>`__ to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -401,8 +402,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Deletes a Conversation.
 
-        If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        If the `Conversation
+        <google.cloud.discoveryengine.v1.Conversation>`__ to
         delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -434,9 +435,11 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Updates a Conversation.
 
-        [Conversation][google.cloud.discoveryengine.v1.Conversation]
-        action type cannot be changed. If the
-        [Conversation][google.cloud.discoveryengine.v1.Conversation] to
+        `Conversation
+        <google.cloud.discoveryengine.v1.Conversation>`__ action
+        type cannot be changed. If the
+        `Conversation
+        <google.cloud.discoveryengine.v1.Conversation>`__ to
         update does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -496,7 +499,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
         r"""Return a callable for the list conversations method over gRPC.
 
         Lists all Conversations by their parent
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1.DataStore>`__.
 
         Returns:
             Callable[[~.ListConversationsRequest],
@@ -557,9 +561,11 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
         Answer query method (streaming).
 
         It takes one
-        [AnswerQueryRequest][google.cloud.discoveryengine.v1.AnswerQueryRequest]
+        `AnswerQueryRequest
+        <google.cloud.discoveryengine.v1.AnswerQueryRequest>`__
         and returns multiple
-        [AnswerQueryResponse][google.cloud.discoveryengine.v1.AnswerQueryResponse]
+        `AnswerQueryResponse
+        <google.cloud.discoveryengine.v1.AnswerQueryResponse>`__
         messages in a stream.
 
         Returns:
@@ -616,8 +622,9 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to create
+        already exists, an ALREADY_EXISTS error is returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -647,8 +654,9 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1.Session] to
-        delete does not exist, a NOT_FOUND error is returned.
+        If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to delete
+        does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteSessionRequest],
@@ -678,9 +686,9 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1.Session] action type
-        cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1.Session] to update
+        `Session <google.cloud.discoveryengine.v1.Session>`__
+        action type cannot be changed. If the `Session
+        <google.cloud.discoveryengine.v1.Session>`__ to update
         does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -737,7 +745,8 @@ class ConversationalSearchServiceGrpcTransport(ConversationalSearchServiceTransp
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists all Sessions by their parent
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1.DataStore>`__.
 
         Returns:
             Callable[[~.ListSessionsRequest],

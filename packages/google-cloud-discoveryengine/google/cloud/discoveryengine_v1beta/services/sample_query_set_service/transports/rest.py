@@ -426,7 +426,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
     """REST backend synchronous transport for SampleQuerySetService.
 
     Service for managing
-    [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s,
+    `SampleQuerySet
+    <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s,
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -546,7 +547,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Args:
                 request (~.sample_query_set_service.CreateSampleQuerySetRequest):
                     The request object. Request message for
-                [SampleQuerySetService.CreateSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet]
+                `SampleQuerySetService.CreateSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -708,7 +710,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Args:
                 request (~.sample_query_set_service.DeleteSampleQuerySetRequest):
                     The request object. Request message for
-                [SampleQuerySetService.DeleteSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet]
+                `SampleQuerySetService.DeleteSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -821,7 +824,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Args:
                 request (~.sample_query_set_service.GetSampleQuerySetRequest):
                     The request object. Request message for
-                [SampleQuerySetService.GetSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet]
+                `SampleQuerySetService.GetSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -976,7 +980,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Args:
                 request (~.sample_query_set_service.ListSampleQuerySetsRequest):
                     The request object. Request message for
-                [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
+                `SampleQuerySetService.ListSampleQuerySets
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -989,7 +994,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Returns:
                 ~.sample_query_set_service.ListSampleQuerySetsResponse:
                     Response message for
-                [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
+                `SampleQuerySetService.ListSampleQuerySets
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets>`__
                 method.
 
             """
@@ -1135,7 +1141,8 @@ class SampleQuerySetServiceRestTransport(_BaseSampleQuerySetServiceRestTransport
             Args:
                 request (~.sample_query_set_service.UpdateSampleQuerySetRequest):
                     The request object. Request message for
-                [SampleQuerySetService.UpdateSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet]
+                `SampleQuerySetService.UpdateSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

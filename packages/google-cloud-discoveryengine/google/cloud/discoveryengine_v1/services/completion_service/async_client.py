@@ -340,7 +340,8 @@ class CompletionServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.CompleteQueryRequest, dict]]):
                 The request object. Request message for
-                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1.CompletionService.CompleteQuery>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -353,8 +354,9 @@ class CompletionServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.CompleteQueryResponse:
                 Response message for
-                   [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1.CompletionService.CompleteQuery]
-                   method.
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1.CompletionService.CompleteQuery>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -402,7 +404,8 @@ class CompletionServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports all
-        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        `SuggestionDenyListEntry
+        <google.cloud.discoveryengine.v1.SuggestionDenyListEntry>`__
         for a DataStore.
 
         .. code-block:: python
@@ -443,7 +446,8 @@ class CompletionServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesRequest, dict]]):
                 The request object. Request message for
-                [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                `CompletionService.ImportSuggestionDenyListEntries
+                <google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -455,11 +459,15 @@ class CompletionServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesResponse` Response message for
-                   [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesResponse`
+                Response message for
+                `CompletionService.ImportSuggestionDenyListEntries
+                <google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -515,7 +523,8 @@ class CompletionServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Permanently deletes all
-        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        `SuggestionDenyListEntry
+        <google.cloud.discoveryengine.v1.SuggestionDenyListEntry>`__
         for a DataStore.
 
         .. code-block:: python
@@ -551,7 +560,8 @@ class CompletionServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesRequest, dict]]):
                 The request object. Request message for
-                [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                `CompletionService.PurgeSuggestionDenyListEntries
+                <google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -563,11 +573,15 @@ class CompletionServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesResponse` Response message for
-                   [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesResponse`
+                Response message for
+                `CompletionService.PurgeSuggestionDenyListEntries
+                <google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.
@@ -621,7 +635,8 @@ class CompletionServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports
-        [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        `CompletionSuggestion
+        <google.cloud.discoveryengine.v1.CompletionSuggestion>`__s
         for a DataStore.
 
         .. code-block:: python
@@ -662,7 +677,8 @@ class CompletionServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsRequest, dict]]):
                 The request object. Request message for
-                [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
+                `CompletionService.ImportCompletionSuggestions
+                <google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -674,14 +690,18 @@ class CompletionServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsResponse` Response of the
-                   [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions]
-                   method. If the long running operation is done, this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation is successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.ImportCompletionSuggestionsResponse`
+                Response of the
+                `CompletionService.ImportCompletionSuggestions
+                <google.cloud.discoveryengine.v1.CompletionService.ImportCompletionSuggestions>`__
+                method. If the long running operation is
+                done, this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation is successful.
 
         """
         # Create or coerce a protobuf request object.
@@ -735,7 +755,8 @@ class CompletionServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Permanently deletes all
-        [CompletionSuggestion][google.cloud.discoveryengine.v1.CompletionSuggestion]s
+        `CompletionSuggestion
+        <google.cloud.discoveryengine.v1.CompletionSuggestion>`__s
         for a DataStore.
 
         .. code-block:: python
@@ -771,7 +792,8 @@ class CompletionServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.PurgeCompletionSuggestionsRequest, dict]]):
                 The request object. Request message for
-                [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
+                `CompletionService.PurgeCompletionSuggestions
+                <google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -783,11 +805,15 @@ class CompletionServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeCompletionSuggestionsResponse` Response message for
-                   [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions]
-                   method.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.PurgeCompletionSuggestionsResponse`
+                Response message for
+                `CompletionService.PurgeCompletionSuggestions
+                <google.cloud.discoveryengine.v1.CompletionService.PurgeCompletionSuggestions>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

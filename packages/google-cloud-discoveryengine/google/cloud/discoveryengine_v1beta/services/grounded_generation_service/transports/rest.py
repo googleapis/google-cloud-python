@@ -406,7 +406,8 @@ class GroundedGenerationServiceRestTransport(
             Args:
                 request (~.grounded_generation_service.CheckGroundingRequest):
                     The request object. Request message for
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1beta.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1beta.GroundedGenerationService.CheckGrounding>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -419,7 +420,8 @@ class GroundedGenerationServiceRestTransport(
             Returns:
                 ~.grounded_generation_service.CheckGroundingResponse:
                     Response message for the
-                [GroundedGenerationService.CheckGrounding][google.cloud.discoveryengine.v1beta.GroundedGenerationService.CheckGrounding]
+                `GroundedGenerationService.CheckGrounding
+                <google.cloud.discoveryengine.v1beta.GroundedGenerationService.CheckGrounding>`__
                 method.
 
             """
@@ -569,8 +571,8 @@ class GroundedGenerationServiceRestTransport(
 
             Args:
                 request (~.grounded_generation_service.GenerateGroundedContentRequest):
-                    The request object. Top-level message sent by the client for the
-                ``GenerateGroundedContent`` method.
+                    The request object. Top-level message sent by the client for
+                the ``GenerateGroundedContent`` method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -581,7 +583,9 @@ class GroundedGenerationServiceRestTransport(
 
             Returns:
                 ~.grounded_generation_service.GenerateGroundedContentResponse:
-                    Response for the ``GenerateGroundedContent`` method.
+                    Response for the
+                ``GenerateGroundedContent`` method.
+
             """
 
             http_options = (

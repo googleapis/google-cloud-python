@@ -119,8 +119,8 @@ class ChunkServiceGrpcAsyncIOTransport(ChunkServiceTransport):
     """gRPC AsyncIO backend transport for ChunkService.
 
     Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__
+    information of the customer's unstructured data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -339,8 +339,8 @@ class ChunkServiceGrpcAsyncIOTransport(ChunkServiceTransport):
     ) -> Callable[[chunk_service.GetChunkRequest], Awaitable[chunk.Chunk]]:
         r"""Return a callable for the get chunk method over gRPC.
 
-        Gets a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
+        Gets a `Document
+        <google.cloud.discoveryengine.v1alpha.Document>`__.
 
         Returns:
             Callable[[~.GetChunkRequest],
@@ -368,8 +368,8 @@ class ChunkServiceGrpcAsyncIOTransport(ChunkServiceTransport):
     ]:
         r"""Return a callable for the list chunks method over gRPC.
 
-        Gets a list of
-        [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s.
+        Gets a list of `Chunk
+        <google.cloud.discoveryengine.v1alpha.Chunk>`__s.
 
         Returns:
             Callable[[~.ListChunksRequest],

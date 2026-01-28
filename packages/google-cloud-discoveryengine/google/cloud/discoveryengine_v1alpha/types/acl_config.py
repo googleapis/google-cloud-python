@@ -34,8 +34,9 @@ class AclConfig(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The full resource name of the acl configuration.
-            Format:
+            Immutable. The full resource name of the acl
+            configuration. Format:
+
             ``projects/{project}/locations/{location}/aclConfig``.
 
             This field must be a UTF-8 encoded string with a length

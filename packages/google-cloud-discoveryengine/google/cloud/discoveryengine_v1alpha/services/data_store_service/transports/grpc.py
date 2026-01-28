@@ -119,7 +119,7 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     """gRPC backend transport for DataStoreService.
 
     Service for managing
-    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+    `DataStore <google.cloud.discoveryengine.v1alpha.DataStore>`__
     configuration.
 
     This class defines the same methods as the primary client, so the
@@ -356,14 +356,15 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the create data store method over gRPC.
 
-        Creates a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-
+        Creates a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
         DataStore is for storing
-        [Documents][google.cloud.discoveryengine.v1alpha.Document]. To
-        serve these documents for Search, or Recommendation use case, an
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine] needs to
-        be created separately.
+        `Documents
+        <google.cloud.discoveryengine.v1alpha.Document>`__. To
+        serve these documents for Search, or Recommendation use
+        case, an `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__ needs
+        to be created separately.
 
         Returns:
             Callable[[~.CreateDataStoreRequest],
@@ -389,8 +390,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ) -> Callable[[data_store_service.GetDataStoreRequest], data_store.DataStore]:
         r"""Return a callable for the get data store method over gRPC.
 
-        Gets a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        Gets a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
 
         Returns:
             Callable[[~.GetDataStoreRequest],
@@ -419,8 +420,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the list data stores method over gRPC.
 
-        Lists all the
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
+        Lists all the `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__s
         associated with the project.
 
         Returns:
@@ -449,8 +450,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the delete data store method over gRPC.
 
-        Deletes a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        Deletes a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
 
         Returns:
             Callable[[~.DeleteDataStoreRequest],
@@ -478,8 +479,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
     ]:
         r"""Return a callable for the update data store method over gRPC.
 
-        Updates a
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+        Updates a `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__
 
         Returns:
             Callable[[~.UpdateDataStoreRequest],
@@ -509,7 +510,8 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
         r"""Return a callable for the get document processing config method over gRPC.
 
         Gets a
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
 
         Returns:
             Callable[[~.GetDocumentProcessingConfigRequest],
@@ -542,14 +544,18 @@ class DataStoreServiceGrpcTransport(DataStoreServiceTransport):
         config method over gRPC.
 
         Updates the
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__
         is a singleon resource of
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
-        It's empty when
-        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
+        `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__.
+        It's empty when `DataStore
+        <google.cloud.discoveryengine.v1alpha.DataStore>`__ is
         created. The first call to this method will set up
-        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        `DocumentProcessingConfig
+        <google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig>`__.
 
         Returns:
             Callable[[~.UpdateDocumentProcessingConfigRequest],

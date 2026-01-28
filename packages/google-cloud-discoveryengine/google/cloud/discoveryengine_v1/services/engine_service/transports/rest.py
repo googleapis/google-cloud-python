@@ -442,8 +442,8 @@ class EngineServiceRestStub:
 class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
     """REST backend synchronous transport for EngineService.
 
-    Service for managing
-    [Engine][google.cloud.discoveryengine.v1.Engine] configuration.
+    Service for managing `Engine
+    <google.cloud.discoveryengine.v1.Engine>`__ configuration.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -745,7 +745,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Args:
                 request (~.engine_service.CreateEngineRequest):
                     The request object. Request for
-                [EngineService.CreateEngine][google.cloud.discoveryengine.v1.EngineService.CreateEngine]
+                `EngineService.CreateEngine
+                <google.cloud.discoveryengine.v1.EngineService.CreateEngine>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -897,7 +898,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Args:
                 request (~.engine_service.DeleteEngineRequest):
                     The request object. Request message for
-                [EngineService.DeleteEngine][google.cloud.discoveryengine.v1.EngineService.DeleteEngine]
+                `EngineService.DeleteEngine
+                <google.cloud.discoveryengine.v1.EngineService.DeleteEngine>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1044,7 +1046,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Args:
                 request (~.engine_service.GetEngineRequest):
                     The request object. Request message for
-                [EngineService.GetEngine][google.cloud.discoveryengine.v1.EngineService.GetEngine]
+                `EngineService.GetEngine
+                <google.cloud.discoveryengine.v1.EngineService.GetEngine>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1056,9 +1059,9 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
-                [Engine][google.cloud.discoveryengine.v1.Engine].
+                    Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1.Engine>`__.
 
             """
 
@@ -1197,7 +1200,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Args:
                 request (~.engine_service.ListEnginesRequest):
                     The request object. Request message for
-                [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+                `EngineService.ListEngines
+                <google.cloud.discoveryengine.v1.EngineService.ListEngines>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1210,7 +1214,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Returns:
                 ~.engine_service.ListEnginesResponse:
                     Response message for
-                [EngineService.ListEngines][google.cloud.discoveryengine.v1.EngineService.ListEngines]
+                `EngineService.ListEngines
+                <google.cloud.discoveryengine.v1.EngineService.ListEngines>`__
                 method.
 
             """
@@ -1351,7 +1356,8 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
             Args:
                 request (~.engine_service.UpdateEngineRequest):
                     The request object. Request message for
-                [EngineService.UpdateEngine][google.cloud.discoveryengine.v1.EngineService.UpdateEngine]
+                `EngineService.UpdateEngine
+                <google.cloud.discoveryengine.v1.EngineService.UpdateEngine>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1363,9 +1369,9 @@ class EngineServiceRestTransport(_BaseEngineServiceRestTransport):
 
             Returns:
                 ~.gcd_engine.Engine:
-                    Metadata that describes the training and serving
-                parameters of an
-                [Engine][google.cloud.discoveryengine.v1.Engine].
+                    Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1.Engine>`__.
 
             """
 

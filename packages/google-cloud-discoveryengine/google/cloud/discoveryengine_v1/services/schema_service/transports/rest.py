@@ -442,8 +442,8 @@ class SchemaServiceRestStub:
 class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
     """REST backend synchronous transport for SchemaService.
 
-    Service for managing
-    [Schema][google.cloud.discoveryengine.v1.Schema]s.
+    Service for managing `Schema
+    <google.cloud.discoveryengine.v1.Schema>`__s.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -745,7 +745,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Args:
                 request (~.schema_service.CreateSchemaRequest):
                     The request object. Request message for
-                [SchemaService.CreateSchema][google.cloud.discoveryengine.v1.SchemaService.CreateSchema]
+                `SchemaService.CreateSchema
+                <google.cloud.discoveryengine.v1.SchemaService.CreateSchema>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -897,7 +898,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Args:
                 request (~.schema_service.DeleteSchemaRequest):
                     The request object. Request message for
-                [SchemaService.DeleteSchema][google.cloud.discoveryengine.v1.SchemaService.DeleteSchema]
+                `SchemaService.DeleteSchema
+                <google.cloud.discoveryengine.v1.SchemaService.DeleteSchema>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1044,7 +1046,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Args:
                 request (~.schema_service.GetSchemaRequest):
                     The request object. Request message for
-                [SchemaService.GetSchema][google.cloud.discoveryengine.v1.SchemaService.GetSchema]
+                `SchemaService.GetSchema
+                <google.cloud.discoveryengine.v1.SchemaService.GetSchema>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1196,7 +1199,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Args:
                 request (~.schema_service.ListSchemasRequest):
                     The request object. Request message for
-                [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
+                `SchemaService.ListSchemas
+                <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1209,7 +1213,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Returns:
                 ~.schema_service.ListSchemasResponse:
                     Response message for
-                [SchemaService.ListSchemas][google.cloud.discoveryengine.v1.SchemaService.ListSchemas]
+                `SchemaService.ListSchemas
+                <google.cloud.discoveryengine.v1.SchemaService.ListSchemas>`__
                 method.
 
             """
@@ -1350,7 +1355,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             Args:
                 request (~.schema_service.UpdateSchemaRequest):
                     The request object. Request message for
-                [SchemaService.UpdateSchema][google.cloud.discoveryengine.v1.SchemaService.UpdateSchema]
+                `SchemaService.UpdateSchema
+                <google.cloud.discoveryengine.v1.SchemaService.UpdateSchema>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

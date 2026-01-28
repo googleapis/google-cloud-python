@@ -1,0 +1,32 @@
+{
+  "id": "google-cloud-discoveryengine",
+  "version": "0.4.0",
+  "apis": [
+    {
+      "path": "google/cloud/discoveryengine/v1",
+      "service_config": "discoveryengine_v1.yaml"
+    },
+    {
+      "path": "google/cloud/discoveryengine/v1beta",
+      "service_config": "discoveryengine_v1beta.yaml"
+    },
+    {
+      "path": "google/cloud/discoveryengine/v1alpha",
+      "service_config": "discoveryengine_v1alpha.yaml"
+    }
+  ],
+  "source_roots": [
+    "packages/google-cloud-discoveryengine"
+  ],
+  "preserve_regex": [
+    "packages/google-cloud-discoveryengine/CHANGELOG.md",
+    "docs/CHANGELOG.md",
+    "samples/README.txt",
+    "samples/snippets/README.rst",
+    "tests/system"
+  ],
+  "remove_regex": [
+    "packages/google-cloud-discoveryengine/"
+  ],
+  "tag_format": "{id}-v{version}"
+}

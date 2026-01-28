@@ -221,7 +221,7 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
     """REST backend synchronous transport for ProjectService.
 
     Service for operations on the
-    [Project][google.cloud.discoveryengine.v1.Project].
+    `Project <google.cloud.discoveryengine.v1.Project>`__.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -523,7 +523,8 @@ class ProjectServiceRestTransport(_BaseProjectServiceRestTransport):
             Args:
                 request (~.project_service.ProvisionProjectRequest):
                     The request object. Request for
-                [ProjectService.ProvisionProject][google.cloud.discoveryengine.v1.ProjectService.ProvisionProject]
+                `ProjectService.ProvisionProject
+                <google.cloud.discoveryengine.v1.ProjectService.ProvisionProject>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.

@@ -990,7 +990,8 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             Args:
                 request (~.session_service.ListFilesRequest):
                     The request object. Request message for
-                [SessionService.ListFiles][google.cloud.discoveryengine.v1alpha.SessionService.ListFiles]
+                `SessionService.ListFiles
+                <google.cloud.discoveryengine.v1alpha.SessionService.ListFiles>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1003,7 +1004,8 @@ class SessionServiceRestTransport(_BaseSessionServiceRestTransport):
             Returns:
                 ~.session_service.ListFilesResponse:
                     Response message for
-                [SessionService.ListFiles][google.cloud.discoveryengine.v1alpha.SessionService.ListFiles]
+                `SessionService.ListFiles
+                <google.cloud.discoveryengine.v1alpha.SessionService.ListFiles>`__
                 method.
 
             """

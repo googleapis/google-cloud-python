@@ -33,9 +33,10 @@ class CustomTuningModel(proto.Message):
 
     Attributes:
         name (str):
-            Required. The fully qualified resource name of the model.
-
+            Required. The fully qualified resource name of the
+            model.
             Format:
+
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/customTuningModels/{custom_tuning_model}``.
 
             Model must be an alpha-numerical string with limit of 40
@@ -45,11 +46,10 @@ class CustomTuningModel(proto.Message):
         model_version (int):
             The version of the model.
         model_state (google.cloud.discoveryengine_v1.types.CustomTuningModel.ModelState):
-            The state that the model is in (e.g.\ ``TRAINING`` or
+            The state that the model is in (e.g.``TRAINING`` or
             ``TRAINING_FAILED``).
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Deprecated: Timestamp the Model was created
-            at.
+            Deprecated: Timestamp the Model was created at.
         training_start_time (google.protobuf.timestamp_pb2.Timestamp):
             Timestamp the model training was initiated.
         metrics (MutableMapping[str, float]):

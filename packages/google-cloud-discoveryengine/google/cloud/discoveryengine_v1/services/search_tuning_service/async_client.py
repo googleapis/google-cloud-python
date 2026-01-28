@@ -351,7 +351,8 @@ class SearchTuningServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.TrainCustomModelRequest, dict]]):
                 The request object. Request message for
-                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1.SearchTuningService.TrainCustomModel]
+                `SearchTuningService.TrainCustomModel
+                <google.cloud.discoveryengine.v1.SearchTuningService.TrainCustomModel>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -363,12 +364,16 @@ class SearchTuningServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.TrainCustomModelResponse` Response of the
-                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1.TrainCustomModelRequest].
-                   This message is returned by the
-                   google.longrunning.Operations.response field.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1.types.TrainCustomModelResponse`
+                Response of the `TrainCustomModelRequest
+                <google.cloud.discoveryengine.v1.TrainCustomModelRequest>`__.
+                This message is returned by the
+                google.longrunning.Operations.response
+                field.
 
         """
         # Create or coerce a protobuf request object.
@@ -454,7 +459,8 @@ class SearchTuningServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.ListCustomModelsRequest, dict]]):
                 The request object. Request message for
-                [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -467,8 +473,9 @@ class SearchTuningServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.types.ListCustomModelsResponse:
                 Response message for
-                   [SearchTuningService.ListCustomModels][google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels]
-                   method.
+                `SearchTuningService.ListCustomModels
+                <google.cloud.discoveryengine.v1.SearchTuningService.ListCustomModels>`__
+                method.
 
         """
         # Create or coerce a protobuf request object.

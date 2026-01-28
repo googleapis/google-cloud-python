@@ -118,7 +118,8 @@ class SampleQuerySetServiceClientMeta(type):
 
 class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
     """Service for managing
-    [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s,
+    `SampleQuerySet
+    <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s,
     """
 
     @staticmethod
@@ -775,7 +776,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> sample_query_set.SampleQuerySet:
         r"""Gets a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         .. code-block:: python
 
@@ -806,22 +808,27 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.GetSampleQuerySetRequest, dict]):
                 The request object. Request message for
-                [SampleQuerySetService.GetSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet]
+                `SampleQuerySetService.GetSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.GetSampleQuerySet>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-                If the caller does not have permission to access the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
-                does not exist, a NOT_FOUND error is returned.
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -900,7 +907,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSampleQuerySetsPager:
         r"""Gets a list of
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s.
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s.
 
         .. code-block:: python
 
@@ -932,17 +940,20 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.ListSampleQuerySetsRequest, dict]):
                 The request object. Request message for
-                [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
+                `SampleQuerySetService.ListSampleQuerySets
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets>`__
                 method.
             parent (str):
-                Required. The parent location resource name, such as
+                Required. The parent location resource
+                name, such as
                 ``projects/{project}/locations/{location}``.
 
-                If the caller does not have permission to list
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s
-                under this location, regardless of whether or not this
-                location exists, a ``PERMISSION_DENIED`` error is
-                returned.
+                If the caller does not have permission
+                to list `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s
+                under this location, regardless of
+                whether or not this location exists, a
+                ``PERMISSION_DENIED`` error is returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -958,11 +969,13 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1beta.services.sample_query_set_service.pagers.ListSampleQuerySetsPager:
                 Response message for
-                   [SampleQuerySetService.ListSampleQuerySets][google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets]
-                   method.
+                `SampleQuerySetService.ListSampleQuerySets
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.ListSampleQuerySets>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1036,7 +1049,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_sample_query_set.SampleQuerySet:
         r"""Creates a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
 
         .. code-block:: python
 
@@ -1072,10 +1086,12 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.CreateSampleQuerySetRequest, dict]):
                 The request object. Request message for
-                [SampleQuerySetService.CreateSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet]
+                `SampleQuerySetService.CreateSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.CreateSampleQuerySet>`__
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}``.
 
                 This corresponds to the ``parent`` field
@@ -1083,7 +1099,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 should not be set.
             sample_query_set (google.cloud.discoveryengine_v1beta.types.SampleQuerySet):
                 Required. The
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
                 to create.
 
                 This corresponds to the ``sample_query_set`` field
@@ -1091,25 +1108,34 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
                 should not be set.
             sample_query_set_id (str):
                 Required. The ID to use for the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-                which will become the final component of the
-                [SampleQuerySet.name][google.cloud.discoveryengine.v1beta.SampleQuerySet.name].
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
+                which will become the final component of
+                the
+                `SampleQuerySet.name
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet.name>`__.
 
-                If the caller does not have permission to create the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                If the caller does not have permission
+                to create the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]s
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__s
                 with the same
-                [parent][google.cloud.discoveryengine.v1beta.CreateSampleQuerySetRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                `parent
+                <google.cloud.discoveryengine.v1beta.CreateSampleQuerySetRequest.parent>`__.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``sample_query_set_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1195,7 +1221,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_sample_query_set.SampleQuerySet:
         r"""Updates a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         .. code-block:: python
 
@@ -1229,20 +1256,23 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.UpdateSampleQuerySetRequest, dict]):
                 The request object. Request message for
-                [SampleQuerySetService.UpdateSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet]
+                `SampleQuerySetService.UpdateSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.UpdateSampleQuerySet>`__
                 method.
             sample_query_set (google.cloud.discoveryengine_v1beta.types.SampleQuerySet):
-                Required. The sample query set to update.
-
-                If the caller does not have permission to update the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
-                to update does not exist a ``NOT_FOUND`` error is
+                Required. The sample query set to
+                update.
+                If the caller does not have permission
+                to update the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
                 returned.
+
+                If the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
+                to update does not exist a ``NOT_FOUND``
+                error is returned.
 
                 This corresponds to the ``sample_query_set`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1336,7 +1366,8 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
         r"""Deletes a
-        [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+        `SampleQuerySet
+        <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
 
         .. code-block:: python
 
@@ -1364,23 +1395,27 @@ class SampleQuerySetServiceClient(metaclass=SampleQuerySetServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1beta.types.DeleteSampleQuerySetRequest, dict]):
                 The request object. Request message for
-                [SampleQuerySetService.DeleteSampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet]
+                `SampleQuerySetService.DeleteSampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySetService.DeleteSampleQuerySet>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
+                `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
-                If the caller does not have permission to delete the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the
-                [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
-                to delete does not exist, a ``NOT_FOUND`` error is
+                If the caller does not have permission
+                to delete the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
                 returned.
+
+                If the `SampleQuerySet
+                <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

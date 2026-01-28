@@ -113,8 +113,8 @@ class ChunkServiceGrpcTransport(ChunkServiceTransport):
     """gRPC backend transport for ChunkService.
 
     Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__
+    information of the customer's unstructured data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -329,8 +329,8 @@ class ChunkServiceGrpcTransport(ChunkServiceTransport):
     def get_chunk(self) -> Callable[[chunk_service.GetChunkRequest], chunk.Chunk]:
         r"""Return a callable for the get chunk method over gRPC.
 
-        Gets a
-        [Document][google.cloud.discoveryengine.v1alpha.Document].
+        Gets a `Document
+        <google.cloud.discoveryengine.v1alpha.Document>`__.
 
         Returns:
             Callable[[~.GetChunkRequest],
@@ -356,8 +356,8 @@ class ChunkServiceGrpcTransport(ChunkServiceTransport):
     ) -> Callable[[chunk_service.ListChunksRequest], chunk_service.ListChunksResponse]:
         r"""Return a callable for the list chunks method over gRPC.
 
-        Gets a list of
-        [Chunk][google.cloud.discoveryengine.v1alpha.Chunk]s.
+        Gets a list of `Chunk
+        <google.cloud.discoveryengine.v1alpha.Chunk>`__s.
 
         Returns:
             Callable[[~.ListChunksRequest],

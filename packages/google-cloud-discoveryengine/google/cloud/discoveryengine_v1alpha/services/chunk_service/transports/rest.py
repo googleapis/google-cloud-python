@@ -273,8 +273,8 @@ class ChunkServiceRestTransport(_BaseChunkServiceRestTransport):
     """REST backend synchronous transport for ChunkService.
 
     Service for displaying processed
-    [Chunk][google.cloud.discoveryengine.v1alpha.Chunk] information of
-    the customer's unstructured data.
+    `Chunk <google.cloud.discoveryengine.v1alpha.Chunk>`__
+    information of the customer's unstructured data.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -390,7 +390,8 @@ class ChunkServiceRestTransport(_BaseChunkServiceRestTransport):
             Args:
                 request (~.chunk_service.GetChunkRequest):
                     The request object. Request message for
-                [ChunkService.GetChunk][google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk]
+                `ChunkService.GetChunk
+                <google.cloud.discoveryengine.v1alpha.ChunkService.GetChunk>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -543,7 +544,8 @@ class ChunkServiceRestTransport(_BaseChunkServiceRestTransport):
             Args:
                 request (~.chunk_service.ListChunksRequest):
                     The request object. Request message for
-                [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
+                `ChunkService.ListChunks
+                <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -556,7 +558,8 @@ class ChunkServiceRestTransport(_BaseChunkServiceRestTransport):
             Returns:
                 ~.chunk_service.ListChunksResponse:
                     Response message for
-                [ChunkService.ListChunks][google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks]
+                `ChunkService.ListChunks
+                <google.cloud.discoveryengine.v1alpha.ChunkService.ListChunks>`__
                 method.
 
             """

@@ -379,9 +379,10 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Creates a Conversation.
 
-        If the
-        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
-        to create already exists, an ALREADY_EXISTS error is returned.
+        If the `Conversation
+        <google.cloud.discoveryengine.v1beta.Conversation>`__ to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateConversationRequest],
@@ -412,9 +413,9 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Deletes a Conversation.
 
-        If the
-        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
-        to delete does not exist, a NOT_FOUND error is returned.
+        If the `Conversation
+        <google.cloud.discoveryengine.v1beta.Conversation>`__ to
+        delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.DeleteConversationRequest],
@@ -445,10 +446,12 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Updates a Conversation.
 
-        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
+        `Conversation
+        <google.cloud.discoveryengine.v1beta.Conversation>`__
         action type cannot be changed. If the
-        [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
-        to update does not exist, a NOT_FOUND error is returned.
+        `Conversation
+        <google.cloud.discoveryengine.v1beta.Conversation>`__ to
+        update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateConversationRequest],
@@ -507,7 +510,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         r"""Return a callable for the list conversations method over gRPC.
 
         Lists all Conversations by their parent
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__.
 
         Returns:
             Callable[[~.ListConversationsRequest],
@@ -595,8 +599,10 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Creates a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
-        create already exists, an ALREADY_EXISTS error is returned.
+        If the `Session
+        <google.cloud.discoveryengine.v1beta.Session>`__ to
+        create already exists, an ALREADY_EXISTS error is
+        returned.
 
         Returns:
             Callable[[~.CreateSessionRequest],
@@ -626,7 +632,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Deletes a Session.
 
-        If the [Session][google.cloud.discoveryengine.v1beta.Session] to
+        If the `Session
+        <google.cloud.discoveryengine.v1beta.Session>`__ to
         delete does not exist, a NOT_FOUND error is returned.
 
         Returns:
@@ -658,10 +665,11 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
 
         Updates a Session.
 
-        [Session][google.cloud.discoveryengine.v1beta.Session] action
-        type cannot be changed. If the
-        [Session][google.cloud.discoveryengine.v1beta.Session] to update
-        does not exist, a NOT_FOUND error is returned.
+        `Session
+        <google.cloud.discoveryengine.v1beta.Session>`__ action
+        type cannot be changed. If the `Session
+        <google.cloud.discoveryengine.v1beta.Session>`__ to
+        update does not exist, a NOT_FOUND error is returned.
 
         Returns:
             Callable[[~.UpdateSessionRequest],
@@ -719,7 +727,8 @@ class ConversationalSearchServiceGrpcAsyncIOTransport(
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists all Sessions by their parent
-        [DataStore][google.cloud.discoveryengine.v1beta.DataStore].
+        `DataStore
+        <google.cloud.discoveryengine.v1beta.DataStore>`__.
 
         Returns:
             Callable[[~.ListSessionsRequest],

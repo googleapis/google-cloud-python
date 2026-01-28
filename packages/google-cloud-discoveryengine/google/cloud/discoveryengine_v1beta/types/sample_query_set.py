@@ -29,13 +29,14 @@ __protobuf__ = proto.module(
 
 
 class SampleQuerySet(proto.Message):
-    r"""A SampleQuerySet is the parent resource of SampleQuery, and
-    contains the configurations shared by all SampleQuery under it.
+    r"""A SampleQuerySet is the parent resource of SampleQuery, and contains
+    the configurations shared by all SampleQuery under it.
 
     Attributes:
         name (str):
             Identifier. The full resource name of the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet],
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__,
             in the format of
             ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}``.
 
@@ -44,15 +45,17 @@ class SampleQuerySet(proto.Message):
         display_name (str):
             Required. The sample query set display name.
 
-            This field must be a UTF-8 encoded string with a
-            length limit of 128 characters.
+            This field must be a UTF-8 encoded string with a length
+            limit of 128 characters.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Timestamp the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet]
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__
             was created at.
         description (str):
             The description of the
-            [SampleQuerySet][google.cloud.discoveryengine.v1beta.SampleQuerySet].
+            `SampleQuerySet
+            <google.cloud.discoveryengine.v1beta.SampleQuerySet>`__.
     """
 
     name: str = proto.Field(

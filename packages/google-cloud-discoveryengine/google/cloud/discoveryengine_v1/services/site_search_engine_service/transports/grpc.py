@@ -353,7 +353,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         r"""Return a callable for the get site search engine method over gRPC.
 
         Gets the
-        [SiteSearchEngine][google.cloud.discoveryengine.v1.SiteSearchEngine].
+        `SiteSearchEngine
+        <google.cloud.discoveryengine.v1.SiteSearchEngine>`__.
 
         Returns:
             Callable[[~.GetSiteSearchEngineRequest],
@@ -381,8 +382,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the create target site method over gRPC.
 
-        Creates a
-        [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        Creates a `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__.
 
         Returns:
             Callable[[~.CreateTargetSiteRequest],
@@ -411,8 +412,9 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the batch create target sites method over gRPC.
 
-        Creates [TargetSite][google.cloud.discoveryengine.v1.TargetSite]
-        in a batch.
+        Creates `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__ in a
+        batch.
 
         Returns:
             Callable[[~.BatchCreateTargetSitesRequest],
@@ -440,7 +442,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the get target site method over gRPC.
 
-        Gets a [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        Gets a `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__.
 
         Returns:
             Callable[[~.GetTargetSiteRequest],
@@ -468,8 +471,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the update target site method over gRPC.
 
-        Updates a
-        [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        Updates a `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__.
 
         Returns:
             Callable[[~.UpdateTargetSiteRequest],
@@ -497,8 +500,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the delete target site method over gRPC.
 
-        Deletes a
-        [TargetSite][google.cloud.discoveryengine.v1.TargetSite].
+        Deletes a `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__.
 
         Returns:
             Callable[[~.DeleteTargetSiteRequest],
@@ -527,8 +530,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the list target sites method over gRPC.
 
-        Gets a list of
-        [TargetSite][google.cloud.discoveryengine.v1.TargetSite]s.
+        Gets a list of `TargetSite
+        <google.cloud.discoveryengine.v1.TargetSite>`__s.
 
         Returns:
             Callable[[~.ListTargetSitesRequest],
@@ -556,7 +559,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the create sitemap method over gRPC.
 
-        Creates a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        Creates a `Sitemap
+        <google.cloud.discoveryengine.v1.Sitemap>`__.
 
         Returns:
             Callable[[~.CreateSitemapRequest],
@@ -584,7 +588,8 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the delete sitemap method over gRPC.
 
-        Deletes a [Sitemap][google.cloud.discoveryengine.v1.Sitemap].
+        Deletes a `Sitemap
+        <google.cloud.discoveryengine.v1.Sitemap>`__.
 
         Returns:
             Callable[[~.DeleteSitemapRequest],
@@ -613,8 +618,10 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     ]:
         r"""Return a callable for the fetch sitemaps method over gRPC.
 
-        Fetch [Sitemap][google.cloud.discoveryengine.v1.Sitemap]s in a
-        [DataStore][google.cloud.discoveryengine.v1.DataStore].
+        Fetch `Sitemap
+        <google.cloud.discoveryengine.v1.Sitemap>`__s in a
+        `DataStore
+        <google.cloud.discoveryengine.v1.DataStore>`__.
 
         Returns:
             Callable[[~.FetchSitemapsRequest],
@@ -767,9 +774,10 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
-        Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         Returns:
             Callable[[~.FetchDomainVerificationStatusRequest],

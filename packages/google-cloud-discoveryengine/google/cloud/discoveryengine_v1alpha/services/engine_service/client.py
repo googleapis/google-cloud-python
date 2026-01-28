@@ -117,8 +117,8 @@ class EngineServiceClientMeta(type):
 
 
 class EngineServiceClient(metaclass=EngineServiceClientMeta):
-    """Service for managing
-    [Engine][google.cloud.discoveryengine.v1alpha.Engine] configuration.
+    """Service for managing `Engine
+    <google.cloud.discoveryengine.v1alpha.Engine>`__ configuration.
     """
 
     @staticmethod
@@ -776,7 +776,8 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Creates a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        r"""Creates a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         .. code-block:: python
 
@@ -817,34 +818,40 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.CreateEngineRequest, dict]):
                 The request object. Request for
-                [EngineService.CreateEngine][google.cloud.discoveryengine.v1alpha.EngineService.CreateEngine]
+                `EngineService.CreateEngine
+                <google.cloud.discoveryengine.v1alpha.EngineService.CreateEngine>`__
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection}``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             engine (google.cloud.discoveryengine_v1alpha.types.Engine):
-                Required. The
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
-                create.
+                Required. The `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__
+                to create.
 
                 This corresponds to the ``engine`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             engine_id (str):
                 Required. The ID to use for the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine],
-                which will become the final component of the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine]'s
+                `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__,
+                which will become the final component of
+                the
+                `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__'s
                 resource name.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an INVALID_ARGUMENT error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                INVALID_ARGUMENT error is returned.
 
                 This corresponds to the ``engine_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -859,10 +866,14 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1alpha.types.Engine` Metadata that describes the training and serving parameters of an
-                   [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1alpha.types.Engine`
+                Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -932,7 +943,8 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
-        r"""Deletes a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        r"""Deletes a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         .. code-block:: python
 
@@ -967,22 +979,26 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.DeleteEngineRequest, dict]):
                 The request object. Request message for
-                [EngineService.DeleteEngine][google.cloud.discoveryengine.v1alpha.EngineService.DeleteEngine]
+                `EngineService.DeleteEngine
+                <google.cloud.discoveryengine.v1alpha.EngineService.DeleteEngine>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine],
+                `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
-                If the caller does not have permission to delete the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to delete the `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
-                If the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
-                delete does not exist, a NOT_FOUND error is returned.
+                If the `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__
+                to delete does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -997,18 +1013,21 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.protobuf.empty_pb2.Empty`
+                A generic empty message that you can
+                re-use to avoid defining duplicated
+                empty messages in your APIs. A typical
+                example is to use it as the request or
+                the response type of an API method. For
+                instance:
 
-                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
-                   empty messages in your APIs. A typical example is to
-                   use it as the request or the response type of an API
-                   method. For instance:
-
-                      service Foo {
-                         rpc Bar(google.protobuf.Empty) returns
-                         (google.protobuf.Empty);
-
-                      }
+                    service Foo {
+                      rpc Bar(google.protobuf.Empty)
+                returns (google.protobuf.Empty);     }
 
         """
         # Create or coerce a protobuf request object.
@@ -1075,7 +1094,8 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_engine.Engine:
-        r"""Updates an [Engine][google.cloud.discoveryengine.v1alpha.Engine]
+        r"""Updates an `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__
 
         .. code-block:: python
 
@@ -1110,32 +1130,37 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.UpdateEngineRequest, dict]):
                 The request object. Request message for
-                [EngineService.UpdateEngine][google.cloud.discoveryengine.v1alpha.EngineService.UpdateEngine]
+                `EngineService.UpdateEngine
+                <google.cloud.discoveryengine.v1alpha.EngineService.UpdateEngine>`__
                 method.
             engine (google.cloud.discoveryengine_v1alpha.types.Engine):
-                Required. The
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
-                update.
+                Required. The `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__
+                to update.
 
-                If the caller does not have permission to update the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to update the `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
-                If the
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
-                update does not exist, a NOT_FOUND error is returned.
+                If the `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__
+                to update does not exist, a NOT_FOUND
+                error is returned.
 
                 This corresponds to the ``engine`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             update_mask (google.protobuf.field_mask_pb2.FieldMask):
                 Indicates which fields in the provided
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine] to
-                update.
+                `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__
+                to update.
 
-                If an unsupported or unknown field is provided, an
-                INVALID_ARGUMENT error is returned.
+                If an unsupported or unknown field is
+                provided, an INVALID_ARGUMENT error is
+                returned.
 
                 This corresponds to the ``update_mask`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1150,8 +1175,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1alpha.types.Engine:
-                Metadata that describes the training and serving parameters of an
-                   [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+                Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1213,7 +1239,8 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> engine.Engine:
-        r"""Gets a [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+        r"""Gets a `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         .. code-block:: python
 
@@ -1244,11 +1271,13 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.GetEngineRequest, dict]):
                 The request object. Request message for
-                [EngineService.GetEngine][google.cloud.discoveryengine.v1alpha.EngineService.GetEngine]
+                `EngineService.GetEngine
+                <google.cloud.discoveryengine.v1alpha.EngineService.GetEngine>`__
                 method.
             name (str):
                 Required. Full resource name of
-                [Engine][google.cloud.discoveryengine.v1alpha.Engine],
+                `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__,
                 such as
                 ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}``.
 
@@ -1265,8 +1294,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1alpha.types.Engine:
-                Metadata that describes the training and serving parameters of an
-                   [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+                Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1324,8 +1354,8 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListEnginesPager:
-        r"""Lists all the
-        [Engine][google.cloud.discoveryengine.v1alpha.Engine]s
+        r"""Lists all the `Engine
+        <google.cloud.discoveryengine.v1alpha.Engine>`__s
         associated with the project.
 
         .. code-block:: python
@@ -1358,10 +1388,12 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.ListEnginesRequest, dict]):
                 The request object. Request message for
-                [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
+                `EngineService.ListEngines
+                <google.cloud.discoveryengine.v1alpha.EngineService.ListEngines>`__
                 method.
             parent (str):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
                 This corresponds to the ``parent`` field
@@ -1378,11 +1410,13 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.engine_service.pagers.ListEnginesPager:
                 Response message for
-                   [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
-                   method.
+                `EngineService.ListEngines
+                <google.cloud.discoveryengine.v1alpha.EngineService.ListEngines>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -1451,10 +1485,11 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> engine.Engine:
-        r"""Pauses the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        r"""Pauses the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         .. code-block:: python
 
@@ -1487,7 +1522,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
                 The request object. Request for pausing training of an
                 engine.
             name (str):
-                Required. The name of the engine to pause. Format:
+                Required. The name of the engine to
+                pause. Format:
+
                 ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
@@ -1503,8 +1540,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1alpha.types.Engine:
-                Metadata that describes the training and serving parameters of an
-                   [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+                Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1562,10 +1600,11 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> engine.Engine:
-        r"""Resumes the training of an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        r"""Resumes the training of an existing engine. Only
+        applicable if `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         .. code-block:: python
 
@@ -1598,7 +1637,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
                 The request object. Request for resuming training of an
                 engine.
             name (str):
-                Required. The name of the engine to resume. Format:
+                Required. The name of the engine to
+                resume. Format:
+
                 ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
@@ -1614,8 +1655,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.cloud.discoveryengine_v1alpha.types.Engine:
-                Metadata that describes the training and serving parameters of an
-                   [Engine][google.cloud.discoveryengine.v1alpha.Engine].
+                Metadata that describes the training and
+                serving parameters of an `Engine
+                <google.cloud.discoveryengine.v1alpha.Engine>`__.
 
         """
         # Create or coerce a protobuf request object.
@@ -1674,9 +1716,10 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation.Operation:
         r"""Tunes an existing engine. Only applicable if
-        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
-        is
-        [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
+        `SolutionType
+        <google.cloud.discoveryengine.v1alpha.SolutionType>`__
+        is `SOLUTION_TYPE_RECOMMENDATION
+        <google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION>`__.
 
         .. code-block:: python
 
@@ -1715,8 +1758,9 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
                 periodically scheduled tuning to
                 happen).
             name (str):
-                Required. The resource name of the engine to tune.
-                Format:
+                Required. The resource name of the
+                engine to tune. Format:
+
                 ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/engines/{engine_id}``
 
                 This corresponds to the ``name`` field
@@ -1732,11 +1776,13 @@ class EngineServiceClient(metaclass=EngineServiceClientMeta):
 
         Returns:
             google.api_core.operation.Operation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
                 :class:`google.cloud.discoveryengine_v1alpha.types.TuneEngineResponse`
-                Response associated with a tune operation.
+                Response associated with a tune
+                operation.
 
         """
         # Create or coerce a protobuf request object.

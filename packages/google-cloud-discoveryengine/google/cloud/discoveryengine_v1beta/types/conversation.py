@@ -50,11 +50,9 @@ class Conversation(proto.Message):
         messages (MutableSequence[google.cloud.discoveryengine_v1beta.types.ConversationMessage]):
             Conversation messages.
         start_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the conversation
-            started.
+            Output only. The time the conversation started.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The time the conversation
-            finished.
+            Output only. The time the conversation finished.
     """
 
     class State(proto.Enum):
@@ -107,7 +105,8 @@ class Reply(proto.Message):
 
     Attributes:
         reply (str):
-            DEPRECATED: use ``summary`` instead. Text reply.
+            DEPRECATED: use ``summary`` instead.
+            Text reply.
         references (MutableSequence[google.cloud.discoveryengine_v1beta.types.Reply.Reference]):
             References in the reply.
         summary (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary):
@@ -166,9 +165,8 @@ class ConversationContext(proto.Message):
 
     Attributes:
         context_documents (MutableSequence[str]):
-            The current list of documents the user is
-            seeing. It contains the document resource
-            references.
+            The current list of documents the user is seeing.
+            It contains the document resource references.
         active_document (str):
             The current active document the user opened.
             It contains the document resource reference.

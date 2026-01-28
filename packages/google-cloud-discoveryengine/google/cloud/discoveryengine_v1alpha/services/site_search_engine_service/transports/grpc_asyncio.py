@@ -361,7 +361,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the get site search engine method over gRPC.
 
         Gets the
-        [SiteSearchEngine][google.cloud.discoveryengine.v1alpha.SiteSearchEngine].
+        `SiteSearchEngine
+        <google.cloud.discoveryengine.v1alpha.SiteSearchEngine>`__.
 
         Returns:
             Callable[[~.GetSiteSearchEngineRequest],
@@ -390,8 +391,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the create target site method over gRPC.
 
-        Creates a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        Creates a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         Returns:
             Callable[[~.CreateTargetSiteRequest],
@@ -420,8 +421,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the batch create target sites method over gRPC.
 
-        Creates
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite] in
+        Creates `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__ in
         a batch.
 
         Returns:
@@ -451,8 +452,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the get target site method over gRPC.
 
-        Gets a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        Gets a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         Returns:
             Callable[[~.GetTargetSiteRequest],
@@ -481,8 +482,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the update target site method over gRPC.
 
-        Updates a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        Updates a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         Returns:
             Callable[[~.UpdateTargetSiteRequest],
@@ -511,8 +512,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
     ]:
         r"""Return a callable for the delete target site method over gRPC.
 
-        Deletes a
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite].
+        Deletes a `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__.
 
         Returns:
             Callable[[~.DeleteTargetSiteRequest],
@@ -542,7 +543,8 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the list target sites method over gRPC.
 
         Gets a list of
-        [TargetSite][google.cloud.discoveryengine.v1alpha.TargetSite]s.
+        `TargetSite
+        <google.cloud.discoveryengine.v1alpha.TargetSite>`__s.
 
         Returns:
             Callable[[~.ListTargetSitesRequest],
@@ -696,9 +698,10 @@ class SiteSearchEngineServiceGrpcAsyncIOTransport(SiteSearchEngineServiceTranspo
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
 
-        Returns list of target sites with its domain verification
-        status. This method can only be called under data store with
-        BASIC_SITE_SEARCH state at the moment.
+        Returns list of target sites with its domain
+        verification status. This method can only be called
+        under data store with BASIC_SITE_SEARCH state at the
+        moment.
 
         Returns:
             Callable[[~.FetchDomainVerificationStatusRequest],

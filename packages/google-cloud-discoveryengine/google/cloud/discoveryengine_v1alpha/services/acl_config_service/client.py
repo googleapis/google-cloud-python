@@ -831,8 +831,8 @@ class AclConfigServiceClient(metaclass=AclConfigServiceClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> acl_config.AclConfig:
-        r"""Gets the
-        [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig].
+        r"""Gets the `AclConfig
+        <google.cloud.discoveryengine.v1alpha.AclConfig>`__.
 
         .. code-block:: python
 
@@ -866,13 +866,16 @@ class AclConfigServiceClient(metaclass=AclConfigServiceClientMeta):
                 GetAclConfigRequest method.
             name (str):
                 Required. Resource name of
-                [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
-                such as ``projects/*/locations/*/aclConfig``.
+                `AclConfig
+                <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
+                such as
+                ``projects/*/locations/*/aclConfig``.
 
-                If the caller does not have permission to access the
-                [AclConfig][google.cloud.discoveryengine.v1alpha.AclConfig],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `AclConfig
+                <google.cloud.discoveryengine.v1alpha.AclConfig>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this

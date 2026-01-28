@@ -61,18 +61,16 @@ class SafetyRating(proto.Message):
         category (google.cloud.discoveryengine_v1.types.HarmCategory):
             Output only. Harm category.
         probability (google.cloud.discoveryengine_v1.types.SafetyRating.HarmProbability):
-            Output only. Harm probability levels in the
-            content.
+            Output only. Harm probability levels in the content.
         probability_score (float):
             Output only. Harm probability score.
         severity (google.cloud.discoveryengine_v1.types.SafetyRating.HarmSeverity):
-            Output only. Harm severity levels in the
-            content.
+            Output only. Harm severity levels in the content.
         severity_score (float):
             Output only. Harm severity score.
         blocked (bool):
-            Output only. Indicates whether the content
-            was filtered out because of this rating.
+            Output only. Indicates whether the content was
+            filtered out because of this rating.
     """
 
     class HarmProbability(proto.Enum):

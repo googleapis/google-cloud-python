@@ -393,7 +393,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         entries method over gRPC.
 
         Imports all
-        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1alpha.SuggestionDenyListEntry]
+        `SuggestionDenyListEntry
+        <google.cloud.discoveryengine.v1alpha.SuggestionDenyListEntry>`__
         for a DataStore.
 
         Returns:
@@ -427,7 +428,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         entries method over gRPC.
 
         Permanently deletes all
-        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1alpha.SuggestionDenyListEntry]
+        `SuggestionDenyListEntry
+        <google.cloud.discoveryengine.v1alpha.SuggestionDenyListEntry>`__
         for a DataStore.
 
         Returns:
@@ -460,7 +462,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         r"""Return a callable for the import completion suggestions method over gRPC.
 
         Imports
-        [CompletionSuggestion][google.cloud.discoveryengine.v1alpha.CompletionSuggestion]s
+        `CompletionSuggestion
+        <google.cloud.discoveryengine.v1alpha.CompletionSuggestion>`__s
         for a DataStore.
 
         Returns:
@@ -493,7 +496,8 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         r"""Return a callable for the purge completion suggestions method over gRPC.
 
         Permanently deletes all
-        [CompletionSuggestion][google.cloud.discoveryengine.v1alpha.CompletionSuggestion]s
+        `CompletionSuggestion
+        <google.cloud.discoveryengine.v1alpha.CompletionSuggestion>`__s
         for a DataStore.
 
         Returns:

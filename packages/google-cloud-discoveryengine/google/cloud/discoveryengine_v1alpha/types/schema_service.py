@@ -40,7 +40,8 @@ __protobuf__ = proto.module(
 
 class GetSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.GetSchema][google.cloud.discoveryengine.v1alpha.SchemaService.GetSchema]
+    `SchemaService.GetSchema
+    <google.cloud.discoveryengine.v1alpha.SchemaService.GetSchema>`__
     method.
 
     Attributes:
@@ -58,32 +59,37 @@ class GetSchemaRequest(proto.Message):
 
 class ListSchemasRequest(proto.Message):
     r"""Request message for
-    [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
+    `SchemaService.ListSchemas
+    <google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name, in the
+            format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         page_size (int):
             The maximum number of
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema]s to
+            `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__s to
             return. The service may return fewer than this value.
 
             If unspecified, at most 100
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema]s are
+            `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__s are
             returned.
 
             The maximum value is 1000; values above 1000 are set to
             1000.
         page_token (str):
             A page token, received from a previous
-            [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
+            `SchemaService.ListSchemas
+            <google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas>`__
             call. Provide this to retrieve the subsequent page.
 
             When paginating, all other parameters provided to
-            [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
+            `SchemaService.ListSchemas
+            <google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas>`__
             must match the call that provided the page token.
     """
 
@@ -103,17 +109,20 @@ class ListSchemasRequest(proto.Message):
 
 class ListSchemasResponse(proto.Message):
     r"""Response message for
-    [SchemaService.ListSchemas][google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas]
+    `SchemaService.ListSchemas
+    <google.cloud.discoveryengine.v1alpha.SchemaService.ListSchemas>`__
     method.
 
     Attributes:
         schemas (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Schema]):
-            The [Schema][google.cloud.discoveryengine.v1alpha.Schema]s.
+            The `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__s.
         next_page_token (str):
             A token that can be sent as
-            [ListSchemasRequest.page_token][google.cloud.discoveryengine.v1alpha.ListSchemasRequest.page_token]
-            to retrieve the next page. If this field is omitted, there
-            are no subsequent pages.
+            `ListSchemasRequest.page_token
+            <google.cloud.discoveryengine.v1alpha.ListSchemasRequest.page_token>`__
+            to retrieve the next page. If this field is omitted,
+            there are no subsequent pages.
     """
 
     @property
@@ -133,27 +142,30 @@ class ListSchemasResponse(proto.Message):
 
 class CreateSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.CreateSchema][google.cloud.discoveryengine.v1alpha.SchemaService.CreateSchema]
+    `SchemaService.CreateSchema
+    <google.cloud.discoveryengine.v1alpha.SchemaService.CreateSchema>`__
     method.
 
     Attributes:
         parent (str):
-            Required. The parent data store resource name, in the format
-            of
+            Required. The parent data store resource name, in the
+            format of
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}``.
         schema (google.cloud.discoveryengine_v1alpha.types.Schema):
-            Required. The
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema] to
+            Required. The `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__ to
             create.
         schema_id (str):
             Required. The ID to use for the
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema], which
+            `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__, which
             becomes the final component of the
-            [Schema.name][google.cloud.discoveryengine.v1alpha.Schema.name].
+            `Schema.name
+            <google.cloud.discoveryengine.v1alpha.Schema.name>`__.
 
             This field should conform to
-            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__ standard
-            with a length limit of 63 characters.
+            `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
+            standard with a length limit of 63 characters.
     """
 
     parent: str = proto.Field(
@@ -173,19 +185,20 @@ class CreateSchemaRequest(proto.Message):
 
 class UpdateSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.UpdateSchema][google.cloud.discoveryengine.v1alpha.SchemaService.UpdateSchema]
+    `SchemaService.UpdateSchema
+    <google.cloud.discoveryengine.v1alpha.SchemaService.UpdateSchema>`__
     method.
 
     Attributes:
         schema (google.cloud.discoveryengine_v1alpha.types.Schema):
-            Required. The
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema] to
+            Required. The `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__ to
             update.
         allow_missing (bool):
             If set to true, and the
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema] is not
-            found, a new
-            [Schema][google.cloud.discoveryengine.v1alpha.Schema] is
+            `Schema <google.cloud.discoveryengine.v1alpha.Schema>`__
+            is not found, a new `Schema
+            <google.cloud.discoveryengine.v1alpha.Schema>`__ is
             created. In this situation, ``update_mask`` is ignored.
     """
 
@@ -202,7 +215,8 @@ class UpdateSchemaRequest(proto.Message):
 
 class DeleteSchemaRequest(proto.Message):
     r"""Request message for
-    [SchemaService.DeleteSchema][google.cloud.discoveryengine.v1alpha.SchemaService.DeleteSchema]
+    `SchemaService.DeleteSchema
+    <google.cloud.discoveryengine.v1alpha.SchemaService.DeleteSchema>`__
     method.
 
     Attributes:
@@ -225,8 +239,8 @@ class CreateSchemaMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -248,8 +262,8 @@ class UpdateSchemaMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -271,8 +285,8 @@ class DeleteSchemaMetadata(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Operation create time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Operation last update time. If the operation
-            is done, this is also the finish time.
+            Operation last update time. If the operation is done,
+            this is also the finish time.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(

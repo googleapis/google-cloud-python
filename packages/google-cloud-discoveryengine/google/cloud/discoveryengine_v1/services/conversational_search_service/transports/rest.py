@@ -1018,7 +1018,8 @@ class ConversationalSearchServiceRestTransport(
             Args:
                 request (~.conversational_search_service.AnswerQueryRequest):
                     The request object. Request message for
-                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                `ConversationalSearchService.AnswerQuery
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1031,7 +1032,8 @@ class ConversationalSearchServiceRestTransport(
             Returns:
                 ~.conversational_search_service.AnswerQueryResponse:
                     Response message for
-                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                `ConversationalSearchService.AnswerQuery
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery>`__
                 method.
 
             """
@@ -1180,7 +1182,8 @@ class ConversationalSearchServiceRestTransport(
             Args:
                 request (~.conversational_search_service.ConverseConversationRequest):
                     The request object. Request message for
-                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
+                `ConversationalSearchService.ConverseConversation
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -1193,7 +1196,8 @@ class ConversationalSearchServiceRestTransport(
             Returns:
                 ~.conversational_search_service.ConverseConversationResponse:
                     Response message for
-                [ConversationalSearchService.ConverseConversation][google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation]
+                `ConversationalSearchService.ConverseConversation
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.ConverseConversation>`__
                 method.
 
             """
@@ -2620,7 +2624,8 @@ class ConversationalSearchServiceRestTransport(
             Args:
                 request (~.conversational_search_service.AnswerQueryRequest):
                     The request object. Request message for
-                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                `ConversationalSearchService.AnswerQuery
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -2633,7 +2638,8 @@ class ConversationalSearchServiceRestTransport(
             Returns:
                 ~.conversational_search_service.AnswerQueryResponse:
                     Response message for
-                [ConversationalSearchService.AnswerQuery][google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery]
+                `ConversationalSearchService.AnswerQuery
+                <google.cloud.discoveryengine.v1.ConversationalSearchService.AnswerQuery>`__
                 method.
 
             """

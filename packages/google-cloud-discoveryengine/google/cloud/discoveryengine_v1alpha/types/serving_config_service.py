@@ -43,10 +43,12 @@ class UpdateServingConfigRequest(proto.Message):
             Required. The ServingConfig to update.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             Indicates which fields in the provided
-            [ServingConfig][google.cloud.discoveryengine.v1alpha.ServingConfig]
+            `ServingConfig
+            <google.cloud.discoveryengine.v1alpha.ServingConfig>`__
             to update. The following are NOT supported:
 
-            - [ServingConfig.name][google.cloud.discoveryengine.v1alpha.ServingConfig.name]
+            * `ServingConfig.name
+            <google.cloud.discoveryengine.v1alpha.ServingConfig.name>`__
 
             If not set, all supported fields are updated.
     """
@@ -84,17 +86,17 @@ class ListServingConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. Full resource name of the parent resource. Format:
+            Required. Full resource name of the parent resource.
+            Format:
             ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
         page_size (int):
-            Optional. Maximum number of results to
-            return. If unspecified, defaults to 100. If a
-            value greater than 100 is provided, at most 100
-            results are returned.
+            Optional. Maximum number of results to return. If
+            unspecified, defaults to 100. If a value greater than
+            100 is provided, at most 100 results are returned.
         page_token (str):
             Optional. A page token, received from a previous
-            ``ListServingConfigs`` call. Provide this to retrieve the
-            subsequent page.
+            ``ListServingConfigs`` call. Provide this to retrieve
+            the subsequent page.
     """
 
     parent: str = proto.Field(
@@ -118,8 +120,8 @@ class ListServingConfigsResponse(proto.Message):
         serving_configs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.ServingConfig]):
             All the ServingConfigs for a given dataStore.
         next_page_token (str):
-            Pagination token, if not returned indicates
-            the last page.
+            Pagination token, if not returned indicates the last
+            page.
     """
 
     @property

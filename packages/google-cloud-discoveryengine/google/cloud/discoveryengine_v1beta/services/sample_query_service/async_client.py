@@ -73,7 +73,8 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class SampleQueryServiceAsyncClient:
     """Service for managing
-    [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s,
+    `SampleQuery
+    <google.cloud.discoveryengine.v1beta.SampleQuery>`__s,
     """
 
     _client: SampleQueryServiceClient
@@ -320,8 +321,8 @@ class SampleQueryServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> sample_query.SampleQuery:
-        r"""Gets a
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery].
+        r"""Gets a `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__.
 
         .. code-block:: python
 
@@ -352,22 +353,27 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.GetSampleQueryRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.GetSampleQuery][google.cloud.discoveryengine.v1beta.SampleQueryService.GetSampleQuery]
+                `SampleQueryService.GetSampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.GetSampleQuery>`__
                 method.
             name (:class:`str`):
                 Required. Full resource name of
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-                If the caller does not have permission to access the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                PERMISSION_DENIED error is returned.
+                If the caller does not have permission
+                to access the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
+                regardless of whether or not it exists,
+                a PERMISSION_DENIED error is returned.
 
                 If the requested
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                does not exist, a NOT_FOUND error is returned.
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__
+                does not exist, a NOT_FOUND error is
+                returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -447,7 +453,8 @@ class SampleQueryServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.ListSampleQueriesAsyncPager:
         r"""Gets a list of
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__s.
 
         .. code-block:: python
 
@@ -479,18 +486,21 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ListSampleQueriesRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries]
+                `SampleQueryService.ListSampleQueries
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries>`__
                 method.
             parent (:class:`str`):
-                Required. The parent sample query set resource name,
-                such as
+                Required. The parent sample query set
+                resource name, such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
-                If the caller does not have permission to list
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
-                under this sample query set, regardless of whether or
-                not this sample query set exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                If the caller does not have permission
+                to list `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
+                under this sample query set, regardless
+                of whether or not this sample query set
+                exists, a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -506,11 +516,13 @@ class SampleQueryServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1beta.services.sample_query_service.pagers.ListSampleQueriesAsyncPager:
                 Response message for
-                   [SampleQueryService.ListSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries]
-                   method.
+                `SampleQueryService.ListSampleQueries
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.ListSampleQueries>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -586,8 +598,8 @@ class SampleQueryServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_sample_query.SampleQuery:
-        r"""Creates a
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
+        r"""Creates a `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__
 
         .. code-block:: python
 
@@ -623,10 +635,12 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.CreateSampleQueryRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.CreateSampleQuery][google.cloud.discoveryengine.v1beta.SampleQueryService.CreateSampleQuery]
+                `SampleQueryService.CreateSampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.CreateSampleQuery>`__
                 method.
             parent (:class:`str`):
-                Required. The parent resource name, such as
+                Required. The parent resource name, such
+                as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sampleQuerySet}``.
 
                 This corresponds to the ``parent`` field
@@ -634,7 +648,8 @@ class SampleQueryServiceAsyncClient:
                 should not be set.
             sample_query (:class:`google.cloud.discoveryengine_v1beta.types.SampleQuery`):
                 Required. The
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__
                 to create.
 
                 This corresponds to the ``sample_query`` field
@@ -642,25 +657,34 @@ class SampleQueryServiceAsyncClient:
                 should not be set.
             sample_query_id (:class:`str`):
                 Required. The ID to use for the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                which will become the final component of the
-                [SampleQuery.name][google.cloud.discoveryengine.v1beta.SampleQuery.name].
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
+                which will become the final component of
+                the
+                `SampleQuery.name
+                <google.cloud.discoveryengine.v1beta.SampleQuery.name>`__.
 
-                If the caller does not have permission to create the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
+                If the caller does not have permission
+                to create the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
+                returned.
 
                 This field must be unique among all
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__s
                 with the same
-                [parent][google.cloud.discoveryengine.v1beta.CreateSampleQueryRequest.parent].
-                Otherwise, an ``ALREADY_EXISTS`` error is returned.
+                `parent
+                <google.cloud.discoveryengine.v1beta.CreateSampleQueryRequest.parent>`__.
+                Otherwise, an ``ALREADY_EXISTS`` error
+                is returned.
 
-                This field must conform to
-                `RFC-1034 <https://tools.ietf.org/html/rfc1034>`__
-                standard with a length limit of 63 characters.
-                Otherwise, an ``INVALID_ARGUMENT`` error is returned.
+                This field must conform to `RFC-1034
+                <https://tools.ietf.org/html/rfc1034>`__
+                standard with a length limit of 63
+                characters. Otherwise, an
+                ``INVALID_ARGUMENT`` error is returned.
 
                 This corresponds to the ``sample_query_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -744,8 +768,8 @@ class SampleQueryServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> gcd_sample_query.SampleQuery:
-        r"""Updates a
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery].
+        r"""Updates a `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__.
 
         .. code-block:: python
 
@@ -779,20 +803,23 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.UpdateSampleQueryRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.UpdateSampleQuery][google.cloud.discoveryengine.v1beta.SampleQueryService.UpdateSampleQuery]
+                `SampleQueryService.UpdateSampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.UpdateSampleQuery>`__
                 method.
             sample_query (:class:`google.cloud.discoveryengine_v1beta.types.SampleQuery`):
                 Required. The simple query to update.
 
-                If the caller does not have permission to update the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                to update does not exist a ``NOT_FOUND`` error is
+                If the caller does not have permission
+                to update the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
                 returned.
+
+                If the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__
+                to update does not exist a ``NOT_FOUND``
+                error is returned.
 
                 This corresponds to the ``sample_query`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -884,8 +911,8 @@ class SampleQueryServiceAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> None:
-        r"""Deletes a
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery].
+        r"""Deletes a `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__.
 
         .. code-block:: python
 
@@ -913,23 +940,27 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.DeleteSampleQueryRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.DeleteSampleQuery][google.cloud.discoveryengine.v1beta.SampleQueryService.DeleteSampleQuery]
+                `SampleQueryService.DeleteSampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.DeleteSampleQuery>`__
                 method.
             name (:class:`str`):
                 Required. Full resource name of
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
+                `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
                 such as
                 ``projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}``.
 
-                If the caller does not have permission to delete the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery],
-                regardless of whether or not it exists, a
-                ``PERMISSION_DENIED`` error is returned.
-
-                If the
-                [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]
-                to delete does not exist, a ``NOT_FOUND`` error is
+                If the caller does not have permission
+                to delete the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__,
+                regardless of whether or not it exists,
+                a ``PERMISSION_DENIED`` error is
                 returned.
+
+                If the `SampleQuery
+                <google.cloud.discoveryengine.v1beta.SampleQuery>`__
+                to delete does not exist, a
+                ``NOT_FOUND`` error is returned.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -997,12 +1028,14 @@ class SampleQueryServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Bulk import of multiple
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__s.
         Sample queries that already exist may be deleted.
 
         Note: It is possible for a subset of the
-        [SampleQuery][google.cloud.discoveryengine.v1beta.SampleQuery]s
-        to be successfully imported.
+        `SampleQuery
+        <google.cloud.discoveryengine.v1beta.SampleQuery>`__s to
+        be successfully imported.
 
         .. code-block:: python
 
@@ -1041,7 +1074,8 @@ class SampleQueryServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesRequest, dict]]):
                 The request object. Request message for
-                [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
+                `SampleQueryService.ImportSampleQueries
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -1053,14 +1087,18 @@ class SampleQueryServiceAsyncClient:
 
         Returns:
             google.api_core.operation_async.AsyncOperation:
-                An object representing a long-running operation.
-
-                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesResponse` Response of the
-                   [SampleQueryService.ImportSampleQueries][google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries]
-                   method. If the long running operation is done, this
-                   message is returned by the
-                   google.longrunning.Operations.response field if the
-                   operation is successful.
+                An object representing a long-running
+                operation.
+                The result type for the operation will
+                be
+                :class:`google.cloud.discoveryengine_v1beta.types.ImportSampleQueriesResponse`
+                Response of the
+                `SampleQueryService.ImportSampleQueries
+                <google.cloud.discoveryengine.v1beta.SampleQueryService.ImportSampleQueries>`__
+                method. If the long running operation is
+                done, this message is returned by the
+                google.longrunning.Operations.response
+                field if the operation is successful.
 
         """
         # Create or coerce a protobuf request object.

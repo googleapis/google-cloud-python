@@ -895,7 +895,8 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         Args:
             request (Union[google.cloud.discoveryengine_v1alpha.types.SearchRequest, dict]):
                 The request object. Request message for
-                [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
                 method.
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -908,11 +909,13 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         Returns:
             google.cloud.discoveryengine_v1alpha.services.search_service.pagers.SearchPager:
                 Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1alpha.SearchService.Search]
-                   method.
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1alpha.SearchService.Search>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

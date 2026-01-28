@@ -800,8 +800,10 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Args:
                 request (~.completion_service.AdvancedCompleteQueryRequest):
                     The request object. Request message for
-                [CompletionService.AdvancedCompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.AdvancedCompleteQuery]
-                method. .
+                `CompletionService.AdvancedCompleteQuery
+                <google.cloud.discoveryengine.v1beta.CompletionService.AdvancedCompleteQuery>`__
+                method.
+                .
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -813,7 +815,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Returns:
                 ~.completion_service.AdvancedCompleteQueryResponse:
                     Response message for
-                [CompletionService.AdvancedCompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.AdvancedCompleteQuery]
+                `CompletionService.AdvancedCompleteQuery
+                <google.cloud.discoveryengine.v1beta.CompletionService.AdvancedCompleteQuery>`__
                 method.
 
             """
@@ -963,7 +966,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Args:
                 request (~.completion_service.CompleteQueryRequest):
                     The request object. Request message for
-                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery]
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery>`__
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -976,7 +980,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
             Returns:
                 ~.completion_service.CompleteQueryResponse:
                     Response message for
-                [CompletionService.CompleteQuery][google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery]
+                `CompletionService.CompleteQuery
+                <google.cloud.discoveryengine.v1beta.CompletionService.CompleteQuery>`__
                 method.
 
             """
@@ -1117,7 +1122,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.import_config.ImportCompletionSuggestionsRequest):
                         The request object. Request message for
-                    [CompletionService.ImportCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions]
+                    `CompletionService.ImportCompletionSuggestions
+                    <google.cloud.discoveryengine.v1beta.CompletionService.ImportCompletionSuggestions>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1279,7 +1285,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.import_config.ImportSuggestionDenyListEntriesRequest):
                         The request object. Request message for
-                    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries]
+                    `CompletionService.ImportSuggestionDenyListEntries
+                    <google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1442,7 +1449,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.purge_config.PurgeCompletionSuggestionsRequest):
                         The request object. Request message for
-                    [CompletionService.PurgeCompletionSuggestions][google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions]
+                    `CompletionService.PurgeCompletionSuggestions
+                    <google.cloud.discoveryengine.v1beta.CompletionService.PurgeCompletionSuggestions>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.
@@ -1599,7 +1607,8 @@ class CompletionServiceRestTransport(_BaseCompletionServiceRestTransport):
                 Args:
                     request (~.purge_config.PurgeSuggestionDenyListEntriesRequest):
                         The request object. Request message for
-                    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries]
+                    `CompletionService.PurgeSuggestionDenyListEntries
+                    <google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries>`__
                     method.
                     retry (google.api_core.retry.Retry): Designation of what errors, if any,
                         should be retried.

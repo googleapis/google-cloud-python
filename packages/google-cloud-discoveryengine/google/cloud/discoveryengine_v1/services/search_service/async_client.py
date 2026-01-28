@@ -342,7 +342,8 @@ class SearchServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.SearchRequest, dict]]):
                 The request object. Request message for
-                [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1.SearchService.Search>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -355,11 +356,13 @@ class SearchServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.search_service.pagers.SearchAsyncPager:
                 Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
-                   method.
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1.SearchService.Search>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.
@@ -414,20 +417,23 @@ class SearchServiceAsyncClient:
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
     ) -> pagers.SearchLiteAsyncPager:
         r"""Performs a search. Similar to the
-        [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+        `SearchService.Search
+        <google.cloud.discoveryengine.v1.SearchService.Search>`__
         method, but a lite version that allows API key for
-        authentication, where OAuth and IAM checks are not required.
+        authentication, where OAuth and IAM checks are not
+        required.
 
-        Only public website search is supported by this method. If data
-        stores and engines not associated with public website search are
-        specified, a ``FAILED_PRECONDITION`` error is returned.
+        Only public website search is supported by this method.
+        If data stores and engines not associated with public
+        website search are specified, a ``FAILED_PRECONDITION``
+        error is returned.
 
-        This method can be used for easy onboarding without having to
-        implement an authentication backend. However, it is strongly
-        recommended to use
-        [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
-        instead with required OAuth and IAM checks to provide better
-        data security.
+        This method can be used for easy onboarding without
+        having to implement an authentication backend. However,
+        it is strongly recommended to use `SearchService.Search
+        <google.cloud.discoveryengine.v1.SearchService.Search>`__
+        instead with required OAuth and IAM checks to provide
+        better data security.
 
         .. code-block:: python
 
@@ -459,7 +465,8 @@ class SearchServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1.types.SearchRequest, dict]]):
                 The request object. Request message for
-                [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1.SearchService.Search>`__
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -472,11 +479,13 @@ class SearchServiceAsyncClient:
         Returns:
             google.cloud.discoveryengine_v1.services.search_service.pagers.SearchLiteAsyncPager:
                 Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1.SearchService.Search]
-                   method.
+                `SearchService.Search
+                <google.cloud.discoveryengine.v1.SearchService.Search>`__
+                method.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
 
         """
         # Create or coerce a protobuf request object.

@@ -34,22 +34,22 @@ class Project(proto.Message):
 
     Attributes:
         name (str):
-            Output only. Full resource name of the project, for example
-            ``projects/{project_number}``. Note that when making
-            requests, project number and project id are both acceptable,
-            but the server will always respond in project number.
+            Output only. Full resource name of the project, for
+            example ``projects/{project_number}``.
+            Note that when making requests, project number and
+            project id are both acceptable, but the server will
+            always respond in project number.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp when this project
-            is created.
+            Output only. The timestamp when this project is
+            created.
         provision_completion_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp when this project
-            is successfully provisioned. Empty value means
-            this project is still provisioning and is not
-            ready for use.
+            Output only. The timestamp when this project is
+            successfully provisioned. Empty value means this project
+            is still provisioning and is not ready for use.
         service_terms_map (MutableMapping[str, google.cloud.discoveryengine_v1alpha.types.Project.ServiceTerms]):
             Output only. A map of terms of services. The key is the
-            ``id`` of
-            [ServiceTerms][google.cloud.discoveryengine.v1alpha.Project.ServiceTerms].
+            ``id`` of `ServiceTerms
+            <google.cloud.discoveryengine.v1alpha.Project.ServiceTerms>`__.
     """
 
     class ServiceTerms(proto.Message):
@@ -57,28 +57,30 @@ class Project(proto.Message):
 
         Attributes:
             id (str):
-                The unique identifier of this terms of service. Available
-                terms:
+                The unique identifier of this terms of service.
+                Available terms:
 
-                - ``GA_DATA_USE_TERMS``: `Terms for data
-                  use <https://cloud.google.com/retail/data-use-terms>`__.
-                  When using this as ``id``, the acceptable
-                  [version][google.cloud.discoveryengine.v1alpha.Project.ServiceTerms.version]
-                  to provide is ``2022-11-23``.
+                * ``GA_DATA_USE_TERMS``: `Terms for data
+                use <https://cloud.google.com/retail/data-use-terms>`__.
+                When using this as ``id``, the acceptable
+                `version
+                <google.cloud.discoveryengine.v1alpha.Project.ServiceTerms.version>`__
+                to provide is ``2022-11-23``.
             version (str):
-                The version string of the terms of service. For acceptable
-                values, see the comments for
-                [id][google.cloud.discoveryengine.v1alpha.Project.ServiceTerms.id]
+                The version string of the terms of service.
+                For acceptable values, see the comments for
+                `id
+                <google.cloud.discoveryengine.v1alpha.Project.ServiceTerms.id>`__
                 above.
             state (google.cloud.discoveryengine_v1alpha.types.Project.ServiceTerms.State):
-                Whether the project has accepted/rejected the
-                service terms or it is still pending.
+                Whether the project has accepted/rejected the service
+                terms or it is still pending.
             accept_time (google.protobuf.timestamp_pb2.Timestamp):
-                The last time when the project agreed to the
-                terms of service.
+                The last time when the project agreed to the terms of
+                service.
             decline_time (google.protobuf.timestamp_pb2.Timestamp):
-                The last time when the project declined or
-                revoked the agreement to terms of service.
+                The last time when the project declined or revoked
+                the agreement to terms of service.
         """
 
         class State(proto.Enum):
