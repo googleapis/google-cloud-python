@@ -49,7 +49,7 @@ all_params = config.get_write_params()
 
 async def create_client():
     """Initializes async client and gets the current event loop."""
-    return AsyncGrpcClient().grpc_client
+    return AsyncGrpcClient()
 
 
 async def upload_chunks_using_grpc_async(client, filename, other_params):

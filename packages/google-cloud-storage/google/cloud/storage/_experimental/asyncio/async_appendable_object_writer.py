@@ -114,7 +114,7 @@ class AsyncAppendableObjectWriter:
 
     def __init__(
         self,
-        client: AsyncGrpcClient.grpc_client,
+        client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
         generation: Optional[int] = None,
@@ -155,7 +155,7 @@ class AsyncAppendableObjectWriter:
         await writer.close()
         ```
 
-        :type client: :class:`~google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client`
+        :type client: :class:`~google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient`
         :param client: async grpc client to use for making API requests.
 
         :type bucket_name: str
@@ -304,7 +304,7 @@ class AsyncAppendableObjectWriter:
                 self._is_stream_open = False
 
             self.write_obj_stream = _AsyncWriteObjectStream(
-                client=self.client,
+                client=self.client.grpc_client,
                 bucket_name=self.bucket_name,
                 object_name=self.object_name,
                 generation_number=self.generation,

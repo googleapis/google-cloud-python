@@ -78,7 +78,7 @@ async def upload_appendable_object(bucket_name, object_name, object_size, chunk_
     # this method is to write "appendable" objects which will be used for
     # benchmarking reads, hence not concerned performance of writes here.
     writer = AsyncAppendableObjectWriter(
-        AsyncGrpcClient().grpc_client,
+        AsyncGrpcClient(),
         bucket_name,
         object_name,
         writer_options={"FLUSH_INTERVAL_BYTES": 1026 * 1024**2},

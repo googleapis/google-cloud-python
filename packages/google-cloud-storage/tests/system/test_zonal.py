@@ -36,7 +36,7 @@ _BYTES_TO_UPLOAD = b"dummy_bytes_to_write_read_and_delete_appendable_object"
 
 async def create_async_grpc_client(attempt_direct_path=True):
     """Initializes async client and gets the current event loop."""
-    return AsyncGrpcClient(attempt_direct_path=attempt_direct_path).grpc_client
+    return AsyncGrpcClient(attempt_direct_path=attempt_direct_path)
 
 
 @pytest.fixture(scope="session")

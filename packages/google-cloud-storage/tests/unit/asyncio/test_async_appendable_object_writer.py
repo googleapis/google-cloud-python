@@ -87,7 +87,8 @@ class TestIsWriteRetryable:
 @pytest.fixture
 def mock_appendable_writer():
     """Fixture to provide a mock AsyncAppendableObjectWriter setup."""
-    mock_client = mock.AsyncMock()
+    mock_client = mock.MagicMock()
+    mock_client.grpc_client = mock.AsyncMock()
     # Internal stream class patch
     stream_patcher = mock.patch(
         "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"

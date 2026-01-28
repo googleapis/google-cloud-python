@@ -47,7 +47,7 @@ all_params = config._get_params()
 
 async def create_client():
     """Initializes async client and gets the current event loop."""
-    return AsyncGrpcClient().grpc_client
+    return AsyncGrpcClient()
 
 
 async def download_chunks_using_mrd_async(client, filename, other_params, chunks):
