@@ -49,7 +49,6 @@ def event_loop():
 
 @pytest.fixture(scope="session")
 def grpc_clients(event_loop):
-
     # grpc clients has to be instantiated in the event loop,
     # otherwise grpc creates it's own event loop and attaches to the client.
     # Which will lead to deadlock because client running in one event loop and

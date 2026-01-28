@@ -180,6 +180,7 @@ def download_files_using_mrd_multi_coro(loop, client, files, other_params, chunk
     Returns:
         float: The maximum latency (in seconds) among all coroutines.
     """
+
     async def main():
         if len(files) == 1:
             result = await download_chunks_using_mrd_async(
@@ -356,8 +357,7 @@ def download_files_mp_mc_wrapper(files_names, params, chunks, bucket_type):
 
 @pytest.mark.parametrize(
     "workload_params",
-    all_params["read_seq_multi_process"] + 
-    all_params["read_rand_multi_process"],
+    all_params["read_seq_multi_process"] + all_params["read_rand_multi_process"],
     indirect=True,
     ids=lambda p: p.name,
 )

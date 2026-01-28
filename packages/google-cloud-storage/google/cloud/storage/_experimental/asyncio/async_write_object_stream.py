@@ -21,9 +21,9 @@ GA(Generally Available) yet, please contact your TAM(Technical Account Manager)
 if you want to use these Rapid Storage APIs.
 
 """
-from typing import Optional
-from . import _utils
+from typing import List, Optional, Tuple
 from google.cloud import _storage_v2
+from google.cloud.storage._experimental.asyncio import _utils
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
 from google.cloud.storage._experimental.asyncio.async_abstract_object_stream import (
     _AsyncAbstractObjectStream,
@@ -72,6 +72,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         object_name: str,
         generation_number: Optional[int] = None,  # None means new object
         write_handle: Optional[_storage_v2.BidiWriteHandle] = None,
+        routing_token: Optional[str] = None,
     ) -> None:
         if client is None:
             raise ValueError("client must be provided")
@@ -87,6 +88,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         )
         self.client: AsyncGrpcClient.grpc_client = client
         self.write_handle: Optional[_storage_v2.BidiWriteHandle] = write_handle
+        self.routing_token: Optional[str] = routing_token
 
         self._full_bucket_name = f"projects/_/buckets/{self.bucket_name}"
 
@@ -101,7 +103,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         self.persisted_size = 0
         self.object_resource: Optional[_storage_v2.Object] = None
 
-    async def open(self) -> None:
+    async def open(self, metadata: Optional[List[Tuple[str, str]]] = None) -> None:
         """
         Opens the bidi-gRPC connection to write to the object.
 
@@ -110,7 +112,7 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
 
         :rtype: None
         :raises ValueError: If the stream is already open.
-        :raises google.api_core.exceptions.FailedPrecondition: 
+        :raises google.api_core.exceptions.FailedPrecondition:
             if `generation_number` is 0 and object already exists.
         """
         if self._is_stream_open:
@@ -121,9 +123,6 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         # Created object type would be Appendable Object.
         # if `generation_number` == 0 new object will be created only if there
         # isn't any existing object.
-        is_open_via_write_handle = (
-            self.write_handle is not None and self.generation_number
-        )
         if self.generation_number is None or self.generation_number == 0:
             self.first_bidi_write_req = _storage_v2.BidiWriteObjectRequest(
                 write_object_spec=_storage_v2.WriteObjectSpec(
@@ -140,44 +139,46 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
                     bucket=self._full_bucket_name,
                     object=self.object_name,
                     generation=self.generation_number,
-                    write_handle=self.write_handle,
+                    write_handle=self.write_handle if self.write_handle else None,
+                    routing_token=self.routing_token if self.routing_token else None,
                 ),
             )
+
+        request_param_values = [f"bucket={self._full_bucket_name}"]
+        final_metadata = []
+        if metadata:
+            for key, value in metadata:
+                if key == "x-goog-request-params":
+                    request_param_values.append(value)
+                else:
+                    final_metadata.append((key, value))
+
+        final_metadata.append(("x-goog-request-params", ",".join(request_param_values)))
+
         self.socket_like_rpc = AsyncBidiRpc(
-            self.rpc, initial_request=self.first_bidi_write_req, metadata=self.metadata
+            self.rpc,
+            initial_request=self.first_bidi_write_req,
+            metadata=final_metadata,
         )
 
         await self.socket_like_rpc.open()  # this is actually 1 send
         response = await self.socket_like_rpc.recv()
         self._is_stream_open = True
-        if is_open_via_write_handle:
-            # Don't use if not response.persisted_size because this will be true
-            # if persisted_size==0 (0 is considered "Falsy" in Python)
-            if response.persisted_size is None:
-                raise ValueError(
-                    "Failed to obtain persisted_size after opening the stream via write_handle"
-                )
+
+        if response.persisted_size:
             self.persisted_size = response.persisted_size
-        else:
-            if not response.resource:
-                raise ValueError(
-                    "Failed to obtain object resource after opening the stream"
-                )
-            if not response.resource.generation:
-                raise ValueError(
-                    "Failed to obtain object generation after opening the stream"
-                )
+
+        if response.resource:
             if not response.resource.size:
                 # Appending to a 0 byte appendable object.
                 self.persisted_size = 0
             else:
                 self.persisted_size = response.resource.size
 
-        if not response.write_handle:
-            raise ValueError("Failed to obtain write_handle after opening the stream")
+            self.generation_number = response.resource.generation
 
-        self.generation_number = response.resource.generation
-        self.write_handle = response.write_handle
+        if response.write_handle:
+            self.write_handle = response.write_handle
 
     async def close(self) -> None:
         """Closes the bidi-gRPC connection."""
@@ -220,7 +221,14 @@ class _AsyncWriteObjectStream(_AsyncAbstractObjectStream):
         if not self._is_stream_open:
             raise ValueError("Stream is not open")
         response = await self.socket_like_rpc.recv()
-        _utils.update_write_handle_if_exists(self, response)
+        # Update write_handle if present in response
+        if response:
+            if response.write_handle:
+                self.write_handle = response.write_handle
+            if response.persisted_size is not None:
+                self.persisted_size = response.persisted_size
+            if response.resource and response.resource.size:
+                self.persisted_size = response.resource.size
         return response
 
     @property

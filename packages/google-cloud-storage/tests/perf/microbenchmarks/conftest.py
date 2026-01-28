@@ -49,6 +49,7 @@ def storage_client():
     with contextlib.closing(client):
         yield client
 
+
 @pytest.fixture
 def monitor():
     """
@@ -56,6 +57,7 @@ def monitor():
     Usage: with monitor() as m: ...
     """
     return ResourceMonitor
+
 
 def publish_resource_metrics(benchmark: Any, monitor: ResourceMonitor) -> None:
     """
@@ -73,10 +75,13 @@ def publish_resource_metrics(benchmark: Any, monitor: ResourceMonitor) -> None:
 
 async def upload_appendable_object(bucket_name, object_name, object_size, chunk_size):
     # flush interval set to little over 1GiB to minimize number of flushes.
-    # this method is to write "appendable" objects which will be used for 
+    # this method is to write "appendable" objects which will be used for
     # benchmarking reads, hence not concerned performance of writes here.
     writer = AsyncAppendableObjectWriter(
-        AsyncGrpcClient().grpc_client, bucket_name, object_name, writer_options={"FLUSH_INTERVAL_BYTES": 1026 * 1024 ** 2}
+        AsyncGrpcClient().grpc_client,
+        bucket_name,
+        object_name,
+        writer_options={"FLUSH_INTERVAL_BYTES": 1026 * 1024**2},
     )
     await writer.open()
     uploaded_bytes = 0
@@ -106,11 +111,15 @@ def _upload_worker(args):
             upload_appendable_object(bucket_name, object_name, object_size, chunk_size)
         )
     else:
-        uploaded_bytes = upload_simple_object(bucket_name, object_name, object_size, chunk_size)
+        uploaded_bytes = upload_simple_object(
+            bucket_name, object_name, object_size, chunk_size
+        )
     return object_name, uploaded_bytes
 
 
-def _create_files(num_files, bucket_name, bucket_type, object_size, chunk_size=1024 * 1024 * 1024):
+def _create_files(
+    num_files, bucket_name, bucket_type, object_size, chunk_size=1024 * 1024 * 1024
+):
     """
     Create/Upload objects for benchmarking and return a list of their names.
     """

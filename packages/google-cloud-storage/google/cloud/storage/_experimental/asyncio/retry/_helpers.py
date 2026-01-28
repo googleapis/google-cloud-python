@@ -18,12 +18,19 @@ import logging
 from typing import Tuple, Optional
 
 from google.api_core import exceptions
-from google.cloud._storage_v2.types import BidiReadObjectRedirectedError
+from google.cloud._storage_v2.types import (
+    BidiReadObjectRedirectedError,
+    BidiWriteObjectRedirectedError,
+)
 from google.rpc import status_pb2
 
 _BIDI_READ_REDIRECTED_TYPE_URL = (
     "type.googleapis.com/google.storage.v2.BidiReadObjectRedirectedError"
 )
+_BIDI_WRITE_REDIRECTED_TYPE_URL = (
+    "type.googleapis.com/google.storage.v2.BidiWriteObjectRedirectedError"
+)
+logger = logging.getLogger(__name__)
 
 
 def _handle_redirect(
@@ -78,6 +85,41 @@ def _handle_redirect(
                                 read_handle = redirect_proto.read_handle
                             break
                 except Exception as e:
-                    logging.ERROR(f"Error unpacking redirect: {e}")
+                    logger.error(f"Error unpacking redirect: {e}")
 
     return routing_token, read_handle
+
+
+def _extract_bidi_writes_redirect_proto(exc: Exception):
+    grpc_error = None
+    if isinstance(exc, exceptions.Aborted) and exc.errors:
+        grpc_error = exc.errors[0]
+
+    if grpc_error:
+        if isinstance(grpc_error, BidiWriteObjectRedirectedError):
+            return grpc_error
+
+        if hasattr(grpc_error, "trailing_metadata"):
+            trailers = grpc_error.trailing_metadata()
+            if not trailers:
+                return
+
+            status_details_bin = None
+            for key, value in trailers:
+                if key == "grpc-status-details-bin":
+                    status_details_bin = value
+                    break
+
+            if status_details_bin:
+                status_proto = status_pb2.Status()
+                try:
+                    status_proto.ParseFromString(status_details_bin)
+                    for detail in status_proto.details:
+                        if detail.type_url == _BIDI_WRITE_REDIRECTED_TYPE_URL:
+                            redirect_proto = BidiWriteObjectRedirectedError.deserialize(
+                                detail.value
+                            )
+                            return redirect_proto
+                except Exception:
+                    logger.error("Error unpacking redirect details from gRPC error.")
+                    pass

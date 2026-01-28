@@ -42,6 +42,7 @@ class AsyncGrpcClient:
         (Optional) Whether to attempt to use DirectPath for gRPC connections.
         Defaults to ``True``.
     """
+
     def __init__(
         self,
         credentials=None,

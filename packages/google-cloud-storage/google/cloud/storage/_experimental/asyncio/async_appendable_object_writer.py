@@ -22,10 +22,16 @@ if you want to use these Rapid Storage APIs.
 
 """
 from io import BufferedReader
-from typing import Optional, Union
+import io
+import logging
+from typing import List, Optional, Tuple, Union
 
-from google_crc32c import Checksum
 from google.api_core import exceptions
+from google.api_core.retry_async import AsyncRetry
+from google.rpc import status_pb2
+from google.cloud._storage_v2.types import BidiWriteObjectRedirectedError
+from google.cloud._storage_v2.types.storage import BidiWriteObjectRequest
+
 
 from . import _utils
 from google.cloud import _storage_v2
@@ -35,10 +41,72 @@ from google.cloud.storage._experimental.asyncio.async_grpc_client import (
 from google.cloud.storage._experimental.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
+from google.cloud.storage._experimental.asyncio.retry.bidi_stream_retry_manager import (
+    _BidiStreamRetryManager,
+)
+from google.cloud.storage._experimental.asyncio.retry.writes_resumption_strategy import (
+    _WriteResumptionStrategy,
+    _WriteState,
+)
+from google.cloud.storage._experimental.asyncio.retry._helpers import (
+    _extract_bidi_writes_redirect_proto,
+)
 
 
 _MAX_CHUNK_SIZE_BYTES = 2 * 1024 * 1024  # 2 MiB
 _DEFAULT_FLUSH_INTERVAL_BYTES = 16 * 1024 * 1024  # 16 MiB
+_BIDI_WRITE_REDIRECTED_TYPE_URL = (
+    "type.googleapis.com/google.storage.v2.BidiWriteObjectRedirectedError"
+)
+logger = logging.getLogger(__name__)
+
+
+def _is_write_retryable(exc):
+    """Predicate to determine if a write operation should be retried."""
+
+    if isinstance(
+        exc,
+        (
+            exceptions.InternalServerError,
+            exceptions.ServiceUnavailable,
+            exceptions.DeadlineExceeded,
+            exceptions.TooManyRequests,
+            BidiWriteObjectRedirectedError,
+        ),
+    ):
+        logger.warning(f"Retryable write exception encountered: {exc}")
+        return True
+
+    grpc_error = None
+    if isinstance(exc, exceptions.Aborted) and exc.errors:
+        grpc_error = exc.errors[0]
+        if isinstance(grpc_error, BidiWriteObjectRedirectedError):
+            return True
+
+        trailers = grpc_error.trailing_metadata()
+        if not trailers:
+            return False
+
+        status_details_bin = None
+        for key, value in trailers:
+            if key == "grpc-status-details-bin":
+                status_details_bin = value
+                break
+
+        if status_details_bin:
+            status_proto = status_pb2.Status()
+            try:
+                status_proto.ParseFromString(status_details_bin)
+                for detail in status_proto.details:
+                    if detail.type_url == _BIDI_WRITE_REDIRECTED_TYPE_URL:
+                        return True
+            except Exception:
+                logger.error(
+                    "Error unpacking redirect details from gRPC error. Exception: ",
+                    {exc},
+                )
+                return False
+    return False
 
 
 class AsyncAppendableObjectWriter:
@@ -128,13 +196,7 @@ class AsyncAppendableObjectWriter:
         self.write_handle = write_handle
         self.generation = generation
 
-        self.write_obj_stream = _AsyncWriteObjectStream(
-            client=self.client,
-            bucket_name=self.bucket_name,
-            object_name=self.object_name,
-            generation_number=self.generation,
-            write_handle=self.write_handle,
-        )
+        self.write_obj_stream: Optional[_AsyncWriteObjectStream] = None
         self._is_stream_open: bool = False
         # `offset` is the latest size of the object without staleless.
         self.offset: Optional[int] = None
@@ -156,6 +218,8 @@ class AsyncAppendableObjectWriter:
                 f"flush_interval must be a multiple of {_MAX_CHUNK_SIZE_BYTES}, but provided {self.flush_interval}"
             )
         self.bytes_appended_since_last_flush = 0
+        self._routing_token: Optional[str] = None
+        self.object_resource: Optional[_storage_v2.Object] = None
 
     async def state_lookup(self) -> int:
         """Returns the persisted_size
@@ -175,11 +239,25 @@ class AsyncAppendableObjectWriter:
             )
         )
         response = await self.write_obj_stream.recv()
-        _utils.update_write_handle_if_exists(self, response)
         self.persisted_size = response.persisted_size
         return self.persisted_size
 
-    async def open(self) -> None:
+    def _on_open_error(self, exc):
+        """Extracts routing token and write handle on redirect error during open."""
+        redirect_proto = _extract_bidi_writes_redirect_proto(exc)
+        if redirect_proto:
+            if redirect_proto.routing_token:
+                self._routing_token = redirect_proto.routing_token
+            if redirect_proto.write_handle:
+                self.write_handle = redirect_proto.write_handle
+            if redirect_proto.generation:
+                self.generation = redirect_proto.generation
+
+    async def open(
+        self,
+        retry_policy: Optional[AsyncRetry] = None,
+        metadata: Optional[List[Tuple[str, str]]] = None,
+    ) -> None:
         """Opens the underlying bidi-gRPC stream.
 
         :raises ValueError: If the stream is already open.
@@ -188,15 +266,80 @@ class AsyncAppendableObjectWriter:
         if self._is_stream_open:
             raise ValueError("Underlying bidi-gRPC stream is already open")
 
-        await self.write_obj_stream.open()
-        self._is_stream_open = True
-        if self.generation is None:
-            self.generation = self.write_obj_stream.generation_number
-        self.write_handle = self.write_obj_stream.write_handle
-        self.persisted_size = self.write_obj_stream.persisted_size
+        if retry_policy is None:
+            retry_policy = AsyncRetry(
+                predicate=_is_write_retryable, on_error=self._on_open_error
+            )
+        else:
+            original_on_error = retry_policy._on_error
 
-    async def append(self, data: bytes) -> None:
-        """Appends data to the Appendable object.
+            def combined_on_error(exc):
+                self._on_open_error(exc)
+                if original_on_error:
+                    original_on_error(exc)
+
+            retry_policy = AsyncRetry(
+                predicate=_is_write_retryable,
+                initial=retry_policy._initial,
+                maximum=retry_policy._maximum,
+                multiplier=retry_policy._multiplier,
+                deadline=retry_policy._deadline,
+                on_error=combined_on_error,
+            )
+
+        async def _do_open():
+            current_metadata = list(metadata) if metadata else []
+
+            # Cleanup stream from previous failed attempt, if any.
+            if self.write_obj_stream:
+                if self.write_obj_stream.is_stream_open:
+                    try:
+                        await self.write_obj_stream.close()
+                    except Exception as e:
+                        logger.warning(
+                            "Error closing previous write stream during open retry. Got exception: ",
+                            {e},
+                        )
+                self.write_obj_stream = None
+                self._is_stream_open = False
+
+            self.write_obj_stream = _AsyncWriteObjectStream(
+                client=self.client,
+                bucket_name=self.bucket_name,
+                object_name=self.object_name,
+                generation_number=self.generation,
+                write_handle=self.write_handle,
+                routing_token=self._routing_token,
+            )
+
+            if self._routing_token:
+                current_metadata.append(
+                    ("x-goog-request-params", f"routing_token={self._routing_token}")
+                )
+
+            await self.write_obj_stream.open(
+                metadata=current_metadata if metadata else None
+            )
+
+            if self.write_obj_stream.generation_number:
+                self.generation = self.write_obj_stream.generation_number
+            if self.write_obj_stream.write_handle:
+                self.write_handle = self.write_obj_stream.write_handle
+            if self.write_obj_stream.persisted_size is not None:
+                self.persisted_size = self.write_obj_stream.persisted_size
+
+            self._is_stream_open = True
+            self._routing_token = None
+
+        await retry_policy(_do_open)()
+
+    async def append(
+        self,
+        data: bytes,
+        retry_policy: Optional[AsyncRetry] = None,
+        metadata: Optional[List[Tuple[str, str]]] = None,
+    ) -> None:
+        """Appends data to the Appendable object with automatic retries.
 
         calling `self.append` will append bytes at the end of the current size
         ie. `self.offset` bytes relative to the begining of the object.
@@ -209,56 +352,110 @@ class AsyncAppendableObjectWriter:
         :type data: bytes
         :param data: The bytes to append to the object.
 
-        :rtype: None
+        :type retry_policy: :class:`~google.api_core.retry_async.AsyncRetry`
+        :param retry_policy: (Optional) The retry policy to use for the operation.
 
-        :raises ValueError: If the stream is not open (i.e., `open()` has not
-            been called).
+        :type metadata: List[Tuple[str, str]]
+        :param metadata: (Optional) The metadata to be sent with the request.
+
+        :raises ValueError: If the stream is not open.
         """
-
         if not self._is_stream_open:
             raise ValueError("Stream is not open. Call open() before append().")
-        total_bytes = len(data)
-        if total_bytes == 0:
-            # TODO: add warning.
+        if not data:
+            logger.debug("No data provided to append; returning without action.")
             return
-        if self.offset is None:
-            assert self.persisted_size is not None
-            self.offset = self.persisted_size
 
-        start_idx = 0
-        while start_idx < total_bytes:
-            end_idx = min(start_idx + _MAX_CHUNK_SIZE_BYTES, total_bytes)
-            data_chunk = data[start_idx:end_idx]
-            is_last_chunk = end_idx == total_bytes
-            chunk_size = end_idx - start_idx
-            await self.write_obj_stream.send(
-                _storage_v2.BidiWriteObjectRequest(
-                    write_offset=self.offset,
-                    checksummed_data=_storage_v2.ChecksummedData(
-                        content=data_chunk,
-                        crc32c=int.from_bytes(Checksum(data_chunk).digest(), "big"),
-                    ),
-                    state_lookup=is_last_chunk,
-                    flush=is_last_chunk
-                    or (
-                        self.bytes_appended_since_last_flush + chunk_size
-                        >= self.flush_interval
-                    ),
-                )
-            )
-            self.offset += chunk_size
-            self.bytes_appended_since_last_flush += chunk_size
+        if retry_policy is None:
+            retry_policy = AsyncRetry(predicate=_is_write_retryable)
 
-            if self.bytes_appended_since_last_flush >= self.flush_interval:
-                self.bytes_appended_since_last_flush = 0
+        strategy = _WriteResumptionStrategy()
+        buffer = io.BytesIO(data)
+        attempt_count = 0
 
-            if is_last_chunk:
-                response = await self.write_obj_stream.recv()
-                _utils.update_write_handle_if_exists(self, response)
-                self.persisted_size = response.persisted_size
-                self.offset = self.persisted_size
-                self.bytes_appended_since_last_flush = 0
-            start_idx = end_idx
+        def send_and_recv_generator(
+            requests: List[BidiWriteObjectRequest],
+            state: dict[str, _WriteState],
+            metadata: Optional[List[Tuple[str, str]]] = None,
+        ):
+            async def generator():
+                nonlocal attempt_count
+                nonlocal requests
+                attempt_count += 1
+                resp = None
+                write_state = state["write_state"]
+                # If this is a retry or redirect, we must re-open the stream
+                if attempt_count > 1 or write_state.routing_token:
+                    logger.info(
+                        f"Re-opening the stream with attempt_count: {attempt_count}"
+                    )
+                    if self.write_obj_stream and self.write_obj_stream.is_stream_open:
+                        await self.write_obj_stream.close()
+
+                    current_metadata = list(metadata) if metadata else []
+                    if write_state.routing_token:
+                        current_metadata.append(
+                            (
+                                "x-goog-request-params",
+                                f"routing_token={write_state.routing_token}",
+                            )
+                        )
+                        self._routing_token = write_state.routing_token
+
+                    self._is_stream_open = False
+                    await self.open(metadata=current_metadata)
+
+                    write_state.persisted_size = self.persisted_size
+                    write_state.write_handle = self.write_handle
+                    write_state.routing_token = None
+
+                    write_state.user_buffer.seek(write_state.persisted_size)
+                    write_state.bytes_sent = write_state.persisted_size
+                    write_state.bytes_since_last_flush = 0
+
+                    requests = strategy.generate_requests(state)
+
+                num_requests = len(requests)
+                for i, chunk_req in enumerate(requests):
+                    if i == num_requests - 1:
+                        chunk_req.state_lookup = True
+                        chunk_req.flush = True
+                    await self.write_obj_stream.send(chunk_req)
+
+                resp = await self.write_obj_stream.recv()
+                if resp:
+                    if resp.persisted_size is not None:
+                        self.persisted_size = resp.persisted_size
+                        state["write_state"].persisted_size = resp.persisted_size
+                        self.offset = self.persisted_size
+                    if resp.write_handle:
+                        self.write_handle = resp.write_handle
+                        state["write_state"].write_handle = resp.write_handle
+                    self.bytes_appended_since_last_flush = 0
+
+                yield resp
+
+            return generator()
+
+        # State initialization
+        write_state = _WriteState(_MAX_CHUNK_SIZE_BYTES, buffer, self.flush_interval)
+        write_state.write_handle = self.write_handle
+        write_state.persisted_size = self.persisted_size
+        write_state.bytes_sent = self.persisted_size
+        write_state.bytes_since_last_flush = self.bytes_appended_since_last_flush
+
+        retry_manager = _BidiStreamRetryManager(
+            _WriteResumptionStrategy(),
+            lambda r, s: send_and_recv_generator(r, s, metadata),
+        )
+        await retry_manager.execute({"write_state": write_state}, retry_policy)
+
+        # Sync local markers
+        self.write_obj_stream.persisted_size = write_state.persisted_size
+        self.write_obj_stream.write_handle = write_state.write_handle
+        self.bytes_appended_since_last_flush = write_state.bytes_since_last_flush
+        self.persisted_size = write_state.persisted_size
+        self.offset = write_state.persisted_size
 
     async def simple_flush(self) -> None:
         """Flushes the data to the server.
@@ -277,6 +474,7 @@ class AsyncAppendableObjectWriter:
                 flush=True,
             )
         )
+        self.bytes_appended_since_last_flush = 0
 
     async def flush(self) -> int:
         """Flushes the data to the server.
@@ -297,9 +495,9 @@ class AsyncAppendableObjectWriter:
             )
         )
         response = await self.write_obj_stream.recv()
-        _utils.update_write_handle_if_exists(self, response)
         self.persisted_size = response.persisted_size
         self.offset = self.persisted_size
+        self.bytes_appended_since_last_flush = 0
         return self.persisted_size
 
     async def close(self, finalize_on_close=False) -> Union[int, _storage_v2.Object]:
@@ -354,7 +552,6 @@ class AsyncAppendableObjectWriter:
             _storage_v2.BidiWriteObjectRequest(finish_write=True)
         )
         response = await self.write_obj_stream.recv()
-        _utils.update_write_handle_if_exists(self, response)
         self.object_resource = response.resource
         self.persisted_size = self.object_resource.size
         await self.write_obj_stream.close()

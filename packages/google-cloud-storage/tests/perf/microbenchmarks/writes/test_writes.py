@@ -31,9 +31,14 @@ import logging
 
 import pytest
 from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
-from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import AsyncAppendableObjectWriter
+from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
+    AsyncAppendableObjectWriter,
+)
 
-from tests.perf.microbenchmarks._utils import publish_benchmark_extra_info, RandomBytesIO
+from tests.perf.microbenchmarks._utils import (
+    publish_benchmark_extra_info,
+    RandomBytesIO,
+)
 from tests.perf.microbenchmarks.conftest import publish_resource_metrics
 import tests.perf.microbenchmarks.writes.config as config
 from google.cloud import storage
@@ -41,9 +46,11 @@ from google.cloud import storage
 # Get write parameters
 all_params = config.get_write_params()
 
+
 async def create_client():
     """Initializes async client and gets the current event loop."""
     return AsyncGrpcClient().grpc_client
+
 
 async def upload_chunks_using_grpc_async(client, filename, other_params):
     """Uploads a file in chunks using the gRPC API asynchronously.
@@ -81,6 +88,7 @@ async def upload_chunks_using_grpc_async(client, filename, other_params):
     elapsed_time = end_time - start_time
     return elapsed_time / 1_000_000_000
 
+
 def upload_chunks_using_grpc(loop, client, filename, other_params):
     """Wrapper to run the async gRPC upload in a synchronous context.
 
@@ -96,6 +104,7 @@ def upload_chunks_using_grpc(loop, client, filename, other_params):
     return loop.run_until_complete(
         upload_chunks_using_grpc_async(client, filename, other_params)
     )
+
 
 def upload_using_json(_, json_client, filename, other_params):
     """Uploads a file using the JSON API.
@@ -123,6 +132,7 @@ def upload_using_json(_, json_client, filename, other_params):
     end_time = time.monotonic_ns()
     elapsed_time = end_time - start_time
     return elapsed_time / 1_000_000_000
+
 
 @pytest.mark.parametrize(
     "workload_params",
@@ -179,12 +189,15 @@ def test_uploads_single_proc_single_coro(
                 task.cancel()
             loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
             loop.close()
-    publish_benchmark_extra_info(benchmark, params, benchmark_group="write", true_times=output_times)
+    publish_benchmark_extra_info(
+        benchmark, params, benchmark_group="write", true_times=output_times
+    )
     publish_resource_metrics(benchmark, m)
 
     blobs_to_delete.extend(
         storage_client.bucket(params.bucket_name).blob(f) for f in files_names
     )
+
 
 def upload_files_using_grpc_multi_coro(loop, client, files, other_params):
     """Uploads multiple files concurrently using gRPC with asyncio.
@@ -198,16 +211,16 @@ def upload_files_using_grpc_multi_coro(loop, client, files, other_params):
     Returns:
         float: The maximum latency observed among all coroutines.
     """
+
     async def main():
         tasks = []
         for f in files:
-            tasks.append(
-                upload_chunks_using_grpc_async(client, f, other_params)
-            )
+            tasks.append(upload_chunks_using_grpc_async(client, f, other_params))
         return await asyncio.gather(*tasks)
 
     results = loop.run_until_complete(main())
     return max(results)
+
 
 def upload_files_using_json_multi_threaded(_, json_client, files, other_params):
     """Uploads multiple files concurrently using the JSON API with a ThreadPoolExecutor.
@@ -234,6 +247,7 @@ def upload_files_using_json_multi_threaded(_, json_client, files, other_params):
             results.append(future.result())
 
     return max(results)
+
 
 @pytest.mark.parametrize(
     "workload_params",
@@ -292,12 +306,15 @@ def test_uploads_single_proc_multi_coro(
                 task.cancel()
             loop.run_until_complete(asyncio.gather(*tasks, return_exceptions=True))
             loop.close()
-    publish_benchmark_extra_info(benchmark, params, benchmark_group="write", true_times=output_times)
+    publish_benchmark_extra_info(
+        benchmark, params, benchmark_group="write", true_times=output_times
+    )
     publish_resource_metrics(benchmark, m)
 
     blobs_to_delete.extend(
         storage_client.bucket(params.bucket_name).blob(f) for f in files_names
     )
+
 
 def _upload_files_worker(files_to_upload, other_params, bucket_type):
     """A worker function for multi-processing uploads.
@@ -330,11 +347,11 @@ def _upload_files_worker(files_to_upload, other_params, bucket_type):
             loop.close()
         return result
     else:  # regional
-
         json_client = storage.Client()
         return upload_files_using_json_multi_threaded(
             None, json_client, files_to_upload, other_params
         )
+
 
 def upload_files_mp_mc_wrapper(files_names, params):
     """Wrapper for multi-process, multi-coroutine uploads.
@@ -369,6 +386,7 @@ def upload_files_mp_mc_wrapper(files_names, params):
         results = pool.starmap(_upload_files_worker, args)
 
     return max(results)
+
 
 @pytest.mark.parametrize(
     "workload_params",
@@ -406,7 +424,9 @@ def test_uploads_multi_proc_multi_coro(
                 ),
             )
     finally:
-        publish_benchmark_extra_info(benchmark, params, benchmark_group="write", true_times=output_times)
+        publish_benchmark_extra_info(
+            benchmark, params, benchmark_group="write", true_times=output_times
+        )
         publish_resource_metrics(benchmark, m)
 
     blobs_to_delete.extend(

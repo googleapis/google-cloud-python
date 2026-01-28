@@ -43,7 +43,7 @@ def publish_benchmark_extra_info(
 
     object_size = params.file_size_bytes
     num_files = params.num_files
-    total_uploaded_mib = (object_size / (1024 * 1024) * num_files)
+    total_uploaded_mib = object_size / (1024 * 1024) * num_files
     min_throughput = total_uploaded_mib / benchmark.stats["max"]
     max_throughput = total_uploaded_mib / benchmark.stats["min"]
     mean_throughput = total_uploaded_mib / benchmark.stats["mean"]
@@ -80,8 +80,8 @@ def publish_benchmark_extra_info(
 
     # Get benchmark name, rounds, and iterations
     name = benchmark.name
-    rounds = benchmark.stats['rounds']
-    iterations = benchmark.stats['iterations']
+    rounds = benchmark.stats["rounds"]
+    iterations = benchmark.stats["iterations"]
 
     # Header for throughput table
     header = "\n\n" + "-" * 125 + "\n"
@@ -98,13 +98,15 @@ def publish_benchmark_extra_info(
     print(row)
     print("-" * 125)
 
+
 class RandomBytesIO(io.RawIOBase):
     """
     A file-like object that generates random bytes using os.urandom.
     It enforces a fixed size and an upper safety cap.
     """
+
     # 10 GiB default safety cap
-    DEFAULT_CAP = 10 * 1024 * 1024 * 1024 
+    DEFAULT_CAP = 10 * 1024 * 1024 * 1024
 
     def __init__(self, size, max_size=DEFAULT_CAP):
         """
@@ -114,9 +116,11 @@ class RandomBytesIO(io.RawIOBase):
         """
         if size is None:
             raise ValueError("Size must be defined (cannot be infinite).")
-        
+
         if size > max_size:
-            raise ValueError(f"Requested size {size} exceeds the maximum limit of {max_size} bytes (10 GiB).")
+            raise ValueError(
+                f"Requested size {size} exceeds the maximum limit of {max_size} bytes (10 GiB)."
+            )
 
         self._size = size
         self._pos = 0
@@ -125,15 +129,15 @@ class RandomBytesIO(io.RawIOBase):
         # 1. Handle "read all" (n=-1)
         if n is None or n < 0:
             n = self._size - self._pos
-        
+
         # 2. Handle EOF (End of File)
         if self._pos >= self._size:
             return b""
-            
+
         # 3. Clamp read amount to remaining size
         # This ensures we stop exactly at `size` bytes.
         n = min(n, self._size - self._pos)
-        
+
         # 4. Generate data
         data = os.urandom(n)
         self._pos += len(data)
