@@ -1,5 +1,6 @@
 click
-gapic-generator==1.30.5 # Fix mypy issue https://github.com/googleapis/gapic-generator-python/pull/2536
+# Testing branch cache-api-context
+gapic-generator @ git+https://github.com/googleapis/gapic-generator-python@cache-api-context
 nox
 starlark-pyo3>=2025.1
 build
