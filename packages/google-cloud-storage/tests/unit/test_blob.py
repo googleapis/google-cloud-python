@@ -228,6 +228,29 @@ class Test_Blob(unittest.TestCase):
         )
         self._set_properties_helper(kms_key_name=kms_resource)
 
+    def test_finalized_time_property_is_none(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertIsNone(blob.finalized_time)
+
+    def test_finalized_time_property_is_not_none(self):
+        from google.cloud.storage import blob as blob_module
+
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+
+        timestamp = "2024-07-29T12:34:56.123456Z"
+        blob._properties["finalizedTime"] = timestamp
+
+        mock_datetime = mock.Mock()
+        with mock.patch.object(
+            blob_module, "_rfc3339_nanos_to_datetime", return_value=mock_datetime
+        ) as mocked:
+            self.assertEqual(blob.finalized_time, mock_datetime)
+            mocked.assert_called_once_with(timestamp)
+
     def test_chunk_size_ctor(self):
         from google.cloud.storage.blob import Blob
 

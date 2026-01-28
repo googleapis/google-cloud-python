@@ -5034,6 +5034,19 @@ class Blob(_PropertyMixin):
         if hard_delete_time is not None:
             return _rfc3339_nanos_to_datetime(hard_delete_time)
 
+    @property
+    def finalized_time(self):
+        """If this object has been soft-deleted, returns the time at which it will be permanently deleted.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns:
+            (readonly) The time that the object will be permanently deleted.
+            Note this property is only set for soft-deleted objects.
+        """
+        finalize_time = self._properties.get("finalizedTime", None)
+        if finalize_time is not None:
+            return _rfc3339_nanos_to_datetime(finalize_time)
+
 
 def _get_host_name(connection):
     """Returns the host name from the given connection.
