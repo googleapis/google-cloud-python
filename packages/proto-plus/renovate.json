@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base",
+    "group:all",
+    ":disableDependencyDashboard",
+    "schedule:weekly"
+  ],
+  "ignorePaths": [
+    ".kokoro/requirements.txt"
+  ]
+}
