@@ -401,3 +401,44 @@ class TestAsyncMultiRangeDownloader:
 
         assert "Checksum mismatch" in str(exc_info.value)
         mock_checksum_class.assert_called_once_with(test_data)
+
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.open",
+        new_callable=AsyncMock,
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.close",
+        new_callable=AsyncMock,
+    )
+    @mock.patch(
+        "google.cloud.storage._experimental.asyncio.async_grpc_client.AsyncGrpcClient.grpc_client"
+    )
+    @pytest.mark.asyncio
+    async def test_async_context_manager_calls_open_and_close(
+        self, mock_grpc_client, mock_close, mock_open
+    ):
+        # Arrange
+        mrd = AsyncMultiRangeDownloader(
+            mock_grpc_client, _TEST_BUCKET_NAME, _TEST_OBJECT_NAME
+        )
+
+        # To simulate the behavior of open and close changing the stream state
+        async def open_side_effect():
+            mrd._is_stream_open = True
+
+        async def close_side_effect():
+            mrd._is_stream_open = False
+
+        mock_open.side_effect = open_side_effect
+        mock_close.side_effect = close_side_effect
+        mrd._is_stream_open = False
+
+        # Act
+        async with mrd as downloader:
+            # Assert
+            mock_open.assert_called_once()
+            assert downloader == mrd
+            assert mrd.is_stream_open
+
+        mock_close.assert_called_once()
+        assert not mrd.is_stream_open

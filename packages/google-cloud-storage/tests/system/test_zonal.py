@@ -116,19 +116,19 @@ def test_basic_wrd(
         assert object_metadata.size == object_size
         assert int(object_metadata.checksums.crc32c) == object_checksum
 
-        mrd = AsyncMultiRangeDownloader(grpc_client, _ZONAL_BUCKET, object_name)
         buffer = BytesIO()
-        await mrd.open()
-        # (0, 0) means read the whole object
-        await mrd.download_ranges([(0, 0, buffer)])
-        await mrd.close()
+        async with AsyncMultiRangeDownloader(
+            grpc_client, _ZONAL_BUCKET, object_name
+        ) as mrd:
+            # (0, 0) means read the whole object
+            await mrd.download_ranges([(0, 0, buffer)])
+            assert mrd.persisted_size == object_size
+
         assert buffer.getvalue() == object_data
-        assert mrd.persisted_size == object_size
 
         # Clean up; use json client (i.e. `storage_client` fixture) to delete.
         blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
         del writer
-        del mrd
         gc.collect()
 
     event_loop.run_until_complete(_run())
