@@ -19,18 +19,19 @@ import logging
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import exceptions as core_exceptions
+from google.api_core import gapic_v1, operations_v1, rest_helpers, rest_streaming
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.requests import AuthorizedSession  # type: ignore
+from google.cloud.vision_v1p3beta1.types import product_search_service
 from google.longrunning import operations_pb2  # type: ignore
 import google.protobuf
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,
+)
 from requests import __version__ as requests_version
-
-from google.cloud.vision_v1p3beta1.types import product_search_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseProductSearchRestTransport
@@ -952,22 +953,23 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] resources,
-      named ``projects/*/locations/*/productSets/*``, which acts as a
-      way to put different products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] resources,
+       named ``projects/*/locations/*/productSets/*``, which acts as a
+       way to put different products into groups to limit
+       identification.
 
     In parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1p3beta1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1p3beta1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1p3beta1.Product] has a
-      collection of
-      [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage]
-      resources, named
-      ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1p3beta1.Product] has a
+       collection of
+       [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1089,6 +1091,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1126,9 +1129,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseAddProductToProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_add_product_to_product_set(
                 request, metadata
@@ -1205,6 +1206,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1355,6 +1357,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1399,9 +1402,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseCreateProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseCreateProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_create_product_set(
                 request, metadata
@@ -1514,6 +1515,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1555,9 +1557,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseCreateReferenceImage._get_http_options()
 
             request, metadata = self._interceptor.pre_create_reference_image(
                 request, metadata
@@ -1670,6 +1670,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1776,6 +1777,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1810,9 +1812,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseDeleteProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseDeleteProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_product_set(
                 request, metadata
@@ -1884,6 +1884,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1918,9 +1919,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseDeleteReferenceImage._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_reference_image(
                 request, metadata
@@ -1992,6 +1991,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2140,6 +2140,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2291,6 +2292,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2331,9 +2333,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseGetReferenceImage._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseGetReferenceImage._get_http_options()
 
             request, metadata = self._interceptor.pre_get_reference_image(
                 request, metadata
@@ -2441,6 +2441,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2483,9 +2484,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseImportProductSets._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseImportProductSets._get_http_options()
 
             request, metadata = self._interceptor.pre_import_product_sets(
                 request, metadata
@@ -2594,6 +2593,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2740,6 +2740,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2889,6 +2890,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2931,9 +2933,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseListProductsInProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_list_products_in_product_set(
                 request, metadata
@@ -3045,6 +3045,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3083,9 +3084,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                     Response message for the ``ListReferenceImages`` method.
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseListReferenceImages._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseListReferenceImages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_reference_images(
                 request, metadata
@@ -3196,6 +3195,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3233,9 +3233,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseRemoveProductFromProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_product_from_product_set(
                 request, metadata
@@ -3314,6 +3312,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3464,6 +3463,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
             transcoded_request,
             body=None,
         ):
+
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3508,9 +3508,7 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductSearchRestTransport._BaseUpdateProductSet._get_http_options()
-            )
+            http_options = _BaseProductSearchRestTransport._BaseUpdateProductSet._get_http_options()
 
             request, metadata = self._interceptor.pre_update_product_set(
                 request, metadata
@@ -3615,7 +3613,9 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._AddProductToProductSet(self._session, self._host, self._interceptor)  # type: ignore
+        return self._AddProductToProductSet(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def create_product(
@@ -3747,7 +3747,9 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._ListProductsInProductSet(self._session, self._host, self._interceptor)  # type: ignore
+        return self._ListProductsInProductSet(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def list_reference_images(
@@ -3768,7 +3770,9 @@ class ProductSearchRestTransport(_BaseProductSearchRestTransport):
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._RemoveProductFromProductSet(self._session, self._host, self._interceptor)  # type: ignore
+        return self._RemoveProductFromProductSet(
+            self._session, self._host, self._interceptor
+        )  # type: ignore
 
     @property
     def update_product(

@@ -137,19 +137,19 @@ class WebDetection(proto.Message):
             proto.STRING,
             number=3,
         )
-        full_matching_images: MutableSequence[
-            "WebDetection.WebImage"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=4,
-            message="WebDetection.WebImage",
+        full_matching_images: MutableSequence["WebDetection.WebImage"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="WebDetection.WebImage",
+            )
         )
-        partial_matching_images: MutableSequence[
-            "WebDetection.WebImage"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=5,
-            message="WebDetection.WebImage",
+        partial_matching_images: MutableSequence["WebDetection.WebImage"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="WebDetection.WebImage",
+            )
         )
 
     class WebLabel(proto.Message):

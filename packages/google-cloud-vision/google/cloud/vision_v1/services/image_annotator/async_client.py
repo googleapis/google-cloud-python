@@ -34,21 +34,21 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.vision_v1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.vision_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-
+from google.api_core import (
+    operation,  # type: ignore
+    operation_async,  # type: ignore
+)
 from google.cloud.vision_v1.types import image_annotator
+from google.longrunning import operations_pb2  # type: ignore
 
 from .client import ImageAnnotatorClient
 from .transports.base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
@@ -122,7 +122,9 @@ class ImageAnnotatorAsyncClient:
         Returns:
             ImageAnnotatorAsyncClient: The constructed client.
         """
-        return ImageAnnotatorClient.from_service_account_info.__func__(ImageAnnotatorAsyncClient, info, *args, **kwargs)  # type: ignore
+        return ImageAnnotatorClient.from_service_account_info.__func__(
+            ImageAnnotatorAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -138,7 +140,9 @@ class ImageAnnotatorAsyncClient:
         Returns:
             ImageAnnotatorAsyncClient: The constructed client.
         """
-        return ImageAnnotatorClient.from_service_account_file.__func__(ImageAnnotatorAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return ImageAnnotatorClient.from_service_account_file.__func__(
+            ImageAnnotatorAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 

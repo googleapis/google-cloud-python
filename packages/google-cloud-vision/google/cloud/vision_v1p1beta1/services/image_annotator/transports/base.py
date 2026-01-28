@@ -22,11 +22,10 @@ from google.api_core import gapic_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-import google.protobuf
-
 from google.cloud.vision_v1p1beta1 import gapic_version as package_version
 from google.cloud.vision_v1p1beta1.types import image_annotator
+from google.oauth2 import service_account  # type: ignore
+import google.protobuf
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__

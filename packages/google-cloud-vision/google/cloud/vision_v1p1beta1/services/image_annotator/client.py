@@ -42,10 +42,9 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.vision_v1p1beta1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.vision_v1p1beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -77,9 +76,7 @@ class ImageAnnotatorClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[ImageAnnotatorTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[ImageAnnotatorTransport]]
     _transport_registry["grpc"] = ImageAnnotatorGrpcTransport
     _transport_registry["grpc_asyncio"] = ImageAnnotatorGrpcAsyncIOTransport
     _transport_registry["rest"] = ImageAnnotatorRestTransport
@@ -601,11 +598,9 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ImageAnnotatorClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ImageAnnotatorClient._read_environment_variables()
+        )
         self._client_cert_source = ImageAnnotatorClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -640,8 +635,7 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ImageAnnotatorTransport, transport)
             self._api_endpoint = self._transport.host

@@ -17,9 +17,8 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.cloud.vision_v1p2beta1.types import geometry
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p2beta1",
@@ -101,6 +100,7 @@ class TextAnnotation(proto.Message):
                 LINE_BREAK (5):
                     Line break that ends a paragraph.
             """
+
             UNKNOWN = 0
             SPACE = 1
             SURE_SPACE = 2
@@ -129,12 +129,12 @@ class TextAnnotation(proto.Message):
                 Detected start or end of a text segment.
         """
 
-        detected_languages: MutableSequence[
-            "TextAnnotation.DetectedLanguage"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=1,
-            message="TextAnnotation.DetectedLanguage",
+        detected_languages: MutableSequence["TextAnnotation.DetectedLanguage"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="TextAnnotation.DetectedLanguage",
+            )
         )
         detected_break: "TextAnnotation.DetectedBreak" = proto.Field(
             proto.MESSAGE,
@@ -210,24 +210,24 @@ class Block(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like:
+            -  when the text is horizontal it might look like:
 
-              ::
+               ::
 
-                   0----1
-                   |    |
-                   3----2
+                    0----1
+                    |    |
+                    3----2
 
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes:
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes:
 
-              ::
+               ::
 
-                   2----3
-                   |    |
-                   1----0
+                    2----3
+                    |    |
+                    1----0
 
-              and the vertice order will still be (0, 1, 2, 3).
+               and the vertice order will still be (0, 1, 2, 3).
         paragraphs (MutableSequence[google.cloud.vision_v1p2beta1.types.Paragraph]):
             List of paragraphs in this block (if this
             blocks is of type text).
@@ -255,6 +255,7 @@ class Block(proto.Message):
             BARCODE (5):
                 Barcode block.
         """
+
         UNKNOWN = 0
         TEXT = 1
         TABLE = 2
@@ -303,11 +304,11 @@ class Paragraph(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         words (MutableSequence[google.cloud.vision_v1p2beta1.types.Word]):
             List of words in this paragraph.
         confidence (float):
@@ -349,11 +350,11 @@ class Word(proto.Message):
             represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         symbols (MutableSequence[google.cloud.vision_v1p2beta1.types.Symbol]):
             List of symbols in the word.
             The order of the symbols follows the natural
@@ -397,11 +398,11 @@ class Symbol(proto.Message):
             is represented as around the top-left corner as defined when
             the text is read in the 'natural' orientation. For example:
 
-            - when the text is horizontal it might look like: 0----1 \|
-              \| 3----2
-            - when it's rotated 180 degrees around the top-left corner
-              it becomes: 2----3 \| \| 1----0 and the vertice order will
-              still be (0, 1, 2, 3).
+            -  when the text is horizontal it might look like: 0----1 \|
+               \| 3----2
+            -  when it's rotated 180 degrees around the top-left corner
+               it becomes: 2----3 \| \| 1----0 and the vertice order
+               will still be (0, 1, 2, 3).
         text (str):
             The actual UTF-8 representation of the
             symbol.

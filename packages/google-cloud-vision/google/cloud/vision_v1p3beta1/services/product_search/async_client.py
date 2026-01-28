@@ -34,24 +34,26 @@ from google.api_core import gapic_v1
 from google.api_core import retry_async as retries
 from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.cloud.vision_v1p3beta1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.vision_v1p3beta1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
+from google.api_core import (
+    operation,  # type: ignore
+    operation_async,  # type: ignore
+)
 from google.cloud.vision_v1p3beta1.services.product_search import pagers
 from google.cloud.vision_v1p3beta1.types import geometry, product_search_service
+from google.protobuf import (
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+from google.rpc import status_pb2  # type: ignore
 
 from .client import ProductSearchClient
 from .transports.base import DEFAULT_CLIENT_INFO, ProductSearchTransport
@@ -71,22 +73,23 @@ class ProductSearchAsyncClient:
     """Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] resources,
-      named ``projects/*/locations/*/productSets/*``, which acts as a
-      way to put different products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1p3beta1.ProductSet] resources,
+       named ``projects/*/locations/*/productSets/*``, which acts as a
+       way to put different products into groups to limit
+       identification.
 
     In parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1p3beta1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1p3beta1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1p3beta1.Product] has a
-      collection of
-      [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage]
-      resources, named
-      ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1p3beta1.Product] has a
+       collection of
+       [ReferenceImage][google.cloud.vision.v1p3beta1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     _client: ProductSearchClient
@@ -144,7 +147,9 @@ class ProductSearchAsyncClient:
         Returns:
             ProductSearchAsyncClient: The constructed client.
         """
-        return ProductSearchClient.from_service_account_info.__func__(ProductSearchAsyncClient, info, *args, **kwargs)  # type: ignore
+        return ProductSearchClient.from_service_account_info.__func__(
+            ProductSearchAsyncClient, info, *args, **kwargs
+        )  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -160,7 +165,9 @@ class ProductSearchAsyncClient:
         Returns:
             ProductSearchAsyncClient: The constructed client.
         """
-        return ProductSearchClient.from_service_account_file.__func__(ProductSearchAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return ProductSearchClient.from_service_account_file.__func__(
+            ProductSearchAsyncClient, filename, *args, **kwargs
+        )  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -335,8 +342,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is
+           longer than 4096 characters.
 
         .. code-block:: python
 
@@ -476,8 +483,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
+           less than 1.
 
         .. code-block:: python
 
@@ -609,7 +616,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         .. code-block:: python
 
@@ -732,10 +739,10 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but missing from the request or longer than 4096
+           characters.
 
         .. code-block:: python
 
@@ -832,9 +839,9 @@ class ProductSearchAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product_set.name", request.product_set.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product_set.name", request.product_set.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -870,7 +877,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         .. code-block:: python
 
@@ -978,12 +985,12 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-        - Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer
+           than 4096 characters.
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID_ARGUMENT if product_category is missing or
+           invalid.
 
         .. code-block:: python
 
@@ -1118,8 +1125,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 
@@ -1249,7 +1256,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         .. code-block:: python
 
@@ -1370,14 +1377,14 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-        - Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-        - Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but is missing from the request or longer than
+           4096 characters.
+        -  Returns INVALID_ARGUMENT if description is present in
+           update_mask but is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         .. code-block:: python
 
@@ -1471,9 +1478,9 @@ class ProductSearchAsyncClient:
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product.name", request.product.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product.name", request.product.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1509,7 +1516,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the product does not exist.
+        -  Returns NOT_FOUND if the product does not exist.
 
         .. code-block:: python
 
@@ -1627,14 +1634,14 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if the product does not exist.
-        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-        - Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or
+           longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
+           and nothing compatible with the parent product's
+           product_category is detected.
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
+           10 polygons.
 
         .. code-block:: python
 
@@ -1786,7 +1793,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the reference image does not exist.
+        -  Returns NOT_FOUND if the reference image does not exist.
 
         .. code-block:: python
 
@@ -1894,9 +1901,9 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the parent product does not exist.
-        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than
+           100, or less than 1.
 
         .. code-block:: python
 
@@ -2029,7 +2036,7 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         .. code-block:: python
 
@@ -2153,8 +2160,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
+           exist.
 
         .. code-block:: python
 
@@ -2278,8 +2285,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns NOT_FOUND If the Product is not found under the
-          ProductSet.
+        -  Returns NOT_FOUND If the Product is not found under the
+           ProductSet.
 
         .. code-block:: python
 
@@ -2404,8 +2411,8 @@ class ProductSearchAsyncClient:
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 

@@ -17,14 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.cloud.vision_v1p2beta1.types import geometry, text_annotation
+from google.cloud.vision_v1p2beta1.types import web_detection as gcv_web_detection
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from google.type import color_pb2  # type: ignore
-from google.type import latlng_pb2  # type: ignore
+from google.type import (
+    color_pb2,  # type: ignore
+    latlng_pb2,  # type: ignore
+)
 import proto  # type: ignore
-
-from google.cloud.vision_v1p2beta1.types import web_detection as gcv_web_detection
-from google.cloud.vision_v1p2beta1.types import geometry, text_annotation
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p2beta1",
@@ -90,6 +91,7 @@ class Likelihood(proto.Enum):
             It is very likely that the image belongs to
             the specified vertical.
     """
+
     UNKNOWN = 0
     VERY_UNLIKELY = 1
     UNLIKELY = 2
@@ -152,6 +154,7 @@ class Feature(proto.Message):
             WEB_DETECTION (10):
                 Run web detection.
         """
+
         TYPE_UNSPECIFIED = 0
         FACE_DETECTION = 1
         LANDMARK_DETECTION = 2
@@ -396,6 +399,7 @@ class FaceAnnotation(proto.Message):
                 CHIN_RIGHT_GONION (34):
                     Chin right gonion.
             """
+
             UNKNOWN_LANDMARK = 0
             LEFT_EYE = 1
             RIGHT_EYE = 2
@@ -1336,9 +1340,9 @@ class GcsDestination(proto.Message):
 
             Examples:
 
-            - File: gs://bucket-name/filename.json
-            - Prefix: gs://bucket-name/prefix/here/
-            - File: gs://bucket-name/prefix/here
+            -  File: gs://bucket-name/filename.json
+            -  Prefix: gs://bucket-name/prefix/here/
+            -  File: gs://bucket-name/prefix/here
 
             If multiple outputs, each response is still
             AnnotateFileResponse, each of which contains some subset of
@@ -1381,6 +1385,7 @@ class OperationMetadata(proto.Message):
             CANCELLED (4):
                 The batch processing was cancelled.
         """
+
         STATE_UNSPECIFIED = 0
         CREATED = 1
         RUNNING = 2

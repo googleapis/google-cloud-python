@@ -44,28 +44,21 @@ except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
 from google.api_core import (
+    client_options,
     future,
     gapic_v1,
     grpc_helpers,
     grpc_helpers_async,
     operation,
+    operation_async,  # type: ignore
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import operation_async  # type: ignore
 from google.api_core import retry as retries
 import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.longrunning import operations_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import any_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
 from google.cloud.vision_v1p3beta1.services.product_search import (
     ProductSearchAsyncClient,
     ProductSearchClient,
@@ -73,6 +66,14 @@ from google.cloud.vision_v1p3beta1.services.product_search import (
     transports,
 )
 from google.cloud.vision_v1p3beta1.types import geometry, product_search_service
+from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import (
+    any_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+from google.rpc import status_pb2  # type: ignore
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -955,10 +956,9 @@ def test_product_search_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1003,10 +1003,9 @@ def test_product_search_client_get_mtls_endpoint_and_cert_source(client_class):
                             client_cert_source=mock_client_cert_source,
                             api_endpoint=mock_api_endpoint,
                         )
-                        (
-                            api_endpoint,
-                            cert_source,
-                        ) = client_class.get_mtls_endpoint_and_cert_source(options)
+                        api_endpoint, cert_source = (
+                            client_class.get_mtls_endpoint_and_cert_source(options)
+                        )
                         assert api_endpoint == mock_api_endpoint
                         assert cert_source is expected_cert_source
 
@@ -1042,10 +1041,9 @@ def test_product_search_client_get_mtls_endpoint_and_cert_source(client_class):
                 "google.auth.transport.mtls.default_client_cert_source",
                 return_value=mock_client_cert_source,
             ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+                api_endpoint, cert_source = (
+                    client_class.get_mtls_endpoint_and_cert_source()
+                )
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -1288,13 +1286,13 @@ def test_product_search_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(grpc_helpers, "create_channel") as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1414,9 +1412,9 @@ def test_create_product_set_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_product_set] = (
+            mock_rpc
+        )
         request = {}
         client.create_product_set(request)
 
@@ -1778,9 +1776,9 @@ def test_list_product_sets_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_product_sets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_product_sets] = (
+            mock_rpc
+        )
         request = {}
         client.list_product_sets(request)
 
@@ -2648,9 +2646,9 @@ def test_update_product_set_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_product_set] = (
+            mock_rpc
+        )
         request = {}
         client.update_product_set(request)
 
@@ -2999,9 +2997,9 @@ def test_delete_product_set_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_product_set] = (
+            mock_rpc
+        )
         request = {}
         client.delete_product_set(request)
 
@@ -5205,9 +5203,9 @@ def test_create_reference_image_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_reference_image] = (
+            mock_rpc
+        )
         request = {}
         client.create_reference_image(request)
 
@@ -5567,9 +5565,9 @@ def test_delete_reference_image_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_reference_image] = (
+            mock_rpc
+        )
         request = {}
         client.delete_reference_image(request)
 
@@ -5905,9 +5903,9 @@ def test_list_reference_images_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_reference_images
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_reference_images] = (
+            mock_rpc
+        )
         request = {}
         client.list_reference_images(request)
 
@@ -6457,9 +6455,9 @@ def test_get_reference_image_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_reference_image] = (
+            mock_rpc
+        )
         request = {}
         client.get_reference_image(request)
 
@@ -8033,9 +8031,9 @@ def test_import_product_sets_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.import_product_sets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.import_product_sets] = (
+            mock_rpc
+        )
         request = {}
         client.import_product_sets(request)
 
@@ -8348,9 +8346,9 @@ def test_create_product_set_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_product_set] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_product_set(request)
@@ -8451,12 +8449,10 @@ def test_create_product_set_rest_unset_required_fields():
     unset_fields = transport.create_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("productSetId",))
-        & set(
-            (
-                "parent",
-                "productSet",
-            )
-        )
+        & set((
+            "parent",
+            "productSet",
+        ))
     )
 
 
@@ -8543,9 +8539,9 @@ def test_list_product_sets_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_product_sets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_product_sets] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_product_sets(request)
@@ -8588,12 +8584,10 @@ def test_list_product_sets_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_product_sets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -8651,12 +8645,10 @@ def test_list_product_sets_rest_unset_required_fields():
 
     unset_fields = transport.list_product_sets._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -8985,9 +8977,9 @@ def test_update_product_set_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.update_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.update_product_set] = (
+            mock_rpc
+        )
 
         request = {}
         client.update_product_set(request)
@@ -9171,9 +9163,9 @@ def test_delete_product_set_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_product_set
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_product_set] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_product_set(request)
@@ -9449,12 +9441,10 @@ def test_create_product_rest_unset_required_fields():
     unset_fields = transport.create_product._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("productId",))
-        & set(
-            (
-                "parent",
-                "product",
-            )
-        )
+        & set((
+            "parent",
+            "product",
+        ))
     )
 
 
@@ -9584,12 +9574,10 @@ def test_list_products_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_products._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9645,12 +9633,10 @@ def test_list_products_rest_unset_required_fields():
 
     unset_fields = transport.list_products._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -10331,9 +10317,9 @@ def test_create_reference_image_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.create_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.create_reference_image] = (
+            mock_rpc
+        )
 
         request = {}
         client.create_reference_image(request)
@@ -10434,12 +10420,10 @@ def test_create_reference_image_rest_unset_required_fields():
     unset_fields = transport.create_reference_image._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("referenceImageId",))
-        & set(
-            (
-                "parent",
-                "referenceImage",
-            )
-        )
+        & set((
+            "parent",
+            "referenceImage",
+        ))
     )
 
 
@@ -10531,9 +10515,9 @@ def test_delete_reference_image_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.delete_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.delete_reference_image] = (
+            mock_rpc
+        )
 
         request = {}
         client.delete_reference_image(request)
@@ -10711,9 +10695,9 @@ def test_list_reference_images_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.list_reference_images
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.list_reference_images] = (
+            mock_rpc
+        )
 
         request = {}
         client.list_reference_images(request)
@@ -10756,12 +10740,10 @@ def test_list_reference_images_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_reference_images._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10819,12 +10801,10 @@ def test_list_reference_images_rest_unset_required_fields():
 
     unset_fields = transport.list_reference_images._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("parent",))
     )
 
@@ -10982,9 +10962,9 @@ def test_get_reference_image_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.get_reference_image
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.get_reference_image] = (
+            mock_rpc
+        )
 
         request = {}
         client.get_reference_image(request)
@@ -11269,12 +11249,10 @@ def test_add_product_to_product_set_rest_unset_required_fields():
     unset_fields = transport.add_product_to_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "name",
-                "product",
-            )
-        )
+        & set((
+            "name",
+            "product",
+        ))
     )
 
 
@@ -11461,17 +11439,15 @@ def test_remove_product_from_product_set_rest_unset_required_fields():
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.remove_product_from_product_set._get_unset_required_fields(
-        {}
+    unset_fields = (
+        transport.remove_product_from_product_set._get_unset_required_fields({})
     )
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "name",
-                "product",
-            )
-        )
+        & set((
+            "name",
+            "product",
+        ))
     )
 
 
@@ -11604,12 +11580,10 @@ def test_list_products_in_product_set_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).list_products_in_product_set._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(
-        (
-            "page_size",
-            "page_token",
-        )
-    )
+    assert not set(unset_fields) - set((
+        "page_size",
+        "page_token",
+    ))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11667,12 +11641,10 @@ def test_list_products_in_product_set_rest_unset_required_fields():
 
     unset_fields = transport.list_products_in_product_set._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(
-            (
-                "pageSize",
-                "pageToken",
-            )
-        )
+        set((
+            "pageSize",
+            "pageToken",
+        ))
         & set(("name",))
     )
 
@@ -11828,9 +11800,9 @@ def test_import_product_sets_rest_use_cached_wrapped_rpc():
         mock_rpc.return_value.name = (
             "foo"  # operation_request.operation in compute client(s) expect a string.
         )
-        client._transport._wrapped_methods[
-            client._transport.import_product_sets
-        ] = mock_rpc
+        client._transport._wrapped_methods[client._transport.import_product_sets] = (
+            mock_rpc
+        )
 
         request = {}
         client.import_product_sets(request)
@@ -11930,12 +11902,10 @@ def test_import_product_sets_rest_unset_required_fields():
     unset_fields = transport.import_product_sets._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(
-            (
-                "parent",
-                "inputConfig",
-            )
-        )
+        & set((
+            "parent",
+            "inputConfig",
+        ))
     )
 
 
@@ -13048,8 +13018,9 @@ def test_create_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13140,13 +13111,11 @@ def test_create_product_set_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -13198,17 +13167,20 @@ def test_create_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_create_product_set"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_create_product_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_create_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_create_product_set"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_create_product_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_create_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13263,8 +13235,9 @@ def test_list_product_sets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13327,17 +13300,20 @@ def test_list_product_sets_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_product_sets"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_product_sets_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_list_product_sets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_list_product_sets"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_list_product_sets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_list_product_sets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13395,8 +13371,9 @@ def test_get_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13461,17 +13438,20 @@ def test_get_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_get_product_set"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_get_product_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_get_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_get_product_set"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_get_product_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_get_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13530,8 +13510,9 @@ def test_update_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13626,13 +13607,11 @@ def test_update_product_set_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -13684,17 +13663,20 @@ def test_update_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_update_product_set"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_update_product_set_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_update_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_update_product_set"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_update_product_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_update_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -13749,8 +13731,9 @@ def test_delete_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13807,13 +13790,13 @@ def test_delete_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_delete_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_delete_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = product_search_service.DeleteProductSetRequest.pb(
             product_search_service.DeleteProductSetRequest()
@@ -13858,8 +13841,9 @@ def test_create_product_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -13940,13 +13924,11 @@ def test_create_product_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -14002,17 +13984,19 @@ def test_create_product_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_create_product"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_create_product_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_create_product"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_create_product"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_create_product_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_create_product"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14067,8 +14051,9 @@ def test_list_products_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14131,17 +14116,19 @@ def test_list_products_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_products"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_products_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_list_products"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_list_products"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_list_products_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_list_products"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14199,8 +14186,9 @@ def test_get_product_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14269,17 +14257,19 @@ def test_get_product_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_get_product"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_get_product_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_get_product"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_get_product"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_get_product_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_get_product"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14336,8 +14326,9 @@ def test_update_product_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14420,13 +14411,11 @@ def test_update_product_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -14482,17 +14471,19 @@ def test_update_product_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_update_product"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_update_product_with_metadata"
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_update_product"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_update_product"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_update_product_with_metadata"
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_update_product"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14547,8 +14538,9 @@ def test_delete_product_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14605,13 +14597,13 @@ def test_delete_product_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_delete_product"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_delete_product"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = product_search_service.DeleteProductRequest.pb(
             product_search_service.DeleteProductRequest()
@@ -14656,8 +14648,9 @@ def test_create_reference_image_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14743,13 +14736,11 @@ def test_create_reference_image_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({
+                        "field": field,
+                        "subfield": subfield,
+                        "is_repeated": is_repeated,
+                    })
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -14801,18 +14792,20 @@ def test_create_reference_image_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_create_reference_image"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor,
-        "post_create_reference_image_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_create_reference_image"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_create_reference_image"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_create_reference_image_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_create_reference_image"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -14872,8 +14865,9 @@ def test_delete_reference_image_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -14932,13 +14926,13 @@ def test_delete_reference_image_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_delete_reference_image"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_delete_reference_image"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = product_search_service.DeleteReferenceImageRequest.pb(
             product_search_service.DeleteReferenceImageRequest()
@@ -14983,8 +14977,9 @@ def test_list_reference_images_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15051,18 +15046,20 @@ def test_list_reference_images_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_reference_images"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor,
-        "post_list_reference_images_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_list_reference_images"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_list_reference_images"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_list_reference_images_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_list_reference_images"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15122,8 +15119,9 @@ def test_get_reference_image_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15190,18 +15188,20 @@ def test_get_reference_image_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_get_reference_image"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor,
-        "post_get_reference_image_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_get_reference_image"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_get_reference_image"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_get_reference_image_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_get_reference_image"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15259,8 +15259,9 @@ def test_add_product_to_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15317,13 +15318,13 @@ def test_add_product_to_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_add_product_to_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_add_product_to_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = product_search_service.AddProductToProductSetRequest.pb(
             product_search_service.AddProductToProductSetRequest()
@@ -15368,8 +15369,9 @@ def test_remove_product_from_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15426,13 +15428,14 @@ def test_remove_product_from_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_remove_product_from_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "pre_remove_product_from_product_set",
+        ) as pre,
+    ):
         pre.assert_not_called()
         pb_message = product_search_service.RemoveProductFromProductSetRequest.pb(
             product_search_service.RemoveProductFromProductSetRequest()
@@ -15477,8 +15480,9 @@ def test_list_products_in_product_set_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15543,18 +15547,20 @@ def test_list_products_in_product_set_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_list_products_in_product_set"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor,
-        "post_list_products_in_product_set_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_list_products_in_product_set"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_list_products_in_product_set"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_list_products_in_product_set_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_list_products_in_product_set"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -15612,8 +15618,9 @@ def test_import_product_sets_rest_bad_request(
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
+    with (
+        mock.patch.object(Session, "request") as req,
+        pytest.raises(core_exceptions.BadRequest),
     ):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
@@ -15670,20 +15677,21 @@ def test_import_product_sets_rest_interceptors(null_interceptor):
     )
     client = ProductSearchClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
-        path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
-        transports.ProductSearchRestInterceptor, "post_import_product_sets"
-    ) as post, mock.patch.object(
-        transports.ProductSearchRestInterceptor,
-        "post_import_product_sets_with_metadata",
-    ) as post_with_metadata, mock.patch.object(
-        transports.ProductSearchRestInterceptor, "pre_import_product_sets"
-    ) as pre:
+    with (
+        mock.patch.object(type(client.transport._session), "request") as req,
+        mock.patch.object(path_template, "transcode") as transcode,
+        mock.patch.object(operation.Operation, "_set_result_from_operation"),
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "post_import_product_sets"
+        ) as post,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor,
+            "post_import_product_sets_with_metadata",
+        ) as post_with_metadata,
+        mock.patch.object(
+            transports.ProductSearchRestInterceptor, "pre_import_product_sets"
+        ) as pre,
+    ):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
@@ -16208,11 +16216,14 @@ def test_product_search_base_transport():
 
 def test_product_search_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
-        "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(
+            google.auth, "load_credentials_from_file", autospec=True
+        ) as load_creds,
+        mock.patch(
+            "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProductSearchTransport(
@@ -16232,9 +16243,12 @@ def test_product_search_base_transport_with_credentials_file():
 
 def test_product_search_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
-    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
-    ) as Transport:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch(
+            "google.cloud.vision_v1p3beta1.services.product_search.transports.ProductSearchTransport._prep_wrapped_messages"
+        ) as Transport,
+    ):
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProductSearchTransport()
@@ -16312,11 +16326,12 @@ def test_product_search_transport_auth_gdch_credentials(transport_class):
 def test_product_search_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel", autospec=True
-    ) as create_channel:
+    with (
+        mock.patch.object(google.auth, "default", autospec=True) as adc,
+        mock.patch.object(
+            grpc_helpers, "create_channel", autospec=True
+        ) as create_channel,
+    ):
         creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])

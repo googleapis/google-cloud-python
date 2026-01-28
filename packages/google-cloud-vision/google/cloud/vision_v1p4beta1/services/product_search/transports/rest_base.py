@@ -18,11 +18,12 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import json_format
-
 from google.cloud.vision_v1p4beta1.types import product_search_service
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    json_format,
+)
 
 from .base import DEFAULT_CLIENT_INFO, ProductSearchTransport
 

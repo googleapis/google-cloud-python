@@ -42,10 +42,9 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.vision_v1 import gapic_version as package_version
 from google.oauth2 import service_account  # type: ignore
 import google.protobuf
-
-from google.cloud.vision_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
@@ -61,16 +60,19 @@ except ImportError:  # pragma: NO COVER
 
 _LOGGER = std_logging.getLogger(__name__)
 
-from google.api_core import operation  # type: ignore
-from google.api_core import operation_async  # type: ignore
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
+from google.api_core import (
+    operation,  # type: ignore
+    operation_async,  # type: ignore
+)
 from google.cloud.vision_v1.services.product_search import pagers
 from google.cloud.vision_v1.types import geometry, product_search_service
+from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import (
+    empty_pb2,  # type: ignore
+    field_mask_pb2,  # type: ignore
+    timestamp_pb2,  # type: ignore
+)
+from google.rpc import status_pb2  # type: ignore
 
 from .transports.base import DEFAULT_CLIENT_INFO, ProductSearchTransport
 from .transports.grpc import ProductSearchGrpcTransport
@@ -117,20 +119,21 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
     """Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
-      ``projects/*/locations/*/productSets/*``, which acts as a way to
-      put different products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1.ProductSet] resources, named
+       ``projects/*/locations/*/productSets/*``, which acts as a way to
+       put different products into groups to limit identification.
 
     In parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1.Product] has a collection of
-      [ReferenceImage][google.cloud.vision.v1.ReferenceImage] resources,
-      named ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1.Product] has a collection
+       of [ReferenceImage][google.cloud.vision.v1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
     """
 
     @staticmethod
@@ -691,11 +694,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = ProductSearchClient._read_environment_variables()
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = (
+            ProductSearchClient._read_environment_variables()
+        )
         self._client_cert_source = ProductSearchClient._get_client_cert_source(
             self._client_options.client_cert_source, self._use_client_cert
         )
@@ -730,8 +731,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
                 )
             if self._client_options.scopes:
                 raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
+                    "When providing a transport instance, provide its scopes directly."
                 )
             self._transport = cast(ProductSearchTransport, transport)
             self._api_endpoint = self._transport.host
@@ -816,8 +816,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is
+           longer than 4096 characters.
 
         .. code-block:: python
 
@@ -954,8 +954,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
+           less than 1.
 
         .. code-block:: python
 
@@ -1084,7 +1084,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         .. code-block:: python
 
@@ -1204,10 +1204,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but missing from the request or longer than 4096
+           characters.
 
         .. code-block:: python
 
@@ -1301,9 +1301,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product_set.name", request.product_set.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product_set.name", request.product_set.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -1440,12 +1440,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-        - Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer
+           than 4096 characters.
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID_ARGUMENT if product_category is missing or
+           invalid.
 
         .. code-block:: python
 
@@ -1577,8 +1577,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 
@@ -1705,7 +1705,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         .. code-block:: python
 
@@ -1823,14 +1823,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-        - Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-        - Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but is missing from the request or longer than
+           4096 characters.
+        -  Returns INVALID_ARGUMENT if description is present in
+           update_mask but is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         .. code-block:: python
 
@@ -1921,9 +1921,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("product.name", request.product.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((
+                ("product.name", request.product.name),
+            )),
         )
 
         # Validate the universe domain.
@@ -2071,14 +2071,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if the product does not exist.
-        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-        - Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or
+           longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
+           and nothing compatible with the parent product's
+           product_category is detected.
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
+           10 polygons.
 
         .. code-block:: python
 
@@ -2327,9 +2327,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the parent product does not exist.
-        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than
+           100, or less than 1.
 
         .. code-block:: python
 
@@ -2459,7 +2459,7 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         .. code-block:: python
 
@@ -2579,8 +2579,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
+           exist.
 
         .. code-block:: python
 
@@ -2823,8 +2823,8 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         .. code-block:: python
 

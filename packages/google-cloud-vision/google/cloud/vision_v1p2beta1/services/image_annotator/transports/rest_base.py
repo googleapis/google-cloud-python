@@ -18,10 +18,9 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1, path_template
+from google.cloud.vision_v1p2beta1.types import image_annotator
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
-
-from google.cloud.vision_v1p2beta1.types import image_annotator
 
 from .base import DEFAULT_CLIENT_INFO, ImageAnnotatorTransport
 

@@ -23,14 +23,13 @@ from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.cloud.vision_v1p4beta1.types import product_search_service
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.vision_v1p4beta1.types import product_search_service
 
 from .base import DEFAULT_CLIENT_INFO, ProductSearchTransport
 
@@ -115,22 +114,23 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
     Manages Products and ProductSets of reference images for use in
     product search. It uses the following resource model:
 
-    - The API has a collection of
-      [ProductSet][google.cloud.vision.v1p4beta1.ProductSet] resources,
-      named ``projects/*/locations/*/productSets/*``, which acts as a
-      way to put different products into groups to limit identification.
+    -  The API has a collection of
+       [ProductSet][google.cloud.vision.v1p4beta1.ProductSet] resources,
+       named ``projects/*/locations/*/productSets/*``, which acts as a
+       way to put different products into groups to limit
+       identification.
 
     In parallel,
 
-    - The API has a collection of
-      [Product][google.cloud.vision.v1p4beta1.Product] resources, named
-      ``projects/*/locations/*/products/*``
+    -  The API has a collection of
+       [Product][google.cloud.vision.v1p4beta1.Product] resources, named
+       ``projects/*/locations/*/products/*``
 
-    - Each [Product][google.cloud.vision.v1p4beta1.Product] has a
-      collection of
-      [ReferenceImage][google.cloud.vision.v1p4beta1.ReferenceImage]
-      resources, named
-      ``projects/*/locations/*/products/*/referenceImages/*``
+    -  Each [Product][google.cloud.vision.v1p4beta1.Product] has a
+       collection of
+       [ReferenceImage][google.cloud.vision.v1p4beta1.ReferenceImage]
+       resources, named
+       ``projects/*/locations/*/products/*/referenceImages/*``
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -371,8 +371,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing, or is
-          longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if display_name is missing, or is
+           longer than 4096 characters.
 
         Returns:
             Callable[[~.CreateProductSetRequest],
@@ -405,8 +405,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100, or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100, or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductSetsRequest],
@@ -438,7 +438,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
 
         Returns:
             Callable[[~.GetProductSetRequest],
@@ -472,10 +472,10 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the ProductSet does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but missing from the request or longer than 4096
-          characters.
+        -  Returns NOT_FOUND if the ProductSet does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but missing from the request or longer than 4096
+           characters.
 
         Returns:
             Callable[[~.UpdateProductSetRequest],
@@ -537,12 +537,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if display_name is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if description is longer than 4096
-          characters.
-        - Returns INVALID_ARGUMENT if product_category is missing or
-          invalid.
+        -  Returns INVALID_ARGUMENT if display_name is missing or longer
+           than 4096 characters.
+        -  Returns INVALID_ARGUMENT if description is longer than 4096
+           characters.
+        -  Returns INVALID_ARGUMENT if product_category is missing or
+           invalid.
 
         Returns:
             Callable[[~.CreateProductRequest],
@@ -575,8 +575,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductsRequest],
@@ -608,7 +608,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
+        -  Returns NOT_FOUND if the Product does not exist.
 
         Returns:
             Callable[[~.GetProductRequest],
@@ -644,14 +644,14 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product does not exist.
-        - Returns INVALID_ARGUMENT if display_name is present in
-          update_mask but is missing from the request or longer than
-          4096 characters.
-        - Returns INVALID_ARGUMENT if description is present in
-          update_mask but is longer than 4096 characters.
-        - Returns INVALID_ARGUMENT if product_category is present in
-          update_mask.
+        -  Returns NOT_FOUND if the Product does not exist.
+        -  Returns INVALID_ARGUMENT if display_name is present in
+           update_mask but is missing from the request or longer than
+           4096 characters.
+        -  Returns INVALID_ARGUMENT if description is present in
+           update_mask but is longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if product_category is present in
+           update_mask.
 
         Returns:
             Callable[[~.UpdateProductRequest],
@@ -725,14 +725,14 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if the image_uri is missing or longer
-          than 4096 characters.
-        - Returns INVALID_ARGUMENT if the product does not exist.
-        - Returns INVALID_ARGUMENT if bounding_poly is not provided, and
-          nothing compatible with the parent product's product_category
-          is detected.
-        - Returns INVALID_ARGUMENT if bounding_poly contains more than
-          10 polygons.
+        -  Returns INVALID_ARGUMENT if the image_uri is missing or
+           longer than 4096 characters.
+        -  Returns INVALID_ARGUMENT if the product does not exist.
+        -  Returns INVALID_ARGUMENT if bounding_poly is not provided,
+           and nothing compatible with the parent product's
+           product_category is detected.
+        -  Returns INVALID_ARGUMENT if bounding_poly contains more than
+           10 polygons.
 
         Returns:
             Callable[[~.CreateReferenceImageRequest],
@@ -800,9 +800,9 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the parent product does not exist.
-        - Returns INVALID_ARGUMENT if the page_size is greater than 100,
-          or less than 1.
+        -  Returns NOT_FOUND if the parent product does not exist.
+        -  Returns INVALID_ARGUMENT if the page_size is greater than
+           100, or less than 1.
 
         Returns:
             Callable[[~.ListReferenceImagesRequest],
@@ -835,7 +835,7 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the specified image does not exist.
+        -  Returns NOT_FOUND if the specified image does not exist.
 
         Returns:
             Callable[[~.GetReferenceImageRequest],
@@ -870,8 +870,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns NOT_FOUND if the Product or the ProductSet doesn't
-          exist.
+        -  Returns NOT_FOUND if the Product or the ProductSet doesn't
+           exist.
 
         Returns:
             Callable[[~.AddProductToProductSetRequest],
@@ -884,12 +884,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "add_product_to_product_set" not in self._stubs:
-            self._stubs[
-                "add_product_to_product_set"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vision.v1p4beta1.ProductSearch/AddProductToProductSet",
-                request_serializer=product_search_service.AddProductToProductSetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["add_product_to_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1p4beta1.ProductSearch/AddProductToProductSet",
+                    request_serializer=product_search_service.AddProductToProductSetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["add_product_to_product_set"]
 
@@ -915,12 +915,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_product_from_product_set" not in self._stubs:
-            self._stubs[
-                "remove_product_from_product_set"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vision.v1p4beta1.ProductSearch/RemoveProductFromProductSet",
-                request_serializer=product_search_service.RemoveProductFromProductSetRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
+            self._stubs["remove_product_from_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1p4beta1.ProductSearch/RemoveProductFromProductSet",
+                    request_serializer=product_search_service.RemoveProductFromProductSetRequest.serialize,
+                    response_deserializer=empty_pb2.Empty.FromString,
+                )
             )
         return self._stubs["remove_product_from_product_set"]
 
@@ -939,8 +939,8 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
 
         Possible errors:
 
-        - Returns INVALID_ARGUMENT if page_size is greater than 100 or
-          less than 1.
+        -  Returns INVALID_ARGUMENT if page_size is greater than 100 or
+           less than 1.
 
         Returns:
             Callable[[~.ListProductsInProductSetRequest],
@@ -953,12 +953,12 @@ class ProductSearchGrpcTransport(ProductSearchTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_products_in_product_set" not in self._stubs:
-            self._stubs[
-                "list_products_in_product_set"
-            ] = self._logged_channel.unary_unary(
-                "/google.cloud.vision.v1p4beta1.ProductSearch/ListProductsInProductSet",
-                request_serializer=product_search_service.ListProductsInProductSetRequest.serialize,
-                response_deserializer=product_search_service.ListProductsInProductSetResponse.deserialize,
+            self._stubs["list_products_in_product_set"] = (
+                self._logged_channel.unary_unary(
+                    "/google.cloud.vision.v1p4beta1.ProductSearch/ListProductsInProductSet",
+                    request_serializer=product_search_service.ListProductsInProductSetRequest.serialize,
+                    response_deserializer=product_search_service.ListProductsInProductSetResponse.deserialize,
+                )
             )
         return self._stubs["list_products_in_product_set"]
 

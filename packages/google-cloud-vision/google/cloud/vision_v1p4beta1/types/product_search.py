@@ -17,10 +17,9 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.cloud.vision_v1p4beta1.types import geometry, product_search_service
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
-
-from google.cloud.vision_v1p4beta1.types import geometry, product_search_service
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p4beta1",
@@ -199,12 +198,12 @@ class ProductSearchResults(proto.Message):
             number=2,
             message="ProductSearchResults.Result",
         )
-        object_annotations: MutableSequence[
-            "ProductSearchResults.ObjectAnnotation"
-        ] = proto.RepeatedField(
-            proto.MESSAGE,
-            number=3,
-            message="ProductSearchResults.ObjectAnnotation",
+        object_annotations: MutableSequence["ProductSearchResults.ObjectAnnotation"] = (
+            proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="ProductSearchResults.ObjectAnnotation",
+            )
         )
 
     index_time: timestamp_pb2.Timestamp = proto.Field(

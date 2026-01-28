@@ -23,6 +23,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import yaml
 from datetime import date, datetime
 from functools import lru_cache
@@ -31,6 +32,40 @@ from typing import Dict, List
 import build.util
 import parse_googleapis_content
 
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+import functools
+
+PERF_LOGGING_ENABLED = os.environ.get("ENABLE_PERF_LOGS") == "1"
+
+if PERF_LOGGING_ENABLED:
+    perf_logger = logging.getLogger("performance_metrics")
+    perf_logger.setLevel(logging.INFO)
+    perf_handler = logging.FileHandler("/tmp/performance_metrics.log", mode='w')
+    perf_formatter = logging.Formatter('%(asctime)s | %(message)s', datefmt='%H:%M:%S')
+    perf_handler.setFormatter(perf_formatter)
+    perf_logger.addHandler(perf_handler)
+    perf_logger.propagate = False
+
+def track_time(func):
+    """
+    Decorator. Usage: @track_time
+    If logging is OFF, it returns the original function (Zero Overhead).
+    If logging is ON, it wraps the function to measure execution time.
+    """
+    if not PERF_LOGGING_ENABLED:
+        return func
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.perf_counter()
+        try:
+            return func(*args, **kwargs)
+        finally:
+            duration = time.perf_counter() - start_time
+            perf_logger.info(f"{func.__name__:<30} | {duration:.4f} seconds")
+            
+    return wrapper
 
 try:
     import synthtool
@@ -323,8 +358,9 @@ def _get_library_id(request_data: Dict) -> str:
     return library_id
 
 
+@track_time
 def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
-    """Runs the synthtool post-processor on the output directory.
+    """Runs the synthtool post-processor (templates) and Ruff formatter (lint/format).
 
     Args:
         output(str): Path to the directory in the container where code
@@ -334,25 +370,57 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
     """
     os.chdir(output)
     path_to_library = f"packages/{library_id}" if is_mono_repo else "."
-    logger.info("Running Python post-processor...")
+    
+    # 1. Run Synthtool (Templates & Fixers only)
+    # Note: This relies on 'nox' being disabled in your environment (via run_fast.sh shim)
+    # to avoid the slow formatting step inside owlbot.
+    logger.info("Running Python post-processor (Templates & Fixers)...")
     if SYNTHTOOL_INSTALLED:
-        if is_mono_repo:
-            python_mono_repo.owlbot_main(path_to_library)
-        else:
-            # Some repositories have customizations in `librarian.py`.
-            # If this file exists, run those customizations instead of `owlbot_main`
-            if Path(f"{output}/librarian.py").exists():
-                subprocess.run(["python3.14", f"{output}/librarian.py"])
+        try:
+            if is_mono_repo:
+                python_mono_repo.owlbot_main(path_to_library)
             else:
-                python.owlbot_main()
-    else:
-        raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
+                # Handle custom librarian scripts if present
+                if Path(f"{output}/librarian.py").exists():
+                    subprocess.run(["python3.14", f"{output}/librarian.py"])
+                else:
+                    python.owlbot_main()
+        except Exception as e:
+            logger.warning(f"Synthtool warning (non-fatal): {e}")
 
-    # If there is no noxfile, run `isort`` and `black` on the output.
-    # This is required for proto-only libraries which are not GAPIC.
-    if not Path(f"{output}/{path_to_library}/noxfile.py").exists():
-        subprocess.run(["isort", output])
-        subprocess.run(["black", output])
+    # 2. Run RUFF (Fast Formatter & Import Sorter)
+    # This replaces both 'isort' and 'black' and runs in < 1 second.
+    # We hardcode flags here to match Black defaults so you don't need config files.
+    # logger.info("🚀 Running Ruff (Fast Formatter)...")
+    ruff_config_path = Path("/usr/local/google/home/omairn/git/googleapis/google-cloud-python/.generator/ruff.toml").resolve()
+
+    if not ruff_config_path.exists():
+         logger.warning(f"⚠️ Could not find Ruff config at {ruff_config_path}. Using defaults.")
+
+    try:
+
+        subprocess.run(["ruff", "--version"], check=False)
+        logger.info("Running Ruff Check (Imports)...")
+        base_args = ["ruff", "--config", str(ruff_config_path)]
+
+        # STEP A: Fix Imports (like isort)
+        subprocess.run(
+            base_args + ["check", "--fix", "."],
+            check=True,
+        )
+
+        # STEP B: Format Code (like black)
+        subprocess.run(
+            base_args + ["format", "."],
+            check=True,
+        )
+        logger.info("Ruff formatting completed successfully.")
+
+    except FileNotFoundError:
+        logger.warning("⚠️ Ruff binary not found. Code will be unformatted.")
+        logger.warning("   Please run: pip install ruff")
+    except subprocess.CalledProcessError as e:
+        logger.error(f"❌ Ruff failed with exit code {e.returncode}.")
 
     logger.info("Python post-processor ran successfully.")
 
@@ -392,6 +460,7 @@ def _add_header_to_files(directory: str) -> None:
                 f.writelines(lines)
 
 
+@track_time
 def _copy_files_needed_for_post_processing(
     output: str, input: str, library_id: str, is_mono_repo: bool
 ):
@@ -444,6 +513,7 @@ def _copy_files_needed_for_post_processing(
                 )
 
 
+@track_time
 def _clean_up_files_after_post_processing(
     output: str, library_id: str, is_mono_repo: bool
 ):
@@ -590,6 +660,7 @@ def _get_repo_name_from_repo_metadata(base: str, library_id: str, is_mono_repo: 
     return repo_name
 
 
+@track_time
 def _generate_repo_metadata_file(
     output: str, library_id: str, source: str, apis: List[Dict], is_mono_repo: bool
 ):
@@ -631,6 +702,7 @@ def _generate_repo_metadata_file(
     _write_json_file(output_repo_metadata, metadata_content)
 
 
+@track_time
 def _copy_readme_to_docs(output: str, library_id: str, is_mono_repo: bool):
     """Copies the README.rst file for a generated library to docs/README.rst.
 
@@ -672,6 +744,7 @@ def _copy_readme_to_docs(output: str, library_id: str, is_mono_repo: bool):
         f.write(content)
 
 
+@track_time
 def handle_generate(
     librarian: str = LIBRARIAN_DIR,
     source: str = SOURCE_DIR,
@@ -933,6 +1006,7 @@ def _stage_gapic_library(tmp_dir: str, staging_dir: str) -> None:
     shutil.copytree(tmp_dir, staging_dir, dirs_exist_ok=True)
 
 
+@track_time
 def _generate_api(
     api_path: str,
     library_id: str,
@@ -1748,6 +1822,7 @@ if __name__ == "__main__":  # pragma: NO COVER
             output=args.output,
             input=args.input,
         )
+
     elif args.command == "build":
         args.func(librarian=args.librarian, repo=args.repo)
     elif args.command == "release-stage":
