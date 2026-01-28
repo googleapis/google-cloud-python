@@ -78,6 +78,7 @@ Services for Google Cloud Compute v1beta API
     region_instances
     region_instance_templates
     region_instant_snapshots
+    region_multi_mig_members
     region_multi_migs
     region_network_endpoint_groups
     region_network_firewall_policies

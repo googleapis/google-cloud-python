@@ -1823,6 +1823,7 @@ def test_bulk_insert_rest_call_success(request_type):
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
                     "kind": "kind_value",
+                    "mac_address": "mac_address_value",
                     "name": "name_value",
                     "network": "network_value",
                     "network_attachment": "network_attachment_value",
