@@ -605,7 +605,7 @@ class _BaseVpcFlowLogsServiceRestTransport(VpcFlowLogsServiceTransport):
                 },
                 {
                     "method": "post",
-                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                    "uri": "/v1/{name=organizations/*/locations/global/operations/*}:cancel",
                     "body": "*",
                 },
             ]
@@ -640,7 +640,7 @@ class _BaseVpcFlowLogsServiceRestTransport(VpcFlowLogsServiceTransport):
                 },
                 {
                     "method": "delete",
-                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    "uri": "/v1/{name=organizations/*/locations/global/operations/*}",
                 },
             ]
             return http_options
@@ -669,7 +669,7 @@ class _BaseVpcFlowLogsServiceRestTransport(VpcFlowLogsServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                    "uri": "/v1/{name=organizations/*/locations/global/operations/*}",
                 },
             ]
             return http_options
@@ -698,7 +698,7 @@ class _BaseVpcFlowLogsServiceRestTransport(VpcFlowLogsServiceTransport):
                 },
                 {
                     "method": "get",
-                    "uri": "/v1/{name=organizations/*/locations/*}/operations",
+                    "uri": "/v1/{name=organizations/*/locations/global}/operations",
                 },
             ]
             return http_options

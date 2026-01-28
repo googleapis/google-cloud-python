@@ -1069,7 +1069,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
     version: 2.62.0
-    last_generated_commit: 94ccdfe4519e0ba817bd33aa22eb9c64f88a6874
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/container/v1
         service_config: container_v1.yaml
@@ -1416,7 +1416,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
     version: 3.8.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/documentai/v1beta3
         service_config: documentai_v1beta3.yaml
@@ -2097,7 +2097,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
     version: 1.31.0
-    last_generated_commit: 53f97391f3451398f7b53c7f86dabd325d205677
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/networkmanagement/v1
         service_config: networkmanagement_v1.yaml
@@ -2387,7 +2387,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
     version: 0.3.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/api/cloudquotas/v1
         service_config: cloudquotas_v1.yaml
@@ -2507,7 +2507,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
     version: 2.8.0
-    last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/retail/v2
         service_config: retail_v2.yaml
@@ -3598,7 +3598,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: googleapis-common-protos
     version: 1.72.0
-    last_generated_commit: 87e3579c041a50f985f8de71e9494c8fc85d520b
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/api
         service_config: serviceconfig.yaml
@@ -3625,7 +3625,7 @@ libraries:
     tag_format: '{id}-v{version}'
   - id: grafeas
     version: 1.18.0
-    last_generated_commit: 94aa4f5ae672addf00e7970ecc47699e34989e90
+    last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: grafeas/v1
         service_config: grafeas_v1.yaml

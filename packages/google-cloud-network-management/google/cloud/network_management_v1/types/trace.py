@@ -43,6 +43,8 @@ __protobuf__ = proto.module(
         "AbortInfo",
         "DropInfo",
         "GKEMasterInfo",
+        "GkePodInfo",
+        "IpMasqueradingSkippedInfo",
         "CloudSQLInstanceInfo",
         "RedisInstanceInfo",
         "RedisClusterInfo",
@@ -287,6 +289,16 @@ class Step(proto.Message):
             Engine cluster master.
 
             This field is a member of `oneof`_ ``step_info``.
+        gke_pod (google.cloud.network_management_v1.types.GkePodInfo):
+            Display information of a Google Kubernetes
+            Engine Pod.
+
+            This field is a member of `oneof`_ ``step_info``.
+        ip_masquerading_skipped (google.cloud.network_management_v1.types.IpMasqueradingSkippedInfo):
+            Display information of the reason why GKE Pod
+            IP masquerading was skipped.
+
+            This field is a member of `oneof`_ ``step_info``.
         cloud_sql_instance (google.cloud.network_management_v1.types.CloudSQLInstanceInfo):
             Display information of a Cloud SQL instance.
 
@@ -370,6 +382,10 @@ class Step(proto.Message):
                 Initial state: packet originating from a
                 Cloud SQL instance. A CloudSQLInstanceInfo is
                 populated with starting instance information.
+            START_FROM_GKE_POD (39):
+                Initial state: packet originating from a
+                Google Kubernetes Engine Pod. A GkePodInfo is
+                populated with starting Pod information.
             START_FROM_REDIS_INSTANCE (32):
                 Initial state: packet originating from a
                 Redis instance. A RedisInstanceInfo is populated
@@ -454,6 +470,10 @@ class Step(proto.Message):
             NAT (14):
                 Transition state: packet header translated. The ``nat``
                 field is populated with the translation information.
+            SKIP_GKE_POD_IP_MASQUERADING (40):
+                Transition state: GKE Pod IP masquerading is skipped. The
+                ``ip_masquerading_skipped`` field is populated with the
+                reason.
             PROXY_CONNECTION (15):
                 Transition state: original connection is
                 terminated and a new proxied connection is
@@ -479,6 +499,7 @@ class Step(proto.Message):
         START_FROM_PRIVATE_NETWORK = 3
         START_FROM_GKE_MASTER = 21
         START_FROM_CLOUD_SQL_INSTANCE = 22
+        START_FROM_GKE_POD = 39
         START_FROM_REDIS_INSTANCE = 32
         START_FROM_REDIS_CLUSTER = 33
         START_FROM_CLOUD_FUNCTION = 23
@@ -504,6 +525,7 @@ class Step(proto.Message):
         DIRECT_VPC_EGRESS_CONNECTION = 35
         SERVERLESS_EXTERNAL_CONNECTION = 36
         NAT = 14
+        SKIP_GKE_POD_IP_MASQUERADING = 40
         PROXY_CONNECTION = 15
         DELIVER = 16
         DROP = 17
@@ -647,6 +669,18 @@ class Step(proto.Message):
         number=18,
         oneof="step_info",
         message="GKEMasterInfo",
+    )
+    gke_pod: "GkePodInfo" = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        oneof="step_info",
+        message="GkePodInfo",
+    )
+    ip_masquerading_skipped: "IpMasqueradingSkippedInfo" = proto.Field(
+        proto.MESSAGE,
+        number=38,
+        oneof="step_info",
+        message="IpMasqueradingSkippedInfo",
     )
     cloud_sql_instance: "CloudSQLInstanceInfo" = proto.Field(
         proto.MESSAGE,
@@ -927,13 +961,19 @@ class FirewallInfo(proto.Message):
                 implicit
                 rules <https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>`__.
             NETWORK_FIREWALL_POLICY_RULE (5):
-                Global network firewall policy rule. For details, see
-                `Network firewall
+                User-defined global network firewall policy rule. For
+                details, see `Network firewall
                 policies <https://cloud.google.com/vpc/docs/network-firewall-policies>`__.
             NETWORK_REGIONAL_FIREWALL_POLICY_RULE (6):
-                Regional network firewall policy rule. For details, see
-                `Regional network firewall
+                User-defined regional network firewall policy rule. For
+                details, see `Regional network firewall
                 policies <https://cloud.google.com/firewall/docs/regional-firewall-policies>`__.
+            SYSTEM_NETWORK_FIREWALL_POLICY_RULE (7):
+                System-defined global network firewall policy
+                rule.
+            SYSTEM_REGIONAL_NETWORK_FIREWALL_POLICY_RULE (8):
+                System-defined regional network firewall
+                policy rule.
             UNSUPPORTED_FIREWALL_POLICY_RULE (100):
                 Firewall policy rule containing attributes not yet supported
                 in Connectivity tests. Firewall analysis is skipped if such
@@ -957,6 +997,8 @@ class FirewallInfo(proto.Message):
         SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE = 4
         NETWORK_FIREWALL_POLICY_RULE = 5
         NETWORK_REGIONAL_FIREWALL_POLICY_RULE = 6
+        SYSTEM_NETWORK_FIREWALL_POLICY_RULE = 7
+        SYSTEM_REGIONAL_NETWORK_FIREWALL_POLICY_RULE = 8
         UNSUPPORTED_FIREWALL_POLICY_RULE = 100
         TRACKING_STATE = 101
         ANALYSIS_SKIPPED = 102
@@ -2039,6 +2081,8 @@ class DeliverInfo(proto.Message):
                 Target is a Redis Instance.
             REDIS_CLUSTER (17):
                 Target is a Redis Cluster.
+            GKE_POD (19):
+                Target is a GKE Pod.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -2058,6 +2102,7 @@ class DeliverInfo(proto.Message):
         GOOGLE_MANAGED_SERVICE = 15
         REDIS_INSTANCE = 16
         REDIS_CLUSTER = 17
+        GKE_POD = 19
 
     class GoogleServiceType(proto.Enum):
         r"""Recognized type of a Google Service.
@@ -2277,8 +2322,20 @@ class AbortInfo(proto.Message):
                 test.
             NO_SOURCE_LOCATION (5):
                 Aborted because no valid source or
-                destination endpoint is derived from the input
+                destination endpoint can be derived from the
                 test request.
+            NO_SOURCE_GCP_NETWORK_LOCATION (42):
+                Aborted because the source IP address is not
+                contained within the subnet ranges of the
+                provided VPC network.
+            NO_SOURCE_NON_GCP_NETWORK_LOCATION (43):
+                Aborted because the source IP address is not
+                contained within the destination ranges of the
+                routes towards non-GCP networks in the provided
+                VPC network.
+            NO_SOURCE_INTERNET_LOCATION (44):
+                Aborted because the source IP address can't
+                be resolved as an Internet IP address.
             INVALID_ARGUMENT (6):
                 Aborted because the source or destination
                 endpoint specified in the request is invalid.
@@ -2334,6 +2391,11 @@ class AbortInfo(proto.Message):
             SOURCE_PSC_CLOUD_SQL_UNSUPPORTED (20):
                 Aborted because tests with a PSC-based Cloud
                 SQL instance as a source are not supported.
+            SOURCE_EXTERNAL_CLOUD_SQL_UNSUPPORTED (45):
+                Aborted because tests with the external
+                database as a source are not supported. In such
+                replication scenarios, the connection is
+                initiated by the Cloud SQL replica instance.
             SOURCE_REDIS_CLUSTER_UNSUPPORTED (34):
                 Aborted because tests with a Redis Cluster as
                 a source are not supported.
@@ -2361,6 +2423,11 @@ class AbortInfo(proto.Message):
             IP_VERSION_PROTOCOL_MISMATCH (40):
                 Aborted because the used protocol is not
                 supported for the used IP version.
+            GKE_POD_UNKNOWN_ENDPOINT_LOCATION (41):
+                Aborted because selected GKE Pod endpoint
+                location is unknown. This is often the case for
+                "Pending" Pods, which don't have assigned IP
+                addresses yet.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
@@ -2379,6 +2446,9 @@ class AbortInfo(proto.Message):
         PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS = 29
         PERMISSION_DENIED_NO_CLOUD_ROUTER_CONFIGS = 36
         NO_SOURCE_LOCATION = 5
+        NO_SOURCE_GCP_NETWORK_LOCATION = 42
+        NO_SOURCE_NON_GCP_NETWORK_LOCATION = 43
+        NO_SOURCE_INTERNET_LOCATION = 44
         INVALID_ARGUMENT = 6
         TRACE_TOO_LONG = 9
         INTERNAL_ERROR = 10
@@ -2393,6 +2463,7 @@ class AbortInfo(proto.Message):
         GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT = 19
         GOOGLE_MANAGED_SERVICE_AMBIGUOUS_ENDPOINT = 39
         SOURCE_PSC_CLOUD_SQL_UNSUPPORTED = 20
+        SOURCE_EXTERNAL_CLOUD_SQL_UNSUPPORTED = 45
         SOURCE_REDIS_CLUSTER_UNSUPPORTED = 34
         SOURCE_REDIS_INSTANCE_UNSUPPORTED = 35
         SOURCE_FORWARDING_RULE_UNSUPPORTED = 21
@@ -2401,6 +2472,7 @@ class AbortInfo(proto.Message):
         UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG = 31
         NO_SERVERLESS_IP_RANGES = 37
         IP_VERSION_PROTOCOL_MISMATCH = 40
+        GKE_POD_UNKNOWN_ENDPOINT_LOCATION = 41
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2495,8 +2567,11 @@ class DropInfo(proto.Message):
                 invalid (it's not a forwarding rule of the
                 internal passthrough load balancer).
             NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS (44):
-                Packet is sent from the Internet or Google
-                service to the private IPv6 address.
+                Packet is sent from the Internet to the
+                private IPv6 address.
+            NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV4_ADDRESS (109):
+                Packet is sent from the Internet to the
+                private IPv4 address.
             NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS (98):
                 Packet is sent from the external IPv6 source
                 address of an instance to the private IPv6
@@ -2552,6 +2627,9 @@ class DropInfo(proto.Message):
             GKE_CLUSTER_NOT_RUNNING (27):
                 Packet sent from or to a GKE cluster that is
                 not in running state.
+            GKE_POD_NOT_RUNNING (103):
+                Packet sent from or to a GKE Pod that is not
+                in running state.
             CLOUD_SQL_INSTANCE_NOT_RUNNING (28):
                 Packet sent from or to a Cloud SQL instance
                 that is not in running state.
@@ -2794,6 +2872,10 @@ class DropInfo(proto.Message):
                 Packet with destination IP address within the
                 reserved NAT64 range is dropped due to no
                 matching NAT gateway in the subnet.
+            NO_CONFIGURED_PRIVATE_NAT64_RULE (107):
+                Packet is dropped due to matching a Private
+                NAT64 gateway with no rules for source IPv6
+                addresses.
             LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH (96):
                 Packet is dropped due to being sent to a
                 backend of a passthrough load balancer that
@@ -2826,6 +2908,9 @@ class DropInfo(proto.Message):
                 hybrid subnet is different from the region of
                 the next hop of the route matched within this
                 hybrid subnet.
+            HYBRID_SUBNET_NO_ROUTE (106):
+                Packet is dropped because no matching route
+                was found in the hybrid subnet.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -2842,6 +2927,7 @@ class DropInfo(proto.Message):
         ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED = 52
         ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID = 53
         NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS = 44
+        NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV4_ADDRESS = 109
         NO_ROUTE_FROM_EXTERNAL_IPV6_SOURCE_TO_PRIVATE_IPV6_ADDRESS = 98
         VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH = 45
         VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH = 46
@@ -2856,6 +2942,7 @@ class DropInfo(proto.Message):
         INGRESS_FIREWALL_TAGS_UNSUPPORTED_BY_DIRECT_VPC_EGRESS = 85
         INSTANCE_NOT_RUNNING = 14
         GKE_CLUSTER_NOT_RUNNING = 27
+        GKE_POD_NOT_RUNNING = 103
         CLOUD_SQL_INSTANCE_NOT_RUNNING = 28
         REDIS_INSTANCE_NOT_RUNNING = 68
         REDIS_CLUSTER_NOT_RUNNING = 69
@@ -2918,6 +3005,7 @@ class DropInfo(proto.Message):
         UNSUPPORTED_ROUTE_MATCHED_FOR_NAT64_DESTINATION = 88
         TRAFFIC_FROM_HYBRID_ENDPOINT_TO_INTERNET_DISALLOWED = 89
         NO_MATCHING_NAT64_GATEWAY = 90
+        NO_CONFIGURED_PRIVATE_NAT64_RULE = 107
         LOAD_BALANCER_BACKEND_IP_VERSION_MISMATCH = 96
         NO_KNOWN_ROUTE_FROM_NCC_NETWORK_TO_DESTINATION = 97
         CLOUD_NAT_PROTOCOL_UNSUPPORTED = 99
@@ -2926,6 +3014,7 @@ class DropInfo(proto.Message):
         L2_INTERCONNECT_DESTINATION_IP_MISMATCH = 102
         NCC_ROUTE_WITHIN_HYBRID_SUBNET_UNSUPPORTED = 104
         HYBRID_SUBNET_REGION_MISMATCH = 105
+        HYBRID_SUBNET_NO_ROUTE = 106
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -2996,6 +3085,103 @@ class GKEMasterInfo(proto.Message):
     dns_endpoint: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class GkePodInfo(proto.Message):
+    r"""For display only. Metadata associated with a Google
+    Kubernetes Engine (GKE) Pod.
+
+    Attributes:
+        pod_uri (str):
+            URI of a GKE Pod. For Pods in regional Clusters, the URI
+            format is:
+            ``projects/{project}/locations/{location}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}``
+            For Pods in zonal Clusters, the URI format is:
+            ``projects/{project}/zones/{zone}/clusters/{cluster}/k8s/namespaces/{namespace}/pods/{pod}``
+        ip_address (str):
+            IP address of a GKE Pod. If the Pod is
+            dual-stack, this is the IP address relevant to
+            the trace.
+        network_uri (str):
+            URI of the network containing the GKE Pod.
+    """
+
+    pod_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class IpMasqueradingSkippedInfo(proto.Message):
+    r"""For display only. Contains information about why IP
+    masquerading was skipped for the packet.
+
+    Attributes:
+        reason (google.cloud.network_management_v1.types.IpMasqueradingSkippedInfo.Reason):
+            Reason why IP masquerading was not applied.
+        non_masquerade_range (str):
+            The matched non-masquerade IP range. Only set if reason is
+            DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE or
+            DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE.
+    """
+
+    class Reason(proto.Enum):
+        r"""Reason why IP masquerading was skipped.
+
+        Values:
+            REASON_UNSPECIFIED (0):
+                Unused default value.
+            DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE (1):
+                Masquerading not applied because destination
+                IP is in one of configured non-masquerade
+                ranges.
+            DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE (2):
+                Masquerading not applied because destination
+                IP is in one of default non-masquerade ranges.
+            DESTINATION_ON_SAME_NODE (3):
+                Masquerading not applied because destination
+                is on the same Node.
+            DEFAULT_SNAT_DISABLED (4):
+                Masquerading not applied because
+                ip-masq-agent doesn't exist and default SNAT is
+                disabled.
+            NO_MASQUERADING_FOR_IPV6 (5):
+                Masquerading not applied because the packet's
+                IP version is IPv6.
+            POD_USES_NODE_NETWORK_NAMESPACE (6):
+                Masquerading not applied because the source
+                Pod uses the host Node's network namespace,
+                including the Node's IP address.
+            NO_MASQUERADING_FOR_RETURN_PACKET (7):
+                Masquerading not applied because the packet
+                is a return packet.
+        """
+        REASON_UNSPECIFIED = 0
+        DESTINATION_IP_IN_CONFIGURED_NON_MASQUERADE_RANGE = 1
+        DESTINATION_IP_IN_DEFAULT_NON_MASQUERADE_RANGE = 2
+        DESTINATION_ON_SAME_NODE = 3
+        DEFAULT_SNAT_DISABLED = 4
+        NO_MASQUERADING_FOR_IPV6 = 5
+        POD_USES_NODE_NETWORK_NAMESPACE = 6
+        NO_MASQUERADING_FOR_RETURN_PACKET = 7
+
+    reason: Reason = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Reason,
+    )
+    non_masquerade_range: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -3367,6 +3553,9 @@ class NatInfo(proto.Message):
         nat_gateway_name (str):
             The name of Cloud NAT Gateway. Only valid when type is
             CLOUD_NAT.
+        cloud_nat_gateway_type (google.cloud.network_management_v1.types.NatInfo.CloudNatGatewayType):
+            Type of Cloud NAT gateway. Only valid when ``type`` is
+            CLOUD_NAT.
     """
 
     class Type(proto.Enum):
@@ -3394,6 +3583,30 @@ class NatInfo(proto.Message):
         CLOUD_NAT = 3
         PRIVATE_SERVICE_CONNECT = 4
         GKE_POD_IP_MASQUERADING = 5
+
+    class CloudNatGatewayType(proto.Enum):
+        r"""Types of Cloud NAT gateway.
+
+        Values:
+            CLOUD_NAT_GATEWAY_TYPE_UNSPECIFIED (0):
+                Type is unspecified.
+            PUBLIC_NAT44 (1):
+                Public NAT gateway.
+            PUBLIC_NAT64 (2):
+                Public NAT64 gateway.
+            PRIVATE_NAT_NCC (3):
+                Private NAT gateway for NCC.
+            PRIVATE_NAT_HYBRID (4):
+                Private NAT gateway for hybrid connectivity.
+            PRIVATE_NAT64 (5):
+                Private NAT64 gateway.
+        """
+        CLOUD_NAT_GATEWAY_TYPE_UNSPECIFIED = 0
+        PUBLIC_NAT44 = 1
+        PUBLIC_NAT64 = 2
+        PRIVATE_NAT_NCC = 3
+        PRIVATE_NAT_HYBRID = 4
+        PRIVATE_NAT64 = 5
 
     type_: Type = proto.Field(
         proto.ENUM,
@@ -3447,6 +3660,11 @@ class NatInfo(proto.Message):
     nat_gateway_name: str = proto.Field(
         proto.STRING,
         number=13,
+    )
+    cloud_nat_gateway_type: CloudNatGatewayType = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=CloudNatGatewayType,
     )
 
 

@@ -1667,6 +1667,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
             endpoint="endpoint_value",
             initial_cluster_version="initial_cluster_version_value",
             current_master_version="current_master_version_value",
+            current_emulated_version="current_emulated_version_value",
             current_node_version="current_node_version_value",
             create_time="create_time_value",
             status=cluster_service.Cluster.Status.PROVISIONING,
@@ -1713,6 +1714,7 @@ def test_get_cluster(request_type, transport: str = "grpc"):
     assert response.endpoint == "endpoint_value"
     assert response.initial_cluster_version == "initial_cluster_version_value"
     assert response.current_master_version == "current_master_version_value"
+    assert response.current_emulated_version == "current_emulated_version_value"
     assert response.current_node_version == "current_node_version_value"
     assert response.create_time == "create_time_value"
     assert response.status == cluster_service.Cluster.Status.PROVISIONING
@@ -1879,6 +1881,7 @@ async def test_get_cluster_async(
                 endpoint="endpoint_value",
                 initial_cluster_version="initial_cluster_version_value",
                 current_master_version="current_master_version_value",
+                current_emulated_version="current_emulated_version_value",
                 current_node_version="current_node_version_value",
                 create_time="create_time_value",
                 status=cluster_service.Cluster.Status.PROVISIONING,
@@ -1926,6 +1929,7 @@ async def test_get_cluster_async(
     assert response.endpoint == "endpoint_value"
     assert response.initial_cluster_version == "initial_cluster_version_value"
     assert response.current_master_version == "current_master_version_value"
+    assert response.current_emulated_version == "current_emulated_version_value"
     assert response.current_node_version == "current_node_version_value"
     assert response.create_time == "create_time_value"
     assert response.status == cluster_service.Cluster.Status.PROVISIONING
@@ -15309,6 +15313,305 @@ async def test_fetch_node_pool_upgrade_info_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cluster_service.CompleteControlPlaneUpgradeRequest,
+        dict,
+    ],
+)
+def test_complete_control_plane_upgrade(request_type, transport: str = "grpc"):
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = cluster_service.Operation(
+            name="name_value",
+            zone="zone_value",
+            operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+            status=cluster_service.Operation.Status.PENDING,
+            detail="detail_value",
+            status_message="status_message_value",
+            self_link="self_link_value",
+            target_link="target_link_value",
+            location="location_value",
+            start_time="start_time_value",
+            end_time="end_time_value",
+        )
+        response = client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        request = cluster_service.CompleteControlPlaneUpgradeRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.Operation)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.operation_type == cluster_service.Operation.Type.CREATE_CLUSTER
+    assert response.status == cluster_service.Operation.Status.PENDING
+    assert response.detail == "detail_value"
+    assert response.status_message == "status_message_value"
+    assert response.self_link == "self_link_value"
+    assert response.target_link == "target_link_value"
+    assert response.location == "location_value"
+    assert response.start_time == "start_time_value"
+    assert response.end_time == "end_time_value"
+
+
+def test_complete_control_plane_upgrade_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cluster_service.CompleteControlPlaneUpgradeRequest(
+        name="name_value",
+        version="version_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        call.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client.complete_control_plane_upgrade(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cluster_service.CompleteControlPlaneUpgradeRequest(
+            name="name_value",
+            version="version_value",
+        )
+
+
+def test_complete_control_plane_upgrade_use_cached_wrapped_rpc():
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method.wrap_method") as wrapper_fn:
+        client = ClusterManagerClient(
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport="grpc",
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._transport.complete_control_plane_upgrade
+            in client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.Mock()
+        mock_rpc.return_value.name = (
+            "foo"  # operation_request.operation in compute client(s) expect a string.
+        )
+        client._transport._wrapped_methods[
+            client._transport.complete_control_plane_upgrade
+        ] = mock_rpc
+        request = {}
+        client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        client.complete_control_plane_upgrade(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_complete_control_plane_upgrade_async_use_cached_wrapped_rpc(
+    transport: str = "grpc_asyncio",
+):
+    # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
+    # instead of constructing them on each call
+    with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
+        client = ClusterManagerAsyncClient(
+            credentials=async_anonymous_credentials(),
+            transport=transport,
+        )
+
+        # Should wrap all calls on client creation
+        assert wrapper_fn.call_count > 0
+        wrapper_fn.reset_mock()
+
+        # Ensure method has been cached
+        assert (
+            client._client._transport.complete_control_plane_upgrade
+            in client._client._transport._wrapped_methods
+        )
+
+        # Replace cached wrapped function with mock
+        mock_rpc = mock.AsyncMock()
+        mock_rpc.return_value = mock.Mock()
+        client._client._transport._wrapped_methods[
+            client._client._transport.complete_control_plane_upgrade
+        ] = mock_rpc
+
+        request = {}
+        await client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert mock_rpc.call_count == 1
+
+        await client.complete_control_plane_upgrade(request)
+
+        # Establish that a new wrapper was not created for this call
+        assert wrapper_fn.call_count == 0
+        assert mock_rpc.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_complete_control_plane_upgrade_async(
+    transport: str = "grpc_asyncio",
+    request_type=cluster_service.CompleteControlPlaneUpgradeRequest,
+):
+    client = ClusterManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        response = await client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        request = cluster_service.CompleteControlPlaneUpgradeRequest()
+        assert args[0] == request
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, cluster_service.Operation)
+    assert response.name == "name_value"
+    assert response.zone == "zone_value"
+    assert response.operation_type == cluster_service.Operation.Type.CREATE_CLUSTER
+    assert response.status == cluster_service.Operation.Status.PENDING
+    assert response.detail == "detail_value"
+    assert response.status_message == "status_message_value"
+    assert response.self_link == "self_link_value"
+    assert response.target_link == "target_link_value"
+    assert response.location == "location_value"
+    assert response.start_time == "start_time_value"
+    assert response.end_time == "end_time_value"
+
+
+@pytest.mark.asyncio
+async def test_complete_control_plane_upgrade_async_from_dict():
+    await test_complete_control_plane_upgrade_async(request_type=dict)
+
+
+def test_complete_control_plane_upgrade_field_headers():
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.CompleteControlPlaneUpgradeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        call.return_value = cluster_service.Operation()
+        client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_complete_control_plane_upgrade_field_headers_async():
+    client = ClusterManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = cluster_service.CompleteControlPlaneUpgradeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation()
+        )
+        await client.complete_control_plane_upgrade(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ClusterManagerGrpcTransport(
@@ -16227,6 +16530,29 @@ def test_fetch_node_pool_upgrade_info_empty_call_grpc():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+def test_complete_control_plane_upgrade_empty_call_grpc():
+    client = ClusterManagerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        call.return_value = cluster_service.Operation()
+        client.complete_control_plane_upgrade(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cluster_service.CompleteControlPlaneUpgradeRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_kind_grpc_asyncio():
     transport = ClusterManagerAsyncClient.get_transport_class("grpc_asyncio")(
         credentials=async_anonymous_credentials()
@@ -16301,6 +16627,7 @@ async def test_get_cluster_empty_call_grpc_asyncio():
                 endpoint="endpoint_value",
                 initial_cluster_version="initial_cluster_version_value",
                 current_master_version="current_master_version_value",
+                current_emulated_version="current_emulated_version_value",
                 current_node_version="current_node_version_value",
                 create_time="create_time_value",
                 status=cluster_service.Cluster.Status.PROVISIONING,
@@ -17559,6 +17886,45 @@ async def test_fetch_node_pool_upgrade_info_empty_call_grpc_asyncio():
         assert args[0] == request_msg
 
 
+# This test is a coverage failsafe to make sure that totally empty calls,
+# i.e. request == None and no flattened fields passed, work.
+@pytest.mark.asyncio
+async def test_complete_control_plane_upgrade_empty_call_grpc_asyncio():
+    client = ClusterManagerAsyncClient(
+        credentials=async_anonymous_credentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call, and fake the request.
+    with mock.patch.object(
+        type(client.transport.complete_control_plane_upgrade), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cluster_service.Operation(
+                name="name_value",
+                zone="zone_value",
+                operation_type=cluster_service.Operation.Type.CREATE_CLUSTER,
+                status=cluster_service.Operation.Status.PENDING,
+                detail="detail_value",
+                status_message="status_message_value",
+                self_link="self_link_value",
+                target_link="target_link_value",
+                location="location_value",
+                start_time="start_time_value",
+                end_time="end_time_value",
+            )
+        )
+        await client.complete_control_plane_upgrade(request=None)
+
+        # Establish that the underlying stub method was called.
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        request_msg = cluster_service.CompleteControlPlaneUpgradeRequest()
+
+        assert args[0] == request_msg
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ClusterManagerClient(
@@ -17629,6 +17995,7 @@ def test_cluster_manager_base_transport():
         "list_locations",
         "fetch_cluster_upgrade_info",
         "fetch_node_pool_upgrade_info",
+        "complete_control_plane_upgrade",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -18035,9 +18402,35 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
-def test_topic_path():
+def test_subnetwork_path():
     project = "oyster"
-    topic = "nudibranch"
+    region = "nudibranch"
+    subnetwork = "cuttlefish"
+    expected = "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+        project=project,
+        region=region,
+        subnetwork=subnetwork,
+    )
+    actual = ClusterManagerClient.subnetwork_path(project, region, subnetwork)
+    assert expected == actual
+
+
+def test_parse_subnetwork_path():
+    expected = {
+        "project": "mussel",
+        "region": "winkle",
+        "subnetwork": "nautilus",
+    }
+    path = ClusterManagerClient.subnetwork_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ClusterManagerClient.parse_subnetwork_path(path)
+    assert expected == actual
+
+
+def test_topic_path():
+    project = "scallop"
+    topic = "abalone"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -18048,8 +18441,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "cuttlefish",
-        "topic": "mussel",
+        "project": "squid",
+        "topic": "clam",
     }
     path = ClusterManagerClient.topic_path(**expected)
 
@@ -18059,7 +18452,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -18069,7 +18462,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ClusterManagerClient.common_billing_account_path(**expected)
 
@@ -18079,7 +18472,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -18089,7 +18482,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ClusterManagerClient.common_folder_path(**expected)
 
@@ -18099,7 +18492,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -18109,7 +18502,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ClusterManagerClient.common_organization_path(**expected)
 
@@ -18119,7 +18512,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -18129,7 +18522,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ClusterManagerClient.common_project_path(**expected)
 
@@ -18139,8 +18532,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -18151,8 +18544,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ClusterManagerClient.common_location_path(**expected)
 

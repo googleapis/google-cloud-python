@@ -28477,9 +28477,35 @@ def test_parse_crypto_key_version_path():
     assert expected == actual
 
 
-def test_topic_path():
+def test_subnetwork_path():
     project = "oyster"
-    topic = "nudibranch"
+    region = "nudibranch"
+    subnetwork = "cuttlefish"
+    expected = "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+        project=project,
+        region=region,
+        subnetwork=subnetwork,
+    )
+    actual = ClusterManagerClient.subnetwork_path(project, region, subnetwork)
+    assert expected == actual
+
+
+def test_parse_subnetwork_path():
+    expected = {
+        "project": "mussel",
+        "region": "winkle",
+        "subnetwork": "nautilus",
+    }
+    path = ClusterManagerClient.subnetwork_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ClusterManagerClient.parse_subnetwork_path(path)
+    assert expected == actual
+
+
+def test_topic_path():
+    project = "scallop"
+    topic = "abalone"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -28490,8 +28516,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "cuttlefish",
-        "topic": "mussel",
+        "project": "squid",
+        "topic": "clam",
     }
     path = ClusterManagerClient.topic_path(**expected)
 
@@ -28501,7 +28527,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -28511,7 +28537,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = ClusterManagerClient.common_billing_account_path(**expected)
 
@@ -28521,7 +28547,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -28531,7 +28557,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = ClusterManagerClient.common_folder_path(**expected)
 
@@ -28541,7 +28567,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -28551,7 +28577,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = ClusterManagerClient.common_organization_path(**expected)
 
@@ -28561,7 +28587,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -28571,7 +28597,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = ClusterManagerClient.common_project_path(**expected)
 
@@ -28581,8 +28607,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -28593,8 +28619,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = ClusterManagerClient.common_location_path(**expected)
 

@@ -86,6 +86,9 @@ class DiscoveryOccurrence(proto.Message):
         files (MutableSequence[grafeas.grafeas_v1.types.DiscoveryOccurrence.File]):
             Files that make up the resource described by
             the occurrence.
+        last_vulnerability_update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The last time vulnerability scan results
+            changed.
     """
 
     class ContinuousAnalysis(proto.Enum):
@@ -305,6 +308,11 @@ class DiscoveryOccurrence(proto.Message):
         proto.MESSAGE,
         number=11,
         message=File,
+    )
+    last_vulnerability_update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=timestamp_pb2.Timestamp,
     )
 
 

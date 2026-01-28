@@ -432,6 +432,11 @@ class ClusterManagerTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.complete_control_plane_upgrade: gapic_v1.method.wrap_method(
+                self.complete_control_plane_upgrade,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -800,6 +805,15 @@ class ClusterManagerTransport(abc.ABC):
             cluster_service.NodePoolUpgradeInfo,
             Awaitable[cluster_service.NodePoolUpgradeInfo],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def complete_control_plane_upgrade(
+        self,
+    ) -> Callable[
+        [cluster_service.CompleteControlPlaneUpgradeRequest],
+        Union[cluster_service.Operation, Awaitable[cluster_service.Operation]],
     ]:
         raise NotImplementedError()
 
