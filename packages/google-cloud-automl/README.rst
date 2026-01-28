@@ -195,3 +195,4 @@ Logging details
 #. The Google-specific logging configurations (default handlers for environment-based configuration; not propagating logging events to the root logger) get
    executed the first time *any* client library is instantiated in your application, and only if the affected loggers have not been previously configured.
    (This is the reason for 2.i. above.)
+
