@@ -123,8 +123,9 @@ class Feature(proto.Message):
             TEXT_DETECTION (5):
                 Run OCR.
             DOCUMENT_TEXT_DETECTION (11):
-                Run dense text document OCR. Takes precedence when both
-                DOCUMENT_TEXT_DETECTION and TEXT_DETECTION are present.
+                Run dense text document OCR. Takes precedence
+                when both DOCUMENT_TEXT_DETECTION and
+                TEXT_DETECTION are present.
             SAFE_SEARCH_DETECTION (6):
                 Run computer vision models to compute image
                 safe-search properties.
@@ -843,9 +844,10 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.

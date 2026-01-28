@@ -52,7 +52,7 @@ STATE_YAML_FILE = "state.yaml"
 
 INPUT_DIR = "input"
 LIBRARIAN_DIR = "librarian"
-OUTPUT_DIR = "output"
+OUTPUT_DIR = "/usr/local/google/home/omairn/git/googleapis/google-cloud-python/output"
 REPO_DIR = "repo"
 SOURCE_DIR = "source"
 _GITHUB_BASE = "https://github.com"
@@ -343,7 +343,9 @@ def _run_post_processor(output: str, library_id: str, is_mono_repo: bool):
             # If this file exists, run those customizations instead of `owlbot_main`
             if Path(f"{output}/librarian.py").exists():
                 subprocess.run(["python3.14", f"{output}/librarian.py"])
+                print("subproces for python 3.14 main")
             else:
+                print("owl_bot main")
                 python.owlbot_main()
     else:
         raise SYNTHTOOL_IMPORT_ERROR  # pragma: NO COVER
@@ -713,13 +715,19 @@ def handle_generate(
                 _generate_api(
                     api_path, library_id, source, output, version, is_mono_repo
                 )
+        print("copy files")
         _copy_files_needed_for_post_processing(output, input, library_id, is_mono_repo)
+        print("_generate_repo_metadata_file")
         _generate_repo_metadata_file(
             output, library_id, source, apis_to_generate, is_mono_repo
         )
+        print("_run_post_processor")
         _run_post_processor(output, library_id, is_mono_repo)
+        print("_copy_readme_to_docs")
         _copy_readme_to_docs(output, library_id, is_mono_repo)
+        print("_clean_up_files_after_post_processing")
         _clean_up_files_after_post_processing(output, library_id, is_mono_repo)
+        print("cleaned")
     except Exception as e:
         raise ValueError("Generation failed.") from e
     logger.info("'generate' command executed.")

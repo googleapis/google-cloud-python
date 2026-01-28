@@ -1,0 +1,40 @@
+{
+  "id": "google-cloud-vision",
+  "version": "3.12.0",
+  "apis": [
+    {
+      "path": "google/cloud/vision/v1p3beta1",
+      "service_config": "vision_v1p3beta1.yaml"
+    },
+    {
+      "path": "google/cloud/vision/v1",
+      "service_config": "vision_v1.yaml"
+    },
+    {
+      "path": "google/cloud/vision/v1p1beta1",
+      "service_config": "vision_v1p1beta1.yaml"
+    },
+    {
+      "path": "google/cloud/vision/v1p2beta1",
+      "service_config": "vision_v1p2beta1.yaml"
+    },
+    {
+      "path": "google/cloud/vision/v1p4beta1",
+      "service_config": "vision_v1p4beta1.yaml"
+    }
+  ],
+  "source_roots": [
+    "packages/google-cloud-vision"
+  ],
+  "preserve_regex": [
+    "packages/google-cloud-vision/CHANGELOG.md",
+    "docs/CHANGELOG.md",
+    "samples/README.txt",
+    "samples/snippets/README.rst",
+    "tests/system"
+  ],
+  "remove_regex": [
+    "packages/google-cloud-vision/"
+  ],
+  "tag_format": "{id}-v{version}"
+}

@@ -88,21 +88,23 @@ class Product(proto.Message):
             "apparel", and "toys" are still supported, but
             these should not be used for new products.
         product_labels (MutableSequence[google.cloud.vision_v1p4beta1.types.Product.KeyValue]):
-            Key-value pairs that can be attached to a product. At query
-            time, constraints can be specified based on the
-            product_labels.
+            Key-value pairs that can be attached to a
+            product. At query time, constraints can be
+            specified based on the product_labels.
 
-            Note that integer values can be provided as strings, e.g.
-            "1199". Only strings with integer values can match a
-            range-based restriction which is to be supported soon.
+            Note that integer values can be provided as
+            strings, e.g. "1199". Only strings with integer
+            values can match a range-based restriction which
+            is to be supported soon.
 
-            Multiple values can be assigned to the same key. One product
-            may have up to 500 product_labels.
+            Multiple values can be assigned to the same key.
+            One product may have up to 500 product_labels.
 
-            Notice that the total number of distinct product_labels over
-            all products in one ProductSet cannot exceed 1M, otherwise
-            the product search pipeline will refuse to work for that
-            ProductSet.
+            Notice that the total number of distinct
+            product_labels over all products in one
+            ProductSet cannot exceed 1M, otherwise the
+            product search pipeline will refuse to work for
+            that ProductSet.
     """
 
     class KeyValue(proto.Message):
@@ -300,8 +302,8 @@ class ListProductsRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous List request,
-            if any.
+            The next_page_token returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -453,8 +455,8 @@ class ListProductSetsRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous List request,
-            if any.
+            The next_page_token returned from a previous
+            List request, if any.
     """
 
     parent: str = proto.Field(
@@ -639,8 +641,8 @@ class ListReferenceImagesResponse(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         next_page_token (str):
-            The next_page_token returned from a previous List request,
-            if any.
+            The next_page_token returned from a previous
+            List request, if any.
     """
 
     @property
@@ -767,8 +769,8 @@ class ListProductsInProductSetRequest(proto.Message):
             The maximum number of items to return.
             Default 10, maximum 100.
         page_token (str):
-            The next_page_token returned from a previous List request,
-            if any.
+            The next_page_token returned from a previous
+            List request, if any.
     """
 
     name: str = proto.Field(
@@ -957,7 +959,8 @@ class ImportProductSetsResponse(proto.Message):
 
     Attributes:
         reference_images (MutableSequence[google.cloud.vision_v1p4beta1.types.ReferenceImage]):
-            The list of reference_images that are imported successfully.
+            The list of reference_images that are
+            imported successfully.
         statuses (MutableSequence[google.rpc.status_pb2.Status]):
             The rpc status for each ImportProductSet request, including
             both successes and errors.
@@ -1050,9 +1053,10 @@ class ProductSetPurgeConfig(proto.Message):
 
     Attributes:
         product_set_id (str):
-            The ProductSet that contains the Products to delete. If a
-            Product is a member of product_set_id in addition to other
-            ProductSets, the Product will still be deleted.
+            The ProductSet that contains the Products to
+            delete. If a Product is a member of
+            product_set_id in addition to other ProductSets,
+            the Product will still be deleted.
     """
 
     product_set_id: str = proto.Field(
@@ -1078,8 +1082,9 @@ class PurgeProductsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``target``.
         delete_orphan_products (bool):
-            If delete_orphan_products is true, all Products that are not
-            in any ProductSet will be deleted.
+            If delete_orphan_products is true, all
+            Products that are not in any ProductSet will be
+            deleted.
 
             This field is a member of `oneof`_ ``target``.
         parent (str):

@@ -870,9 +870,10 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to fine-tune
             OCR behavior.
@@ -1336,9 +1337,9 @@ class GcsDestination(proto.Message):
 
             Examples:
 
-            - File: gs://bucket-name/filename.json
-            - Prefix: gs://bucket-name/prefix/here/
-            - File: gs://bucket-name/prefix/here
+            -  File: gs://bucket-name/filename.json
+            -  Prefix: gs://bucket-name/prefix/here/
+            -  File: gs://bucket-name/prefix/here
 
             If multiple outputs, each response is still
             AnnotateFileResponse, each of which contains some subset of

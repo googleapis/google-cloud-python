@@ -148,8 +148,8 @@ class ProductSearchResults(proto.Message):
                 Object ID that should align with
                 EntityAnnotation mid.
             language_code (str):
-                The BCP-47 language code, such as "en-US" or "sr-Latn". For
-                more information, see
+                The BCP-47 language code, such as "en-US" or
+                "sr-Latn". For more information, see
                 http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
             name (str):
                 Object name, expressed in its ``language_code`` language.

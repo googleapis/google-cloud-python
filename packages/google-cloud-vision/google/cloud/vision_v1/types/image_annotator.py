@@ -666,8 +666,8 @@ class LocalizedObjectAnnotation(proto.Message):
             Object ID that should align with
             EntityAnnotation mid.
         language_code (str):
-            The BCP-47 language code, such as "en-US" or "sr-Latn". For
-            more information, see
+            The BCP-47 language code, such as "en-US" or
+            "sr-Latn". For more information, see
             http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
         name (str):
             Object name, expressed in its ``language_code`` language.
@@ -930,18 +930,19 @@ class TextDetectionParams(proto.Message):
 
     Attributes:
         enable_text_detection_confidence_score (bool):
-            By default, Cloud Vision API only includes confidence score
-            for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
-            include confidence score for TEXT_DETECTION as well.
+            By default, Cloud Vision API only includes
+            confidence score for DOCUMENT_TEXT_DETECTION
+            result. Set the flag to true to include
+            confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
             A list of advanced OCR options to further fine-tune OCR
             behavior. Current valid values are:
 
-            - ``legacy_layout``: a heuristics layout detection
-              algorithm, which serves as an alternative to the current
-              ML-based layout detection algorithm. Customers can choose
-              the best suitable layout algorithm based on their
-              situation.
+            -  ``legacy_layout``: a heuristics layout detection
+               algorithm, which serves as an alternative to the current
+               ML-based layout detection algorithm. Customers can choose
+               the best suitable layout algorithm based on their
+               situation.
     """
 
     enable_text_detection_confidence_score: bool = proto.Field(
@@ -1712,16 +1713,16 @@ class GcsDestination(proto.Message):
 
             Examples:
 
-            - File Prefix: gs://bucket-name/here/filenameprefix The
-              output files will be created in gs://bucket-name/here/ and
-              the names of the output files will begin with
-              "filenameprefix".
+            -  File Prefix: gs://bucket-name/here/filenameprefix The
+               output files will be created in gs://bucket-name/here/
+               and the names of the output files will begin with
+               "filenameprefix".
 
-            - Directory Prefix: gs://bucket-name/some/location/ The
-              output files will be created in
-              gs://bucket-name/some/location/ and the names of the
-              output files could be anything because there was no
-              filename prefix specified.
+            -  Directory Prefix: gs://bucket-name/some/location/ The
+               output files will be created in
+               gs://bucket-name/some/location/ and the names of the
+               output files could be anything because there was no
+               filename prefix specified.
 
             If multiple outputs, each response is still
             AnnotateFileResponse, each of which contains some subset of
