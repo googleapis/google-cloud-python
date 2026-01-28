@@ -66,7 +66,7 @@ class QuotaInfo(proto.Message):
             "locations/" must be "global". For example,
             ``projects/123/locations/global/services/compute.googleapis.com/quotaInfos/CpusPerProjectPerRegion``
         quota_id (str):
-            The id of the quota, which is unquie within the service. For
+            The id of the quota, which is unique within the service. For
             example, ``CpusPerProjectPerRegion``
         metric (str):
             The metric of the quota. It specifies the resources

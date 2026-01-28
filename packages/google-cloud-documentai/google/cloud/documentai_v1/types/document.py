@@ -120,10 +120,10 @@ class Document(proto.Message):
             comparing the entity extraction results at
             different stages of the processing.
         entities_revision_id (str):
-            The entity revision id that ``document.entities`` field is
+            The entity revision ID that ``document.entities`` field is
             based on. If this field is set and ``entities_revisions`` is
             not empty, the entities in ``document.entities`` field are
-            the entities in the entity revision with this id and
+            the entities in the entity revision with this ID and
             ``document.entity_validation_output`` field is the
             ``entity_validation_output`` field in this entity revision.
     """

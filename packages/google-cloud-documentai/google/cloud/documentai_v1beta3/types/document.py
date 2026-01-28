@@ -114,9 +114,9 @@ class Document(proto.Message):
         blob_assets (MutableSequence[google.cloud.documentai_v1beta3.types.Document.BlobAsset]):
             Optional. The blob assets in this document.
             This is used to store the content of the inline
-            blobs in this document, e.g. image bytes, such
-            that it can be referenced by other fields in the
-            document via asset id.
+            blobs in this document, for example, image
+            bytes, such that it can be referenced by other
+            fields in the document via asset id.
         entity_validation_output (google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput):
             The entity validation output for the document. This is the
             validation output for ``document.entities`` field.
@@ -127,10 +127,10 @@ class Document(proto.Message):
             comparing the entity extraction results at
             different stages of the processing.
         entities_revision_id (str):
-            The entity revision id that ``document.entities`` field is
+            The entity revision ID that ``document.entities`` field is
             based on. If this field is set and ``entities_revisions`` is
             not empty, the entities in ``document.entities`` field are
-            the entities in the entity revision with this id and
+            the entities in the entity revision with this ID and
             ``document.entity_validation_output`` field is the
             ``entity_validation_output`` field in this entity revision.
     """
@@ -299,7 +299,8 @@ class Document(proto.Message):
                 page.
             visual_elements (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Page.VisualElement]):
                 A list of detected non-text visual elements
-                e.g. checkbox, signature etc. on the page.
+                for example, checkbox, signature etc. on the
+                page.
             tables (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Page.Table]):
                 A list of visually detected tables on the
                 page.
@@ -421,9 +422,9 @@ class Document(proto.Message):
                 confidence (float):
                     Confidence of the current
                     [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
-                    within context of the object this layout is for. e.g.
-                    confidence can be for a single token, a table, a visual
-                    element, etc. depending on context. Range ``[0, 1]``.
+                    within context of the object this layout is for. For
+                    example, confidence can be for a single token, a table, a
+                    visual element, etc. depending on context. Range ``[0, 1]``.
                 bounding_poly (google.cloud.documentai_v1beta3.types.BoundingPoly):
                     The bounding polygon for the
                     [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout].
@@ -799,8 +800,8 @@ class Document(proto.Message):
             )
 
         class VisualElement(proto.Message):
-            r"""Detected non-text visual elements e.g. checkbox, signature
-            etc. on the page.
+            r"""Detected non-text visual elements, for example, checkbox,
+            signature, etc. on the page.
 
             Attributes:
                 layout (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
@@ -945,7 +946,7 @@ class Document(proto.Message):
                     [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
                     for the
                     [FormField][google.cloud.documentai.v1beta3.Document.Page.FormField]
-                    name. e.g. ``Address``, ``Email``, ``Grand total``,
+                    name. For example, ``Address``, ``Email``, ``Grand total``,
                     ``Phone number``, etc.
                 field_value (google.cloud.documentai_v1beta3.types.Document.Page.Layout):
                     [Layout][google.cloud.documentai.v1beta3.Document.Page.Layout]
@@ -1220,9 +1221,10 @@ class Document(proto.Message):
                 into the
                 [Document.text][google.cloud.documentai.v1beta3.Document.text].
             type_ (str):
-                Required. Entity type from a schema e.g. ``Address``.
+                Required. Entity type from a schema for example,
+                ``Address``.
             mention_text (str):
-                Optional. Text value of the entity e.g.
+                Optional. Text value of the entity for example,
                 ``1600 Amphitheatre Pkwy``.
             mention_id (str):
                 Optional. Deprecated. Use ``id`` field instead.
@@ -1234,13 +1236,13 @@ class Document(proto.Message):
                 entity wrt. the location on the page where it
                 was found.
             id (str):
-                Optional. Canonical id. This will be a unique
+                Optional. Canonical ID. This will be a unique
                 value in the entity list for this document.
             normalized_value (google.cloud.documentai_v1beta3.types.Document.Entity.NormalizedValue):
                 Optional. Normalized entity value. Absent if
                 the extracted value could not be converted or
-                the type (e.g. address) is not supported for
-                certain parsers. This field is also only
+                the type (for example, address) is not supported
+                for certain parsers. This field is also only
                 populated for certain supported document types.
             properties (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Entity]):
                 Optional. Entities can be nested to form a
@@ -1454,9 +1456,9 @@ class Document(proto.Message):
 
         Attributes:
             subject_id (str):
-                Subject entity id.
+                Subject entity ID.
             object_id (str):
-                Object entity id.
+                Object entity ID.
             relation (str):
                 Relationship description.
         """
@@ -1651,7 +1653,7 @@ class Document(proto.Message):
                 The index of the revision that produced this
                 element.
             id (int):
-                The Id of this operation.  Needs to be unique
+                The ID of this operation.  Needs to be unique
                 within the scope of the revision.
             parents (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Provenance.Parent]):
                 References to the original elements that are
@@ -1716,7 +1718,7 @@ class Document(proto.Message):
                     properties within entities, etc.) in the parent
                     revision.
                 id (int):
-                    The id of the parent provenance.
+                    The ID of the parent provenance.
             """
 
             revision: int = proto.Field(
@@ -1764,7 +1766,7 @@ class Document(proto.Message):
         Attributes:
             agent (str):
                 If the change was made by a person specify
-                the name or id of that person.
+                the name or ID of that person.
 
                 This field is a member of `oneof`_ ``source``.
             processor (str):
@@ -1773,7 +1775,7 @@ class Document(proto.Message):
 
                 This field is a member of `oneof`_ ``source``.
             id (str):
-                Id of the revision, internally generated by
+                ID of the revision, internally generated by
                 doc proto storage. Unique within the context of
                 the document.
             parent (MutableSequence[int]):
@@ -1782,7 +1784,7 @@ class Document(proto.Message):
                 field represents the index into the ``revisions`` field.
             parent_ids (MutableSequence[str]):
                 The revisions that this revision is based on. Must include
-                all the ids that have anything to do with this revision -
+                all the IDs that have anything to do with this revision -
                 eg. there are ``provenance.parent.revision`` fields that
                 index into this field.
             create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1798,8 +1800,8 @@ class Document(proto.Message):
 
             Attributes:
                 state (str):
-                    Human review state. e.g. ``requested``, ``succeeded``,
-                    ``rejected``.
+                    Human review state. For example, ``requested``,
+                    ``succeeded``, ``rejected``.
                 state_message (str):
                     A message providing more details about the current state of
                     processing. For example, the rejection reason when the state
@@ -2135,20 +2137,20 @@ class Document(proto.Message):
 
                 Attributes:
                     blob_asset_id (str):
-                        Optional. Asset id of the inline image. If set, find the
+                        Optional. Asset ID of the inline image. If set, find the
                         image content in the blob_assets field.
 
                         This field is a member of `oneof`_ ``image_source``.
                     gcs_uri (str):
-                        Optional. Google Cloud Storage uri of the
+                        Optional. Google Cloud Storage URI of the
                         image.
 
                         This field is a member of `oneof`_ ``image_source``.
                     data_uri (str):
-                        Optional. Data uri of the image. It is composed of four
+                        Optional. Data URI of the image. It is composed of four
                         parts: a prefix (data:), a MIME type indicating the type of
                         data, an optional base64 token if non-textual, and the data
-                        itself: data:[][;base64],
+                        itself: data:[][;base64],.
 
                         This field is a member of `oneof`_ ``image_source``.
                     mime_type (str):
@@ -2337,20 +2339,20 @@ class Document(proto.Message):
 
                 Attributes:
                     blob_asset_id (str):
-                        Optional. Asset id of the inline image. If set, find the
+                        Optional. Asset ID of the inline image. If set, find the
                         image content in the blob_assets field.
 
                         This field is a member of `oneof`_ ``image_source``.
                     gcs_uri (str):
-                        Optional. Google Cloud Storage uri of the
+                        Optional. Google Cloud Storage URI of the
                         image.
 
                         This field is a member of `oneof`_ ``image_source``.
                     data_uri (str):
-                        Optional. Data uri of the image. It is composed of four
+                        Optional. Data URI of the image. It is composed of four
                         parts: a prefix (data:), a MIME type indicating the type of
                         data, an optional base64 token if non-textual, and the data
-                        itself: data:[][;base64],
+                        itself: data:[][;base64],.
 
                         This field is a member of `oneof`_ ``image_source``.
                     annotations (google.cloud.documentai_v1beta3.types.Document.Annotations):
@@ -2394,7 +2396,7 @@ class Document(proto.Message):
 
             class ChunkField(proto.Message):
                 r"""The chunk field in the chunk. A chunk field could be one of
-                the various types (e.g. image, table) supported.
+                the various types (for example, image, table) supported.
 
                 This message has `oneof`_ fields (mutually exclusive fields).
                 For each oneof, at most one member field can be set at the same time.
@@ -2478,15 +2480,16 @@ class Document(proto.Message):
 
     class BlobAsset(proto.Message):
         r"""Represents a blob asset. It's used to store the content of
-        the inline blob in this document, e.g. image bytes, such that it
-        can be referenced by other fields in the document via asset id.
+        the inline blob in this document, for example, image bytes, such
+        that it can be referenced by other fields in the document via
+        asset ID.
 
         Attributes:
             asset_id (str):
-                Optional. The id of the blob asset.
+                Optional. The ID of the blob asset.
             content (bytes):
-                Optional. The content of the blob asset, e.g.
-                image bytes.
+                Optional. The content of the blob asset, for
+                example, image bytes.
             mime_type (str):
                 The mime type of the blob asset. An IANA published `media
                 type (MIME
@@ -2590,7 +2593,7 @@ class Document(proto.Message):
 
         Attributes:
             revision_id (str):
-                The revision id.
+                The revision ID.
             entities (MutableSequence[google.cloud.documentai_v1beta3.types.Document.Entity]):
                 The entities in this revision.
             entity_validation_output (google.cloud.documentai_v1beta3.types.Document.EntityValidationOutput):
@@ -2723,7 +2726,7 @@ class RevisionRef(proto.Message):
 
             This field is a member of `oneof`_ ``source``.
         revision_id (str):
-            Reads the revision given by the id.
+            Reads the revision given by the ID.
 
             This field is a member of `oneof`_ ``source``.
         latest_processor_version (str):

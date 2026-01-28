@@ -273,6 +273,28 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def subnetwork_path(
+        project: str,
+        region: str,
+        subnetwork: str,
+    ) -> str:
+        """Returns a fully-qualified subnetwork string."""
+        return "projects/{project}/regions/{region}/subnetworks/{subnetwork}".format(
+            project=project,
+            region=region,
+            subnetwork=subnetwork,
+        )
+
+    @staticmethod
+    def parse_subnetwork_path(path: str) -> Dict[str, str]:
+        """Parses a subnetwork path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/regions/(?P<region>.+?)/subnetworks/(?P<subnetwork>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def topic_path(
         project: str,
         topic: str,
@@ -5595,6 +5617,98 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[
             self._transport.fetch_node_pool_upgrade_info
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def complete_control_plane_upgrade(
+        self,
+        request: Optional[
+            Union[cluster_service.CompleteControlPlaneUpgradeRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
+    ) -> cluster_service.Operation:
+        r"""CompleteControlPlaneUpgrade completes the
+        rollback-safe upgrade by performing the step two upgrade
+        for a specific cluster.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import container_v1beta1
+
+            def sample_complete_control_plane_upgrade():
+                # Create a client
+                client = container_v1beta1.ClusterManagerClient()
+
+                # Initialize request argument(s)
+                request = container_v1beta1.CompleteControlPlaneUpgradeRequest(
+                )
+
+                # Make the request
+                response = client.complete_control_plane_upgrade(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.container_v1beta1.types.CompleteControlPlaneUpgradeRequest, dict]):
+                The request object. CompleteControlPlaneUpgradeRequest
+                sets the name of target cluster to
+                complete upgrade.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, Union[str, bytes]]]): Key/value pairs which should be
+                sent along with the request as metadata. Normally, each value must be of type `str`,
+                but for metadata keys ending with the suffix `-bin`, the corresponding values must
+                be of type `bytes`.
+
+        Returns:
+            google.cloud.container_v1beta1.types.Operation:
+                This operation resource represents
+                operations that may have happened or are
+                happening on the cluster. All fields are
+                output only.
+
+        """
+        # Create or coerce a protobuf request object.
+        # - Use the request object if provided (there's no risk of modifying the input as
+        #   there are no flattened fields), or create one.
+        if not isinstance(request, cluster_service.CompleteControlPlaneUpgradeRequest):
+            request = cluster_service.CompleteControlPlaneUpgradeRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.complete_control_plane_upgrade
         ]
 
         # Certain fields should be provided within the metadata header;

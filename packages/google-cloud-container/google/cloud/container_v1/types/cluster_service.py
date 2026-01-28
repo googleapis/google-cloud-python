@@ -77,6 +77,7 @@ __protobuf__ = proto.module(
         "ParallelstoreCsiDriverConfig",
         "HighScaleCheckpointingConfig",
         "LustreCsiDriverConfig",
+        "SliceControllerConfig",
         "RayOperatorConfig",
         "GkeBackupAgentConfig",
         "StatefulHAConfig",
@@ -192,10 +193,12 @@ __protobuf__ = proto.module(
         "ShieldedNodes",
         "VirtualNIC",
         "FastSocket",
+        "GPUDirectConfig",
         "NotificationConfig",
         "ConfidentialNodes",
         "UpgradeEvent",
         "UpgradeInfoEvent",
+        "DisruptionEvent",
         "UpgradeAvailableEvent",
         "SecurityBulletinEvent",
         "Autopilot",
@@ -230,6 +233,7 @@ __protobuf__ = proto.module(
         "NodePoolUpgradeInfo",
         "GkeAutoUpgradeConfig",
         "NetworkTierConfig",
+        "ManagedOpenTelemetryConfig",
     },
 )
 
@@ -309,10 +313,15 @@ class NodePoolUpdateStrategy(proto.Enum):
             SURGE is the traditional way of upgrade a node pool.
             max_surge and max_unavailable determines the level of
             upgrade parallelism.
+        SHORT_LIVED (5):
+            SHORT_LIVED is the dedicated upgrade strategy for
+            QueuedProvisioning and flex start nodepools scaled up only
+            by enqueueing to the Dynamic Workload Scheduler (DWS).
     """
     NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED = 0
     BLUE_GREEN = 2
     SURGE = 3
+    SHORT_LIVED = 5
 
 
 class StackType(proto.Enum):
@@ -385,18 +394,24 @@ class LinuxNodeConfig(proto.Message):
             net.core.rmem_default net.core.wmem_default
             net.core.wmem_max net.core.optmem_max net.core.somaxconn
             net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
-            net.ipv4.tcp_max_orphans net.netfilter.nf_conntrack_max
+            net.ipv4.tcp_mtu_probing net.ipv4.tcp_max_orphans
+            net.ipv4.tcp_max_tw_buckets net.ipv4.tcp_syn_retries
+            net.ipv4.tcp_ecn net.ipv4.tcp_congestion_control
+            net.netfilter.nf_conntrack_max
             net.netfilter.nf_conntrack_buckets
             net.netfilter.nf_conntrack_tcp_timeout_close_wait
             net.netfilter.nf_conntrack_tcp_timeout_time_wait
             net.netfilter.nf_conntrack_tcp_timeout_established
             net.netfilter.nf_conntrack_acct kernel.shmmni kernel.shmmax
-            kernel.shmall fs.aio-max-nr fs.file-max
+            kernel.shmall kernel.perf_event_paranoid
+            kernel.sched_rt_runtime_us kernel.softlockup_panic
+            kernel.yama.ptrace_scope kernel.kptr_restrict
+            kernel.dmesg_restrict kernel.sysrq fs.aio-max-nr fs.file-max
             fs.inotify.max_user_instances fs.inotify.max_user_watches
             fs.nr_open vm.dirty_background_ratio
-            vm.dirty_expire_centisecs vm.dirty_ratio
-            vm.dirty_writeback_centisecs vm.max_map_count
-            vm.overcommit_memory vm.overcommit_ratio
+            vm.dirty_background_bytes vm.dirty_expire_centisecs
+            vm.dirty_ratio vm.dirty_bytes vm.dirty_writeback_centisecs
+            vm.max_map_count vm.overcommit_memory vm.overcommit_ratio
             vm.vfs_cache_pressure vm.swappiness
             vm.watermark_scale_factor vm.min_free_kbytes
         cgroup_mode (google.cloud.container_v1.types.LinuxNodeConfig.CgroupMode):
@@ -425,6 +440,11 @@ class LinuxNodeConfig(proto.Message):
             See
             https://docs.kernel.org/admin-guide/mm/transhuge.html
             for more details.
+        swap_config (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig):
+            Optional. Enables and configures swap space
+            on nodes. If omitted, swap is disabled.
+
+            This field is a member of `oneof`_ ``_swap_config``.
         node_kernel_module_loading (google.cloud.container_v1.types.LinuxNodeConfig.NodeKernelModuleLoading):
             Optional. Configuration for kernel module
             loading on nodes. When enabled, the node pool
@@ -543,6 +563,175 @@ class LinuxNodeConfig(proto.Message):
             optional=True,
         )
 
+    class SwapConfig(proto.Message):
+        r"""Configuration for swap memory on a node pool.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            enabled (bool):
+                Optional. Enables or disables swap for the
+                node pool.
+
+                This field is a member of `oneof`_ ``_enabled``.
+            encryption_config (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig.EncryptionConfig):
+                Optional. If omitted, swap space is encrypted
+                by default.
+
+                This field is a member of `oneof`_ ``_encryption_config``.
+            boot_disk_profile (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig.BootDiskProfile):
+                Swap on the node's boot disk.
+
+                This field is a member of `oneof`_ ``performance_profile``.
+            ephemeral_local_ssd_profile (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile):
+                Swap on the local SSD shared with pod
+                ephemeral storage.
+
+                This field is a member of `oneof`_ ``performance_profile``.
+            dedicated_local_ssd_profile (google.cloud.container_v1.types.LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile):
+                Provisions a new, separate local NVMe SSD
+                exclusively for swap.
+
+                This field is a member of `oneof`_ ``performance_profile``.
+        """
+
+        class EncryptionConfig(proto.Message):
+            r"""Defines encryption settings for the swap space.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                disabled (bool):
+                    Optional. If true, swap space will not be
+                    encrypted. Defaults to false (encrypted).
+
+                    This field is a member of `oneof`_ ``_disabled``.
+            """
+
+            disabled: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+                optional=True,
+            )
+
+        class BootDiskProfile(proto.Message):
+            r"""Swap on the node's boot disk.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                swap_size_gib (int):
+                    Specifies the size of the swap space in
+                    gibibytes (GiB).
+
+                    This field is a member of `oneof`_ ``swap_size``.
+                swap_size_percent (int):
+                    Specifies the size of the swap space as a
+                    percentage of the boot disk size.
+
+                    This field is a member of `oneof`_ ``swap_size``.
+            """
+
+            swap_size_gib: int = proto.Field(
+                proto.INT64,
+                number=1,
+                oneof="swap_size",
+            )
+            swap_size_percent: int = proto.Field(
+                proto.INT32,
+                number=2,
+                oneof="swap_size",
+            )
+
+        class EphemeralLocalSsdProfile(proto.Message):
+            r"""Swap on the local SSD shared with pod ephemeral storage.
+
+            This message has `oneof`_ fields (mutually exclusive fields).
+            For each oneof, at most one member field can be set at the same time.
+            Setting any member of the oneof automatically clears all other
+            members.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                swap_size_gib (int):
+                    Specifies the size of the swap space in
+                    gibibytes (GiB).
+
+                    This field is a member of `oneof`_ ``swap_size``.
+                swap_size_percent (int):
+                    Specifies the size of the swap space as a
+                    percentage of the ephemeral local SSD capacity.
+
+                    This field is a member of `oneof`_ ``swap_size``.
+            """
+
+            swap_size_gib: int = proto.Field(
+                proto.INT64,
+                number=1,
+                oneof="swap_size",
+            )
+            swap_size_percent: int = proto.Field(
+                proto.INT32,
+                number=2,
+                oneof="swap_size",
+            )
+
+        class DedicatedLocalSsdProfile(proto.Message):
+            r"""Provisions a new, separate local NVMe SSD exclusively for
+            swap.
+
+            Attributes:
+                disk_count (int):
+                    The number of physical local NVMe SSD disks
+                    to attach.
+            """
+
+            disk_count: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+
+        enabled: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        encryption_config: "LinuxNodeConfig.SwapConfig.EncryptionConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            optional=True,
+            message="LinuxNodeConfig.SwapConfig.EncryptionConfig",
+        )
+        boot_disk_profile: "LinuxNodeConfig.SwapConfig.BootDiskProfile" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="performance_profile",
+            message="LinuxNodeConfig.SwapConfig.BootDiskProfile",
+        )
+        ephemeral_local_ssd_profile: "LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="performance_profile",
+            message="LinuxNodeConfig.SwapConfig.EphemeralLocalSsdProfile",
+        )
+        dedicated_local_ssd_profile: "LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="performance_profile",
+            message="LinuxNodeConfig.SwapConfig.DedicatedLocalSsdProfile",
+        )
+
     class NodeKernelModuleLoading(proto.Message):
         r"""Configuration for kernel module loading on nodes.
 
@@ -612,6 +801,12 @@ class LinuxNodeConfig(proto.Message):
         proto.ENUM,
         number=5,
         enum=TransparentHugepageDefrag,
+    )
+    swap_config: SwapConfig = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        optional=True,
+        message=SwapConfig,
     )
     node_kernel_module_loading: NodeKernelModuleLoading = proto.Field(
         proto.MESSAGE,
@@ -846,6 +1041,28 @@ class NodeKubeletConfig(proto.Message):
             individually instead of as a group.
 
             This field is a member of `oneof`_ ``_single_process_oom_kill``.
+        shutdown_grace_period_seconds (int):
+            Optional. shutdown_grace_period_seconds is the maximum
+            allowed grace period (in seconds) the total duration that
+            the node should delay the shutdown during a graceful
+            shutdown. This is the total grace period for pod termination
+            for both regular and critical pods.
+            https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
+            If set to 0, node will not enable the graceful node shutdown
+            functionality. This field is only valid for Spot VMs.
+            Allowed values: 0, 30, 120.
+
+            This field is a member of `oneof`_ ``_shutdown_grace_period_seconds``.
+        shutdown_grace_period_critical_pods_seconds (int):
+            Optional. shutdown_grace_period_critical_pods_seconds is the
+            maximum allowed grace period (in seconds) used to terminate
+            critical pods during a node shutdown. This value should be
+            <= shutdown_grace_period_seconds, and is only valid if
+            shutdown_grace_period_seconds is set.
+            https://kubernetes.io/docs/concepts/cluster-administration/node-shutdown/
+            Range: [0, 120].
+
+            This field is a member of `oneof`_ ``_shutdown_grace_period_critical_pods_seconds``.
     """
 
     cpu_manager_policy: str = proto.Field(
@@ -934,6 +1151,16 @@ class NodeKubeletConfig(proto.Message):
     single_process_oom_kill: bool = proto.Field(
         proto.BOOL,
         number=22,
+        optional=True,
+    )
+    shutdown_grace_period_seconds: int = proto.Field(
+        proto.INT32,
+        number=26,
+        optional=True,
+    )
+    shutdown_grace_period_critical_pods_seconds: int = proto.Field(
+        proto.INT32,
+        number=27,
         optional=True,
     )
 
@@ -1476,6 +1703,10 @@ class NodeConfig(proto.Message):
             Secondary boot disk update strategy.
 
             This field is a member of `oneof`_ ``_secondary_boot_disk_update_strategy``.
+        gpu_direct_config (google.cloud.container_v1.types.GPUDirectConfig):
+            The configuration for GPU Direct
+
+            This field is a member of `oneof`_ ``_gpu_direct_config``.
         max_run_duration (google.protobuf.duration_pb2.Duration):
             The maximum duration for the nodes to exist.
             If unspecified, the nodes can exist
@@ -1497,6 +1728,12 @@ class NodeConfig(proto.Message):
         boot_disk (google.cloud.container_v1.types.BootDisk):
             The boot disk configuration for the node
             pool.
+        consolidation_delay (google.protobuf.duration_pb2.Duration):
+            Consolidation delay defines duration after
+            which the Cluster Autoscaler can scale down
+            underutilized nodes. If not set, nodes are
+            scaled down by default behavior, i.e. according
+            to the chosen autoscaling profile.
     """
 
     class LocalSsdEncryptionMode(proto.Enum):
@@ -1730,6 +1967,12 @@ class NodeConfig(proto.Message):
             message="SecondaryBootDiskUpdateStrategy",
         )
     )
+    gpu_direct_config: "GPUDirectConfig" = proto.Field(
+        proto.MESSAGE,
+        number=51,
+        optional=True,
+        message="GPUDirectConfig",
+    )
     max_run_duration: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
         number=53,
@@ -1755,6 +1998,11 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=57,
         message="BootDisk",
+    )
+    consolidation_delay: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=60,
+        message=duration_pb2.Duration,
     )
 
 
@@ -1911,13 +2159,20 @@ class NodeNetworkConfig(proto.Message):
             The ratio is Usage/[Total number of IPs in the secondary
             range], Usage=numNodes\ *numZones*\ podIPsPerNode.
         subnetwork (str):
-            Output only. The subnetwork path for the node
-            pool. Format:
+            Optional. The subnetwork name/path for the
+            node pool. Format:
             projects/{project}/regions/{region}/subnetworks/{subnetwork}
             If the cluster is associated with multiple
-            subnetworks, the subnetwork for the node pool is
-            picked based on the IP utilization during node
-            pool creation and is immutable.
+            subnetworks, the subnetwork can be either:
+
+            1. A user supplied subnetwork name/full path
+                during node pool creation.    Example1:
+                my-subnet
+               Example2:
+            projects/gke-project/regions/us-central1/subnetworks/my-subnet
+            2. A subnetwork path picked based on the IP
+                utilization during node pool    creation and
+                is immutable.
         network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
             Output only. The network tier configuration
             for the node pool inherits from the
@@ -2296,6 +2551,10 @@ class ContainerdConfig(proto.Message):
         writable_cgroups (google.cloud.container_v1.types.ContainerdConfig.WritableCgroups):
             Optional. WritableCgroups defines writable
             cgroups configuration for the node pool.
+        registry_hosts (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig]):
+            RegistryHostConfig configures containerd registry host
+            configuration. Each registry_hosts represents a hosts.toml
+            file. At most 25 registry_hosts are allowed.
     """
 
     class PrivateRegistryAccessConfig(proto.Message):
@@ -2326,8 +2585,7 @@ class ContainerdConfig(proto.Message):
                     - my.customdomain.com
                     - 10.0.1.2:5000
                 gcp_secret_manager_certificate_config (google.cloud.container_v1.types.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig):
-                    Google Secret Manager (GCP) certificate
-                    configuration.
+                    Secret Manager certificate configuration.
 
                     This field is a member of `oneof`_ ``certificate_config``.
             """
@@ -2385,6 +2643,218 @@ class ContainerdConfig(proto.Message):
             number=1,
         )
 
+    class RegistryHostConfig(proto.Message):
+        r"""RegistryHostConfig configures the top-level structure for a
+        single containerd registry server's configuration, which
+        represents one hosts.toml file on the node. It will override the
+        same fqdns in PrivateRegistryAccessConfig.
+
+        Attributes:
+            server (str):
+                Defines the host name of the registry server,
+                which will be used to create configuration file
+                as /etc/containerd/hosts.d/<server>/hosts.toml.
+                It supports fully qualified domain names (FQDN)
+                and IP addresses:
+
+                Specifying port is supported.
+                Wildcards are NOT supported.
+                Examples:
+
+                - my.customdomain.com
+                - 10.0.1.2:5000
+            hosts (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.HostConfig]):
+                HostConfig configures a list of host-specific
+                configurations for the server.
+                Each server can have at most 10 host
+                configurations.
+        """
+
+        class HostCapability(proto.Enum):
+            r"""HostCapability configures capabilities for the registry host.
+
+            Values:
+                HOST_CAPABILITY_UNSPECIFIED (0):
+                    UNKNOWN should never be set.
+                HOST_CAPABILITY_PULL (1):
+                    Pull represents the capability to fetch
+                    manifests and blobs by digest.
+                HOST_CAPABILITY_RESOLVE (2):
+                    Resolve represents the capability to fetch
+                    manifests by name.
+                HOST_CAPABILITY_PUSH (3):
+                    Push represents the capability to push blobs
+                    and manifests.
+            """
+            HOST_CAPABILITY_UNSPECIFIED = 0
+            HOST_CAPABILITY_PULL = 1
+            HOST_CAPABILITY_RESOLVE = 2
+            HOST_CAPABILITY_PUSH = 3
+
+        class CertificateConfig(proto.Message):
+            r"""CertificateConfig configures certificate for the registry.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                gcp_secret_manager_secret_uri (str):
+                    The URI configures a secret from `Secret
+                    Manager <https://cloud.google.com/secret-manager>`__ in the
+                    format
+                    "projects/$PROJECT_ID/secrets/$SECRET_NAME/versions/$VERSION"
+                    for global secret or
+                    "projects/$PROJECT_ID/locations/$REGION/secrets/$SECRET_NAME/versions/$VERSION"
+                    for regional secret. Version can be fixed (e.g. "2") or
+                    "latest".
+
+                    This field is a member of `oneof`_ ``certificate``.
+            """
+
+            gcp_secret_manager_secret_uri: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="certificate",
+            )
+
+        class CertificateConfigPair(proto.Message):
+            r"""CertificateConfigPair configures pairs of certificates, which
+            is used for client certificate and key pairs under a registry.
+
+            Attributes:
+                cert (google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.CertificateConfig):
+                    Cert configures the client certificate.
+                key (google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.CertificateConfig):
+                    Key configures the client private key.
+                    Optional.
+            """
+
+            cert: "ContainerdConfig.RegistryHostConfig.CertificateConfig" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="ContainerdConfig.RegistryHostConfig.CertificateConfig",
+            )
+            key: "ContainerdConfig.RegistryHostConfig.CertificateConfig" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="ContainerdConfig.RegistryHostConfig.CertificateConfig",
+            )
+
+        class RegistryHeader(proto.Message):
+            r"""RegistryHeader configures headers for the registry.
+
+            Attributes:
+                key (str):
+                    Key configures the header key.
+                value (MutableSequence[str]):
+                    Value configures the header value.
+            """
+
+            key: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            value: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
+
+        class HostConfig(proto.Message):
+            r"""HostConfig configures the registry host under a given Server.
+
+            Attributes:
+                host (str):
+                    Host configures the registry host/mirror.
+                    It supports fully qualified domain names (FQDN)
+                    and IP addresses:
+
+                    Specifying port is supported.
+                    Wildcards are NOT supported.
+                    Examples:
+
+                    - my.customdomain.com
+                    - 10.0.1.2:5000
+                capabilities (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.HostCapability]):
+                    Capabilities represent the capabilities of
+                    the registry host, specifying what operations a
+                    host is capable of performing. If not set,
+                    containerd enables all capabilities by default.
+                override_path (bool):
+                    OverridePath is used to indicate the host's
+                    API root endpoint is defined in the URL path
+                    rather than by the API specification. This may
+                    be used with non-compliant OCI registries which
+                    are missing the /v2 prefix.
+                    If not set, containerd sets default false.
+                header (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.RegistryHeader]):
+                    Header configures the registry host headers.
+                ca (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.CertificateConfig]):
+                    CA configures the registry host certificate.
+                client (MutableSequence[google.cloud.container_v1.types.ContainerdConfig.RegistryHostConfig.CertificateConfigPair]):
+                    Client configures the registry host client
+                    certificate and key.
+                dial_timeout (google.protobuf.duration_pb2.Duration):
+                    Specifies the maximum duration allowed for a connection
+                    attempt to complete. A shorter timeout helps reduce delays
+                    when falling back to the original registry if the mirror is
+                    unreachable. Maximum allowed value is 180s. If not set,
+                    containerd sets default 30s. The value should be a decimal
+                    number of seconds with an ``s`` suffix.
+            """
+
+            host: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            capabilities: MutableSequence[
+                "ContainerdConfig.RegistryHostConfig.HostCapability"
+            ] = proto.RepeatedField(
+                proto.ENUM,
+                number=2,
+                enum="ContainerdConfig.RegistryHostConfig.HostCapability",
+            )
+            override_path: bool = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
+            header: MutableSequence[
+                "ContainerdConfig.RegistryHostConfig.RegistryHeader"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=4,
+                message="ContainerdConfig.RegistryHostConfig.RegistryHeader",
+            )
+            ca: MutableSequence[
+                "ContainerdConfig.RegistryHostConfig.CertificateConfig"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=5,
+                message="ContainerdConfig.RegistryHostConfig.CertificateConfig",
+            )
+            client: MutableSequence[
+                "ContainerdConfig.RegistryHostConfig.CertificateConfigPair"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=6,
+                message="ContainerdConfig.RegistryHostConfig.CertificateConfigPair",
+            )
+            dial_timeout: duration_pb2.Duration = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                message=duration_pb2.Duration,
+            )
+
+        server: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        hosts: MutableSequence[
+            "ContainerdConfig.RegistryHostConfig.HostConfig"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="ContainerdConfig.RegistryHostConfig.HostConfig",
+        )
+
     private_registry_access_config: PrivateRegistryAccessConfig = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -2394,6 +2864,11 @@ class ContainerdConfig(proto.Message):
         proto.MESSAGE,
         number=2,
         message=WritableCgroups,
+    )
+    registry_hosts: MutableSequence[RegistryHostConfig] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=RegistryHostConfig,
     )
 
 
@@ -2670,6 +3145,9 @@ class AddonsConfig(proto.Message):
             Checkpointing add-on.
         lustre_csi_driver_config (google.cloud.container_v1.types.LustreCsiDriverConfig):
             Configuration for the Lustre CSI driver.
+        slice_controller_config (google.cloud.container_v1.types.SliceControllerConfig):
+            Optional. Configuration for the slice
+            controller add-on.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -2753,6 +3231,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=23,
         message="LustreCsiDriverConfig",
+    )
+    slice_controller_config: "SliceControllerConfig" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message="SliceControllerConfig",
     )
 
 
@@ -3137,6 +3620,21 @@ class LustreCsiDriverConfig(proto.Message):
     )
 
 
+class SliceControllerConfig(proto.Message):
+    r"""Configuration for the Slice Controller.
+
+    Attributes:
+        enabled (bool):
+            Optional. Indicates whether Slice Controller
+            is enabled in the cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class RayOperatorConfig(proto.Message):
     r"""Configuration options for the Ray Operator add-on.
 
@@ -3440,7 +3938,7 @@ class IPAllocationPolicy(proto.Message):
             specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -3455,7 +3953,7 @@ class IPAllocationPolicy(proto.Message):
             specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -3473,7 +3971,7 @@ class IPAllocationPolicy(proto.Message):
             specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -3491,7 +3989,7 @@ class IPAllocationPolicy(proto.Message):
             specific netmask.
 
             Set to a
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``) from the RFC-1918 private
             networks (e.g. ``10.0.0.0/8``, ``172.16.0.0/12``,
             ``192.168.0.0/16``) to pick a specific range to use.
@@ -3745,7 +4243,7 @@ class Cluster(proto.Message):
         cluster_ipv4_cidr (str):
             The IP address range of the container pods in this cluster,
             in
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``10.96.0.0/14``). Leave blank to have one
             automatically chosen or specify a ``/14`` block in
             ``10.0.0.0/8``.
@@ -3931,7 +4429,7 @@ class Cluster(proto.Message):
         services_ipv4_cidr (str):
             Output only. The IP address range of the Kubernetes services
             in this cluster, in
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``1.2.3.4/29``). Service addresses are
             typically put in the last ``/16`` from the container CIDR.
         instance_group_urls (MutableSequence[str]):
@@ -3959,7 +4457,7 @@ class Cluster(proto.Message):
         tpu_ipv4_cidr_block (str):
             Output only. The IP address range of the Cloud TPUs in this
             cluster, in
-            `CIDR <http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
+            `CIDR <https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>`__
             notation (e.g. ``1.2.3.4/29``). This field is deprecated due
             to the deprecation of 2VM TPU. The end of life date for 2VM
             TPU is 2025-04-25.
@@ -4036,6 +4534,9 @@ class Cluster(proto.Message):
         anonymous_authentication_config (google.cloud.container_v1.types.AnonymousAuthenticationConfig):
             Configuration for limiting anonymous access
             to all endpoints except the health checks.
+        managed_opentelemetry_config (google.cloud.container_v1.types.ManagedOpenTelemetryConfig):
+            Configuration for Managed OpenTelemetry
+            pipeline.
     """
 
     class Status(proto.Enum):
@@ -4438,6 +4939,11 @@ class Cluster(proto.Message):
         number=164,
         message="AnonymousAuthenticationConfig",
     )
+    managed_opentelemetry_config: "ManagedOpenTelemetryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=168,
+        message="ManagedOpenTelemetryConfig",
+    )
 
 
 class RBACBindingConfig(proto.Message):
@@ -4510,6 +5016,10 @@ class UserManagedKeysConfig(proto.Message):
             The Cloud KMS cryptoKey to use for
             Confidential Hyperdisk on the control plane
             nodes.
+        control_plane_disk_encryption_key_versions (MutableSequence[str]):
+            Output only. All of the versions of the Cloud
+            KMS cryptoKey that are used by Confidential
+            Hyperdisks on the control plane nodes.
         gkeops_etcd_backup_encryption_key (str):
             Resource path of the Cloud KMS cryptoKey to
             use for encryption of internal etcd backups.
@@ -4542,6 +5052,12 @@ class UserManagedKeysConfig(proto.Message):
     control_plane_disk_encryption_key: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    control_plane_disk_encryption_key_versions: MutableSequence[
+        str
+    ] = proto.RepeatedField(
+        proto.STRING,
+        number=18,
     )
     gkeops_etcd_backup_encryption_key: str = proto.Field(
         proto.STRING,
@@ -5179,6 +5695,12 @@ class ClusterUpdate(proto.Message):
         desired_network_tier_config (google.cloud.container_v1.types.NetworkTierConfig):
             The desired network tier configuration for
             the cluster.
+        desired_privileged_admission_config (google.cloud.container_v1.types.PrivilegedAdmissionConfig):
+            The desired privileged admission config for
+            the cluster.
+        desired_managed_opentelemetry_config (google.cloud.container_v1.types.ManagedOpenTelemetryConfig):
+            The desired managed open telemetry
+            configuration.
     """
 
     desired_node_version: str = proto.Field(
@@ -5545,6 +6067,16 @@ class ClusterUpdate(proto.Message):
         number=155,
         message="NetworkTierConfig",
     )
+    desired_privileged_admission_config: "PrivilegedAdmissionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=159,
+        message="PrivilegedAdmissionConfig",
+    )
+    desired_managed_opentelemetry_config: "ManagedOpenTelemetryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=163,
+        message="ManagedOpenTelemetryConfig",
+    )
 
 
 class AdditionalPodRangesConfig(proto.Message):
@@ -5587,7 +6119,31 @@ class AdditionalIPRangesConfig(proto.Message):
             subnetwork that can be used for pod IPs.
             Example1: gke-pod-range1
             Example2: gke-pod-range1,gke-pod-range2
+        status (google.cloud.container_v1.types.AdditionalIPRangesConfig.Status):
+            Draining status of the additional subnet.
     """
+
+    class Status(proto.Enum):
+        r"""Additional subnet with DRAINING status will not be selected during
+        new node pool creation. To undrain the draining status, update the
+        cluster to set the sunbet to ACTIVE status. To remove the additional
+        subnet, use the update cluster API to remove the subnet from the
+        desired_additional_ip_ranges list. IP ranges can be removed
+        regardless of its status, as long as no node pools are using them.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Not set, same as ACTIVE.
+            ACTIVE (1):
+                ACTIVE status indicates that the subnet is
+                available for new node pool creation.
+            DRAINING (2):
+                DRAINING status indicates that the subnet is
+                not used for new node pool creation.
+        """
+        STATUS_UNSPECIFIED = 0
+        ACTIVE = 1
+        DRAINING = 2
 
     subnetwork: str = proto.Field(
         proto.STRING,
@@ -5596,6 +6152,11 @@ class AdditionalIPRangesConfig(proto.Message):
     pod_ipv4_range_names: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=2,
+    )
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Status,
     )
 
 
@@ -6387,6 +6948,15 @@ class UpdateNodePoolRequest(proto.Message):
             node pool. Initiates an upgrade operation that
             migrates the nodes in the node pool to the
             specified boot disk config.
+        node_drain_config (google.cloud.container_v1.types.NodePool.NodeDrainConfig):
+            The desired node drain configuration for
+            nodes in the node pool.
+        consolidation_delay (google.protobuf.duration_pb2.Duration):
+            Consolidation delay defines duration after
+            which the Cluster Autoscaler can scale down
+            underutilized nodes. If not set, nodes are
+            scaled down by default behavior, i.e. according
+            to the chosen autoscaling profile.
     """
 
     project_id: str = proto.Field(
@@ -6550,6 +7120,16 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=47,
         message="BootDisk",
+    )
+    node_drain_config: "NodePool.NodeDrainConfig" = proto.Field(
+        proto.MESSAGE,
+        number=48,
+        message="NodePool.NodeDrainConfig",
+    )
+    consolidation_delay: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=49,
+        message=duration_pb2.Duration,
     )
 
 
@@ -7750,6 +8330,9 @@ class NodePool(proto.Message):
             provisioning.
         best_effort_provisioning (google.cloud.container_v1.types.BestEffortProvisioning):
             Enable best effort provisioning for nodes
+        node_drain_config (google.cloud.container_v1.types.NodePool.NodeDrainConfig):
+            Specifies the node drain configuration for
+            this node pool.
     """
 
     class Status(proto.Enum):
@@ -8043,6 +8626,27 @@ class NodePool(proto.Message):
             number=1,
         )
 
+    class NodeDrainConfig(proto.Message):
+        r"""NodeDrainConfig contains the node drain related
+        configurations for this nodepool.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            respect_pdb_during_node_pool_deletion (bool):
+                Whether to respect PDB during node pool
+                deletion.
+
+                This field is a member of `oneof`_ ``_respect_pdb_during_node_pool_deletion``.
+        """
+
+        respect_pdb_during_node_pool_deletion: bool = proto.Field(
+            proto.BOOL,
+            number=3,
+            optional=True,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -8138,6 +8742,11 @@ class NodePool(proto.Message):
         proto.MESSAGE,
         number=113,
         message="BestEffortProvisioning",
+    )
+    node_drain_config: NodeDrainConfig = proto.Field(
+        proto.MESSAGE,
+        number=116,
+        message=NodeDrainConfig,
     )
 
 
@@ -8418,7 +9027,7 @@ class RecurringTimeWindow(proto.Message):
         recurrence (str):
             An RRULE
             (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for
-            how this window reccurs. They go on for the span of time
+            how this window recurs. They go on for the span of time
             between the start and end time.
 
             For example, to have something repeat every weekday, you'd
@@ -8729,6 +9338,9 @@ class ClusterAutoscaling(proto.Message):
         default_compute_class_config (google.cloud.container_v1.types.DefaultComputeClassConfig):
             Default compute class is a configuration for
             default compute class.
+        autopilot_general_profile (google.cloud.container_v1.types.ClusterAutoscaling.AutopilotGeneralProfile):
+            Autopilot general profile for the cluster,
+            which defines the configuration for the cluster.
     """
 
     class AutoscalingProfile(proto.Enum):
@@ -8747,6 +9359,18 @@ class ClusterAutoscaling(proto.Message):
         PROFILE_UNSPECIFIED = 0
         OPTIMIZE_UTILIZATION = 1
         BALANCED = 2
+
+    class AutopilotGeneralProfile(proto.Enum):
+        r"""Defines possible options for Autopilot general profile.
+
+        Values:
+            AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED (0):
+                Use default configuration.
+            NO_PERFORMANCE (1):
+                Avoid extra IP consumption.
+        """
+        AUTOPILOT_GENERAL_PROFILE_UNSPECIFIED = 0
+        NO_PERFORMANCE = 1
 
     enable_node_autoprovisioning: bool = proto.Field(
         proto.BOOL,
@@ -8777,6 +9401,11 @@ class ClusterAutoscaling(proto.Message):
         proto.MESSAGE,
         number=9,
         message="DefaultComputeClassConfig",
+    )
+    autopilot_general_profile: AutopilotGeneralProfile = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=AutopilotGeneralProfile,
     )
 
 
@@ -10833,6 +11462,43 @@ class FastSocket(proto.Message):
     )
 
 
+class GPUDirectConfig(proto.Message):
+    r"""GPUDirectConfig specifies the GPU direct strategy on the node
+    pool.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gpu_direct_strategy (google.cloud.container_v1.types.GPUDirectConfig.GPUDirectStrategy):
+            The type of GPU direct strategy to enable on
+            the node pool.
+
+            This field is a member of `oneof`_ ``_gpu_direct_strategy``.
+    """
+
+    class GPUDirectStrategy(proto.Enum):
+        r"""Option for GPU direct Strategies
+
+        Values:
+            GPU_DIRECT_STRATEGY_UNSPECIFIED (0):
+                Default value. No GPU Direct strategy is
+                enabled on the node.
+            RDMA (2):
+                GPUDirect-RDMA on A3 Ultra, and A4 machine
+                types
+        """
+        GPU_DIRECT_STRATEGY_UNSPECIFIED = 0
+        RDMA = 2
+
+    gpu_direct_strategy: GPUDirectStrategy = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=GPUDirectStrategy,
+    )
+
+
 class NotificationConfig(proto.Message):
     r"""NotificationConfig is the configuration of notifications.
 
@@ -11052,6 +11718,11 @@ class UpgradeInfoEvent(proto.Message):
             A brief description of the event.
         event_type (google.cloud.container_v1.types.UpgradeInfoEvent.EventType):
             The type of the event.
+        disruption_event (google.cloud.container_v1.types.DisruptionEvent):
+            The information about the disruption event. This field is
+            only populated when event_type is DISRUPTION_EVENT.
+
+            This field is a member of `oneof`_ ``_disruption_event``.
     """
 
     class State(proto.Enum):
@@ -11094,11 +11765,15 @@ class UpgradeInfoEvent(proto.Message):
             UPGRADE_LIFECYCLE (3):
                 UPGRADE_LIFECYCLE indicates the event is about the upgrade
                 lifecycle.
+            DISRUPTION_EVENT (4):
+                DISRUPTION_EVENT indicates the event is about the
+                disruption.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         END_OF_SUPPORT = 1
         COS_MILESTONE_VERSION_UPDATE = 2
         UPGRADE_LIFECYCLE = 3
+        DISRUPTION_EVENT = 4
 
     resource_type: "UpgradeResourceType" = proto.Field(
         proto.ENUM,
@@ -11156,6 +11831,98 @@ class UpgradeInfoEvent(proto.Message):
         proto.ENUM,
         number=12,
         enum=EventType,
+    )
+    disruption_event: "DisruptionEvent" = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        optional=True,
+        message="DisruptionEvent",
+    )
+
+
+class DisruptionEvent(proto.Message):
+    r"""DisruptionEvent is a notification sent to customers about the
+    disruption event of a resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        disruption_type (google.cloud.container_v1.types.DisruptionEvent.DisruptionType):
+            The type of the disruption event.
+        pdb_blocked_node (str):
+            The node whose drain is blocked by PDB. This field is set
+            for both POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+        pdb_blocked_pod (MutableSequence[google.cloud.container_v1.types.DisruptionEvent.PdbBlockedPod]):
+            The pods whose evictions are blocked by PDB. This field is
+            set for both POD_PDB_VIOLATION and POD_NOT_ENOUGH_PDB event.
+        pdb_violation_timeout (google.protobuf.duration_pb2.Duration):
+            The timeout in seconds for which the node drain is blocked
+            by PDB. After this timeout, pods are forcefully evicted.
+            This field is only populated when event_type is
+            POD_PDB_VIOLATION.
+
+            This field is a member of `oneof`_ ``_pdb_violation_timeout``.
+    """
+
+    class DisruptionType(proto.Enum):
+        r"""The type of the disruption event.
+
+        Values:
+            DISRUPTION_TYPE_UNSPECIFIED (0):
+                DISRUPTION_TYPE_UNSPECIFIED indicates the disruption type is
+                unspecified.
+            POD_NOT_ENOUGH_PDB (1):
+                POD_NOT_ENOUGH_PDB indicates there are still running pods on
+                the node during node drain because their evictions are
+                blocked by PDB.
+            POD_PDB_VIOLATION (2):
+                POD_PDB_VIOLATION indicates that there are force pod
+                evictions during node drain which violate the PDB.
+        """
+        DISRUPTION_TYPE_UNSPECIFIED = 0
+        POD_NOT_ENOUGH_PDB = 1
+        POD_PDB_VIOLATION = 2
+
+    class PdbBlockedPod(proto.Message):
+        r"""The namespace/name of the pod whose eviction is blocked by
+        PDB.
+
+        Attributes:
+            namespace (str):
+                The namespace of the pod.
+            name (str):
+                The name of the pod.
+        """
+
+        namespace: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
+    disruption_type: DisruptionType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DisruptionType,
+    )
+    pdb_blocked_node: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pdb_blocked_pod: MutableSequence[PdbBlockedPod] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=PdbBlockedPod,
+    )
+    pdb_violation_timeout: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        optional=True,
+        message=duration_pb2.Duration,
     )
 
 
@@ -12732,6 +13499,46 @@ class NetworkTierConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=NetworkTier,
+    )
+
+
+class ManagedOpenTelemetryConfig(proto.Message):
+    r"""ManagedOpenTelemetryConfig is the configuration for the GKE
+    Managed OpenTelemetry pipeline.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        scope (google.cloud.container_v1.types.ManagedOpenTelemetryConfig.Scope):
+            Scope of the Managed OpenTelemetry pipeline.
+
+            This field is a member of `oneof`_ ``_scope``.
+    """
+
+    class Scope(proto.Enum):
+        r"""Scope is the scope of the Managed OpenTelemetry pipeline.
+
+        Values:
+            SCOPE_UNSPECIFIED (0):
+                SCOPE_UNSPECIFIED is when the scope is not set.
+            NONE (1):
+                NONE is used to disable the Managed
+                OpenTelemetry pipeline.
+            COLLECTION_AND_INSTRUMENTATION_COMPONENTS (2):
+                COLLECTION_AND_INSTRUMENTATION_COMPONENTS is used to enable
+                the Managed OpenTelemetry pipeline for collection and
+                instrumentation components.
+        """
+        SCOPE_UNSPECIFIED = 0
+        NONE = 1
+        COLLECTION_AND_INSTRUMENTATION_COMPONENTS = 2
+
+    scope: Scope = proto.Field(
+        proto.ENUM,
+        number=1,
+        optional=True,
+        enum=Scope,
     )
 
 

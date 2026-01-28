@@ -82,6 +82,8 @@ class ClusterManagerAsyncClient:
     parse_crypto_key_version_path = staticmethod(
         ClusterManagerClient.parse_crypto_key_version_path
     )
+    subnetwork_path = staticmethod(ClusterManagerClient.subnetwork_path)
+    parse_subnetwork_path = staticmethod(ClusterManagerClient.parse_subnetwork_path)
     topic_path = staticmethod(ClusterManagerClient.topic_path)
     parse_topic_path = staticmethod(ClusterManagerClient.parse_topic_path)
     common_billing_account_path = staticmethod(

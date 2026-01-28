@@ -9866,6 +9866,7 @@ def test_create_occurrence_rest_call_success(request_type):
                 "error": "error_value",
             },
             "files": [{"name": "name_value", "digest": {}}],
+            "last_vulnerability_update_time": {},
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -10594,6 +10595,7 @@ def test_update_occurrence_rest_call_success(request_type):
                 "error": "error_value",
             },
             "files": [{"name": "name_value", "digest": {}}],
+            "last_vulnerability_update_time": {},
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",

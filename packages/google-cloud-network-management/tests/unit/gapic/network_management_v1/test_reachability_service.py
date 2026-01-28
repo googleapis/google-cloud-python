@@ -5581,6 +5581,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
             "cloud_sql_instance": "cloud_sql_instance_value",
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
+            "gke_pod": "gke_pod_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
@@ -5833,6 +5834,15 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "external_ip": "external_ip_value",
                                 "dns_endpoint": "dns_endpoint_value",
                             },
+                            "gke_pod": {
+                                "pod_uri": "pod_uri_value",
+                                "ip_address": "ip_address_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "ip_masquerading_skipped": {
+                                "reason": 1,
+                                "non_masquerade_range": "non_masquerade_range_value",
+                            },
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -5889,6 +5899,7 @@ def test_create_connectivity_test_rest_call_success(request_type):
                                 "new_destination_port": 2159,
                                 "router_uri": "router_uri_value",
                                 "nat_gateway_name": "nat_gateway_name_value",
+                                "cloud_nat_gateway_type": 1,
                             },
                             "proxy_connection": {
                                 "protocol": "protocol_value",
@@ -6168,6 +6179,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
             "cloud_sql_instance": "cloud_sql_instance_value",
             "redis_instance": "redis_instance_value",
             "redis_cluster": "redis_cluster_value",
+            "gke_pod": "gke_pod_value",
             "cloud_function": {"uri": "uri_value"},
             "app_engine_version": {"uri": "uri_value"},
             "cloud_run_revision": {
@@ -6420,6 +6432,15 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "external_ip": "external_ip_value",
                                 "dns_endpoint": "dns_endpoint_value",
                             },
+                            "gke_pod": {
+                                "pod_uri": "pod_uri_value",
+                                "ip_address": "ip_address_value",
+                                "network_uri": "network_uri_value",
+                            },
+                            "ip_masquerading_skipped": {
+                                "reason": 1,
+                                "non_masquerade_range": "non_masquerade_range_value",
+                            },
                             "cloud_sql_instance": {
                                 "display_name": "display_name_value",
                                 "uri": "uri_value",
@@ -6476,6 +6497,7 @@ def test_update_connectivity_test_rest_call_success(request_type):
                                 "new_destination_port": 2159,
                                 "router_uri": "router_uri_value",
                                 "nat_gateway_name": "nat_gateway_name_value",
+                                "cloud_nat_gateway_type": 1,
                             },
                             "proxy_connection": {
                                 "protocol": "protocol_value",

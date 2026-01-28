@@ -704,7 +704,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     },
                     {
                         "method": "post",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}:cancel",
+                        "uri": "/v1/{name=organizations/*/locations/global/operations/*}:cancel",
                         "body": "*",
                     },
                 ],
@@ -715,7 +715,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     },
                     {
                         "method": "delete",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=organizations/*/locations/global/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.GetOperation": [
@@ -725,7 +725,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=organizations/*/locations/*/operations/*}",
+                        "uri": "/v1/{name=organizations/*/locations/global/operations/*}",
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
@@ -735,7 +735,7 @@ class OrganizationVpcFlowLogsServiceRestTransport(
                     },
                     {
                         "method": "get",
-                        "uri": "/v1/{name=organizations/*/locations/*}/operations",
+                        "uri": "/v1/{name=organizations/*/locations/global}/operations",
                     },
                 ],
             }
