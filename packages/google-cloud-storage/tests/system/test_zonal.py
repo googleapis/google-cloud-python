@@ -264,7 +264,7 @@ def test_read_unfinalized_appendable_object(
 
     event_loop.run_until_complete(_run())
 
-
+@pytest.mark.skip(reason='Flaky test b/478129078')
 def test_mrd_open_with_read_handle(event_loop, grpc_client_direct):
     object_name = f"test_read_handl-{str(uuid.uuid4())[:4]}"
 
