@@ -1578,6 +1578,98 @@
           "fullName": "google.cloud.compute_v1.AutoscalersClient",
           "shortName": "AutoscalersClient"
         },
+        "fullName": "google.cloud.compute_v1.AutoscalersClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Autoscalers.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Autoscalers",
+            "shortName": "Autoscalers"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsAutoscalerRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_autoscalers_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Autoscalers_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_autoscalers_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.AutoscalersClient",
+          "shortName": "AutoscalersClient"
+        },
         "fullName": "google.cloud.compute_v1.AutoscalersClient.update",
         "method": {
           "fullName": "google.cloud.compute.v1.Autoscalers.Update",
@@ -13742,6 +13834,94 @@
         }
       ],
       "title": "compute_v1_generated_health_checks_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.HealthChecksClient",
+          "shortName": "HealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1.HealthChecksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.HealthChecks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.HealthChecks",
+            "shortName": "HealthChecks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_health_checks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_HealthChecks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_health_checks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -41962,6 +42142,98 @@
           "fullName": "google.cloud.compute_v1.RegionAutoscalersClient",
           "shortName": "RegionAutoscalersClient"
         },
+        "fullName": "google.cloud.compute_v1.RegionAutoscalersClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.RegionAutoscalers.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.RegionAutoscalers",
+            "shortName": "RegionAutoscalers"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsRegionAutoscalerRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_region_autoscalers_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_RegionAutoscalers_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_region_autoscalers_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RegionAutoscalersClient",
+          "shortName": "RegionAutoscalersClient"
+        },
         "fullName": "google.cloud.compute_v1.RegionAutoscalersClient.update",
         "method": {
           "fullName": "google.cloud.compute.v1.RegionAutoscalers.Update",
@@ -46126,6 +46398,98 @@
         }
       ],
       "title": "compute_v1_generated_region_health_checks_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RegionHealthChecksClient",
+          "shortName": "RegionHealthChecksClient"
+        },
+        "fullName": "google.cloud.compute_v1.RegionHealthChecksClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.RegionHealthChecks.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.RegionHealthChecks",
+            "shortName": "RegionHealthChecks"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsRegionHealthCheckRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_region_health_checks_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_RegionHealthChecks_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_region_health_checks_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -52382,6 +52746,98 @@
         }
       ],
       "title": "compute_v1_generated_region_notification_endpoints_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RegionNotificationEndpointsClient",
+          "shortName": "RegionNotificationEndpointsClient"
+        },
+        "fullName": "google.cloud.compute_v1.RegionNotificationEndpointsClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.RegionNotificationEndpoints.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.RegionNotificationEndpoints",
+            "shortName": "RegionNotificationEndpoints"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsRegionNotificationEndpointRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "region",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_region_notification_endpoints_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_RegionNotificationEndpoints_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 53,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 53,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 54,
+          "start": 51,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_region_notification_endpoints_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -61594,6 +62050,94 @@
         }
       ],
       "title": "compute_v1_generated_routes_list_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.RoutesClient",
+          "shortName": "RoutesClient"
+        },
+        "fullName": "google.cloud.compute_v1.RoutesClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.Routes.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.Routes",
+            "shortName": "Routes"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsRouteRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_routes_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_Routes_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_routes_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -71923,6 +72467,94 @@
       "canonical": true,
       "clientMethod": {
         "client": {
+          "fullName": "google.cloud.compute_v1.TargetSslProxiesClient",
+          "shortName": "TargetSslProxiesClient"
+        },
+        "fullName": "google.cloud.compute_v1.TargetSslProxiesClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.TargetSslProxies.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.TargetSslProxies",
+            "shortName": "TargetSslProxies"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsTargetSslProxyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_target_ssl_proxies_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_TargetSslProxies_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_target_ssl_proxies_test_iam_permissions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
           "fullName": "google.cloud.compute_v1.TargetTcpProxiesClient",
           "shortName": "TargetTcpProxiesClient"
         },
@@ -72506,6 +73138,94 @@
         }
       ],
       "title": "compute_v1_generated_target_tcp_proxies_set_proxy_header_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.TargetTcpProxiesClient",
+          "shortName": "TargetTcpProxiesClient"
+        },
+        "fullName": "google.cloud.compute_v1.TargetTcpProxiesClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.TargetTcpProxies.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.TargetTcpProxies",
+            "shortName": "TargetTcpProxies"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsTargetTcpProxyRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_target_tcp_proxies_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_TargetTcpProxies_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_target_tcp_proxies_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,
@@ -73614,6 +74334,94 @@
         }
       ],
       "title": "compute_v1_generated_url_maps_patch_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.compute_v1.UrlMapsClient",
+          "shortName": "UrlMapsClient"
+        },
+        "fullName": "google.cloud.compute_v1.UrlMapsClient.test_iam_permissions",
+        "method": {
+          "fullName": "google.cloud.compute.v1.UrlMaps.TestIamPermissions",
+          "service": {
+            "fullName": "google.cloud.compute.v1.UrlMaps",
+            "shortName": "UrlMaps"
+          },
+          "shortName": "TestIamPermissions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.compute_v1.types.TestIamPermissionsUrlMapRequest"
+          },
+          {
+            "name": "project",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "test_permissions_request_resource",
+            "type": "google.cloud.compute_v1.types.TestPermissionsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, Union[str, bytes]]]"
+          }
+        ],
+        "resultType": "google.cloud.compute_v1.types.TestPermissionsResponse",
+        "shortName": "test_iam_permissions"
+      },
+      "description": "Sample for TestIamPermissions",
+      "file": "compute_v1_generated_url_maps_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "compute_v1_generated_UrlMaps_TestIamPermissions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "compute_v1_generated_url_maps_test_iam_permissions_sync.py"
     },
     {
       "canonical": true,

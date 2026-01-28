@@ -6875,6 +6875,7 @@ def test_add_rule_rest_call_success(request_type):
             ],
             "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_network_context": "dest_network_context_value",
             "dest_network_type": "dest_network_type_value",
             "dest_region_codes": [
                 "dest_region_codes_value1",
@@ -6896,6 +6897,7 @@ def test_add_rule_rest_call_success(request_type):
             ],
             "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_network_context": "src_network_context_value",
             "src_network_type": "src_network_type_value",
             "src_networks": ["src_networks_value1", "src_networks_value2"],
             "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
@@ -8098,6 +8100,7 @@ def test_insert_rest_call_success(request_type):
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
                     ],
+                    "dest_network_context": "dest_network_context_value",
                     "dest_network_type": "dest_network_type_value",
                     "dest_region_codes": [
                         "dest_region_codes_value1",
@@ -8119,6 +8122,7 @@ def test_insert_rest_call_success(request_type):
                     ],
                     "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_network_context": "src_network_context_value",
                     "src_network_type": "src_network_type_value",
                     "src_networks": ["src_networks_value1", "src_networks_value2"],
                     "src_region_codes": [
@@ -8858,6 +8862,7 @@ def test_patch_rest_call_success(request_type):
                         "dest_ip_ranges_value1",
                         "dest_ip_ranges_value2",
                     ],
+                    "dest_network_context": "dest_network_context_value",
                     "dest_network_type": "dest_network_type_value",
                     "dest_region_codes": [
                         "dest_region_codes_value1",
@@ -8879,6 +8884,7 @@ def test_patch_rest_call_success(request_type):
                     ],
                     "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+                    "src_network_context": "src_network_context_value",
                     "src_network_type": "src_network_type_value",
                     "src_networks": ["src_networks_value1", "src_networks_value2"],
                     "src_region_codes": [
@@ -9170,6 +9176,7 @@ def test_patch_rule_rest_call_success(request_type):
             ],
             "dest_fqdns": ["dest_fqdns_value1", "dest_fqdns_value2"],
             "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+            "dest_network_context": "dest_network_context_value",
             "dest_network_type": "dest_network_type_value",
             "dest_region_codes": [
                 "dest_region_codes_value1",
@@ -9191,6 +9198,7 @@ def test_patch_rule_rest_call_success(request_type):
             ],
             "src_fqdns": ["src_fqdns_value1", "src_fqdns_value2"],
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
+            "src_network_context": "src_network_context_value",
             "src_network_type": "src_network_type_value",
             "src_networks": ["src_networks_value1", "src_networks_value2"],
             "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],

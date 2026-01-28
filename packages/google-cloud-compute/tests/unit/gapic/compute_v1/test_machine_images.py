@@ -4213,6 +4213,7 @@ def test_insert_rest_call_success(request_type):
             "metadata": {},
             "min_cpu_platform": "min_cpu_platform_value",
             "network_interfaces": {},
+            "post_key_revocation_action_type": "post_key_revocation_action_type_value",
             "scheduling": {},
             "service_accounts": {},
             "tags": {},

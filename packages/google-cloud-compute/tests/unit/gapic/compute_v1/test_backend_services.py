@@ -8112,6 +8112,9 @@ def test_insert_rest_call_success(request_type):
         "metadatas": {},
         "name": "name_value",
         "network": "network_value",
+        "network_pass_through_lb_traffic_policy": {
+            "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
+        },
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,
@@ -8810,6 +8813,9 @@ def test_patch_rest_call_success(request_type):
         "metadatas": {},
         "name": "name_value",
         "network": "network_value",
+        "network_pass_through_lb_traffic_policy": {
+            "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
+        },
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,
@@ -10193,6 +10199,9 @@ def test_update_rest_call_success(request_type):
         "metadatas": {},
         "name": "name_value",
         "network": "network_value",
+        "network_pass_through_lb_traffic_policy": {
+            "zonal_affinity": {"spillover": "spillover_value", "spillover_ratio": 0.163}
+        },
         "outlier_detection": {
             "base_ejection_time": {},
             "consecutive_errors": 1956,

@@ -4027,6 +4027,7 @@ def test_insert_rest_call_success(request_type):
         "multi_tenant_only": True,
         "name": "name_value",
         "os_license": True,
+        "params": {"resource_manager_tags": {}},
         "removable_from_disk": True,
         "required_coattached_licenses": [
             "required_coattached_licenses_value1",
@@ -4866,6 +4867,7 @@ def test_update_rest_call_success(request_type):
         "multi_tenant_only": True,
         "name": "name_value",
         "os_license": True,
+        "params": {"resource_manager_tags": {}},
         "removable_from_disk": True,
         "required_coattached_licenses": [
             "required_coattached_licenses_value1",
