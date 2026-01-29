@@ -206,7 +206,7 @@ class SQLGlotIR:
 
             select_expr = select.copy()
             select_expr, select_ctes = _pop_query_ctes(select_expr)
-            existing_ctes = [*existing_ctes, *select_ctes]
+            existing_ctes = _merge_ctes(existing_ctes, select_ctes)
             union_selects.append(select_expr)
 
         union_expr: sge.Query = union_selects[0].subquery()
@@ -337,7 +337,7 @@ class SQLGlotIR:
 
         left_select, left_ctes = _pop_query_ctes(left_select)
         right_select, right_ctes = _pop_query_ctes(right_select)
-        merged_ctes = [*left_ctes, *right_ctes]
+        merged_ctes = _merge_ctes(left_ctes, right_ctes)
 
         join_on = _and(
             tuple(
@@ -374,7 +374,7 @@ class SQLGlotIR:
 
         left_select, left_ctes = _pop_query_ctes(left_select)
         right_select, right_ctes = _pop_query_ctes(right_select)
-        merged_ctes = [*left_ctes, *right_ctes]
+        merged_ctes = _merge_ctes(left_ctes, right_ctes)
 
         left_condition = typed_expr.TypedExpr(
             sge.Column(this=conditions[0].expr, table=left_cte_name),
@@ -825,6 +825,15 @@ def _set_query_ctes(
     else:
         raise ValueError("The expression does not support CTEs.")
     return new_expr
+
+
+def _merge_ctes(ctes1: list[sge.CTE], ctes2: list[sge.CTE]) -> list[sge.CTE]:
+    """Merges two lists of CTEs, de-duplicating by alias name."""
+    seen = {cte.alias: cte for cte in ctes1}
+    for cte in ctes2:
+        if cte.alias not in seen:
+            seen[cte.alias] = cte
+    return list(seen.values())
 
 
 def _pop_query_ctes(

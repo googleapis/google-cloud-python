@@ -50,12 +50,6 @@ WITH `bfcte_2` AS (
     *,
     2 AS `bfcol_26`
   FROM `bfcte_5`
-), `bfcte_0` AS (
-  SELECT
-    `bool_col`,
-    `float64_col`,
-    `int64_too`
-  FROM `bigframes-dev`.`sqlglot_test`.`scalar_types`
 ), `bfcte_3` AS (
   SELECT
     *
