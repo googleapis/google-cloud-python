@@ -197,3 +197,18 @@ def test_render_bqquery_finished_event_plaintext():
     assert "finished" in text
     assert "1.0 kB processed" in text
     assert "Slot time: 2 seconds" in text
+
+
+def test_get_job_url():
+    job_id = "my-job-id"
+    location = "us-central1"
+    project_id = "my-project"
+    expected_url = (
+        f"https://console.cloud.google.com/bigquery?project={project_id}"
+        f"&j=bq:{location}:{job_id}&page=queryresults"
+    )
+
+    actual_url = formatting_helpers.get_job_url(
+        job_id=job_id, location=location, project_id=project_id
+    )
+    assert actual_url == expected_url

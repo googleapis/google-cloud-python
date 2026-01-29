@@ -336,7 +336,7 @@ def get_job_url(
     """
     if project_id is None or location is None or job_id is None:
         return None
-    return f"""https://console.cloud. google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
+    return f"""https://console.cloud.google.com/bigquery?project={project_id}&j=bq:{location}:{job_id}&page=queryresults"""
 
 
 def render_bqquery_sent_event_html(
