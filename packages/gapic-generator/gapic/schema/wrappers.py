@@ -67,6 +67,7 @@ from google.protobuf.json_format import MessageToDict  # type: ignore
 
 from gapic import utils
 from gapic.schema import metadata
+from gapic.utils import cached_proto_context
 from gapic.utils import uri_sample
 from gapic.utils import make_private
 
@@ -410,6 +411,7 @@ class Field:
             "This code should not be reachable; please file a bug."
         )
 
+    @cached_proto_context
     def with_context(
         self,
         *,
@@ -805,6 +807,7 @@ class MessageType:
         # message.
         return cursor.message.get_field(*field_path[1:], collisions=collisions)
 
+    @cached_proto_context
     def with_context(
         self,
         *,
@@ -937,6 +940,7 @@ class EnumType:
         """Return the identifier data to be used in templates."""
         return self.meta.address
 
+    @cached_proto_context
     def with_context(self, *, collisions: Set[str]) -> "EnumType":
         """Return a derivative of this enum with the provided context.
 
@@ -1058,6 +1062,7 @@ class ExtendedOperationInfo:
     request_type: MessageType
     operation_type: MessageType
 
+    @cached_proto_context
     def with_context(
         self,
         *,
@@ -1127,6 +1132,7 @@ class OperationInfo:
     response_type: MessageType
     metadata_type: MessageType
 
+    @cached_proto_context
     def with_context(
         self,
         *,
@@ -1937,6 +1943,7 @@ class Method:
         """Return True if this method has no return value, False otherwise."""
         return self.output.ident.proto == "google.protobuf.Empty"
 
+    @cached_proto_context
     def with_context(
         self,
         *,
@@ -2357,6 +2364,7 @@ class Service:
     def is_internal(self) -> bool:
         return any(m.is_internal for m in self.methods.values())
 
+    @cached_proto_context
     def with_context(
         self,
         *,

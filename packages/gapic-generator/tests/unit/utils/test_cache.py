@@ -31,3 +31,46 @@ def test_cached_property():
     assert foo.call_count == 1
     assert foo.bar == 42
     assert foo.call_count == 1
+
+
+def test_cached_proto_context():
+    class Foo:
+        def __init__(self):
+            self.call_count = 0
+
+        # We define a signature that matches the real Proto.with_context
+        # to ensure arguments are propagated correctly.
+        @cache.cached_proto_context
+        def with_context(self, collisions, *, skip_fields=False, visited_messages=None):
+            self.call_count += 1
+            return f"val-{self.call_count}"
+
+    foo = Foo()
+
+    # 1. Test Bypass (No Context)
+    # The cache is not active, so every call increments the counter.
+    assert foo.with_context(collisions={"a"}) == "val-1"
+    assert foo.with_context(collisions={"a"}) == "val-2"
+
+    # 2. Test Context Activation
+    with cache.generation_cache_context():
+        # Reset counter to make tracking easier
+        foo.call_count = 0
+
+        # A. Basic Cache Hit
+        assert foo.with_context(collisions={"a"}) == "val-1", "a"
+        assert foo.with_context(collisions={"a"}) == "val-1"  # Hit
+        assert foo.call_count == 1
+
+        # B. Collision Difference
+        # Changing collisions creates a new key
+        assert foo.with_context(collisions={"b"}) == "val-2"
+        assert foo.call_count == 2
+
+    # 3. Context Cleared
+    # Everything should be forgotten now.
+    assert (
+        getattr(cache._proto_collisions_cache_state, "resolved_collisions", None)
+        is None
+    )
+    assert foo.with_context(collisions={"a"}) == "val-3"

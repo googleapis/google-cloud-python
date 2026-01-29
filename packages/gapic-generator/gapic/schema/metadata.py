@@ -35,6 +35,7 @@ from google.protobuf import descriptor_pb2
 from gapic.schema import imp
 from gapic.schema import naming
 from gapic.utils import cached_property
+from gapic.utils import cached_proto_context
 from gapic.utils import RESERVED_NAMES
 
 # This class is a minor hack to optimize Address's __eq__ method.
@@ -359,6 +360,7 @@ class Address(BaseAddress):
             return f'{".".join(self.package)}.{selector}'
         return selector
 
+    @cached_proto_context
     def with_context(self, *, collisions: Set[str]) -> "Address":
         """Return a derivative of this address with the provided context.
 
@@ -398,6 +400,7 @@ class Metadata:
             return "\n\n".join(self.documentation.leading_detached_comments)
         return ""
 
+    @cached_proto_context
     def with_context(self, *, collisions: Set[str]) -> "Metadata":
         """Return a derivative of this metadata with the provided context.
 
