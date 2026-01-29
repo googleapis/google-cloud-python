@@ -59,7 +59,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
     ) -> aio.Channel:
         """Create and return a gRPC AsyncIO channel object.
         Args:
-            address (Optional[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If

@@ -70,7 +70,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+            scopes (Optional[Sequence[str]]): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
@@ -153,7 +153,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If

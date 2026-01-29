@@ -74,10 +74,10 @@ class DashboardsServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DashboardsServiceTransport]): The
+            transport (Union[str, ~.DashboardsServiceTransport, None]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
+            client_options (Optional[ClientOptions]): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS
@@ -120,9 +120,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.CreateDashboardRequest`):
                 The request object. The `CreateDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -181,9 +181,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.ListDashboardsRequest`):
                 The request object. The `ListDashboards` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -251,9 +251,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.GetDashboardRequest`):
                 The request object. The `GetDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -312,9 +312,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.DeleteDashboardRequest`):
                 The request object. The `DeleteDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -362,9 +362,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.UpdateDashboardRequest`):
                 The request object. The `UpdateDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
