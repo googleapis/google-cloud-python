@@ -71,9 +71,7 @@ class TestAsyncWriteObjectStream:
     # Open Stream Tests
     # -------------------------------------------------------------------------
 
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
-    )
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio
     async def test_open_new_object(self, mock_rpc_cls, mock_client):
         mock_rpc = mock_rpc_cls.return_value
@@ -101,9 +99,7 @@ class TestAsyncWriteObjectStream:
         assert stream.write_handle == WRITE_HANDLE
         assert stream.generation_number == GENERATION
 
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
-    )
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio
     async def test_open_existing_object_with_token(self, mock_rpc_cls, mock_client):
         mock_rpc = mock_rpc_cls.return_value
@@ -132,9 +128,7 @@ class TestAsyncWriteObjectStream:
         assert initial_request.append_object_spec.routing_token == "token-123"
         assert stream.persisted_size == 1024
 
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
-    )
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio
     async def test_open_metadata_merging(self, mock_rpc_cls, mock_client):
         mock_rpc = mock_rpc_cls.return_value
@@ -166,9 +160,7 @@ class TestAsyncWriteObjectStream:
     # Send & Recv & Close Tests
     # -------------------------------------------------------------------------
 
-    @mock.patch(
-        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
-    )
+    @mock.patch("google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc")
     @pytest.mark.asyncio
     async def test_send_and_recv_logic(self, mock_rpc_cls, mock_client):
         # Setup open stream

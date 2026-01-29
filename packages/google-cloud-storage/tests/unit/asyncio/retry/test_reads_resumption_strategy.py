@@ -27,9 +27,7 @@ from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
 from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 
 _READ_ID = 1
-LOGGER_NAME = (
-    "google.cloud.storage.asyncio.retry.reads_resumption_strategy"
-)
+LOGGER_NAME = "google.cloud.storage.asyncio.retry.reads_resumption_strategy"
 
 
 class TestDownloadState(unittest.TestCase):

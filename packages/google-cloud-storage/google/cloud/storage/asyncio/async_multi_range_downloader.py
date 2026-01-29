@@ -128,10 +128,11 @@ class AsyncMultiRangeDownloader:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,
+        generation: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
         retry_policy: Optional[AsyncRetry] = None,
         metadata: Optional[List[Tuple[str, str]]] = None,
+        **kwargs,
     ) -> AsyncMultiRangeDownloader:
         """Initializes a MultiRangeDownloader and opens the underlying bidi-gRPC
         object for reading.
@@ -145,8 +146,8 @@ class AsyncMultiRangeDownloader:
         :type object_name: str
         :param object_name: The name of the object to be read.
 
-        :type generation_number: int
-        :param generation_number: (Optional) If present, selects a specific
+        :type generation: int
+        :param generation: (Optional) If present, selects a specific
                                   revision of this object.
 
         :type read_handle: _storage_v2.BidiReadHandle
@@ -162,7 +163,14 @@ class AsyncMultiRangeDownloader:
         :rtype: :class:`~google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader`
         :returns: An initialized AsyncMultiRangeDownloader instance for reading.
         """
-        mrd = cls(client, bucket_name, object_name, generation_number, read_handle)
+        mrd = cls(
+            client,
+            bucket_name,
+            object_name,
+            generation=generation,
+            read_handle=read_handle,
+            **kwargs,
+        )
         await mrd.open(retry_policy=retry_policy, metadata=metadata)
         return mrd
 
@@ -171,8 +179,9 @@ class AsyncMultiRangeDownloader:
         client: AsyncGrpcClient,
         bucket_name: str,
         object_name: str,
-        generation_number: Optional[int] = None,
+        generation: Optional[int] = None,
         read_handle: Optional[_storage_v2.BidiReadHandle] = None,
+        **kwargs,
     ) -> None:
         """Constructor for AsyncMultiRangeDownloader, clients are not adviced to
          use it directly. Instead it's adviced to use the classmethod `create_mrd`.
@@ -186,20 +195,27 @@ class AsyncMultiRangeDownloader:
         :type object_name: str
         :param object_name: The name of the object to be read.
 
-        :type generation_number: int
-        :param generation_number: (Optional) If present, selects a specific revision of
+        :type generation: int
+        :param generation: (Optional) If present, selects a specific revision of
                                   this object.
 
         :type read_handle: _storage_v2.BidiReadHandle
         :param read_handle: (Optional) An existing read handle.
         """
+        if "generation_number" in kwargs:
+            if generation is not None:
+                raise TypeError(
+                    "Cannot set both 'generation' and 'generation_number'. "
+                    "Use 'generation' for new code."
+                )
+            generation = kwargs.pop("generation_number")
 
         raise_if_no_fast_crc32c()
 
         self.client = client
         self.bucket_name = bucket_name
         self.object_name = object_name
-        self.generation_number = generation_number
+        self.generation = generation
         self.read_handle: Optional[_storage_v2.BidiReadHandle] = read_handle
         self.read_obj_str: Optional[_AsyncReadObjectStream] = None
         self._is_stream_open: bool = False
@@ -276,7 +292,7 @@ class AsyncMultiRangeDownloader:
                 client=self.client.grpc_client,
                 bucket_name=self.bucket_name,
                 object_name=self.object_name,
-                generation_number=self.generation_number,
+                generation_number=self.generation,
                 read_handle=self.read_handle,
             )
 
@@ -291,7 +307,7 @@ class AsyncMultiRangeDownloader:
             )
 
             if self.read_obj_str.generation_number:
-                self.generation_number = self.read_obj_str.generation_number
+                self.generation = self.read_obj_str.generation_number
             if self.read_obj_str.read_handle:
                 self.read_handle = self.read_obj_str.read_handle
             if self.read_obj_str.persisted_size is not None:
@@ -435,7 +451,7 @@ class AsyncMultiRangeDownloader:
                             client=self.client.grpc_client,
                             bucket_name=self.bucket_name,
                             object_name=self.object_name,
-                            generation_number=self.generation_number,
+                            generation_number=self.generation,
                             read_handle=current_handle,
                         )
 

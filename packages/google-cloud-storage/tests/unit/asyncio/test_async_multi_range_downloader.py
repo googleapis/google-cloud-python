@@ -49,7 +49,7 @@ class TestAsyncMultiRangeDownloader:
         mock_cls_async_read_object_stream,
         bucket_name=_TEST_BUCKET_NAME,
         object_name=_TEST_OBJECT_NAME,
-        generation_number=_TEST_GENERATION_NUMBER,
+        generation=_TEST_GENERATION_NUMBER,
         read_handle=_TEST_READ_HANDLE,
     ):
         mock_client = mock.MagicMock()
@@ -62,7 +62,7 @@ class TestAsyncMultiRangeDownloader:
         mock_stream.read_handle = _TEST_READ_HANDLE
 
         mrd = await AsyncMultiRangeDownloader.create_mrd(
-            mock_client, bucket_name, object_name, generation_number, read_handle
+            mock_client, bucket_name, object_name, generation, read_handle
         )
 
         return mrd, mock_client
@@ -89,7 +89,7 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.client == mock_client
         assert mrd.bucket_name == _TEST_BUCKET_NAME
         assert mrd.object_name == _TEST_OBJECT_NAME
-        assert mrd.generation_number == _TEST_GENERATION_NUMBER
+        assert mrd.generation == _TEST_GENERATION_NUMBER
         assert mrd.read_handle == _TEST_READ_HANDLE
         assert mrd.persisted_size == _TEST_OBJECT_SIZE
         assert mrd.is_stream_open
@@ -303,9 +303,7 @@ class TestAsyncMultiRangeDownloader:
         assert not mrd.is_stream_open
 
     @mock.patch("google.cloud.storage.asyncio._utils.google_crc32c")
-    def test_init_raises_if_crc32c_c_extension_is_missing(
-        self, mock_google_crc32c
-    ):
+    def test_init_raises_if_crc32c_c_extension_is_missing(self, mock_google_crc32c):
         mock_google_crc32c.implementation = "python"
         mock_client = mock.MagicMock()
 
@@ -317,9 +315,7 @@ class TestAsyncMultiRangeDownloader:
         )
 
     @pytest.mark.asyncio
-    @mock.patch(
-        "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
-    )
+    @mock.patch("google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum")
     async def test_download_ranges_raises_on_checksum_mismatch(
         self, mock_checksum_class
     ):
@@ -405,3 +401,47 @@ class TestAsyncMultiRangeDownloader:
 
         mock_close.assert_called_once()
         assert not mrd.is_stream_open
+
+    @mock.patch(
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+    )
+    @pytest.mark.asyncio
+    async def test_create_mrd_with_generation_number(
+        self, mock_cls_async_read_object_stream
+    ):
+        # Arrange
+        mock_client = mock.MagicMock()
+        mock_client.grpc_client = mock.AsyncMock()
+
+        mock_stream = mock_cls_async_read_object_stream.return_value
+        mock_stream.open = AsyncMock()
+        mock_stream.generation_number = _TEST_GENERATION_NUMBER
+        mock_stream.persisted_size = _TEST_OBJECT_SIZE
+        mock_stream.read_handle = _TEST_READ_HANDLE
+
+        # Act
+        mrd = await AsyncMultiRangeDownloader.create_mrd(
+            mock_client,
+            _TEST_BUCKET_NAME,
+            _TEST_OBJECT_NAME,
+            generation_number=_TEST_GENERATION_NUMBER,
+            read_handle=_TEST_READ_HANDLE,
+        )
+
+        # Assert
+        assert mrd.generation == _TEST_GENERATION_NUMBER
+
+    @pytest.mark.asyncio
+    async def test_create_mrd_with_both_generation_and_generation_number(self):
+        # Arrange
+        mock_client = mock.MagicMock()
+
+        # Act & Assert
+        with pytest.raises(TypeError):
+            await AsyncMultiRangeDownloader.create_mrd(
+                mock_client,
+                _TEST_BUCKET_NAME,
+                _TEST_OBJECT_NAME,
+                generation=_TEST_GENERATION_NUMBER,
+                generation_number=_TEST_GENERATION_NUMBER,
+            )

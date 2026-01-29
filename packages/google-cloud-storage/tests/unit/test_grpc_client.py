@@ -31,7 +31,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_defaults_and_options(
         self, mock_storage_client, mock_base_client
     ):
-
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_creds = _make_credentials(spec=["_base", "_get_project_id"])
@@ -76,7 +75,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_disables_direct_path(
         self, mock_storage_client, mock_base_client
     ):
-
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_creds = _make_credentials()
@@ -98,7 +96,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_initialize_with_api_key(
         self, mock_storage_client, mock_base_client
     ):
-
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_creds = _make_credentials()
@@ -125,7 +122,6 @@ class TestGrpcClient(unittest.TestCase):
     @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_grpc_client_property(self, mock_storage_client, mock_base_client):
-
         mock_creds = _make_credentials()
         mock_base_client.return_value._credentials = mock_creds
 
@@ -140,7 +136,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_with_api_key_and_client_options(
         self, mock_storage_client, mock_base_client
     ):
-
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
         mock_transport = mock_transport_cls.return_value
@@ -174,7 +169,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_with_api_key_and_dict_options(
         self, mock_storage_client, mock_base_client
     ):
-
         mock_creds = _make_credentials()
         mock_base_instance = mock_base_client.return_value
         mock_base_instance._credentials = mock_creds
