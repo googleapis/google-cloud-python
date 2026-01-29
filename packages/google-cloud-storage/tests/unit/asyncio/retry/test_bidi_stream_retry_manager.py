@@ -18,10 +18,10 @@ import pytest
 from google.api_core import exceptions
 from google.api_core.retry_async import AsyncRetry
 
-from google.cloud.storage._experimental.asyncio.retry import (
+from google.cloud.storage.asyncio.retry import (
     bidi_stream_retry_manager as manager,
 )
-from google.cloud.storage._experimental.asyncio.retry import base_strategy
+from google.cloud.storage.asyncio.retry import base_strategy
 
 
 def _is_retriable(exc):

@@ -30,8 +30,8 @@ import logging
 
 import pytest
 
-from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
-from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
 from tests.perf.microbenchmarks._utils import publish_benchmark_extra_info

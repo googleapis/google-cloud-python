@@ -16,7 +16,7 @@ import unittest.mock as mock
 from unittest.mock import AsyncMock, MagicMock
 import pytest
 
-from google.cloud.storage._experimental.asyncio.async_write_object_stream import (
+from google.cloud.storage.asyncio.async_write_object_stream import (
     _AsyncWriteObjectStream,
 )
 from google.cloud import _storage_v2
@@ -72,7 +72,7 @@ class TestAsyncWriteObjectStream:
     # -------------------------------------------------------------------------
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
     )
     @pytest.mark.asyncio
     async def test_open_new_object(self, mock_rpc_cls, mock_client):
@@ -102,7 +102,7 @@ class TestAsyncWriteObjectStream:
         assert stream.generation_number == GENERATION
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
     )
     @pytest.mark.asyncio
     async def test_open_existing_object_with_token(self, mock_rpc_cls, mock_client):
@@ -133,7 +133,7 @@ class TestAsyncWriteObjectStream:
         assert stream.persisted_size == 1024
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
     )
     @pytest.mark.asyncio
     async def test_open_metadata_merging(self, mock_rpc_cls, mock_client):
@@ -167,7 +167,7 @@ class TestAsyncWriteObjectStream:
     # -------------------------------------------------------------------------
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_write_object_stream.AsyncBidiRpc"
+        "google.cloud.storage.asyncio.async_write_object_stream.AsyncBidiRpc"
     )
     @pytest.mark.asyncio
     async def test_send_and_recv_logic(self, mock_rpc_cls, mock_client):

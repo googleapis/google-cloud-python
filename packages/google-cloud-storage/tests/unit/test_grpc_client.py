@@ -16,6 +16,7 @@ import unittest
 from unittest import mock
 from google.auth import credentials as auth_credentials
 from google.api_core import client_options as client_options_lib
+from google.cloud.storage import grpc_client
 
 
 def _make_credentials(spec=None):
@@ -30,7 +31,6 @@ class TestGrpcClient(unittest.TestCase):
     def test_constructor_defaults_and_options(
         self, mock_storage_client, mock_base_client
     ):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -71,12 +71,11 @@ class TestGrpcClient(unittest.TestCase):
         # 4. Assert the client instance holds the mocked GAPIC client.
         self.assertIs(client.grpc_client, mock_storage_client.return_value)
 
-    @mock.patch("google.cloud.storage._experimental.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_constructor_disables_direct_path(
         self, mock_storage_client, mock_base_client
     ):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -94,12 +93,11 @@ class TestGrpcClient(unittest.TestCase):
             attempt_direct_path=False
         )
 
-    @mock.patch("google.cloud.storage._experimental.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_constructor_initialize_with_api_key(
         self, mock_storage_client, mock_base_client
     ):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -124,10 +122,9 @@ class TestGrpcClient(unittest.TestCase):
             client_options={"api_key": "test-api-key"},
         )
 
-    @mock.patch("google.cloud.storage._experimental.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_grpc_client_property(self, mock_storage_client, mock_base_client):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_creds = _make_credentials()
         mock_base_client.return_value._credentials = mock_creds
@@ -138,12 +135,11 @@ class TestGrpcClient(unittest.TestCase):
 
         self.assertIs(retrieved_client, mock_storage_client.return_value)
 
-    @mock.patch("google.cloud.storage._experimental.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_constructor_with_api_key_and_client_options(
         self, mock_storage_client, mock_base_client
     ):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_transport_cls = mock.MagicMock()
         mock_storage_client.get_transport_class.return_value = mock_transport_cls
@@ -173,12 +169,11 @@ class TestGrpcClient(unittest.TestCase):
         )
         self.assertEqual(client_options_obj.api_key, "new-test-key")
 
-    @mock.patch("google.cloud.storage._experimental.grpc_client.ClientWithProject")
+    @mock.patch("google.cloud.storage.grpc_client.ClientWithProject")
     @mock.patch("google.cloud._storage_v2.StorageClient")
     def test_constructor_with_api_key_and_dict_options(
         self, mock_storage_client, mock_base_client
     ):
-        from google.cloud.storage._experimental import grpc_client
 
         mock_creds = _make_credentials()
         mock_base_instance = mock_base_client.return_value

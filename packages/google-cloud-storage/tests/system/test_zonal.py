@@ -11,12 +11,12 @@ import pytest
 import gc
 
 # current library imports
-from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
-from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
     _DEFAULT_FLUSH_INTERVAL_BYTES,
 )
-from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
+from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
 from google.api_core.exceptions import FailedPrecondition

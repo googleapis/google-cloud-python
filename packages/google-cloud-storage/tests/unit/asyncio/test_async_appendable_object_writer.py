@@ -21,7 +21,7 @@ from google.api_core import exceptions
 from google.rpc import status_pb2
 from google.cloud._storage_v2.types import storage as storage_type
 from google.cloud._storage_v2.types.storage import BidiWriteObjectRedirectedError
-from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
     _is_write_retryable,
     _MAX_CHUNK_SIZE_BYTES,
@@ -91,7 +91,7 @@ def mock_appendable_writer():
     mock_client.grpc_client = mock.AsyncMock()
     # Internal stream class patch
     stream_patcher = mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
+        "google.cloud.storage.asyncio.async_appendable_object_writer._AsyncWriteObjectStream"
     )
     mock_stream_cls = stream_patcher.start()
     mock_stream = mock_stream_cls.return_value
@@ -156,7 +156,7 @@ class TestAsyncAppendableObjectWriter:
 
     def test_init_raises_if_crc32c_missing(self, mock_appendable_writer):
         with mock.patch(
-            "google.cloud.storage._experimental.asyncio._utils.google_crc32c"
+            "google.cloud.storage.asyncio._utils.google_crc32c"
         ) as mock_crc:
             mock_crc.implementation = "python"
             with pytest.raises(exceptions.FailedPrecondition):
@@ -206,7 +206,7 @@ class TestAsyncAppendableObjectWriter:
         )
 
         with mock.patch(
-            "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._extract_bidi_writes_redirect_proto",
+            "google.cloud.storage.asyncio.async_appendable_object_writer._extract_bidi_writes_redirect_proto",
             return_value=redirect,
         ):
             writer._on_open_error(exceptions.Aborted("redirect"))
@@ -230,7 +230,7 @@ class TestAsyncAppendableObjectWriter:
         data = b"test-data"
 
         with mock.patch(
-            "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
+            "google.cloud.storage.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
         ) as MockManager:
 
             async def mock_execute(state, policy):
@@ -277,7 +277,7 @@ class TestAsyncAppendableObjectWriter:
             writer, "open", side_effect=mock_open
         ) as mock_writer_open:
             with mock.patch(
-                "google.cloud.storage._experimental.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
+                "google.cloud.storage.asyncio.async_appendable_object_writer._BidiStreamRetryManager"
             ) as MockManager:
 
                 async def mock_execute(state, policy):

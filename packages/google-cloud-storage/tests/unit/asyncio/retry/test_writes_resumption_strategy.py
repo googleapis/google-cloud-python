@@ -22,7 +22,7 @@ from google.rpc import status_pb2
 from google.api_core import exceptions
 
 from google.cloud._storage_v2.types import storage as storage_type
-from google.cloud.storage._experimental.asyncio.retry.writes_resumption_strategy import (
+from google.cloud.storage.asyncio.retry.writes_resumption_strategy import (
     _WriteState,
     _WriteResumptionStrategy,
 )
@@ -352,7 +352,7 @@ class TestWriteResumptionStrategy:
         ]
 
         with mock.patch(
-            "google.cloud.storage._experimental.asyncio.retry.writes_resumption_strategy._extract_bidi_writes_redirect_proto",
+            "google.cloud.storage.asyncio.retry.writes_resumption_strategy._extract_bidi_writes_redirect_proto",
             return_value=redirect_proto,
         ):
             await strategy.recover_state_on_failure(

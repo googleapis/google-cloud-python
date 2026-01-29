@@ -22,10 +22,10 @@ import multiprocessing
 import os
 import uuid
 from google.cloud import storage
-from google.cloud.storage._experimental.asyncio.async_appendable_object_writer import (
+from google.cloud.storage.asyncio.async_appendable_object_writer import (
     AsyncAppendableObjectWriter,
 )
-from google.cloud.storage._experimental.asyncio.async_grpc_client import AsyncGrpcClient
+from google.cloud.storage.asyncio.async_grpc_client import AsyncGrpcClient
 from tests.perf.microbenchmarks.writes.parameters import WriteParameters
 
 _OBJECT_NAME_PREFIX = "micro-benchmark"

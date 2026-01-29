@@ -20,7 +20,7 @@ from google.cloud.storage.exceptions import DataCorruption
 from google.api_core import exceptions
 
 from google.cloud import _storage_v2 as storage_v2
-from google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy import (
+from google.cloud.storage.asyncio.retry.reads_resumption_strategy import (
     _DownloadState,
     _ReadResumptionStrategy,
 )
@@ -28,7 +28,7 @@ from google.cloud._storage_v2.types.storage import BidiReadObjectRedirectedError
 
 _READ_ID = 1
 LOGGER_NAME = (
-    "google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy"
+    "google.cloud.storage.asyncio.retry.reads_resumption_strategy"
 )
 
 

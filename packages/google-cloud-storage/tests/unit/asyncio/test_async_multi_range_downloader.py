@@ -20,10 +20,10 @@ from google.cloud import _storage_v2
 from google.api_core import exceptions
 from google_crc32c import Checksum
 
-from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
+from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
-from google.cloud.storage._experimental.asyncio import async_read_object_stream
+from google.cloud.storage.asyncio import async_read_object_stream
 from io import BytesIO
 from google.cloud.storage.exceptions import DataCorruption
 
@@ -68,7 +68,7 @@ class TestAsyncMultiRangeDownloader:
         return mrd, mock_client
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
     async def test_create_mrd(self, mock_cls_async_read_object_stream):
@@ -95,10 +95,10 @@ class TestAsyncMultiRangeDownloader:
         assert mrd.is_stream_open
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
     )
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
     async def test_download_ranges_via_async_gather(
@@ -166,10 +166,10 @@ class TestAsyncMultiRangeDownloader:
         assert second_buffer.getvalue() == data[10:16]
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
+        "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer"
     )
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
     async def test_download_ranges(
@@ -236,7 +236,7 @@ class TestAsyncMultiRangeDownloader:
         )
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
     async def test_opening_mrd_more_than_once_should_throw_error(
@@ -255,7 +255,7 @@ class TestAsyncMultiRangeDownloader:
         assert str(exc.value) == "Underlying bidi-gRPC stream is already open"
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
+        "google.cloud.storage.asyncio.async_multi_range_downloader._AsyncReadObjectStream"
     )
     @pytest.mark.asyncio
     async def test_close_mrd(self, mock_cls_async_read_object_stream):
@@ -302,7 +302,7 @@ class TestAsyncMultiRangeDownloader:
         assert str(exc.value) == "Underlying bidi-gRPC stream is not open"
         assert not mrd.is_stream_open
 
-    @mock.patch("google.cloud.storage._experimental.asyncio._utils.google_crc32c")
+    @mock.patch("google.cloud.storage.asyncio._utils.google_crc32c")
     def test_init_raises_if_crc32c_c_extension_is_missing(
         self, mock_google_crc32c
     ):
@@ -318,12 +318,12 @@ class TestAsyncMultiRangeDownloader:
 
     @pytest.mark.asyncio
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.retry.reads_resumption_strategy.Checksum"
+        "google.cloud.storage.asyncio.retry.reads_resumption_strategy.Checksum"
     )
     async def test_download_ranges_raises_on_checksum_mismatch(
         self, mock_checksum_class
     ):
-        from google.cloud.storage._experimental.asyncio.async_multi_range_downloader import (
+        from google.cloud.storage.asyncio.async_multi_range_downloader import (
             AsyncMultiRangeDownloader,
         )
 
@@ -359,7 +359,7 @@ class TestAsyncMultiRangeDownloader:
 
         with pytest.raises(DataCorruption) as exc_info:
             with mock.patch(
-                "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.generate_random_56_bit_integer",
+                "google.cloud.storage.asyncio.async_multi_range_downloader.generate_random_56_bit_integer",
                 return_value=0,
             ):
                 await mrd.download_ranges([(0, len(test_data), BytesIO())])
@@ -368,11 +368,11 @@ class TestAsyncMultiRangeDownloader:
         mock_checksum_class.assert_called_once_with(test_data)
 
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.open",
+        "google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.open",
         new_callable=AsyncMock,
     )
     @mock.patch(
-        "google.cloud.storage._experimental.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.close",
+        "google.cloud.storage.asyncio.async_multi_range_downloader.AsyncMultiRangeDownloader.close",
         new_callable=AsyncMock,
     )
     @pytest.mark.asyncio
