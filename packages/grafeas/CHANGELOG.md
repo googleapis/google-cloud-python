@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.19.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.18.0...grafeas-v1.19.0) (2026-01-29)
+
+
+### Features
+
+* A new field `last_vulnerability_update_time` is added to message `.grafeas.v1.DiscoveryOccurrence` ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.17.0...grafeas-v1.18.0) (2026-01-15)
 
 

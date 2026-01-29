@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-retail/#history
 
+## [2.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.8.0...google-cloud-retail-v2.9.0) (2026-01-29)
+
+
+### Features
+
+* add a user_attributes field in SearchRequest that can be used for personalization ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* add a model_scores field in SearchResponse.results to expose model quality signals ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [2.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v2.7.0...google-cloud-retail-v2.8.0) (2026-01-09)
 
 

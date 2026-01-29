@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-quotas/#history
 
+## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.3.0...google-cloud-quotas-v0.4.0) (2026-01-29)
+
+
+### Documentation
+
+* Correct typo in comment for field `quota_id` ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [0.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-quotas-v0.2.0...google-cloud-quotas-v0.3.0) (2026-01-09)
 
 
