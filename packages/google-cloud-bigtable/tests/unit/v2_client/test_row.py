@@ -370,44 +370,135 @@ def test_direct_row_delete_cells_with_string_columns():
 
 
 def test_direct_row_commit():
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+    from google.rpc import code_pb2, status_pb2
+
     project_id = "project-id"
     row_key = b"row_key"
     table_name = "projects/more-stuff"
+    app_profile_id = "app_profile_id"
     column_family_id = "column_family_id"
     column = b"column"
 
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
-    table = _Table(table_name, client=client)
+    table = _Table(table_name, client=client, app_profile_id=app_profile_id)
     row = _make_direct_row(row_key, table)
     value = b"bytes-value"
+
+    # Set mock
+    api = mock.create_autospec(BigtableClient)
+    response_pb = _MutateRowResponsePB()
+    api.mutate_row.side_effect = [response_pb]
+    client.table_data_client
+    client._table_data_client._gapic_client = api
 
     # Perform the method and check the result.
     row.set_cell(column_family_id, column, value)
-    row.commit()
-    assert table.mutated_rows == [row]
+    response = row.commit()
+    assert row._mutations == []
+    assert response == status_pb2.Status(code=code_pb2.OK)
+    call_args = api.mutate_row.call_args
+    assert app_profile_id == call_args.app_profile_id[0]
 
 
 def test_direct_row_commit_with_exception():
-    from google.rpc import status_pb2
+    from google.api_core.exceptions import InternalServerError
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+    from google.rpc import code_pb2, status_pb2
 
     project_id = "project-id"
     row_key = b"row_key"
     table_name = "projects/more-stuff"
+    app_profile_id = "app_profile_id"
     column_family_id = "column_family_id"
     column = b"column"
 
     credentials = _make_credentials()
     client = _make_client(project=project_id, credentials=credentials, admin=True)
-    table = _Table(table_name, client=client)
+    table = _Table(table_name, client=client, app_profile_id=app_profile_id)
     row = _make_direct_row(row_key, table)
     value = b"bytes-value"
+
+    # Set mock
+    api = mock.create_autospec(BigtableClient)
+    exception_message = "Boom!"
+    exception = InternalServerError(exception_message)
+    api.mutate_row.side_effect = [exception]
+    client.table_data_client
+    client._table_data_client._gapic_client = api
 
     # Perform the method and check the result.
     row.set_cell(column_family_id, column, value)
     result = row.commit()
-    expected = status_pb2.Status(code=0)
-    assert result == expected
+    assert row._mutations == []
+    assert result == status_pb2.Status(
+        code=code_pb2.Code.INTERNAL, message=exception_message
+    )
+    call_args = api.mutate_row.call_args
+    assert app_profile_id == call_args.app_profile_id[0]
+
+
+def test_direct_row_commit_with_unknown_exception():
+    from google.api_core.exceptions import GoogleAPICallError
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+    from google.rpc import code_pb2, status_pb2
+
+    project_id = "project-id"
+    row_key = b"row_key"
+    table_name = "projects/more-stuff"
+    app_profile_id = "app_profile_id"
+    column_family_id = "column_family_id"
+    column = b"column"
+
+    credentials = _make_credentials()
+    client = _make_client(project=project_id, credentials=credentials, admin=True)
+    table = _Table(table_name, client=client, app_profile_id=app_profile_id)
+    row = _make_direct_row(row_key, table)
+    value = b"bytes-value"
+
+    # Set mock
+    api = mock.create_autospec(BigtableClient)
+    exception_message = "Boom!"
+    exception = GoogleAPICallError(message=exception_message)
+    api.mutate_row.side_effect = [exception]
+    client.table_data_client
+    client._table_data_client._gapic_client = api
+
+    # Perform the method and check the result.
+    row.set_cell(column_family_id, column, value)
+    result = row.commit()
+    assert row._mutations == []
+    assert result == status_pb2.Status(
+        code=code_pb2.Code.UNKNOWN, message=exception_message
+    )
+    call_args = api.mutate_row.call_args
+    assert app_profile_id == call_args.app_profile_id[0]
+
+
+def test_direct_row_commit_with_invalid_argument():
+    from google.cloud.bigtable_v2.services.bigtable import BigtableClient
+    from google.rpc import code_pb2, status_pb2
+
+    project_id = "project-id"
+    row_key = b"row_key"
+    table_name = "projects/more-stuff"
+    app_profile_id = "app_profile_id"
+
+    credentials = _make_credentials()
+    client = _make_client(project=project_id, credentials=credentials, admin=True)
+    table = _Table(table_name, client=client, app_profile_id=app_profile_id)
+    row = _make_direct_row(row_key, table)
+
+    # Set mock
+    api = mock.create_autospec(BigtableClient)
+    client.table_data_client
+    client._table_data_client._gapic_client = api
+
+    # Perform the method and check the result.
+    with pytest.raises(ValueError, match="No mutations provided"):
+        row.commit()
+    api.mutate_row.assert_not_called()
 
 
 def _make_conditional_row(*args, **kwargs):
@@ -734,6 +825,12 @@ def test__parse_rmw_row_response():
     assert expected_output == _parse_rmw_row_response(sample_input)
 
 
+def _MutateRowResponsePB():
+    from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
+
+    return messages_v2_pb2.MutateRowResponse()
+
+
 def _CheckAndMutateRowResponsePB(*args, **kw):
     from google.cloud.bigtable_v2.types import bigtable as messages_v2_pb2
 
@@ -783,16 +880,9 @@ class _Table(object):
         self._instance = _Instance(client)
         self._app_profile_id = app_profile_id
         self.client = client
-        self.mutated_rows = []
 
         self._table_impl = self._instance._client._veneer_data_client.get_table(
             _INSTANCE_ID,
             self.name,
             app_profile_id=self._app_profile_id,
         )
-
-    def mutate_rows(self, rows):
-        from google.rpc import status_pb2
-
-        self.mutated_rows.extend(rows)
-        return [status_pb2.Status(code=0)]
