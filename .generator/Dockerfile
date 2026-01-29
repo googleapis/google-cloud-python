@@ -92,6 +92,9 @@ ENV PYTHON_VERSION_DEFAULT=3.14
 # These are the non "-dev" versions of the libraries used in the builder.
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
+    # Temporarily include git and ca-certificates to download gapic-generator from Github
+    ca-certificates \
+    git \
     # This is needed to avoid the following error:
     # `ImportError: libsqlite3.so.0: cannot open shared object file: No such file or directory`.
     # `libsqlite3-0` is used by the `coverage` PyPI package which is used when testing libraries
