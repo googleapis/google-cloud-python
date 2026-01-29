@@ -18,25 +18,22 @@ from google.cloud import _storage_v2 as storage_v2
 from google.cloud._storage_v2.services.storage.transports.base import (
     DEFAULT_CLIENT_INFO,
 )
+from google.cloud.storage import __version__
 
 
 class AsyncGrpcClient:
     """An asynchronous client for interacting with Google Cloud Storage using the gRPC API.
-
     :type credentials: :class:`~google.auth.credentials.Credentials`
     :param credentials: (Optional) The OAuth2 Credentials to use for this
                         client. If not passed, falls back to the default
                         inferred from the environment.
-
     :type client_info: :class:`~google.api_core.client_info.ClientInfo`
     :param client_info:
         The client info used to send a user-agent string along with API
         requests. If ``None``, then default info will be used.
-
     :type client_options: :class:`~google.api_core.client_options.ClientOptions`
     :param client_options: (Optional) Client options used to set user options
         on the client.
-
     :type attempt_direct_path: bool
     :param attempt_direct_path:
         (Optional) Whether to attempt to use DirectPath for gRPC connections.
@@ -51,6 +48,18 @@ class AsyncGrpcClient:
         *,
         attempt_direct_path=True,
     ):
+        if client_info is None:
+            client_info = DEFAULT_CLIENT_INFO
+        else:
+            client_info = client_info
+        client_info.client_library_version = __version__
+        # TODO: When metrics all use gccl, this should be removed #9552
+        if client_info.user_agent is None:  # pragma: no branch
+            client_info.user_agent = ""
+        agent_version = f"gcloud-python/{__version__}"
+        if agent_version not in client_info.user_agent:
+            client_info.user_agent += f" {agent_version} "
+
         self._grpc_client = self._create_async_grpc_client(
             credentials=credentials,
             client_info=client_info,
@@ -69,8 +78,6 @@ class AsyncGrpcClient:
             "grpc_asyncio"
         )
 
-        if client_info is None:
-            client_info = DEFAULT_CLIENT_INFO
         primary_user_agent = client_info.to_user_agent()
 
         channel = transport_cls.create_channel(
