@@ -60,6 +60,7 @@ from bigframes.bigquery._operations.json import (
 from bigframes.bigquery._operations.search import create_vector_index, vector_search
 from bigframes.bigquery._operations.sql import sql_scalar
 from bigframes.bigquery._operations.struct import struct
+from bigframes.bigquery.table import create_external_table
 from bigframes.core.logging import log_adapter
 
 _functions = [
@@ -104,6 +105,8 @@ _functions = [
     sql_scalar,
     # struct ops
     struct,
+    # table ops
+    create_external_table,
 ]
 
 _module = sys.modules[__name__]
@@ -155,6 +158,8 @@ __all__ = [
     "sql_scalar",
     # struct ops
     "struct",
+    # table ops
+    "create_external_table",
     # Modules / SQL namespaces
     "ai",
     "ml",
