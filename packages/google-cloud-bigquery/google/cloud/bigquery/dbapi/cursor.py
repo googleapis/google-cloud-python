@@ -323,6 +323,8 @@ class Cursor(object):
             read_session=requested_session,
             # a single stream only, as DB API is not well-suited for multithreading
             max_stream_count=1,
+            retry=None,
+            timeout=None,
         )
 
         if not read_session.streams:

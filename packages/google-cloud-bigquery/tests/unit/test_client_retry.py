@@ -23,6 +23,11 @@ from .helpers import make_connection
 
 PROJECT = "test-project"
 
+# A deadline > 1.0s is required because the default retry (google.api_core.retry.Retry)
+# has an initial delay of 1.0s. If the deadline is <= 1.0s, the first retry attempt
+# (scheduled for now + 1.0s) will be rejected immediately as exceeding the deadline.
+_RETRY_DEADLINE = 10.0
+
 
 def _make_credentials():
     import google.auth.credentials
@@ -83,7 +88,7 @@ def test_call_api_applying_custom_retry_on_timeout(global_time_lock):
         "api_request",
         side_effect=[TimeoutError, "result"],
     )
-    retry = DEFAULT_RETRY.with_deadline(1).with_predicate(
+    retry = DEFAULT_RETRY.with_deadline(_RETRY_DEADLINE).with_predicate(
         lambda exc: isinstance(exc, TimeoutError)
     )
 

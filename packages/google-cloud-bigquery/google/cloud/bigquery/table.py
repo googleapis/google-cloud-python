@@ -2152,7 +2152,10 @@ class RowIterator(HTTPIterator):
             timeout=timeout,
         )
         tabledata_list_download = functools.partial(
-            _pandas_helpers.download_arrow_row_iterator, iter(self.pages), self.schema
+            _pandas_helpers.download_arrow_row_iterator,
+            iter(self.pages),
+            self.schema,
+            timeout=timeout,
         )
         return self._to_page_iterable(
             bqstorage_download,
@@ -2366,6 +2369,7 @@ class RowIterator(HTTPIterator):
             iter(self.pages),
             self.schema,
             dtypes,
+            timeout=timeout,
         )
         return self._to_page_iterable(
             bqstorage_download,

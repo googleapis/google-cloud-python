@@ -480,7 +480,11 @@ class TestCursor(unittest.TestCase):
             data_format=bigquery_storage.DataFormat.ARROW,
         )
         mock_bqstorage_client.create_read_session.assert_called_once_with(
-            parent="projects/P", read_session=expected_session, max_stream_count=1
+            parent="projects/P",
+            read_session=expected_session,
+            max_stream_count=1,
+            retry=None,
+            timeout=None,
         )
 
         # Check the data returned.

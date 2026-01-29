@@ -179,6 +179,8 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
         parent="projects/test-project",
         read_session=expected_session,
         max_stream_count=1,  # Use a single stream to preserve row order.
+        retry=None,
+        timeout=None,
     )
 
 
@@ -593,6 +595,8 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
         parent="projects/bqstorage-billing-project",
         read_session=expected_session,
         max_stream_count=0,  # Use default number of streams for best performance.
+        retry=None,
+        timeout=None,
     )
     bqstorage_client.read_rows.assert_called_once_with(stream_id)
 
@@ -644,6 +648,8 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
         parent="projects/bqstorage-billing-project",
         read_session=expected_session,
         max_stream_count=0,
+        retry=None,
+        timeout=None,
     )
 
 
