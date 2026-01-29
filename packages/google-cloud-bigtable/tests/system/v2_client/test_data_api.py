@@ -215,6 +215,37 @@ def test_table_read_rows_filter_millis(data_table):
     row_data.consume_all()
 
 
+def test_table_direct_row_commit(data_table, rows_to_delete):
+    from google.rpc import code_pb2
+
+    row = data_table.direct_row(ROW_KEY)
+
+    # Test set cell
+    row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
+    row.set_cell(COLUMN_FAMILY_ID1, COL_NAME2, CELL_VAL1)
+    status = row.commit()
+    rows_to_delete.append(row)
+    assert status.code == code_pb2.Code.OK
+    row_data = data_table.read_row(ROW_KEY)
+    assert row_data.cells[COLUMN_FAMILY_ID1][COL_NAME1][0].value == CELL_VAL1
+    assert row_data.cells[COLUMN_FAMILY_ID1][COL_NAME2][0].value == CELL_VAL1
+
+    # Test delete cell
+    row.delete_cell(COLUMN_FAMILY_ID1, COL_NAME1)
+    status = row.commit()
+    assert status.code == code_pb2.Code.OK
+    row_data = data_table.read_row(ROW_KEY)
+    assert COL_NAME1 not in row_data.cells[COLUMN_FAMILY_ID1]
+    assert row_data.cells[COLUMN_FAMILY_ID1][COL_NAME2][0].value == CELL_VAL1
+
+    # Test delete row
+    row.delete()
+    status = row.commit()
+    assert status.code == code_pb2.Code.OK
+    row_data = data_table.read_row(ROW_KEY)
+    assert row_data is None
+
+
 def test_table_mutate_rows(data_table, rows_to_delete):
     row1 = data_table.direct_row(ROW_KEY)
     row1.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
@@ -1033,8 +1064,11 @@ def test_table_sample_row_keys(data_table, skip_on_emulator):
 
 
 def test_table_direct_row_input_errors(data_table, rows_to_delete):
+<<<<<<< HEAD
     from google.api_core.exceptions import InvalidArgument
 
+=======
+>>>>>>> 6153a5c31cb (feat: Rerouted DirectRow.commit to use MutateRow (#1276))
     from google.cloud.bigtable.row import MAX_MUTATIONS
 
     row = data_table.direct_row(ROW_KEY)
@@ -1060,20 +1094,18 @@ def test_table_direct_row_input_errors(data_table, rows_to_delete):
     with pytest.raises(TypeError):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, FLOAT_CELL_VAL)
 
-    # Can't have more than MAX_MUTATIONS mutations, but only enforced after
-    # a row.commit
+    # Can't have more than MAX_MUTATIONS mutations, enforced on server side now.
     row.clear()
     for _ in range(0, MAX_MUTATIONS + 1):
         row.set_cell(COLUMN_FAMILY_ID1, COL_NAME1, CELL_VAL1)
 
-    with pytest.raises(ValueError):
-        row.commit()
+    resp = row.commit()
+    assert resp.code == StatusCode.INVALID_ARGUMENT.value[0]
 
-    # Not having any mutations gives a server error (InvalidArgument), not
-    # enforced on the client side.
+    # Not having any mutations raises a ValueError
     row.clear()
-    with pytest.raises(InvalidArgument):
-        row.commit()
+    with pytest.raises(ValueError):
+        resp = row.commit()
 
 
 def test_table_conditional_row_input_errors(data_table, rows_to_delete):
