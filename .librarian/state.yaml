@@ -468,7 +468,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: google-cloud-automl
-    version: 2.18.0
+    version: 2.18.1
     last_generated_commit: 3322511885371d2b2253f209ccc3aa60d4100cfd
     apis:
       - path: google/cloud/automl/v1beta1
@@ -979,7 +979,7 @@ libraries:
       - packages/google-cloud-common/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute
-    version: 1.42.0
+    version: 1.43.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/compute/v1
@@ -994,7 +994,7 @@ libraries:
       - packages/google-cloud-compute/
     tag_format: '{id}-v{version}'
   - id: google-cloud-compute-v1beta
-    version: 0.5.0
+    version: 0.6.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/compute/v1beta
@@ -1068,7 +1068,7 @@ libraries:
       - packages/google-cloud-contact-center-insights/
     tag_format: '{id}-v{version}'
   - id: google-cloud-container
-    version: 2.62.0
+    version: 2.63.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/container/v1
@@ -1415,7 +1415,7 @@ libraries:
       - packages/google-cloud-dms/
     tag_format: '{id}-v{version}'
   - id: google-cloud-documentai
-    version: 3.8.0
+    version: 3.9.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/documentai/v1beta3
@@ -2096,7 +2096,7 @@ libraries:
       - packages/google-cloud-network-connectivity/
     tag_format: '{id}-v{version}'
   - id: google-cloud-network-management
-    version: 1.31.0
+    version: 1.32.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/networkmanagement/v1
@@ -2386,7 +2386,7 @@ libraries:
       - packages/google-cloud-privilegedaccessmanager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-quotas
-    version: 0.3.0
+    version: 0.4.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/api/cloudquotas/v1
@@ -2506,7 +2506,7 @@ libraries:
       - packages/google-cloud-resource-manager/
     tag_format: '{id}-v{version}'
   - id: google-cloud-retail
-    version: 2.8.0
+    version: 2.9.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: google/cloud/retail/v2
@@ -3624,7 +3624,7 @@ libraries:
       - docs/summary_overview.md
     tag_format: '{id}-v{version}'
   - id: grafeas
-    version: 1.18.0
+    version: 1.19.0
     last_generated_commit: cfe62b3c5ceb9f81879c61480f26707980534462
     apis:
       - path: grafeas/v1

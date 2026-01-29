@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-network-management/#history
 
+## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.31.0...google-cloud-network-management-v1.32.0) (2026-01-29)
+
+
+### Features
+
+* add fields and messages for GKE Pods and IP masquerading ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.30.0...google-cloud-network-management-v1.31.0) (2026-01-09)
 
 

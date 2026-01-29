@@ -4,6 +4,52 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.63.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.62.0...google-cloud-container-v2.63.0) (2026-01-29)
+
+
+### Documentation
+
+* A comment for field `subnetwork` in message `.google.container.v1beta1.NodeNetworkConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `cluster_ipv4_cidr` in message `.google.container.v1beta1.Cluster` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `cluster_ipv4_cidr_block` in message `.google.container.v1beta1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `node_ipv4_cidr_block` in message `.google.container.v1beta1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `tpu_ipv4_cidr_block` in message `.google.container.v1beta1.Cluster` is change ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `tpu_ipv4_cidr_block` in message `.google.container.v1beta1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `services_ipv4_cidr_block` in message `.google.container.v1beta1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `services_ipv4_cidr` in message `.google.container.v1beta1.Cluster` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `sysctls` in message `.google.container.v1beta1.LinuxNodeConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `enable_legacy_lustre_port` in message `.google.container.v1beta1.LustreCsiDriverConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `cluster_ipv4_cidr` in message `.google.container.v1.Cluster` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `services_ipv4_cidr_block` in message `.google.container.v1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `cluster_ipv4_cidr_block` in message `.google.container.v1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `node_ipv4_cidr_block` in message `.google.container.v1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `tpu_ipv4_cidr_block` in message `.google.container.v1.IPAllocationPolicy` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `sysctls` in message `.google.container.v1.LinuxNodeConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `gcp_secret_manager_certificate_config` in message `.google.container.v1.ContainerdConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `subnetwork` in message `.google.container.v1.NodeNetworkConfig` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `services_ipv4_cidr` in message `.google.container.v1.Cluster` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `tpu_ipv4_cidr_block` in message `.google.container.v1.Cluster` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* A comment for field `recurrence` in message `.google.container.v1.RecurringTimeWindow` is changed ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
+
+### Features
+
+* Add GPUDirectConfig to configure GPU Direct for node pools ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add consolidation_delay to configure Cluster Autoscaler node consolidation delay ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add SHORT_LIVED as a NodePoolUpdateStrategy ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add DRAINING status to AdditionalIPRangesConfig for subnet draining ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add DisruptionEvent to provide details on node disruption events ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add shutdown_grace_period_seconds and shutdown_grace_period_critical_pods_seconds to NodeKubeletConfig to configure graceful node shutdown for Spot VMs ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add RegistryHostConfig to ContainerdConfig for containerd registry host configuration ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add NodeDrainConfig to NodePool to configure node draining behavior ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add AutopilotGeneralProfile to ClusterAutoscaling to configure Autopilot profiles ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add ManagedOpenTelemetryConfig to Cluster to manage the OpenTelemetry pipeline ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add fields for Rollback-Safe upgrades, including RollbackSafeUpgrade, CompatibilityStatus, and CompleteControlPlaneUpgrade RPC ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add SliceControllerConfig to AddonsConfig to manage the Slice Controller addon ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Allow specifying subnetwork in NodeNetworkConfig during node pool creation ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add PodSnapshotConfig to AddonsConfig to manage Pod Snapshots ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Add SwapConfig to enable and configure swap memory for node pools ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [2.62.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.61.0...google-cloud-container-v2.62.0) (2026-01-08)
 
 

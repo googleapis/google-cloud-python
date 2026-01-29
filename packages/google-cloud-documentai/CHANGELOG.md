@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-documentai/#history
 
+## [3.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.8.0...google-cloud-documentai-v3.9.0) (2026-01-29)
+
+
+### Documentation
+
+* Fixed language issues in multiple message field descriptions ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+* Regenerated REST and RPC Document AI documentation to include missing changes from September 2024 to November 2025 ([38754bbd8765298482b679b027e9bc0ac5a66bb3](https://github.com/googleapis/google-cloud-python/commit/38754bbd8765298482b679b027e9bc0ac5a66bb3))
+
 ## [3.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v3.7.0...google-cloud-documentai-v3.8.0) (2026-01-08)
 
 

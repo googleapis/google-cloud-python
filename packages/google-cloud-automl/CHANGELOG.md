@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.18.0...google-cloud-automl-v2.18.1) (2026-01-29)
+
+
+### Bug Fixes
+
+* fix mypy errors (#15483) ([78eb0a1df15a95ed56526a0766bf83fba37fa759](https://github.com/googleapis/google-cloud-python/commit/78eb0a1df15a95ed56526a0766bf83fba37fa759))
+
 ## [2.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.17.0...google-cloud-automl-v2.18.0) (2026-01-08)
 
 
