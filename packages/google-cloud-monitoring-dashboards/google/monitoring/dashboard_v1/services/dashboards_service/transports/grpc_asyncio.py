@@ -51,7 +51,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
     def create_channel(
         cls,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: Optional[credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
@@ -92,12 +92,12 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         self,
         *,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: Optional[credentials.Credentials] = None,
         credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        channel: Optional[aio.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id=None,
     ) -> None:
         """Instantiate the transport.
@@ -138,7 +138,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
-            credentials = False
+            credentials = None
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel

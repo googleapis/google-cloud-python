@@ -46,7 +46,7 @@ class DashboardsServiceTransport(abc.ABC):
         self,
         *,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
+        credentials: typing.Optional[credentials.Credentials] = None,
         credentials_file: typing.Optional[str] = None,
         scopes: typing.Optional[typing.Sequence[str]] = AUTH_SCOPES,
         quota_project_id: typing.Optional[str] = None,
