@@ -779,6 +779,7 @@ class ConfigClient(metaclass=ConfigClientMeta):
         ] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
+        _allow_async_transport: bool = False,
     ) -> None:
         """Instantiates the config client.
 
@@ -870,6 +871,18 @@ class ConfigClient(metaclass=ConfigClientMeta):
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
         transport_provided = isinstance(transport, ConfigTransport)
+
+        # Raise an exception if the async transport is provided.
+        if (
+            not _allow_async_transport
+            and transport_provided
+            and isinstance(transport, ConfigGrpcAsyncIOTransport)
+        ):
+            raise ValueError(
+                "The `ConfigClient` does not support async transports. "
+                "Please use `ConfigAsyncClient` instead."
+            )
+
         if transport_provided:
             # transport is a ConfigTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
@@ -909,6 +922,18 @@ class ConfigClient(metaclass=ConfigClientMeta):
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., ConfigTransport], transport)
             )
+
+            # Raise an exception if the async transport is provided.
+            if (
+                not _allow_async_transport
+                and isinstance(transport, str)
+                and transport == "grpc_asyncio"
+            ):
+                raise ValueError(
+                    "The `ConfigClient` does not support async transports. "
+                    "Please use `ConfigAsyncClient` instead."
+                )
+
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
                 credentials=credentials,
