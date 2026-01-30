@@ -81,6 +81,9 @@ def main(project_id, instance_id, table_id):
             # sequential keys can result in poor distribution of operations
             # across nodes.
             #
+            # We recommend that you use bytestrings directly for row keys
+            # where possible, rather than encoding strings.
+            #
             # For more information about how to design a Bigtable schema for
             # the best performance, see the documentation:
             #
