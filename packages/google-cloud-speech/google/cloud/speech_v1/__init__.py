@@ -175,7 +175,7 @@ from google.cloud.speech_v1.helpers import SpeechHelpers
 # but their type signatures don't match.
 # We ignore [no-redef] because of the name shadow with SpeechClient. We don't want
 # to expose the GAPIC client without the helpers.
-class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[misc]
+class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[no-redef, misc]
     __doc__ = SpeechClient.__doc__
 
 

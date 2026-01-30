@@ -146,7 +146,7 @@ replacements:
       # but their type signatures don't match.
       # We ignore [no-redef] because of the name shadow with SpeechClient. We don't want
       # to expose the GAPIC client without the helpers.
-      class SpeechClient(SpeechHelpers, SpeechClient):
+      class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[no-redef, misc]
           __doc__ = SpeechClient.__doc__\n\n
       __all__ = (
     count: 1
