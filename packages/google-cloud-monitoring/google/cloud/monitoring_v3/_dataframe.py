@@ -19,7 +19,7 @@ import itertools
 try:
     import pandas
 except ImportError:  # pragma: NO COVER
-    pandas = None
+    pandas = None  # type: ignore[assignment]
 
 from google.cloud import monitoring_v3
 

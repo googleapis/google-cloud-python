@@ -169,7 +169,13 @@ else:  # pragma: NO COVER
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
 
-class SpeechClient(SpeechHelpers, SpeechClient):
+# This class merges the auto-generated GAPIC client with handwritten helper methods.
+# We ignore [misc] because mypy is flagging that both parent classes have a method
+# named `streaming_recognize`,
+# but their type signatures don't match.
+# We ignore [no-redef] because of the name shadow with SpeechClient. We don't want
+# to expose the GAPIC client without the helpers.
+class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[no-redef, misc]
     __doc__ = SpeechClient.__doc__
 
 
