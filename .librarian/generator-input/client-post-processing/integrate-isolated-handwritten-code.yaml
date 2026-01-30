@@ -131,6 +131,7 @@ replacements:
     count: 1
   - paths: [
       packages/google-cloud-speech/google/cloud/speech_v1/__init__.py,
+      packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
     ]    
     before: |
       \)
@@ -149,21 +150,7 @@ replacements:
       class SpeechClient(SpeechHelpers, SpeechClient):  # type: ignore[no-redef, misc]
           __doc__ = SpeechClient.__doc__\n\n
       __all__ = (
-    count: 1
-  - paths: [
-      packages/google-cloud-speech/google/cloud/speech_v1p1beta1/__init__.py,
-    ]    
-    before: |
-      \)\n
-      __all__ = \(
-    after: |
-      )\n
-      from google.cloud.speech_v1.helpers import SpeechHelpers
-      \n
-      class SpeechClient(SpeechHelpers, SpeechClient):
-          __doc__ = SpeechClient.__doc__\n\n
-      __all__ = (
-    count: 1
+    count: 2
   - paths: [
       packages/google-cloud-speech/google/cloud/speech/__init__.py,
     ]    
