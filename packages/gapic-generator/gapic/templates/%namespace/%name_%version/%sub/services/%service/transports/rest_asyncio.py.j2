@@ -202,7 +202,7 @@ class Async{{service.name}}RestTransport(_Base{{ service.name }}RestTransport):
             {% endif %}
             """
 
-            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, True, method.output.ident.is_proto_plus_type)|indent(8) }}
+            {{ shared_macros.rest_call_method_common(body_spec, method.name, service, True, method.input.ident.is_proto_plus_type)|indent(8) }}
 
             {% if not method.void %}
             # Return the response

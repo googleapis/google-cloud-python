@@ -196,8 +196,9 @@ def _get_http_options():
         body_spec (str): The http options body i.e. method.http_options[0].body
         method_name (str): The method name.
         service: The service.
-        is_async (bool): Used to determine the code path i.e. whether for sync or async call. #}
-{% macro rest_call_method_common(body_spec, method_name, service, is_async=False, is_proto_plus_type=False) %}
+        is_async (bool): Used to determine the code path i.e. whether for sync or async call.
+        is_request_message_proto_plus_type (bool): Used to determine whether the request message is a proto-plus type. #}
+{% macro rest_call_method_common(body_spec, method_name, service, is_async=False, is_request_message_proto_plus_type=False) %}
 {% set service_name = service.name %}
 {% set await_prefix = "await " if is_async else "" %}
 {% set async_class_prefix = "Async" if is_async else "" %}
@@ -218,7 +219,7 @@ def _get_http_options():
         request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request['uri'])
         method = transcoded_request['method']
         try:
-            request_payload = {% if is_proto_plus_type %}type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
+            request_payload = {% if is_request_message_proto_plus_type %}type(request).to_json(request){% else %}json_format.MessageToJson(request){% endif %}
 
         except:
             {# TODO(https://github.com/googleapis/gapic-generator-python/issues/2282): Remove try/except and correctly parse request payload. #}
