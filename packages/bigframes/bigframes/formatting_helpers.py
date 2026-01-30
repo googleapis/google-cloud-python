@@ -25,10 +25,10 @@ import bigframes_vendored.constants as constants
 import google.api_core.exceptions as api_core_exceptions
 import google.cloud.bigquery as bigquery
 import humanize
-import IPython
-import IPython.display as display
 
 if TYPE_CHECKING:
+    from IPython import display
+
     import bigframes.core.events
 
 GenericJob = Union[
@@ -160,6 +160,8 @@ def progress_callback(
         progress_bar = "notebook" if in_ipython() else "terminal"
 
     if progress_bar == "notebook":
+        import IPython.display as display
+
         if (
             isinstance(event, bigframes.core.events.ExecutionStarted)
             or current_display is None
@@ -239,6 +241,8 @@ def wait_for_job(job: GenericJob, progress_bar: Optional[str] = None):
 
     try:
         if progress_bar == "notebook":
+            import IPython.display as display
+
             display_id = str(random.random())
             loading_bar = display.HTML(get_base_job_loading_html(job))
             display.display(loading_bar, display_id=display_id)
@@ -607,4 +611,8 @@ def get_bytes_processed_string(val: Any):
 
 def in_ipython():
     """Return True iff we're in a colab-like IPython."""
+    try:
+        import IPython
+    except (ImportError, NameError):
+        return False
     return hasattr(IPython.get_ipython(), "kernel")

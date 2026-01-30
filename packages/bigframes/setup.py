@@ -55,7 +55,6 @@ dependencies = [
     "requests >=2.27.1",
     "shapely >=1.8.5",
     "tabulate >=0.9",
-    "ipywidgets >=7.7.1",
     "humanize >=4.6.0",
     "matplotlib >=3.7.1",
     "db-dtypes >=1.4.2",

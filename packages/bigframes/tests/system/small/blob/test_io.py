@@ -14,11 +14,13 @@
 
 from unittest import mock
 
-import IPython.display
 import pandas as pd
+import pytest
 
 import bigframes
 import bigframes.pandas as bpd
+
+idisplay = pytest.importorskip("IPython.display")
 
 
 def test_blob_create_from_uri_str(
@@ -99,14 +101,14 @@ def test_blob_create_read_gbq_object_table(
 
 def test_display_images(monkeypatch, images_mm_df: bpd.DataFrame):
     mock_display = mock.Mock()
-    monkeypatch.setattr(IPython.display, "display", mock_display)
+    monkeypatch.setattr(idisplay, "display", mock_display)
 
     images_mm_df["blob_col"].blob.display()
 
     for call in mock_display.call_args_list:
         args, _ = call
         arg = args[0]
-        assert isinstance(arg, IPython.display.Image)
+        assert isinstance(arg, idisplay.Image)
 
 
 def test_display_nulls(
@@ -117,7 +119,7 @@ def test_display_nulls(
     uri_series = bpd.Series([None, None, None], dtype="string", session=session)
     blob_series = uri_series.str.to_blob(connection=bq_connection)
     mock_display = mock.Mock()
-    monkeypatch.setattr(IPython.display, "display", mock_display)
+    monkeypatch.setattr(idisplay, "display", mock_display)
 
     blob_series.blob.display()
 
