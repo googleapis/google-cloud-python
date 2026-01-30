@@ -296,3 +296,31 @@ def generate_text(
     sql += _build_struct_sql(struct_options)
     sql += ")\n"
     return sql
+
+
+def generate_embedding(
+    model_name: str,
+    table: str,
+    *,
+    flatten_json_output: Optional[bool] = None,
+    task_type: Optional[str] = None,
+    output_dimensionality: Optional[int] = None,
+) -> str:
+    """Encode the ML.GENERATE_EMBEDDING statement.
+    See https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding for reference.
+    """
+    struct_options: Dict[
+        str,
+        Union[str, int, float, bool, Mapping[str, str], List[str], Mapping[str, Any]],
+    ] = {}
+    if flatten_json_output is not None:
+        struct_options["flatten_json_output"] = flatten_json_output
+    if task_type is not None:
+        struct_options["task_type"] = task_type
+    if output_dimensionality is not None:
+        struct_options["output_dimensionality"] = output_dimensionality
+
+    sql = f"SELECT * FROM ML.GENERATE_EMBEDDING(MODEL {googlesql.identifier(model_name)}, ({table})"
+    sql += _build_struct_sql(struct_options)
+    sql += ")\n"
+    return sql

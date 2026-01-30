@@ -520,3 +520,63 @@ def generate_text(
         return bpd.read_gbq_query(sql)
     else:
         return session.read_gbq_query(sql)
+
+
+@log_adapter.method_logger(custom_base_name="bigquery_ml")
+def generate_embedding(
+    model: Union[bigframes.ml.base.BaseEstimator, str, pd.Series],
+    input_: Union[pd.DataFrame, dataframe.DataFrame, str],
+    *,
+    flatten_json_output: Optional[bool] = None,
+    task_type: Optional[str] = None,
+    output_dimensionality: Optional[int] = None,
+) -> dataframe.DataFrame:
+    """
+    Generates text embedding using a BigQuery ML model.
+
+    See the `BigQuery ML GENERATE_EMBEDDING function syntax
+    <https://docs.cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-generate-embedding>`_
+    for additional reference.
+
+    Args:
+        model (bigframes.ml.base.BaseEstimator or str):
+            The model to use for text embedding.
+        input_ (Union[bigframes.pandas.DataFrame, str]):
+            The DataFrame or query to use for text embedding.
+        flatten_json_output (bool, optional):
+            A BOOL value that determines the content of the generated JSON column.
+        task_type (str, optional):
+            A STRING value that specifies the intended downstream application task.
+            Supported values are:
+            - `RETRIEVAL_QUERY`
+            - `RETRIEVAL_DOCUMENT`
+            - `SEMANTIC_SIMILARITY`
+            - `CLASSIFICATION`
+            - `CLUSTERING`
+            - `QUESTION_ANSWERING`
+            - `FACT_VERIFICATION`
+            - `CODE_RETRIEVAL_QUERY`
+        output_dimensionality (int, optional):
+            An INT64 value that specifies the size of the output embedding.
+
+    Returns:
+        bigframes.pandas.DataFrame:
+            The generated text embedding.
+    """
+    import bigframes.pandas as bpd
+
+    model_name, session = _get_model_name_and_session(model, input_)
+    table_sql = _to_sql(input_)
+
+    sql = bigframes.core.sql.ml.generate_embedding(
+        model_name=model_name,
+        table=table_sql,
+        flatten_json_output=flatten_json_output,
+        task_type=task_type,
+        output_dimensionality=output_dimensionality,
+    )
+
+    if session is None:
+        return bpd.read_gbq_query(sql)
+    else:
+        return session.read_gbq_query(sql)

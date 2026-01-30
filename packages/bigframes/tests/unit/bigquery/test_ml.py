@@ -200,3 +200,32 @@ def test_generate_text_with_pandas_dataframe(read_pandas_mock, read_gbq_query_mo
     assert "['a', 'b'] AS stop_sequences" in generated_sql
     assert "true AS ground_with_google_search" in generated_sql
     assert "'TYPE' AS request_type" in generated_sql
+
+
+@mock.patch("bigframes.pandas.read_gbq_query")
+@mock.patch("bigframes.pandas.read_pandas")
+def test_generate_embedding_with_pandas_dataframe(
+    read_pandas_mock, read_gbq_query_mock
+):
+    df = pd.DataFrame({"col1": [1, 2, 3]})
+    read_pandas_mock.return_value._to_sql_query.return_value = (
+        "SELECT * FROM `pandas_df`",
+        [],
+        [],
+    )
+    ml_ops.generate_embedding(
+        MODEL_SERIES,
+        input_=df,
+        flatten_json_output=True,
+        task_type="RETRIEVAL_DOCUMENT",
+        output_dimensionality=256,
+    )
+    read_pandas_mock.assert_called_once()
+    read_gbq_query_mock.assert_called_once()
+    generated_sql = read_gbq_query_mock.call_args[0][0]
+    assert "ML.GENERATE_EMBEDDING" in generated_sql
+    assert f"MODEL `{MODEL_NAME}`" in generated_sql
+    assert "(SELECT * FROM `pandas_df`)" in generated_sql
+    assert "true AS flatten_json_output" in generated_sql
+    assert "'RETRIEVAL_DOCUMENT' AS task_type" in generated_sql
+    assert "256 AS output_dimensionality" in generated_sql

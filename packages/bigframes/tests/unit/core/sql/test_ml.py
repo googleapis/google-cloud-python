@@ -201,3 +201,22 @@ def test_generate_text_model_with_options(snapshot):
         request_type="TYPE",
     )
     snapshot.assert_match(sql, "generate_text_model_with_options.sql")
+
+
+def test_generate_embedding_model_basic(snapshot):
+    sql = bigframes.core.sql.ml.generate_embedding(
+        model_name="my_project.my_dataset.my_model",
+        table="SELECT * FROM new_data",
+    )
+    snapshot.assert_match(sql, "generate_embedding_model_basic.sql")
+
+
+def test_generate_embedding_model_with_options(snapshot):
+    sql = bigframes.core.sql.ml.generate_embedding(
+        model_name="my_project.my_dataset.my_model",
+        table="SELECT * FROM new_data",
+        flatten_json_output=True,
+        task_type="RETRIEVAL_DOCUMENT",
+        output_dimensionality=256,
+    )
+    snapshot.assert_match(sql, "generate_embedding_model_with_options.sql")
