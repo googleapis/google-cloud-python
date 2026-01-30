@@ -1,6 +1,7 @@
 {% extends '_base.py.j2' %}
 
 {% block content %}
+{% from "docs/common_setup.py.j2" import sphinx_imports, sphinx_setup %}
 
 #
 # {{ api.naming.warehouse_package_name }} documentation build configuration file
@@ -14,9 +15,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys
+import logging
 import os
 import shlex
+import sys
+{{ sphinx_imports() }}
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -361,4 +364,7 @@ napoleon_use_admonition_for_references = False
 napoleon_use_ivar = False
 napoleon_use_param = True
 napoleon_use_rtype = True
+
+# Setup for sphinx behaviors such as warning filters.
+{{ sphinx_setup() }}
 {% endblock %}
