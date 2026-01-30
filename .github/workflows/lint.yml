@@ -46,3 +46,29 @@ jobs:
         PY_VERSION: "unused"
       run: |
         ci/run_conditional_tests.sh
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5
+      # Use a fetch-depth of 2 to avoid error `fatal: origin/main...HEAD: no merge base`
+      # See https://github.com/googleapis/google-cloud-python/issues/12013
+      # and https://github.com/actions/checkout#checkout-head.
+      with:
+        fetch-depth: 2
+    - name: Setup Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.14"
+    - name: Install nox
+      run: |
+        python -m pip install --upgrade setuptools pip wheel
+        python -m pip install nox
+    - name: Run mypy
+      env:
+        BUILD_TYPE: presubmit
+        TEST_TYPE: mypy
+        # TODO(https://github.com/googleapis/google-cloud-python/issues/13775): Specify `PY_VERSION` rather than relying on the default python version of the nox session.
+        PY_VERSION: "unused"
+      run: |
+        ci/run_conditional_tests.sh
