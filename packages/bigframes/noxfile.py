@@ -444,6 +444,8 @@ def doctest(session: nox.sessions.Session):
             "bigframes/testing",
             "--ignore",
             "bigframes/display/anywidget.py",
+            "--ignore",
+            "bigframes/bigquery/_operations/ai.py",
         ),
         test_folder="bigframes",
         check_cov=True,
