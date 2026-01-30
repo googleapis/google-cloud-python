@@ -113,6 +113,18 @@ GOOGLE_API_CERTIFICATE_CONFIG = "GOOGLE_API_CERTIFICATE_CONFIG"
 """Environment variable defining the location of Google API certificate config
 file."""
 
+CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE = (
+    "CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE"
+)
+"""Environment variable controlling whether to use client certificate or not.
+This variable is the fallback of GOOGLE_API_USE_CLIENT_CERTIFICATE."""
+
+CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH = (
+    "CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH"
+)
+"""Environment variable defining the location of Google API certificate config
+file. This variable is the fallback of GOOGLE_API_CERTIFICATE_CONFIG."""
+
 GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES = (
     "GOOGLE_API_PREVENT_AGENT_TOKEN_SHARING_FOR_GCP_SERVICES"
 )

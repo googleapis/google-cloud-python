@@ -151,7 +151,14 @@ def _get_cert_config_path(certificate_config_path=None):
         if env_path is not None and env_path != "":
             certificate_config_path = env_path
         else:
-            certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
+            env_path = environ.get(
+                environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH,
+                None,
+            )
+            if env_path is not None and env_path != "":
+                certificate_config_path = env_path
+            else:
+                certificate_config_path = CERTIFICATE_CONFIGURATION_DEFAULT_PATH
 
     certificate_config_path = path.expanduser(certificate_config_path)
     if not path.exists(certificate_config_path):
@@ -452,13 +459,23 @@ def check_use_client_cert():
     Returns:
         bool: Whether the client certificate should be used for mTLS connection.
     """
-    use_client_cert = getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE")
+    use_client_cert = getenv(environment_vars.GOOGLE_API_USE_CLIENT_CERTIFICATE)
+    if use_client_cert is None or use_client_cert == "":
+        use_client_cert = getenv(
+            environment_vars.CLOUDSDK_CONTEXT_AWARE_USE_CLIENT_CERTIFICATE
+        )
+
     # Check if the value of GOOGLE_API_USE_CLIENT_CERTIFICATE is set.
     if use_client_cert:
         return use_client_cert.lower() == "true"
     else:
         # Check if the value of GOOGLE_API_CERTIFICATE_CONFIG is set.
-        cert_path = getenv("GOOGLE_API_CERTIFICATE_CONFIG")
+        cert_path = getenv(environment_vars.GOOGLE_API_CERTIFICATE_CONFIG)
+        if cert_path is None:
+            cert_path = getenv(
+                environment_vars.CLOUDSDK_CONTEXT_AWARE_CERTIFICATE_CONFIG_FILE_PATH
+            )
+
         if cert_path:
             try:
                 with open(cert_path, "r") as f:

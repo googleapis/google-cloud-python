@@ -22,14 +22,13 @@ API`_'s auth-related functionality.
 import base64
 import http.client as http_client
 import json
-import os
 
 from google.auth import _exponential_backoff
 from google.auth import _helpers
 from google.auth import credentials
 from google.auth import crypt
 from google.auth import exceptions
-from google.auth.transport import mtls
+from google.auth.transport import _mtls_helper
 
 IAM_RETRY_CODES = {
     http_client.INTERNAL_SERVER_ERROR,
@@ -40,20 +39,12 @@ IAM_RETRY_CODES = {
 
 _IAM_SCOPE = ["https://www.googleapis.com/auth/iam"]
 
-# 1. Determine if we should use mTLS.
-# Note: We only support automatic mTLS on the default googleapis.com universe.
-if hasattr(mtls, "should_use_client_cert"):
-    use_client_cert = mtls.should_use_client_cert()
-else:  # pragma: NO COVER
-    # if unsupported, fallback to reading from env var
-    use_client_cert = (
-        os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower() == "true"
-    )
-
-# 2. Construct the template domain using the library's DEFAULT_UNIVERSE_DOMAIN constant.
-# This ensures that the .replace() calls in the classes will work correctly.
-if use_client_cert:
-    # We use the .mtls. prefix only for the default universe template
+# Determine if we should use mTLS.
+if (
+    hasattr(_mtls_helper, "check_use_client_cert")
+    and _mtls_helper.check_use_client_cert()
+):
+    # Construct the template domain using the library's DEFAULT_UNIVERSE_DOMAIN constant.
     _IAM_DOMAIN = f"iamcredentials.mtls.{credentials.DEFAULT_UNIVERSE_DOMAIN}"
 else:
     _IAM_DOMAIN = f"iamcredentials.{credentials.DEFAULT_UNIVERSE_DOMAIN}"
