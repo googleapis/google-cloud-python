@@ -106,3 +106,55 @@ class AsyncGrpcClient:
             google.cloud._storage_v2.StorageAsyncClient: The configured GAPIC client.
         """
         return self._grpc_client
+
+    async def delete_object(
+        self,
+        bucket_name,
+        object_name,
+        generation=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        **kwargs,
+    ):
+        """Deletes an object and its metadata.
+
+        :type bucket_name: str
+        :param bucket_name: The name of the bucket in which the object resides.
+
+        :type object_name: str
+        :param object_name: The name of the object to delete.
+
+        :type generation: int
+        :param generation:
+            (Optional) If present, permanently deletes a specific generation
+            of an object.
+
+        :type if_generation_match: int
+        :param if_generation_match: (Optional)
+
+        :type if_generation_not_match: int
+        :param if_generation_not_match: (Optional)
+
+        :type if_metageneration_match: int
+        :param if_metageneration_match: (Optional)
+
+        :type if_metageneration_not_match: int
+        :param if_metageneration_not_match: (Optional)
+
+
+        """
+        # The gRPC API requires the bucket name to be in the format "projects/_/buckets/bucket_name"
+        bucket_path = f"projects/_/buckets/{bucket_name}"
+        request = storage_v2.DeleteObjectRequest(
+            bucket=bucket_path,
+            object=object_name,
+            generation=generation,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+            **kwargs,
+        )
+        await self._grpc_client.delete_object(request=request)

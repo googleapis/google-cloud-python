@@ -19,7 +19,7 @@ from google.cloud.storage.asyncio.async_appendable_object_writer import (
 from google.cloud.storage.asyncio.async_multi_range_downloader import (
     AsyncMultiRangeDownloader,
 )
-from google.api_core.exceptions import FailedPrecondition
+from google.api_core.exceptions import FailedPrecondition, NotFound
 
 
 pytestmark = pytest.mark.skipif(
@@ -568,5 +568,36 @@ def test_open_existing_object_with_gen_None_overrides_existing(
         gc.collect()
 
         blobs_to_delete.append(storage_client.bucket(_ZONAL_BUCKET).blob(object_name))
+
+    event_loop.run_until_complete(_run())
+
+
+def test_delete_object_using_grpc_client(event_loop, grpc_client_direct):
+    """
+    Test that a new writer when specifies `None` overrides the existing object.
+    """
+    object_name = f"test_append_with_generation-{uuid.uuid4()}"
+
+    async def _run():
+        writer = AsyncAppendableObjectWriter(
+            grpc_client_direct, _ZONAL_BUCKET, object_name, generation=0
+        )
+
+        # Empty object is created.
+        await writer.open()
+        await writer.append(b"some_bytes")
+        await writer.close()
+
+        await grpc_client_direct.delete_object(_ZONAL_BUCKET, object_name)
+
+        # trying to get raises raises 404.
+        with pytest.raises(NotFound):
+            # TODO: Remove this once GET_OBJECT is exposed in `AsyncGrpcClient`
+            await grpc_client_direct._grpc_client.get_object(
+                bucket=f"projects/_/buckets/{_ZONAL_BUCKET}", object_=object_name
+            )
+        # cleanup
+        del writer
+        gc.collect()
 
     event_loop.run_until_complete(_run())
