@@ -1957,13 +1957,13 @@ replacements:
           def __init__(
               self,
               *,
-              transport: Union[str, GrafeasTransport] = None,
+              transport: Optional[Union[str, GrafeasTransport]] = None,
               credentials: Optional[ga_credentials.Credentials] = None,
           ) -> None:
               """Instantiate the grafeas client.
 
               Args:
-                  transport (Union[str, ~.GrafeasTransport]): The
+                  transport (Optional[Union[str, ~.GrafeasTransport]]): The
                       transport to use.
                   credentials (Optional[google.auth.credentials.Credentials]): The
                       authorization credentials to attach to requests. These
