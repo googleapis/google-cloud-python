@@ -29,7 +29,7 @@ else:  # pragma: NO COVER
     import importlib_metadata as metadata
 
 from .services.adaptation import AdaptationAsyncClient, AdaptationClient
-from .services.speech import SpeechAsyncClient, SpeechClient
+from .services.speech import SpeechAsyncClient, SpeechClient as SpeechGapicClient
 from .types.cloud_speech import (
     LongRunningRecognizeMetadata,
     LongRunningRecognizeRequest,
@@ -169,8 +169,11 @@ else:  # pragma: NO COVER
 from google.cloud.speech_v1.helpers import SpeechHelpers
 
 
-class SpeechClient(SpeechHelpers, SpeechClient):
-    __doc__ = SpeechClient.__doc__
+# This class merges the auto-generated GAPIC client with handwritten helper methods.
+# Mypy is flagging that both parent classes have a method named `streaming_recognize`,
+# but their type signatures don't match.
+class SpeechClient(SpeechHelpers, SpeechGapicClient):  # type: ignore[misc]
+    __doc__ = SpeechGapicClient.__doc__
 
 
 __all__ = (
