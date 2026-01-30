@@ -301,3 +301,14 @@ replacements:
               "pandas-stubs",
           )
     count: 1
+  - paths: [
+      packages/google-cloud-monitoring/noxfile.py,
+    ]
+    before: |
+      "types-protobuf",
+      \    \)
+    after: |
+      "types-protobuf",
+              "pandas-stubs",
+          )
+    count: 1
