@@ -18,12 +18,12 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Sequence, Tuple, Type, Union
+from typing import Dict, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
-import google.api_core.client_options as ClientOptions  # type: ignore
+from google.api_core.client_options import ClientOptions  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
@@ -34,6 +34,12 @@ from google.monitoring.dashboard_v1.types import dashboard, dashboards_service, 
 from .client import DashboardsServiceClient
 from .transports.base import DashboardsServiceTransport
 from .transports.grpc_asyncio import DashboardsServiceGrpcAsyncIOTransport
+
+
+try:
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
+except AttributeError:  # pragma: NO COVER
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 
 class DashboardsServiceAsyncClient:
@@ -51,16 +57,14 @@ class DashboardsServiceAsyncClient:
     from_service_account_file = DashboardsServiceClient.from_service_account_file
     from_service_account_json = from_service_account_file
 
-    get_transport_class = functools.partial(
-        type(DashboardsServiceClient).get_transport_class, type(DashboardsServiceClient)
-    )
+    get_transport_class = DashboardsServiceClient.get_transport_class
 
     def __init__(
         self,
         *,
-        credentials: credentials.Credentials = None,
-        transport: Union[str, DashboardsServiceTransport] = "grpc_asyncio",
-        client_options: ClientOptions = None,
+        credentials: Optional[credentials.Credentials] = None,
+        transport: Union[str, DashboardsServiceTransport, None] = "grpc_asyncio",
+        client_options: Optional[ClientOptions] = None,
     ) -> None:
         """Instantiate the dashboards service client.
 
@@ -70,10 +74,10 @@ class DashboardsServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.DashboardsServiceTransport]): The
+            transport (Union[str, ~.DashboardsServiceTransport, None]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
+            client_options (Optional[ClientOptions]): Custom options for the client. It
                 won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS
@@ -100,10 +104,10 @@ class DashboardsServiceAsyncClient:
 
     async def create_dashboard(
         self,
-        request: dashboards_service.CreateDashboardRequest = None,
+        request: Optional[dashboards_service.CreateDashboardRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Creates a new custom dashboard.
@@ -116,9 +120,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.CreateDashboardRequest`):
                 The request object. The `CreateDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -161,10 +165,10 @@ class DashboardsServiceAsyncClient:
 
     async def list_dashboards(
         self,
-        request: dashboards_service.ListDashboardsRequest = None,
+        request: Optional[dashboards_service.ListDashboardsRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListDashboardsAsyncPager:
         r"""Lists the existing dashboards.
@@ -177,9 +181,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.ListDashboardsRequest`):
                 The request object. The `ListDashboards` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -231,10 +235,10 @@ class DashboardsServiceAsyncClient:
 
     async def get_dashboard(
         self,
-        request: dashboards_service.GetDashboardRequest = None,
+        request: Optional[dashboards_service.GetDashboardRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Fetches a specific dashboard.
@@ -247,9 +251,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.GetDashboardRequest`):
                 The request object. The `GetDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 
@@ -292,10 +296,10 @@ class DashboardsServiceAsyncClient:
 
     async def delete_dashboard(
         self,
-        request: dashboards_service.DeleteDashboardRequest = None,
+        request: Optional[dashboards_service.DeleteDashboardRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an existing custom dashboard.
@@ -308,9 +312,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.DeleteDashboardRequest`):
                 The request object. The `DeleteDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
         """
@@ -342,10 +346,10 @@ class DashboardsServiceAsyncClient:
 
     async def update_dashboard(
         self,
-        request: dashboards_service.UpdateDashboardRequest = None,
+        request: Optional[dashboards_service.UpdateDashboardRequest] = None,
         *,
-        retry: retries.Retry = gapic_v1.method.DEFAULT,
-        timeout: float = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Optional[float] = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dashboard.Dashboard:
         r"""Replaces an existing custom dashboard with a new definition.
@@ -358,9 +362,9 @@ class DashboardsServiceAsyncClient:
             request (:class:`~.dashboards_service.UpdateDashboardRequest`):
                 The request object. The `UpdateDashboard` request.
 
-            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+            retry (OptionalRetry): Designation of what errors, if any,
                 should be retried.
-            timeout (float): The timeout for this request.
+            timeout (Optional[float]): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
 

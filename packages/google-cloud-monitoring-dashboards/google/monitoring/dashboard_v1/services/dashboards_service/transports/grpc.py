@@ -49,12 +49,12 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
         self,
         *,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
-        scopes: Sequence[str] = None,
-        channel: grpc.Channel = None,
-        api_mtls_endpoint: str = None,
-        client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
+        credentials: Optional[credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
+        scopes: Optional[Sequence[str]] = None,
+        channel: Optional[grpc.Channel] = None,
+        api_mtls_endpoint: Optional[str] = None,
+        client_cert_source: Optional[Callable[[], Tuple[bytes, bytes]]] = None,
         quota_project_id: Optional[str] = None
     ) -> None:
         """Instantiate the transport.
@@ -70,7 +70,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+            scopes (Optional[Sequence[str]]): A list of scopes. This argument is
                 ignored if ``channel`` is provided.
             channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
@@ -94,7 +94,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
         if channel:
             # Sanity check: Ensure that channel and credentials are not both
             # provided.
-            credentials = False
+            credentials = None
 
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
@@ -145,15 +145,15 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
     def create_channel(
         cls,
         host: str = "monitoring.googleapis.com",
-        credentials: credentials.Credentials = None,
-        credentials_file: str = None,
+        credentials: Optional[credentials.Credentials] = None,
+        credentials_file: Optional[str] = None,
         scopes: Optional[Sequence[str]] = None,
         quota_project_id: Optional[str] = None,
         **kwargs
     ) -> grpc.Channel:
         """Create and return a gRPC channel object.
         Args:
-            address (Optionsl[str]): The host for the channel to use.
+            host (Optional[str]): The host for the channel to use.
             credentials (Optional[~.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify this application to the service. If
